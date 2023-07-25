@@ -51,6 +51,6 @@ public interface SnowLoggable {
 		Vec3 startPos = new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ());
 		Vec3 endPos = startPos.add(entity.getLookAngle().x() * 6.0D, entity.getLookAngle().y() * 6.0D, entity.getLookAngle().z() * (double) 6);
 		ClipContext rayTraceContext = new ClipContext(startPos, endPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity);
-		return entity.getLevel().clip(rayTraceContext);
+		return entity.level().clip(rayTraceContext);
 	}
 }

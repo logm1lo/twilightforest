@@ -1,4 +1,4 @@
-// 1.20.1	2023-07-22T15:14:42.6462964	TwilightForest Item and BlockItem models
+// 1.20.1	2023-07-24T21:19:58.2235612	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -189,6 +189,7 @@ bd8ec10fba2faf5c43a345a3f6324458ffccf0aa assets/twilightforest/models/item/giant
 7416195b8d9ad04bee9af5f946d82daae6bfa6e4 assets/twilightforest/models/item/giant_log.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/giant_miner_spawn_egg.json
 b8509740b4ae3573901b20d4ca0b9fd9298b9e3f assets/twilightforest/models/item/giant_obsidian.json
+b1d6f61a6bdaa30c445651a607e0fe85a4ae211d assets/twilightforest/models/item/glacialis.json
 9d1ea9a2d4af16c34c90f72733fd03b951263c68 assets/twilightforest/models/item/glass_sword.json
 e21b89209c4ae4bdf01ecbbd79a13e5209f36681 assets/twilightforest/models/item/gold_minotaur_axe.json
 9aa005dbed13d3b210f51aaf9de87c28de547b4e assets/twilightforest/models/item/greater_flask_0.json

@@ -71,11 +71,6 @@ public class GlacialisFlowerBlock extends FlowerBlock implements SnowLoggable {
 	}
 
 	@Override
-	public boolean useShapeForLightOcclusion(BlockState state) {
-		return true;
-	}
-
-	@Override
 	public float getShadeBrightness(BlockState state, BlockGetter getter, BlockPos pos) {
 		return state.getValue(SNOW_LAYERS) == 8 ? 0.2F : 1.0F;
 	}

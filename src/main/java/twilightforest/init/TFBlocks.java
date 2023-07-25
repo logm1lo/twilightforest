@@ -142,8 +142,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> EXPERIMENT_115 = BLOCKS.register("experiment_115", () -> new Experiment115Block(BlockBehaviour.Properties.of().noLootTable().pushReaction(PushReaction.DESTROY).randomTicks().sound(SoundType.WOOL).strength(0.5F)));
 
 	//snowy forest
-	public static final RegistryObject<Block> SNOWY_LEAVES = BLOCKS.register("snowy_leaves", () -> new SnowyLeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).sound(SoundType.GRASS).randomTicks().noOcclusion().isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
-	public static final RegistryObject<Block> GLACIALIS = BLOCKS.register("glacialis", () -> new GlacialisFlowerBlock(BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.GRASS).randomTicks()));
+	public static final RegistryObject<Block> SNOWY_LEAVES = BLOCKS.register("snowy_leaves", () -> new SnowyLeavesBlock(BlockBehaviour.Properties.of().mapColor(state -> state.getValue(SnowyLeavesBlock.SNOWY) ? MapColor.SNOW : MapColor.PLANT).ignitedByLava().pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GRASS).randomTicks().noOcclusion().isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
+	public static final RegistryObject<Block> GLACIALIS = register("glacialis", () -> new GlacialisFlowerBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).instabreak().sound(SoundType.GRASS).randomTicks()));
 
 	//aurora palace
 	public static final RegistryObject<Block> AURORA_BLOCK = register("aurora_block", () -> new AuroraBrickBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CHIME).mapColor(MapColor.ICE).strength(10.0F, 6.0F)));

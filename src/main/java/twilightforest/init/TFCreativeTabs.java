@@ -329,6 +329,7 @@ public class TFCreativeTabs {
 				output.accept(TFBlocks.CARMINITE_BUILDER.get());
 				output.accept(TFBlocks.ANTIBUILDER.get());
 				output.accept(TFBlocks.CARMINITE_REACTOR.get());
+				output.accept(TFBlocks.GLACIALIS.get());
 				output.accept(TFBlocks.AURORA_BLOCK.get());
 				output.accept(TFBlocks.AURORA_PILLAR.get());
 				output.accept(TFBlocks.AURORA_SLAB.get());
