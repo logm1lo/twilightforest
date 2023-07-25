@@ -13,12 +13,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.client.ISTER;
 
-public class TrophyItem extends StandingAndWallBlockItem {
+import java.util.function.Consumer;
+
+public class TrophyItem extends StandingAndWallBlockItem implements CurioItem {
 
 	public TrophyItem(Block floorBlock, Block wallBlock, Properties properties) {
 		super(floorBlock, wallBlock, properties, Direction.DOWN);
@@ -54,10 +56,12 @@ public class TrophyItem extends StandingAndWallBlockItem {
 
 	@Nullable
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.setupCuriosCapability(stack);
-		}
-		return super.initCapabilities(stack, tag);
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+		return this.setupCurio(stack, super.initCapabilities(stack, nbt));
+	}
+
+	@Override
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(ISTER.CLIENT_ITEM_EXTENSION);
 	}
 }

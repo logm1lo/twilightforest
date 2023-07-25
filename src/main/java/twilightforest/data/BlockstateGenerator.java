@@ -132,6 +132,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.PLAYER_SKULL_CANDLE.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.PIGLIN_SKULL_CANDLE.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 
 		getVariantBuilder(TFBlocks.SPIRAL_BRICKS.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(models().getExistingFile(TwilightForestMod.prefix("block/spiral_bricks/" + state.getValue(SpiralBrickBlock.AXIS_FACING).getName() + "_spiral_" + state.getValue(SpiralBrickBlock.DIAGONAL).getSerializedName()))).build());
 
@@ -192,6 +194,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		perFaceBlock(TFBlocks.TROLLSTEINN.get(), blockTexture(TFBlocks.TROLLSTEINN.get()), prefix("block/" + TFBlocks.TROLLSTEINN.getId().getPath() + "_light"));
 		simpleBlockWithRenderType(TFBlocks.WISPY_CLOUD.get(), TRANSLUCENT);
 		simpleBlock(TFBlocks.FLUFFY_CLOUD.get());
+		simpleBlock(TFBlocks.RAINY_CLOUD.get());
+		simpleBlock(TFBlocks.SNOWY_CLOUD.get());
 		simpleBlock(TFBlocks.GIANT_COBBLESTONE.get(), models().withExistingParent(TFBlocks.GIANT_COBBLESTONE.getId().getPath(), new ResourceLocation("block/block"))
 				.texture("particle", blockTexture(Blocks.COBBLESTONE))
 				.texture("all", blockTexture(Blocks.COBBLESTONE))
@@ -284,19 +288,21 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("all2", prefix("block/" + TFBlocks.CARMINITE_BLOCK.getId().getPath() + "_overlay"));
 		allRotations(TFBlocks.CARMINITE_BLOCK.get(), carminiteBlock);
 
-		simpleBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/portal")));
-		simpleBlock(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/naga_courtyard")));
-		simpleBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/lich_tower")));
+		horizontalBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/portal")));
+		horizontalBlock(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/naga_courtyard")));
+		horizontalBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/lich_tower")));
 		mazestone();
 		simpleBlock(TFBlocks.HEDGE.get(), ConfiguredModel.builder()
 				.weight(10).modelFile(models().cubeAll(TFBlocks.HEDGE.getId().getPath(), blockTexture(TFBlocks.HEDGE.get()))).nextModel()
 				.weight(1).modelFile(models().cubeAll(TFBlocks.HEDGE.getId().getPath() + "_rose", prefix("block/" + TFBlocks.HEDGE.getId().getPath() + "_rose"))).build());
 
-		ModelFile bigSpawner = models().withExistingParent("boss_spawner", "block/block").renderType(CUTOUT).texture("particle", "#all").texture("all", TwilightForestMod.prefix("block/boss_spawner")).element()
+		/*ModelFile bigSpawner = models().withExistingParent("boss_spawner", "block/block").renderType(CUTOUT).texture("particle", "#all").texture("all", TwilightForestMod.prefix("block/boss_spawner")).element()
 				.from(-4, -4, -4)
 				.to(20, 20, 20)
-				.allFaces((dir, builder) -> builder/*.cullface(dir)*/.uvs(2, 2, 14, 14).texture("#all"))
-				.end();
+				.allFaces((dir, builder) -> builder*//*.cullface(dir)*//*.uvs(2, 2, 14, 14).texture("#all"))
+				.end();*/
+
+		ModelFile bigSpawner = models().cubeAll("boss_spawner", TwilightForestMod.prefix("block/boss_spawner")).renderType(CUTOUT);
 
 		simpleBlock(TFBlocks.NAGA_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.LICH_BOSS_SPAWNER.get(), bigSpawner);
@@ -403,8 +409,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.POTTED_FIDDLEHEAD.get(), models().withExistingParent(TFBlocks.POTTED_FIDDLEHEAD.getId().getPath(), "block/tinted_flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.POTTED_FIDDLEHEAD.get())));
 		simpleBlock(TFBlocks.POTTED_MUSHGLOOM.get(), models().withExistingParent(TFBlocks.POTTED_MUSHGLOOM.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.POTTED_MUSHGLOOM.get())));
 		simpleBlock(TFBlocks.POTTED_THORN.get(), models().withExistingParent(TFBlocks.POTTED_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/brown_thorns_top")).texture("thorn_side", prefix("block/brown_thorns_side")));
-		simpleBlock(TFBlocks.POTTED_GREEN_THORN.get(), models().withExistingParent(TFBlocks.POTTED_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/green_thorns_top")).texture("thorn_side", prefix("block/green_thorns_side")));
-		simpleBlock(TFBlocks.POTTED_DEAD_THORN.get(), models().withExistingParent(TFBlocks.POTTED_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/burnt_thorns_top")).texture("thorn_side", prefix("block/burnt_thorns_side")));
+		simpleBlock(TFBlocks.POTTED_GREEN_THORN.get(), models().withExistingParent(TFBlocks.POTTED_GREEN_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/green_thorns_top")).texture("thorn_side", prefix("block/green_thorns_side")));
+		simpleBlock(TFBlocks.POTTED_DEAD_THORN.get(), models().withExistingParent(TFBlocks.POTTED_DEAD_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/burnt_thorns_top")).texture("thorn_side", prefix("block/burnt_thorns_side")));
 		simpleBlock(TFBlocks.POTTED_GLACIALIS.get(), models().withExistingParent(TFBlocks.POTTED_GLACIALIS.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.GLACIALIS.get())));
 
 		builtinEntity(TFBlocks.TWILIGHT_OAK_SIGN.get(), "twilightforest:block/wood/planks_twilight_oak_0");
@@ -424,6 +430,23 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		builtinEntity(TFBlocks.SORTING_SIGN.get(), "twilightforest:block/wood/planks_sort_0");
 		builtinEntity(TFBlocks.SORTING_WALL_SIGN.get(), "twilightforest:block/wood/planks_sort_0");
 
+		builtinEntity(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), "twilightforest:block/stripped_twilight_oak_log");
+		builtinEntity(TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_twilight_oak_log");
+		builtinEntity(TFBlocks.CANOPY_HANGING_SIGN.get(), "twilightforest:block/stripped_canopy_log");
+		builtinEntity(TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_canopy_log");
+		builtinEntity(TFBlocks.MANGROVE_HANGING_SIGN.get(), "twilightforest:block/stripped_mangrove_log");
+		builtinEntity(TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_mangrove_log");
+		builtinEntity(TFBlocks.DARK_HANGING_SIGN.get(), "twilightforest:block/stripped_dark_log");
+		builtinEntity(TFBlocks.DARK_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_dark_log");
+		builtinEntity(TFBlocks.TIME_HANGING_SIGN.get(), "twilightforest:block/stripped_time_log");
+		builtinEntity(TFBlocks.TIME_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_time_log");
+		builtinEntity(TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), "twilightforest:block/stripped_transformation_log");
+		builtinEntity(TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_transformation_log");
+		builtinEntity(TFBlocks.MINING_HANGING_SIGN.get(), "twilightforest:block/stripped_mining_log");
+		builtinEntity(TFBlocks.MINING_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_mining_log");
+		builtinEntity(TFBlocks.SORTING_HANGING_SIGN.get(), "twilightforest:block/stripped_sorting_log");
+		builtinEntity(TFBlocks.SORTING_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_sorting_log");
+		
 		builtinEntity(TFBlocks.TWILIGHT_OAK_CHEST.get(), "twilightforest:block/wood/planks_twilight_oak_0");
 		builtinEntity(TFBlocks.CANOPY_CHEST.get(), "twilightforest:block/wood/planks_canopy_0");
 		builtinEntity(TFBlocks.MANGROVE_CHEST.get(), "twilightforest:block/wood/planks_mangrove_0");
@@ -1147,6 +1170,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		banisterVanilla(TFBlocks.CRIMSON_BANISTER.get(), "crimson_planks", "crimson");
 		banisterVanilla(TFBlocks.WARPED_BANISTER.get(), "warped_planks", "warped");
 		banisterVanilla(TFBlocks.VANGROVE_BANISTER.get(), "mangrove_planks", "vanilla_mangrove");
+		banisterVanilla(TFBlocks.BAMBOO_BANISTER.get(), "bamboo_planks", "bamboo");
+		banisterVanilla(TFBlocks.CHERRY_BANISTER.get(), "cherry_planks", "cherry");
 
 		final ResourceLocation MOSS = TwilightForestMod.prefix("block/mosspatch");
 		final ResourceLocation MOSS_OVERHANG = TwilightForestMod.prefix("block/moss_overhang");
@@ -1172,6 +1197,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		hollowLogs(Blocks.CRIMSON_STEM, Blocks.STRIPPED_CRIMSON_STEM, TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL, TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL, TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
 		hollowLogs(Blocks.WARPED_STEM, Blocks.STRIPPED_WARPED_STEM, TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL, TFBlocks.HOLLOW_WARPED_STEM_VERTICAL, TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
 		hollowLogs(Blocks.MANGROVE_LOG, Blocks.STRIPPED_MANGROVE_LOG, TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL, TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
+		hollowLogs(Blocks.CHERRY_LOG, Blocks.STRIPPED_CHERRY_LOG, TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CHERRY_LOG_VERTICAL, TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
 
 		hollowLogs(TFBlocks.TWILIGHT_OAK_LOG, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
 		hollowLogs(TFBlocks.CANOPY_LOG, TFBlocks.STRIPPED_CANOPY_LOG, TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
@@ -1306,18 +1332,16 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			return ConfiguredModel.builder().modelFile(model).build();
 		});
 
-		ModelFile vanish = this.make3LayerCubeAllSidesSame(TFBlocks.VANISHING_BLOCK.getId().getPath(), CUTOUT, 0, 15, 10)
+		ModelFile vanish = this.make3LayerCubeAllSidesSame("vanishing_block", CUTOUT, 0, 15, 10)
 				.texture("all", prefix("block/towerdev_vanish_off"))
 				.texture("all2", prefix("block/tower_device_level_1/towerdev_vanish_off_1"))
 				.texture("all3", prefix("block/tower_device_level_2/towerdev_vanish_off_2"));
-		ModelFile vanishActive = this.make3LayerCubeAllSidesSame(TFBlocks.VANISHING_BLOCK.getId().getPath() + "_active", CUTOUT, 0, 15, 10)
+		ModelFile vanishActive = this.make3LayerCubeAllSidesSame("vanishing_block_active", CUTOUT, 0, 15, 10)
 				.texture("all", prefix("block/towerdev_vanish_on"))
 				.texture("all2", prefix("block/tower_device_level_1/towerdev_vanish_on_1"))
 				.texture("all3", prefix("block/tower_device_level_2/towerdev_vanish_on_2"));
-		getVariantBuilder(TFBlocks.VANISHING_BLOCK.get()).partialState()
-				.with(VanishingBlock.ACTIVE, false).setModels(new ConfiguredModel(vanish));
-		getVariantBuilder(TFBlocks.VANISHING_BLOCK.get()).partialState()
-				.with(VanishingBlock.ACTIVE, true).setModels(new ConfiguredModel(vanishActive));
+		getVariantBuilder(TFBlocks.UNBREAKABLE_VANISHING_BLOCK.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(VanishingBlock.ACTIVE) ? vanishActive : vanish).build());
+		getVariantBuilder(TFBlocks.VANISHING_BLOCK.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(VanishingBlock.ACTIVE) ? vanishActive : vanish).build());
 
 		ModelFile vanishLocked = this.make3LayerCubeAllSidesSame(TFBlocks.LOCKED_VANISHING_BLOCK.getId().getPath(), CUTOUT, 0, 15, 10)
 				.texture("all", prefix("block/towerdev_lock_on"))

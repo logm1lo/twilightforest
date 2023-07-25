@@ -31,6 +31,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.entity.ai.control.NoClipMoveControl;
@@ -40,6 +41,7 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.entity.projectile.UrGhastFireball;
 import twilightforest.init.*;
+import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
@@ -90,7 +92,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_TANTRUM, false);
+		this.getEntityData().define(DATA_TANTRUM, false);
 	}
 
 	public List<BlockPos> getTrapLocations() {
@@ -112,9 +114,9 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 	@Override
 	public void checkDespawn() {
-		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.getRestrictCenter() != BlockPos.ZERO) {
-				this.getLevel().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
+			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -151,11 +153,11 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	public void aiStep() {
 		super.aiStep();
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 		} else {
 			if (this.isInTantrum() && !this.isDeadOrDying()) {
-				this.getLevel().addParticle(TFParticleType.BOSS_TEAR.get(),
+				this.level().addParticle(TFParticleType.BOSS_TEAR.get(),
 						this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
 						this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 0.5D,
 						this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
@@ -198,7 +200,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 			this.hurtBy.add(player);
 		}
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (this.hurtTime == this.hurtDuration && !this.isDeadOrDying()) {
 				this.damageUntilNextPhase -= lastDamage;
 
@@ -227,7 +229,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 	private void startTantrum() {
 		this.setInTantrum(true);
-		if (this.level instanceof ServerLevel serverLevel) {
+		if (this.level() instanceof ServerLevel serverLevel) {
 			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
 			if (lightningbolt != null) {
 				BlockPos blockpos = serverLevel.findLightningTargetAround(BlockPos.containing(this.position().add(new Vec3(18, 0, 0).yRot((float) Math.toRadians(this.getRandom().nextInt(360))))));
@@ -241,7 +243,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 	@Override
 	public void tick() {
-		if (this.level.isClientSide && !this.isDeadOrDying() && this.isInTantrum()) TFWeatherRenderer.urGhastAlive = true;
+		if (this.level().isClientSide() && !this.isDeadOrDying() && this.isInTantrum()) TFWeatherRenderer.urGhastAlive = true;
 		super.tick();
 	}
 
@@ -273,23 +275,23 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		int rangeY = 8;
 
 		// lightning strike
-		LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, this.getLevel());
+		LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, this.level());
 		bolt.setPos(x, y + 4, z);
 		bolt.setVisualOnly(true);
-		this.getLevel().addFreshEntity(bolt);
+		this.level().addFreshEntity(bolt);
 
 		for (int i = 0; i < tries; i++) {
-			CarminiteGhastling minion = TFEntities.CARMINITE_GHASTLING.get().create(this.getLevel());
+			CarminiteGhastling minion = TFEntities.CARMINITE_GHASTLING.get().create(this.level());
 
 			double sx = x + ((this.getRandom().nextDouble() - this.getRandom().nextDouble()) * rangeXZ);
 			double sy = y + (this.getRandom().nextDouble() * rangeY);
 			double sz = z + ((this.getRandom().nextDouble() - this.getRandom().nextDouble()) * rangeXZ);
 
-			minion.moveTo(sx, sy, sz, this.getLevel().getRandom().nextFloat() * 360.0F, 0.0F);
+			minion.moveTo(sx, sy, sz, this.level().getRandom().nextFloat() * 360.0F, 0.0F);
 			minion.makeBossMinion();
 
-			if (minion.checkSpawnRules(this.getLevel(), MobSpawnType.MOB_SUMMONED)) {
-				this.getLevel().addFreshEntity(minion);
+			if (minion.checkSpawnRules(this.level(), MobSpawnType.MOB_SUMMONED)) {
+				this.level().addFreshEntity(minion);
 				minion.spawnAnim();
 			}
 
@@ -304,7 +306,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		super.customServerAiStep();
 
 		// despawn mini ghasts that are in our AABB
-		for (CarminiteGhastling ghast : this.getLevel().getEntitiesOfClass(CarminiteGhastling.class, this.getBoundingBox().inflate(1.0D))) {
+		for (CarminiteGhastling ghast : this.level().getEntitiesOfClass(CarminiteGhastling.class, this.getBoundingBox().inflate(1.0D))) {
 			ghast.spawnAnim();
 			ghast.discard();
 			this.heal(2);
@@ -312,11 +314,11 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 		if (this.tickCount % 60 == 0 && !this.getTrapLocations().isEmpty()) {
 			//validate traps positions are still actually usable traps. If not, remove them
-			this.getTrapLocations().removeIf(pos -> !this.getLevel().getBlockState(pos).is(TFBlocks.GHAST_TRAP.get()) || !this.getLevel().canSeeSky(pos.above()));
+			this.getTrapLocations().removeIf(pos -> !this.level().getBlockState(pos).is(TFBlocks.GHAST_TRAP.get()) || !this.level().canSeeSky(pos.above()));
 		}
 
 		if (this.firstTick || this.tickCount % 100 == 0) {
-			List<BlockPos> addedPositions = this.scanForTraps((ServerLevel) this.getLevel());
+			List<BlockPos> addedPositions = this.scanForTraps((ServerLevel) this.level());
 			addedPositions.removeIf(pos -> this.getTrapLocations().contains(pos));
 			if (!addedPositions.isEmpty()) {
 				this.getTrapLocations().addAll(addedPositions);
@@ -328,7 +330,8 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 			// cry?
 			if (--this.nextTantrumCry <= 0) {
-				this.playSound(TFSounds.UR_GHAST_TANTRUM.get());
+				this.playSound(TFSounds.UR_GHAST_TANTRUM.get(), this.getSoundVolume(), this.getVoicePitch());
+				this.ambientSoundTime = -this.getAmbientSoundInterval();
 				this.nextTantrumCry = 20 + this.getRandom().nextInt(30);
 			}
 
@@ -340,7 +343,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 	//If we have a home position, use that for scanning, otherwise use our current position
 	public BlockPos getLogicalScanPoint() {
-		return this.getRestrictionCenter() == BlockPos.ZERO ? this.blockPosition() : this.getRestrictionCenter();
+		return !this.isRestrictionPointValid(this.level().dimension()) ? this.blockPosition() : this.getRestrictionPoint().pos();
 	}
 
 	private List<BlockPos> scanForTraps(ServerLevel level) {
@@ -348,7 +351,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		Stream<PoiRecord> stream = poimanager.getInRange(type ->
 				type.is(TFPOITypes.GHAST_TRAP.getKey()),
 				this.getLogicalScanPoint(),
-				(int)(this.getRestrictRadius() == -1 ? 32 : this.getRestrictRadius()),
+				this.getHomeRadius(),
 				PoiManager.Occupancy.ANY);
 		return stream.map(PoiRecord::getPos)
 				.filter(trapPos -> level.canSeeSky(trapPos.above()))
@@ -360,14 +363,14 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		// harm player below
 		AABB below = this.getBoundingBox().move(0, -16, 0).inflate(0, 16, 0);
 
-		for (Player player : this.getLevel().getEntitiesOfClass(Player.class, below)) {
-			if (this.getLevel().canSeeSkyFromBelowWater(player.blockPosition())) {
-				player.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.GHAST_TEAR, TFEntities.UR_GHAST.get()), 3);
+		for (Player player : this.level().getEntitiesOfClass(Player.class, below)) {
+			if (this.level().canSeeSkyFromBelowWater(player.blockPosition())) {
+				player.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.GHAST_TEAR, TFEntities.UR_GHAST.get()), 3);
 			}
 		}
 
 		// also suck up mini ghasts
-		for (CarminiteGhastling ghast : this.getLevel().getEntitiesOfClass(CarminiteGhastling.class, below)) {
+		for (CarminiteGhastling ghast : this.level().getEntitiesOfClass(CarminiteGhastling.class, below)) {
 			ghast.push(0, 1, 0);
 		}
 	}
@@ -381,7 +384,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		for (BlockPos trap : this.getTrapLocations()) {
 			AABB aabb = new AABB(trap, trap.offset(1, 1, 1)).inflate(8D, 16D, 8D);
 
-			List<CarminiteGhastling> nearbyGhasts = this.getLevel().getEntitiesOfClass(CarminiteGhastling.class, aabb);
+			List<CarminiteGhastling> nearbyGhasts = this.level().getEntitiesOfClass(CarminiteGhastling.class, aabb);
 
 			if (nearbyGhasts.size() >= 4) {
 				trapsWithEnoughGhasts++;
@@ -397,7 +400,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		double offsetY = this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F - (this.getY() + this.getBbHeight() / 2.0F);
 		double offsetZ = this.getTarget().getZ() - this.getZ();
 
-		UrGhastFireball entityFireball = new UrGhastFireball(this.getLevel(), this, offsetX, offsetY, offsetZ, 1);
+		UrGhastFireball entityFireball = new UrGhastFireball(this.level(), this, offsetX, offsetY, offsetZ, 1);
 		double shotSpawnDistance = 8.5D;
 		Vec3 lookVec = this.getViewVector(1.0F);
 		entityFireball.setPos(
@@ -405,16 +408,16 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 				this.getY() + this.getBbHeight() / 2.0F + lookVec.y() * shotSpawnDistance,
 				this.getZ() + lookVec.z() * shotSpawnDistance
 		);
-		this.getLevel().addFreshEntity(entityFireball);
+		this.level().addFreshEntity(entityFireball);
 
 		for (int i = 0; i < 2; i++) {
-			entityFireball = new UrGhastFireball(this.getLevel(), this, offsetX + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 8, offsetY, offsetZ + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 8, 1);
+			entityFireball = new UrGhastFireball(this.level(), this, offsetX + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 8, offsetY, offsetZ + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 8, 1);
 			entityFireball.setPos(
 					this.getX() + lookVec.x() * shotSpawnDistance,
 					this.getY() + this.getBbHeight() / 2.0F + lookVec.y() * shotSpawnDistance,
 					this.getZ() + lookVec.z() * shotSpawnDistance
 			);
-			this.getLevel().addFreshEntity(entityFireball);
+			this.level().addFreshEntity(entityFireball);
 		}
 	}
 
@@ -441,11 +444,11 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	}
 
 	public boolean isInTantrum() {
-		return this.entityData.get(DATA_TANTRUM);
+		return this.getEntityData().get(DATA_TANTRUM);
 	}
 
 	public void setInTantrum(boolean inTantrum) {
-		this.entityData.set(DATA_TANTRUM, inTantrum);
+		this.getEntityData().set(DATA_TANTRUM, inTantrum);
 		this.resetDamageUntilNextPhase();
 	}
 
@@ -480,10 +483,10 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the tower as defeated
-		if (this.getLevel() instanceof ServerLevel serverLevel) {
+		if (this.level() instanceof ServerLevel serverLevel) {
 			this.bossInfo.setProgress(0.0F);
-			IBossLootBuffer.saveDropsIntoBoss(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), serverLevel);
-			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.DARK_TOWER, true);
+			IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
+			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.DARK_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
@@ -510,16 +513,16 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 				double d1 = this.random.nextGaussian() * 0.02D;
 				double d2 = this.random.nextGaussian() * 0.02D;
 
-				this.getLevel().addParticle(this.random.nextBoolean() ? (this.random.nextBoolean() ? ParticleTypes.POOF : ParticleTypes.EXPLOSION) : DustParticleOptions.REDSTONE,
+				this.level().addParticle(this.random.nextBoolean() ? (this.random.nextBoolean() ? ParticleTypes.POOF : ParticleTypes.EXPLOSION) : DustParticleOptions.REDSTONE,
 						(this.getX() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
 						this.getY() + this.random.nextFloat() * bbHeight,
 						(this.getZ() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
 						d, d1, d2
 				);
 			}
-		} else if (this.level instanceof ServerLevel) {
+		} else if (this.level() instanceof ServerLevel) {
 			if (this.deathTime >= maxDeath && !this.isRemoved()) {
-				this.level.broadcastEntityEvent(this, (byte) 60);
+				this.level().broadcastEntityEvent(this, (byte) 60);
 				this.remove(Entity.RemovalReason.KILLED);
 				return;
 			}
@@ -556,17 +559,16 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	}
 
 	@Override
-	public void remove(RemovalReason removalReason) {
-		if (removalReason.equals(RemovalReason.KILLED) && this.level instanceof ServerLevel serverLevel) {
+	public void remove(RemovalReason reason) {
+		if (reason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
 			IBossLootBuffer.depositDropsIntoChest(this, TFBlocks.DARK_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
 		}
-		super.remove(removalReason);
+		super.remove(reason);
 	}
 
 	@Override
 	protected boolean shouldDropLoot() {
-		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
-		return false;
+		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
 	}
 
 	// Don't attack (or even think about attacking) things while we're throwing a tantrum

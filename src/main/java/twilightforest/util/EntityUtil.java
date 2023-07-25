@@ -9,12 +9,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Painting;
@@ -35,10 +32,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.entity.EnforcedHomePoint;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -50,8 +49,8 @@ import java.util.function.DoubleUnaryOperator;
 
 public class EntityUtil {
 
-	public static BlockPos bossChestLocation(Mob boss) {
-		return boss.getRestrictCenter() == BlockPos.ZERO ? boss.blockPosition() : boss.getRestrictCenter().below();
+	public static <T extends Mob & EnforcedHomePoint> BlockPos bossChestLocation(T boss) {
+		return !boss.isRestrictionPointValid(boss.level().dimension()) ? boss.blockPosition() : boss.getRestrictionPoint().pos().below();
 	}
 
 	public static boolean canDestroyBlock(Level world, BlockPos pos, Entity entity) {
@@ -61,6 +60,7 @@ public class EntityUtil {
 	public static boolean canDestroyBlock(Level world, BlockPos pos, BlockState state, Entity entity) {
 		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.isAir()
+				&& !(world.getBlockEntity(pos) instanceof Container)
 				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
 				&& (/* rude type limit */!(entity instanceof LivingEntity)
 				|| ForgeEventFactory.onEntityDestroyBlock((LivingEntity) entity, pos, state));
@@ -73,7 +73,7 @@ public class EntityUtil {
 		Vec3 position = entity.getEyePosition(1.0F);
 		Vec3 look = entity.getViewVector(1.0F);
 		Vec3 dest = position.add(look.x * range, look.y * range, look.z * range);
-		return entity.level.clip(new ClipContext(position, dest, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
+		return entity.level().clip(new ClipContext(position, dest, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
 	}
 
 	public static BlockHitResult rayTrace(Player player) {
@@ -124,9 +124,9 @@ public class EntityUtil {
 			for (double z = bounds.minZ; z < bounds.maxZ; z++) {
 				for (double y = bounds.minY; y < bounds.maxY; y++) {
 					BlockPos pos = BlockPos.containing(x, y, z);
-					BlockState state = entity.getLevel().getBlockState(pos);
+					BlockState state = entity.level().getBlockState(pos);
 					if (state.is(Blocks.LAVA)) {
-						entity.getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+						entity.level().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					}
 				}
 			}

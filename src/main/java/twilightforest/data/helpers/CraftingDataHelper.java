@@ -3,7 +3,6 @@ package twilightforest.data.helpers;
 import net.minecraft.Util;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.nbt.CompoundTag;
@@ -211,10 +210,10 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locWood(name + "_gate"));
 	}
 
-	protected final void planksBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+	protected final void planksBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, TagKey<Item> material) {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result.get(), 4)
-				.requires(material.get())
-				.unlockedBy("has_item", has(material.get()))
+				.requires(material)
+				.unlockedBy("has_item", has(material))
 				.save(consumer, locWood(name + "_planks"));
 	}
 
@@ -269,7 +268,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locWood(name + "_stripped_wood"));
 	}
 
-	protected final void signBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+	protected final void signBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Block> material) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result.get(), 3)
 				.pattern("###")
 				.pattern("###")
@@ -277,7 +276,18 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.define('#', material.get())
 				.define('-', Tags.Items.RODS_WOODEN)
 				.unlockedBy("has_item", has(material.get()))
-				.save(consumer, locWood(name + "_wood"));
+				.save(consumer, locWood(name + "_sign"));
+	}
+
+	protected final void hangingSignBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result.get(), 6)
+				.pattern("| |")
+				.pattern("###")
+				.pattern("###")
+				.define('#', material.get())
+				.define('|', Items.CHAIN)
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_hanging_sign"));
 	}
 
 	protected final void banisterBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {

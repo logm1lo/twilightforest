@@ -24,9 +24,9 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
 minecraft {
-    //mappings channel: "official", version: "1.19.4"
+    //mappings channel: "official", version: "1.20"
     // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
-    mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.19.4'
+    mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20'
 
     //version = minecraft_version + "-" + forge_version // grab latest forge
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
@@ -143,22 +143,23 @@ repositories {
 
 dependencies {
     // jared
-    implementation fg.deobf("mezz.jei:jei-${project.minecraft_sub_version}-forge:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_sub_version}-forge:${project.jei_version}")
 
     // tterrag
     //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
 
     // theillusivec4
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.minecraft_sub_version}-${curios_version}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}+${project.minecraft_sub_version}")
 
     //curse maven
-    implementation fg.deobf("curse.maven:jade-324717:4439089-api-4439091")
-    //runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:3944903")
+    implementation fg.deobf("curse.maven:jade-324717:4573193")
+    runtimeOnly fg.deobf("curse.maven:jeed-532286:4599236")
+    runtimeOnly fg.deobf("curse.maven:museum-curator-859070:4607988")
 
-    compileOnly fg.deobf("curse.maven:the-one-probe-245211:4442439")
+    compileOnly fg.deobf("curse.maven:the-one-probe-245211:4613250")
 
     //mods we dont have compat with but are nice to have
-    //runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_sub_version}-1.0")
+    runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_version}-1.0")
 
     minecraft "net.minecraftforge:forge:${project.minecraft_sub_version}-${project.forge_version}"
 }

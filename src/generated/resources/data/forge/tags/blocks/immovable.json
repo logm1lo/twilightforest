@@ -1,6 +1,7 @@
 {
   "values": [
     "twilightforest:twilight_portal",
+    "twilightforest:stronghold_shield",
     "twilightforest:time_log_core",
     "twilightforest:transformation_log_core",
     "twilightforest:mining_log_core",
@@ -12,6 +13,7 @@
     "twilightforest:reactor_debris",
     "twilightforest:locked_vanishing_block",
     "twilightforest:vanishing_block",
+    "twilightforest:unbreakable_vanishing_block",
     "twilightforest:reappearing_block",
     "twilightforest:beanstalk_grower",
     "twilightforest:giant_cobblestone",

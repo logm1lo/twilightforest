@@ -47,13 +47,13 @@ import java.util.Random;
  */
 public class TFWeatherRenderer {
 
-	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
-	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
+	public static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
+	public static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
 
 	private static final ResourceLocation SPARKLES_TEXTURE = TwilightForestMod.getEnvTexture("sparkles.png");
 
-	private static final float[] rainxs = new float[1024];
-	private static final float[] rainzs = new float[1024];
+	public static final float[] rainxs = new float[1024];
+	public static final float[] rainzs = new float[1024];
 
 	private static int rendererUpdateCount;
 	private static BoundingBox protectedBox;
@@ -83,6 +83,7 @@ public class TFWeatherRenderer {
 	public static boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTicks, LightTexture lightmap, double camX, double camY, double camZ) {
 		Minecraft mc = Minecraft.getInstance();
 		// do normal weather rendering
+
 		renderNormalWeather(lightmap, level, partialTicks, camX, camY, camZ, Math.max(urGhastRain, level.getRainLevel(partialTicks)));
 
 		if (LandmarkUtil.isProgressionEnforced(level) && mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator()) {
@@ -139,10 +140,7 @@ public class TFWeatherRenderer {
 							k2 = i2;
 						}
 
-						int l2 = i2;
-						if (i2 < j) {
-							l2 = j;
-						}
+						int l2 = Math.max(i2, j);
 
 						if (j2 != k2) {
 							Random random = new Random((long) k1 * k1 * 3121 + k1 * 45238971L ^ (long) j1 * j1 * 418711 + j1 * 13761L);
@@ -172,7 +170,7 @@ public class TFWeatherRenderer {
 								bufferbuilder.vertex((double)k1 - x - d0 + 0.5D, (double)j2 - y, (double)j1 - z - d1 + 0.5D).uv(0.0F, (float)k2 * 0.25F + f3).color(1.0F, 1.0F, 1.0F, f5).uv2(j3).endVertex();
 							} else {
 								if (i1 != 1) {
-									if (i1 >= 0) {
+									if (i1 == 0) {
 										tesselator.end();
 									}
 
@@ -242,8 +240,7 @@ public class TFWeatherRenderer {
 
 			RenderType currentType = null;
 			float combinedTicks = rendererUpdateCount + partialTicks;
-			//bufferBuilder.setTranslation(-dx, -dy, -dz);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.setShader(GameRenderer::getParticleShader);
 			BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
 			for (int z = z0 - range; z <= z0 + range; ++z) {
@@ -468,7 +465,7 @@ public class TFWeatherRenderer {
 				}
 			}
 
-			if (j1 >= 0) {
+			if (j1 == 0) {
 				tessellator.end();
 			}
 

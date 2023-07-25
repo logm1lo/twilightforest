@@ -1,7 +1,6 @@
 package twilightforest.data;
 
 import net.minecraft.data.PackOutput;
-import twilightforest.TFConfig;
 import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.init.*;
 
@@ -203,6 +202,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.MOSSY_TOWERWOOD, "Mossy Towerwood Planks");
 		this.addBlock(TFBlocks.INFESTED_TOWERWOOD, "Infested Towerwood Planks");
 		this.addBlock(TFBlocks.ENCASED_TOWERWOOD, "Encased Towerwood Planks");
+		this.addBlock(TFBlocks.UNBREAKABLE_VANISHING_BLOCK, "Vanishing Block");
 		this.addBlock(TFBlocks.VANISHING_BLOCK, "Vanishing Block");
 		this.addBlock(TFBlocks.REAPPEARING_BLOCK, "Reappearing Block");
 		this.addBlock(TFBlocks.LOCKED_VANISHING_BLOCK, "Locked Vanishing Block");
@@ -236,6 +236,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.TROLLBER, "Trollber");
 		this.addBlock(TFBlocks.TROLLSTEINN, "Trollsteinn");
 		this.addBlock(TFBlocks.FLUFFY_CLOUD, "Fluffy Cloud");
+		this.addBlock(TFBlocks.RAINY_CLOUD, "Rainy Cloud");
+		this.addBlock(TFBlocks.SNOWY_CLOUD, "Snowy Cloud");
 		this.addBlock(TFBlocks.WISPY_CLOUD, "Wispy Cloud");
 		this.addBlock(TFBlocks.GIANT_LEAVES, "Giant Leaves");
 		this.addBlock(TFBlocks.GIANT_LOG, "Giant Log");
@@ -357,6 +359,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.CRIMSON_BANISTER, "Crimson Banister");
 		this.addBlock(TFBlocks.WARPED_BANISTER, "Warped Banister");
 		this.addBlock(TFBlocks.VANGROVE_BANISTER, "Mangrove Banister");
+		this.addBlock(TFBlocks.BAMBOO_BANISTER, "Bamboo Banister");
+		this.addBlock(TFBlocks.CHERRY_BANISTER, "Cherry Banister");
 
 		this.createHollowLogs("oak", "Oak", false);
 		this.createHollowLogs("spruce", "Spruce", false);
@@ -367,6 +371,7 @@ public class LangGenerator extends TFLangProvider {
 		this.createHollowLogs("crimson", "Crimson", true);
 		this.createHollowLogs("warped", "Warped", true);
 		this.createHollowLogs("vangrove", "Mangrove", false);
+		this.createHollowLogs("cherry", "Cherry", false);
 		this.add("block.twilightforest.banister.cycle", "Right click with an axe to cycle");
 
 		this.addBlock(TFBlocks.MOSS_PATCH, "Moss Patch");
@@ -376,8 +381,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.FALLEN_LEAVES, "Fallen Leaves");
 		this.addBlock(TFBlocks.MAYAPPLE, "Mayapple");
 		this.addBlock(TFBlocks.POTTED_MAYAPPLE, "Potted Mayapple");
-		this.addBlock(TFBlocks.FIDDLEHEAD, "Mayapple");
-		this.addBlock(TFBlocks.POTTED_FIDDLEHEAD, "Potted Mayapple");
+		this.addBlock(TFBlocks.FIDDLEHEAD, "Fiddlehead Fern");
+		this.addBlock(TFBlocks.POTTED_FIDDLEHEAD, "Potted Fiddlehead");
 		this.addBlock(TFBlocks.MUSHGLOOM, "Mushgloom");
 		this.addBlock(TFBlocks.POTTED_MUSHGLOOM, "Potted Mushgloom");
 		this.addBlock(TFBlocks.POTTED_THORN, "Potted Thorn");
@@ -430,6 +435,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.PLAYER_SKULL_CANDLE, "Player Skull Candle");
 		this.add("block.twilightforest.player_skull_candle.named", "%s's Head with Candles");
 		this.addBlock(TFBlocks.PLAYER_WALL_SKULL_CANDLE, "Player Wall Skull Candle");
+		this.addBlock(TFBlocks.PIGLIN_SKULL_CANDLE, "Piglin Skull Candle");
+		this.addBlock(TFBlocks.PIGLIN_WALL_SKULL_CANDLE, "Piglin Wall Skull Candle");
 
 		this.addBlock(TFBlocks.UNCRAFTING_TABLE, "Uncrafting Table");
 		this.add("container.twilightforest.uncrafting_table", "Uncrafting Table");
@@ -1091,8 +1098,41 @@ public class LangGenerator extends TFLangProvider {
 		this.addScreenMessage("optifine.message", "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug, please remove Optifine first and check again to see if the bug is still present.\n\nOptifine-related issues are not solvable on Twilight Forest's end!\n\nThis screen may be disabled in the Client Config.");
 		this.addScreenMessage("optifine.suggestions", "Here's a selection of mods that we recommend using instead.");
 
+		this.addScreenMessage("progression_end.message", "This is the end of progression for now. The Final Castle that awaits on the plateau is still unfinished and a work in progress. If you would like to keep up with the mod's development you can join our %s.");
+		this.addScreenMessage("progression_end.discord", "Discord Server");
+
 		this.addScreenMessage("crumble_horn_jei", "Crumble Horn");
 		this.addScreenMessage("transformation_jei", "Transformation Powder");
 		this.addScreenMessage("uncrafting_jei", "Uncrafting");
+
+		this.addTrim("carminite", "Carminite");
+		this.addTrim("fiery", "Fiery");
+		this.addTrim("ironwood", "Ironwood");
+		this.addTrim("knightmetal", "Knightmetal");
+		this.addTrim("naga_scale", "Naga Scale");
+		this.addTrim("steeleaf", "Steeleaf");
+
+		this.add("museumcurator.animalhusbandry.twilightforest.bugs", "Bugs");
+		this.add("museumcurator.architecture.twilightforest.aurorablocks", "Aurora Blocks");
+		this.add("museumcurator.architecture.twilightforest.banisters", "Banisters");
+		this.add("museumcurator.architecture.twilightforest.castlebrick", "Castle Brick");
+		this.add("museumcurator.architecture.twilightforest.giantblocks", "Giant Blocks");
+		this.add("museumcurator.botany.twilightforest.beanstalk", "Beanstalk");
+		this.add("museumcurator.botany.twilightforest.canopytree", "Canopy Tree");
+		this.add("museumcurator.botany.twilightforest.darkwoodtree", "Darkwood Tree");
+		this.add("museumcurator.botany.twilightforest.miningtree", "Minewood Tree");
+		this.add("museumcurator.botany.twilightforest.sortingtree", "Sortingwood Tree");
+		this.add("museumcurator.botany.twilightforest.mangrovetree", "Mangrove Tree");
+		this.add("museumcurator.botany.twilightforest.timetree", "Timewood Tree");
+		this.add("museumcurator.botany.twilightforest.transformationtree", "Transwood Tree");
+		this.add("museumcurator.botany.twilightforest.twilightoaktree", "Twilight Oak Tree");
+		this.add("museumcurator.equipment.twilightforest.scepters", "Scepters of Power");
+		this.add("museumcurator.lithology.twilightforest.deadrock", "Deadrock");
+		this.add("museumcurator.lithology.twilightforest.mazestone", "Mazestone");
+		this.add("museumcurator.lithology.twilightforest.nagastone", "Nagastone");
+		this.add("museumcurator.machinery.twilightforest.carminitemachines", "Carminite Mechanisms");
+		this.add("museumcurator.metallurgy.twilightforest.fiery", "Fiery Metal");
+		this.add("museumcurator.metallurgy.twilightforest.ironwood", "Ironwood");
+		this.add("museumcurator.metallurgy.twilightforest.knightmetal", "Knightmetal");
 	}
 }

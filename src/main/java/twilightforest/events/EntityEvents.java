@@ -1,7 +1,10 @@
 package twilightforest.events;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -25,7 +28,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -55,6 +60,13 @@ import java.util.UUID;
 public class EntityEvents {
 
 	private static final boolean SHIELD_PARRY_MOD_LOADED = ModList.get().isLoaded("parry");
+
+	@SubscribeEvent
+	public static void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
+		if (event.getAdvancement().getId().equals(TwilightForestMod.prefix("progression_end"))) {
+			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/twilightforest")))));
+		}
+	}
 
 	@SubscribeEvent
 	public static void entityHurts(LivingHurtEvent event) {
@@ -223,6 +235,10 @@ public class EntityEvents {
 							if (wall) makeWallSkull(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get());
 							else makeFloorSkull(event, TFBlocks.CREEPER_SKULL_CANDLE.get());
 						}
+						case PIGLIN -> {
+							if (wall) makeWallSkull(event, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.PIGLIN_SKULL_CANDLE.get());
+						}
 						default -> {
 							return;
 						}
@@ -285,5 +301,26 @@ public class EntityEvents {
 		}
 
 		return amount;
+	}
+
+	@SubscribeEvent
+	public static void onLivingTickEvent(LivingEvent.LivingTickEvent event) {
+		LivingEntity living = event.getEntity();
+		if (living != null && canSpawnCloudParticles(living)) {
+			CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, false);
+		}
+	}
+
+	public static boolean canSpawnCloudParticles(LivingEntity living) {
+		if (living.getDeltaMovement().x == 0.0D && living.getDeltaMovement().z == 0.0D && living.getRandom().nextInt(20) != 0) return false;
+		return living.tickCount % 2 == 0 && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock;
+	}
+
+	@SubscribeEvent
+	public static void onLivingJumpEvent(LivingEvent.LivingJumpEvent event) {
+		LivingEntity living = event.getEntity();
+		if (living != null && living.level().isClientSide() && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock) {
+			for (int i = 0; i < 12; i++) CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
+		}
 	}
 }

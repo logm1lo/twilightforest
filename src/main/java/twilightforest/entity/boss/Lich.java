@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -48,6 +49,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
 import twilightforest.data.tags.DamageTypeTagGenerator;
@@ -55,6 +57,7 @@ import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.*;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.init.*;
+import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
@@ -64,6 +67,7 @@ import twilightforest.util.WorldUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer {
 
@@ -71,6 +75,8 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	private static final EntityDataAccessor<Integer> SHIELD_STRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> MINIONS_LEFT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> ATTACK_TYPE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+
 	private final NonNullList<ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
 
 	public static final int MAX_SHADOW_CLONES = 2;
@@ -113,10 +119,11 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(IS_CLONE, false);
-		this.entityData.define(SHIELD_STRENGTH, INITIAL_SHIELD_STRENGTH);
-		this.entityData.define(MINIONS_LEFT, INITIAL_MINIONS_TO_SUMMON);
-		this.entityData.define(ATTACK_TYPE, 0);
+		this.getEntityData().define(IS_CLONE, false);
+		this.getEntityData().define(SHIELD_STRENGTH, INITIAL_SHIELD_STRENGTH);
+		this.getEntityData().define(MINIONS_LEFT, INITIAL_MINIONS_TO_SUMMON);
+		this.getEntityData().define(ATTACK_TYPE, 0);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -166,7 +173,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		this.readDeathItemsSaveData(compound);
-		this.loadHomePointFromNbt(compound, 20);
+		this.loadHomePointFromNbt(compound);
 		this.setShadowClone(compound.getBoolean("ShadowClone"));
 		this.setShieldStrength(compound.getInt("ShieldStrength"));
 		this.setMinionsToSummon(compound.getInt("MinionsToSummon"));
@@ -196,7 +203,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	public void aiStep() {
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (this.getPhase() == 1) {
 				this.bossInfo.setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
 			} else {
@@ -243,11 +250,11 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 				blu = 0.00F * sparkle;
 			}
 
-			this.getLevel().addParticle(ParticleTypes.ENTITY_EFFECT, dx + (this.getRandom().nextGaussian() * 0.025), dy + (this.getRandom().nextGaussian() * 0.025), dz + (this.getRandom().nextGaussian() * 0.025), red, grn, blu);
+			this.level().addParticle(ParticleTypes.ENTITY_EFFECT, dx + (this.getRandom().nextGaussian() * 0.025), dy + (this.getRandom().nextGaussian() * 0.025), dz + (this.getRandom().nextGaussian() * 0.025), red, grn, blu);
 		}
 
 		if (this.getPhase() == 3)
-			this.getLevel().addParticle(ParticleTypes.ANGRY_VILLAGER,
+			this.level().addParticle(ParticleTypes.ANGRY_VILLAGER,
 					this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
 					this.getY() + 1.0D + this.getRandom().nextFloat() * this.getBbHeight(),
 					this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
@@ -351,15 +358,15 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the tower as defeated
-		if (this.getLevel() instanceof ServerLevel serverLevel && !this.isShadowClone()) {
+		if (this.level() instanceof ServerLevel serverLevel && !this.isShadowClone()) {
 			this.bossInfo.setProgress(0.0F);
-			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.LICH_TOWER, true);
+			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.LICH_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
 			this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-			IBossLootBuffer.saveDropsIntoBoss(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), serverLevel);
+			IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
 		}
 	}
 
@@ -369,7 +376,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	protected void tickDeath() {
 		++this.deathTime;
 
-		if (this.level instanceof ServerLevel) {
+		if (this.level() instanceof ServerLevel) {
 			int maxDeath = 175;//How many ticks until the body disappears
 			if (this.deathTime <= 50) {
 				boolean done = this.deathTime == 50;
@@ -466,7 +473,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	public void remove(RemovalReason removalReason) {
-		if (removalReason.equals(RemovalReason.KILLED) && this.level instanceof ServerLevel serverLevel) {
+		if (removalReason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
 			IBossLootBuffer.depositDropsIntoChest(this, this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 		super.remove(removalReason);
@@ -474,9 +481,9 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	public void checkDespawn() {
-		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL && !this.isShadowClone()) {
-			if (this.hasRestriction()) {
-				this.getLevel().setBlockAndUpdate(getRestrictCenter(), TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.level().getDifficulty() == Difficulty.PEACEFUL && !this.isShadowClone()) {
+			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -503,7 +510,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
-		this.getLevel().addFreshEntity(projectile);
+		this.level().addFreshEntity(projectile);
 	}
 
 	public boolean wantsNewClone(Lich clone) {
@@ -524,7 +531,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	}
 
 	public List<? extends Lich> getNearbyLiches() {
-		return this.getLevel().getEntitiesOfClass(getClass(), new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
+		return this.level().getEntitiesOfClass(getClass(), new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
 	}
 
 	public boolean wantsNewMinion() {
@@ -532,7 +539,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	}
 
 	public int countMyMinions() {
-		return (int) this.getLevel().getEntitiesOfClass(LichMinion.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D))
+		return (int) this.level().getEntitiesOfClass(LichMinion.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D))
 				.stream()
 				.filter(m -> m.master == this)
 				.count();
@@ -602,7 +609,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		this.teleportTo(destX, destY, destZ);
 
 		this.makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
-		this.getLevel().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT.get(), this.getSoundSource(), 1.0F, 1.0F);
+		this.level().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT.get(), this.getSoundSource(), 1.0F, 1.0F);
 		this.playSound(TFSounds.LICH_TELEPORT.get(), 1.0F, 1.0F);
 		this.gameEvent(GameEvent.TELEPORT);
 
@@ -625,14 +632,14 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			double tx = srcX + (destX - srcX) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
 			double ty = srcY + (destY - srcY) * trailFactor + this.getRandom().nextDouble() * this.getBbHeight();
 			double tz = srcZ + (destZ - srcZ) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
-			this.getLevel().addParticle(ParticleTypes.EFFECT, tx, ty, tz, f, f1, f2);
+			this.level().addParticle(ParticleTypes.EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
 
 	public void makeMagicTrail(Vec3 source, Vec3 target, float red, float green, float blue) {
 		int particles = 60;
-		if (!this.getLevel().isClientSide()) {
-			for (ServerPlayer serverplayer : ((ServerLevel) this.getLevel()).players()) {
+		if (!this.level().isClientSide()) {
+			for (ServerPlayer serverplayer : ((ServerLevel) this.level()).players()) {
 				if (serverplayer.distanceToSqr(source) < 4096.0D) {
 					ParticlePacket packet = new ParticlePacket();
 
@@ -652,12 +659,12 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	private void extinguishNearbyCandles() {
 		for (BlockPos pos : WorldUtil.getAllAround(this.blockPosition(), 10)) {
-			if (level.getBlockState(pos).getBlock() instanceof AbstractCandleBlock && level.getBlockState(pos).getValue(BlockStateProperties.LIT)) {
-				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(BlockStateProperties.LIT, false));
-				level.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);
-			} else if (level.getBlockState(pos).getBlock() instanceof AbstractLightableBlock && level.getBlockState(pos).getValue(AbstractLightableBlock.LIGHTING) == AbstractLightableBlock.Lighting.NORMAL) {
-				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(AbstractLightableBlock.LIGHTING, AbstractLightableBlock.Lighting.OMINOUS));
-				level.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 0.75F);
+			if (this.level().getBlockState(pos).getBlock() instanceof AbstractCandleBlock && this.level().getBlockState(pos).getValue(BlockStateProperties.LIT)) {
+				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(BlockStateProperties.LIT, false));
+				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);
+			} else if (this.level().getBlockState(pos).getBlock() instanceof AbstractLightableBlock && this.level().getBlockState(pos).getValue(AbstractLightableBlock.LIGHTING) == AbstractLightableBlock.Lighting.NORMAL) {
+				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(AbstractLightableBlock.LIGHTING, AbstractLightableBlock.Lighting.OMINOUS));
+				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 0.75F);
 			}
 		}
 	}
@@ -726,36 +733,36 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	}
 
 	public boolean isShadowClone() {
-		return this.entityData.get(IS_CLONE);
+		return this.getEntityData().get(IS_CLONE);
 	}
 
 	public void setShadowClone(boolean shadowClone) {
 		this.bossInfo.setVisible(!shadowClone);
-		this.entityData.set(IS_CLONE, shadowClone);
+		this.getEntityData().set(IS_CLONE, shadowClone);
 	}
 
 	public int getShieldStrength() {
-		return this.entityData.get(SHIELD_STRENGTH);
+		return this.getEntityData().get(SHIELD_STRENGTH);
 	}
 
 	public void setShieldStrength(int shieldStrength) {
-		this.entityData.set(SHIELD_STRENGTH, shieldStrength);
+		this.getEntityData().set(SHIELD_STRENGTH, shieldStrength);
 	}
 
 	public int getMinionsToSummon() {
-		return this.entityData.get(MINIONS_LEFT);
+		return this.getEntityData().get(MINIONS_LEFT);
 	}
 
 	public void setMinionsToSummon(int minionsToSummon) {
-		this.entityData.set(MINIONS_LEFT, minionsToSummon);
+		this.getEntityData().set(MINIONS_LEFT, minionsToSummon);
 	}
 
 	public int getNextAttackType() {
-		return this.entityData.get(ATTACK_TYPE);
+		return this.getEntityData().get(ATTACK_TYPE);
 	}
 
 	public void setNextAttackType(int attackType) {
-		this.entityData.set(ATTACK_TYPE, attackType);
+		this.getEntityData().set(ATTACK_TYPE, attackType);
 	}
 
 
@@ -790,8 +797,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	protected boolean shouldDropLoot() {
-		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
-		return false;
+		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
 	}
 
 	@Override
@@ -831,17 +837,22 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
-	}
-
-	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
-	}
-
-	@Override
 	public NonNullList<ItemStack> getItemStacks() {
 		return this.dyingInventory;
+	}
+
+	@Override
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
+	}
+
+	@Override
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
 	}
 }

@@ -69,7 +69,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(CHARGING, false);
+		this.getEntityData().define(CHARGING, false);
 	}
 
 	@Nullable
@@ -94,12 +94,12 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	public boolean isCharging() {
-		return this.entityData.get(CHARGING);
+		return this.getEntityData().get(CHARGING);
 	}
 
 	@Override
 	public void setCharging(boolean flag) {
-		this.entityData.set(CHARGING, flag);
+		this.getEntityData().set(CHARGING, flag);
 	}
 
 	//[VanillaCopy] of Mob.doHurtTarget, edits noted
@@ -118,7 +118,7 @@ public class Minotaur extends Monster implements ITFCharger {
 		}
 
 		//TF: change damage source to minotaur one
-		boolean flag = entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.AXING, this), f);
+		boolean flag = entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), f);
 		if (flag) {
 			if (f1 > 0.0F && entity instanceof LivingEntity living) {
 				living.knockback(f1 * 0.5F, Mth.sin(this.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(this.getYRot() * Mth.DEG_TO_RAD));
