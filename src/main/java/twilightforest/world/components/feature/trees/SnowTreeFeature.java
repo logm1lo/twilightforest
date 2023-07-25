@@ -45,7 +45,7 @@ public class SnowTreeFeature extends Feature<TreeConfiguration> {
     }
 
     public static boolean validTreePos(LevelSimulatedReader reader, BlockPos pos) {
-        return reader.isStateAtPosition(pos, (state) -> state.isAir() || state.is(Blocks.SNOW)) || state.is(BlockTags.REPLACEABLE_BY_TREES));
+        return reader.isStateAtPosition(pos, (state) -> state.isAir() || state.is(Blocks.SNOW) || state.is(BlockTags.REPLACEABLE_BY_TREES));
     }
 
     private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, FoliagePlacer.FoliageSetter setter, TreeConfiguration config) {
