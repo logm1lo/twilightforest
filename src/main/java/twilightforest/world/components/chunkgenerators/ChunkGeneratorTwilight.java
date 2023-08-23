@@ -46,6 +46,7 @@ import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.placements.BiomeForcedLandmarkPlacement;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.type.HollowHillStructure;
+import twilightforest.world.components.structures.type.jigsaw.IndexedPoolElementPiece;
 import twilightforest.world.components.structures.util.ControlledSpawns;
 
 import java.util.*;
@@ -829,6 +830,9 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 				if (component instanceof TFStructureComponent tfComponent) {
 					if (tfComponent.spawnListIndex > highestFoundIndex)
 						highestFoundIndex = tfComponent.spawnListIndex;
+				} else if (component instanceof IndexedPoolElementPiece piece) {
+					if (piece.getSpawnIndex() > highestFoundIndex)
+						highestFoundIndex = piece.getSpawnIndex();
 				} else
 					return 0;
 			}

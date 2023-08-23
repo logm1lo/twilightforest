@@ -11,6 +11,7 @@ import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.MagicPaintingVariants;
 import twilightforest.init.custom.Restrictions;
 import twilightforest.init.custom.WoodPalettes;
+import twilightforest.init.pools.LichTowerPools;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -22,6 +23,7 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 			.add(Registries.PLACED_FEATURE, TFPlacedFeatures::bootstrap)
 			.add(Registries.STRUCTURE, TFStructures::bootstrap)
 			.add(Registries.STRUCTURE_SET, TFStructureSets::bootstrap)
+			.add(Registries.TEMPLATE_POOL, LichTowerPools::bootstrap)
 			.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)
 			.add(Registries.NOISE_SETTINGS, TFDimensionSettings::bootstrapNoise)
 			.add(BiomeLayerStack.BIOME_STACK_KEY, BiomeLayerStack::bootstrap)

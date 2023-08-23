@@ -1,0 +1,41 @@
+{
+  "elements": [
+    {
+      "element": {
+        "adjustment": "none",
+        "element_type": "twilightforest:indexed_element",
+        "location": "twilightforest:lich_tower/spawners/bridge",
+        "processors": {
+          "processors": []
+        },
+        "spawnIndex": 0
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "adjustment": "none",
+        "element_type": "twilightforest:indexed_element",
+        "location": "twilightforest:lich_tower/spawners/stairs",
+        "processors": {
+          "processors": []
+        },
+        "spawnIndex": 0
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "adjustment": "none",
+        "element_type": "twilightforest:indexed_element",
+        "location": "twilightforest:lich_tower/spawners/none",
+        "processors": {
+          "processors": []
+        },
+        "spawnIndex": 0
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

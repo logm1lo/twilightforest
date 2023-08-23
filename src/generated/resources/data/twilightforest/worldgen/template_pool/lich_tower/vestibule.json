@@ -1,0 +1,17 @@
+{
+  "elements": [
+    {
+      "element": {
+        "adjustment": "none",
+        "element_type": "twilightforest:indexed_element",
+        "location": "twilightforest:lich_tower/vestibule",
+        "processors": {
+          "processors": []
+        },
+        "spawnIndex": -1
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

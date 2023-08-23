@@ -1,0 +1,65 @@
+{
+  "elements": [
+    {
+      "element": {
+        "adjustment": "none",
+        "element_type": "twilightforest:indexed_element",
+        "location": "twilightforest:lich_tower/doorways/bridge",
+        "processors": {
+          "processors": []
+        },
+        "spawnIndex": 0
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "adjustment": "none",
+        "element_type": "twilightforest:indexed_element",
+        "location": "twilightforest:lich_tower/doorways/wall",
+        "processors": {
+          "processors": []
+        },
+        "spawnIndex": 0
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "adjustment": "none",
+        "element_type": "twilightforest:indexed_element",
+        "location": "twilightforest:lich_tower/doorways/window1",
+        "processors": {
+          "processors": []
+        },
+        "spawnIndex": 0
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "adjustment": "none",
+        "element_type": "twilightforest:indexed_element",
+        "location": "twilightforest:lich_tower/doorways/window2",
+        "processors": {
+          "processors": []
+        },
+        "spawnIndex": 0
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "adjustment": "none",
+        "element_type": "twilightforest:indexed_element",
+        "location": "twilightforest:lich_tower/doorways/window3",
+        "processors": {
+          "processors": []
+        },
+        "spawnIndex": 0
+      },
+      "weight": 2
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.type.*;
+import twilightforest.world.components.structures.type.jigsaw.TFStructureConfigs;
 
 public class TFStructures {
 
@@ -39,7 +40,7 @@ public class TFStructures {
 		context.register(HOLLOW_HILL_MEDIUM, HollowHillStructure.buildMediumHillConfig(context));
 		context.register(HOLLOW_HILL_LARGE, HollowHillStructure.buildLargeHillConfig(context));
 		context.register(NAGA_COURTYARD, NagaCourtyardStructure.buildStructureConfig(context));
-		context.register(LICH_TOWER, LichTowerStructure.buildLichTowerConfig(context));
+		context.register(LICH_TOWER, TFStructureConfigs.buildLichTowerConfig(context));
 		context.register(LABYRINTH, LabyrinthStructure.buildLabyrinthConfig(context));
 		context.register(HYDRA_LAIR, HydraLairStructure.buildHydraLairConfig(context));
 		context.register(KNIGHT_STRONGHOLD, KnightStrongholdStructure.buildKnightStrongholdConfig(context));

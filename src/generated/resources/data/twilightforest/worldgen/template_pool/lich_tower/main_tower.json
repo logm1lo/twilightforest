@@ -1,0 +1,17 @@
+{
+  "elements": [
+    {
+      "element": {
+        "adjustment": "none",
+        "element_type": "twilightforest:indexed_element",
+        "location": "twilightforest:lich_tower/main_tower",
+        "processors": {
+          "processors": []
+        },
+        "spawnIndex": 0
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

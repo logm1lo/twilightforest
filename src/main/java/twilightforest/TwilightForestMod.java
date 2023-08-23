@@ -120,6 +120,7 @@ public class TwilightForestMod {
 		TFSounds.SOUNDS.register(modbus);
 		TFEntities.SPAWN_EGGS.register(modbus);
 		TFStats.STATS.register(modbus);
+		TFStructureElementTypes.STRUCTURE_ELEMENT_TYPES.register(modbus);
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(modbus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
 		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(modbus);
