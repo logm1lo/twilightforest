@@ -41,9 +41,11 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
 import twilightforest.init.TFSounds;
+import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.LandmarkUtil;
 
 import java.util.Optional;
 
@@ -127,6 +129,8 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
 		}
+
+		LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.QUEST_GROVE, true);
 	}
 
 	@Override
