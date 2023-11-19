@@ -1,7 +1,9 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -9,9 +11,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
 
 public class TimeLogCoreBlock extends SpecialMagicLogBlock {
@@ -41,15 +48,32 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 			BlockState state = level.getBlockState(dPos);
 
 			if (!state.is(BlockTagGenerator.TIME_CORE_EXCLUDED)) {
+				boolean worked = false;
+
 				if (state.isRandomlyTicking()) {
 					state.randomTick((ServerLevel) level, dPos, rand);
+					worked = true;
 				}
 
 				BlockEntity entity = level.getBlockEntity(dPos);
 				if (entity != null) {
 					BlockEntityTicker<BlockEntity> ticker = state.getTicker(level, (BlockEntityType<BlockEntity>) entity.getType());
-					if (ticker != null)
+					if (ticker != null) {
 						ticker.tick(level, dPos, state, entity);
+						worked = true;
+					}
+				}
+
+				if (worked) {
+					Vec3 xyz = Vec3.atCenterOf(dPos);
+					for (ServerPlayer serverplayer : ((ServerLevel) level).players()) { // This is just particle math, we send a particle packet to every player in range
+						if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
+							ParticlePacket particlePacket = new ParticlePacket();
+							double yOffset = state.getBlock().getOcclusionShape(state, level, dPos).max(Direction.Axis.Y);
+							particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
+							TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
+						}
+					}
 				}
 			}
 		}

@@ -8,12 +8,12 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SortingParticle extends TextureSheetParticle {
+public class TransformationParticle extends TextureSheetParticle {
     private final double xStart;
     private final double yStart;
     private final double zStart;
 
-    public SortingParticle(ClientLevel level, double x, double y, double z, double x2, double y2, double z2) {
+    public TransformationParticle(ClientLevel level, double x, double y, double z, double x2, double y2, double z2) {
         super(level, x, y, z);
         this.xd = x2;
         this.yd = y2;
@@ -27,13 +27,13 @@ public class SortingParticle extends TextureSheetParticle {
         this.x = this.xo;
         this.y = this.yo;
         this.z = this.zo;
-        this.quadSize = 0.4F * (this.random.nextFloat() * 0.3F + 0.2F);
+        this.quadSize = 0.5F * (this.random.nextFloat() * 0.3F + 0.2F);
         this.hasPhysics = false;
-        this.lifetime = (int)(Math.random() * 10.0D) + 19;
+        this.lifetime = ((int)(Math.random() * 10.0D) + 10) * 2;
         this.alpha = 0;
-        this.rCol = 0.0F;
-        this.gCol = 0.9F;
-        this.bCol = 0.1F;
+        this.rCol = 0.38F;
+        this.gCol = 0.82F;
+        this.bCol = 0.82F;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class SortingParticle extends TextureSheetParticle {
     public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
         @Override
         public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double x2, double y2, double z2) {
-            SortingParticle sortingParticle = new SortingParticle(level, x, y, z, x2, y2, z2);
+            TransformationParticle sortingParticle = new TransformationParticle(level, x, y, z, x2, y2, z2);
             sortingParticle.pickSprite(this.sprite);
             return sortingParticle;
         }

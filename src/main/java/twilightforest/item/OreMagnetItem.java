@@ -5,6 +5,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -26,9 +28,13 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
@@ -136,10 +142,10 @@ public class OreMagnetItem extends Item {
 		Vec3 lookVec = getOffsetLook(living, yawOffset, pitchOffset);
 		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
 
-		return doMagnet(level, BlockPos.containing(srcVec), BlockPos.containing(destVec));
+		return doMagnet(level, BlockPos.containing(srcVec), BlockPos.containing(destVec), false);
 	}
 
-	public static int doMagnet(Level level, BlockPos usePos, BlockPos destPos) {
+	public static int doMagnet(Level level, BlockPos usePos, BlockPos destPos, boolean sourceIsMineCore) {
 		// FIXME Find a better place to invoke this!
 		initOre2BlockMap();
 
@@ -183,6 +189,20 @@ public class OreMagnetItem extends Item {
 
 				if (isReplaceable(replaceState) || replaceState.canBeReplaced() || replaceState.isAir()) {
 					level.setBlock(coord, replacementBlock, 2);
+
+					if (sourceIsMineCore && level instanceof ServerLevel serverLevel) {
+						Vec3 xyz = Vec3.atCenterOf(replacePos);
+						for (ServerPlayer serverplayer : serverLevel.players()) { // This is just particle math, we send a particle packet to every player in range
+							if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
+								ParticlePacket particlePacket = new ParticlePacket();
+								for (int i = 0; i < 16; i++) {
+									Vec3 offset = new Vec3((level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D);
+									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
+								}
+								TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
+							}
+						}
+					}
 
 					// set close to ore material
 					level.setBlock(replacePos, attactedOreBlock, 2);
