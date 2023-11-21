@@ -80,7 +80,7 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.HOLLOW_OAK_SAPLING.get())) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.HOLLOW_OAK_SAPLING.value())) {
 			return false;
 		}
 
@@ -396,7 +396,7 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		world.setBlock(pos.above(), Blocks.SPAWNER.defaultBlockState(), 16 | 2);
 		SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(pos.above());
 		if (ms != null) {
-			ms.setEntityId(TFEntities.SWARM_SPIDER.get(), random);
+			ms.setEntityId(TFEntities.SWARM_SPIDER.value(), random);
 		}
 
 		// treasure chests?
@@ -436,8 +436,8 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
-			world.setBlock(src, TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
+		if (TFBlocks.FIREFLY.value().defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
+			world.setBlock(src, TFBlocks.FIREFLY.value().defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
 		}
 	}
 
@@ -457,8 +457,8 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.CICADA.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
-			world.setBlock(src, TFBlocks.CICADA.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
+		if (TFBlocks.CICADA.value().defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
+			world.setBlock(src, TFBlocks.CICADA.value().defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
 		}
 	}
 }

@@ -53,12 +53,12 @@ public record UncraftingRecipe(int cost, int width, int height, Ingredient input
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.UNCRAFTING_SERIALIZER.get();
+		return TFRecipes.UNCRAFTING_SERIALIZER.value();
 	}
 
 	@Override
 	public RecipeType<?> getType() {
-		return TFRecipes.UNCRAFTING_RECIPE.get();
+		return TFRecipes.UNCRAFTING_RECIPE.value();
 	}
 
 	@Override

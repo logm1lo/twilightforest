@@ -35,7 +35,7 @@ public class TransformPowderItem extends Item {
 		}
 		AtomicBoolean flag = new AtomicBoolean(false);
 
-		player.level().getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach(recipeHolder -> {
+		player.level().getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.value()).forEach(recipeHolder -> {
 			if (flag.get()) return;
 			if (recipeHolder.value().input() == target.getType() || (recipeHolder.value().isReversible() && recipeHolder.value().result() == target.getType())) {
 				EntityType<?> type = recipeHolder.value().isReversible() && recipeHolder.value().result() == target.getType() ? recipeHolder.value().input() : recipeHolder.value().result();
@@ -69,7 +69,7 @@ public class TransformPowderItem extends Item {
 					mob.spawnAnim();
 					mob.spawnAnim();
 				}
-				target.playSound(TFSounds.POWDER_USE.get(), 1.0F + target.level().getRandom().nextFloat(), target.level().getRandom().nextFloat() * 0.7F + 0.3F);
+				target.playSound(TFSounds.POWDER_USE.value(), 1.0F + target.level().getRandom().nextFloat(), target.level().getRandom().nextFloat() * 0.7F + 0.3F);
 				flag.set(true);
 			}
 		});

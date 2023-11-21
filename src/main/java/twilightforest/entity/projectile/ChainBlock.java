@@ -77,7 +77,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
 		super(type, thrower, world);
 		this.isReturning = false;
-		this.canSmashBlocks = EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0 && !thrower.hasEffect(MobEffects.DIG_SLOWDOWN);
+		this.canSmashBlocks = EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.value(), stack) > 0 && !thrower.hasEffect(MobEffects.DIG_SLOWDOWN);
 		this.stack = stack;
 		this.setHand(hand);
 		this.chain1 = new Chain(this);
@@ -142,7 +142,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 			if (damage > 0.0F) {
 				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.getOwner()), damage)) {
-					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0f, this.random.nextFloat());
+					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.value(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;
 					this.isReturning = true;
@@ -165,7 +165,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 			boolean restrictedPlaceMode = this.getOwner() instanceof ServerPlayer player && player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted();
 			if (!state.isAir() && !this.canBreakBlockAt(pos, state, restrictedPlaceMode)) {
 				if (!this.isReturning && !this.hitEntity) {
-					this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
+					this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.value(), 0.125f, this.random.nextFloat());
 					this.gameEvent(GameEvent.HIT_GROUND);
 				}
 
@@ -334,7 +334,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().is(TFItems.BLOCK_AND_CHAIN.get())) {
+		if (thrower != null && thrower.getUseItem().is(TFItems.BLOCK_AND_CHAIN.value())) {
 			thrower.stopUsingItem();
 		}
 	}

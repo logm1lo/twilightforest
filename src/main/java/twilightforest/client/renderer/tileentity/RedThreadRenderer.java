@@ -47,7 +47,7 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 	@Override
 	public void render(T thread, float ticks, PoseStack poseStack, MultiBufferSource source, int light, int overlay) {
 		BlockState state = thread.getBlockState();
-		boolean glow = Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFBlocks.RED_THREAD.get().asItem());
+		boolean glow = Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFBlocks.RED_THREAD.value().asItem());
 
 		for (Direction face : Direction.values()) {
 			if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face))) {
@@ -77,13 +77,13 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 
 				if (!flag && level != null) { //If there is no other face to connect to, we check neighbouring positions for other red thread blocks.
 					BlockState state = level.getBlockState(pos.relative(direction));
-					flag = state.getBlock().equals(TFBlocks.RED_THREAD.get()) && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face));
+					flag = state.getBlock().equals(TFBlocks.RED_THREAD.value()) && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face));
 
 					if (!flag) { //And if the above check also fails, we check if there is a red thread behind the corner for us to connect to.
 						state = level.getBlockState(pos.relative(direction).relative(face));
 						//check if theres a block in the way of the connection. If there is, dont connect
 						boolean threadBlocked = level.getBlockState(pos.relative(direction)).isFaceSturdy(level, pos, direction.getOpposite());
-						flag = state.getBlock().equals(TFBlocks.RED_THREAD.get()) && !threadBlocked && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()));
+						flag = state.getBlock().equals(TFBlocks.RED_THREAD.value()) && !threadBlocked && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()));
 					}
 				}
 

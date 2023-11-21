@@ -25,11 +25,11 @@ public class YetiCaveComponent extends HollowHillComponent {
 	private static final Stalactite ICE_SPIKE = new Stalactite(Map.of(Blocks.ICE, 1), 0.6F, 10, 1);
 
 	public YetiCaveComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFYeti.get(), nbt);
+		super(TFStructurePieceTypes.TFYeti.value(), nbt);
 	}
 
 	public YetiCaveComponent(int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFYeti.get(), i, 2, x, y, z);
+		super(TFStructurePieceTypes.TFYeti.value(), i, 2, x, y, z);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 		}
 
 		// spawn alpha yeti
-		final BlockState yetiSpawner = TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get().defaultBlockState();
+		final BlockState yetiSpawner = TFBlocks.ALPHA_YETI_BOSS_SPAWNER.value().defaultBlockState();
 		this.setBlockStateRotated(world, yetiSpawner, this.radius, 1, this.radius, Rotation.NONE, sbb);
 	}
 

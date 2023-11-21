@@ -47,7 +47,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		}
 
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.CANOPY_SAPLING.get())) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.CANOPY_SAPLING.value())) {
 			return false;
 		}
 

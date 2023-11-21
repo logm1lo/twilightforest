@@ -65,7 +65,7 @@ public class Experiment115Block extends Block {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!player.isSecondaryUseActive()) {
-			if (bitesTaken > 0 && stack.is(TFItems.EXPERIMENT_115.get())) {
+			if (bitesTaken > 0 && stack.is(TFItems.EXPERIMENT_115.value())) {
 				level.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken - 1));
 				level.playSound(null, pos, state.getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (!player.isCreative()) stack.shrink(1);
@@ -90,7 +90,7 @@ public class Experiment115Block extends Block {
 				}
 				player.playSound(SoundEvents.ITEM_PICKUP, 0.5F, 1.0F);
 				if (!player.isCreative())
-					ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.get()));
+					ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.value()));
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
@@ -100,7 +100,7 @@ public class Experiment115Block extends Block {
 	private InteractionResult eatCake(Level level, BlockPos pos, BlockState state, Player player) {
 		if (!player.canEat(false)) return InteractionResult.PASS;
 		else {
-			player.awardStat(TFStats.E115_SLICES_EATEN.get());
+			player.awardStat(TFStats.E115_SLICES_EATEN.value());
 			player.getFoodData().eat(4, 0.3F);
 			level.playSound(null, pos, SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
 			int i = state.getValue(BITES_TAKEN);
@@ -112,8 +112,8 @@ public class Experiment115Block extends Block {
 			}
 
 			if (player instanceof ServerPlayer) {
-				CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.EXPERIMENT_115.get(), 8 - i));
-				player.awardStat(Stats.ITEM_USED.get(TFItems.EXPERIMENT_115.get()));
+				CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.EXPERIMENT_115.value(), 8 - i));
+				player.awardStat(Stats.ITEM_USED.get(TFItems.EXPERIMENT_115.value()));
 			}
 
 			return InteractionResult.sidedSuccess(level.isClientSide());

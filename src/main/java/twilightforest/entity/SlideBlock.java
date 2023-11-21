@@ -41,7 +41,7 @@ public class SlideBlock extends Entity {
 	public SlideBlock(EntityType<? extends SlideBlock> type, Level world) {
 		super(type, world);
 		this.blocksBuilding = true;
-		this.myState = TFBlocks.SLIDER.get().defaultBlockState();
+		this.myState = TFBlocks.SLIDER.value().defaultBlockState();
 	}
 
 	public SlideBlock(EntityType<? extends SlideBlock> type, Level world, double x, double y, double z, BlockState state) {
@@ -121,7 +121,7 @@ public class SlideBlock extends Entity {
 
 			if (!this.level().isClientSide()) {
 				if (this.slideTime % 5 == 0) {
-					this.playSound(TFSounds.SLIDER.get(), 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
+					this.playSound(TFSounds.SLIDER.value(), 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
 				}
 
 				BlockPos pos = new BlockPos(this.blockPosition());

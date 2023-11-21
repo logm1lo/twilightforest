@@ -23,7 +23,7 @@ public class ModExistsCondition implements LootItemCondition {
 
 	@Override
 	public LootItemConditionType getType() {
-		return TFLoot.MOD_EXISTS.get();
+		return TFLoot.MOD_EXISTS.value();
 	}
 
 	@Override

@@ -25,11 +25,11 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class MazeRuinsComponent extends TFStructureComponentOld {
 
 	public MazeRuinsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMRuins.get(), nbt);
+		super(TFStructurePieceTypes.TFMMRuins.value(), nbt);
 	}
 
 	public MazeRuinsComponent(int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRuins.get(), i, TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH, false));
+		super(TFStructurePieceTypes.TFMMRuins.value(), i, TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH, false));
 		this.setOrientation(Direction.SOUTH);
 	}
 

@@ -108,7 +108,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 						return false;
 					} else {
 						if (rand.nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
-							access.setBlockState(pos.relative(facing), TFBlocks.TROLLSTEINN.get().defaultBlockState(), false);
+							access.setBlockState(pos.relative(facing), TFBlocks.TROLLSTEINN.value().defaultBlockState(), false);
 						}
 						access.setBlockState(pos, CAVE_AIR, false);
 

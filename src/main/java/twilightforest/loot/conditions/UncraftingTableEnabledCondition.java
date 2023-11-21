@@ -15,7 +15,7 @@ public class UncraftingTableEnabledCondition implements LootItemCondition {
 
 	@Override
 	public LootItemConditionType getType() {
-		return TFLoot.UNCRAFTING_TABLE_ENABLED.get();
+		return TFLoot.UNCRAFTING_TABLE_ENABLED.value();
 	}
 
 	@Override

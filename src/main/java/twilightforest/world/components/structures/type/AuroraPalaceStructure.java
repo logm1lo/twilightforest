@@ -39,18 +39,18 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.AURORA_PALACE.get();
+        return TFStructureTypes.AURORA_PALACE.value();
     }
 
     public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstapContext<Structure> context) {
         return new AuroraPalaceStructure(
                 ControlledSpawningConfig.firstIndexMonsters(
-                        new MobSpawnSettings.SpawnerData(TFEntities.SNOW_GUARDIAN.get(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.STABLE_ICE_CORE.get(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.UNSTABLE_ICE_CORE.get(), 5, 1, 2)
+                        new MobSpawnSettings.SpawnerData(TFEntities.SNOW_GUARDIAN.value(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.STABLE_ICE_CORE.value(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.UNSTABLE_ICE_CORE.value(), 5, 1, 2)
                 ),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_yeti"))),
-                new HintConfig(HintConfig.book("icetower", 3), TFEntities.KOBOLD.get()),
+                new HintConfig(HintConfig.book("icetower", 3), TFEntities.KOBOLD.value()),
                 new DecorationConfig(2, false, true, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_AURORA_PALACE_BIOMES),

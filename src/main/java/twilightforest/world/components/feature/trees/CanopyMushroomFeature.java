@@ -63,7 +63,7 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
             BlockPos.MutableBlockPos bugPos = new BlockPos.MutableBlockPos();
             bugPos.set(pos).move(direction);
             if (!levelAccessor.getBlockState(bugPos).isSolidRender(levelAccessor, bugPos)) {
-                BlockState bugState = TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
+                BlockState bugState = TFBlocks.FIREFLY.value().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
                 this.setBlock(levelAccessor, bugPos, bugState);
                 this.bugsLeft--;
             }

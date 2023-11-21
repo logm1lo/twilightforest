@@ -89,8 +89,8 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 		this.darkForestCanopyHeight = darkForestCanopyHeight;
 
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen && noiseGen.generatorSettings().isBound()) {
-			this.defaultBlock = noiseGen.generatorSettings().get().defaultBlock();
-			this.defaultFluid = noiseGen.generatorSettings().get().defaultFluid();
+			this.defaultBlock = noiseGen.generatorSettings().value().defaultBlock();
+			this.defaultFluid = noiseGen.generatorSettings().value().defaultFluid();
 			this.surfaceNoiseGetter = Optional.empty();//Optional.of(noiseGen.sampler);
 		} else {
 			this.defaultBlock = Blocks.STONE.defaultBlockState();
@@ -583,14 +583,14 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 						final int oceanFloor = primer.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
 
 						if (dist < 7 || cv < 0.05F) {
-							primer.setBlock(movingPos.setY(y), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y), TFBlocks.WISPY_CLOUD.value().defaultBlockState(), 3);
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.value().defaultBlockState(), 3);
 							}
-							primer.setBlock(movingPos.setY(y - depth), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y - depth), TFBlocks.WISPY_CLOUD.value().defaultBlockState(), 3);
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.value().defaultBlockState(), 3);
 							}
 						}
 
@@ -805,7 +805,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 
 					treeBottom -= noise;
 
-					BlockState darkLeaves = TFBlocks.HARDENED_DARK_LEAVES.get().defaultBlockState();
+					BlockState darkLeaves = TFBlocks.HARDENED_DARK_LEAVES.value().defaultBlockState();
 
 					for (int y = treeBottom; y < treeTop; y++) {
 						primer.setBlock(pos.atY(y), darkLeaves, 3);

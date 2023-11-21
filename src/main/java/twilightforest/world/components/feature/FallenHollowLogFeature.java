@@ -18,12 +18,12 @@ import twilightforest.util.FeatureUtil;
 
 public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 
-	final BlockState mossPatch = TFBlocks.MOSS_PATCH.get().defaultBlockState();
-	final BlockState oakLeaves = TFBlocks.TWILIGHT_OAK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
-	final BlockState oakLogWithZAxis = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
-	final BlockState oakLogWithXAxis = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+	final BlockState mossPatch = TFBlocks.MOSS_PATCH.value().defaultBlockState();
+	final BlockState oakLeaves = TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
+	final BlockState oakLogWithZAxis = TFBlocks.TWILIGHT_OAK_LOG.value().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+	final BlockState oakLogWithXAxis = TFBlocks.TWILIGHT_OAK_LOG.value().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 	final BlockState grass = Blocks.GRASS_BLOCK.defaultBlockState();
-	final BlockState firefly = TFBlocks.FIREFLY.get().defaultBlockState();
+	final BlockState firefly = TFBlocks.FIREFLY.value().defaultBlockState();
 
 	public FallenHollowLogFeature(Codec<NoneFeatureConfiguration> configIn) {
 		super(configIn);

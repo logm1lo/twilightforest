@@ -39,6 +39,7 @@ import twilightforest.init.custom.Restrictions;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.Restriction;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.*;
@@ -128,7 +129,7 @@ public class TFTeleporter implements ITeleporter {
 			flag = false;
 			// Validate that the Portal still exists
 			TwilightForestMod.LOGGER.debug("Using cache, validating. {}", blockpos);
-			if (blockpos == null || !destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL.get())) {
+			if (blockpos == null || !destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL.value())) {
 				// Portal was broken, we need to recreate it.
 				TwilightForestMod.LOGGER.debug("Portal Invalid, recreating.");
 				blockpos = null;
@@ -241,7 +242,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean isPortal(BlockState state) {
-		return state.getBlock() == TFBlocks.TWILIGHT_PORTAL.get();
+		return state.getBlock() == TFBlocks.TWILIGHT_PORTAL.value();
 	}
 
 	// from the start point, builds a set of all directly adjacent non-portal blocks
@@ -356,7 +357,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean checkBiome(Level world, BlockPos pos, Entity entity) {
-		return Restrictions.isBiomeSafeFor(world.getBiome(pos).value(), entity);
+		return Restriction.isBiomeSafeFor(world.getBiome(pos).value(), entity);
 	}
 
 	@Nullable
@@ -536,7 +537,7 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockAndUpdate(pos.east().south().below(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
+		BlockState portal = TFBlocks.TWILIGHT_PORTAL.value().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
 
 		world.setBlock(pos, portal, 2);
 		world.setBlock(pos.east(), portal, 2);

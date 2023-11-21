@@ -29,7 +29,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 		BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		if (!level.isClientSide()) {
 			for (LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos), EntitySelector.NO_SPECTATORS)) {
-				level.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach(recipeHolder -> {
+				level.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.value()).forEach(recipeHolder -> {
 					if (recipeHolder.value().input() == livingentity.getType() || (recipeHolder.value().isReversible() && recipeHolder.value().result() == livingentity.getType())) {
 						EntityType<?> type = recipeHolder.value().isReversible() && recipeHolder.value().result() == livingentity.getType() ? recipeHolder.value().input() : recipeHolder.value().result();
 						Entity newEntity = type.create(level);
@@ -54,7 +54,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 								((Mob) livingentity).spawnAnim();
 								((Mob) livingentity).spawnAnim();
 							}
-							livingentity.playSound(TFSounds.POWDER_USE.get(), 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
+							livingentity.playSound(TFSounds.POWDER_USE.value(), 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
 							stack.shrink(1);
 							this.fired = true;
 						}

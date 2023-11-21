@@ -72,7 +72,7 @@ public class MiscEvents {
 //			}
 		}
 
-		if (living != null && !living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.get().asItem())) {
+		if (living != null && !living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.value().asItem())) {
 			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> living), new CreateMovingCicadaSoundPacket(living.getId()));
 		}
 	}
@@ -81,7 +81,7 @@ public class MiscEvents {
 	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
 		Player player = event.getEntity();
 		ItemStack stack = player.getItemInHand(event.getHand());
-		if (stack.getItem() instanceof SpawnEggItem spawnEggItem && spawnEggItem.getType(stack.getTag()) == TFEntities.DEATH_TOME.get()) {
+		if (stack.getItem() instanceof SpawnEggItem spawnEggItem && spawnEggItem.getType(stack.getTag()) == TFEntities.DEATH_TOME.value()) {
 			BlockPos pos = event.getPos();
 			BlockState state = event.getLevel().getBlockState(pos);
 			if (state.getBlock() instanceof LecternBlock && !state.getValue(BlockStateProperties.HAS_BOOK)) {
@@ -89,7 +89,7 @@ public class MiscEvents {
 				event.getLevel().playSound(null, pos, SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1.0F, 1.0F);
 
 				if (event.getLevel() instanceof ServerLevel serverLevel) {
-					DeathTome tome = TFEntities.DEATH_TOME.get().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
+					DeathTome tome = TFEntities.DEATH_TOME.value().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
 					if (tome != null) {
 						if (!player.getAbilities().instabuild) stack.shrink(1);
 						serverLevel.gameEvent(player, GameEvent.ENTITY_PLACE, pos);

@@ -29,7 +29,7 @@ public class TimeTreeFeature extends HollowTreeFeature {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.TIME_SAPLING.get())) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.TIME_SAPLING.value())) {
 			return false;
 		}
 
@@ -49,7 +49,7 @@ public class TimeTreeFeature extends HollowTreeFeature {
 		buildTinyCrown(world, trunkPlacer, leavesPlacer, random, pos, diameter, height, config);
 
 		// add clock block
-		world.setBlock(pos.offset(-1, 2, 0), TFBlocks.TIME_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
+		world.setBlock(pos.offset(-1, 2, 0), TFBlocks.TIME_LOG_CORE.value().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
 
 		return true;
 	}

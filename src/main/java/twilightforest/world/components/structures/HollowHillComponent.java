@@ -42,7 +42,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	final int hdiam;
 
 	public HollowHillComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFHill.get(), nbt);
+		this(TFStructurePieceTypes.TFHill.value(), nbt);
 	}
 
 	public HollowHillComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -274,8 +274,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			case 3, 4, 5 -> EntityType.SPIDER;
 			case 6, 7 -> EntityType.ZOMBIE;
 			case 8 -> EntityType.SILVERFISH;
-			case 9 -> TFEntities.REDCAP.get();
-			default -> TFEntities.SWARM_SPIDER.get();
+			case 9 -> TFEntities.REDCAP.value();
+			default -> TFEntities.SWARM_SPIDER.value();
 		};
 	}
 
@@ -286,9 +286,9 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		return switch (rand.nextInt(10)) {
 			case 3, 4, 5 -> EntityType.ZOMBIE;
 			case 6, 7 -> EntityType.SKELETON;
-			case 8 -> TFEntities.SWARM_SPIDER.get();
+			case 8 -> TFEntities.SWARM_SPIDER.value();
 			case 9 -> EntityType.CAVE_SPIDER;
-			default -> TFEntities.REDCAP.get();
+			default -> TFEntities.REDCAP.value();
 		};
 	}
 
@@ -297,13 +297,13 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 */
 	public EntityType<?> getLevel3Mob(RandomSource rand) {
 		return switch (rand.nextInt(11)) {
-			case 0 -> TFEntities.SLIME_BEETLE.get();
-			case 1 -> TFEntities.FIRE_BEETLE.get();
-			case 2 -> TFEntities.PINCH_BEETLE.get();
+			case 0 -> TFEntities.SLIME_BEETLE.value();
+			case 1 -> TFEntities.FIRE_BEETLE.value();
+			case 2 -> TFEntities.PINCH_BEETLE.value();
 			case 3, 4, 5 -> EntityType.SKELETON;
 			case 6, 7, 8 -> EntityType.CAVE_SPIDER;
 			case 9 -> EntityType.CREEPER;
-			default -> TFEntities.WRAITH.get();
+			default -> TFEntities.WRAITH.value();
 		};
 	}
 

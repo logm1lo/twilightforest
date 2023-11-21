@@ -126,7 +126,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 		if (stack.isEmpty() && player.isSecondaryUseActive() && player.getDirection().getAxis().equals(stateAxis) &&
 				player.blockPosition().getY() == pos.getY() && !player.isFallFlying() && player.position().distanceTo(Vec3.atBottomCenterOf(pos)) < 0.81D) {
 			player.setPose(Pose.SWIMMING);
-		} else if (stack.is(TFBlocks.MOSS_PATCH.get().asItem())) {
+		} else if (stack.is(TFBlocks.MOSS_PATCH.value().asItem())) {
 			if (canChangeVariant(variant, level, pos, stateAxis)) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS), 3);
 				level.playSound(null, pos, SoundEvents.MOSS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -168,7 +168,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
 				if (!player.isCreative()) {
 					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
-					level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(TFBlocks.MOSS_PATCH.get())));
+					level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(TFBlocks.MOSS_PATCH.value())));
 					if (variant == HollowLogVariants.Horizontal.MOSS_AND_GRASS)
 						level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Blocks.GRASS)));
 				}

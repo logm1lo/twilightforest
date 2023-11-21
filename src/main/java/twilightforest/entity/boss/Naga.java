@@ -337,17 +337,17 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.NAGA_HISS.get();
+		return TFSounds.NAGA_HISS.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.NAGA_HURT.get();
+		return TFSounds.NAGA_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.NAGA_HURT.get();
+		return TFSounds.NAGA_HURT.value();
 	}
 
 	@Override
@@ -432,7 +432,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.NAGA_BOSS_SPAWNER.value().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -443,7 +443,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	public void remove(RemovalReason reason) {
 		if (reason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
-			IBossLootBuffer.depositDropsIntoChest(this, this.getRandom().nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
+			IBossLootBuffer.depositDropsIntoChest(this, this.getRandom().nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.value().defaultBlockState() : TFBlocks.CANOPY_CHEST.value().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 		super.remove(reason);
 		if (this.level() instanceof ServerLevel) {

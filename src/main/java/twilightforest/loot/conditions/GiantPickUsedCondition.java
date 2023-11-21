@@ -20,7 +20,7 @@ public record GiantPickUsedCondition(LootContext.EntityTarget target) implements
 
     @Override
     public LootItemConditionType getType() {
-        return TFLoot.GIANT_PICK_USED_CONDITION.get();
+        return TFLoot.GIANT_PICK_USED_CONDITION.value();
     }
 
     @Override

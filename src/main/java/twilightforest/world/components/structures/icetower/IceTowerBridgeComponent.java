@@ -23,12 +23,12 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 	private final int length;
 
 	public IceTowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFITBri.get(), nbt);
+		super(TFStructurePieceTypes.TFITBri.value(), nbt);
 		this.length = nbt.getInt("bridgeLength");
 	}
 
 	public IceTowerBridgeComponent(int index, int x, int y, int z, int length, Direction direction) {
-		super(TFStructurePieceTypes.TFITBri.get(), index, x, y, z);
+		super(TFStructurePieceTypes.TFITBri.value(), index, x, y, z);
 		this.length = length;
 		this.setOrientation(direction);
 

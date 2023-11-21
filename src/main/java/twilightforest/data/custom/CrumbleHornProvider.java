@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import oshi.util.tuples.Pair;
 import twilightforest.init.TFRecipes;
 
@@ -48,8 +47,8 @@ public abstract class CrumbleHornProvider implements DataProvider {
 
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> ForgeRegistries.BLOCKS.containsValue(transform.getA().getBlock()))
-					.filter(s -> ForgeRegistries.BLOCKS.containsValue(transform.getB().getBlock()))
+					.filter(s -> BuiltInRegistries.BLOCK.containsValue(transform.getA().getBlock()))
+					.filter(s -> BuiltInRegistries.BLOCK.containsValue(transform.getB().getBlock()))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.toList();
@@ -76,7 +75,7 @@ public abstract class CrumbleHornProvider implements DataProvider {
 	private JsonObject serializeToJson(BlockState transformFrom, BlockState transformTo) {
 		JsonObject jsonobject = new JsonObject();
 
-		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.CRUMBLE_SERIALIZER.get()).toString());
+		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.CRUMBLE_SERIALIZER.value()).toString());
 		jsonobject.addProperty("from", BuiltInRegistries.BLOCK.getKey(transformFrom.getBlock()).toString());
 		jsonobject.addProperty("to", BuiltInRegistries.BLOCK.getKey(transformTo.getBlock()).toString());
 		return jsonobject;

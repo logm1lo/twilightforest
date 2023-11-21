@@ -69,8 +69,8 @@ public class TFMaze {
 		tall = 3;
 		head = 0;
 		roots = 0;
-		wallBlockState = TFBlocks.CUT_MAZESTONE.get().defaultBlockState();
-		rootBlockState = TFBlocks.MAZESTONE.get().defaultBlockState();
+		wallBlockState = TFBlocks.CUT_MAZESTONE.value().defaultBlockState();
+		rootBlockState = TFBlocks.MAZESTONE.value().defaultBlockState();
 		torchBlockState = Blocks.TORCH.defaultBlockState();
 		pillarBlockState = null;
 

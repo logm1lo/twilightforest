@@ -103,7 +103,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	}
 
 	public Lich(Level level, Lich otherLich) {
-		this(TFEntities.LICH.get(), level);
+		this(TFEntities.LICH.value(), level);
 
 		this.setShadowClone(true);
 		this.masterLich = otherLich;
@@ -273,8 +273,8 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			this.popCooldown--;
 		}
 
-		if (this.getScepterTimeLeft() == 0 && this.getPopCooldown() < 30 && this.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.LIFEDRAIN_SCEPTER.get())) {
-			this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(this.getPhase() == 2 ? TFItems.ZOMBIE_SCEPTER.get() : Items.GOLDEN_SWORD));
+		if (this.getScepterTimeLeft() == 0 && this.getPopCooldown() < 30 && this.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.LIFEDRAIN_SCEPTER.value())) {
+			this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(this.getPhase() == 2 ? TFItems.ZOMBIE_SCEPTER.value() : Items.GOLDEN_SWORD));
 		}
 
 		if (this.getScepterTimeLeft() > 0) {
@@ -299,7 +299,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		}
 
 		if (this.isShadowClone() && !src.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-			this.playSound(TFSounds.LICH_CLONE_HURT.get(), 1.0F, this.getVoicePitch() * 2.0F);
+			this.playSound(TFSounds.LICH_CLONE_HURT.value(), 1.0F, this.getVoicePitch() * 2.0F);
 			return false;
 		}
 
@@ -314,11 +314,11 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 				// reduce shield for magic damage greater than 1 heart
 				if (this.getShieldStrength() > 0) {
 					this.setShieldStrength(this.getShieldStrength() - 1);
-					this.playSound(TFSounds.SHIELD_BREAK.get(), 1.0F, this.getVoicePitch() * 2.0F);
+					this.playSound(TFSounds.SHIELD_BREAK.value(), 1.0F, this.getVoicePitch() * 2.0F);
 					this.gameEvent(GameEvent.ENTITY_DAMAGE);
 				}
 			} else {
-				this.playSound(TFSounds.SHIELD_BREAK.get(), 1.0F, this.getVoicePitch() * 2.0F);
+				this.playSound(TFSounds.SHIELD_BREAK.value(), 1.0F, this.getVoicePitch() * 2.0F);
 				this.gameEvent(GameEvent.ENTITY_DAMAGE);
 				if (src.getEntity() instanceof LivingEntity living) {
 					this.setLastHurtByMob(living);
@@ -447,7 +447,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 						double x = (this.random.nextDouble() - 0.5D) * 0.075D * i;
 						double y = (this.random.nextDouble() - 0.5D) * 0.075D * i;
 						double z = (this.random.nextDouble() - 0.5D) * 0.075D * i;
-						particlePacket.queueParticle(this.random.nextBoolean() ? TFParticleType.OMINOUS_FLAME.get() : ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
+						particlePacket.queueParticle(this.random.nextBoolean() ? TFParticleType.OMINOUS_FLAME.value() : ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
 					}
 				}
 				if (flag) {
@@ -461,7 +461,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 				for (double i = 0.0D; i < 1.0D; i += 0.2D) {
 					double x = Math.sin((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
 					double z = Math.cos((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
-					particlePacket.queueParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.add(x, -0.25D, z), Vec3.ZERO);
+					particlePacket.queueParticle(TFParticleType.OMINOUS_FLAME.value(), false, particlePos.add(x, -0.25D, z), Vec3.ZERO);
 				}
 
 				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
@@ -474,7 +474,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	public void remove(RemovalReason removalReason) {
 		if (removalReason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
-			IBossLootBuffer.depositDropsIntoChest(this, this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
+			IBossLootBuffer.depositDropsIntoChest(this, this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.value().defaultBlockState() : TFBlocks.CANOPY_CHEST.value().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 		super.remove(removalReason);
 	}
@@ -483,7 +483,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL && !this.isShadowClone()) {
 			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.LICH_BOSS_SPAWNER.value().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -505,7 +505,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		double ty = (this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F) - (this.getY() + this.getBbHeight() / 2.0F);
 		double tz = this.getTarget().getZ() - sz;
 
-		this.playSound(TFSounds.LICH_SHOOT.get(), this.getSoundVolume(), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
+		this.playSound(TFSounds.LICH_SHOOT.value(), this.getSoundVolume(), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
 
 		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
@@ -609,8 +609,8 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		this.teleportTo(destX, destY, destZ);
 
 		this.makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
-		this.level().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT.get(), this.getSoundSource(), 1.0F, 1.0F);
-		this.playSound(TFSounds.LICH_TELEPORT.get(), 1.0F, 1.0F);
+		this.level().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT.value(), this.getSoundSource(), 1.0F, 1.0F);
+		this.playSound(TFSounds.LICH_TELEPORT.value(), 1.0F, 1.0F);
 		this.gameEvent(GameEvent.TELEPORT);
 
 		// sometimes we need to do this
@@ -725,7 +725,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	public void setScepterTime() {
 		this.heldScepterTime = 20 + this.getRandom().nextInt(20);
-		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(TFItems.LIFEDRAIN_SCEPTER.get()));
+		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(TFItems.LIFEDRAIN_SCEPTER.value()));
 	}
 
 	public void resetScepterTime() {
@@ -772,17 +772,17 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.LICH_AMBIENT.get();
+		return TFSounds.LICH_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.LICH_HURT.get();
+		return TFSounds.LICH_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return this.deathTime > 1 ? TFSounds.LICH_DEATH.get() : TFSounds.LICH_HURT.get();
+		return this.deathTime > 1 ? TFSounds.LICH_DEATH.value() : TFSounds.LICH_HURT.value();
 	}
 
 	@Override

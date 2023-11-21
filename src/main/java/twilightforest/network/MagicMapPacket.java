@@ -5,7 +5,7 @@ import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.neoforged.neoforge.network.NetworkEvent;
-import twilightforest.TFMagicMapData;
+import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.item.MagicMapItem;
 
 // Rewraps vanilla SPacketMaps to properly expose our custom decorations

@@ -64,17 +64,17 @@ public class TowerwoodBorer extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.TOWERWOOD_BORER_AMBIENT.get();
+		return TFSounds.TOWERWOOD_BORER_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TOWERWOOD_BORER_HURT.get();
+		return TFSounds.TOWERWOOD_BORER_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TOWERWOOD_BORER_DEATH.get();
+		return TFSounds.TOWERWOOD_BORER_DEATH.value();
 	}
 
 	// [VanillaCopy] Silverfish.hurt
@@ -93,7 +93,7 @@ public class TowerwoodBorer extends Monster {
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.TOWERWOOD_BORER_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.TOWERWOOD_BORER_STEP.value(), 0.15F, 1.0F);
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class TowerwoodBorer extends Monster {
 					BlockState state = this.mob.level().getBlockState(blockpos);
 
 					// TF - Change block check
-					if (state.is(TFBlocks.TOWERWOOD.get())) {
+					if (state.is(TFBlocks.TOWERWOOD.value())) {
 						this.doMerge = true;
 						return true;
 					}
@@ -160,9 +160,9 @@ public class TowerwoodBorer extends Monster {
 
 				// TF - Change block check
 				// TF - add a random chance to dig. This should prevent them from instantly digging away
-				if (state.is(TFBlocks.TOWERWOOD.get()) && this.mob.getRandom().nextInt(5) == 0) {
+				if (state.is(TFBlocks.TOWERWOOD.value()) && this.mob.getRandom().nextInt(5) == 0) {
 					// TF - Change block type
-					level.setBlock(blockpos, TFBlocks.INFESTED_TOWERWOOD.get().defaultBlockState(), 3);
+					level.setBlock(blockpos, TFBlocks.INFESTED_TOWERWOOD.value().defaultBlockState(), 3);
 					this.mob.spawnAnim();
 					this.mob.discard();
 				}
@@ -209,13 +209,13 @@ public class TowerwoodBorer extends Monster {
 							BlockState state = world.getBlockState(offsetPos);
 
 							// TF - Change block check
-							if (state.is(TFBlocks.INFESTED_TOWERWOOD.get())) {
+							if (state.is(TFBlocks.INFESTED_TOWERWOOD.value())) {
 								if (EventHooks.getMobGriefingEvent(world, this.borer)) {
 									world.destroyBlock(offsetPos, true);
 									this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
 								} else {
 									// TF - reset to normal tower wood
-									world.setBlock(offsetPos, TFBlocks.TOWERWOOD.get().defaultBlockState(), 3);
+									world.setBlock(offsetPos, TFBlocks.TOWERWOOD.value().defaultBlockState(), 3);
 								}
 
 								if (random.nextBoolean()) {

@@ -81,8 +81,8 @@ public class CharmEvents {
 	}
 
 	private static boolean charmOfLife(Player player) {
-		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2.get()) || hasCharmCurio(TFItems.CHARM_OF_LIFE_2.get(), player);
-		boolean charm1 = !charm2 && (TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_1.get()) || hasCharmCurio(TFItems.CHARM_OF_LIFE_1.get(), player));
+		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2.value()) || hasCharmCurio(TFItems.CHARM_OF_LIFE_2.value(), player);
+		boolean charm1 = !charm2 && (TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_1.value()) || hasCharmCurio(TFItems.CHARM_OF_LIFE_1.value(), player));
 
 		if (charm2 || charm1) {
 			if (charm1) {
@@ -99,16 +99,16 @@ public class CharmEvents {
 			}
 
 			// spawn effect thingers
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
+			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.value(), player.level(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.value() : TFItems.CHARM_OF_LIFE_2.value());
 			player.level().addFreshEntity(effect);
 
-			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
+			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.value(), player.level(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.value() : TFItems.CHARM_OF_LIFE_2.value());
 			effect2.offset = (float) Math.PI;
 			player.level().addFreshEntity(effect2);
 
-			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_LIFE.get(), player.getSoundSource(), 1, 1);
+			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_LIFE.value(), player.getSoundSource(), 1, 1);
 
-			if (player instanceof ServerPlayer) player.awardStat(TFStats.LIFE_CHARMS_ACTIVATED.get());
+			if (player instanceof ServerPlayer) player.awardStat(TFStats.LIFE_CHARMS_ACTIVATED.value());
 
 			return true;
 		}
@@ -119,9 +119,9 @@ public class CharmEvents {
 	private static void charmOfKeeping(Player player) {
 		//check our inventory for any charms of keeping. We also want to check curio slots (if the mod is installed)
 		// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
-		boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_3.get()) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_3.get(), player);
-		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_2.get()) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_2.get(), player);
-		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_1.get()) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_1.get(), player);
+		boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_3.value()) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_3.value(), player);
+		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_2.value()) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_2.value(), player);
+		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_1.value()) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_1.value(), player);
 
 		//create a fake inventory to organize our kept inventory in
 		Inventory keepInventory = new Inventory(null);
@@ -136,14 +136,14 @@ public class CharmEvents {
 		if (tier3) {
 			//tier 3 keeps our entire inventory
 			keepWholeList(keepInventory.items, player.getInventory().items);
-			charmUsed = new ItemStack(TFItems.CHARM_OF_KEEPING_3.get());
+			charmUsed = new ItemStack(TFItems.CHARM_OF_KEEPING_3.value());
 		} else if (tier2) {
 			//tier 2 keeps our hotbar only
 			for (int i = 0; i < 9; i++) {
 				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
-			charmUsed = new ItemStack(TFItems.CHARM_OF_KEEPING_2.get());
+			charmUsed = new ItemStack(TFItems.CHARM_OF_KEEPING_2.value());
 		} else if (tier1) {
 			//tier 1 keeps our selected item only
 			int i = player.getInventory().selected;
@@ -151,7 +151,7 @@ public class CharmEvents {
 				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
-			charmUsed = new ItemStack(TFItems.CHARM_OF_KEEPING_1.get());
+			charmUsed = new ItemStack(TFItems.CHARM_OF_KEEPING_1.value());
 		}
 
 		//keep all items in the kept_on_death tag. This allows modpacks to support other items to keep on death
@@ -187,7 +187,7 @@ public class CharmEvents {
 	private static void keepsakeCasket(Player player) {
 		//reset this just in case. I was having fresh caskets place as the max damaged ones
 		TFItemStackUtils.damage = 0;
-		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.KEEPSAKE_CASKET.get().asItem());
+		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.KEEPSAKE_CASKET.value().asItem());
 
 		if (casketConsumed) {
 			Level level = player.getCommandSenderWorld();
@@ -212,7 +212,7 @@ public class CharmEvents {
 			BlockPos immutablePos = pos.immutable();
 			FluidState fluidState = level.getFluidState(immutablePos);
 
-			if (level.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage).setValue(KeepsakeCasketBlock.FACING, Direction.from2DDataValue(level.getRandom().nextInt(3))))) {
+			if (level.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.value().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage).setValue(KeepsakeCasketBlock.FACING, Direction.from2DDataValue(level.getRandom().nextInt(3))))) {
 				BlockEntity te = level.getBlockEntity(immutablePos);
 
 				if (te instanceof KeepsakeCasketBlockEntity casket) {
@@ -240,7 +240,7 @@ public class CharmEvents {
 							TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, alerting the player and dropping extra items", player.getName().getString());
 						} else {
 							damage = damage + 1;
-							level.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, damage));
+							level.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.value().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, damage));
 							TwilightForestMod.LOGGER.debug("{}'s Casket was randomly damaged, applying new damage", player.getName().getString());
 						}
 					}
@@ -283,15 +283,15 @@ public class CharmEvents {
 
 		// spawn effect thingers
 		if (charmUsed != null) {
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, charmUsed.getItem());
+			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.value(), player.level(), player, charmUsed.getItem());
 			player.level().addFreshEntity(effect);
 
-			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, charmUsed.getItem());
+			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.value(), player.level(), player, charmUsed.getItem());
 			effect2.offset = (float) Math.PI;
 			player.level().addFreshEntity(effect2);
 
-			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP.get(), player.getSoundSource(), 1.5F, 1.0F);
-			if (player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED.get());
+			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP.value(), player.getSoundSource(), 1.5F, 1.0F);
+			if (player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED.value());
 			charmUsed = null;
 		}
 	}
@@ -312,11 +312,11 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-//		if (ModList.get().isLoaded("curios")) {
+//		if (ModList.value().isLoaded("curios")) {
 //			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
 //
 //			if (slot.isPresent()) {
-//				slot.get().stack().shrink(1);
+//				slot.value().stack().shrink(1);
 //				return true;
 //			}
 //		}

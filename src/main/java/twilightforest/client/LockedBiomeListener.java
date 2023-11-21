@@ -31,7 +31,7 @@ public class LockedBiomeListener {
 		if(level.isClientSide() && event.phase == TickEvent.Phase.END && player.tickCount % 5 == 0
 				&& LandmarkUtil.isProgressionEnforced(level)
 				&& !player.isCreative() && !player.isSpectator() && !TFConfig.CLIENT_CONFIG.disableLockedBiomeToasts.get()) {
-			Optional<Restriction> restriction = Restrictions.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player);
+			Optional<Restriction> restriction = Restriction.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player);
 			if (restriction.isPresent() && restriction.get().lockedBiomeToast() != null) {
 				timeUntilToast--;
 				if(!shownToast && timeUntilToast <= 0) {

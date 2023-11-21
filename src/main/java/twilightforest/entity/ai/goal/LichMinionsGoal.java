@@ -35,7 +35,7 @@ public class LichMinionsGoal extends Goal {
 
 	@Override
 	public void start() {
-		this.lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.ZOMBIE_SCEPTER.get()));
+		this.lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.ZOMBIE_SCEPTER.value()));
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class LichMinionsGoal extends Goal {
 			minion.setTarget(targetedEntity);
 
 			minion.spawnAnim();
-			minion.playSound(TFSounds.MINION_SUMMON.get(), 1.0F, ((this.lich.getRandom().nextFloat() - this.lich.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			minion.playSound(TFSounds.MINION_SUMMON.value(), 1.0F, ((this.lich.getRandom().nextFloat() - this.lich.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
 			this.lich.swing(InteractionHand.MAIN_HAND);
 			// make sparkles leading to it

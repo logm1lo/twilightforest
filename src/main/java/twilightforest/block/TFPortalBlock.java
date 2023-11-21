@@ -63,6 +63,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	public static final BooleanProperty DISALLOW_RETURN = BooleanProperty.create("is_one_way");
 
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F));
+	@Nullable
 	private static ResourceKey<Level> cachedOriginDimension;
 
 	public static final Component PORTAL_UNWORTHY = Component.translatable("misc.twilightforest.portal_unworthy");
@@ -126,7 +127,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
 					if (checkedPos.getValue()) {
-						level.setBlock(checkedPos.getKey(), TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState(), 2);
+						level.setBlock(checkedPos.getKey(), TFBlocks.TWILIGHT_PORTAL.value().defaultBlockState(), 2);
 					}
 				}
 
@@ -284,7 +285,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if (state.getValue(DISALLOW_RETURN) && random < 80) return;
 
 		if (random == 0) {
-			level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.PORTAL_WHOOSH.get(), SoundSource.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
+			level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.PORTAL_WHOOSH.value(), SoundSource.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
 		}
 
 		for (int i = 0; i < 4; ++i) {

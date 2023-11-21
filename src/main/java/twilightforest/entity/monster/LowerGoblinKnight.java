@@ -110,7 +110,7 @@ public class LowerGoblinKnight extends Monster {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
 
-		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level());
+		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.value(), this.level());
 		upper.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 		EventHooks.onFinalizeSpawn(upper, accessor, difficulty, MobSpawnType.NATURAL, data, tag);
 		upper.startRiding(this);
@@ -136,17 +136,17 @@ public class LowerGoblinKnight extends Monster {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT.get() : TFSounds.GOBLIN_KNIGHT_AMBIENT.get();
+		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT.value() : TFSounds.GOBLIN_KNIGHT_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH.get() : TFSounds.GOBLIN_KNIGHT_DEATH.get();
+		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH.value() : TFSounds.GOBLIN_KNIGHT_DEATH.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT.get() : TFSounds.GOBLIN_KNIGHT_HURT.get();
+		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT.value() : TFSounds.GOBLIN_KNIGHT_HURT.value();
 	}
 
 	@Override

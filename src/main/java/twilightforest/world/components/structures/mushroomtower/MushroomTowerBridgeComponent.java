@@ -27,7 +27,7 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 	final int dHeight;
 
 	public MushroomTowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFMTBri.get(), nbt);
+		this(TFStructurePieceTypes.TFMTBri.value(), nbt);
 	}
 
 	public MushroomTowerBridgeComponent(StructurePieceType piece, CompoundTag nbt) {

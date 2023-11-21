@@ -1,9 +1,17 @@
-package twilightforest.util;
+package twilightforest.entity;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
+import twilightforest.TFRegistries;
+import twilightforest.data.AtlasGenerator;
+import twilightforest.data.LangGenerator;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -15,6 +23,22 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
             ExtraCodecs.POSITIVE_INT.fieldOf("height").forGetter(MagicPaintingVariant::height),
             ExtraCodecs.nonEmptyList(Layer.CODEC.listOf()).fieldOf("layers").forGetter(MagicPaintingVariant::layers)
     ).apply(recordCodecBuilder, MagicPaintingVariant::new));
+
+    public static Optional<MagicPaintingVariant> getVariant(RegistryAccess regAccess, String id) {
+        return getVariant(regAccess, new ResourceLocation(id));
+    }
+
+    public static Optional<MagicPaintingVariant> getVariant(RegistryAccess regAccess, ResourceLocation id) {
+        return regAccess.registry(TFRegistries.Keys.MAGIC_PAINTINGS).map(reg -> reg.get(id));
+    }
+
+    public static String getVariantId(RegistryAccess regAccess, MagicPaintingVariant variant) {
+        return getVariantResourceLocation(regAccess, variant).toString();
+    }
+
+    public static ResourceLocation getVariantResourceLocation(RegistryAccess regAccess, MagicPaintingVariant variant) {
+        return regAccess.registry(TFRegistries.Keys.MAGIC_PAINTINGS).map(reg -> reg.getKey(variant)).orElse(new ResourceLocation(MagicPainting.EMPTY));
+    }
 
     public record Layer(String path, @Nullable Parallax parallax, @Nullable OpacityModifier opacityModifier, boolean fullbright) {
         public static final Codec<Layer> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(

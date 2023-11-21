@@ -39,12 +39,12 @@ public record TransformPowderRecipe(EntityType<?> input, EntityType<?> result, b
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.TRANSFORMATION_SERIALIZER.get();
+		return TFRecipes.TRANSFORMATION_SERIALIZER.value();
 	}
 
 	@Override
 	public RecipeType<?> getType() {
-		return TFRecipes.TRANSFORM_POWDER_RECIPE.get();
+		return TFRecipes.TRANSFORM_POWDER_RECIPE.value();
 	}
 
 	public static class Serializer implements RecipeSerializer<TransformPowderRecipe> {

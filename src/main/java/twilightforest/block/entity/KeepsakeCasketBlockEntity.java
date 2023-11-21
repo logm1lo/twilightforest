@@ -46,7 +46,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 	private int ticksSinceSync;
 
 	public KeepsakeCasketBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.KEEPSAKE_CASKET.get(), pos, state);
+		super(TFBlockEntities.KEEPSAKE_CASKET.value(), pos, state);
 	}
 
 	@Override
@@ -121,11 +121,11 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 	//[VanillaCopy] of EnderChestBlockEntity, with some small adaptations
 	public static void tick(Level level, BlockPos pos, BlockState state, KeepsakeCasketBlockEntity te) {
 		if (++te.ticksSinceSync % 20 * 4 == 0) {
-			level.blockEvent(pos, TFBlocks.KEEPSAKE_CASKET.get(), 1, te.numPlayersUsing);
+			level.blockEvent(pos, TFBlocks.KEEPSAKE_CASKET.value(), 1, te.numPlayersUsing);
 		}
 		te.prevLidAngle = te.lidAngle;
 		if (te.numPlayersUsing > 0 && te.lidAngle == 0.0F) {
-			level.playSound(null, pos, TFSounds.CASKET_OPEN.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+			level.playSound(null, pos, TFSounds.CASKET_OPEN.value(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 		}
 		if (te.numPlayersUsing == 0 && te.lidAngle > 0.0F || te.numPlayersUsing > 0 && te.lidAngle < 1.0F) {
 			float f2 = te.lidAngle;
@@ -136,7 +136,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 			if (te.lidAngle > 1.0F) te.lidAngle = 1.0F;
 
 			if (te.lidAngle < 0.4F && f2 >= 0.4F) {
-				level.playSound(null, pos, TFSounds.CASKET_CLOSE.get(), SoundSource.BLOCKS, 0.75F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+				level.playSound(null, pos, TFSounds.CASKET_CLOSE.value(), SoundSource.BLOCKS, 0.75F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 			}
 			if (te.lidAngle < 0.0F) te.lidAngle = 0.0F;
 		}
@@ -173,7 +173,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 			if (user.hasPermissions(3) || user.getGameProfile().getId().equals(this.playeruuid)) {
 				return super.canOpen(user);
 			} else {
-				user.playNotifySound(TFSounds.CASKET_LOCKED.get(), SoundSource.BLOCKS, 0.5F, 0.5F);
+				user.playNotifySound(TFSounds.CASKET_LOCKED.value(), SoundSource.BLOCKS, 0.5F, 0.5F);
 				user.displayClientMessage(Component.translatable("block.twilightforest.casket.locked", name).withStyle(ChatFormatting.RED), true);
 				return false;
 			}
@@ -201,7 +201,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 				this.numPlayersUsing = 0;
 			}
 			++this.numPlayersUsing;
-			this.getLevel().blockEvent(this.getBlockPos(), TFBlocks.KEEPSAKE_CASKET.get(), 1, this.numPlayersUsing);
+			this.getLevel().blockEvent(this.getBlockPos(), TFBlocks.KEEPSAKE_CASKET.value(), 1, this.numPlayersUsing);
 		}
 
 	}
@@ -209,7 +209,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 	public void stopOpen(Player player) {
 		if (!player.isSpectator()) {
 			--this.numPlayersUsing;
-			this.getLevel().blockEvent(this.getBlockPos(), TFBlocks.KEEPSAKE_CASKET.get(), 1, this.numPlayersUsing);
+			this.getLevel().blockEvent(this.getBlockPos(), TFBlocks.KEEPSAKE_CASKET.value(), 1, this.numPlayersUsing);
 		}
 
 	}

@@ -35,7 +35,7 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 	public JEIUncraftingCategory(IGuiHelper guiHelper) {
 		ResourceLocation location = TwilightForestMod.getGuiTexture("uncrafting_jei.png");
 		this.background = guiHelper.createDrawable(location, 0, 0, width, height);
-		this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()));
+		this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TFBlocks.UNCRAFTING_TABLE.value()));
 		this.localizedName = Component.translatable("gui.twilightforest.uncrafting_jei");
 	}
 

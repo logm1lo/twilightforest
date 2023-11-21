@@ -10,7 +10,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Triple;
 import twilightforest.init.TFRecipes;
 
@@ -44,8 +43,8 @@ public abstract class TransformationPowderProvider implements DataProvider {
 
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> ForgeRegistries.ENTITY_TYPES.containsValue(transform.getLeft()))
-					.filter(s -> ForgeRegistries.ENTITY_TYPES.containsValue(transform.getMiddle()))
+					.filter(s -> BuiltInRegistries.ENTITY_TYPE.containsValue(transform.getLeft()))
+					.filter(s -> BuiltInRegistries.ENTITY_TYPE.containsValue(transform.getMiddle()))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.toList();
@@ -72,7 +71,7 @@ public abstract class TransformationPowderProvider implements DataProvider {
 	private JsonObject serializeToJson(EntityType<?> transformFrom, EntityType<?> transformTo, boolean reversible) {
 		JsonObject jsonobject = new JsonObject();
 
-		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.TRANSFORMATION_SERIALIZER.get()).toString());
+		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.TRANSFORMATION_SERIALIZER.value()).toString());
 		jsonobject.addProperty("from", BuiltInRegistries.ENTITY_TYPE.getKey(transformFrom).toString());
 		jsonobject.addProperty("to", BuiltInRegistries.ENTITY_TYPE.getKey(transformTo).toString());
 		jsonobject.addProperty("reversible", reversible);

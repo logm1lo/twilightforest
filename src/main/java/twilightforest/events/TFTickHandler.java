@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.events;
 
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
@@ -18,12 +18,14 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
-import twilightforest.init.custom.Enforcement;
+import twilightforest.util.Enforcement;
 import twilightforest.item.BrittleFlaskItem;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionClearPacket;
@@ -131,7 +133,7 @@ public class TFTickHandler {
 
 			for (ItemEntity entityItem : itemList) {
 				if (entityItem.getItem().is(ItemTagGenerator.PORTAL_ACTIVATOR) &&
-						TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(world.getBlockState(entityItem.blockPosition())) &&
+						TFBlocks.TWILIGHT_PORTAL.value().canFormPortal(world.getBlockState(entityItem.blockPosition())) &&
 						Objects.equals(entityItem.getOwner(), player)) {
 
 					qualified = entityItem;
@@ -149,7 +151,7 @@ public class TFTickHandler {
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.value().display().orElse(null);
-						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.value())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
@@ -167,7 +169,7 @@ public class TFTickHandler {
 				world.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
 			}
 
-			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(world, qualified.blockPosition(), qualified, player))
+			if (TFBlocks.TWILIGHT_PORTAL.value().tryToCreatePortal(world, qualified.blockPosition(), qualified, player))
 				TFAdvancements.MADE_TF_PORTAL.trigger(player);
 
 		}

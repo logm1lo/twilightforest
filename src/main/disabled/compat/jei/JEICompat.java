@@ -43,16 +43,16 @@ public class JEICompat implements IModPlugin {
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
-			registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()), RecipeTypes.CRAFTING);
-			registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()), JEIUncraftingCategory.UNCRAFTING);
+			registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.value()), RecipeTypes.CRAFTING);
+			registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.value()), JEIUncraftingCategory.UNCRAFTING);
 		}
-		registration.addRecipeCatalyst(new ItemStack(TFItems.TRANSFORMATION_POWDER.get()), TransformationPowderCategory.TRANSFORMATION);
-		registration.addRecipeCatalyst(new ItemStack(TFItems.CRUMBLE_HORN.get()), CrumbleHornCategory.CRUMBLE_HORN);
+		registration.addRecipeCatalyst(new ItemStack(TFItems.TRANSFORMATION_POWDER.value()), TransformationPowderCategory.TRANSFORMATION);
+		registration.addRecipeCatalyst(new ItemStack(TFItems.CRUMBLE_HORN.value()), CrumbleHornCategory.CRUMBLE_HORN);
 	}
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-		registration.addRecipeTransferHandler(UncraftingMenu.class, TFMenuTypes.UNCRAFTING.get(), RecipeTypes.CRAFTING, 11, 9, 20, 36);
+		registration.addRecipeTransferHandler(UncraftingMenu.class, TFMenuTypes.UNCRAFTING.value(), RecipeTypes.CRAFTING, 11, 9, 20, 36);
 	}
 
 	@Override
@@ -85,14 +85,14 @@ public class JEICompat implements IModPlugin {
 							TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) //remove blacklisted mod ids
 					.collect(Collectors.toList());
 			recipes.removeIf(recipe -> (recipe instanceof ShapelessRecipe && !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get()));
-			recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
+			recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.value()));
 			registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, recipes);
-		}else if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
-			List<CraftingRecipe> recipes = new ArrayList<>(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
+		} else if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+			List<CraftingRecipe> recipes = new ArrayList<>(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.value()));
 			registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, recipes);
 		}
-		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, manager.getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()));
-		registration.addRecipes(CrumbleHornCategory.CRUMBLE_HORN, manager.getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()));
+		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, manager.getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.value()));
+		registration.addRecipes(CrumbleHornCategory.CRUMBLE_HORN, manager.getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.value()));
 	}
 
 	@Override

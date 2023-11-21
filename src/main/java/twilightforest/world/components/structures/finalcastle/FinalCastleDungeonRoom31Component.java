@@ -34,7 +34,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
 	public FinalCastleDungeonRoom31Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFFCDunR31.get(), nbt);
+		this(TFStructurePieceTypes.TFFCDunR31.value(), nbt);
 	}
 
 	public FinalCastleDungeonRoom31Component(StructurePieceType piece, CompoundTag nbt) {
@@ -99,7 +99,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
-		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(TFStructurePieceTypes.TFFCDunR31.get(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
+		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(TFStructurePieceTypes.TFFCDunR31.value(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
 
 		BoundingBox largerBB = BoundingBoxUtils.clone(dRoom.getBoundingBox());
 
@@ -160,13 +160,13 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		//TODO add a deadrock tag, or a tag for castle replaceables
-		Predicate<BlockState> replacing = state -> state.isAir() || state.is(TFBlocks.DEADROCK.get()) || state.is(TFBlocks.CRACKED_DEADROCK.get()) || state.is(TFBlocks.WEATHERED_DEADROCK.get());
+		Predicate<BlockState> replacing = state -> state.isAir() || state.is(TFBlocks.DEADROCK.value()) || state.is(TFBlocks.CRACKED_DEADROCK.value()) || state.is(TFBlocks.WEATHERED_DEADROCK.value());
 
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, replacing);
 
-		BlockState floor = TFBlocks.CASTLE_BRICK.get().defaultBlockState();
-		BlockState border = TFBlocks.THICK_CASTLE_BRICK.get().defaultBlockState();
+		BlockState floor = TFBlocks.CASTLE_BRICK.value().defaultBlockState();
+		BlockState border = TFBlocks.THICK_CASTLE_BRICK.value().defaultBlockState();
 
 		final int cs = 7;
 
@@ -191,15 +191,15 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	protected BlockState getRuneColor(BlockState forceFieldColor) {
-		return forceFieldColor.is(TFBlocks.GREEN_FORCE_FIELD.get()) ? TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState() : TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return forceFieldColor.is(TFBlocks.GREEN_FORCE_FIELD.value()) ? TFBlocks.YELLOW_CASTLE_RUNE_BRICK.value().defaultBlockState() : TFBlocks.BLUE_CASTLE_RUNE_BRICK.value().defaultBlockState();
 	}
 
 	protected BlockState getForceFieldColor(RandomSource decoRNG) {
 		int i = decoRNG.nextInt(2) + 3;
 
 		if (i == 3)
-			return TFBlocks.GREEN_FORCE_FIELD.get().defaultBlockState();
+			return TFBlocks.GREEN_FORCE_FIELD.value().defaultBlockState();
 		else
-			return TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState();
+			return TFBlocks.BLUE_FORCE_FIELD.value().defaultBlockState();
 	}
 }

@@ -31,7 +31,7 @@ public class GlassSwordItem extends SwordItem {
 		}
 
 		stack.hurtAndBreak(stack.getMaxDamage() + 1, attacker, (user) -> {
-			user.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
+			user.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.value(), attacker.getSoundSource(), 1F, 0.5F);
 			user.broadcastBreakEvent(InteractionHand.MAIN_HAND);
 			user.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
 		});

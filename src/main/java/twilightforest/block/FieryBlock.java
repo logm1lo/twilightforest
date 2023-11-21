@@ -42,7 +42,7 @@ public class FieryBlock extends Block {
 		if ((!entity.fireImmune())
 				&& entity instanceof LivingEntity living
 				&& (!EnchantmentHelper.hasFrostWalker(living))
-				&& !living.getItemBySlot(EquipmentSlot.FEET).is(TFItems.FIERY_BOOTS.get())) {
+				&& !living.getItemBySlot(EquipmentSlot.FEET).is(TFItems.FIERY_BOOTS.value())) {
 			entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.FIERY), 1.0F);
 		}
 

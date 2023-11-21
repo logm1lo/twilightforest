@@ -37,7 +37,7 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 	}
 
 	public TwilightChestBoat(Level level, double x, double y, double z) {
-		this(TFEntities.CHEST_BOAT.get(), level);
+		this(TFEntities.CHEST_BOAT.value(), level);
 		this.setPos(x, y, z);
 		this.xo = x;
 		this.yo = y;
@@ -109,14 +109,14 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 	@Override
 	public Item getDropItem() {
 		return switch (this.getTwilightBoatType()) {
-			case TWILIGHT_OAK -> TFItems.TWILIGHT_OAK_CHEST_BOAT.get();
-			case CANOPY -> TFItems.CANOPY_CHEST_BOAT.get();
-			case MANGROVE -> TFItems.MANGROVE_CHEST_BOAT.get();
-			case DARKWOOD -> TFItems.DARK_CHEST_BOAT.get();
-			case TIME -> TFItems.TIME_CHEST_BOAT.get();
-			case TRANSFORMATION -> TFItems.TRANSFORMATION_CHEST_BOAT.get();
-			case MINING -> TFItems.MINING_CHEST_BOAT.get();
-			case SORTING -> TFItems.SORTING_CHEST_BOAT.get();
+			case TWILIGHT_OAK -> TFItems.TWILIGHT_OAK_CHEST_BOAT.value();
+			case CANOPY -> TFItems.CANOPY_CHEST_BOAT.value();
+			case MANGROVE -> TFItems.MANGROVE_CHEST_BOAT.value();
+			case DARKWOOD -> TFItems.DARK_CHEST_BOAT.value();
+			case TIME -> TFItems.TIME_CHEST_BOAT.value();
+			case TRANSFORMATION -> TFItems.TRANSFORMATION_CHEST_BOAT.value();
+			case MINING -> TFItems.MINING_CHEST_BOAT.value();
+			case SORTING -> TFItems.SORTING_CHEST_BOAT.value();
 		};
 	}
 

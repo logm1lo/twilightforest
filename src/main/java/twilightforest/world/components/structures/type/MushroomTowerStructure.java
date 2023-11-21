@@ -32,7 +32,7 @@ public class MushroomTowerStructure extends LandmarkStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.MUSHROOM_TOWER.get();
+        return TFStructureTypes.MUSHROOM_TOWER.value();
     }
 
     public static MushroomTowerStructure buildStructureConfig(BootstapContext<Structure> context) {

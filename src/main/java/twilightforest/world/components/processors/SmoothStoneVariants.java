@@ -38,6 +38,6 @@ public class SmoothStoneVariants extends StructureProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return TFStructureProcessors.SMOOTH_STONE_VARIANTS.get();
+        return TFStructureProcessors.SMOOTH_STONE_VARIANTS.value();
     }
 }

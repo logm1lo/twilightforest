@@ -24,14 +24,14 @@ public class MagicMapCloningRecipe extends CustomRecipe {
 		for(int j = 0; j < container.getContainerSize(); j++) {
 			ItemStack itemstack1 = container.getItem(j);
 			if (!itemstack1.isEmpty()) {
-				if (itemstack1.is(TFItems.FILLED_MAGIC_MAP.get())) {
+				if (itemstack1.is(TFItems.FILLED_MAGIC_MAP.value())) {
 					if (!itemstack.isEmpty()) {
 						return false;
 					}
 
 					itemstack = itemstack1;
 				} else {
-					if (!itemstack1.is(TFItems.MAGIC_MAP.get())) {
+					if (!itemstack1.is(TFItems.MAGIC_MAP.value())) {
 						return false;
 					}
 
@@ -51,14 +51,14 @@ public class MagicMapCloningRecipe extends CustomRecipe {
 		for(int j = 0; j < container.getContainerSize(); j++) {
 			ItemStack itemstack1 = container.getItem(j);
 			if (!itemstack1.isEmpty()) {
-				if (itemstack1.is(TFItems.FILLED_MAGIC_MAP.get())) {
+				if (itemstack1.is(TFItems.FILLED_MAGIC_MAP.value())) {
 					if (!itemstack.isEmpty()) {
 						return ItemStack.EMPTY;
 					}
 
 					itemstack = itemstack1;
 				} else {
-					if (!itemstack1.is(TFItems.MAGIC_MAP.get())) {
+					if (!itemstack1.is(TFItems.MAGIC_MAP.value())) {
 						return ItemStack.EMPTY;
 					}
 
@@ -81,6 +81,6 @@ public class MagicMapCloningRecipe extends CustomRecipe {
 	}
 
 	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.MAGIC_MAP_CLONING_RECIPE.get();
+		return TFRecipes.MAGIC_MAP_CLONING_RECIPE.value();
 	}
 }

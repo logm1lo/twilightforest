@@ -114,9 +114,9 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 	@Override
 	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
-		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
-		this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(TFItems.PHANTOM_CHESTPLATE.get()));
-		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFItems.PHANTOM_HELMET.get()));
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.value()));
+		this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(TFItems.PHANTOM_CHESTPLATE.value()));
+		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFItems.PHANTOM_HELMET.value()));
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.getRestrictionPoint() != null && this.getNumber() == 0) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.value().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -199,7 +199,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 		if (this.isChargingAtPlayer()) {
 			// make particles
 			for (int i = 0; i < 4; ++i) {
-				Item particleID = this.getRandom().nextBoolean() ? TFItems.PHANTOM_HELMET.get() : TFItems.KNIGHTMETAL_SWORD.get();
+				Item particleID = this.getRandom().nextBoolean() ? TFItems.PHANTOM_HELMET.value() : TFItems.KNIGHTMETAL_SWORD.value();
 
 				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(particleID)), this.getX() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 0, -0.1, 0);
 				this.level().addParticle(ParticleTypes.SMOKE, this.getX() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 0, 0.1, 0);
@@ -387,17 +387,17 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.KNIGHT_PHANTOM_AMBIENT.get();
+		return TFSounds.KNIGHT_PHANTOM_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.KNIGHT_PHANTOM_HURT.get();
+		return TFSounds.KNIGHT_PHANTOM_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.KNIGHT_PHANTOM_DEATH.get();
+		return TFSounds.KNIGHT_PHANTOM_DEATH.value();
 	}
 
 	private void switchToFormationByNumber(int formationNumber) {
@@ -430,15 +430,15 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	}
 
 	public boolean isSwordKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_SWORD.get());
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_SWORD.value());
 	}
 
 	public boolean isAxeKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_AXE.get());
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_AXE.value());
 	}
 
 	public boolean isPickKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_PICKAXE.get());
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_PICKAXE.value());
 	}
 
 	public int getNumber() {
@@ -452,9 +452,9 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 		// set weapon per number
 		switch (number % 3) {
-			case 0 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
-			case 1 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
-			case 2 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
+			case 0 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.value()));
+			case 1 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_AXE.value()));
+			case 2 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.value()));
 		}
 	}
 

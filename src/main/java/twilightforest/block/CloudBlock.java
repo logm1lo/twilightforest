@@ -72,7 +72,7 @@ public class CloudBlock extends Block {
      */
     public Pair<Biome.Precipitation, Float> getCurrentPrecipitation(BlockPos pos, Level level, float rainLevel) {
         if (this.getPrecipitation() == null) {
-            if (rainLevel > 0.0F) return Pair.of(level.getBiome(pos).get().getPrecipitationAt(pos), rainLevel);
+            if (rainLevel > 0.0F) return Pair.of(level.getBiome(pos).value().getPrecipitationAt(pos), rainLevel);
             else return Pair.of(Biome.Precipitation.NONE, 0.0F);
         } else return Pair.of(this.getPrecipitation(), 1.0F);
     }
@@ -147,7 +147,7 @@ public class CloudBlock extends Block {
             double xSpeed = xSpd * 0.0035D * maxI;
             double zSpeed = zSpd * 0.0035D * maxI;
 
-            particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(),  false, x, y, z, xSpeed, ySpeed, zSpeed);
+            particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.value(),  false, x, y, z, xSpeed, ySpeed, zSpeed);
         }
 
         TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(pos)), particlePacket);
@@ -176,7 +176,7 @@ public class CloudBlock extends Block {
         if (blockpos1.getX() != pos.getX()) x = Mth.clamp(x, pos.getX(), (double) pos.getX() + 1.0D);
         if (blockpos1.getZ() != pos.getZ()) z = Mth.clamp(z, pos.getZ(), (double) pos.getZ() + 1.0D);
 
-        level.addParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, deltaMovement.x * -0.5D, 0.015D * jumpMultiplier, deltaMovement.z * -0.5D);
+        level.addParticle(TFParticleType.CLOUD_PUFF.value(), x, y, z, deltaMovement.x * -0.5D, 0.015D * jumpMultiplier, deltaMovement.z * -0.5D);
     }
 
     @Override
@@ -208,7 +208,7 @@ public class CloudBlock extends Block {
                         if (side == Direction.WEST) x = (double) posX + aabb.minX - (double) 0.1F;
                         if (side == Direction.EAST) x = (double) posX + aabb.maxX + (double) 0.1F;
 
-                        Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, (double) side.getStepX() * 0.01D, (double) side.getStepY() * 0.01D, (double) side.getStepZ() * 0.01D);
+                        Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.value(), x, y, z, (double) side.getStepX() * 0.01D, (double) side.getStepY() * 0.01D, (double) side.getStepZ() * 0.01D);
                         if (particle == null) return true;
                         manager.add(particle);
                     }
@@ -246,7 +246,7 @@ public class CloudBlock extends Block {
                                 speedY = (speedY - 0.5D) * 0.05D;
                                 speedZ = (speedZ - 0.5D) * 0.05D;
                                 
-                                Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, speedX, speedY, speedZ);
+                                Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.value(), (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, speedX, speedY, speedZ);
                                 if (particle == null) return;
                                 manager.add(particle);
                             }

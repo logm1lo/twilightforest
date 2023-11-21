@@ -33,7 +33,7 @@ public class HedgeMazeStructure extends LandmarkStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.HEDGE_MAZE.get();
+        return TFStructureTypes.HEDGE_MAZE.value();
     }
 
     public static HedgeMazeStructure buildStructureConfig(BootstapContext<Structure> context) {

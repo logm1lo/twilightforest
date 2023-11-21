@@ -65,7 +65,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.CINDER_FURNACE.get(), CinderFurnaceBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.CINDER_FURNACE.value(), CinderFurnaceBlockEntity::tick);
 	}
 
 	@Override

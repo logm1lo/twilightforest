@@ -54,7 +54,7 @@ public class SkullCandleItem extends StandingAndWallBlockItem implements CurioIt
 
 	@Override
 	public Component getName(ItemStack stack) {
-		if (stack.is(TFBlocks.PLAYER_SKULL_CANDLE.get().asItem()) && stack.hasTag()) {
+		if (stack.is(TFBlocks.PLAYER_SKULL_CANDLE.value().asItem()) && stack.hasTag()) {
 			String s = null;
 			CompoundTag compoundtag = stack.getTag();
 			if (compoundtag != null && compoundtag.contains("SkullOwner", 8)) {

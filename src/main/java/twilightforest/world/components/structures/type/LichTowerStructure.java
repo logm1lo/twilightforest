@@ -41,7 +41,7 @@ public class LichTowerStructure extends ControlledSpawningStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.LICH_TOWER.get();
+        return TFStructureTypes.LICH_TOWER.value();
     }
 
     @Override
@@ -56,11 +56,11 @@ public class LichTowerStructure extends ControlledSpawningStructure {
                         new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1, 1),
                         new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.get(), 10, 2, 3),
+                        new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.value(), 10, 2, 3),
                         new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
                 ),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_naga"))),
-                new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.get()),
+                new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.value()),
                 new DecorationConfig(1, false, true, true),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LICH_TOWER_BIOMES),

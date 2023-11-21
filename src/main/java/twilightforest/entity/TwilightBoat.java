@@ -26,7 +26,7 @@ public class TwilightBoat extends Boat {
 	}
 
 	public TwilightBoat(Level level, double x, double y, double z) {
-		this(TFEntities.BOAT.get(), level);
+		this(TFEntities.BOAT.value(), level);
 		this.setPos(x, y, z);
 		this.xo = x;
 		this.yo = y;
@@ -40,14 +40,14 @@ public class TwilightBoat extends Boat {
 	@Override
 	public Item getDropItem() {
 		return switch (this.getTwilightBoatType()) {
-			case TWILIGHT_OAK -> TFItems.TWILIGHT_OAK_BOAT.get();
-			case CANOPY -> TFItems.CANOPY_BOAT.get();
-			case MANGROVE -> TFItems.MANGROVE_BOAT.get();
-			case DARKWOOD -> TFItems.DARK_BOAT.get();
-			case TIME -> TFItems.TIME_BOAT.get();
-			case TRANSFORMATION -> TFItems.TRANSFORMATION_BOAT.get();
-			case MINING -> TFItems.MINING_BOAT.get();
-			case SORTING -> TFItems.SORTING_BOAT.get();
+			case TWILIGHT_OAK -> TFItems.TWILIGHT_OAK_BOAT.value();
+			case CANOPY -> TFItems.CANOPY_BOAT.value();
+			case MANGROVE -> TFItems.MANGROVE_BOAT.value();
+			case DARKWOOD -> TFItems.DARK_BOAT.value();
+			case TIME -> TFItems.TIME_BOAT.value();
+			case TRANSFORMATION -> TFItems.TRANSFORMATION_BOAT.value();
+			case MINING -> TFItems.MINING_BOAT.value();
+			case SORTING -> TFItems.SORTING_BOAT.value();
 		};
 	}
 
@@ -79,14 +79,14 @@ public class TwilightBoat extends Boat {
 	}
 
 	public enum Type {
-		TWILIGHT_OAK(TFBlocks.TWILIGHT_OAK_PLANKS.get(), "twilight_oak"),
-		CANOPY(TFBlocks.CANOPY_PLANKS.get(), "canopy"),
-		MANGROVE(TFBlocks.MANGROVE_PLANKS.get(), "mangrove"),
-		DARKWOOD(TFBlocks.DARK_PLANKS.get(), "dark"),
-		TIME(TFBlocks.TIME_PLANKS.get(), "time"),
-		TRANSFORMATION(TFBlocks.TRANSFORMATION_PLANKS.get(), "transformation"),
-		MINING(TFBlocks.MINING_PLANKS.get(), "mining"),
-		SORTING(TFBlocks.SORTING_PLANKS.get(), "sorting");
+		TWILIGHT_OAK(TFBlocks.TWILIGHT_OAK_PLANKS.value(), "twilight_oak"),
+		CANOPY(TFBlocks.CANOPY_PLANKS.value(), "canopy"),
+		MANGROVE(TFBlocks.MANGROVE_PLANKS.value(), "mangrove"),
+		DARKWOOD(TFBlocks.DARK_PLANKS.value(), "dark"),
+		TIME(TFBlocks.TIME_PLANKS.value(), "time"),
+		TRANSFORMATION(TFBlocks.TRANSFORMATION_PLANKS.value(), "transformation"),
+		MINING(TFBlocks.MINING_PLANKS.value(), "mining"),
+		SORTING(TFBlocks.SORTING_PLANKS.value(), "sorting");
 
 		private final String name;
 		private final Block block;

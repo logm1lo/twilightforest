@@ -55,7 +55,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 			}
 
 			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
-			level.playSound(null, pos, TFSounds.JET_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.playSound(null, pos, TFSounds.JET_START.value(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			level.blockEvent(pos, this, ACTIVATE_EVENT, 0);
 		}
 	}
@@ -123,6 +123,6 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.GHAST_TRAP.get(), GhastTrapBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.GHAST_TRAP.value(), GhastTrapBlockEntity::tick);
 	}
 }

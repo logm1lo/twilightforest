@@ -62,7 +62,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		if (fromPos.getY() == pos.getY() + 1) {
 			BlockState above = level.getBlockState(fromPos);
-			if (!(above.getBlock() instanceof BonemealableBlock bonemealableBlock && !above.is(TFBlocks.UBEROUS_SOIL.get()))) {
+			if (!(above.getBlock() instanceof BonemealableBlock bonemealableBlock && !above.is(TFBlocks.UBEROUS_SOIL.value()))) {
 				if (above.isSolid())
 					level.setBlockAndUpdate(pos, pushEntitiesUp(state, Blocks.DIRT.defaultBlockState(), level, pos));
 				return;
@@ -114,7 +114,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (level.isClientSide() && rand.nextInt(5) == 0) {
 			for (Player player : level.players()) {
-				if (player.getMainHandItem().getItem().equals(TFItems.MAGIC_BEANS.get()) || player.getOffhandItem().getItem().equals(TFItems.MAGIC_BEANS.get())) {
+				if (player.getMainHandItem().getItem().equals(TFItems.MAGIC_BEANS.value()) || player.getOffhandItem().getItem().equals(TFItems.MAGIC_BEANS.value())) {
 					for (int i = 0; i < 2; i++) {
 						level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX() + rand.nextDouble(), pos.getY() + 1.25D, pos.getZ() + rand.nextDouble(), 0.0D, 0.0D, 0.0D);
 					}
@@ -133,19 +133,19 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 				if (
 						!getter.getBlockState(pos.relative(dir).above()).isSolid() &&
 								(blockAt.is(BlockTags.DIRT) || blockAt.is(Blocks.FARMLAND)) &&
-								!blockAt.is(TFBlocks.UBEROUS_SOIL.get())) {
+								!blockAt.is(TFBlocks.UBEROUS_SOIL.value())) {
 					return true;
 
 				} else if (
 						!getter.getBlockState(pos.relative(dir).above().above()).isSolid() &&
 								(getter.getBlockState(pos.relative(dir).above()).is(BlockTags.DIRT) || getter.getBlockState(pos.relative(dir).above()).is(Blocks.FARMLAND)) &&
-								!getter.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL.get())) {
+								!getter.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL.value())) {
 					return true;
 
 				} else if (
 						!getter.getBlockState(pos.relative(dir)).isSolid() &&
 								(getter.getBlockState(pos.relative(dir).below()).is(BlockTags.DIRT) || getter.getBlockState(pos.relative(dir).below()).is(Blocks.FARMLAND)) &&
-								!getter.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL.get())) {
+								!getter.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL.value())) {
 					return true;
 				}
 			}
@@ -170,21 +170,21 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 				if (
 						!level.getBlockState(pos.relative(dir).above()).isSolid() &&
 								(blockAt.is(BlockTags.DIRT) || blockAt.is(Blocks.FARMLAND)) &&
-								!blockAt.is(TFBlocks.UBEROUS_SOIL.get())) {
+								!blockAt.is(TFBlocks.UBEROUS_SOIL.value())) {
 
 					level.setBlockAndUpdate(pos.relative(dir), this.defaultBlockState());
 					break;
 				} else if (
 						!level.getBlockState(pos.relative(dir).above().above()).isSolid() &&
 								(level.getBlockState(pos.relative(dir).above()).is(BlockTags.DIRT) || level.getBlockState(pos.relative(dir).above()).is(Blocks.FARMLAND)) &&
-								!level.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL.get())) {
+								!level.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL.value())) {
 
 					level.setBlockAndUpdate(pos.relative(dir).above(), this.defaultBlockState());
 					break;
 				} else if (
 						!level.getBlockState(pos.relative(dir)).isSolid() &&
 								(level.getBlockState(pos.relative(dir).below()).is(BlockTags.DIRT) || level.getBlockState(pos.relative(dir).below()).is(Blocks.FARMLAND)) &&
-								!level.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL.get())) {
+								!level.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL.value())) {
 
 					level.setBlockAndUpdate(pos.relative(dir).below(), this.defaultBlockState());
 					break;

@@ -79,7 +79,7 @@ public class ToolEvents {
 
 	@SubscribeEvent
 	public static void fieryToolSetFire(LivingAttackEvent event) {
-		if (event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE.get())) && !event.getEntity().fireImmune()) {
+		if (event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD.value()) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE.value())) && !event.getEntity().fireImmune()) {
 			event.getEntity().setSecondsOnFire(1);
 		}
 	}
@@ -92,7 +92,7 @@ public class ToolEvents {
 			ItemStack weapon = living.getMainHandItem();
 
 			if (!weapon.isEmpty()) {
-				if (target.getArmorValue() > 0 && (weapon.is(TFItems.KNIGHTMETAL_PICKAXE.get()) || weapon.is(TFItems.KNIGHTMETAL_SWORD.get()))) {
+				if (target.getArmorValue() > 0 && (weapon.is(TFItems.KNIGHTMETAL_PICKAXE.value()) || weapon.is(TFItems.KNIGHTMETAL_SWORD.value()))) {
 					if (target.getArmorCoverPercentage() > 0) {
 						int moreBonus = (int) (KNIGHTMETAL_BONUS_DAMAGE * target.getArmorCoverPercentage());
 						event.setAmount(event.getAmount() + moreBonus);
@@ -101,7 +101,7 @@ public class ToolEvents {
 					}
 					// enchantment attack sparkles
 					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
-				} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
+				} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.value())) {
 					event.setAmount(event.getAmount() + KNIGHTMETAL_BONUS_DAMAGE);
 					// enchantment attack sparkles
 					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
@@ -160,12 +160,12 @@ public class ToolEvents {
 			ItemStack heldStack = player.getItemInHand(hand);
 			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 				UUID uuidForOppositeHand = GiantItem.GIANT_RANGE_MODIFIER;
-				AttributeInstance attackRange = player.getAttribute(NeoForgeMod.ENTITY_REACH.get());
+				AttributeInstance attackRange = player.getAttribute(NeoForgeMod.ENTITY_REACH.value());
 				if (attackRange != null) {
 					AttributeModifier giantModifier = attackRange.getModifier(uuidForOppositeHand);
 					if (giantModifier != null) {
 						attackRange.removeModifier(giantModifier.getId());
-						double range = player.getAttributeValue(NeoForgeMod.ENTITY_REACH.get());
+						double range = player.getAttributeValue(NeoForgeMod.ENTITY_REACH.value());
 						double trueReach = range == 0 ? 0 : range + (player.isCreative() ? 3 : 0); // Copied from IForgePlayer#getAttackRange().
 						boolean tooFar = !player.isCloseEnough(target, trueReach);
 						attackRange.addTransientModifier(giantModifier);
@@ -181,12 +181,12 @@ public class ToolEvents {
 			ItemStack heldStack = player.getItemInHand(hand);
 			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 				UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
-				AttributeInstance reachDistance = player.getAttribute(NeoForgeMod.BLOCK_REACH.get());
+				AttributeInstance reachDistance = player.getAttribute(NeoForgeMod.BLOCK_REACH.value());
 				if (reachDistance != null) {
 					AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
 					if (giantModifier != null) {
 						reachDistance.removeModifier(giantModifier.getId());
-						double reach = player.getAttributeValue(NeoForgeMod.BLOCK_REACH.get());
+						double reach = player.getAttributeValue(NeoForgeMod.BLOCK_REACH.value());
 						double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
 						boolean tooFar = player.pick(trueReach, 0.0F, false).getType() != HitResult.Type.BLOCK;
 						reachDistance.addTransientModifier(giantModifier);

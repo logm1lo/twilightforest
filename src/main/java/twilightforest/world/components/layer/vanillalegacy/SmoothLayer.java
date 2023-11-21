@@ -40,12 +40,12 @@ public enum SmoothLayer implements CastleTransformer {
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.SMOOTH.get();
+			return BiomeLayerTypes.SMOOTH.value();
 		}
 	}
 }

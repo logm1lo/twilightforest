@@ -22,7 +22,7 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 		BlockState state = level.getBlockState(pos);
 		if (!level.isClientSide()) {
 			if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
-				level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipeHolder -> {
+				level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.value()).forEach(recipeHolder -> {
 					if (recipeHolder.value().input() == state.getBlock()) {
 						if (recipeHolder.value().result() == Blocks.AIR) {
 							level.removeBlock(pos, true);

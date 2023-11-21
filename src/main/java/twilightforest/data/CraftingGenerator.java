@@ -11,8 +11,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.TrueCondition;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
-import net.neoforged.neoforge.common.crafting.ConditionalRecipeBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.UncraftingGenerator;
 import twilightforest.data.helpers.CraftingDataHelper;
@@ -59,38 +59,38 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.pattern("mmm")
 				.pattern("mtm")
 				.pattern("mmm")
-				.define('m', Ingredient.of(TFBlocks.MOSS_PATCH.get()))
-				.define('t', Ingredient.of(TFItems.TRANSFORMATION_POWDER.get()))
-				.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.get()))
+				.define('m', Ingredient.of(TFBlocks.MOSS_PATCH.value()))
+				.define('t', Ingredient.of(TFItems.TRANSFORMATION_POWDER.value()))
+				.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.value()))
 				.save(output, TwilightForestMod.prefix("tf_moss_to_vanilla"));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.MOSS_PATCH.get(), 8)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.MOSS_PATCH.value(), 8)
 				.requires(Ingredient.of(Items.MOSS_BLOCK))
-				.requires(Ingredient.of(TFItems.TRANSFORMATION_POWDER.get()))
-				.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.get()))
+				.requires(Ingredient.of(TFItems.TRANSFORMATION_POWDER.value()))
+				.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.value()))
 				.save(output, TwilightForestMod.prefix("vanilla_to_tf_moss"));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.HUGE_LILY_PAD.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.HUGE_LILY_PAD.value())
 				.requires(Ingredient.of(Blocks.LILY_PAD), 4)
-				.requires(Ingredient.of(TFItems.TRANSFORMATION_POWDER.get()))
-				.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.get()))
+				.requires(Ingredient.of(TFItems.TRANSFORMATION_POWDER.value()))
+				.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.value()))
 				.save(output, TwilightForestMod.prefix("vanilla_to_tf_lilypad"));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, Blocks.LILY_PAD, 4)
-				.requires(Ingredient.of(TFBlocks.HUGE_LILY_PAD.get()))
-				.requires(Ingredient.of(TFItems.TRANSFORMATION_POWDER.get()))
-				.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.get()))
+				.requires(Ingredient.of(TFBlocks.HUGE_LILY_PAD.value()))
+				.requires(Ingredient.of(TFItems.TRANSFORMATION_POWDER.value()))
+				.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.value()))
 				.save(output, TwilightForestMod.prefix("tf_to_vanilla_lilypad"));
 
 		slabBlock(output, "aurora_slab", TFBlocks.AURORA_SLAB, TFBlocks.AURORA_BLOCK);
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.AURORA_PILLAR.get(), 2)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.AURORA_PILLAR.value(), 2)
 				.pattern("#")
 				.pattern("#")
-				.define('#', Ingredient.of(TFBlocks.AURORA_BLOCK.get()))
-				.unlockedBy("has_slab", has(TFBlocks.AURORA_SLAB.get()))
+				.define('#', Ingredient.of(TFBlocks.AURORA_BLOCK.value()))
+				.unlockedBy("has_slab", has(TFBlocks.AURORA_SLAB.value()))
 				.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.IRON_LADDER.get(), 3)
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.IRON_LADDER.value(), 3)
 				.pattern("-#-")
 				.pattern("-#-")
 				.define('#', Ingredient.of(Blocks.IRON_BARS))
@@ -98,57 +98,56 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_iron_bars", has(Blocks.IRON_BARS))
 				.save(output);
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_JAR.get())
-				.requires(Ingredient.of(TFBlocks.FIREFLY.get()))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_JAR.value())
+				.requires(Ingredient.of(TFBlocks.FIREFLY.value()))
 				.requires(Ingredient.of(Items.GLASS_BOTTLE))
-				.unlockedBy("has_item", has(TFBlocks.FIREFLY.get()))
+				.unlockedBy("has_item", has(TFBlocks.FIREFLY.value()))
 				.save(output);
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_SPAWNER.get())
-				.requires(Ingredient.of(TFBlocks.FIREFLY_JAR.get()))
-				.requires(Ingredient.of(TFBlocks.FIREFLY.get()))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_SPAWNER.value())
+				.requires(Ingredient.of(TFBlocks.FIREFLY_JAR.value()))
+				.requires(Ingredient.of(TFBlocks.FIREFLY.value()))
 				.requires(Ingredient.of(Blocks.POPPY))
-				.unlockedBy("has_jar", has(TFBlocks.FIREFLY_JAR.get()))
+				.unlockedBy("has_jar", has(TFBlocks.FIREFLY_JAR.value()))
 				.save(output);
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.CICADA_JAR.get())
-				.requires(Ingredient.of(TFBlocks.CICADA.get()))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.CICADA_JAR.value())
+				.requires(Ingredient.of(TFBlocks.CICADA.value()))
 				.requires(Ingredient.of(Items.GLASS_BOTTLE))
-				.unlockedBy("has_item", has(TFBlocks.CICADA.get()))
+				.unlockedBy("has_item", has(TFBlocks.CICADA.value()))
 				.save(output);
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.MAGENTA_DYE)
-				.requires(Ingredient.of(TFBlocks.HUGE_WATER_LILY.get()))
-				.unlockedBy("has_item", has(TFBlocks.HUGE_WATER_LILY.get()))
+				.requires(Ingredient.of(TFBlocks.HUGE_WATER_LILY.value()))
+				.unlockedBy("has_item", has(TFBlocks.HUGE_WATER_LILY.value()))
 				.save(output, TwilightForestMod.prefix("waterlily_to_magenta"));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.RED_DYE)
-				.requires(Ingredient.of(TFBlocks.THORN_ROSE.get()))
-				.unlockedBy("has_item", has(TFBlocks.THORN_ROSE.get()))
+				.requires(Ingredient.of(TFBlocks.THORN_ROSE.value()))
+				.unlockedBy("has_item", has(TFBlocks.THORN_ROSE.value()))
 				.save(output, TwilightForestMod.prefix("thorn_rose_to_red"));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STICK)
-				.requires(Ingredient.of(TFBlocks.ROOT_STRAND.get()))
-				.unlockedBy("has_item", has(TFBlocks.ROOT_STRAND.get()))
+				.requires(Ingredient.of(TFBlocks.ROOT_STRAND.value()))
+				.unlockedBy("has_item", has(TFBlocks.ROOT_STRAND.value()))
 				.save(output, TwilightForestMod.prefix("root_stick"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Blocks.TORCH, 5)
 				.pattern("∴")
 				.pattern("|")
-				.define('∴', Ingredient.of(TFItems.TORCHBERRIES.get()))
+				.define('∴', Ingredient.of(TFItems.TORCHBERRIES.value()))
 				.define('|', Tags.Items.RODS_WOODEN)
-				.unlockedBy("has_item", has(TFItems.TORCHBERRIES.get()))
+				.unlockedBy("has_item", has(TFItems.TORCHBERRIES.value()))
 				.save(output, TwilightForestMod.prefix("berry_torch"));
 
-		new ConditionalRecipeBuilder().withCondition(UncraftingTableCondition.INSTANCE).withRecipe(
-						ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.UNCRAFTING_TABLE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.UNCRAFTING_TABLE.value())
 								.pattern("###")
 								.pattern("#X#")
 								.pattern("###")
 								.define('#', Blocks.CRAFTING_TABLE)
-								.define('X', TFItems.MAZE_MAP_FOCUS.get())
-								.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get())))
-				.save(output, TwilightForestMod.prefix("uncrafting_table"));
+								.define('X', TFItems.MAZE_MAP_FOCUS.value())
+								.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.value()))
+				.save(output/*.withConditions(UncraftingTableCondition.INSTANCE)*/, TwilightForestMod.prefix("uncrafting_table"));
 
 		cookingRecipes(output, "smelted", RecipeSerializer.SMELTING_RECIPE, 200);
 		cookingRecipes(output, "smoked", RecipeSerializer.SMOKING_RECIPE, 100);
@@ -160,145 +159,145 @@ public class CraftingGenerator extends CraftingDataHelper {
 		crackedWoodRecipes(output);
 		crackedStoneRecipes(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.EMPTY_CANOPY_BOOKSHELF.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.EMPTY_CANOPY_BOOKSHELF.value())
 				.pattern("---")
 				.pattern("   ")
 				.pattern("---")
-				.define('-', TFBlocks.CANOPY_SLAB.get())
-				.unlockedBy("has_item", has(TFBlocks.CANOPY_SLAB.get()))
+				.define('-', TFBlocks.CANOPY_SLAB.value())
+				.unlockedBy("has_item", has(TFBlocks.CANOPY_SLAB.value()))
 				.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.CANOPY_BOOKSHELF.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.CANOPY_BOOKSHELF.value())
 				.pattern("---")
 				.pattern("B B")
 				.pattern("---")
-				.define('-', TFBlocks.CANOPY_PLANKS.get())
+				.define('-', TFBlocks.CANOPY_PLANKS.value())
 				.define('B', Items.BOOK)
-				.unlockedBy("has_item", has(TFBlocks.CANOPY_PLANKS.get()))
+				.unlockedBy("has_item", has(TFBlocks.CANOPY_PLANKS.value()))
 				.save(output);
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.ARMOR_SHARD_CLUSTER.get())
-				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()), 9)
-				.unlockedBy("has_item", has(TFItems.ARMOR_SHARD.get()))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.ARMOR_SHARD_CLUSTER.value())
+				.requires(Ingredient.of(TFItems.ARMOR_SHARD.value()), 9)
+				.unlockedBy("has_item", has(TFItems.ARMOR_SHARD.value()))
 				.save(output, TwilightForestMod.prefix("material/" + TFItems.ARMOR_SHARD_CLUSTER.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_UNDERBRICK.get(), 1)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_UNDERBRICK.value(), 1)
 				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
-				.requires(Ingredient.of(TFBlocks.UNDERBRICK.get()))
-				.unlockedBy("has_item", has(TFBlocks.UNDERBRICK.get()))
+				.requires(Ingredient.of(TFBlocks.UNDERBRICK.value()))
+				.unlockedBy("has_item", has(TFBlocks.UNDERBRICK.value()))
 				.save(output);
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_MAZESTONE.get(), 1)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_MAZESTONE.value(), 1)
 				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
-				.requires(Ingredient.of(TFBlocks.MAZESTONE_BRICK.get()))
-				.unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.get()))
+				.requires(Ingredient.of(TFBlocks.MAZESTONE_BRICK.value()))
+				.unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.value()))
 				.save(output, TwilightForestMod.prefix("maze_stone/mossy_mazestone"));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.CARMINITE.get())
-				.requires(Ingredient.of(TFItems.BORER_ESSENCE.get()))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.CARMINITE.value())
+				.requires(Ingredient.of(TFItems.BORER_ESSENCE.value()))
 				.requires(Tags.Items.DUSTS_REDSTONE)
-				.requires(Ingredient.of(TFItems.BORER_ESSENCE.get()))
+				.requires(Ingredient.of(TFItems.BORER_ESSENCE.value()))
 				.requires(Tags.Items.DUSTS_REDSTONE)
 				.requires(Ingredient.of(Items.GHAST_TEAR))
 				.requires(Tags.Items.DUSTS_REDSTONE)
-				.requires(Ingredient.of(TFItems.BORER_ESSENCE.get()))
+				.requires(Ingredient.of(TFItems.BORER_ESSENCE.value()))
 				.requires(Tags.Items.DUSTS_REDSTONE)
-				.requires(Ingredient.of(TFItems.BORER_ESSENCE.get()))
-				.unlockedBy("has_item", has(TFItems.BORER_ESSENCE.get()))
+				.requires(Ingredient.of(TFItems.BORER_ESSENCE.value()))
+				.unlockedBy("has_item", has(TFItems.BORER_ESSENCE.value()))
 				.save(output, TwilightForestMod.prefix("material/" + TFItems.CARMINITE.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.RAW_IRONWOOD.get(), 2)
-				.requires(Ingredient.of(TFItems.LIVEROOT.get()))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.RAW_IRONWOOD.value(), 2)
+				.requires(Ingredient.of(TFItems.LIVEROOT.value()))
 				.requires(Ingredient.of(Items.RAW_IRON))
 				.requires(Tags.Items.NUGGETS_GOLD)
-				.unlockedBy("has_item", has(TFItems.LIVEROOT.get()))
+				.unlockedBy("has_item", has(TFItems.LIVEROOT.value()))
 				.save(output, TwilightForestMod.prefix("material/" + TFItems.RAW_IRONWOOD.getId().getPath()));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.RAINY_CLOUD.get(), 8)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.RAINY_CLOUD.value(), 8)
 				.pattern("ccc")
 				.pattern("cbc")
 				.pattern("ccc")
-				.define('c', Ingredient.of(TFBlocks.FLUFFY_CLOUD.get()))
+				.define('c', Ingredient.of(TFBlocks.FLUFFY_CLOUD.value()))
 				.define('b', Ingredient.of(Items.WATER_BUCKET))
-				.unlockedBy("has_item", has(TFBlocks.FLUFFY_CLOUD.get()))
+				.unlockedBy("has_item", has(TFBlocks.FLUFFY_CLOUD.value()))
 				.save(output, TwilightForestMod.prefix("rainy_cloud"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.SNOWY_CLOUD.get(), 8)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.SNOWY_CLOUD.value(), 8)
 				.pattern("ccc")
 				.pattern("cbc")
 				.pattern("ccc")
-				.define('c', Ingredient.of(TFBlocks.FLUFFY_CLOUD.get()))
+				.define('c', Ingredient.of(TFBlocks.FLUFFY_CLOUD.value()))
 				.define('b', Ingredient.of(Items.POWDER_SNOW_BUCKET))
-				.unlockedBy("has_item", has(TFBlocks.FLUFFY_CLOUD.get()))
+				.unlockedBy("has_item", has(TFBlocks.FLUFFY_CLOUD.value()))
 				.save(output, TwilightForestMod.prefix("snowy_cloud"));
 	}
 
 	private void darkTowerRecipes(RecipeOutput output) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.ENCASED_FIRE_JET.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.ENCASED_FIRE_JET.value())
 				.pattern("#∴#")
 				.pattern("∴^∴")
 				.pattern("uuu")
 				.define('∴', Tags.Items.DUSTS_REDSTONE)
-				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.get()))
-				.define('^', Ingredient.of(TFBlocks.FIRE_JET.get()))
+				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.value()))
+				.define('^', Ingredient.of(TFBlocks.FIRE_JET.value()))
 				.define('u', Ingredient.of(Items.LAVA_BUCKET))
-				.unlockedBy("has_item", has(TFBlocks.FIRE_JET.get()))
+				.unlockedBy("has_item", has(TFBlocks.FIRE_JET.value()))
 				.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.ENCASED_SMOKER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.ENCASED_SMOKER.value())
 				.pattern("#∴#")
 				.pattern("∴^∴")
 				.pattern("#∴#")
 				.define('∴', Tags.Items.DUSTS_REDSTONE)
-				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.get()))
-				.define('^', Ingredient.of(TFBlocks.SMOKER.get()))
-				.unlockedBy("has_item", has(TFBlocks.SMOKER.get()))
+				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.value()))
+				.define('^', Ingredient.of(TFBlocks.SMOKER.value()))
+				.unlockedBy("has_item", has(TFBlocks.SMOKER.value()))
 				.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.CARMINITE_BUILDER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.CARMINITE_BUILDER.value())
 				.pattern("#6#")
 				.pattern("6o6")
 				.pattern("#6#")
 				.define('6', ItemTagGenerator.CARMINITE_GEMS)
-				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.get()))
+				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.value()))
 				.define('o', Ingredient.of(Blocks.DISPENSER))
 				.unlockedBy("has_item", has(ItemTagGenerator.CARMINITE_GEMS))
 				.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.CARMINITE_REACTOR.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.CARMINITE_REACTOR.value())
 				.pattern("#6#")
 				.pattern("6%6")
 				.pattern("#6#")
 				.define('6', ItemTagGenerator.CARMINITE_GEMS)
-				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.get()))
+				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.value()))
 				.define('%', Tags.Items.ORES_REDSTONE)
 				.unlockedBy("has_item", has(ItemTagGenerator.CARMINITE_GEMS))
 				.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.REAPPEARING_BLOCK.get(), 2)
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.REAPPEARING_BLOCK.value(), 2)
 				.pattern("#∴#")
 				.pattern("∴6∴")
 				.pattern("#∴#")
 				.define('∴', Tags.Items.DUSTS_REDSTONE)
-				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.get()))
+				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.value()))
 				.define('6', ItemTagGenerator.CARMINITE_GEMS)
-				.unlockedBy("has_item", has(TFBlocks.REAPPEARING_BLOCK.get()))
+				.unlockedBy("has_item", has(TFBlocks.REAPPEARING_BLOCK.value()))
 				.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.VANISHING_BLOCK.get(), 8)
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, TFBlocks.VANISHING_BLOCK.value(), 8)
 				.pattern("#w#")
 				.pattern("w6w")
 				.pattern("#w#")
 				.define('w', ItemTagGenerator.TOWERWOOD)
-				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.get()))
+				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.value()))
 				.define('6', ItemTagGenerator.CARMINITE_GEMS)
-				.unlockedBy("has_item", has(TFBlocks.REAPPEARING_BLOCK.get()))
+				.unlockedBy("has_item", has(TFBlocks.REAPPEARING_BLOCK.value()))
 				.save(output);
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_TOWERWOOD.get())
-				.requires(Ingredient.of(TFBlocks.TOWERWOOD.get()))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_TOWERWOOD.value())
+				.requires(Ingredient.of(TFBlocks.TOWERWOOD.value()))
 				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
-				.unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get()))
+				.unlockedBy("has_item", has(TFBlocks.TOWERWOOD.value()))
 				.save(output, TwilightForestMod.prefix("wood/" + TFBlocks.MOSSY_TOWERWOOD.getId().getPath()));
 
 	}
@@ -324,62 +323,62 @@ public class CraftingGenerator extends CraftingDataHelper {
 		swordItem(output, "knightmetal_sword", TFItems.KNIGHTMETAL_SWORD, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
 		axeItem(output, "knightmetal_axe", TFItems.KNIGHTMETAL_AXE, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TFItems.GIANT_PICKAXE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TFItems.GIANT_PICKAXE.value())
 				.pattern("###")
 				.pattern(" X ")
 				.pattern(" X ")
-				.define('#', TFBlocks.GIANT_COBBLESTONE.get())
-				.define('X', TFBlocks.GIANT_LOG.get())
-				.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.get()))
+				.define('#', TFBlocks.GIANT_COBBLESTONE.value())
+				.define('X', TFBlocks.GIANT_LOG.value())
+				.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.value()))
 				.save(output, locEquip(TFItems.GIANT_PICKAXE.getId().getPath()));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TFItems.GIANT_SWORD.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TFItems.GIANT_SWORD.value())
 				.pattern("#")
 				.pattern("#")
 				.pattern("X")
-				.define('#', TFBlocks.GIANT_COBBLESTONE.get())
-				.define('X', TFBlocks.GIANT_LOG.get())
-				.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.get()))
+				.define('#', TFBlocks.GIANT_COBBLESTONE.value())
+				.define('X', TFBlocks.GIANT_LOG.value())
+				.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.value()))
 				.save(output, locEquip(TFItems.GIANT_SWORD.getId().getPath()));
 
 		charmRecipe(output, "charm_of_keeping_2", TFItems.CHARM_OF_KEEPING_2, TFItems.CHARM_OF_KEEPING_1);
 		charmRecipe(output, "charm_of_keeping_3", TFItems.CHARM_OF_KEEPING_3, TFItems.CHARM_OF_KEEPING_2);
 		charmRecipe(output, "charm_of_life_2", TFItems.CHARM_OF_LIFE_2, TFItems.CHARM_OF_LIFE_1);
 
-		SpecialRecipeBuilder.special(TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.get()).save(output, TwilightForestMod.prefix("moonworm_queen_repair_recipe").toString());
-		SpecialRecipeBuilder.special(TFRecipes.MAGIC_MAP_CLONING_RECIPE.get()).save(output, TwilightForestMod.prefix("magic_map_cloning_recipe").toString());
-		SpecialRecipeBuilder.special(TFRecipes.MAZE_MAP_CLONING_RECIPE.get()).save(output, TwilightForestMod.prefix("maze_map_cloning_recipe").toString());
+		SpecialRecipeBuilder.special(TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.value()).save(output, TwilightForestMod.prefix("moonworm_queen_repair_recipe").toString());
+		SpecialRecipeBuilder.special(TFRecipes.MAGIC_MAP_CLONING_RECIPE.value()).save(output, TwilightForestMod.prefix("magic_map_cloning_recipe").toString());
+		SpecialRecipeBuilder.special(TFRecipes.MAZE_MAP_CLONING_RECIPE.value()).save(output, TwilightForestMod.prefix("maze_map_cloning_recipe").toString());
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.COBBLESTONE, 64)
-				.requires(TFBlocks.GIANT_COBBLESTONE.get())
-				.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.get()))
+				.requires(TFBlocks.GIANT_COBBLESTONE.value())
+				.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.value()))
 				.save(output, TwilightForestMod.prefix(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.COBBLESTONE).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_PLANKS, 64)
-				.requires(TFBlocks.GIANT_LOG.get())
-				.unlockedBy("has_item", has(TFBlocks.GIANT_LOG.get()))
+				.requires(TFBlocks.GIANT_LOG.value())
+				.unlockedBy("has_item", has(TFBlocks.GIANT_LOG.value()))
 				.save(output, TwilightForestMod.prefix(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_PLANKS).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_LEAVES, 64)
-				.requires(TFBlocks.GIANT_LEAVES.get())
-				.unlockedBy("has_item", has(TFBlocks.GIANT_LEAVES.get()))
+				.requires(TFBlocks.GIANT_LEAVES.value())
+				.unlockedBy("has_item", has(TFBlocks.GIANT_LEAVES.value()))
 				.save(output, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_LEAVES).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OBSIDIAN, 64)
-				.requires(TFBlocks.GIANT_OBSIDIAN.get())
-				.unlockedBy("has_item", has(TFBlocks.GIANT_OBSIDIAN.get()))
+				.requires(TFBlocks.GIANT_OBSIDIAN.value())
+				.unlockedBy("has_item", has(TFBlocks.GIANT_OBSIDIAN.value()))
 				.save(output, TwilightForestMod.prefix(TFBlocks.GIANT_OBSIDIAN.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OBSIDIAN).getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.BLOCK_AND_CHAIN.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.BLOCK_AND_CHAIN.value())
 				.requires(Ingredient.of(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL))
 				.requires(Ingredient.of(ItemTagGenerator.KNIGHTMETAL_INGOTS), 3)
-				.requires(Ingredient.of(TFItems.KNIGHTMETAL_RING.get()))
+				.requires(Ingredient.of(TFItems.KNIGHTMETAL_RING.value()))
 				.unlockedBy("has_block", has(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL))
 				.unlockedBy("has_ingot", has(ItemTagGenerator.KNIGHTMETAL_INGOTS))
-				.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING.get()))
+				.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING.value()))
 				.save(output, locEquip(TFItems.BLOCK_AND_CHAIN.getId().getPath()));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TFItems.KNIGHTMETAL_RING.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TFItems.KNIGHTMETAL_RING.value())
 				.pattern(" - ")
 				.pattern("- -")
 				.pattern(" - ")
@@ -387,40 +386,40 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_item", has(ItemTagGenerator.KNIGHTMETAL_INGOTS))
 				.save(output, locEquip(TFItems.KNIGHTMETAL_RING.getId().getPath()));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.KNIGHTMETAL_SHIELD.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.KNIGHTMETAL_SHIELD.value())
 				.pattern("-#")
 				.pattern("-o")
 				.pattern("-#")
 				.define('-', ItemTagGenerator.KNIGHTMETAL_INGOTS)
 				.define('#', ItemTagGenerator.TOWERWOOD)
-				.define('o', Ingredient.of(TFItems.KNIGHTMETAL_RING.get()))
+				.define('o', Ingredient.of(TFItems.KNIGHTMETAL_RING.value()))
 				.unlockedBy("has_ingot", has(ItemTagGenerator.KNIGHTMETAL_INGOTS))
-				.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING.get()))
+				.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING.value()))
 				.save(output, locEquip(TFItems.KNIGHTMETAL_SHIELD.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.LIFEDRAIN_SCEPTER.get())
-				.requires(scepter(TFItems.LIFEDRAIN_SCEPTER.get()))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.LIFEDRAIN_SCEPTER.value())
+				.requires(scepter(TFItems.LIFEDRAIN_SCEPTER.value()))
 				.requires(Ingredient.of(Items.FERMENTED_SPIDER_EYE))
-				.unlockedBy("has_item", has(TFItems.LIFEDRAIN_SCEPTER.get()))
+				.unlockedBy("has_item", has(TFItems.LIFEDRAIN_SCEPTER.value()))
 				.save(output, locEquip(TFItems.LIFEDRAIN_SCEPTER.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.FORTIFICATION_SCEPTER.get())
-				.requires(scepter(TFItems.FORTIFICATION_SCEPTER.get()))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.FORTIFICATION_SCEPTER.value())
+				.requires(scepter(TFItems.FORTIFICATION_SCEPTER.value()))
 				.requires(Ingredient.of(Items.GOLDEN_APPLE))
-				.unlockedBy("has_item", has(TFItems.FORTIFICATION_SCEPTER.get()))
+				.unlockedBy("has_item", has(TFItems.FORTIFICATION_SCEPTER.value()))
 				.save(output, locEquip(TFItems.FORTIFICATION_SCEPTER.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.TWILIGHT_SCEPTER.get())
-				.requires(scepter(TFItems.TWILIGHT_SCEPTER.get()))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.TWILIGHT_SCEPTER.value())
+				.requires(scepter(TFItems.TWILIGHT_SCEPTER.value()))
 				.requires(Tags.Items.ENDER_PEARLS)
-				.unlockedBy("has_item", has(TFItems.TWILIGHT_SCEPTER.get()))
+				.unlockedBy("has_item", has(TFItems.TWILIGHT_SCEPTER.value()))
 				.save(output, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.ZOMBIE_SCEPTER.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.ZOMBIE_SCEPTER.value())
 				.requires(CompoundIngredient.of(potion(Potions.STRENGTH), potion(Potions.STRONG_STRENGTH), potion(Potions.LONG_STRENGTH)))
-				.requires(scepter(TFItems.ZOMBIE_SCEPTER.get()))
+				.requires(scepter(TFItems.ZOMBIE_SCEPTER.value()))
 				.requires(Ingredient.of(Items.ROTTEN_FLESH))
-				.unlockedBy("has_item", has(TFItems.ZOMBIE_SCEPTER.get()))
+				.unlockedBy("has_item", has(TFItems.ZOMBIE_SCEPTER.value()))
 				.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
 	}
 
@@ -441,38 +440,38 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void emptyMapRecipes(RecipeOutput output) {
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.MAGIC_MAP_FOCUS.get())
-				.requires(TFItems.RAVEN_FEATHER.get())
-				.requires(TFItems.TORCHBERRIES.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.MAGIC_MAP_FOCUS.value())
+				.requires(TFItems.RAVEN_FEATHER.value())
+				.requires(TFItems.TORCHBERRIES.value())
 				.requires(Tags.Items.DUSTS_GLOWSTONE)
-				.unlockedBy("has_berries", has(TFItems.TORCHBERRIES.get()))
-				.unlockedBy("has_feather", has(TFItems.RAVEN_FEATHER.get()))
+				.unlockedBy("has_berries", has(TFItems.TORCHBERRIES.value()))
+				.unlockedBy("has_feather", has(TFItems.RAVEN_FEATHER.value()))
 				.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TFItems.MAGIC_MAP.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TFItems.MAGIC_MAP.value())
 				.pattern("###")
 				.pattern("#•#")
 				.pattern("###")
 				.define('#', ItemTagGenerator.PAPER)
-				.define('•', Ingredient.of(TFItems.MAGIC_MAP_FOCUS.get()))
-				.unlockedBy("has_item", has(TFItems.MAGIC_MAP_FOCUS.get()))
+				.define('•', Ingredient.of(TFItems.MAGIC_MAP_FOCUS.value()))
+				.unlockedBy("has_item", has(TFItems.MAGIC_MAP_FOCUS.value()))
 				.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TFItems.MAZE_MAP.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TFItems.MAZE_MAP.value())
 				.pattern("###")
 				.pattern("#•#")
 				.pattern("###")
 				.define('#', ItemTagGenerator.PAPER)
-				.define('•', Ingredient.of(TFItems.MAZE_MAP_FOCUS.get()))
-				.unlockedBy("has_item", has(TFItems.MAZE_MAP_FOCUS.get()))
+				.define('•', Ingredient.of(TFItems.MAZE_MAP_FOCUS.value()))
+				.unlockedBy("has_item", has(TFItems.MAZE_MAP_FOCUS.value()))
 				.save(output);
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.ORE_MAP.get())
-				.requires(TFItems.MAZE_MAP.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.ORE_MAP.value())
+				.requires(TFItems.MAZE_MAP.value())
 				.requires(Tags.Items.STORAGE_BLOCKS_DIAMOND)
 				.requires(Tags.Items.STORAGE_BLOCKS_GOLD)
 				.requires(Tags.Items.STORAGE_BLOCKS_IRON)
-				.unlockedBy("has_item", has(TFItems.MAZE_MAP.get()))
+				.unlockedBy("has_item", has(TFItems.MAZE_MAP.value()))
 				.save(output);
 	}
 
@@ -558,14 +557,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 		slabBlock(output, "transformation", TFBlocks.TRANSFORMATION_SLAB, TFBlocks.TRANSFORMATION_PLANKS);
 		slabBlock(output, "twilight_oak", TFBlocks.TWILIGHT_OAK_SLAB, TFBlocks.TWILIGHT_OAK_PLANKS);
 
-		stairsBlock(output, locWood("canopy_stairs"), TFBlocks.CANOPY_STAIRS, TFBlocks.CANOPY_PLANKS, TFBlocks.CANOPY_PLANKS.get());
-		stairsBlock(output, locWood("dark_stairs"), TFBlocks.DARK_STAIRS, TFBlocks.DARK_PLANKS, TFBlocks.DARK_PLANKS.get());
-		stairsBlock(output, locWood("mangrove_stairs"), TFBlocks.MANGROVE_STAIRS, TFBlocks.MANGROVE_PLANKS, TFBlocks.MANGROVE_PLANKS.get());
-		stairsBlock(output, locWood("mining_stairs"), TFBlocks.MINING_STAIRS, TFBlocks.MINING_PLANKS, TFBlocks.MINING_PLANKS.get());
-		stairsBlock(output, locWood("sorting_stairs"), TFBlocks.SORTING_STAIRS, TFBlocks.SORTING_PLANKS, TFBlocks.SORTING_PLANKS.get());
-		stairsBlock(output, locWood("time_stairs"), TFBlocks.TIME_STAIRS, TFBlocks.TIME_PLANKS, TFBlocks.TIME_PLANKS.get());
-		stairsBlock(output, locWood("transformation_stairs"), TFBlocks.TRANSFORMATION_STAIRS, TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.TRANSFORMATION_PLANKS.get());
-		stairsBlock(output, locWood("twilight_oak_stairs"), TFBlocks.TWILIGHT_OAK_STAIRS, TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.TWILIGHT_OAK_PLANKS.get());
+		stairsBlock(output, locWood("canopy_stairs"), TFBlocks.CANOPY_STAIRS, TFBlocks.CANOPY_PLANKS, TFBlocks.CANOPY_PLANKS.value());
+		stairsBlock(output, locWood("dark_stairs"), TFBlocks.DARK_STAIRS, TFBlocks.DARK_PLANKS, TFBlocks.DARK_PLANKS.value());
+		stairsBlock(output, locWood("mangrove_stairs"), TFBlocks.MANGROVE_STAIRS, TFBlocks.MANGROVE_PLANKS, TFBlocks.MANGROVE_PLANKS.value());
+		stairsBlock(output, locWood("mining_stairs"), TFBlocks.MINING_STAIRS, TFBlocks.MINING_PLANKS, TFBlocks.MINING_PLANKS.value());
+		stairsBlock(output, locWood("sorting_stairs"), TFBlocks.SORTING_STAIRS, TFBlocks.SORTING_PLANKS, TFBlocks.SORTING_PLANKS.value());
+		stairsBlock(output, locWood("time_stairs"), TFBlocks.TIME_STAIRS, TFBlocks.TIME_PLANKS, TFBlocks.TIME_PLANKS.value());
+		stairsBlock(output, locWood("transformation_stairs"), TFBlocks.TRANSFORMATION_STAIRS, TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.TRANSFORMATION_PLANKS.value());
+		stairsBlock(output, locWood("twilight_oak_stairs"), TFBlocks.TWILIGHT_OAK_STAIRS, TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.TWILIGHT_OAK_PLANKS.value());
 
 		trapdoorBlock(output, "canopy", TFBlocks.CANOPY_TRAPDOOR, TFBlocks.CANOPY_PLANKS);
 		trapdoorBlock(output, "dark", TFBlocks.DARK_TRAPDOOR, TFBlocks.DARK_PLANKS);
@@ -635,73 +634,73 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void nagastoneRecipes(RecipeOutput output) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.SPIRAL_BRICKS.get(), 8)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.SPIRAL_BRICKS.value(), 8)
 				.pattern("BSS")
 				.pattern("BSS")
 				.pattern("BBB")
 				.define('B', Ingredient.of(Blocks.STONE_BRICKS, Blocks.MOSSY_STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS, Blocks.CHISELED_STONE_BRICKS))//Ingredient.merge(ImmutableList.of(Ingredient.fromTag(Tags.Items.STONE), Ingredient.fromItems(Blocks.STONE_BRICKS, Blocks.MOSSY_STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS, Blocks.CHISELED_STONE_BRICKS))))
 				.define('S', Ingredient.of(Blocks.STONE_SLAB, Blocks.STONE_BRICK_SLAB))
-				.unlockedBy("has_item", has(TFBlocks.SPIRAL_BRICKS.get()))
+				.unlockedBy("has_item", has(TFBlocks.SPIRAL_BRICKS.value()))
 				.save(output, locNaga("nagastone_spiral"));
 
-		stairsBlock(output, locNaga("nagastone_stairs_left"), TFBlocks.NAGASTONE_STAIRS_LEFT, TFBlocks.ETCHED_NAGASTONE, TFBlocks.ETCHED_NAGASTONE.get());
-		stairsRightBlock(output, locNaga("nagastone_stairs_right"), TFBlocks.NAGASTONE_STAIRS_RIGHT, TFBlocks.ETCHED_NAGASTONE, TFBlocks.ETCHED_NAGASTONE.get());
+		stairsBlock(output, locNaga("nagastone_stairs_left"), TFBlocks.NAGASTONE_STAIRS_LEFT, TFBlocks.ETCHED_NAGASTONE, TFBlocks.ETCHED_NAGASTONE.value());
+		stairsRightBlock(output, locNaga("nagastone_stairs_right"), TFBlocks.NAGASTONE_STAIRS_RIGHT, TFBlocks.ETCHED_NAGASTONE, TFBlocks.ETCHED_NAGASTONE.value());
 
-		stairsBlock(output, locNaga("mossy_nagastone_stairs_left"), TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT, TFBlocks.MOSSY_ETCHED_NAGASTONE, TFBlocks.MOSSY_ETCHED_NAGASTONE.get());
-		stairsRightBlock(output, locNaga("mossy_nagastone_stairs_right"), TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT, TFBlocks.MOSSY_ETCHED_NAGASTONE, TFBlocks.MOSSY_ETCHED_NAGASTONE.get());
+		stairsBlock(output, locNaga("mossy_nagastone_stairs_left"), TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT, TFBlocks.MOSSY_ETCHED_NAGASTONE, TFBlocks.MOSSY_ETCHED_NAGASTONE.value());
+		stairsRightBlock(output, locNaga("mossy_nagastone_stairs_right"), TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT, TFBlocks.MOSSY_ETCHED_NAGASTONE, TFBlocks.MOSSY_ETCHED_NAGASTONE.value());
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), 1)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_ETCHED_NAGASTONE.value(), 1)
 				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
-				.requires(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.get()))
-				.unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.get()))
+				.requires(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.value()))
+				.unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.value()))
 				.save(output, locNaga("mossy_etched_nagastone"));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_NAGASTONE_PILLAR.get(), 1)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_NAGASTONE_PILLAR.value(), 1)
 				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
-				.requires(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.get()))
-				.unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.get()))
+				.requires(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.value()))
+				.unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.value()))
 				.save(output, locNaga("mossy_nagastone_pillar"));
 
-		stairsBlock(output, locNaga("cracked_nagastone_stairs_left"), TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT, TFBlocks.CRACKED_ETCHED_NAGASTONE, TFBlocks.CRACKED_ETCHED_NAGASTONE.get());
-		stairsRightBlock(output, locNaga("cracked_nagastone_stairs_right"), TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT, TFBlocks.CRACKED_ETCHED_NAGASTONE, TFBlocks.CRACKED_ETCHED_NAGASTONE.get());
+		stairsBlock(output, locNaga("cracked_nagastone_stairs_left"), TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT, TFBlocks.CRACKED_ETCHED_NAGASTONE, TFBlocks.CRACKED_ETCHED_NAGASTONE.value());
+		stairsRightBlock(output, locNaga("cracked_nagastone_stairs_right"), TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT, TFBlocks.CRACKED_ETCHED_NAGASTONE, TFBlocks.CRACKED_ETCHED_NAGASTONE.value());
 	}
 
 	private void castleRecipes(RecipeOutput output) {
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_CASTLE_BRICK.get(), 1)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_CASTLE_BRICK.value(), 1)
 				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
-				.requires(Ingredient.of(TFBlocks.CASTLE_BRICK.get()))
-				.unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.get()))
+				.requires(Ingredient.of(TFBlocks.CASTLE_BRICK.value()))
+				.unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.value()))
 				.save(output, locCastle("mossy_castle_brick"));
 
-		castleBlock(output, TFBlocks.THICK_CASTLE_BRICK, TFBlocks.CASTLE_BRICK.get(), TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK.get());
-		castleBlock(output, TFBlocks.BOLD_CASTLE_BRICK_PILLAR, TFBlocks.THICK_CASTLE_BRICK.get());
-		castleBlock(output, TFBlocks.BOLD_CASTLE_BRICK_TILE, TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get());
+		castleBlock(output, TFBlocks.THICK_CASTLE_BRICK, TFBlocks.CASTLE_BRICK.value(), TFBlocks.WORN_CASTLE_BRICK.value(), TFBlocks.CRACKED_CASTLE_BRICK.value(), TFBlocks.MOSSY_CASTLE_BRICK.value());
+		castleBlock(output, TFBlocks.BOLD_CASTLE_BRICK_PILLAR, TFBlocks.THICK_CASTLE_BRICK.value());
+		castleBlock(output, TFBlocks.BOLD_CASTLE_BRICK_TILE, TFBlocks.BOLD_CASTLE_BRICK_PILLAR.value());
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), 4)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.BOLD_CASTLE_BRICK_PILLAR.value(), 4)
 				.pattern("##")
 				.pattern("##")
-				.define('#', Ingredient.of(TFBlocks.BOLD_CASTLE_BRICK_TILE.get()))
-				.unlockedBy("has_castle_brick", has(TFBlocks.CASTLE_BRICK.get()))
+				.define('#', Ingredient.of(TFBlocks.BOLD_CASTLE_BRICK_TILE.value()))
+				.unlockedBy("has_castle_brick", has(TFBlocks.CASTLE_BRICK.value()))
 				.save(output, locCastle("bold_castle_pillar_from_tile"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), 6)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.value(), 6)
 				.pattern("#H#")
 				.pattern("#H#")
-				.define('#', Ingredient.of(TFBlocks.CASTLE_BRICK.get(), TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()))
-				.define('H', Ingredient.of(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), TFBlocks.BOLD_CASTLE_BRICK_TILE.get()))
-				.unlockedBy("has_castle_brick", has(TFBlocks.CASTLE_BRICK.get()))
+				.define('#', Ingredient.of(TFBlocks.CASTLE_BRICK.value(), TFBlocks.WORN_CASTLE_BRICK.value(), TFBlocks.CRACKED_CASTLE_BRICK.value(), TFBlocks.MOSSY_CASTLE_BRICK.value(), TFBlocks.THICK_CASTLE_BRICK.value()))
+				.define('H', Ingredient.of(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.value(), TFBlocks.ENCASED_CASTLE_BRICK_TILE.value(), TFBlocks.BOLD_CASTLE_BRICK_PILLAR.value(), TFBlocks.BOLD_CASTLE_BRICK_TILE.value()))
+				.unlockedBy("has_castle_brick", has(TFBlocks.CASTLE_BRICK.value()))
 				.save(output, locCastle("encased_castle_pillar"));
 
-		stairsBlock(output, locCastle("bold_castle_brick_stairs"), TFBlocks.BOLD_CASTLE_BRICK_STAIRS, TFBlocks.BOLD_CASTLE_BRICK_PILLAR, TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), TFBlocks.BOLD_CASTLE_BRICK_TILE.get());
-		stairsBlock(output, locCastle("castle_brick_stairs"), TFBlocks.CASTLE_BRICK_STAIRS, TFBlocks.CASTLE_BRICK, TFBlocks.CASTLE_BRICK.get());
-		stairsBlock(output, locCastle("cracked_castle_brick_stairs"), TFBlocks.CRACKED_CASTLE_BRICK_STAIRS, TFBlocks.CRACKED_CASTLE_BRICK, TFBlocks.CRACKED_CASTLE_BRICK.get());
-		stairsBlock(output, locCastle("encased_castle_brick_stairs"), TFBlocks.ENCASED_CASTLE_BRICK_STAIRS, TFBlocks.ENCASED_CASTLE_BRICK_PILLAR, TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), TFBlocks.ENCASED_CASTLE_BRICK_TILE.get());
-		stairsBlock(output, locCastle("mossy_castle_brick_stairs"), TFBlocks.MOSSY_CASTLE_BRICK_STAIRS, TFBlocks.MOSSY_CASTLE_BRICK, TFBlocks.MOSSY_CASTLE_BRICK.get());
-		stairsBlock(output, locCastle("worn_castle_brick_stairs"), TFBlocks.WORN_CASTLE_BRICK_STAIRS, TFBlocks.WORN_CASTLE_BRICK, TFBlocks.WORN_CASTLE_BRICK.get());
+		stairsBlock(output, locCastle("bold_castle_brick_stairs"), TFBlocks.BOLD_CASTLE_BRICK_STAIRS, TFBlocks.BOLD_CASTLE_BRICK_PILLAR, TFBlocks.BOLD_CASTLE_BRICK_PILLAR.value(), TFBlocks.BOLD_CASTLE_BRICK_TILE.value());
+		stairsBlock(output, locCastle("castle_brick_stairs"), TFBlocks.CASTLE_BRICK_STAIRS, TFBlocks.CASTLE_BRICK, TFBlocks.CASTLE_BRICK.value());
+		stairsBlock(output, locCastle("cracked_castle_brick_stairs"), TFBlocks.CRACKED_CASTLE_BRICK_STAIRS, TFBlocks.CRACKED_CASTLE_BRICK, TFBlocks.CRACKED_CASTLE_BRICK.value());
+		stairsBlock(output, locCastle("encased_castle_brick_stairs"), TFBlocks.ENCASED_CASTLE_BRICK_STAIRS, TFBlocks.ENCASED_CASTLE_BRICK_PILLAR, TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.value(), TFBlocks.ENCASED_CASTLE_BRICK_TILE.value());
+		stairsBlock(output, locCastle("mossy_castle_brick_stairs"), TFBlocks.MOSSY_CASTLE_BRICK_STAIRS, TFBlocks.MOSSY_CASTLE_BRICK, TFBlocks.MOSSY_CASTLE_BRICK.value());
+		stairsBlock(output, locCastle("worn_castle_brick_stairs"), TFBlocks.WORN_CASTLE_BRICK_STAIRS, TFBlocks.WORN_CASTLE_BRICK, TFBlocks.WORN_CASTLE_BRICK.value());
 	}
 
 	private void fieryConversions(RecipeOutput output) {
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.FIERY_INGOT.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.FIERY_INGOT.value())
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL))
 				.requires(Ingredient.of(Tags.Items.INGOTS_IRON))
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
@@ -711,14 +710,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 		fieryConversion(output, TFItems.FIERY_CHESTPLATE, Items.IRON_CHESTPLATE, 8);
 		fieryConversion(output, TFItems.FIERY_LEGGINGS, Items.IRON_LEGGINGS, 7);
 		fieryConversion(output, TFItems.FIERY_BOOTS, Items.IRON_BOOTS, 4);
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.FIERY_SWORD.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.FIERY_SWORD.value())
 				.requires(Items.IRON_SWORD)
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), 2)
 				.requires(Ingredient.of(Tags.Items.RODS_BLAZE))
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
 				.save(output, locEquip("fiery_" + BuiltInRegistries.ITEM.getKey(Items.IRON_SWORD).getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, TFItems.FIERY_PICKAXE.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, TFItems.FIERY_PICKAXE.value())
 				.requires(Items.IRON_PICKAXE)
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), 3)
 				.requires(Ingredient.of(Tags.Items.RODS_BLAZE), 2)
@@ -727,24 +726,24 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void cookingRecipes(RecipeOutput output, String processName, RecipeSerializer<? extends AbstractCookingRecipe> process, int smeltingTime) {
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_MEEF.get()), RecipeCategory.FOOD, TFItems.COOKED_MEEF.get(), 0.3f, smeltingTime, process).unlockedBy("has_food", has(TFItems.RAW_MEEF.get())).save(output, TwilightForestMod.prefix("food/" + processName + "_meef").toString());
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_VENISON.get()), RecipeCategory.FOOD, TFItems.COOKED_VENISON.get(), 0.3f, smeltingTime, process).unlockedBy("has_food", has(TFItems.RAW_VENISON.get())).save(output, TwilightForestMod.prefix("food/" + processName + "_venison").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_MEEF.value()), RecipeCategory.FOOD, TFItems.COOKED_MEEF.value(), 0.3f, smeltingTime, process).unlockedBy("has_food", has(TFItems.RAW_MEEF.value())).save(output, TwilightForestMod.prefix("food/" + processName + "_meef").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_VENISON.value()), RecipeCategory.FOOD, TFItems.COOKED_VENISON.value(), 0.3f, smeltingTime, process).unlockedBy("has_food", has(TFItems.RAW_VENISON.value())).save(output, TwilightForestMod.prefix("food/" + processName + "_venison").toString());
 	}
 
 	private void ingotRecipes(RecipeOutput output, String processName, RecipeSerializer<? extends AbstractCookingRecipe> process, int smeltingTime) {
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.ARMOR_SHARD_CLUSTER.get()), RecipeCategory.MISC, TFItems.KNIGHTMETAL_INGOT.get(), 1.0f, smeltingTime, process).unlockedBy("has_item", has(TFItems.ARMOR_SHARD_CLUSTER.get())).save(output, TwilightForestMod.prefix("material/" + processName + "_knightmetal_ingot").toString());
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_IRONWOOD.get()), RecipeCategory.MISC, TFItems.IRONWOOD_INGOT.get(), 1.0f, smeltingTime, process).unlockedBy("has_item", has(TFItems.RAW_IRONWOOD.get())).save(output, TwilightForestMod.prefix("material/" + processName + "_ironwood_ingot").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.ARMOR_SHARD_CLUSTER.value()), RecipeCategory.MISC, TFItems.KNIGHTMETAL_INGOT.value(), 1.0f, smeltingTime, process).unlockedBy("has_item", has(TFItems.ARMOR_SHARD_CLUSTER.value())).save(output, TwilightForestMod.prefix("material/" + processName + "_knightmetal_ingot").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_IRONWOOD.value()), RecipeCategory.MISC, TFItems.IRONWOOD_INGOT.value(), 1.0f, smeltingTime, process).unlockedBy("has_item", has(TFItems.RAW_IRONWOOD.value())).save(output, TwilightForestMod.prefix("material/" + processName + "_ironwood_ingot").toString());
 	}
 
 	private void crackedWoodRecipes(RecipeOutput output) {
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.TOWERWOOD.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_TOWERWOOD.get(), 0.3f, 100, RecipeSerializer.SMOKING_RECIPE).unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get())).save(output, TwilightForestMod.prefix("wood/" + "smoked" + "_cracked_towerwood").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.TOWERWOOD.value()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_TOWERWOOD.value(), 0.3f, 100, RecipeSerializer.SMOKING_RECIPE).unlockedBy("has_item", has(TFBlocks.TOWERWOOD.value())).save(output, TwilightForestMod.prefix("wood/" + "smoked" + "_cracked_towerwood").toString());
 	}
 
 	private void crackedStoneRecipes(RecipeOutput output) {
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.get())).save(output, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_nagastone_pillar").toString());
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.get())).save(output, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_etched_nagastone").toString());
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.MAZESTONE_BRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_MAZESTONE.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.get())).save(output, TwilightForestMod.prefix("maze_stone/" + "smelted" + "_maze_stone_cracked").toString());
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.CASTLE_BRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_CASTLE_BRICK.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.get())).save(output, TwilightForestMod.prefix("castleblock/" + "smelted" + "_cracked_castle_brick").toString());
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.UNDERBRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_UNDERBRICK.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.UNDERBRICK.get())).save(output, TwilightForestMod.prefix("smelted" + "_cracked_underbrick").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.value()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_NAGASTONE_PILLAR.value(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.value())).save(output, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_nagastone_pillar").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.value()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_ETCHED_NAGASTONE.value(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.value())).save(output, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_etched_nagastone").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.MAZESTONE_BRICK.value()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_MAZESTONE.value(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.value())).save(output, TwilightForestMod.prefix("maze_stone/" + "smelted" + "_maze_stone_cracked").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.CASTLE_BRICK.value()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_CASTLE_BRICK.value(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.value())).save(output, TwilightForestMod.prefix("castleblock/" + "smelted" + "_cracked_castle_brick").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFBlocks.UNDERBRICK.value()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_UNDERBRICK.value(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.UNDERBRICK.value())).save(output, TwilightForestMod.prefix("smelted" + "_cracked_underbrick").toString());
 	}
 }

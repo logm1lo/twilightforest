@@ -58,15 +58,15 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
     @Override
     protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
         return switch (this.size) { // TODO Clean up once TFLandmark params are no longer necessary
-            case 1 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 3, y - 2, z - 3);
-            case 2 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 7, y - 5, z - 7);
-            default -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 11, y - 5, z - 11);
+            case 1 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.value(), 0, this.size, x - 3, y - 2, z - 3);
+            case 2 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.value(), 0, this.size, x - 7, y - 5, z - 7);
+            default -> new HollowHillComponent(TFStructurePieceTypes.TFHill.value(), 0, this.size, x - 11, y - 5, z - 11);
         };
     }
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.HOLLOW_HILL.get();
+        return TFStructureTypes.HOLLOW_HILL.value();
     }
 
     @Override
@@ -80,9 +80,9 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
                 ControlledSpawningConfig.create(List.of(List.of(
                         new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 10, 4, 4),
                         new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 10, 4, 4),
-                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), 10, 4, 4),
-                        new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.get(), 10, 4, 4),
-                        new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 10, 4, 8)
+                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.value(), 10, 4, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.value(), 10, 4, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.value(), 10, 4, 8)
                 )), List.of(), List.of()),
                 new DecorationConfig(1, true, false, false),
                 new StructureSettings(
@@ -98,15 +98,15 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
         return new HollowHillStructure(
                 2,
                 ControlledSpawningConfig.create(List.of(List.of(
-                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 1, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 10, 2, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.value(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.value(), 1, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.value(), 10, 2, 4),
                         new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 2, 3),
-                        new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.get(), 10, 2, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.value(), 10, 2, 4),
                         new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 10, 1, 3),
                         new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), 5, 1, 1),
-                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 5, 1, 1),
+                        new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.value(), 5, 1, 1),
+                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.value(), 5, 1, 1),
                         new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
                 )), List.of(), List.of()),
                 new DecorationConfig(2, true, false, false),
@@ -123,16 +123,16 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
         return new HollowHillStructure(
                 3,
                 ControlledSpawningConfig.firstIndexMonsters(
-                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), 10, 2, 4),
-                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 2, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.value(), 10, 2, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.value(), 2, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 2, 3),
                         new MobSpawnSettings.SpawnerData(EntityType.CAVE_SPIDER, 10, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 10, 1, 1),
                         new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 1, 1),
-                        new MobSpawnSettings.SpawnerData(TFEntities.WRAITH.get(), 2, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.WRAITH.value(), 2, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.value(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.value(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.value(), 10, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
                 ),
                 new DecorationConfig(3, true, false, false),

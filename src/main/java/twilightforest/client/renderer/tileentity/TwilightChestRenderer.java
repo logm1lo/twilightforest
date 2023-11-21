@@ -20,14 +20,14 @@ public class TwilightChestRenderer<T extends TwilightChestEntity> extends ChestR
     static {
         ImmutableMap.Builder<Block, EnumMap<ChestType, Material>> builder = ImmutableMap.builder();
 
-        builder.put(TFBlocks.TWILIGHT_OAK_CHEST.get(), chestMaterial("twilight"));
-        builder.put(TFBlocks.CANOPY_CHEST.get(), chestMaterial("canopy"));
-        builder.put(TFBlocks.MANGROVE_CHEST.get(), chestMaterial("mangrove"));
-        builder.put(TFBlocks.DARK_CHEST.get(), chestMaterial("darkwood"));
-        builder.put(TFBlocks.TIME_CHEST.get(), chestMaterial("time"));
-        builder.put(TFBlocks.TRANSFORMATION_CHEST.get(), chestMaterial("trans"));
-        builder.put(TFBlocks.MINING_CHEST.get(), chestMaterial("mining"));
-        builder.put(TFBlocks.SORTING_CHEST.get(), chestMaterial("sort"));
+        builder.put(TFBlocks.TWILIGHT_OAK_CHEST.value(), chestMaterial("twilight"));
+        builder.put(TFBlocks.CANOPY_CHEST.value(), chestMaterial("canopy"));
+        builder.put(TFBlocks.MANGROVE_CHEST.value(), chestMaterial("mangrove"));
+        builder.put(TFBlocks.DARK_CHEST.value(), chestMaterial("darkwood"));
+        builder.put(TFBlocks.TIME_CHEST.value(), chestMaterial("time"));
+        builder.put(TFBlocks.TRANSFORMATION_CHEST.value(), chestMaterial("trans"));
+        builder.put(TFBlocks.MINING_CHEST.value(), chestMaterial("mining"));
+        builder.put(TFBlocks.SORTING_CHEST.value(), chestMaterial("sort"));
 
         MATERIALS = builder.build();
     }

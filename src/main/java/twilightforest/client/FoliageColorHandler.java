@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;

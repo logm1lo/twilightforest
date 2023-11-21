@@ -61,6 +61,6 @@ public final class CourtyardTerraceTemplateProcessor extends StructureProcessor 
 
     @Override
     public StructureProcessorType<?> getType() {
-        return TFStructureProcessors.COURTYARD_TERRACE.get();
+        return TFStructureProcessors.COURTYARD_TERRACE.value();
     }
 }

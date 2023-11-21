@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.item.mapdata;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.item.mapdata;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -23,6 +23,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PlayNetworkDirection;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFLandmark;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.network.TFPacketHandler;

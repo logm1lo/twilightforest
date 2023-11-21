@@ -68,7 +68,7 @@ public interface IBossLootBuffer {
 				container.setItem(i, boss.getItem(i));
 			}
 			Vec3 vec3 = Vec3.atCenterOf(pos);
-			serverLevel.playSound(null, vec3.x, vec3.y, vec3.z, TFSounds.BOSS_CHEST_APPEAR.get(), boss.getSoundSource(), 128.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.175F + 0.5F);
+			serverLevel.playSound(null, vec3.x, vec3.y, vec3.z, TFSounds.BOSS_CHEST_APPEAR.value(), boss.getSoundSource(), 128.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.175F + 0.5F);
 		}
 	}
 

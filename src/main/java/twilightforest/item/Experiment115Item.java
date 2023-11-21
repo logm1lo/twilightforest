@@ -36,7 +36,7 @@ public class Experiment115Item extends BlockItem {
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
 		if (entity instanceof ServerPlayer player) {
-			player.awardStat(TFStats.E115_SLICES_EATEN.get());
+			player.awardStat(TFStats.E115_SLICES_EATEN.value());
 		}
 		return super.finishUsingItem(stack, level, entity);
 	}

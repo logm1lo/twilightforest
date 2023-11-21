@@ -42,7 +42,7 @@ public class DangleFromTreeDecorator extends TreeDecorator {
 
 	@Override
 	protected TreeDecoratorType<DangleFromTreeDecorator> type() {
-		return TFFeatureModifiers.DANGLING_DECORATOR.get();
+		return TFFeatureModifiers.DANGLING_DECORATOR.value();
 	}
 
 	@Override

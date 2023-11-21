@@ -7,7 +7,7 @@ import twilightforest.TFConfig;
 public class UncraftingTableCondition implements ICondition {
 
 	public static final UncraftingTableCondition INSTANCE = new UncraftingTableCondition();
-	public static final Codec<UncraftingTableCondition> CODEC = Codec.unit(INSTANCE);
+	public static final Codec<UncraftingTableCondition> CODEC = Codec.unit(INSTANCE).stable();
 
 	@Override
 	public Codec<? extends ICondition> codec() {
@@ -17,5 +17,10 @@ public class UncraftingTableCondition implements ICondition {
 	@Override
 	public boolean test(IContext context) {
 		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get();
+	}
+
+	@Override
+	public String toString() {
+		return "Uncrafting Table Enabled";
 	}
 }

@@ -197,7 +197,7 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 
 		@Override
 		public RecipeSerializer<?> type() {
-			return TFRecipes.UNCRAFTING_SERIALIZER.get();
+			return TFRecipes.UNCRAFTING_SERIALIZER.value();
 		}
 
 		@Override

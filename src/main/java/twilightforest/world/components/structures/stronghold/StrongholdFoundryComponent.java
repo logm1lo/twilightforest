@@ -24,13 +24,13 @@ public class StrongholdFoundryComponent extends KnightStrongholdComponent {
 	boolean deepslateVer;
 
 	public StrongholdFoundryComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSFo.get(), nbt);
+		super(TFStructurePieceTypes.TFSFo.value(), nbt);
 		this.deepslateVer = nbt.getBoolean("deepslateVer");
 		this.entranceLevel = nbt.getInt("entranceLevel");
 	}
 
 	public StrongholdFoundryComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSFo.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSFo.value(), i, facing, x, y, z);
 	}
 
 	@Override

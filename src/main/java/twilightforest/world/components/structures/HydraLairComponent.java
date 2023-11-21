@@ -20,11 +20,11 @@ import twilightforest.world.components.feature.BlockSpikeFeature;
 public class HydraLairComponent extends HollowHillComponent {
 
 	public HydraLairComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFHydra.get(), nbt);
+		super(TFStructurePieceTypes.TFHydra.value(), nbt);
 	}
 
 	public HydraLairComponent(int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFHydra.get(), i, 2, x, y + 2, z);
+		super(TFStructurePieceTypes.TFHydra.value(), i, 2, x, y + 2, z);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class HydraLairComponent extends HollowHillComponent {
 		}
 
 		// boss spawner seems important
-		placeBlock(world, TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState(), 27, 3, 27, sbb);
+		placeBlock(world, TFBlocks.HYDRA_BOSS_SPAWNER.value().defaultBlockState(), 27, 3, 27, sbb);
 	}
 
 	@Override

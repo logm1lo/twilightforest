@@ -162,27 +162,27 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINOSHROOM_AMBIENT.get();
+		return TFSounds.MINOSHROOM_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.MINOSHROOM_HURT.get();
+		return TFSounds.MINOSHROOM_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINOSHROOM_DEATH.get();
+		return TFSounds.MINOSHROOM_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.MINOSHROOM_STEP.get(), 0.15F, 0.8F);
+		this.playSound(TFSounds.MINOSHROOM_STEP.value(), 0.15F, 0.8F);
 	}
 
 	@Override
 	protected SoundEvent getChargeSound() {
-		return TFSounds.MINOSHROOM_ATTACK.get();
+		return TFSounds.MINOSHROOM_ATTACK.value();
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -197,7 +197,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	@Override
 	protected void populateDefaultEquipmentSlots(RandomSource source, DifficultyInstance difficulty) {
 		super.populateDefaultEquipmentSlots(source, difficulty);
-		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.DIAMOND_MINOTAUR_AXE.get()));
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.DIAMOND_MINOTAUR_AXE.value()));
 	}
 
 	@Override
@@ -229,7 +229,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.value().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
@@ -247,7 +247,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.MINOSHROOM_BOSS_SPAWNER.get().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.MINOSHROOM_BOSS_SPAWNER.value().defaultBlockState());
 			}
 			this.discard();
 		} else {

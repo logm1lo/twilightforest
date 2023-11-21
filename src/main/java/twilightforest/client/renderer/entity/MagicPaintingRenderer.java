@@ -23,9 +23,9 @@ import org.joml.Matrix4f;
 import twilightforest.client.MagicPaintingTextureManager;
 import twilightforest.entity.MagicPainting;
 import twilightforest.init.custom.MagicPaintingVariants;
-import twilightforest.util.MagicPaintingVariant;
-import twilightforest.util.MagicPaintingVariant.Layer.OpacityModifier;
-import twilightforest.util.MagicPaintingVariant.Layer.Parallax;
+import twilightforest.entity.MagicPaintingVariant;
+import twilightforest.entity.MagicPaintingVariant.Layer.OpacityModifier;
+import twilightforest.entity.MagicPaintingVariant.Layer.Parallax;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -56,7 +56,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
     }
 
     private void renderPainting(PoseStack stack, VertexConsumer vertex, MagicPainting painting, MagicPaintingVariant variant) {
-        ResourceLocation textureLocation = MagicPaintingVariants.getVariantResourceLocation(painting.level().registryAccess(), variant);
+        ResourceLocation textureLocation = MagicPaintingVariant.getVariantResourceLocation(painting.level().registryAccess(), variant);
 
         int width = variant.width();
         int height = variant.height();

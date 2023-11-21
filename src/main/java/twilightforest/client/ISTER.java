@@ -32,7 +32,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.AbstractSkullCandleBlock;
@@ -63,7 +63,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		}
 	});
 
-	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState());
+	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.value().defaultBlockState());
 	private final Map<Block, TwilightChestEntity> chestEntities = Util.make(new HashMap<>(), map -> {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
 		makeInstance(map, TFBlocks.CANOPY_CHEST);
@@ -170,8 +170,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		}
 	}
 
-	public static void makeInstance(Map<Block, TwilightChestEntity> map, RegistryObject<? extends ChestBlock> registryObject) {
-		ChestBlock block = registryObject.get();
+	public static void makeInstance(Map<Block, TwilightChestEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
+		ChestBlock block = registryObject.value();
 		map.put(block, new TwilightChestEntity(BlockPos.ZERO, block.defaultBlockState()));
 	}
 }

@@ -49,6 +49,6 @@ public final class CobbleVariants extends StructureProcessor {
 
 	@Override
 	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.COBBLE_VARIANTS.get();
+		return TFStructureProcessors.COBBLE_VARIANTS.value();
 	}
 }

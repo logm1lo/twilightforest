@@ -123,7 +123,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if ((player.getItemInHand(hand).is(Tags.Items.INGOTS_IRON) || player.getItemInHand(hand).is(Tags.Items.NUGGETS_IRON)) && state.getValue(POST) != PostState.CAPPED && level.getBlockState(pos.above()).isAir()) {
             level.setBlock(pos, state.setValue(POST, PostState.CAPPED), 3);
-            level.playSound(null, pos, TFSounds.WROUGHT_IRON_FENCE_EXTENDED.get(), SoundSource.BLOCKS, 0.35F, level.getRandom().nextFloat() * 0.1F + 0.75F);
+            level.playSound(null, pos, TFSounds.WROUGHT_IRON_FENCE_EXTENDED.value(), SoundSource.BLOCKS, 0.35F, level.getRandom().nextFloat() * 0.1F + 0.75F);
             return InteractionResult.SUCCESS;
         }
         return super.use(state, level, pos, player, hand, result);

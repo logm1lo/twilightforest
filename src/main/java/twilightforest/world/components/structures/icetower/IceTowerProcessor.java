@@ -13,7 +13,7 @@ public class IceTowerProcessor extends StructurePiece.BlockSelector {
 		if (!wall) {
 			this.next = Blocks.AIR.defaultBlockState();
 		} else {
-			this.next = TFBlocks.AURORA_BLOCK.get().defaultBlockState().setValue(
+			this.next = TFBlocks.AURORA_BLOCK.value().defaultBlockState().setValue(
 					AuroraBrickBlock.VARIANT,
 					Math.abs(x + z) % 16
 			);

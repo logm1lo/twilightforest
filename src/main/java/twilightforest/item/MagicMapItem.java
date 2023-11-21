@@ -21,7 +21,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMagicMapData;
+import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFLandmark;
@@ -61,7 +61,7 @@ public class MagicMapItem extends MapItem {
 	}
 
 	public static ItemStack setupNewMap(Level level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
-		ItemStack itemstack = new ItemStack(TFItems.FILLED_MAGIC_MAP.get());
+		ItemStack itemstack = new ItemStack(TFItems.FILLED_MAGIC_MAP.value());
 		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension());
 		return itemstack;
 	}

@@ -83,7 +83,7 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
                 BlockEntity tile = world.getBlockEntity(blockPos);
 
                 if (tile instanceof SpawnerBlockEntity ms) {
-                    ms.setEntityId(TFEntities.SKELETON_DRUID.get(), random);
+                    ms.setEntityId(TFEntities.SKELETON_DRUID.value(), random);
                 }
             }
         } else if (s.startsWith("loot")) {

@@ -15,7 +15,7 @@ public class MovingCicadaSoundInstance extends AbstractTickableSoundInstance {
 	protected final LivingEntity wearer;
 
 	public MovingCicadaSoundInstance(LivingEntity entity) {
-		super(TFSounds.CICADA.get(), SoundSource.NEUTRAL, SoundInstance.createUnseededRandom());
+		super(TFSounds.CICADA.value(), SoundSource.NEUTRAL, SoundInstance.createUnseededRandom());
 		this.wearer = entity;
 		this.x = entity.getX();
 		this.y = entity.getY();
@@ -26,7 +26,7 @@ public class MovingCicadaSoundInstance extends AbstractTickableSoundInstance {
 
 	@Override
 	public void tick() {
-		if (!this.wearer.isRemoved() && (this.wearer.getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.get().asItem()) || this.isWearingCicadaCurio())) {
+		if (!this.wearer.isRemoved() && (this.wearer.getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.value().asItem()) || this.isWearingCicadaCurio())) {
 			this.x = (float)this.wearer.getX();
 			this.y = (float)this.wearer.getY();
 			this.z = (float)this.wearer.getZ();

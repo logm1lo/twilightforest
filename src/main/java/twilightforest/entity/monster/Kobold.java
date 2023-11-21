@@ -76,17 +76,17 @@ public class Kobold extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.KOBOLD_AMBIENT.get();
+		return TFSounds.KOBOLD_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.KOBOLD_HURT.get();
+		return TFSounds.KOBOLD_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.KOBOLD_DEATH.get();
+		return TFSounds.KOBOLD_DEATH.value();
 	}
 
 	public boolean isPanicked() {
@@ -99,7 +99,7 @@ public class Kobold extends Monster {
 
 	@Override
 	public SoundEvent getEatingSound(ItemStack stack) {
-		return TFSounds.KOBOLD_MUNCH.get();
+		return TFSounds.KOBOLD_MUNCH.value();
 	}
 
 	@Override

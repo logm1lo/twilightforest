@@ -51,21 +51,21 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 			double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 			double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
 			double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
-			level.addParticle(TFParticleType.FIREFLY.get(), dx, dy, dz, 0, 0, 0);
+			level.addParticle(TFParticleType.FIREFLY.value(), dx, dy, dz, 0, 0, 0);
 		}
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (stack.getItem() == TFBlocks.FIREFLY.get().asItem() && !player.isShiftKeyDown() && state.getValue(RADIUS) < 10) {
+		if (stack.getItem() == TFBlocks.FIREFLY.value().asItem() && !player.isShiftKeyDown() && state.getValue(RADIUS) < 10) {
 			level.setBlockAndUpdate(pos, state.setValue(RADIUS, state.getValue(RADIUS) + 1));
 			if (!player.isCreative()) stack.shrink(1);
 			player.displayClientMessage(Component.translatable("misc.twilightforest.firefly_spawner_radius", state.getValue(RADIUS) + 1), true);
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		} else if (player.isShiftKeyDown() && state.getValue(RADIUS) > 1) {
 			level.setBlockAndUpdate(pos, state.setValue(RADIUS, state.getValue(RADIUS) - 1));
-			ItemEntity bug = new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 1, pos.getZ() + 0.5D, new ItemStack(TFBlocks.FIREFLY.get()));
+			ItemEntity bug = new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 1, pos.getZ() + 0.5D, new ItemStack(TFBlocks.FIREFLY.value()));
 			level.addFreshEntity(bug);
 			player.displayClientMessage(Component.translatable("misc.twilightforest.firefly_spawner_radius", state.getValue(RADIUS) - 1), true);
 			return InteractionResult.sidedSuccess(level.isClientSide());
@@ -75,7 +75,7 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 
 	@Override
 	public ParticleType<?> getParticlesToSpawn() {
-		return TFParticleType.PARTICLE_SPAWNER_FIREFLY.get();
+		return TFParticleType.PARTICLE_SPAWNER_FIREFLY.value();
 	}
 
 	@Override

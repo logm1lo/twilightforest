@@ -57,12 +57,12 @@ public record CompanionBiomesLayer(List<Pair<ResourceKey<Biome>, ResourceKey<Bio
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.instance.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return this.instance.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.COMPANION_BIOMES.get();
+			return BiomeLayerTypes.COMPANION_BIOMES.value();
 		}
 
 		public long salt() {

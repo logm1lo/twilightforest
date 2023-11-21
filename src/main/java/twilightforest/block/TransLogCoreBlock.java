@@ -83,7 +83,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 						for (int j = 0; j < 9; j++) {
 							float angle = rand.nextFloat() * 360.0F;
 							Vec3 offset = new Vec3(Math.cos(angle), 0.0D, Math.sin(angle)).scale(2.0D);
-							particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), false, xyz.add(offset), Vec3.ZERO.subtract(offset));
+							particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.value(), false, xyz.add(offset), Vec3.ZERO.subtract(offset));
 						}
 						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
 					}
@@ -95,6 +95,6 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {
-		level.playSound(null, pos, TFSounds.TRANSFORMATION_CORE.get(), SoundSource.BLOCKS, 0.1F, rand.nextFloat() * 2F);
+		level.playSound(null, pos, TFSounds.TRANSFORMATION_CORE.value(), SoundSource.BLOCKS, 0.1F, rand.nextFloat() * 2F);
 	}
 }

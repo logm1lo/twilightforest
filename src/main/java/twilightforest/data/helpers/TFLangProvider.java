@@ -6,14 +6,13 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.neoforged.neoforge.common.data.LanguageProvider;
-import net.neoforged.neoforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
-
-import java.util.function.Supplier;
 
 public abstract class TFLangProvider extends LanguageProvider {
 	public TFLangProvider(PackOutput output) {
@@ -92,9 +91,9 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("item.twilightforest." + itemKey + "_hoe", item + " Hoe");
 	}
 
-	public void addMusicDisc(Supplier<Item> disc, String description) {
+	public void addMusicDisc(DeferredHolder<Item, RecordItem> disc, String description) {
 		this.addItem(disc, "Music Disc");
-		this.add(disc.get().getDescriptionId() + ".desc", description);
+		this.add(disc.value().getDescriptionId() + ".desc", description);
 	}
 
 	public void addStructure(ResourceKey<Structure> biome, String name) {
@@ -111,12 +110,12 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("enchantment.twilightforest." + key + ".desc", desc);
 	}
 
-	public void addEntityAndEgg(RegistryObject<? extends EntityType<?>> entity, String name) {
+	public void addEntityAndEgg(DeferredHolder<EntityType<?>, ? extends EntityType<?>> entity, String name) {
 		this.addEntityType(entity, name);
 		this.add("item.twilightforest." + entity.getId().getPath() + "_spawn_egg", name + " Spawn Egg");
 	}
 
-	public void addSubtitle(RegistryObject<SoundEvent> sound, String name) {
+	public void addSubtitle(DeferredHolder<SoundEvent, SoundEvent> sound, String name) {
 		String[] splitSoundName  = sound.getId().getPath().split("\\.", 3);
 		this.add("subtitles.twilightforest." + splitSoundName[0] + "." + splitSoundName[2], name);
 	}

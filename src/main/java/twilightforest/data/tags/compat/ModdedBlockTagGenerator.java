@@ -32,13 +32,13 @@ public class ModdedBlockTagGenerator extends IntrinsicHolderTagsProvider<Block> 
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		tag(AC_FERROMAGNETIC_BLOCKS).addTag(BlockTagGenerator.STORAGE_BLOCKS_IRONWOOD).addTag(BlockTagGenerator.STORAGE_BLOCKS_STEELEAF).addTag(BlockTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.CANDELABRA.get()).add(TFBlocks.WROUGHT_IRON_FENCE.get());
-		tag(AC_GLOOMOTH_LIGHT_SOURCES).add(TFBlocks.FIREFLY_SPAWNER.get(), TFBlocks.FIREFLY_JAR.get());
-		tag(AC_UNDERZEALOT_LIGHT_SOURCES).add(TFBlocks.FIREFLY.get(), TFBlocks.MOONWORM.get());
+		tag(AC_FERROMAGNETIC_BLOCKS).addTag(BlockTagGenerator.STORAGE_BLOCKS_IRONWOOD).addTag(BlockTagGenerator.STORAGE_BLOCKS_STEELEAF).addTag(BlockTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.CANDELABRA.value()).add(TFBlocks.WROUGHT_IRON_FENCE.value());
+		tag(AC_GLOOMOTH_LIGHT_SOURCES).add(TFBlocks.FIREFLY_SPAWNER.value(), TFBlocks.FIREFLY_JAR.value());
+		tag(AC_UNDERZEALOT_LIGHT_SOURCES).add(TFBlocks.FIREFLY.value(), TFBlocks.MOONWORM.value());
 
 		tag(ARTIFACTS_CAMPSITE_CHESTS).addTag(BlockTagGenerator.TF_CHESTS);
 
-		tag(FD_COMPOST_ACTIVATORS).add(TFBlocks.UBEROUS_SOIL.get(), TFBlocks.MUSHGLOOM.get());
+		tag(FD_COMPOST_ACTIVATORS).add(TFBlocks.UBEROUS_SOIL.value(), TFBlocks.MUSHGLOOM.value());
 		tag(FD_HEAT_SOURCES).addTag(BlockTagGenerator.STORAGE_BLOCKS_FIERY);
 	}
 

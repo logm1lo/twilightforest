@@ -30,7 +30,7 @@ public class Bighorn extends Sheep {
 	}
 
 	public Bighorn(Level world, double x, double y, double z) {
-		this(TFEntities.BIGHORN_SHEEP.get(), world);
+		this(TFEntities.BIGHORN_SHEEP.value(), world);
 		this.setPos(x, y, z);
 	}
 
@@ -81,28 +81,28 @@ public class Bighorn extends Sheep {
 			return null;
 		}
 
-		Bighorn babySheep = TFEntities.BIGHORN_SHEEP.get().create(world);
+		Bighorn babySheep = TFEntities.BIGHORN_SHEEP.value().create(world);
 		babySheep.setColor(getOffspringColor(this, otherParent));
 		return babySheep;
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.BIGHORN_SHEEP_AMBIENT.get();
+		return TFSounds.BIGHORN_SHEEP_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.BIGHORN_SHEEP_HURT.get();
+		return TFSounds.BIGHORN_SHEEP_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.BIGHORN_SHEEP_DEATH.get();
+		return TFSounds.BIGHORN_SHEEP_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.BIGHORN_SHEEP_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.BIGHORN_SHEEP_STEP.value(), 0.15F, 1.0F);
 	}
 }

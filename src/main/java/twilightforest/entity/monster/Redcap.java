@@ -60,17 +60,17 @@ public class Redcap extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.REDCAP_AMBIENT.get();
+		return TFSounds.REDCAP_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.REDCAP_HURT.get();
+		return TFSounds.REDCAP_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.REDCAP_DEATH.get();
+		return TFSounds.REDCAP_DEATH.value();
 	}
 
 	public boolean isShy() {

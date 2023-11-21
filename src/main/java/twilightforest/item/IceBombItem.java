@@ -19,13 +19,13 @@ public class IceBombItem extends Item {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		player.playSound(TFSounds.ICE_BOMB_FIRED.get(), 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+		player.playSound(TFSounds.ICE_BOMB_FIRED.value(), 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
 		if (!level.isClientSide()) {
 			if (!player.getAbilities().instabuild) {
 				player.getItemInHand(hand).shrink(1);
 			}
-			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), level, player);
+			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.value(), level, player);
 			ice.shootFromRotation(player, player.getXRot(), player.getYRot(), -20.0F, 0.75F, 1.0F);
 			level.addFreshEntity(ice);
 		}

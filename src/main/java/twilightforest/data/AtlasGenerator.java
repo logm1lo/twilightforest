@@ -10,7 +10,7 @@ import net.neoforged.neoforge.common.data.SpriteSourceProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MagicPaintingTextureManager;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
-import twilightforest.util.MagicPaintingVariant;
+import twilightforest.entity.MagicPaintingVariant;
 
 import java.util.HashMap;
 import java.util.Map;

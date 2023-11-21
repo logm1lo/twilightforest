@@ -37,6 +37,6 @@ public final class TargetedRotProcessor extends BlockRotProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return TFStructureProcessors.TARGETED_ROT.get();
+        return TFStructureProcessors.TARGETED_ROT.value();
     }
 }

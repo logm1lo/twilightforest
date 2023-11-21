@@ -51,8 +51,8 @@ public class CuriosCompat {
 			@Override
 			public void onEquip(SlotContext context, ItemStack prevStack) {
 				//check that we dont have a cicada already on our head before trying to start the sound
-				if (!context.entity().getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.get().asItem())) {
-					if (stack.is(TFBlocks.CICADA.get().asItem()) && !context.entity().level().isClientSide()) {
+				if (!context.entity().getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.value().asItem())) {
+					if (stack.is(TFBlocks.CICADA.value().asItem()) && !context.entity().level().isClientSide()) {
 						TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(context::entity), new CreateMovingCicadaSoundPacket(context.entity().getId()));
 					}
 				}
@@ -87,36 +87,36 @@ public class CuriosCompat {
 
 	public static void registerCurioRenderers(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_1.get(), () -> new CharmOfLifeNecklaceRenderer(new float[]{1.0F, 0.5F, 0.5F}));
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_2.get(), () -> new CharmOfLifeNecklaceRenderer(new float[]{1.0F, 0.9F, 0.0F}));
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_1.get(), CharmOfKeepingRenderer::new);
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_2.get(), CharmOfKeepingRenderer::new);
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_3.get(), CharmOfKeepingRenderer::new);
+			CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_1.value(), () -> new CharmOfLifeNecklaceRenderer(new float[]{1.0F, 0.5F, 0.5F}));
+			CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_2.value(), () -> new CharmOfLifeNecklaceRenderer(new float[]{1.0F, 0.9F, 0.0F}));
+			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_1.value(), CharmOfKeepingRenderer::new);
+			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_2.value(), CharmOfKeepingRenderer::new);
+			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_3.value(), CharmOfKeepingRenderer::new);
 
-			CuriosRendererRegistry.register(TFItems.NAGA_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.LICH_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.MINOSHROOM_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.HYDRA_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.KNIGHT_PHANTOM_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.UR_GHAST_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.ALPHA_YETI_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.SNOW_QUEEN_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.QUEST_RAM_TROPHY.get(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.NAGA_TROPHY.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.LICH_TROPHY.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.MINOSHROOM_TROPHY.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.HYDRA_TROPHY.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.KNIGHT_PHANTOM_TROPHY.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.UR_GHAST_TROPHY.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.ALPHA_YETI_TROPHY.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.SNOW_QUEEN_TROPHY.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.QUEST_RAM_TROPHY.value(), CurioHeadRenderer::new);
 
-			CuriosRendererRegistry.register(TFItems.CICADA.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.FIREFLY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.MOONWORM.get(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.CICADA.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.FIREFLY.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.MOONWORM.value(), CurioHeadRenderer::new);
 
-			CuriosRendererRegistry.register(TFItems.CREEPER_SKULL_CANDLE.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.PIGLIN_SKULL_CANDLE.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.PLAYER_SKULL_CANDLE.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.SKELETON_SKULL_CANDLE.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.ZOMBIE_SKULL_CANDLE.get(), CurioHeadRenderer::new);});
+			CuriosRendererRegistry.register(TFItems.CREEPER_SKULL_CANDLE.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.PIGLIN_SKULL_CANDLE.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.PLAYER_SKULL_CANDLE.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.SKELETON_SKULL_CANDLE.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.WITHER_SKELETON_SKULL_CANDLE.value(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.ZOMBIE_SKULL_CANDLE.value(), CurioHeadRenderer::new);});
 	}
 
 	public static boolean isCicadaEquipped(LivingEntity entity) {
-		Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(entity, stack -> stack.is(TFItems.CICADA.get()));
+		Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(entity, stack -> stack.is(TFItems.CICADA.value()));
 		return slot.isPresent();
 	}
 

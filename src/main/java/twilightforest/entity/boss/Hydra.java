@@ -138,7 +138,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			this.level().setBlockAndUpdate(this.blockPosition().offset(0, 1, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
+			this.level().setBlockAndUpdate(this.blockPosition().offset(0, 1, 0), TFBlocks.HYDRA_BOSS_SPAWNER.value().defaultBlockState());
 			this.discard();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -701,17 +701,17 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HYDRA_GROWL.get();
+		return TFSounds.HYDRA_GROWL.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HYDRA_HURT.get();
+		return TFSounds.HYDRA_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HYDRA_DEATH.get();
+		return TFSounds.HYDRA_DEATH.value();
 	}
 
 	@Override
@@ -730,7 +730,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.value().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 

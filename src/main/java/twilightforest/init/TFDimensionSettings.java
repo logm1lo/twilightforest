@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
+import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
@@ -154,7 +155,7 @@ public class TFDimensionSettings {
 						BiomeMaker.makeBiomeList(biomeRegistry, biomeRegistry.getOrThrow(TFBiomes.UNDERGROUND)),
 						-1.25F,
 						2.5F,
-						context.lookup(BiomeLayerStack.BIOME_STACK_KEY).getOrThrow(BiomeLayerStack.BIOMES_ALONG_STREAMS)
+						context.lookup(TFRegistries.Keys.BIOME_STACK).getOrThrow(BiomeLayerStack.BIOMES_ALONG_STREAMS)
 				),
 				noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN));
 

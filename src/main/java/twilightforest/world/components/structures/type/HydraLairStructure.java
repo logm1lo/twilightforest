@@ -38,13 +38,13 @@ public class HydraLairStructure extends ProgressionStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.HYDRA_LAIR.get();
+        return TFStructureTypes.HYDRA_LAIR.value();
     }
 
     public static HydraLairStructure buildHydraLairConfig(BootstapContext<Structure> context) {
         return new HydraLairStructure(
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_labyrinth"))),
-                new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD.get()),
+                new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD.value()),
                 new DecorationConfig(2, false, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HYDRA_LAIR_BIOMES),

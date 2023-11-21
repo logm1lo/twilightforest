@@ -71,7 +71,7 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 	}
 
 	public UncraftingMenu(int id, Inventory inventory, Level level, ContainerLevelAccess positionData) {
-		super(TFMenuTypes.UNCRAFTING.get(), id);
+		super(TFMenuTypes.UNCRAFTING.value(), id);
 
 		this.positionData = positionData;
 		this.level = level;
@@ -319,7 +319,7 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 					}
 				}
 			}
-			for (RecipeHolder<UncraftingRecipe> uncraftingRecipe : world.getRecipeManager().getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get())) {
+			for (RecipeHolder<UncraftingRecipe> uncraftingRecipe : world.getRecipeManager().getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.value())) {
 				if (uncraftingRecipe.value().isItemStackAnIngredient(inputStack)) recipes.add(uncraftingRecipe.value());
 			}
 		}
@@ -632,7 +632,7 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get() && stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
+		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get() && stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.value());
 	}
 
 	@Override

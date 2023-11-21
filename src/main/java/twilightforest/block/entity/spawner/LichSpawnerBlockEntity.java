@@ -15,7 +15,7 @@ import twilightforest.init.TFEntities;
 public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	public LichSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.LICH_SPAWNER.get(), TFEntities.LICH.get(), pos, state);
+		super(TFBlockEntities.LICH_SPAWNER.value(), TFEntities.LICH.value(), pos, state);
 	}
 
 	@Override

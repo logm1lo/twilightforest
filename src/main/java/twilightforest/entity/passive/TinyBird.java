@@ -16,7 +16,7 @@ import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFSounds;
-import twilightforest.init.custom.TinyBirdVariant;
+import twilightforest.init.custom.TinyBirdVariants;
 
 public class TinyBird extends FlyingBird {
 
@@ -60,7 +60,7 @@ public class TinyBird extends FlyingBird {
 	}
 
 	public TinyBirdVariant getBirdType() {
-		return TinyBirdVariant.getVariant(this.getEntityData().get(TYPE)).orElse(TinyBirdVariant.BLUE.get());
+		return TinyBirdVariant.getVariant(this.getEntityData().get(TYPE)).orElse(TinyBirdVariants.BLUE.value());
 	}
 
 	public void setBirdType(String type) {
@@ -69,17 +69,17 @@ public class TinyBird extends FlyingBird {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.getRandom().nextInt(20) == 0 ? TFSounds.TINY_BIRD_SONG.get() : TFSounds.TINY_BIRD_CHIRP.get();
+		return this.getRandom().nextInt(20) == 0 ? TFSounds.TINY_BIRD_SONG.value() : TFSounds.TINY_BIRD_CHIRP.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TINY_BIRD_HURT.get();
+		return TFSounds.TINY_BIRD_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TINY_BIRD_HURT.get();
+		return TFSounds.TINY_BIRD_HURT.value();
 	}
 
 	@Override

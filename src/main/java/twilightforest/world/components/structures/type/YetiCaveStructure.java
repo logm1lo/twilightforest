@@ -39,7 +39,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.YETI_CAVE.get();
+        return TFStructureTypes.YETI_CAVE.value();
     }
 
     @Override
@@ -49,9 +49,9 @@ public class YetiCaveStructure extends ControlledSpawningStructure {
 
     public static YetiCaveStructure buildYetiCaveConfig(BootstapContext<Structure> context) {
         return new YetiCaveStructure(
-                ControlledSpawningConfig.firstIndexMonsters(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 5, 1, 2)),
+                ControlledSpawningConfig.firstIndexMonsters(new MobSpawnSettings.SpawnerData(TFEntities.YETI.value(), 5, 1, 2)),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
-                new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.get()),
+                new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.value()),
                 new DecorationConfig(2, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_YETI_CAVE_BIOMES),

@@ -5,7 +5,7 @@ import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.neoforged.neoforge.network.NetworkEvent;
-import twilightforest.TFMazeMapData;
+import twilightforest.item.mapdata.TFMazeMapData;
 import twilightforest.item.MazeMapItem;
 
 /**
