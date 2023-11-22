@@ -24,7 +24,7 @@ steps:
 
 - task: Cache@2
   inputs:
-    key: 'gradle | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    key: 'gradleLocal | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
     restoreKeys: gradleLocal
     path: .gradle
   displayName: Project Level Gradle build cache
