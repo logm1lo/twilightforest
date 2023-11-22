@@ -16,7 +16,7 @@ variables:
 steps:
 - task: Cache@2
   inputs:
-    key: 'gradle | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    key: 'gradle | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
     restoreKeys: gradle
     path: $(GRADLE_USER_HOME)
   displayName: Restore Gradle Cache
@@ -24,7 +24,7 @@ steps:
 
 - task: Cache@2
   inputs:
-    key: 'gradleLocal | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    key: 'gradleLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
     restoreKeys: gradleLocal
     path: .gradle
   displayName: Restore Project Level Gradle Cache
@@ -32,7 +32,7 @@ steps:
 
 - task: Cache@2
   inputs:
-    key: 'gradleBuildNeoForgeLocal | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    key: 'gradleBuildNeoForgeLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
     restoreKeys: gradleBuildNeoForgeLocal
     path: build/neoForge
   displayName: Restore Project Level build/neoForge Cache
@@ -40,7 +40,7 @@ steps:
 
 - task: Cache@2
   inputs:
-    key: 'gradleBuildNeoFormLocal | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    key: 'gradleBuildNeoFormLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
     restoreKeys: gradleBuildNeoFormLocal
     path: build/neoForm
   displayName: Restore Project Level build/neoForm Cache
@@ -48,9 +48,9 @@ steps:
 
 - task: Cache@2
   inputs:
-    key: 'gradleBuildTmpLocal | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    key: 'gradleBuildTmpLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
     restoreKeys: gradleBuildTmpLocal
-    path: build/neoForm
+    path: build/tmp
   displayName: Restore Project Level build/tmp Cache
   condition: eq(variables.SKIP_BUILD, 'false')
 
