@@ -22,6 +22,14 @@ steps:
   displayName: Gradle build cache
   condition: eq(variables.SKIP_BUILD, 'false')
 
+- task: Cache@2
+  inputs:
+    key: 'gradle | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    restoreKeys: gradleLocal
+    path: .gradle
+  displayName: Project Level Gradle build cache
+  condition: eq(variables.SKIP_BUILD, 'false')
+
 - powershell: |
     (Get-Content ./gradle.properties).Split([Environment]::NewLine) | % {
         $kvp = $_.Split('=')
