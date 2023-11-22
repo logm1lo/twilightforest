@@ -19,7 +19,7 @@ steps:
     key: 'gradle | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
     restoreKeys: gradle
     path: $(GRADLE_USER_HOME)
-  displayName: Gradle build cache
+  displayName: Restore Gradle Cache
   condition: eq(variables.SKIP_BUILD, 'false')
 
 - task: Cache@2
@@ -27,7 +27,15 @@ steps:
     key: 'gradleLocal | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
     restoreKeys: gradleLocal
     path: .gradle
-  displayName: Project Level Gradle build cache
+  displayName: Restore Project Level Gradle Cache
+  condition: eq(variables.SKIP_BUILD, 'false')
+
+- task: Cache@2
+  inputs:
+    key: 'gradleBuildLocal | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    restoreKeys: gradleBuildLocal
+    path: build
+  displayName: Restore Project Level Build Cache
   condition: eq(variables.SKIP_BUILD, 'false')
 
 - powershell: |
