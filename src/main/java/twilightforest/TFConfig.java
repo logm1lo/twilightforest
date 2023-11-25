@@ -8,6 +8,8 @@ import com.mojang.authlib.minecraft.client.ObjectMapper;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilEnvironment;
 import com.mojang.authlib.yggdrasil.response.MinecraftProfilePropertiesResponse;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -375,7 +377,10 @@ public class TFConfig {
 							List of player UUIDs whose skins the giants of Twilight Forest should use.
 							If left empty, the giants will appear the same as the player viewing them does.""").
 					defineListAllowEmpty("giantSkinUUIDs", new ArrayList<>(), s -> s instanceof String);
-
+			auroraBiomes = builder.
+					translation(config + "aurora_biomes").
+					comment("Defines which biomes the aurora shader effect will appear in. Leave the list empty to disable the effect.")
+					.defineList("auroraBiomes", List.of("twilightforest:glacier"), s -> s instanceof String);
 		}
 
 		public final ForgeConfigSpec.BooleanValue silentCicadas;
@@ -387,6 +392,8 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
 		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
+		private final List<ResourceLocation> validAuroraBiomes = new ArrayList<>();
 	}
 
 	private static final String config = "config." + TwilightForestMod.ID;
@@ -413,31 +420,52 @@ public class TFConfig {
 		return COMMON_CONFIG.portalLockingAdvancement;
 	}
 
-	@SubscribeEvent
-	public static void onConfigReload(final ModConfigEvent.Reloading event) {
-		//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things dont desync.
-		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-		if (server != null && server.isDedicatedServer()) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncUncraftingTableConfigPacket(
-					COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
+	//Forge's biome registry doesn't contain biomes done via datapacks, so we have to use registryaccess
+	public static List<ResourceLocation> getValidAuroraBiomes(RegistryAccess access) {
+		if (CLIENT_CONFIG.validAuroraBiomes.isEmpty() && !CLIENT_CONFIG.auroraBiomes.get().isEmpty()) {
+			CLIENT_CONFIG.auroraBiomes.get().forEach(s -> {
+				ResourceLocation key = ResourceLocation.tryParse(s);
+				if (key == null || !access.registryOrThrow(Registries.BIOME).containsKey(key)) {
+					TwilightForestMod.LOGGER.warn("Biome {} in Twilight Forest's validAuroraBiomes config option is not a valid biome. Skipping!", s);
+				} else {
+					CLIENT_CONFIG.validAuroraBiomes.add(key);
+				}
+			});
 		}
-
-		TFConfig.giantCheck(event);
-		//sets cached portal locking advancement to null just in case it changed
-		COMMON_CONFIG.portalLockingAdvancement = null;
+		return CLIENT_CONFIG.validAuroraBiomes;
 	}
 
 	@SubscribeEvent
-	public static void onConfigReload(final ModConfigEvent.Loading event) {
-		TFConfig.giantCheck(event);
+	public static void onConfigReload(final ModConfigEvent event) {
+		if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID)) {
+			if (event.getConfig().getType() == ModConfig.Type.COMMON) {
+				//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things dont desync.
+				MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+				if (server != null && server.isDedicatedServer()) {
+					TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncUncraftingTableConfigPacket(
+							COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
+							COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
+							COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
+							COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
+							COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
+							COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
+							COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
+							COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
+							COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
+				}
+				//sets cached portal locking advancement to null just in case it changed
+				COMMON_CONFIG.portalLockingAdvancement = null;
+			} else if (event.getConfig().getType() == ModConfig.Type.CLIENT) {
+				CLIENT_CONFIG.validAuroraBiomes.clear();
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onConfigReload(final ModConfigEvent.Reloading event) {
+		if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID) && event.getConfig().getType() == ModConfig.Type.CLIENT) {
+			TFConfig.reloadGiantSkins();
+		}
 	}
 
 	//damn forge events
@@ -464,8 +492,8 @@ public class TFConfig {
 
 	public static final List<GameProfile> GAME_PROFILES = new ArrayList<>();
 
-	public static void giantCheck(ModConfigEvent event) {
-		if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID) && event.getConfig().getType().equals(ModConfig.Type.CLIENT)) {
+	public static void reloadGiantSkins() {
+		if (!TFConfig.CLIENT_CONFIG.giantSkinUUIDs.get().isEmpty()) {
 			new Thread() {
 				@Override
 				public void run() {

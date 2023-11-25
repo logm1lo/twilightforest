@@ -19,6 +19,8 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.model.block.doors.CastleDoorBuilder;
+import twilightforest.client.model.block.forcefield.ForceFieldModel;
+import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
 import twilightforest.data.helpers.BlockModelBuilders;
 import twilightforest.enums.*;
@@ -50,11 +52,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		tintedAndFlipped(TFBlocks.MOSSY_TOWERWOOD.get());
 		tintedAndFlipped(TFBlocks.INFESTED_TOWERWOOD.get());
 
-		builtinEntity(TFBlocks.FIREFLY.get(), "twilightforest:block/stone_twist/twist_blank");
-		builtinEntity(TFBlocks.MOONWORM.get(), "twilightforest:block/stone_twist/twist_blank");
-		builtinEntity(TFBlocks.CICADA.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.FIREFLY.get(), "block/blank");
+		builtinEntity(TFBlocks.MOONWORM.get(), "block/blank");
+		builtinEntity(TFBlocks.CICADA.get(), "block/blank");
 
-		builtinEntity(TFBlocks.RED_THREAD.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.RED_THREAD.get(), "block/blank");
 
 		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
 		ModelFile portalOverlayModel = models().getExistingFile(prefix("block/twilight_portal_barrier"));
@@ -200,7 +202,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("top", blockTexture(TFBlocks.UBEROUS_SOIL.get()))
 				.texture("dirt", blockTexture(TFBlocks.UBEROUS_SOIL.get())));
 		axisBlock(TFBlocks.HUGE_STALK.get(), prefix("block/huge_stalk"), prefix("block/huge_stalk_top"));
-		builtinEntity(TFBlocks.BEANSTALK_GROWER.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.BEANSTALK_GROWER.get(), "block/blank");
 		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
 		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_mushgloom_stem"));
 		simpleBlock(TFBlocks.TROLLVIDR.get(), models().cross(TFBlocks.TROLLVIDR.getId().getPath(), blockTexture(TFBlocks.TROLLVIDR.get())).renderType(CUTOUT));
@@ -328,7 +330,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 		getVariantBuilder(TFBlocks.UNCRAFTING_TABLE.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(s.getValue(UncraftingTableBlock.POWERED) ? glowing : notglowing).build());
 		registerSmokersAndJets();
-		axisBlock(TFBlocks.TWISTED_STONE.get(), prefix("block/stone_twist/twist_side"), prefix("block/stone_twist/twist_end"));
+		axisBlock(TFBlocks.TWISTED_STONE.get(), prefix("block/twisted_stone_side"), prefix("block/twisted_stone_end"));
 		axisBlock(TFBlocks.BOLD_STONE_PILLAR.get(), prefix("block/stone_pillar_side"), prefix("block/stone_pillar_end"));
 		simpleBlock(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get(), models().cubeColumn("empty_canopy_bookshelf", prefix("block/wood/bookshelf_spawner/bookshelf_empty"), prefix("block/wood/planks_canopy_0")));
 		simpleBlock(TFBlocks.CANOPY_BOOKSHELF.get(), ConfiguredModel.builder()
@@ -337,45 +339,15 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.modelFile(models().cubeColumn("canopy_bookshelf_2", prefix("block/wood/bookshelf_canopy_2"), prefix("block/wood/planks_canopy_0"))).nextModel()
 				.modelFile(models().cubeColumn("canopy_bookshelf_3", prefix("block/wood/bookshelf_canopy_3"), prefix("block/wood/planks_canopy_0")))
 				.build());
-		//if theres a better way to do this block please do it. I dont want to think about it right now
 		getVariantBuilder(TFBlocks.DEATH_TOME_SPAWNER.get()).forAllStatesExcept(s -> {
-			switch (s.getValue(TomeSpawnerBlock.BOOK_STAGES)) {
-				case 1 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_1", prefix("block/wood/bookshelf_spawner/bookshelf_1"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 2 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_2", prefix("block/wood/bookshelf_spawner/bookshelf_2"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 3 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_3", prefix("block/wood/bookshelf_spawner/bookshelf_3"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 4 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_4", prefix("block/wood/bookshelf_spawner/bookshelf_4"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 5 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_5", prefix("block/wood/bookshelf_spawner/bookshelf_5"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 6 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_6", prefix("block/wood/bookshelf_spawner/bookshelf_6"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 7 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_7", prefix("block/wood/bookshelf_spawner/bookshelf_7"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 8 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_8", prefix("block/wood/bookshelf_spawner/bookshelf_8"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 9 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_9", prefix("block/wood/bookshelf_spawner/bookshelf_9"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				default -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_10", prefix("block/wood/bookshelf_canopy"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-			}
+			int books = s.getValue(TomeSpawnerBlock.BOOK_STAGES);
+			return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_" + books, prefix("block/wood/bookshelf_spawner/bookshelf_" + books), prefix("block/wood/planks_canopy_0"))).build();
 		}, TomeSpawnerBlock.SPAWNER);
 
 		getMultipartBuilder(TFBlocks.WROUGHT_IRON_FENCE.get())
-				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post"))).addModel().condition(WroughtIronFenceBlock.POST, true).end()
-				
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post"))).addModel().condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post_capped"))).addModel().condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED).end()
+
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
@@ -395,11 +367,6 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end();
-
-		getVariantBuilder(TFBlocks.WROUGHT_IRON_FINIAL.get()).forAllStatesExcept(state ->
-				ConfiguredModel.builder().modelFile(state.getValue(WroughtIronFinialBlock.ROTATED) ? models().getExistingFile(prefix("wrought_iron_finial_ew")) : models().getExistingFile(prefix("wrought_iron_finial_ns")))
-						.rotationX(state.getValue(WroughtIronFinialBlock.FACING) == Direction.DOWN ? 180 : state.getValue(WroughtIronFinialBlock.FACING).getAxis().isHorizontal() ? 90 : 0)
-						.rotationY(state.getValue(WroughtIronFinialBlock.FACING).getAxis().isVertical() ? 0 : (((int) state.getValue(WroughtIronFinialBlock.FACING).toYRot()) + 180) % 360).build(), WroughtIronFinialBlock.WATERLOGGED);
 
 		registerWoodBlocks();
 		registerNagastone();
@@ -469,451 +436,149 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		candelabra();
 	}
 
-	/**
-	 * AVERT YOUR GAZE WHILE SCROLLING PAST THIS METHOD, LOOK FOR TOO LONG AND YOU WILL GO MAD
-	 * if you find a way to trim this down without sacrificing the modularity of the force-fields, feel free
-	 */
 	private void registerForceFields() {
-		String baseName = "block/force_field/force_field";
-		//WEST
-		BlockModelBuilder west = this.models().withExistingParent(baseName + "_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.WEST).cullface(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder no_west = this.models().withExistingParent(baseName + "_no_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//EAST
-		BlockModelBuilder east = this.models().withExistingParent(baseName + "_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.EAST).cullface(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder no_east = this.models().withExistingParent(baseName + "_no_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//DOWN
-		BlockModelBuilder down = this.models().withExistingParent(baseName + "_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder no_down = this.models().withExistingParent(baseName + "_no_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//UP
-		BlockModelBuilder up = this.models().withExistingParent(baseName + "_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.UP).cullface(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder no_up = this.models().withExistingParent(baseName + "_no_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//NORTH
-		BlockModelBuilder north = this.models().withExistingParent(baseName + "_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder no_north = this.models().withExistingParent(baseName + "_no_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//SOUTH
-		BlockModelBuilder south = this.models().withExistingParent(baseName + "_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder no_south = this.models().withExistingParent(baseName + "_no_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//DOWN WEST
-		BlockModelBuilder down_west = this.models().withExistingParent(baseName + "_down_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 0, 7).to(7, 7, 9)
-				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(0, 7, 7, 9).end()
-				.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 0, 9, 7).end()
-				.face(Direction.NORTH).uvs(0, 0, 7, 7).end()
-				.face(Direction.SOUTH).uvs(9, 0, 16, 7).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder down_no_west = this.models().withExistingParent(baseName + "_down_no_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.WEST).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder west_no_down = this.models().withExistingParent(baseName + "_west_no_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.DOWN).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//DOWN EAST
-		BlockModelBuilder down_east = this.models().withExistingParent(baseName + "_down_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 0, 7).to(16, 7, 9)
-				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(9, 7, 16, 9).end()
-				.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 0, 9, 7).end()
-				.face(Direction.NORTH).uvs(9, 0, 16, 7).end()
-				.face(Direction.SOUTH).uvs(0, 0, 7, 7).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder down_no_east = this.models().withExistingParent(baseName + "_down_no_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.EAST).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder east_no_down = this.models().withExistingParent(baseName + "_east_no_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.DOWN).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//DOWN NORTH
-		BlockModelBuilder down_north = this.models().withExistingParent(baseName + "_down_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 0).to(9, 7, 7)
-				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 0, 9, 7).end()
-				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 0, 9, 7).end()
-				.face(Direction.WEST).uvs(0, 0, 7, 7).end()
-				.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder down_no_north = this.models().withExistingParent(baseName + "_down_no_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.NORTH).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder north_no_down = this.models().withExistingParent(baseName + "_north_no_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.DOWN).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//DOWN SOUTH
-		BlockModelBuilder down_south = this.models().withExistingParent(baseName + "_down_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 9).to(9, 7, 16)
-				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 9, 9, 16).end()
-				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 0, 9, 7).end()
-				.face(Direction.WEST).uvs(9, 0, 16, 7).end()
-				.face(Direction.EAST).uvs(0, 0, 7, 7).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder down_no_south = this.models().withExistingParent(baseName + "_down_no_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.SOUTH).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder south_no_down = this.models().withExistingParent(baseName + "_south_no_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.DOWN).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//UP WEST
-		BlockModelBuilder up_west = this.models().withExistingParent(baseName + "_up_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 9, 7).to(7, 16, 9)
-				.face(Direction.UP).cullface(Direction.UP).uvs(0, 7, 7, 9).end()
-				.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 9, 9, 16).end()
-				.face(Direction.NORTH).uvs(0, 9, 7, 16).end()
-				.face(Direction.SOUTH).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder up_no_west = this.models().withExistingParent(baseName + "_up_no_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.WEST).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder west_no_up = this.models().withExistingParent(baseName + "_west_no_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.UP).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//UP EAST
-		BlockModelBuilder up_east = this.models().withExistingParent(baseName + "_up_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 9, 7).to(16, 16, 9)
-				.face(Direction.UP).cullface(Direction.UP).uvs(9, 7, 16, 9).end()
-				.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 9, 9, 16).end()
-				.face(Direction.NORTH).uvs(9, 9, 16, 16).end()
-				.face(Direction.SOUTH).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder up_no_east = this.models().withExistingParent(baseName + "_up_no_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.EAST).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder east_no_up = this.models().withExistingParent(baseName + "_east_no_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.UP).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//UP NORTH
-		BlockModelBuilder up_north = this.models().withExistingParent(baseName + "_up_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 0).to(9, 16, 7)
-				.face(Direction.UP).cullface(Direction.UP).uvs(7, 0, 9, 7).end()
-				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 9, 9, 16).end()
-				.face(Direction.WEST).uvs(0, 9, 7, 16).end()
-				.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder up_no_north = this.models().withExistingParent(baseName + "_up_no_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.NORTH).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder north_no_up = this.models().withExistingParent(baseName + "_north_no_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.UP).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//UP SOUTH
-		BlockModelBuilder up_south = this.models().withExistingParent(baseName + "_up_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 9).to(9, 16, 16)
-				.face(Direction.UP).cullface(Direction.UP).uvs(7, 9, 9, 16).end()
-				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 9, 9, 16).end()
-				.face(Direction.WEST).uvs(9, 9, 16, 16).end()
-				.face(Direction.EAST).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder up_no_south = this.models().withExistingParent(baseName + "_up_no_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.SOUTH).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder south_no_up = this.models().withExistingParent(baseName + "_south_no_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.UP).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//NORTH WEST
-		BlockModelBuilder north_west = this.models().withExistingParent(baseName + "_north_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 0).to(7, 9, 7)
-				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(0, 7, 7, 9).end()
-				.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
-				.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
-				.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder north_no_west = this.models().withExistingParent(baseName + "_north_no_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder west_no_north = this.models().withExistingParent(baseName + "_west_no_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.NORTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//NORTH EAST
-		BlockModelBuilder north_east = this.models().withExistingParent(baseName + "_north_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 0).to(16, 9, 7)
-				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(9, 7, 16, 9).end()
-				.face(Direction.EAST).cullface(Direction.EAST).uvs(0, 7, 7, 9).end()
-				.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
-				.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder north_no_east = this.models().withExistingParent(baseName + "_north_no_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.EAST).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder east_no_north = this.models().withExistingParent(baseName + "_east_no_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.NORTH).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//SOUTH WEST
-		BlockModelBuilder south_west = this.models().withExistingParent(baseName + "_south_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 9).to(7, 9, 16)
-				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
-				.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
-				.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
-				.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder south_no_west = this.models().withExistingParent(baseName + "_south_no_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder west_no_south = this.models().withExistingParent(baseName + "_west_no_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-		//SOUTH EAST
-		BlockModelBuilder south_east = this.models().withExistingParent(baseName + "_south_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 9).to(16, 9, 16)
-				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
-				.face(Direction.EAST).cullface(Direction.EAST).uvs(9, 7, 16, 9).end()
-				.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
-				.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15)).shade(false).end();
-
-		BlockModelBuilder south_no_east = this.models().withExistingParent(baseName + "_south_no_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
-		BlockModelBuilder east_no_south = this.models().withExistingParent(baseName + "_east_no_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().shade(false).end();
-
 		for (RegistryObject<Block> block : ImmutableList.of(TFBlocks.PINK_FORCE_FIELD, TFBlocks.BLUE_FORCE_FIELD, TFBlocks.GREEN_FORCE_FIELD, TFBlocks.VIOLET_FORCE_FIELD, TFBlocks.ORANGE_FORCE_FIELD)) {
-			String blockName = "block/force_field/" + block.getId().getPath();
 			ResourceLocation textureLocation = prefix("block/" + block.getId().getPath());
+			simpleBlock(block.get(), models().withExistingParent(block.getId().getPath(), new ResourceLocation("block/block"))
+				.texture("particle", textureLocation)
+				.texture("pane", textureLocation)
+				.ao(false)
+				.renderType(TRANSLUCENT)
+				.customLoader(ForceFieldModelBuilder::begin)
 
-			ModelFile west_child = models().withExistingParent(blockName + "_west", west.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile no_west_child = models().withExistingParent(blockName + "_no_west", no_west.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile east_child = models().withExistingParent(blockName + "_east", east.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile no_east_child = models().withExistingParent(blockName + "_no_east", no_east.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile down_child = models().withExistingParent(blockName + "_down", down.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile no_down_child = models().withExistingParent(blockName + "_no_down", no_down.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile up_child = models().withExistingParent(blockName + "_up", up.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile no_up_child = models().withExistingParent(blockName + "_no_up", no_up.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile north_child = models().withExistingParent(blockName + "_north", north.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile no_north_child = models().withExistingParent(blockName + "_no_north", no_north.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile south_child = models().withExistingParent(blockName + "_south", south.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile no_south_child = models().withExistingParent(blockName + "_no_south", no_south.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile down_west_child = models().withExistingParent(blockName + "_down_west", down_west.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile down_no_west_child = models().withExistingParent(blockName + "_down_no_west", down_no_west.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile west_no_down_child = models().withExistingParent(blockName + "_west_no_down", west_no_down.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile down_east_child = models().withExistingParent(blockName + "_down_east", down_east.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile down_no_east_child = models().withExistingParent(blockName + "_down_no_east", down_no_east.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile east_no_down_child = models().withExistingParent(blockName + "_east_no_down", east_no_down.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile down_north_child = models().withExistingParent(blockName + "_down_north", down_north.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile down_no_north_child = models().withExistingParent(blockName + "_down_no_north", down_no_north.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile north_no_down_child = models().withExistingParent(blockName + "_north_no_down", north_no_down.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile down_south_child = models().withExistingParent(blockName + "_down_south", down_south.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile down_no_south_child = models().withExistingParent(blockName + "_down_no_south", down_no_south.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile south_no_down_child = models().withExistingParent(blockName + "_south_no_down", south_no_down.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile up_west_child = models().withExistingParent(blockName + "_up_west", up_west.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile up_no_west_child = models().withExistingParent(blockName + "_up_no_west", up_no_west.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile west_no_up_child = models().withExistingParent(blockName + "_west_no_up", west_no_up.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile up_east_child = models().withExistingParent(blockName + "_up_east", up_east.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile up_no_east_child = models().withExistingParent(blockName + "_up_no_east", up_no_east.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile east_no_up_child = models().withExistingParent(blockName + "_east_no_up", east_no_up.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile up_north_child = models().withExistingParent(blockName + "_up_north", up_north.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile up_no_north_child = models().withExistingParent(blockName + "_up_no_north", up_no_north.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile north_no_up_child = models().withExistingParent(blockName + "_north_no_up", north_no_up.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile up_south_child = models().withExistingParent(blockName + "_up_south", up_south.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile up_no_south_child = models().withExistingParent(blockName + "_up_no_south", up_no_south.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile south_no_up_child = models().withExistingParent(blockName + "_south_no_up", south_no_up.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile north_west_child = models().withExistingParent(blockName + "_north_west", north_west.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile north_no_west_child = models().withExistingParent(blockName + "_north_no_west", north_no_west.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile west_no_north_child = models().withExistingParent(blockName + "_west_no_north", west_no_north.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile north_east_child = models().withExistingParent(blockName + "_north_east", north_east.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile north_no_east_child = models().withExistingParent(blockName + "_north_no_east", north_no_east.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile east_no_north_child = models().withExistingParent(blockName + "_east_no_north", east_no_north.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile south_west_child = models().withExistingParent(blockName + "_south_west", south_west.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile south_no_west_child = models().withExistingParent(blockName + "_south_no_west", south_no_west.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile west_no_south_child = models().withExistingParent(blockName + "_west_no_south", west_no_south.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile south_east_child = models().withExistingParent(blockName + "_south_east", south_east.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile south_no_east_child = models().withExistingParent(blockName + "_south_no_east", south_no_east.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
-			ModelFile east_no_south_child = models().withExistingParent(blockName + "_east_no_south", east_no_south.getLocation()).renderType(TRANSLUCENT).texture("pane", textureLocation);
+				//WEST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.WEST, true).from(0, 7, 7).to(7, 9, 9).shade(false).face(Direction.WEST).cullface(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).shade(false).face(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get())
-					.part().modelFile(west_child).uvLock(true).addModel().condition(PipeBlock.WEST, true).end()
-					.part().modelFile(no_west_child).uvLock(true).addModel().condition(PipeBlock.WEST, false).end()
-					.part().modelFile(east_child).uvLock(true).addModel().condition(PipeBlock.EAST, true).end()
-					.part().modelFile(no_east_child).uvLock(true).addModel().condition(PipeBlock.EAST, false).end()
-					.part().modelFile(down_child).uvLock(true).addModel().condition(PipeBlock.DOWN, true).end()
-					.part().modelFile(no_down_child).uvLock(true).addModel().condition(PipeBlock.DOWN, false).end()
-					.part().modelFile(up_child).uvLock(true).addModel().condition(PipeBlock.UP, true).end()
-					.part().modelFile(no_up_child).uvLock(true).addModel().condition(PipeBlock.UP, false).end()
-					.part().modelFile(north_child).uvLock(true).addModel().condition(PipeBlock.NORTH, true).end()
-					.part().modelFile(no_north_child).uvLock(true).addModel().condition(PipeBlock.NORTH, false).end()
-					.part().modelFile(south_child).uvLock(true).addModel().condition(PipeBlock.SOUTH, true).end()
-					.part().modelFile(no_south_child).uvLock(true).addModel().condition(PipeBlock.SOUTH, false).end();
+				//EAST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.EAST, true).from(9, 7, 7).to(16, 9, 9).shade(false).face(Direction.EAST).cullface(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).shade(false).face(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(down_west_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.SOUTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.X).end().end();
+				//DOWN
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN, true).from(7, 0, 7).to(9, 7, 9).shade(false).face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).shade(false).face(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(down_no_west_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
+				//UP
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP, true).from(7, 9, 7).to(9, 16, 9).shade(false).face(Direction.UP).cullface(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).shade(false).face(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(west_no_down_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, false).condition(PipeBlock.WEST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
+				//NORTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH, true).from(7, 7, 0).to(9, 9, 7).shade(false).face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).shade(false).face(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(down_east_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.SOUTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.X).end().end();
+				//SOUTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH, true).from(7, 7, 9).to(9, 9, 16).shade(false).face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).shade(false).face(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(down_no_east_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
+				//DOWN WEST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_WEST, true).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.WEST).from(0, 0, 7).to(7, 7, 9).shade(false)
+					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(0, 7, 7, 9).end()
+					.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 0, 9, 7).end()
+					.face(Direction.NORTH).uvs(0, 0, 7, 7).end()
+					.face(Direction.SOUTH).uvs(9, 0, 16, 7).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).shade(false).face(Direction.WEST).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).shade(false).face(Direction.DOWN).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(east_no_down_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, false).condition(PipeBlock.EAST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
+				//DOWN EAST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_EAST, true).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.EAST).from(9, 0, 7).to(16, 7, 9).shade(false)
+					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(9, 7, 16, 9).end()
+					.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 0, 9, 7).end()
+					.face(Direction.NORTH).uvs(9, 0, 16, 7).end()
+					.face(Direction.SOUTH).uvs(0, 0, 7, 7).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).shade(false).face(Direction.EAST).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).shade(false).face(Direction.DOWN).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(down_north_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.Z).end().end();
+				//DOWN NORTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_NORTH, true).from(7, 0, 0).to(9, 7, 7).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.NORTH).shade(false)
+					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 0, 9, 7).end()
+					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 0, 9, 7).end()
+					.face(Direction.WEST).uvs(0, 0, 7, 7).end()
+					.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).shade(false).face(Direction.NORTH).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).shade(false).face(Direction.DOWN).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(down_no_north_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
+				//DOWN SOUTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_SOUTH, true).from(7, 0, 9).to(9, 7, 16).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.SOUTH).shade(false)
+					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 9, 9, 16).end()
+					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 0, 9, 7).end()
+					.face(Direction.WEST).uvs(9, 0, 16, 7).end()
+					.face(Direction.EAST).uvs(0, 0, 7, 7).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).shade(false).face(Direction.SOUTH).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).shade(false).face(Direction.DOWN).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(north_no_down_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, false).condition(PipeBlock.NORTH, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
+				//UP WEST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_WEST, true).from(0, 9, 7).to(7, 16, 9).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.WEST).shade(false)
+					.face(Direction.UP).cullface(Direction.UP).uvs(0, 7, 7, 9).end()
+					.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 9, 9, 16).end()
+					.face(Direction.NORTH).uvs(0, 9, 7, 16).end()
+					.face(Direction.SOUTH).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).shade(false).face(Direction.WEST).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).shade(false).face(Direction.UP).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(down_south_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.Z).end().end();
+				//UP EAST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_EAST, true).from(9, 9, 7).to(16, 16, 9).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.EAST).shade(false)
+					.face(Direction.UP).cullface(Direction.UP).uvs(9, 7, 16, 9).end()
+					.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 9, 9, 16).end()
+					.face(Direction.NORTH).uvs(9, 9, 16, 16).end()
+					.face(Direction.SOUTH).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).shade(false).face(Direction.EAST).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).shade(false).face(Direction.UP).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(down_no_south_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
+				//UP NORTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_NORTH, true).from(7, 9, 0).to(9, 16, 7).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.NORTH).shade(false)
+					.face(Direction.UP).cullface(Direction.UP).uvs(7, 0, 9, 7).end()
+					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 9, 9, 16).end()
+					.face(Direction.WEST).uvs(0, 9, 7, 16).end()
+					.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).shade(false).face(Direction.NORTH).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).shade(false).face(Direction.UP).uvs(7, 0, 9, 7).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(south_no_down_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.DOWN, false).condition(PipeBlock.SOUTH, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
+				//UP SOUTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_SOUTH, true).from(7, 9, 9).to(9, 16, 16).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.SOUTH).shade(false)
+					.face(Direction.UP).cullface(Direction.UP).uvs(7, 9, 9, 16).end()
+					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 9, 9, 16).end()
+					.face(Direction.WEST).uvs(9, 9, 16, 16).end()
+					.face(Direction.EAST).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).shade(false).face(Direction.SOUTH).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).shade(false).face(Direction.UP).uvs(7, 9, 9, 16).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(up_west_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.SOUTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.X).end().end();
+				//NORTH WEST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH_WEST, true).from(0, 7, 0).to(7, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH, ForceFieldModel.ExtraDirection.WEST).shade(false)
+					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(0, 7, 7, 9).end()
+					.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
+					.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
+					.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).shade(false).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).shade(false).face(Direction.NORTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(up_no_west_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
+				//NORTH EAST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH_EAST, true).from(9, 7, 0).to(16, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH, ForceFieldModel.ExtraDirection.EAST).shade(false)
+					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(9, 7, 16, 9).end()
+					.face(Direction.EAST).cullface(Direction.EAST).uvs(0, 7, 7, 9).end()
+					.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
+					.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).shade(false).face(Direction.EAST).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).shade(false).face(Direction.NORTH).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(west_no_up_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, false).condition(PipeBlock.WEST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
+				//SOUTH WEST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH_WEST, true).from(0, 7, 9).to(7, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH, ForceFieldModel.ExtraDirection.WEST).shade(false)
+					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
+					.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
+					.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
+					.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).shade(false).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).shade(false).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(up_east_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.SOUTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.X).end().end();
+				//SOUTH EAST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH_EAST, true).from(9, 7, 9).to(16, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH, ForceFieldModel.ExtraDirection.EAST).shade(false)
+					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
+					.face(Direction.EAST).cullface(Direction.EAST).uvs(9, 7, 16, 9).end()
+					.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
+					.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15, 15))
+				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).shade(false).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end()
+				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).shade(false).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().end()
 
-			builder = builder.part().modelFile(up_no_east_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
-
-			builder = builder.part().modelFile(east_no_up_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, false).condition(PipeBlock.EAST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
-
-			builder = builder.part().modelFile(up_north_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.Z).end().end();
-
-			builder = builder.part().modelFile(up_no_north_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
-
-			builder = builder.part().modelFile(north_no_up_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, false).condition(PipeBlock.NORTH, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
-
-			builder = builder.part().modelFile(up_south_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.Z).end().end();
-
-			builder = builder.part().modelFile(up_no_south_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
-
-			builder = builder.part().modelFile(south_no_up_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.UP, false).condition(PipeBlock.SOUTH, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
-
-			builder = builder.part().modelFile(north_west_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.UP, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X, Direction.Axis.Z).end().end();
-
-			builder = builder.part().modelFile(north_no_west_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
-
-			builder = builder.part().modelFile(west_no_north_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.NORTH, false).condition(PipeBlock.WEST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
-
-			builder = builder.part().modelFile(north_east_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.UP, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X, Direction.Axis.Z).end().end();
-
-			builder = builder.part().modelFile(north_no_east_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
-
-			builder = builder.part().modelFile(east_no_north_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.NORTH, false).condition(PipeBlock.EAST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
-
-			builder = builder.part().modelFile(south_west_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.UP, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X, Direction.Axis.Z).end().end();
-
-			builder = builder.part().modelFile(south_no_west_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
-
-			builder = builder.part().modelFile(west_no_south_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.SOUTH, false).condition(PipeBlock.WEST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
-
-			builder = builder.part().modelFile(south_east_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.UP, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X, Direction.Axis.Z).end().end();
-
-			builder = builder.part().modelFile(south_no_east_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
-
-			builder.part().modelFile(east_no_south_child).uvLock(true).addModel()
-					.nestedGroup().condition(PipeBlock.SOUTH, false).condition(PipeBlock.EAST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
+			.end());
 		}
 	}
 

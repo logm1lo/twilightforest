@@ -1,7 +1,7 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -16,6 +16,9 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -31,6 +34,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkStatus;
@@ -53,6 +57,7 @@ import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.model.block.doors.CastleDoorModelLoader;
+import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
 import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
@@ -80,6 +85,7 @@ public class TFClientEvents {
 		public static void registerLoaders(ModelEvent.RegisterGeometryLoaders event) {
 			event.register("patch", PatchModelLoader.INSTANCE);
 			event.register("giant_block", GiantBlockModelLoader.INSTANCE);
+			event.register("force_field", ForceFieldModelLoader.INSTANCE);
 			event.register("castle_door", CastleDoorModelLoader.INSTANCE);
 		}
 
@@ -126,10 +132,11 @@ public class TFClientEvents {
 	}
 
 	/**
-	 * Render effects in first-person perspective
+	 * Render effects in first-person perspective and aurora
 	 */
 	@SubscribeEvent
 	public static void renderWorldLast(RenderLevelStageEvent event) {
+		if (Minecraft.getInstance().level == null) return;
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) { // after particles says its best for special rendering effects, and thats what I consider this
 			if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
@@ -147,6 +154,28 @@ public class TFClientEvents {
 					}
 				}
 			}
+		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
+			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
+			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+
+			final double scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
+			Vec3 pos = event.getCamera().getPosition();
+			double y = 256D - pos.y();
+			buffer.vertex(-scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
+			buffer.vertex(-scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
+			buffer.vertex(scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
+			buffer.vertex(scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
+
+			RenderSystem.enableBlend();
+			RenderSystem.enableDepthTest();
+			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F * 0.5F);
+			TFShaders.AURORA.invokeThenEndTesselator(
+					Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
+					(float) pos.x(), (float) pos.y(), (float) pos.z()
+			);
+			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+			RenderSystem.disableDepthTest();
+			RenderSystem.disableBlend();
 		}
 	}
 
@@ -183,6 +212,9 @@ public class TFClientEvents {
 	private static final int SINE_TICKER_BOUND = (int) ((PI * 200.0F) - 1.0F);
 	private static float intensity = 0.0F;
 
+	private static int aurora = 0;
+	private static int lastAurora = 0;
+
 	@SubscribeEvent
 	public static void clientTick(TickEvent.ClientTickEvent event) {
 		if (event.phase != TickEvent.Phase.END) return;
@@ -197,6 +229,19 @@ public class TFClientEvents {
 
 			rotationTicker = rotationTickerI + partial;
 			sineTicker = sineTicker + partial;
+
+			lastAurora = aurora;
+			if (Minecraft.getInstance().level != null && Minecraft.getInstance().cameraEntity != null && !TFConfig.getValidAuroraBiomes(Minecraft.getInstance().level.registryAccess()).isEmpty()) {
+				RegistryAccess access = Minecraft.getInstance().level.registryAccess();
+				Holder<Biome> biome = Minecraft.getInstance().level.getBiome(Minecraft.getInstance().cameraEntity.blockPosition());
+				if (TFConfig.getValidAuroraBiomes(access).contains(access.registryOrThrow(Registries.BIOME).getKey(biome.value())))
+					aurora++;
+				else
+					aurora--;
+				aurora = Mth.clamp(aurora, 0, 60);
+			} else {
+				aurora = 0;
+			}
 		}
 
 		if (!mc.isPaused()) {
@@ -270,14 +315,14 @@ public class TFClientEvents {
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
 	@SubscribeEvent
-	public static void FOVUpdate(ComputeFovModifierEvent event) {
+	public static void updateBowFOV(ComputeFovModifierEvent event) {
 		Player player = event.getPlayer();
 		if (player.isUsingItem()) {
 			Item useItem = player.getUseItem().getItem();
 			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {
 				float f = player.getTicksUsingItem() / 20.0F;
 				f = f > 1.0F ? 1.0F : f * f;
-				event.setNewFovModifier(event.getFovModifier() * (1.0F - f * 0.15F));
+				event.setNewFovModifier((float) Mth.lerp(Minecraft.getInstance().options.fovEffectScale().get(), 1.0F, (event.getFovModifier() * (1.0F - f * 0.15F))));
 			}
 		}
 	}
