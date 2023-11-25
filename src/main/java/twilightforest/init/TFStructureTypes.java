@@ -15,14 +15,13 @@ public class TFStructureTypes {
 	public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, TwilightForestMod.ID);
 
 	public static final DeferredHolder<StructureType<?>, StructureType<LegacyStructure>> LEGACY_LANDMARK = registerType("legacy_landmark", () -> () -> LegacyStructure.CODEC);
-	public static final DeferredHolder<StructureType<?>, ProgressionJigsawStructure>> PROGRESSION_JIGSAW = registerType("progression_jigsaw", () -> () -> ProgressionJigsawStructure.CODEC);
+	public static final DeferredHolder<StructureType<?>, StructureType<ProgressionJigsawStructure>> PROGRESSION_JIGSAW = registerType("progression_jigsaw", () -> () -> ProgressionJigsawStructure.CODEC);
 
 	public static final DeferredHolder<StructureType<?>, StructureType<HedgeMazeStructure>> HEDGE_MAZE = registerType("hedge_maze", () -> () -> HedgeMazeStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<HollowHillStructure>> HOLLOW_HILL = registerType("hollow_hill", () -> () -> HollowHillStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<QuestGroveStructure>> QUEST_GROVE = registerType("quest_grove", () -> () -> QuestGroveStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<MushroomTowerStructure>> MUSHROOM_TOWER = registerType("mushroom_tower", () -> () -> MushroomTowerStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<NagaCourtyardStructure>> NAGA_COURTYARD = registerType("naga_courtyard", () -> () -> NagaCourtyardStructure.CODEC);
-	public static final DeferredHolder<StructureType<?>, StructureType<LichTowerStructure>> LICH_TOWER = registerType("lich_tower", () -> () -> LichTowerStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<LabyrinthStructure>> LABYRINTH = registerType("labyrinth", () -> () -> LabyrinthStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<HydraLairStructure>> HYDRA_LAIR = registerType("hydra_lair", () -> () -> HydraLairStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<KnightStrongholdStructure>> KNIGHT_STRONGHOLD = registerType("knight_stronghold", () -> () -> KnightStrongholdStructure.CODEC);
