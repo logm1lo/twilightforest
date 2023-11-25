@@ -108,7 +108,7 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
                 Codec.floatRange(1, 32).fieldOf("spacing").forGetter(TriangularLatticeConfig::spacing)
         ).apply(instance, TriangularLatticeConfig::new));
 
-        public static final TriangularLatticeConfig DEFAULT = new TriangularLatticeConfig(3.75f);
+        public static final TriangularLatticeConfig DEFAULT = new TriangularLatticeConfig(3.5f);
 
         public static final Codec<TriangularLatticeConfig> CODEC = ExtraCodecs.withAlternative(VERBOSE_CODEC, ExtraCodecs.withAlternative(OFFSET_CODEC, ExtraCodecs.withAlternative(SPACING_CODEC, Codec.unit(DEFAULT))));
 

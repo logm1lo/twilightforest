@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.RectangleLatticeIterator;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.Map;
@@ -28,68 +29,48 @@ public class YetiCaveComponent extends HollowHillComponent {
 		super(TFStructurePieceTypes.TFYeti.value(), nbt);
 	}
 
-	public YetiCaveComponent(int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFYeti.value(), i, 2, x, y, z);
+	public YetiCaveComponent(int i, int x, int y, int z, RectangleLatticeIterator.TriangularLatticeConfig spikePlacement) {
+		super(TFStructurePieceTypes.TFYeti.value(), i, 2, x, y, z, spikePlacement);
 	}
 
 	/**
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		int sn = 64;
-
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox writeableBounds, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fill in features
 
 //		// ore or glowing stalactites! (smaller, less plentiful)
 //		for (int i = 0; i < sn; i++)
 //		{
 //			int[] dest = getCoordsInHill2D(rand);
-//			generateOreStalactite(world, dest[0], 1, dest[1], sbb);
+//			generateOreStalactite(world, dest[0], 1, dest[1], writeableBounds);
 //		}
-		// blue ice stalactites!
-		for (int i = 0; i < sn; i++) {
-			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, 24);
-			this.generateBlockSpike(world, BLUE_ICE_SPIKE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
-		}
-		// packed ice stalactites!
-		for (int i = 0; i < sn; i++) {
-			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, 24);
-			this.generateBlockSpike(world, PACKED_ICE_SPIKE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
-		}
-		// ice stalactites!
-		for (int i = 0; i < sn; i++) {
-			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, 24);
-			this.generateBlockSpike(world, ICE_SPIKE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
-		}
-		// stone stalactites!
-		for (int i = 0; i < sn; i++) {
-			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, 24);
-			this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
+
+		int maxRadius = 24;
+
+		BlockPos center = this.getLocatorPosition();
+		for (BlockPos.MutableBlockPos dest : this.spikePlacement.boundedGrid(writeableBounds, 0)) {
+			int xDist = Math.abs(dest.getX() - center.getX());
+			int zDist = Math.abs(dest.getZ() - center.getZ());
+
+			if (xDist <= maxRadius && zDist <= maxRadius) {
+				BlockPos ceiling = dest.atY(15 - Math.min(xDist, zDist) / 6);
+
+				// TODO Make configurable
+				Stalactite spike = switch (rand.nextInt(4)) {
+					case 3 -> BlockSpikeFeature.STONE_STALACTITE;
+					case 2 -> ICE_SPIKE;
+					case 1 -> PACKED_ICE_SPIKE;
+					default -> BLUE_ICE_SPIKE;
+				};
+
+				this.generateBlockSpike(world, spike, ceiling.getX(), ceiling.getY(), ceiling.getZ(), writeableBounds, true);
+			}
 		}
 
 		// spawn alpha yeti
 		final BlockState yetiSpawner = TFBlocks.ALPHA_YETI_BOSS_SPAWNER.value().defaultBlockState();
-		this.setBlockStateRotated(world, yetiSpawner, this.radius, 1, this.radius, Rotation.NONE, sbb);
-	}
-
-	/**
-	 * @return true if the coordinates would be inside the hill on the "floor" of the hill
-	 */
-	@Override
-	boolean isInHill(int cx, int cz) {
-		// yeti cave is square
-		return cx < this.radius * 2 && cx > 0 && cz < this.radius * 2 && cz > 0;
-	}
-
-	@Override
-	BlockPos.MutableBlockPos randomCeilingCoordinates(RandomSource rand, float maximumRadius) {
-		int rad = (int) maximumRadius;
-		int x = rand.nextInt(rad * 2) - rad;
-		int z = rand.nextInt(rad * 2) - rad;
-
-		int dist = Math.min(Math.abs(x), Math.abs(z));
-
-		return new BlockPos.MutableBlockPos(this.radius + x, 17 - dist / 6, this.radius + z);
+		this.setBlockStateRotated(world, yetiSpawner, this.radius, 1, this.radius, Rotation.NONE, writeableBounds);
 	}
 }

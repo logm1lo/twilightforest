@@ -15,6 +15,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.util.RectangleLatticeIterator;
 import twilightforest.world.components.structures.HydraLairComponent;
 import twilightforest.world.components.structures.util.ProgressionStructure;
 
@@ -24,16 +25,22 @@ import java.util.stream.Collectors;
 
 public class HydraLairStructure extends ProgressionStructure {
     public static final Codec<HydraLairStructure> CODEC = RecordCodecBuilder.create(instance ->
-            progressionCodec(instance).apply(instance, HydraLairStructure::new)
+            progressionCodec(instance)
+                    .and(RectangleLatticeIterator.TriangularLatticeConfig.CODEC.fieldOf("spike_placement_config").orElse(new RectangleLatticeIterator.TriangularLatticeConfig(4.5f)).forGetter(s -> s.spikePlaceConfig))
+                    .apply(instance, HydraLairStructure::new)
     );
 
-    public HydraLairStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
+    private RectangleLatticeIterator.TriangularLatticeConfig spikePlaceConfig;
+
+    public HydraLairStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings, RectangleLatticeIterator.TriangularLatticeConfig spikePlaceConfig) {
         super(advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+
+        this.spikePlaceConfig = spikePlaceConfig;
     }
 
     @Override
     protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new HydraLairComponent(0, x - 7, y, z - 7);
+        return new HydraLairComponent(0, x - 7, y, z - 7, this.spikePlaceConfig);
     }
 
     @Override
@@ -51,7 +58,8 @@ public class HydraLairStructure extends ProgressionStructure {
                         Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
                         TerrainAdjustment.NONE
-                )
+                ),
+                new RectangleLatticeIterator.TriangularLatticeConfig(4.5f)
         );
     }
 }
