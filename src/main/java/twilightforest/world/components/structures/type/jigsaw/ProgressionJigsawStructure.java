@@ -16,17 +16,17 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.world.components.structures.util.ConquerableStructure;
+import twilightforest.world.components.structures.util.*;
 
 import java.util.Optional;
 
-public class ProgressionJigsawStructure extends ConquerableStructure {
+public class ProgressionJigsawStructure extends ControlledSpawningStructure {
 
 	public static final Codec<ProgressionJigsawStructure> CODEC = RecordCodecBuilder.<ProgressionJigsawStructure>mapCodec(instance ->
 			instance.group(
-					ControlledSpawningConfig.FLAT_CODEC.forGetter(ConquerableStructure::getConfig),
-					AdvancementLockConfig.CODEC.fieldOf("advancements_required").forGetter(s -> s.advancementLockConfig),
-					HintConfig.FLAT_CODEC.forGetter(s -> s.hintConfig),
+					ControlledSpawns.ControlledSpawningConfig.FLAT_CODEC.forGetter(ControlledSpawningStructure::getConfig),
+					AdvancementLockedStructure.AdvancementLockConfig.CODEC.fieldOf("advancements_required").forGetter(s -> s.advancementLockConfig),
+					StructureHints.HintConfig.FLAT_CODEC.forGetter(s -> s.hintConfig),
 					DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
 					Structure.settingsCodec(instance),
 					StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(o -> o.startPool),
@@ -44,7 +44,7 @@ public class ProgressionJigsawStructure extends ConquerableStructure {
 	private final Optional<Heightmap.Types> projectStartToHeightmap;
 	private final int maxDistanceFromCenter;
 
-	public ProgressionJigsawStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, Structure.StructureSettings settings, Holder<StructureTemplatePool> startPool, Optional<ResourceLocation> startJigsaw, int maxDepth, HeightProvider startHeight, Optional<Heightmap.Types> type, int maxDistanceFromCenter) {
+	public ProgressionJigsawStructure(ControlledSpawns.ControlledSpawningConfig controlledSpawningConfig, AdvancementLockedStructure.AdvancementLockConfig advancementLockConfig, StructureHints.HintConfig hintConfig, DecorationConfig decorationConfig, Structure.StructureSettings settings, Holder<StructureTemplatePool> startPool, Optional<ResourceLocation> startJigsaw, int maxDepth, HeightProvider startHeight, Optional<Heightmap.Types> type, int maxDistanceFromCenter) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, settings);
 		this.startPool = startPool;
 		this.startJigsawName = startJigsaw;

@@ -6,7 +6,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.minecraftforge.common.world.PieceBeardifierModifier;
+import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 
 public class IndexedPoolElementPiece extends PoolElementStructurePiece implements PieceBeardifierModifier {
 
