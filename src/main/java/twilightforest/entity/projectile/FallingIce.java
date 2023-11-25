@@ -42,7 +42,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFParticleType;
 
 import java.util.Objects;
 
@@ -63,7 +62,7 @@ public class FallingIce extends Entity {
 	}
 
 	public FallingIce(Level level, double x, double y, double z, BlockState state, int hangTime) {
-		this(TFEntities.FALLING_ICE.get(), level);
+		this(TFEntities.FALLING_ICE.value(), level);
 		this.hangTime = hangTime;
 		this.blockState = state;
 		this.blocksBuilding = true;

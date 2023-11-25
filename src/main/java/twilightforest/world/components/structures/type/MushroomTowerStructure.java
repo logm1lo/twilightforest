@@ -16,7 +16,6 @@ import twilightforest.world.components.structures.mushroomtower.MushroomTowerMai
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MushroomTowerStructure extends LandmarkStructure {
@@ -33,7 +32,7 @@ public class MushroomTowerStructure extends LandmarkStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.MUSHROOM_TOWER.get();
+        return TFStructureTypes.MUSHROOM_TOWER.value();
     }
 
     public static MushroomTowerStructure buildStructureConfig(BootstapContext<Structure> context) {

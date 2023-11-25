@@ -8,10 +8,10 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.AuroraBrickBlock;
 import twilightforest.block.CastleDoorBlock;
@@ -30,11 +30,11 @@ public final class ColorHandler {
 
 		BlockColors blockColors = event.getBlockColors();
 
-		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : ColorUtil.hsvToRGB(getter == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.get());
+		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : ColorUtil.hsvToRGB(getter == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			int normalColor = blockColors.getColor(TFBlocks.AURORA_BLOCK.get().defaultBlockState(), getter, pos, tintIndex);
+			int normalColor = blockColors.getColor(TFBlocks.AURORA_BLOCK.value().defaultBlockState(), getter, pos, tintIndex);
 
 			int red = (normalColor >> 16) & 255;
 			int blue = normalColor & 255;
@@ -43,7 +43,7 @@ public final class ColorHandler {
 			float[] hsb = ColorUtil.rgbToHSV(red, green, blue);
 
 			return ColorUtil.hsvToRGB(hsb[0], hsb[1] * 0.5F, Math.min(hsb[2] + 0.4F, 0.9F));
-		}, TFBlocks.AURORA_PILLAR.get(), TFBlocks.AURORA_SLAB.get(), TFBlocks.AURORALIZED_GLASS.get());
+		}, TFBlocks.AURORA_PILLAR.value(), TFBlocks.AURORA_SLAB.value(), TFBlocks.AURORALIZED_GLASS.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -65,9 +65,9 @@ public final class ColorHandler {
 			}
 
 			return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
-		}, TFBlocks.DARK_LEAVES.get(), TFBlocks.HARDENED_DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : blockColors.getColor(Blocks.GRASS.defaultBlockState(), getter, pos, tintIndex), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get());
-		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? 2129968 : 7455580, TFBlocks.HUGE_LILY_PAD.get());
+		}, TFBlocks.DARK_LEAVES.value(), TFBlocks.HARDENED_DARK_LEAVES.value(), TFBlocks.GIANT_LEAVES.value());
+		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : blockColors.getColor(Blocks.GRASS.defaultBlockState(), getter, pos, tintIndex), TFBlocks.SMOKER.value(), TFBlocks.FIRE_JET.value());
+		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? 2129968 : 7455580, TFBlocks.HUGE_LILY_PAD.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -91,7 +91,7 @@ public final class ColorHandler {
 
 				return red << 16 | green << 8 | blue;
 			}
-		}, TFBlocks.TIME_LEAVES.get());
+		}, TFBlocks.TIME_LEAVES.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -115,7 +115,7 @@ public final class ColorHandler {
 
 				return red << 16 | green << 8 | blue;
 			}
-		}, TFBlocks.TRANSFORMATION_LEAVES.get());
+		}, TFBlocks.TRANSFORMATION_LEAVES.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -139,7 +139,7 @@ public final class ColorHandler {
 
 				return red << 16 | green << 8 | blue;
 			}
-		}, TFBlocks.MINING_LEAVES.get());
+		}, TFBlocks.MINING_LEAVES.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -163,7 +163,7 @@ public final class ColorHandler {
 
 				return red << 16 | green << 8 | blue;
 			}
-		}, TFBlocks.SORTING_LEAVES.get());
+		}, TFBlocks.SORTING_LEAVES.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -173,7 +173,7 @@ public final class ColorHandler {
 				float f = AuroraBrickBlock.rippleFractialNoise(2, 32.0f, pos, 0.4f, 1.0f, 2f);
 				return ColorUtil.hsvToRGB(0.1f, 1f - f, (f + 2f) / 3f);
 			}
-		}, TFBlocks.TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.INFESTED_TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get());
+		}, TFBlocks.TOWERWOOD.value(), TFBlocks.CRACKED_TOWERWOOD.value(), TFBlocks.INFESTED_TOWERWOOD.value(), TFBlocks.MOSSY_TOWERWOOD.value());
 		event.register((state, world, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -195,7 +195,7 @@ public final class ColorHandler {
 
 				return (red / 9 & 0xFF) << 16 | (green / 9 & 0xFF) << 8 | blue / 9 & 0xFF;
 			}
-		}, TFBlocks.TWILIGHT_OAK_LEAVES.get());
+		}, TFBlocks.TWILIGHT_OAK_LEAVES.value());
 		event.register((state, world, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -219,7 +219,7 @@ public final class ColorHandler {
 				// canopy colorizer
 				return ((normalColor & 0xFEFEFE) + 0x469A66) / 2;
 			}
-		}, TFBlocks.CANOPY_LEAVES.get());
+		}, TFBlocks.CANOPY_LEAVES.value());
 		event.register((state, world, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -243,7 +243,7 @@ public final class ColorHandler {
 				// mangrove colors
 				return ((normalColor & 0xFEFEFE) + 0xC0E694) / 2;
 			}
-		}, TFBlocks.MANGROVE_LEAVES.get());
+		}, TFBlocks.MANGROVE_LEAVES.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -284,8 +284,8 @@ public final class ColorHandler {
 
 				return red << 16 | green << 8 | blue;
 			}
-		}, TFBlocks.RAINBOW_OAK_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> FoliageColor.getEvergreenColor(), TFBlocks.BEANSTALK_LEAVES.get(), TFBlocks.THORN_LEAVES.get());
+		}, TFBlocks.RAINBOW_OAK_LEAVES.value());
+		event.register((state, getter, pos, tintIndex) -> FoliageColor.getEvergreenColor(), TFBlocks.BEANSTALK_LEAVES.value(), TFBlocks.THORN_LEAVES.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex != 0) {
 				return 0xFFFFFF;
@@ -296,7 +296,7 @@ public final class ColorHandler {
 					return FoliageColor.getDefaultColor();
 				}
 			}
-		}, TFBlocks.FALLEN_LEAVES.get());
+		}, TFBlocks.FALLEN_LEAVES.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if ((tintIndex & 1) == 1) {
 				return 0xFFFFFF;
@@ -307,18 +307,18 @@ public final class ColorHandler {
 					return GrassColor.get(0.5D, 1.0D);
 				}
 			}
-		}, TFBlocks.FIDDLEHEAD.get(), TFBlocks.POTTED_FIDDLEHEAD.get());
+		}, TFBlocks.FIDDLEHEAD.value(), TFBlocks.POTTED_FIDDLEHEAD.value());
 		event.register((state, getter, pos, tintIndex) -> {
 					if ((tintIndex & 1) == 0) {
 						return 0xFFFFFF;
 					} else {
 						return GrassColor.get(0.5D, 1.0D);
 					}
-				}, TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get(),
-				TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(),
-				TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL.get(),
-				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(),
-				TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get());
+				}, TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.value(),
+				TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.value(), TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.value(),
+				TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL.value(),
+				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.value(),
+				TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.value(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.value());
 		event.register((state, getter, pos, tintIndex) -> {
 					if (state.getValue(HollowLogClimbable.VARIANT) != HollowLogVariants.Climbable.VINE || (tintIndex & 1) == 0) {
 						return 0xFFFFFF;
@@ -329,57 +329,57 @@ public final class ColorHandler {
 							return FoliageColor.getDefaultColor();
 						}
 					}
-				}, TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE.get(),
-				TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(), TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(),
-				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get(),
-				TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get());
+				}, TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE.value(),
+				TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.value(), TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.value(), TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.value(),
+				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.value(),
+				TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.value(), TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.value());
 		event.register((state, getter, pos, tintIndex) -> GrassColor.get(0.5D, 1.0D),
-				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), /*TFBlocks.HEDGE_MAZE_MINIATURE_STRUCTURE.get(), TFBlocks.HOLLOW_HILL_MINIATURE_STRUCTURE.get(), TFBlocks.QUEST_GROVE_MINIATURE_STRUCTURE.get(), TFBlocks.MUSHROOM_TOWER_MINIATURE_STRUCTURE.get(),*/ TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get() //TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(),
-				/*TFBlocks.HYDRA_LAIR_MINIATURE_STRUCTURE.get(), TFBlocks.GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE.get(), TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), TFBlocks.YETI_CAVE_MINIATURE_STRUCTURE.get(), TFBlocks.AURORA_PALACE_MINIATURE_STRUCTURE.get(), TFBlocks.TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE.get(), TFBlocks.FINAL_CASTLE_MINIATURE_STRUCTURE.get()*/);
+				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.value(), /*TFBlocks.HEDGE_MAZE_MINIATURE_STRUCTURE.value(), TFBlocks.HOLLOW_HILL_MINIATURE_STRUCTURE.value(), TFBlocks.QUEST_GROVE_MINIATURE_STRUCTURE.value(), TFBlocks.MUSHROOM_TOWER_MINIATURE_STRUCTURE.value(),*/ TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.value(), TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.value() //TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.value(),
+				/*TFBlocks.HYDRA_LAIR_MINIATURE_STRUCTURE.value(), TFBlocks.GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE.value(), TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.value(), TFBlocks.YETI_CAVE_MINIATURE_STRUCTURE.value(), TFBlocks.AURORA_PALACE_MINIATURE_STRUCTURE.value(), TFBlocks.TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE.value(), TFBlocks.FINAL_CASTLE_MINIATURE_STRUCTURE.value()*/);
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			int color = 0xFF00FF;
 			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
 			return color;
-		}, TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.PINK_CASTLE_DOOR.get());
+		}, TFBlocks.PINK_CASTLE_RUNE_BRICK.value(), TFBlocks.PINK_CASTLE_DOOR.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			int color = 0x00FFFF;
 			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
 			return color;
-		}, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_DOOR.get());
+		}, TFBlocks.BLUE_CASTLE_RUNE_BRICK.value(), TFBlocks.BLUE_CASTLE_DOOR.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			int color = 0xFFFF00;
 			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
 			return color;
-		}, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_DOOR.get());
+		}, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.value(), TFBlocks.YELLOW_CASTLE_DOOR.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			int color = 0x4B0082;
 			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
 			return color;
-		}, TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_DOOR.get());
+		}, TFBlocks.VIOLET_CASTLE_RUNE_BRICK.value(), TFBlocks.VIOLET_CASTLE_DOOR.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0x5C1074;
-		}, TFBlocks.VIOLET_FORCE_FIELD.get());
+		}, TFBlocks.VIOLET_FORCE_FIELD.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0xFA057E;
-		}, TFBlocks.PINK_FORCE_FIELD.get());
+		}, TFBlocks.PINK_FORCE_FIELD.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0xFF5B02;
-		}, TFBlocks.ORANGE_FORCE_FIELD.get());
+		}, TFBlocks.ORANGE_FORCE_FIELD.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0x89E701;
-		}, TFBlocks.GREEN_FORCE_FIELD.get());
+		}, TFBlocks.GREEN_FORCE_FIELD.value());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0x0DDEFF;
-		}, TFBlocks.BLUE_FORCE_FIELD.get());
+		}, TFBlocks.BLUE_FORCE_FIELD.value());
 	}
 
 	@SubscribeEvent
@@ -391,21 +391,21 @@ public final class ColorHandler {
 						return blockColors.getColor(blocc.getBlock().defaultBlockState(), null, null, tintIndex);
 					return 0xFFFFFF;
 				},
-				TFBlocks.AURORA_BLOCK.get(), TFBlocks.AURORA_PILLAR.get(), TFBlocks.AURORA_SLAB.get(), TFBlocks.AURORALIZED_GLASS.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get(),
-				TFBlocks.TIME_LEAVES.get(), TFBlocks.TRANSFORMATION_LEAVES.get(), TFBlocks.MINING_LEAVES.get(), TFBlocks.SORTING_LEAVES.get(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.CANOPY_LEAVES.get(), TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.THORN_LEAVES.get(), TFBlocks.BEANSTALK_LEAVES.get(),
-				TFBlocks.FALLEN_LEAVES.get(), TFBlocks.FIDDLEHEAD.get(), TFBlocks.POTTED_FIDDLEHEAD.get(), TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
-				TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(), TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(), TFBlocks.VIOLET_FORCE_FIELD.get(), TFBlocks.HUGE_LILY_PAD.get(),
-				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), /*TFBlocks.HEDGE_MAZE_MINIATURE_STRUCTURE.get(), TFBlocks.HOLLOW_HILL_MINIATURE_STRUCTURE.get(), TFBlocks.QUEST_GROVE_MINIATURE_STRUCTURE.get(), TFBlocks.MUSHROOM_TOWER_MINIATURE_STRUCTURE.get(),*/ TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get()//, TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(),
-				/*TFBlocks.HYDRA_LAIR_MINIATURE_STRUCTURE.get(), TFBlocks.GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE.get(), TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), TFBlocks.YETI_CAVE_MINIATURE_STRUCTURE.get(), TFBlocks.AURORA_PALACE_MINIATURE_STRUCTURE.get(), TFBlocks.TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE.get(), TFBlocks.FINAL_CASTLE_MINIATURE_STRUCTURE.get()*/);
+				TFBlocks.AURORA_BLOCK.value(), TFBlocks.AURORA_PILLAR.value(), TFBlocks.AURORA_SLAB.value(), TFBlocks.AURORALIZED_GLASS.value(), TFBlocks.DARK_LEAVES.value(), TFBlocks.GIANT_LEAVES.value(), TFBlocks.SMOKER.value(), TFBlocks.FIRE_JET.value(),
+				TFBlocks.TIME_LEAVES.value(), TFBlocks.TRANSFORMATION_LEAVES.value(), TFBlocks.MINING_LEAVES.value(), TFBlocks.SORTING_LEAVES.value(), TFBlocks.TWILIGHT_OAK_LEAVES.value(), TFBlocks.CANOPY_LEAVES.value(), TFBlocks.MANGROVE_LEAVES.value(), TFBlocks.RAINBOW_OAK_LEAVES.value(), TFBlocks.THORN_LEAVES.value(), TFBlocks.BEANSTALK_LEAVES.value(),
+				TFBlocks.FALLEN_LEAVES.value(), TFBlocks.FIDDLEHEAD.value(), TFBlocks.POTTED_FIDDLEHEAD.value(), TFBlocks.PINK_CASTLE_RUNE_BRICK.value(), TFBlocks.BLUE_CASTLE_RUNE_BRICK.value(), TFBlocks.YELLOW_CASTLE_RUNE_BRICK.value(), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.value(),
+				TFBlocks.YELLOW_CASTLE_DOOR.value(), TFBlocks.BLUE_CASTLE_DOOR.value(), TFBlocks.PINK_CASTLE_DOOR.value(), TFBlocks.VIOLET_CASTLE_DOOR.value(), TFBlocks.PINK_FORCE_FIELD.value(), TFBlocks.BLUE_FORCE_FIELD.value(), TFBlocks.GREEN_FORCE_FIELD.value(), TFBlocks.ORANGE_FORCE_FIELD.value(), TFBlocks.VIOLET_FORCE_FIELD.value(), TFBlocks.HUGE_LILY_PAD.value(),
+				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.value(), /*TFBlocks.HEDGE_MAZE_MINIATURE_STRUCTURE.value(), TFBlocks.HOLLOW_HILL_MINIATURE_STRUCTURE.value(), TFBlocks.QUEST_GROVE_MINIATURE_STRUCTURE.value(), TFBlocks.MUSHROOM_TOWER_MINIATURE_STRUCTURE.value(),*/ TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.value(), TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.value()//, TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.value(),
+				/*TFBlocks.HYDRA_LAIR_MINIATURE_STRUCTURE.value(), TFBlocks.GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE.value(), TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.value(), TFBlocks.YETI_CAVE_MINIATURE_STRUCTURE.value(), TFBlocks.AURORA_PALACE_MINIATURE_STRUCTURE.value(), TFBlocks.TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE.value(), TFBlocks.FINAL_CASTLE_MINIATURE_STRUCTURE.value()*/);
 
 		event.register((stack, tintIndex) ->
 						stack.getItem() instanceof ArcticArmorItem arctic
 								? (arctic).getColor(stack, tintIndex)
 								: 0xFFFFFF,
-				TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
+				TFItems.ARCTIC_HELMET.value(), TFItems.ARCTIC_CHESTPLATE.value(), TFItems.ARCTIC_LEGGINGS.value(), TFItems.ARCTIC_BOOTS.value());
 
 		event.register((stack, tintIndex) ->
 						tintIndex > 0 ? -1 : PotionUtils.getColor(stack),
-				TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
+				TFItems.BRITTLE_FLASK.value(), TFItems.GREATER_FLASK.value());
 	}
 }

@@ -14,10 +14,10 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 
 public class DarkTowerBridgeComponent extends TowerWingComponent {
 
@@ -26,7 +26,7 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 	}
 
 	public DarkTowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFDTBri.get(), nbt);
+		super(TFStructurePieceTypes.TFDTBri.value(), nbt);
 	}
 
 	private int dSize;
@@ -62,7 +62,7 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 			return false;
 		}
 
-		TowerWingComponent wing = new DarkTowerWingComponent(TFStructurePieceTypes.TFDTWin.get(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		TowerWingComponent wing = new DarkTowerWingComponent(TFStructurePieceTypes.TFDTWin.value(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {

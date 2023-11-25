@@ -61,12 +61,12 @@ public record BorderLayer(ResourceKey<Biome> targetBiome, ResourceKey<Biome> bor
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.instance.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return this.instance.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.BORDER.get();
+			return BiomeLayerTypes.BORDER.value();
 		}
 
 		public long salt() {

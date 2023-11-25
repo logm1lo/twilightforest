@@ -5,14 +5,14 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.entity.boss.UrGhast;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
-import twilightforest.entity.boss.UrGhast;
 
 public class UrGhastSpawnerBlockEntity extends BossSpawnerBlockEntity<UrGhast> {
 
 	public UrGhastSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.UR_GHAST_SPAWNER.get(), TFEntities.UR_GHAST.get(), pos, state);
+		super(TFBlockEntities.UR_GHAST_SPAWNER.value(), TFEntities.UR_GHAST.value(), pos, state);
 	}
 
 	@Override

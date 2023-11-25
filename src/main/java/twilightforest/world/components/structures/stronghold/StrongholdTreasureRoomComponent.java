@@ -19,17 +19,17 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 
 
-public class StrongholdTreasureRoomComponent extends StructureTFStrongholdComponent {
+public class StrongholdTreasureRoomComponent extends KnightStrongholdComponent {
 
 	private boolean enterBottom;
 
 	public StrongholdTreasureRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFTreaR.get(), nbt);
+		super(TFStructurePieceTypes.TFTreaR.value(), nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
 	public StrongholdTreasureRoomComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFTreaR.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFTreaR.value(), i, facing, x, y, z);
 	}
 
 	@Override
@@ -68,9 +68,9 @@ public class StrongholdTreasureRoomComponent extends StructureTFStrongholdCompon
 		this.generateBox(world, sbb, 3, 1, 8, 5, 4, 9, Blocks.IRON_BARS.defaultBlockState(), Blocks.IRON_BARS.defaultBlockState(), false);
 
 		// spawnwers
-		this.setSpawner(world, 4, 1, 4, sbb, TFEntities.HELMET_CRAB.get());
+		this.setSpawner(world, 4, 1, 4, sbb, TFEntities.HELMET_CRAB.value());
 
-		this.setSpawner(world, 4, 4, 15, sbb, TFEntities.HELMET_CRAB.get());
+		this.setSpawner(world, 4, 4, 15, sbb, TFEntities.HELMET_CRAB.value());
 
 		// treasure!
 		this.manualTreaurePlacement(world, 2, 4, 13, Direction.WEST, TFLootTables.STRONGHOLD_ROOM, false, sbb);

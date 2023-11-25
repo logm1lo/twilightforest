@@ -20,10 +20,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.TFRegistries;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.MagicPaintingVariants;
-import twilightforest.util.MagicPaintingVariant;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class MagicPainting extends HangingEntity {
     }
 
     private MagicPainting(Level level, BlockPos pos) {
-        super(TFEntities.MAGIC_PAINTING.get(), level, pos);
+        super(TFEntities.MAGIC_PAINTING.value(), level, pos);
     }
 
     @Override
@@ -61,20 +61,20 @@ public class MagicPainting extends HangingEntity {
     public Optional<MagicPaintingVariant> getVariant() {
         String id = this.entityData.get(DATA_PAINTING_VARIANT_ID);
         if (id.equals(EMPTY)) return Optional.empty();
-        return MagicPaintingVariants.getVariant(this.level().registryAccess(), id);
+        return MagicPaintingVariant.getVariant(this.level().registryAccess(), id);
     }
 
     public static Optional<MagicPainting> create(Level level, BlockPos pos, Direction direction) {
         MagicPainting magicPainting = new MagicPainting(level, pos);
         List<MagicPaintingVariant> list = new ArrayList<>();
         RegistryAccess regAccess = level.registryAccess();
-        regAccess.registryOrThrow(MagicPaintingVariants.REGISTRY_KEY).forEach(list::add);
+        regAccess.registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).forEach(list::add);
         if (list.isEmpty()) {
             return Optional.empty();
         } else {
             magicPainting.setDirection(direction);
             list.removeIf((variant) -> {
-                magicPainting.setVariant(MagicPaintingVariants.getVariantId(regAccess, variant));
+                magicPainting.setVariant(MagicPaintingVariant.getVariantId(regAccess, variant));
                 return !magicPainting.survives();
             });
             if (list.isEmpty()) {
@@ -86,7 +86,7 @@ public class MagicPainting extends HangingEntity {
                 if (optional.isEmpty()) {
                     return Optional.empty();
                 } else {
-                    magicPainting.setVariant(MagicPaintingVariants.getVariantId(regAccess, optional.get()));
+                    magicPainting.setVariant(MagicPaintingVariant.getVariantId(regAccess, optional.get()));
                     magicPainting.setDirection(direction);
                     return Optional.of(magicPainting);
                 }
@@ -133,7 +133,7 @@ public class MagicPainting extends HangingEntity {
                 }
             }
 
-            this.spawnAtLocation(Util.make(new ItemStack(TFItems.MAGIC_PAINTING.get()), stack -> {
+            this.spawnAtLocation(Util.make(new ItemStack(TFItems.MAGIC_PAINTING.value()), stack -> {
                 CompoundTag tag = stack.getOrCreateTagElement("EntityTag");
                 tag.putString("variant", this.entityData.get(DATA_PAINTING_VARIANT_ID));
             }));
@@ -151,7 +151,7 @@ public class MagicPainting extends HangingEntity {
     }
 
     @Override
-    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
         this.setPos(x, y, z);
     }
 
@@ -173,6 +173,6 @@ public class MagicPainting extends HangingEntity {
 
     @Override
     public ItemStack getPickResult() {
-        return new ItemStack(TFItems.MAGIC_PAINTING.get());
+        return new ItemStack(TFItems.MAGIC_PAINTING.value());
     }
 }

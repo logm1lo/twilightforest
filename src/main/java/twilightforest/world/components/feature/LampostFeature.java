@@ -1,15 +1,15 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
-import net.minecraft.world.level.levelgen.feature.Feature;
 import twilightforest.init.TFBlocks;
 
 public class LampostFeature extends Feature<BlockStateConfiguration> {
@@ -46,7 +46,7 @@ public class LampostFeature extends Feature<BlockStateConfiguration> {
 
 		// generate lamp
 		for (int dy = 0; dy < height; dy++) {
-			world.setBlock(pos.above(dy), TFBlocks.CANOPY_FENCE.get().defaultBlockState(), 16 | 2);
+			world.setBlock(pos.above(dy), TFBlocks.CANOPY_FENCE.value().defaultBlockState(), 16 | 2);
 		}
 		world.setBlock(pos.above(height), config.state.rotate(ROTATIONS[rand.nextInt(ROTATIONS.length)]), 16 | 2);
 		return true;

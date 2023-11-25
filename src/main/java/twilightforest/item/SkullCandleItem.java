@@ -1,10 +1,8 @@
 package twilightforest.item;
 
-import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -17,13 +15,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import org.apache.commons.lang3.StringUtils;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
-import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.client.ISTER;
 import twilightforest.init.TFBlocks;
 
@@ -57,7 +54,7 @@ public class SkullCandleItem extends StandingAndWallBlockItem implements CurioIt
 
 	@Override
 	public Component getName(ItemStack stack) {
-		if (stack.is(TFBlocks.PLAYER_SKULL_CANDLE.get().asItem()) && stack.hasTag()) {
+		if (stack.is(TFBlocks.PLAYER_SKULL_CANDLE.value().asItem()) && stack.hasTag()) {
 			String s = null;
 			CompoundTag compoundtag = stack.getTag();
 			if (compoundtag != null && compoundtag.contains("SkullOwner", 8)) {
@@ -80,13 +77,7 @@ public class SkullCandleItem extends StandingAndWallBlockItem implements CurioIt
 	@Override
 	public void verifyTagAfterLoad(CompoundTag tag) {
 		super.verifyTagAfterLoad(tag);
-		if (tag.contains("SkullOwner", 8) && !StringUtils.isBlank(tag.getString("SkullOwner"))) {
-			GameProfile gameprofile = new GameProfile(null, tag.getString("SkullOwner"));
-			SkullCandleBlockEntity.updateGameprofile(gameprofile, (p_151177_) -> {
-				tag.put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), p_151177_));
-			});
-		}
-
+		SkullBlockEntity.resolveGameProfile(tag);
 	}
 
 	@Override

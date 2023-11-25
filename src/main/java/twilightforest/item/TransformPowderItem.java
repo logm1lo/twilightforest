@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
 import twilightforest.init.TFSounds;
@@ -35,10 +35,10 @@ public class TransformPowderItem extends Item {
 		}
 		AtomicBoolean flag = new AtomicBoolean(false);
 
-		player.level().getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach((recipe) -> {
+		player.level().getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.value()).forEach(recipeHolder -> {
 			if (flag.get()) return;
-			if (recipe.input() == target.getType() || (recipe.isReversible() && recipe.result() == target.getType())) {
-				EntityType<?> type = recipe.isReversible() && recipe.result() == target.getType() ? recipe.input() : recipe.result();
+			if (recipeHolder.value().input() == target.getType() || (recipeHolder.value().isReversible() && recipeHolder.value().result() == target.getType())) {
+				EntityType<?> type = recipeHolder.value().isReversible() && recipeHolder.value().result() == target.getType() ? recipeHolder.value().input() : recipeHolder.value().result();
 				if (type == null) {
 					return;
 				}
@@ -50,7 +50,7 @@ public class TransformPowderItem extends Item {
 
 				newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
 				if (newEntity instanceof Mob mob && target.level() instanceof ServerLevelAccessor world) {
-					ForgeEventFactory.onFinalizeSpawn(mob, world, target.level().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
+					EventHooks.onFinalizeSpawn(mob, world, target.level().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
 				}
 
 				try { // try copying what can be copied
@@ -69,7 +69,7 @@ public class TransformPowderItem extends Item {
 					mob.spawnAnim();
 					mob.spawnAnim();
 				}
-				target.playSound(TFSounds.POWDER_USE.get(), 1.0F + target.level().getRandom().nextFloat(), target.level().getRandom().nextFloat() * 0.7F + 0.3F);
+				target.playSound(TFSounds.POWDER_USE.value(), 1.0F + target.level().getRandom().nextFloat(), target.level().getRandom().nextFloat() * 0.7F + 0.3F);
 				flag.set(true);
 			}
 		});

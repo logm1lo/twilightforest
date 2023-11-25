@@ -3,10 +3,8 @@ package twilightforest.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.inventory.UncraftingMenu;
-
-import java.util.function.Supplier;
 
 public class UncraftingGuiPacket {
 	private final int type;
@@ -25,10 +23,10 @@ public class UncraftingGuiPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(UncraftingGuiPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ServerPlayer player = ctx.get().getSender();
+		public static boolean onMessage(UncraftingGuiPacket message, NetworkEvent.Context ctx) {
+			ServerPlayer player = ctx.getSender();
 
-			ctx.get().enqueueWork(() -> {
+			ctx.enqueueWork(() -> {
 				AbstractContainerMenu container = player.containerMenu;
 
 				if (container instanceof UncraftingMenu uncrafting) {
@@ -49,7 +47,7 @@ public class UncraftingGuiPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

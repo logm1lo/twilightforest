@@ -8,10 +8,9 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.FireflyBlockEntity;
 import twilightforest.init.TFBlockEntities;
-
-import org.jetbrains.annotations.Nullable;
 import twilightforest.loot.TFLootTables;
 
 public class FireflyBlock extends CritterBlock {
@@ -29,7 +28,7 @@ public class FireflyBlock extends CritterBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.FIREFLY.get(), FireflyBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.FIREFLY.value(), FireflyBlockEntity::tick);
 	}
 
 	@Override

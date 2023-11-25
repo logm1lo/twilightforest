@@ -40,29 +40,33 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
+import twilightforest.client.FoliageColorHandler;
 import twilightforest.client.TFClientSetup;
+import twilightforest.entity.TFPart;
 import twilightforest.events.ToolEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimensionSettings;
-import twilightforest.entity.TFPart;
 import twilightforest.init.TFItems;
 import twilightforest.item.GiantItem;
+import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.world.components.structures.util.CustomStructureData;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
@@ -80,16 +84,20 @@ public class ASMHooks {
 	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}<br>
-	 * [BEFORE FIRST ISTORE]
+	 * [BEFORE ISTORE 5]
 	 */
-	public static void mapRenderContext(PoseStack stack, MultiBufferSource buffer, int light) {
-		TFMagicMapData.TFMapDecoration.RenderContext.stack = stack;
-		TFMagicMapData.TFMapDecoration.RenderContext.buffer = buffer;
-		TFMagicMapData.TFMapDecoration.RenderContext.light = light;
+	public static int mapRenderDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
+		if (data instanceof TFMagicMapData mapData) {
+			for (TFMagicMapData.TFMapDecoration decoration : mapData.tfDecorations.values()) {
+				decoration.render(o, stack, buffer, light);
+				o++;
+			}
+		}
+		return o;
 	}
 
 	private static boolean isOurMap(ItemStack stack) {
-		return stack.is(TFItems.FILLED_MAGIC_MAP.get()) || stack.is(TFItems.FILLED_MAZE_MAP.get()) || stack.is(TFItems.FILLED_ORE_MAP.get());
+		return stack.is(TFItems.FILLED_MAGIC_MAP.value()) || stack.is(TFItems.FILLED_MAZE_MAP.value()) || stack.is(TFItems.FILLED_ORE_MAP.value());
 	}
 
 	/**
@@ -250,12 +258,12 @@ public class ASMHooks {
 		ItemStack heldStack = player.getItemInHand(hand);
 		if (ToolEvents.hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 			UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
-			AttributeInstance reachDistance = player.getAttribute(ForgeMod.BLOCK_REACH.get());
+			AttributeInstance reachDistance = player.getAttribute(NeoForgeMod.BLOCK_REACH.value());
 			if (reachDistance != null) {
 				AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
 				if (giantModifier != null) {
-					reachDistance.removeModifier(giantModifier);
-					double reach = player.getAttributeValue(ForgeMod.BLOCK_REACH.get());
+					reachDistance.removeModifier(giantModifier.getId());
+					double reach = player.getAttributeValue(NeoForgeMod.BLOCK_REACH.value());
 					double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
 					BlockHitResult result = getPlayerPOVHitResultForReach(level, player, trueReach, fluidMode);
 					reachDistance.addTransientModifier(giantModifier);
@@ -295,7 +303,7 @@ public class ASMHooks {
 			for (int z = -1; z <= 1; z++) {
 				if (x == 0 && z == 0)
 					continue;
-				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL.get()))
+				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL.value()))
 					return 0;
 			}
 		}
@@ -330,6 +338,6 @@ public class ASMHooks {
 	 */
 	public static boolean lead(boolean o, LeashFenceKnotEntity entity) {
 		BlockState fenceState = entity.level().getBlockState(entity.getPos());
-		return o || (fenceState.is(TFBlocks.WROUGHT_IRON_FENCE.get()) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE);
+		return o || (fenceState.is(TFBlocks.WROUGHT_IRON_FENCE.value()) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE);
 	}
 }

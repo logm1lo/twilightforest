@@ -11,8 +11,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
@@ -25,7 +25,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 	}
 
 	public LichBomb(Level world, LivingEntity thrower) {
-		super(TFEntities.LICH_BOMB.get(), world, thrower);
+		super(TFEntities.LICH_BOMB.value(), world, thrower);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 
 	private void explode() {
 		if (!this.level().isClientSide()) {
-			this.level().explode(this, TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.LICH_BOMB, TFEntities.LICH.get()), null, this.getX(), this.getY(), this.getZ(), 2.0F, false, Level.ExplosionInteraction.NONE);
+			this.level().explode(this, TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.LICH_BOMB, TFEntities.LICH.value()), null, this.getX(), this.getY(), this.getZ(), 2.0F, false, Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
 	}

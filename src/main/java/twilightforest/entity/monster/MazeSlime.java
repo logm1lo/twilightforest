@@ -22,10 +22,9 @@ import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 public class MazeSlime extends Slime {
 
@@ -60,28 +59,23 @@ public class MazeSlime extends Slime {
 	}
 
 	@Override
-	public double getMyRidingOffset() {
-		return 0.25D;
-	}
-
-	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return this.isTiny() ? TFSounds.MAZE_SLIME_HURT_SMALL.get() : TFSounds.MAZE_SLIME_HURT.get();
+		return this.isTiny() ? TFSounds.MAZE_SLIME_HURT_SMALL.value() : TFSounds.MAZE_SLIME_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return this.isTiny() ? TFSounds.MAZE_SLIME_DEATH_SMALL.get() : TFSounds.MAZE_SLIME_DEATH.get();
+		return this.isTiny() ? TFSounds.MAZE_SLIME_DEATH_SMALL.value() : TFSounds.MAZE_SLIME_DEATH.value();
 	}
 
 	@Override
 	protected SoundEvent getSquishSound() {
-		return this.isTiny() ? TFSounds.MAZE_SLIME_SQUISH_SMALL.get() : TFSounds.MAZE_SLIME_SQUISH.get();
+		return this.isTiny() ? TFSounds.MAZE_SLIME_SQUISH_SMALL.value() : TFSounds.MAZE_SLIME_SQUISH.value();
 	}
 
 	@Override
 	protected SoundEvent getJumpSound() {
-		return this.isTiny() ? TFSounds.MAZE_SLIME_SQUISH_SMALL.get() : TFSounds.MAZE_SLIME_SQUISH.get();
+		return this.isTiny() ? TFSounds.MAZE_SLIME_SQUISH_SMALL.value() : TFSounds.MAZE_SLIME_SQUISH.value();
 	}
 
 	@Override
@@ -100,7 +94,7 @@ public class MazeSlime extends Slime {
 			float f3 = Mth.cos(f) * i * 0.5F * f1;
 			double d0 = this.getX() + f2;
 			double d1 = this.getZ() + f3;
-			BlockState state = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
+			BlockState state = TFBlocks.MAZESTONE_BRICK.value().defaultBlockState();
 			this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D);
 		}
 		return true;

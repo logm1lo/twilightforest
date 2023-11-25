@@ -18,16 +18,15 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
-import twilightforest.world.components.structures.util.ConquerableStructure;
+import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class KnightStrongholdStructure extends ConquerableStructure {
+public class KnightStrongholdStructure extends ControlledSpawningStructure {
     public static final Codec<KnightStrongholdStructure> CODEC = RecordCodecBuilder.create(instance ->
-            conquerStatusCodec(instance).apply(instance, KnightStrongholdStructure::new)
+            controlledSpawningCodec(instance).apply(instance, KnightStrongholdStructure::new)
     );
 
     public KnightStrongholdStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
@@ -41,23 +40,23 @@ public class KnightStrongholdStructure extends ConquerableStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.KNIGHT_STRONGHOLD.get();
+        return TFStructureTypes.KNIGHT_STRONGHOLD.value();
     }
 
     public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstapContext<Structure> context) {
         return new KnightStrongholdStructure(
                 ControlledSpawningConfig.firstIndexMonsters(
-                        new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.get(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.LOWER_GOBLIN_KNIGHT.get(), 5, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.HELMET_CRAB.get(), 10, 2, 4),
-                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 10, 2, 3),
-                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 2, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 10, 2, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.value(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.LOWER_GOBLIN_KNIGHT.value(), 5, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.HELMET_CRAB.value(), 10, 2, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.value(), 10, 2, 3),
+                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.value(), 2, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.value(), 10, 2, 4),
                         new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 5, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.SLIME, 5, 4, 4)
                 ),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_trophy_pedestal"))),
-                new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD.get()),
+                new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD.value()),
                 new DecorationConfig(3, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_KNIGHT_STRONGHOLD_BIOMES),

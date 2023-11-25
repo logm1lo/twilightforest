@@ -12,8 +12,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
@@ -27,7 +27,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	}
 
 	public IceSnowball(Level world, LivingEntity thrower) {
-		super(TFEntities.ICE_SNOWBALL.get(), world, thrower);
+		super(TFEntities.ICE_SNOWBALL.value(), world, thrower);
 	}
 
 	@Override

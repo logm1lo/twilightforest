@@ -21,12 +21,12 @@ import twilightforest.util.BoundingBoxUtils;
 import java.util.List;
 
 
-public class StrongholdEntranceComponent extends StructureTFStrongholdComponent {
+public class StrongholdEntranceComponent extends KnightStrongholdComponent {
 
 	public final StrongholdPieces lowerPieces;
 
 	public StrongholdEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSEnter.get(), nbt);
+		super(TFStructurePieceTypes.TFSEnter.value(), nbt);
 
 		this.deco = new StrongholdDecorator();
 
@@ -34,7 +34,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 	}
 
 	public StrongholdEntranceComponent(int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSEnter.get(), i, Direction.SOUTH, x, y - 10, z);
+		super(TFStructurePieceTypes.TFSEnter.value(), i, Direction.SOUTH, x, y - 10, z);
 
 		this.deco = new StrongholdDecorator();
 
@@ -106,7 +106,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 //		list.add(shield);
 
 			// add the upper stronghold
-			StructureTFStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(2, this.getOrientation(), boundingBox.minX() + 8, boundingBox.minY() + 7, boundingBox.minZ() + 4);
+			KnightStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(2, this.getOrientation(), boundingBox.minX() + 8, boundingBox.minY() + 7, boundingBox.minZ() + 4);
 			list.add(accessChamber);
 			accessChamber.addChildren(this, old, random);
 		}

@@ -21,7 +21,6 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.BlockItem;
@@ -31,10 +30,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.registries.RegistryObject;
-import org.apache.commons.lang3.StringUtils;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.AbstractSkullCandleBlock;
@@ -65,7 +63,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		}
 	});
 
-	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState());
+	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.value().defaultBlockState());
 	private final Map<Block, TwilightChestEntity> chestEntities = Util.make(new HashMap<>(), map -> {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
 		makeInstance(map, TFBlocks.CANOPY_CHEST);
@@ -138,19 +136,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			} else if (block instanceof TFChestBlock) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), ms, buffers, light, overlay);
 			} else if (block instanceof AbstractSkullCandleBlock candleBlock) {
-				GameProfile gameprofile = null;
-				if (stack.hasTag()) {
-					CompoundTag compoundtag = stack.getTag();
-					if (compoundtag.contains("SkullOwner", 10)) {
-						gameprofile = NbtUtils.readGameProfile(compoundtag.getCompound("SkullOwner"));
-					} else if (compoundtag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundtag.getString("SkullOwner"))) {
-						gameprofile = new GameProfile(null, compoundtag.getString("SkullOwner"));
-						compoundtag.remove("SkullOwner");
-						SkullBlockEntity.updateGameprofile(gameprofile, (p_172560_) ->
-								compoundtag.put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), p_172560_)));
-					}
-				}
-
+				CompoundTag compoundtag = stack.getTag();
+				GameProfile gameprofile = compoundtag != null ? SkullBlockEntity.getOrResolveGameProfile(compoundtag) : null;
 				SkullBlock.Type type = candleBlock.getType();
 				SkullModelBase base = this.skulls.get(type);
 				RenderType renderType = SkullCandleTileEntityRenderer.getRenderType(type, gameprofile);
@@ -183,8 +170,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		}
 	}
 
-	public static void makeInstance(Map<Block, TwilightChestEntity> map, RegistryObject<? extends ChestBlock> registryObject) {
-		ChestBlock block = registryObject.get();
+	public static void makeInstance(Map<Block, TwilightChestEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
+		ChestBlock block = registryObject.value();
 		map.put(block, new TwilightChestEntity(BlockPos.ZERO, block.defaultBlockState()));
 	}
 }

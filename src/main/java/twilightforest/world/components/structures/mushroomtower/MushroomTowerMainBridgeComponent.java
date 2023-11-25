@@ -1,7 +1,7 @@
 package twilightforest.world.components.structures.mushroomtower;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -13,12 +13,12 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeComponent {
 
 	public MushroomTowerMainBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMTMB.get(), nbt);
+		super(TFStructurePieceTypes.TFMTMB.value(), nbt);
 	}
 
 	protected MushroomTowerMainBridgeComponent(int i, int x, int y, int z, int pHeight, Direction direction) {
 		// bridge only 11 long
-		super(TFStructurePieceTypes.TFMTMB.get(), i, x, y, z, 11, pHeight, direction);
+		super(TFStructurePieceTypes.TFMTMB.value(), i, x, y, z, 11, pHeight, direction);
 	}
 
 	@Override

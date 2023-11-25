@@ -40,7 +40,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	protected int height;
 
 	public TrollCaveMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFTCMai.get(), nbt);
+		this(TFStructurePieceTypes.TFTCMai.value(), nbt);
 	}
 
 	public TrollCaveMainComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -150,7 +150,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 					if (dist > threshold) {
 						this.placeBlock(world, Blocks.AIR.defaultBlockState(), x, y, z, boundingBox);
 					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlock(world, x, y, z, boundingBox).is(BlockTags.BASE_STONE_OVERWORLD)) {
-						this.placeBlock(world, TFBlocks.TROLLSTEINN.get().defaultBlockState(), x, y, z, boundingBox);
+						this.placeBlock(world, TFBlocks.TROLLSTEINN.value().defaultBlockState(), x, y, z, boundingBox);
 					}
 				}
 			}

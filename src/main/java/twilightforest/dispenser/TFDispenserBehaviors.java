@@ -1,8 +1,8 @@
 package twilightforest.dispenser;
 
-import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.sounds.SoundEvent;
@@ -22,7 +22,7 @@ import twilightforest.init.TFSounds;
 public class TFDispenserBehaviors {
 
 	public static void init() {
-		DispenserBlock.registerBehavior(TFItems.MOONWORM_QUEEN.get(), new DamageableStackDispenseBehavior() {
+		DispenserBlock.registerBehavior(TFItems.MOONWORM_QUEEN.value(), new DamageableStackDispenseBehavior() {
 			@Override
 			protected Projectile getProjectileEntity(Level level, Position position, ItemStack stack) {
 				return new MoonwormShot(level, position.x(), position.y(), position.z());
@@ -35,7 +35,7 @@ public class TFDispenserBehaviors {
 
 			@Override
 			protected SoundEvent getFiredSound() {
-				return TFSounds.MOONWORM_SQUISH.get();
+				return TFSounds.MOONWORM_SQUISH.value();
 			}
 		});
 
@@ -46,29 +46,29 @@ public class TFDispenserBehaviors {
 				return stack;
 			}
 		};
-		DispenserBlock.registerBehavior(TFBlocks.NAGA_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.LICH_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.MINOSHROOM_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.HYDRA_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.KNIGHT_PHANTOM_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.UR_GHAST_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.ALPHA_YETI_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.QUEST_RAM_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.CREEPER_SKULL_CANDLE.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.PLAYER_SKULL_CANDLE.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.CICADA.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.FIREFLY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.MOONWORM.get().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.NAGA_TROPHY.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.LICH_TROPHY.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.MINOSHROOM_TROPHY.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.HYDRA_TROPHY.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.KNIGHT_PHANTOM_TROPHY.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.UR_GHAST_TROPHY.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.ALPHA_YETI_TROPHY.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.SNOW_QUEEN_TROPHY.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.QUEST_RAM_TROPHY.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.CREEPER_SKULL_CANDLE.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.PLAYER_SKULL_CANDLE.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.SKELETON_SKULL_CANDLE.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.WITHER_SKELE_SKULL_CANDLE.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.ZOMBIE_SKULL_CANDLE.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.CICADA.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.FIREFLY.value().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.MOONWORM.value().asItem(), idispenseitembehavior);
 
-		DispenserBlock.registerBehavior(TFItems.PEACOCK_FEATHER_FAN.get().asItem(), new FeatherFanDispenseBehavior());
-		DispenserBlock.registerBehavior(TFItems.CRUMBLE_HORN.get().asItem(), new CrumbleDispenseBehavior());
-		DispenserBlock.registerBehavior(TFItems.TRANSFORMATION_POWDER.get().asItem(), new TransformationDispenseBehavior());
+		DispenserBlock.registerBehavior(TFItems.PEACOCK_FEATHER_FAN.value().asItem(), new FeatherFanDispenseBehavior());
+		DispenserBlock.registerBehavior(TFItems.CRUMBLE_HORN.value().asItem(), new CrumbleDispenseBehavior());
+		DispenserBlock.registerBehavior(TFItems.TRANSFORMATION_POWDER.value().asItem(), new TransformationDispenseBehavior());
 
-		DispenserBlock.registerBehavior(TFItems.TWILIGHT_SCEPTER.get(), new DamageableStackDispenseBehavior() {
+		DispenserBlock.registerBehavior(TFItems.TWILIGHT_SCEPTER.value(), new DamageableStackDispenseBehavior() {
 			@Override
 			protected Projectile getProjectileEntity(Level level, Position position, ItemStack stack) {
 				return new TwilightWandBolt(level, position.x(), position.y(), position.z());
@@ -81,7 +81,7 @@ public class TFDispenserBehaviors {
 
 			@Override
 			protected SoundEvent getFiredSound() {
-				return TFSounds.SCEPTER_PEARL.get();
+				return TFSounds.SCEPTER_PEARL.value();
 			}
 
 			@Override
@@ -90,7 +90,7 @@ public class TFDispenserBehaviors {
 			}
 		});
 
-		DispenserBlock.registerBehavior(TFItems.ICE_BOMB.get(), new AbstractProjectileDispenseBehavior() {
+		DispenserBlock.registerBehavior(TFItems.ICE_BOMB.value(), new AbstractProjectileDispenseBehavior() {
 			@Override
 			protected Projectile getProjectile(Level level, Position pos, ItemStack stack) {
 				return new IceBomb(level, pos);

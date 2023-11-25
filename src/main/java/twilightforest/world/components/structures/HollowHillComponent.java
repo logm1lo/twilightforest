@@ -25,13 +25,6 @@ import twilightforest.util.RectangleLatticeIterator;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 public class HollowHillComponent extends TFStructureComponentOld {
-	// Triangle-grid settings for placing features inside (Stalactites, Stalagmites, Chests, & Spawners)
-	private static final float SPACING = 3.75f;
-	private static final float X_OFFSET = Mth.cos(Mth.PI/6f) * SPACING;
-	private static final float Z_OFFSET = Mth.sin(Mth.PI/6f) * SPACING;
-	private static final float X_SPACING = X_OFFSET * 2f;
-	private static final float Z_SPACING = SPACING;
-
 	private static final float CHEST_SPAWN_CHANCE = 0.025f;
 	private static final float SPAWNER_SPAWN_CHANCE = 0.025f;
 	private static final float SPECIAL_SPAWN_CHANCE = CHEST_SPAWN_CHANCE + SPAWNER_SPAWN_CHANCE;
@@ -41,8 +34,11 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	final int radius;
 	final int hdiam;
 
+	// Triangle-grid settings for placing features inside (Stalactites, Stalagmites, Chests, & Spawners)
+	protected final RectangleLatticeIterator.TriangularLatticeConfig spikePlacement;
+
 	public HollowHillComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFHill.get(), nbt);
+		this(TFStructurePieceTypes.TFHill.value(), nbt);
 	}
 
 	public HollowHillComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -50,9 +46,10 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		hillSize = nbt.getInt("hillSize");
 		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 		this.hdiam = (hillSize * 2 + 1) * 16;
+		this.spikePlacement = nbt.contains("spike_placement", 10) ? RectangleLatticeIterator.TriangularLatticeConfig.fromNBT(nbt.getCompound("spike_config")) : RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT;
 	}
 
-	public HollowHillComponent(StructurePieceType piece, int i, int size, int x, int y, int z) {
+	public HollowHillComponent(StructurePieceType piece, int i, int size, int x, int y, int z, RectangleLatticeIterator.TriangularLatticeConfig spikePlacement) {
 		super(piece, i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
@@ -64,6 +61,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 		// can we determine the size here?
 		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / (hillSize == 1 ? 2 : hillSize), radius * 2, Direction.SOUTH, true);
+
+		this.spikePlacement = spikePlacement;
 	}
 
 	@Override
@@ -77,23 +76,15 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 */
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox writeableBounds, ChunkPos chunkPosIn, BlockPos blockPos) {
-		BlockPos locatorPos = this.getLocatorPosition();
+		BlockPos center = this.getLocatorPosition();
 		float shortenedRadiusSq = this.radius * this.radius * 0.85f;
 
 		// Use two rectangle-grid lattices to simulate a triangular-grid lattice, simulating an optimal hexagonal-packing pattern for filling this structure
 		// with stalactites, stalagmites, chests, and spawners
 
 		// RectangleLatticeIterator enables for approximately-even spacing across chunks
-		for (BlockPos.MutableBlockPos latticePos : RectangleLatticeIterator.boundedGrid(writeableBounds, 0, X_SPACING, Z_SPACING, 0, 0)) {
-			int distSq = getDistSqFromCenter(locatorPos, latticePos);
-
-			if (distSq > shortenedRadiusSq) continue;
-
-			this.setFeatures(world, rand, writeableBounds, latticePos, distSq);
-		}
-
-		for (BlockPos.MutableBlockPos latticePos : RectangleLatticeIterator.boundedGrid(writeableBounds, 0, X_SPACING, Z_SPACING, X_OFFSET, Z_OFFSET)) {
-			int distSq = getDistSqFromCenter(locatorPos, latticePos);
+		for (BlockPos.MutableBlockPos latticePos : this.spikePlacement.boundedGrid(writeableBounds, 0)) {
+			int distSq = getDistSqFromCenter(center, latticePos);
 
 			if (distSq > shortenedRadiusSq) continue;
 
@@ -155,13 +146,10 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 */
 	protected void generateOreStalactite(WorldGenLevel world, int x, int y, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
-		int dx = getWorldX(x, z);
-		int dy = getWorldY(y);
-		int dz = getWorldZ(x, z);
-		BlockPos pos = new BlockPos(dx, dy, dz);
+		BlockPos pos = new BlockPos(x, y, z);
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
-			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
+			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) x * z);
 
 			// make the actual stalactite
 			Stalactite stalag = BlockSpikeFeature.makeRandomOreStalactite(stalRNG, this.hillSize);
@@ -171,70 +159,18 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 	protected void generateBlockSpike(WorldGenLevel world, Stalactite config, int x, int y, int z, BoundingBox sbb, boolean hanging) {
 		// are the coordinates in our bounding box?
-		int dx = getWorldX(x, z);
-		int dy = getWorldY(y);
-		int dz = getWorldZ(x, z);
-		BlockPos pos = new BlockPos(dx, dy, dz);
+		BlockPos pos = new BlockPos(x, y, z);
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
-			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
+			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) x * z);
 
 			// make the actual stalactite
 			BlockSpikeFeature.startSpike(world, pos, config, stalRNG, hanging);
 		}
 	}
 
-	/**
-	 * @return true if the coordinates would be inside the hill on the "floor" of the hill
-	 */
-	boolean isInHill(int cx, int cz) {
-		int dx = radius - cx;
-		int dz = radius - cz;
-
-		return Mth.sqrt(dx * dx + dz * dz) < radius;
-	}
-
-	@Deprecated
-		// Use randomPolarCoordinates
-	int[] randomCoordinatesInHill2D(RandomSource rand) {
-		return this.randomCoordinatesInHill2D(rand, radius);
-	}
-
-	/**
-	 * @return a two element array containing some coordinates in the hill
-	 */
-	@Deprecated
-	// Use randomPolarCoordinates
-	int[] randomCoordinatesInHill2D(RandomSource rand, int maximumRadius) {
-		Vec3i pos = this.randomFloorCoordinates(rand, maximumRadius);
-
-		return new int[]{pos.getX(), pos.getZ()};
-	}
-
-	BlockPos.MutableBlockPos randomFloorCoordinates(RandomSource rand, float maximumRadius) {
-		float degree = rand.nextFloat() * Mth.TWO_PI;
-		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
-		float radius = rand.nextFloat() * 0.9f * maximumRadius;
-		// Nonetheless the floor-carving curve is one-third the top-level terrain curve
-		float dist = Mth.sqrt(radius * radius);
-		float height = this.getFloorHeight(dist);
-
-		return new BlockPos.MutableBlockPos(maximumRadius - Mth.cos(degree) * radius, height, maximumRadius - Mth.sin(degree) * radius);
-	}
-
 	private float getFloorHeight(float dist) {
 		return (this.hillSize * 2) - Mth.cos(dist / this.hdiam * Mth.PI) * (this.hdiam / 20f) + 1;
-	}
-
-	BlockPos.MutableBlockPos randomCeilingCoordinates(RandomSource rand, float maximumRadius) {
-		float degree = rand.nextFloat() * Mth.TWO_PI;
-		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
-		float radius = rand.nextFloat() * 0.9f * maximumRadius;
-		// Nonetheless the floor-carving curve is one-third the top-level terrain curve
-		float dist = Mth.sqrt(radius * radius);
-		float height = getCeilingHeight(dist);
-
-		return new BlockPos.MutableBlockPos(maximumRadius - Mth.cos(degree) * radius, height, maximumRadius - Mth.sin(degree) * radius);
 	}
 
 	private float getCeilingHeight(float dist) {
@@ -274,8 +210,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			case 3, 4, 5 -> EntityType.SPIDER;
 			case 6, 7 -> EntityType.ZOMBIE;
 			case 8 -> EntityType.SILVERFISH;
-			case 9 -> TFEntities.REDCAP.get();
-			default -> TFEntities.SWARM_SPIDER.get();
+			case 9 -> TFEntities.REDCAP.value();
+			default -> TFEntities.SWARM_SPIDER.value();
 		};
 	}
 
@@ -286,9 +222,9 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		return switch (rand.nextInt(10)) {
 			case 3, 4, 5 -> EntityType.ZOMBIE;
 			case 6, 7 -> EntityType.SKELETON;
-			case 8 -> TFEntities.SWARM_SPIDER.get();
+			case 8 -> TFEntities.SWARM_SPIDER.value();
 			case 9 -> EntityType.CAVE_SPIDER;
-			default -> TFEntities.REDCAP.get();
+			default -> TFEntities.REDCAP.value();
 		};
 	}
 
@@ -297,13 +233,13 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 */
 	public EntityType<?> getLevel3Mob(RandomSource rand) {
 		return switch (rand.nextInt(11)) {
-			case 0 -> TFEntities.SLIME_BEETLE.get();
-			case 1 -> TFEntities.FIRE_BEETLE.get();
-			case 2 -> TFEntities.PINCH_BEETLE.get();
+			case 0 -> TFEntities.SLIME_BEETLE.value();
+			case 1 -> TFEntities.FIRE_BEETLE.value();
+			case 2 -> TFEntities.PINCH_BEETLE.value();
 			case 3, 4, 5 -> EntityType.SKELETON;
 			case 6, 7, 8 -> EntityType.CAVE_SPIDER;
 			case 9 -> EntityType.CREEPER;
-			default -> TFEntities.WRAITH.get();
+			default -> TFEntities.WRAITH.value();
 		};
 	}
 

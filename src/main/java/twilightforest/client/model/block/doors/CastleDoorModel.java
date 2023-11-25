@@ -12,11 +12,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.ChunkRenderTypeSet;
-import net.minecraftforge.client.RenderTypeGroup;
-import net.minecraftforge.client.model.IDynamicBakedModel;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.client.model.data.ModelProperty;
+import net.neoforged.neoforge.client.ChunkRenderTypeSet;
+import net.neoforged.neoforge.client.RenderTypeGroup;
+import net.neoforged.neoforge.client.model.IDynamicBakedModel;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
@@ -37,7 +37,7 @@ public class CastleDoorModel implements IDynamicBakedModel {
 	private final List<RenderType> itemRenderTypes;
 	private final List<RenderType> fabulousItemRenderTypes;
 	//if we ever expand this model to be more flexible, I think we'll need a list of blocks that can connect together defined in the json instead of hardcoding this (tags may be nice for this)
-	private final Block[] validConnectors = {TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()};
+	private final Block[] validConnectors = {TFBlocks.PINK_CASTLE_DOOR.value(), TFBlocks.YELLOW_CASTLE_DOOR.value(), TFBlocks.BLUE_CASTLE_DOOR.value(), TFBlocks.VIOLET_CASTLE_DOOR.value()};
 	private static final ModelProperty<CastleDoorData> DATA = new ModelProperty<>();
 
 	public CastleDoorModel(@Nullable List<BakedQuad>[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms, RenderTypeGroup group) {

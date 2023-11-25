@@ -22,11 +22,11 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentOld {
 
 	public FinalCastleRoof48CrenellatedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCRo48Cr.get(), nbt);
+		super(TFStructurePieceTypes.TFFCRo48Cr.value(), nbt);
 	}
 
 	public FinalCastleRoof48CrenellatedComponent(int i, TFStructureComponentOld keep, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCRo48Cr.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCRo48Cr.value(), i, x, y, z);
 
 		int height = 5;
 
@@ -45,7 +45,7 @@ public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentO
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// add second layer of floor
-		final BlockState castleMagic = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		final BlockState castleMagic = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.value().defaultBlockState();
 		this.generateBox(world, sbb, 2, 2, 2, 50, 2, 50, castleMagic, castleMagic, false);
 
 		// crenellations

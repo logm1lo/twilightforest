@@ -17,7 +17,6 @@ import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class HedgeMazeStructure extends LandmarkStructure {
@@ -34,7 +33,7 @@ public class HedgeMazeStructure extends LandmarkStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.HEDGE_MAZE.get();
+        return TFStructureTypes.HEDGE_MAZE.value();
     }
 
     public static HedgeMazeStructure buildStructureConfig(BootstapContext<Structure> context) {

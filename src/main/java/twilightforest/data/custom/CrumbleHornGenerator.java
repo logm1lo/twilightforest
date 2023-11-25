@@ -2,7 +2,7 @@ package twilightforest.data.custom;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 
@@ -15,18 +15,24 @@ public class CrumbleHornGenerator extends CrumbleHornProvider {
 	@Override
 	public void registerTransforms() {
 		addTransform(Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS);
+		addTransform(Blocks.INFESTED_STONE_BRICKS, Blocks.INFESTED_CRACKED_STONE_BRICKS);
 		addTransform(Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS);
 		addTransform(Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.BLACKSTONE);
 		addTransform(Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS);
 		addTransform(Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS);
 		addTransform(Blocks.DEEPSLATE_TILES, Blocks.CRACKED_DEEPSLATE_TILES);
-		addTransform(TFBlocks.MAZESTONE_BRICK.get(), TFBlocks.CRACKED_MAZESTONE.get());
-		addTransform(TFBlocks.UNDERBRICK.get(), TFBlocks.CRACKED_UNDERBRICK.get());
-		addTransform(TFBlocks.DEADROCK.get(), TFBlocks.CRACKED_DEADROCK.get());
-		addTransform(TFBlocks.TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get());
-		addTransform(TFBlocks.CASTLE_BRICK.get(), TFBlocks.CRACKED_CASTLE_BRICK.get());
-		addTransform(TFBlocks.NAGASTONE_PILLAR.get(), TFBlocks.CRACKED_NAGASTONE_PILLAR.get());
-		addTransform(TFBlocks.ETCHED_NAGASTONE.get(), TFBlocks.CRACKED_ETCHED_NAGASTONE.get());
+		addTransform(TFBlocks.MAZESTONE_BRICK.value(), TFBlocks.CRACKED_MAZESTONE.value());
+		addTransform(TFBlocks.UNDERBRICK.value(), TFBlocks.CRACKED_UNDERBRICK.value());
+		addTransform(TFBlocks.DEADROCK.value(), TFBlocks.CRACKED_DEADROCK.value());
+		addTransform(TFBlocks.CRACKED_DEADROCK.value(), TFBlocks.WEATHERED_DEADROCK.value());
+		addTransform(TFBlocks.TOWERWOOD.value(), TFBlocks.CRACKED_TOWERWOOD.value());
+		addTransform(TFBlocks.CASTLE_BRICK.value(), TFBlocks.CRACKED_CASTLE_BRICK.value());
+		addTransform(TFBlocks.CRACKED_CASTLE_BRICK.value(), TFBlocks.WORN_CASTLE_BRICK.value());
+		addTransform(TFBlocks.NAGASTONE_PILLAR.value(), TFBlocks.CRACKED_NAGASTONE_PILLAR.value());
+		addTransform(TFBlocks.ETCHED_NAGASTONE.value(), TFBlocks.CRACKED_ETCHED_NAGASTONE.value());
+		addTransform(TFBlocks.CASTLE_BRICK_STAIRS.value(), TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.value());
+		addTransform(TFBlocks.NAGASTONE_STAIRS_LEFT.value(), TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.value());
+		addTransform(TFBlocks.NAGASTONE_STAIRS_RIGHT.value(), TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.value());
 		addTransform(Blocks.STONE, Blocks.COBBLESTONE);
 		addTransform(Blocks.COBBLESTONE, Blocks.GRAVEL);
 		addTransform(Blocks.SANDSTONE, Blocks.SAND);

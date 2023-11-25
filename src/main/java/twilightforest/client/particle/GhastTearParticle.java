@@ -13,9 +13,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.init.TFSounds;
 
 @OnlyIn(Dist.CLIENT)
@@ -41,7 +41,7 @@ public class GhastTearParticle extends TextureSheetParticle {
 	public void tick() {
 		if (this.onGround) {
 			if (this.random.nextBoolean()) {
-				this.level.playLocalSound(this.x, this.y + 1.0D, this.z, TFSounds.TEAR_BREAK.get(), SoundSource.AMBIENT, 0.5F, 1.65F, false);
+				this.level.playLocalSound(this.x, this.y + 1.0D, this.z, TFSounds.TEAR_BREAK.value(), SoundSource.AMBIENT, 0.5F, 1.65F, false);
 			}
 
 			ItemStack itemID = new ItemStack(Items.GHAST_TEAR);

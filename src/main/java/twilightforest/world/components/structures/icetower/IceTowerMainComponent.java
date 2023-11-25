@@ -1,24 +1,24 @@
 package twilightforest.world.components.structures.icetower;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.util.BoundingBoxUtils;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 
 
 public class IceTowerMainComponent extends IceTowerWingComponent {
 	public boolean hasBossWing = false;
 
 	public IceTowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFITMai.get(), nbt);
+		super(TFStructurePieceTypes.TFITMai.value(), nbt);
 		this.hasBossWing = nbt.getBoolean("hasBossWing");
 	}
 
@@ -27,7 +27,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 	}
 
 	public IceTowerMainComponent(RandomSource rand, int index, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFITMai.get(), index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
+		super(TFStructurePieceTypes.TFITMai.value(), index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
 
 		// decorator
 		if (this.deco == null) {

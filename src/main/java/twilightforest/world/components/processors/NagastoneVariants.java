@@ -10,11 +10,10 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.init.TFBlocks;
-import twilightforest.util.FeaturePlacers;
-import twilightforest.init.TFStructureProcessors;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructureProcessors;
+import twilightforest.util.FeaturePlacers;
 
 public final class NagastoneVariants extends StructureProcessor {
 	public static final NagastoneVariants INSTANCE = new NagastoneVariants();
@@ -33,23 +32,23 @@ public final class NagastoneVariants extends StructureProcessor {
 		BlockState state = modifiedBlockInfo.state();
 		Block block = state.getBlock();
 
-		if (block == TFBlocks.ETCHED_NAGASTONE.get() && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, random.nextBoolean() ? TFBlocks.MOSSY_ETCHED_NAGASTONE.get() : TFBlocks.CRACKED_ETCHED_NAGASTONE.get()), null);
+		if (block == TFBlocks.ETCHED_NAGASTONE.value() && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, random.nextBoolean() ? TFBlocks.MOSSY_ETCHED_NAGASTONE.value() : TFBlocks.CRACKED_ETCHED_NAGASTONE.value()), null);
 
-		if (block == TFBlocks.NAGASTONE_PILLAR.get() && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, random.nextBoolean() ? TFBlocks.MOSSY_NAGASTONE_PILLAR.get() : TFBlocks.CRACKED_NAGASTONE_PILLAR.get()), null);
+		if (block == TFBlocks.NAGASTONE_PILLAR.value() && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, random.nextBoolean() ? TFBlocks.MOSSY_NAGASTONE_PILLAR.value() : TFBlocks.CRACKED_NAGASTONE_PILLAR.value()), null);
 
-		if (block == TFBlocks.NAGASTONE_STAIRS_LEFT.get() && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, random.nextBoolean() ? TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get() : TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get()), null);
+		if (block == TFBlocks.NAGASTONE_STAIRS_LEFT.value() && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, random.nextBoolean() ? TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.value() : TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.value()), null);
 
-		if (block == TFBlocks.NAGASTONE_STAIRS_RIGHT.get() && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, random.nextBoolean() ? TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get() : TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get()), null);
+		if (block == TFBlocks.NAGASTONE_STAIRS_RIGHT.value() && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, random.nextBoolean() ? TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.value() : TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.value()), null);
 
 		return modifiedBlockInfo;
 	}
 
 	@Override
 	public StructureProcessorType<?> getType() {
-		return TFStructureProcessors.NAGASTONE_VARIANTS.get();
+		return TFStructureProcessors.NAGASTONE_VARIANTS.value();
 	}
 }

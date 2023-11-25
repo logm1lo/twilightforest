@@ -20,11 +20,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 public class SnowGuardian extends BaseIceMob {
 
@@ -52,17 +51,17 @@ public class SnowGuardian extends BaseIceMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.SNOW_GUARDIAN_AMBIENT.get();
+		return TFSounds.SNOW_GUARDIAN_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.SNOW_GUARDIAN_HURT.get();
+		return TFSounds.SNOW_GUARDIAN_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.SNOW_GUARDIAN_DEATH.get();
+		return TFSounds.SNOW_GUARDIAN_DEATH.value();
 	}
 
 	@Override
@@ -81,33 +80,33 @@ public class SnowGuardian extends BaseIceMob {
 	private Item makeItemForSlot(EquipmentSlot slot, int type) {
 		return switch (slot) {
 			default -> switch (type) {
-				default -> TFItems.IRONWOOD_SWORD.get();
-				case 1 -> TFItems.STEELEAF_SWORD.get();
-				case 2, 3 -> TFItems.KNIGHTMETAL_SWORD.get();
+				default -> TFItems.IRONWOOD_SWORD.value();
+				case 1 -> TFItems.STEELEAF_SWORD.value();
+				case 2, 3 -> TFItems.KNIGHTMETAL_SWORD.value();
 			};
 			case FEET -> switch (type) {
-				default -> TFItems.IRONWOOD_BOOTS.get();
-				case 1 -> TFItems.STEELEAF_BOOTS.get();
-				case 2 -> TFItems.KNIGHTMETAL_BOOTS.get();
-				case 3 -> TFItems.ARCTIC_BOOTS.get();
+				default -> TFItems.IRONWOOD_BOOTS.value();
+				case 1 -> TFItems.STEELEAF_BOOTS.value();
+				case 2 -> TFItems.KNIGHTMETAL_BOOTS.value();
+				case 3 -> TFItems.ARCTIC_BOOTS.value();
 			};
 			case LEGS -> switch (type) {
-				default -> TFItems.IRONWOOD_LEGGINGS.get();
-				case 1 -> TFItems.STEELEAF_LEGGINGS.get();
-				case 2 -> TFItems.KNIGHTMETAL_LEGGINGS.get();
-				case 3 -> TFItems.ARCTIC_LEGGINGS.get();
+				default -> TFItems.IRONWOOD_LEGGINGS.value();
+				case 1 -> TFItems.STEELEAF_LEGGINGS.value();
+				case 2 -> TFItems.KNIGHTMETAL_LEGGINGS.value();
+				case 3 -> TFItems.ARCTIC_LEGGINGS.value();
 			};
 			case CHEST -> switch (type) {
-				default -> TFItems.IRONWOOD_CHESTPLATE.get();
-				case 1 -> TFItems.STEELEAF_CHESTPLATE.get();
-				case 2 -> TFItems.KNIGHTMETAL_CHESTPLATE.get();
-				case 3 -> TFItems.ARCTIC_CHESTPLATE.get();
+				default -> TFItems.IRONWOOD_CHESTPLATE.value();
+				case 1 -> TFItems.STEELEAF_CHESTPLATE.value();
+				case 2 -> TFItems.KNIGHTMETAL_CHESTPLATE.value();
+				case 3 -> TFItems.ARCTIC_CHESTPLATE.value();
 			};
 			case HEAD -> switch (type) {
-				default -> TFItems.IRONWOOD_HELMET.get();
-				case 1 -> TFItems.STEELEAF_HELMET.get();
-				case 2 -> TFItems.KNIGHTMETAL_HELMET.get();
-				case 3 -> TFItems.ARCTIC_HELMET.get();
+				default -> TFItems.IRONWOOD_HELMET.value();
+				case 1 -> TFItems.STEELEAF_HELMET.value();
+				case 2 -> TFItems.KNIGHTMETAL_HELMET.value();
+				case 3 -> TFItems.ARCTIC_HELMET.value();
 			};
 		};
 	}
@@ -131,7 +130,7 @@ public class SnowGuardian extends BaseIceMob {
 				float py = this.getEyeHeight() + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
 				float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
 
-				this.level().addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+				this.level().addParticle(TFParticleType.SNOW_GUARDIAN.value(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 			}
 		}
 	}

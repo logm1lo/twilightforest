@@ -23,12 +23,12 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
@@ -43,7 +43,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	public FinalCastleMazeTower13Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFFCSiTo.get(), nbt);
+		this(TFStructurePieceTypes.TFFCSiTo.value(), nbt);
 	}
 
 	public FinalCastleMazeTower13Component(StructurePieceType piece, RandomSource rand, int i, int x, int y, int z, BlockState color, Direction direction) {
@@ -99,7 +99,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.value(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
@@ -259,7 +259,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 			if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
 
-				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
+				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.value(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
 
 				BoundingBox largerBB = new BoundingBox(
 						sTower.getBoundingBox().minX() - 6, 0, sTower.getBoundingBox().minZ() - 6,
@@ -330,7 +330,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	protected FinalCastleMazeTower13Component makeNewDamagedTower(RandomSource rand, Direction facing, BlockPos tc) {
-		return new FinalCastleDamagedTowerComponent(TFStructurePieceTypes.TFFCDamT.get(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+		return new FinalCastleDamagedTowerComponent(TFStructurePieceTypes.TFFCDamT.value(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
 	private int adjustOpening(int posY, BlockPos dest) {
@@ -364,7 +364,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 		// what color of tower?
 		FinalCastleMazeTower13Component eTower;
-		if (this.color == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
+		if (this.color == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.value().defaultBlockState()) {
 			eTower = new FinalCastleEntranceTowerComponent(this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 		} else {
 			eTower = new FinalCastleBellTower21Component(this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
@@ -478,7 +478,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	public BlockState getGlyphMeta() {
 		if (color == null) {
 			TwilightForestMod.LOGGER.warn("Final Castle tower has null for glyph color, this is a bug.");
-			return TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
+			return TFBlocks.BLUE_CASTLE_RUNE_BRICK.value().defaultBlockState();
 		} else {
 			return color;
 		}
@@ -560,17 +560,17 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	public BlockState doorColor() {
-		if (color == TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
-			return TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState();
+		if (color == TFBlocks.PINK_CASTLE_RUNE_BRICK.value().defaultBlockState()) {
+			return TFBlocks.PINK_CASTLE_DOOR.value().defaultBlockState();
 		}
-		if (color == TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
-			return TFBlocks.BLUE_CASTLE_DOOR.get().defaultBlockState();
+		if (color == TFBlocks.BLUE_CASTLE_RUNE_BRICK.value().defaultBlockState()) {
+			return TFBlocks.BLUE_CASTLE_DOOR.value().defaultBlockState();
 		}
-		if (color == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
-			return TFBlocks.YELLOW_CASTLE_DOOR.get().defaultBlockState();
+		if (color == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.value().defaultBlockState()) {
+			return TFBlocks.YELLOW_CASTLE_DOOR.value().defaultBlockState();
 		}
-		if (color == TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
-			return TFBlocks.VIOLET_CASTLE_DOOR.get().defaultBlockState();
+		if (color == TFBlocks.VIOLET_CASTLE_RUNE_BRICK.value().defaultBlockState()) {
+			return TFBlocks.VIOLET_CASTLE_DOOR.value().defaultBlockState();
 		}
 		TwilightForestMod.LOGGER.warn("Couldn't add door to tower, rune color couldn't be read");
 		return Blocks.AIR.defaultBlockState();

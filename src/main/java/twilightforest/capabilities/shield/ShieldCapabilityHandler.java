@@ -5,11 +5,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFSounds;
+import twilightforest.init.TFStats;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
-import twilightforest.init.TFStats;
 
 public class ShieldCapabilityHandler implements IShieldCapability {
 	private int temporaryShields;
@@ -60,9 +60,9 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 			}
 
 			if (this.host instanceof ServerPlayer player)
-				player.awardStat(TFStats.TF_SHIELDS_BROKEN.get());
+				player.awardStat(TFStats.TF_SHIELDS_BROKEN.value());
 			this.sendUpdatePacket();
-			this.host.level().playSound(null, this.host.blockPosition(), TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, ((this.host.getRandom().nextFloat() - this.host.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			this.host.level().playSound(null, this.host.blockPosition(), TFSounds.SHIELD_BREAK.value(), SoundSource.PLAYERS, 1.0F, ((this.host.getRandom().nextFloat() - this.host.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 			this.breakTimer = 20;
 		}
 	}
@@ -70,7 +70,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	@Override
 	public void replenishShields() {
 		this.setShields(5, true);
-		this.host.level().playSound(null, this.host.blockPosition(), TFSounds.SHIELD_ADD.get(), SoundSource.PLAYERS, 1.0F, (this.host.getRandom().nextFloat() - this.host.getRandom().nextFloat()) * 0.2F + 1.0F);
+		this.host.level().playSound(null, this.host.blockPosition(), TFSounds.SHIELD_ADD.value(), SoundSource.PLAYERS, 1.0F, (this.host.getRandom().nextFloat() - this.host.getRandom().nextFloat()) * 0.2F + 1.0F);
 	}
 
 	@Override

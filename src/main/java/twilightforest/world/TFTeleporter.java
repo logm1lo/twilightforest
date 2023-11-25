@@ -3,7 +3,9 @@ package twilightforest.world;
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -18,14 +20,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.ITeleporter;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.util.ITeleporter;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
@@ -37,6 +39,7 @@ import twilightforest.init.custom.Restrictions;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.Restriction;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.*;
@@ -126,7 +129,7 @@ public class TFTeleporter implements ITeleporter {
 			flag = false;
 			// Validate that the Portal still exists
 			TwilightForestMod.LOGGER.debug("Using cache, validating. {}", blockpos);
-			if (blockpos == null || !destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL.get())) {
+			if (blockpos == null || !destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL.value())) {
 				// Portal was broken, we need to recreate it.
 				TwilightForestMod.LOGGER.debug("Portal Invalid, recreating.");
 				blockpos = null;
@@ -239,7 +242,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean isPortal(BlockState state) {
-		return state.getBlock() == TFBlocks.TWILIGHT_PORTAL.get();
+		return state.getBlock() == TFBlocks.TWILIGHT_PORTAL.value();
 	}
 
 	// from the start point, builds a set of all directly adjacent non-portal blocks
@@ -354,7 +357,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean checkBiome(Level world, BlockPos pos, Entity entity) {
-		return Restrictions.isBiomeSafeFor(world.getBiome(pos).value(), entity);
+		return Restriction.isBiomeSafeFor(world.getBiome(pos).value(), entity);
 	}
 
 	@Nullable
@@ -534,7 +537,7 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockAndUpdate(pos.east().south().below(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
+		BlockState portal = TFBlocks.TWILIGHT_PORTAL.value().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
 
 		world.setBlock(pos, portal, 2);
 		world.setBlock(pos.east(), portal, 2);
@@ -571,7 +574,11 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static BlockState randNatureBlock(RandomSource random) {
-		return ForgeRegistries.BLOCKS.tags().getTag(BlockTagGenerator.GENERATED_PORTAL_DECO).getRandomElement(random).get().defaultBlockState();
+		Optional<Block> optional = BuiltInRegistries.BLOCK
+				.getTag(BlockTagGenerator.GENERATED_PORTAL_DECO)
+				.flatMap(tag -> tag.getRandomElement(random))
+				.map(Holder::value);
+		return optional.map(Block::defaultBlockState).orElseGet(Blocks.GRASS::defaultBlockState);
 	}
 
 	private static boolean isOkayForPortal(ServerLevel world, BlockPos pos) {

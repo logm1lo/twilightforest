@@ -18,19 +18,19 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
+public class StrongholdFoundryComponent extends KnightStrongholdComponent {
 
 	int entranceLevel;
 	boolean deepslateVer;
 
 	public StrongholdFoundryComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSFo.get(), nbt);
+		super(TFStructurePieceTypes.TFSFo.value(), nbt);
 		this.deepslateVer = nbt.getBoolean("deepslateVer");
 		this.entranceLevel = nbt.getInt("entranceLevel");
 	}
 
 	public StrongholdFoundryComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSFo.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSFo.value(), i, facing, x, y, z);
 	}
 
 	@Override
@@ -45,13 +45,13 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 		this.deepslateVer = RandomSource.create().nextBoolean();
 		if (y > -15) {
 			this.entranceLevel = 3;
-			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -20, 0, 18, 25, 18, facing);
+			return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -20, 0, 18, 25, 18, facing);
 		} else if (y < -21) {
 			this.entranceLevel = 1;
-			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -6, 0, 18, 25, 18, facing);
+			return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -6, 0, 18, 25, 18, facing);
 		} else {
 			this.entranceLevel = 2;
-			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -13, 0, 18, 25, 18, facing);
+			return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -13, 0, 18, 25, 18, facing);
 		}
 	}
 

@@ -18,11 +18,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeDeadEndPaintingComponent extends MazeDeadEndComponent {
 
 	public MazeDeadEndPaintingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMDEP.get(), nbt);
+		super(TFStructurePieceTypes.TFMMDEP.value(), nbt);
 	}
 
 	public MazeDeadEndPaintingComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMDEP.get(), i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMDEP.value(), i, x, y, z, rotation);
 	}
 
 	@Override

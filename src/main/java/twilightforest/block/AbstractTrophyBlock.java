@@ -27,14 +27,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TrophyBlockEntity;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
 public abstract class AbstractTrophyBlock extends BaseEntityBlock {
@@ -83,7 +82,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.TROPHY.get(), TrophyBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.TROPHY.value(), TrophyBlockEntity::tick);
 	}
 
 	public BossVariant getVariant() {
@@ -108,40 +107,40 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 			float pitch = 0.9F;
 			switch (this.variant) {
 				case NAGA -> {
-					sound = TFSounds.NAGA_RATTLE.get();
+					sound = TFSounds.NAGA_RATTLE.value();
 					volume = 1.25F;
 					pitch = 1.2F;
 				}
 				case LICH -> {
-					sound = TFSounds.LICH_AMBIENT.get();
+					sound = TFSounds.LICH_AMBIENT.value();
 					volume = 0.35F;
 					pitch = 1.1F;
 				}
 				case HYDRA -> {
-					sound = TFSounds.HYDRA_GROWL.get();
+					sound = TFSounds.HYDRA_GROWL.value();
 					pitch = 1.2F;
 				}
 				case UR_GHAST -> {
-					sound = TFSounds.UR_GHAST_AMBIENT.get();
+					sound = TFSounds.UR_GHAST_AMBIENT.value();
 					pitch = 0.6F;
 				}
-				case SNOW_QUEEN -> sound = TFSounds.SNOW_QUEEN_AMBIENT.get();
+				case SNOW_QUEEN -> sound = TFSounds.SNOW_QUEEN_AMBIENT.value();
 				case KNIGHT_PHANTOM -> {
-					sound = TFSounds.KNIGHT_PHANTOM_AMBIENT.get();
+					sound = TFSounds.KNIGHT_PHANTOM_AMBIENT.value();
 					pitch = 1.1F;
 				}
 				case MINOSHROOM -> {
-					sound = TFSounds.MINOSHROOM_AMBIENT.get();
+					sound = TFSounds.MINOSHROOM_AMBIENT.value();
 					volume = 0.75F;
 					pitch = 0.7F;
 				}
 				case ALPHA_YETI -> {
-					sound = world.getRandom().nextInt(50) == 0 ? TFSounds.ALPHA_YETI_ROAR.get() : TFSounds.ALPHA_YETI_GROWL.get();
+					sound = world.getRandom().nextInt(50) == 0 ? TFSounds.ALPHA_YETI_ROAR.value() : TFSounds.ALPHA_YETI_GROWL.value();
 					volume = 0.75F;
 					pitch = 0.75F;
 				}
 				case QUEST_RAM -> {
-					sound = TFSounds.QUEST_RAM_AMBIENT.get();
+					sound = TFSounds.QUEST_RAM_AMBIENT.value();
 					pitch = 0.7F;
 				}
 				default -> {
@@ -188,7 +187,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 						break;
 					case KNIGHT_PHANTOM:
 						for (int brek = 0; brek < 10; brek++) {
-							server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get())),
+							server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.value())),
 									pos.getX() + 0.5 + (rand.nextFloat() - 0.5),
 									pos.getY() + rand.nextFloat() + 0.5,
 									pos.getZ() + 0.5 + (rand.nextFloat() - 0.5),
@@ -216,7 +215,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 						break;
 					case SNOW_QUEEN:
 						for (int b = 0; b < 20; b++) {
-							server.sendParticles(TFParticleType.SNOW_WARNING.get(),
+							server.sendParticles(TFParticleType.SNOW_WARNING.value(),
 									(double) pos.getX() - 1 + (rand.nextDouble() * 3.25),
 									(double) pos.getY() + 5,
 									(double) pos.getZ() - 1 + (rand.nextDouble() * 3.25), 1,

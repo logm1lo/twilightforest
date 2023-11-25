@@ -18,11 +18,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 
 	public DarkTowerEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFDTEnt.get(), nbt);
+		super(TFStructurePieceTypes.TFDTEnt.value(), nbt);
 	}
 
 	protected DarkTowerEntranceComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFDTEnt.get(), i, x, y, z, pSize, pHeight, direction);
+		super(TFStructurePieceTypes.TFDTEnt.value(), i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override

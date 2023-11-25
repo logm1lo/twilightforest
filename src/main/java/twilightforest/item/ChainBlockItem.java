@@ -13,10 +13,10 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.TierSortingRegistry;
+import net.neoforged.neoforge.common.TierSortingRegistry;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.entity.ChainBlock;
+import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -63,10 +63,10 @@ public class ChainBlockItem extends Item {
 		if (getThrownUuid(stack) != null)
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
-		player.playSound(TFSounds.BLOCK_AND_CHAIN_FIRED.get(), 0.5F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
+		player.playSound(TFSounds.BLOCK_AND_CHAIN_FIRED.value(), 0.5F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
 
 		if (!level.isClientSide()) {
-			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), level, player, hand, stack);
+			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.value(), level, player, hand, stack);
 			level.addFreshEntity(launchedBlock);
 			this.setThrownEntity(stack, launchedBlock);
 		}
@@ -122,7 +122,7 @@ public class ChainBlockItem extends Item {
 	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
 		//dont try to check harvest level if we arent thrown
 		if (stack.getTag() == null || !stack.getTag().contains(THROWN_UUID_KEY)) return false;
-		if (EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0) {
+		if (EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.value(), stack) > 0) {
 			if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
 					|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
 				return TierSortingRegistry.isCorrectTierForDrops(this.getHarvestLevel(stack), state);
@@ -131,7 +131,7 @@ public class ChainBlockItem extends Item {
 	}
 
 	public Tier getHarvestLevel(ItemStack stack) {
-		int enchantLevel = EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack);
+		int enchantLevel = EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.value(), stack);
 		if (enchantLevel == 2) {
 			return Tiers.STONE;
 		} else if (enchantLevel >= 3) {

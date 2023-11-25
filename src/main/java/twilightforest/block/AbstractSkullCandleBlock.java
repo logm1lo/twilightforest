@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -30,8 +31,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.Tags;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.SkullCandleBlockEntity;
@@ -80,7 +80,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	//input one of the enum names to convert it into a candle block
 	public static Block candleColorToCandle(CandleColors color) {
 		if (color != CandleColors.PLAIN) {
-			return Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(color.getSerializedName() + "_candle")));
+			return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getSerializedName() + "_candle")));
 		}
 		return Blocks.CANDLE;
 	}
@@ -88,7 +88,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	//inverse of above
 	public static CandleColors candleToCandleColor(Item candle) {
 		if (!(candle == Blocks.CANDLE.asItem())) {
-			return CandleColors.valueOf(ForgeRegistries.ITEMS.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
+			return CandleColors.valueOf(BuiltInRegistries.ITEM.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
 		}
 		return CandleColors.PLAIN;
 	}
@@ -203,7 +203,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.get(), SkullCandleBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.value(), SkullCandleBlockEntity::tick);
 	}
 
 	public enum CandleColors implements StringRepresentable {

@@ -21,13 +21,13 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	protected final int height;
 
 	public DarkTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFDTBea.get(), nbt);
+		super(TFStructurePieceTypes.TFDTBea.value(), nbt);
 		this.size = nbt.getInt("beardSize");
 		this.height = nbt.getInt("beardHeight");
 	}
 
 	public DarkTowerBeardComponent(int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFDTBea.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFDTBea.value(), i, x, y, z);
 
 		this.setOrientation(wing.getOrientation());
 		this.size = wing.size;
@@ -54,7 +54,7 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	}
 
 	protected void makeDarkBeard(WorldGenLevel world, BoundingBox sbb, int minX, int minZ, int maxX, int maxY, int maxZ) {
-		BlockState frameState = TFBlocks.ENCASED_TOWERWOOD.get().defaultBlockState();
+		BlockState frameState = TFBlocks.ENCASED_TOWERWOOD.value().defaultBlockState();
 
 		for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {

@@ -3,6 +3,7 @@ package twilightforest.events;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,18 +32,17 @@ import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.AdvancementEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
@@ -67,7 +67,7 @@ public class EntityEvents {
 
 	@SubscribeEvent
 	public static void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
-		if (event.getAdvancement().getId().equals(TwilightForestMod.prefix("progression_end"))) {
+		if (event.getAdvancement().id().equals(TwilightForestMod.prefix("progression_end"))) {
 			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/twilightforest")))));
 		}
 	}
@@ -79,7 +79,7 @@ public class EntityEvents {
 		if (stack.is(Items.LEAD)) {
 			BlockPos pos = event.getPos();
 			BlockState state = event.getLevel().getBlockState(pos);
-			if (state.is(TFBlocks.WROUGHT_IRON_FENCE.get()) && state.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE) {
+			if (state.is(TFBlocks.WROUGHT_IRON_FENCE.value()) && state.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE) {
 				if (!event.getLevel().isClientSide()) {
 					LeadItem.bindPlayerMobs(player, event.getLevel(), event.getPos());
 					event.setCanceled(true);
@@ -112,7 +112,7 @@ public class EntityEvents {
 		// triple bow strips invulnerableTime
 		if (source.getMsgId().equals("arrow") && trueSource instanceof Player player) {
 
-			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW.get())) {
+			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW.value())) {
 				living.invulnerableTime = 0;
 			}
 		}
@@ -125,7 +125,7 @@ public class EntityEvents {
 		Player player = event.getPlayer();
 		BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
 		UUID checker;
-		if (block == TFBlocks.KEEPSAKE_CASKET.get()) {
+		if (block == TFBlocks.KEEPSAKE_CASKET.value()) {
 			if (te instanceof KeepsakeCasketBlockEntity casket) {
 				checker = casket.playeruuid;
 			} else checker = null;
@@ -144,7 +144,7 @@ public class EntityEvents {
 		ItemStack itemStack = event.getCrafting();
 
 		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-		if (itemStack.is(Items.OAK_PLANKS) && itemStack.getCount() == 64 && event.getInventory().countItem(TFBlocks.GIANT_LOG.get().asItem()) > 0) {
+		if (itemStack.is(Items.OAK_PLANKS) && itemStack.getCount() == 64 && event.getInventory().countItem(TFBlocks.GIANT_LOG.value().asItem()) > 0) {
 			Player player = event.getEntity();
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
@@ -156,11 +156,11 @@ public class EntityEvents {
 	public static void onLivingHurtEvent(LivingHurtEvent event) {
 		LivingEntity living = event.getEntity();
 		if (living != null) {
-			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
+			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.value())).ifPresent(mobEffectInstance -> {
 				if (event.getSource().is(DamageTypes.FREEZE)) {
 					event.setAmount(event.getAmount() + (float)(mobEffectInstance.getAmplifier() / 2));
 				} else if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
-					living.removeEffect(TFMobEffects.FROSTY.get());
+					living.removeEffect(TFMobEffects.FROSTY.value());
 					mobEffectInstance.amplifier -= 1;
 					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
 				}
@@ -207,34 +207,34 @@ public class EntityEvents {
 		BlockPos pos = event.getPos();
 		BlockState state = level.getBlockState(pos);
 		if (!TFConfig.COMMON_CONFIG.disableSkullCandles.get()) {
-			if (stack.is(ItemTags.CANDLES) && ForgeRegistries.ITEMS.getKey(stack.getItem()).getNamespace().equals("minecraft") && !event.getEntity().isShiftKeyDown()) {
-				if (state.getBlock() instanceof AbstractSkullBlock skull && ForgeRegistries.BLOCKS.getKey(state.getBlock()).getNamespace().equals("minecraft")) {
+			if (stack.is(ItemTags.CANDLES) && BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("minecraft") && !event.getEntity().isShiftKeyDown()) {
+				if (state.getBlock() instanceof AbstractSkullBlock skull && BuiltInRegistries.BLOCK.getKey(state.getBlock()).getNamespace().equals("minecraft")) {
 					SkullBlock.Types type = (SkullBlock.Types) skull.getType();
 					boolean wall = state.getBlock() instanceof WallSkullBlock;
 					switch (type) {
 						case SKELETON -> {
-							if (wall) makeWallSkull(event, TFBlocks.SKELETON_WALL_SKULL_CANDLE.get());
-							else makeFloorSkull(event, TFBlocks.SKELETON_SKULL_CANDLE.get());
+							if (wall) makeWallSkull(event, TFBlocks.SKELETON_WALL_SKULL_CANDLE.value());
+							else makeFloorSkull(event, TFBlocks.SKELETON_SKULL_CANDLE.value());
 						}
 						case WITHER_SKELETON -> {
-							if (wall) makeWallSkull(event, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get());
-							else makeFloorSkull(event, TFBlocks.WITHER_SKELE_SKULL_CANDLE.get());
+							if (wall) makeWallSkull(event, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.value());
+							else makeFloorSkull(event, TFBlocks.WITHER_SKELE_SKULL_CANDLE.value());
 						}
 						case PLAYER -> {
-							if (wall) makeWallSkull(event, TFBlocks.PLAYER_WALL_SKULL_CANDLE.get());
-							else makeFloorSkull(event, TFBlocks.PLAYER_SKULL_CANDLE.get());
+							if (wall) makeWallSkull(event, TFBlocks.PLAYER_WALL_SKULL_CANDLE.value());
+							else makeFloorSkull(event, TFBlocks.PLAYER_SKULL_CANDLE.value());
 						}
 						case ZOMBIE -> {
-							if (wall) makeWallSkull(event, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get());
-							else makeFloorSkull(event, TFBlocks.ZOMBIE_SKULL_CANDLE.get());
+							if (wall) makeWallSkull(event, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.value());
+							else makeFloorSkull(event, TFBlocks.ZOMBIE_SKULL_CANDLE.value());
 						}
 						case CREEPER -> {
-							if (wall) makeWallSkull(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get());
-							else makeFloorSkull(event, TFBlocks.CREEPER_SKULL_CANDLE.get());
+							if (wall) makeWallSkull(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.value());
+							else makeFloorSkull(event, TFBlocks.CREEPER_SKULL_CANDLE.value());
 						}
 						case PIGLIN -> {
-							if (wall) makeWallSkull(event, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get());
-							else makeFloorSkull(event, TFBlocks.PIGLIN_SKULL_CANDLE.get());
+							if (wall) makeWallSkull(event, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.value());
+							else makeFloorSkull(event, TFBlocks.PIGLIN_SKULL_CANDLE.value());
 						}
 						default -> {
 							return;
@@ -243,7 +243,7 @@ public class EntityEvents {
 					if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
 					event.getEntity().swing(event.getHand());
 					if (event.getEntity() instanceof ServerPlayer)
-						event.getEntity().awardStat(TFStats.SKULL_CANDLES_MADE.get());
+						event.getEntity().awardStat(TFStats.SKULL_CANDLES_MADE.value());
 					//this is to prevent anything from being placed afterwords
 					event.setCanceled(true);
 				}

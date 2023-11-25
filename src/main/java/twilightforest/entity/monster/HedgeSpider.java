@@ -8,7 +8,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -41,13 +40,7 @@ public class HedgeSpider extends Spider {
 		this.goalSelector.availableGoals.removeIf(t -> t.getGoal() instanceof MeleeAttackGoal);
 
 		// Replace with one that doesn't become docile in light
-		// [VanillaCopy] based on Spider.MeleeAttackGoal
-		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true) {
-			@Override
-			protected double getAttackReachSqr(LivingEntity attackTarget) {
-				return 4.0F + attackTarget.getBbWidth();
-			}
-		});
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true));
 
 		// Remove default spider target player task
 		this.targetSelector.availableGoals.removeIf(t -> t.getPriority() == 2 && t.getGoal() instanceof NearestAttackableTargetGoal);
@@ -65,22 +58,22 @@ public class HedgeSpider extends Spider {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HEDGE_SPIDER_AMBIENT.get();
+		return TFSounds.HEDGE_SPIDER_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HEDGE_SPIDER_HURT.get();
+		return TFSounds.HEDGE_SPIDER_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HEDGE_SPIDER_DEATH.get();
+		return TFSounds.HEDGE_SPIDER_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.HEDGE_SPIDER_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.HEDGE_SPIDER_STEP.value(), 0.15F, 1.0F);
 	}
 
 	public static boolean canSpawn(EntityType<HedgeSpider> type, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {

@@ -2,37 +2,36 @@ package twilightforest.world.components.feature.templates;
 
 import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.minecraft.world.level.block.state.properties.StructureMode;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.neoforged.neoforge.event.EventHooks;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.Wraith;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFStructureProcessors;
-
-import org.jetbrains.annotations.Nullable;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.FeatureLogic;
 
 import java.util.ArrayList;
@@ -178,9 +177,9 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 							TFLootTables.GRAVEYARD.generateChestContents(world, placement.offset(chestloc));
 							world.setBlock(placement.offset(chestloc).below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
 						}
-						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());
+						Wraith wraith = new Wraith(TFEntities.WRAITH.value(), world.getLevel());
 						wraith.setPos(placement.getX(), placement.getY(), placement.getZ());
-						ForgeEventFactory.onFinalizeSpawn(wraith, world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null, null);
+						EventHooks.onFinalizeSpawn(wraith, world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null, null);
 						world.addFreshEntity(wraith);
 					}
 				}
@@ -197,7 +196,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						if (world.setBlock(p, Blocks.SPAWNER.defaultBlockState(), 3)) {
 							SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(p);
 							if (ms != null)
-								ms.setEntityId(TFEntities.RISING_ZOMBIE.get(), rand);
+								ms.setEntityId(TFEntities.RISING_ZOMBIE.value(), rand);
 						}
 					}
 				}
@@ -232,7 +231,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 
 		@Override
 		protected StructureProcessorType<?> getType() {
-			return TFStructureProcessors.WEB.get();
+			return TFStructureProcessors.WEB.value();
 		}
 
 		@Nullable

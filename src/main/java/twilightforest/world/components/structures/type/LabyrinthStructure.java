@@ -19,16 +19,15 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.minotaurmaze.MazeRuinsComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
-import twilightforest.world.components.structures.util.ConquerableStructure;
+import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class LabyrinthStructure extends ConquerableStructure implements ConfigurableSpawns {
+public class LabyrinthStructure extends ControlledSpawningStructure implements ConfigurableSpawns {
     public static final Codec<LabyrinthStructure> CODEC = RecordCodecBuilder.create(instance ->
-            conquerStatusCodec(instance).apply(instance, LabyrinthStructure::new)
+            controlledSpawningCodec(instance).apply(instance, LabyrinthStructure::new)
     );
 
     public LabyrinthStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
@@ -47,23 +46,23 @@ public class LabyrinthStructure extends ConquerableStructure implements Configur
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.LABYRINTH.get();
+        return TFStructureTypes.LABYRINTH.value();
     }
 
     public static LabyrinthStructure buildLabyrinthConfig(BootstapContext<Structure> context) {
         return new LabyrinthStructure(
                 ControlledSpawningConfig.firstIndexMonsters(
-                        new MobSpawnSettings.SpawnerData(TFEntities.MINOTAUR.get(), 20, 2, 3),
+                        new MobSpawnSettings.SpawnerData(TFEntities.MINOTAUR.value(), 20, 2, 3),
                         new MobSpawnSettings.SpawnerData(EntityType.CAVE_SPIDER, 10, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.MAZE_SLIME.get(), 10, 2, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.MAZE_SLIME.value(), 10, 2, 4),
                         new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), 10, 1, 1)
+                        new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.value(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.value(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.value(), 10, 1, 1)
                 ),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
-                new HintConfig(HintConfig.book("labyrinth", 5), TFEntities.KOBOLD.get()),
+                new HintConfig(HintConfig.book("labyrinth", 5), TFEntities.KOBOLD.value()),
                 new DecorationConfig(3, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LABYRINTH_BIOMES),

@@ -7,10 +7,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 
 public class TFGenerationSettings {
 	@Deprecated // Used in places where we can't access the sea level FIXME Resolve
@@ -35,6 +35,6 @@ public class TFGenerationSettings {
 
 	// Checks if the world is *a* Twilight world on the Server side.
 	public static boolean usesTwilightChunkGenerator(ServerLevel level) {
-		return level.getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight;
+		return level.getChunkSource().getGenerator() instanceof TwilightChunkGenerator;
 	}
 }

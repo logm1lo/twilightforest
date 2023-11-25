@@ -21,13 +21,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFEntities;
-import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
-
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
+
 import java.util.Objects;
 
 public class LowerGoblinKnight extends Monster {
@@ -86,7 +88,7 @@ public class LowerGoblinKnight extends Monster {
 					Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).addTransientModifier(ARMOR_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER);
+				Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER.getId());
 			}
 		}
 	}
@@ -108,17 +110,17 @@ public class LowerGoblinKnight extends Monster {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
 
-		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level());
+		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.value(), this.level());
 		upper.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-		upper.finalizeSpawn(accessor, difficulty, MobSpawnType.NATURAL, data, tag);
+		EventHooks.onFinalizeSpawn(upper, accessor, difficulty, MobSpawnType.NATURAL, data, tag);
 		upper.startRiding(this);
 
 		return data;
 	}
 
 	@Override
-	public double getPassengersRidingOffset() {
-		return 1.0D;
+	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vector3f(0.0F, dimensions.height * 0.91F, 0.0F);
 	}
 
 	@Override
@@ -134,17 +136,17 @@ public class LowerGoblinKnight extends Monster {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT.get() : TFSounds.GOBLIN_KNIGHT_AMBIENT.get();
+		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT.value() : TFSounds.GOBLIN_KNIGHT_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH.get() : TFSounds.GOBLIN_KNIGHT_DEATH.get();
+		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH.value() : TFSounds.GOBLIN_KNIGHT_DEATH.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT.get() : TFSounds.GOBLIN_KNIGHT_HURT.get();
+		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT.value() : TFSounds.GOBLIN_KNIGHT_HURT.value();
 	}
 
 	@Override

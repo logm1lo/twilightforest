@@ -21,9 +21,9 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.PlantType;
-import twilightforest.init.TFSounds;
+import net.neoforged.neoforge.common.PlantType;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 
 public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBlock {
@@ -55,17 +55,17 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (state.getValue(HAS_BERRIES)) {
 			level.setBlockAndUpdate(pos, state.setValue(HAS_BERRIES, false));
-			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-			ItemEntity torchberries = new ItemEntity(level, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, new ItemStack(TFItems.TORCHBERRIES.get()));
+			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			ItemEntity torchberries = new ItemEntity(level, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, new ItemStack(TFItems.TORCHBERRIES.value()));
 			level.addFreshEntity(torchberries);
-			if (player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
+			if (player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.value());
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return super.use(state, level, pos, player, hand, result);
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state) {
 		return !state.getValue(HAS_BERRIES);
 	}
 

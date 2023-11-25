@@ -22,7 +22,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 
 public class CastleDoorBlock extends Block {
 
@@ -79,7 +79,7 @@ public class CastleDoorBlock extends Block {
 		if (state.getValue(VANISHED) || state.getValue(ACTIVE)) return InteractionResult.FAIL;
 
 		if (isBlockLocked(level, pos)) {
-			level.playSound(null, pos, TFSounds.DOOR_ACTIVATED.get(), SoundSource.BLOCKS, 1.0F, 0.3F);
+			level.playSound(null, pos, TFSounds.DOOR_ACTIVATED.value(), SoundSource.BLOCKS, 1.0F, 0.3F);
 			return InteractionResult.PASS;
 		} else {
 			changeToActiveBlock(level, pos, state);
@@ -97,7 +97,7 @@ public class CastleDoorBlock extends Block {
 	private static boolean isBlockLocked(Level level, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
 		if (!level.isClientSide()) {
-			ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(level);
+			TwilightChunkGenerator generator = WorldUtil.getChunkGenerator(level);
 			//return generator != null && generator.isStructureLocked(pos, lockIndex);
 		}
 		return false;
@@ -130,11 +130,11 @@ public class CastleDoorBlock extends Block {
 	}
 
 	private void playVanishSound(Level level, BlockPos pos) {
-		level.playSound(null, pos, TFSounds.DOOR_VANISH.get(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.75F);
+		level.playSound(null, pos, TFSounds.DOOR_VANISH.value(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.75F);
 	}
 
 	private void playReappearSound(Level level, BlockPos pos) {
-		level.playSound(null, pos, TFSounds.DOOR_REAPPEAR.get(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.25F);
+		level.playSound(null, pos, TFSounds.DOOR_REAPPEAR.value(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.25F);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class CastleDoorBlock extends Block {
 
 						double speed = rand.nextGaussian() * 0.2D;
 
-						((ServerLevel) level).sendParticles(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+						((ServerLevel) level).sendParticles(TFParticleType.ANNIHILATE.value(), x, y, z, 1, 0, 0, 0, speed);
 					}
 				}
 			}

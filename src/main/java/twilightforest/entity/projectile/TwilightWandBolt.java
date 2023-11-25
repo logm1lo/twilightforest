@@ -12,8 +12,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
@@ -24,12 +24,12 @@ public class TwilightWandBolt extends TFThrowable {
 	}
 
 	public TwilightWandBolt(Level world, LivingEntity thrower) {
-		super(TFEntities.WAND_BOLT.get(), world, thrower);
+		super(TFEntities.WAND_BOLT.value(), world, thrower);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0, 1.5F, 1.0F);
 	}
 
 	public TwilightWandBolt(Level worldIn, double x, double y, double z) {
-		super(TFEntities.WAND_BOLT.get(), worldIn, x, y, z);
+		super(TFEntities.WAND_BOLT.value(), worldIn, x, y, z);
 	}
 
 	@Override

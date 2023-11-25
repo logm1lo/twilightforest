@@ -1,20 +1,20 @@
 package twilightforest.block.entity;
 
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFSounds;
 import twilightforest.block.BuilderBlock;
 import twilightforest.block.TranslucentBuiltBlock;
-import twilightforest.init.TFBlocks;
 import twilightforest.enums.TowerDeviceVariant;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
 
 public class CarminiteBuilderBlockEntity extends BlockEntity {
 	private static final int RANGE = 16;
@@ -31,10 +31,10 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 
     private Player trackedPlayer;
 
-	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.get().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
+	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.value().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
 
 	public CarminiteBuilderBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.TOWER_BUILDER.get(), pos, state);
+		super(TFBlockEntities.TOWER_BUILDER.value(), pos, state);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 				if (te.blocksMade <= RANGE && level.isEmptyBlock(nextPos)) {
 					level.setBlock(nextPos, te.blockBuiltState, 3);
 
-					level.playSound(null, pos, TFSounds.BUILDER_CREATE.get(), SoundSource.BLOCKS, 0.75F, 1.2F);
+					level.playSound(null, pos, TFSounds.BUILDER_CREATE.value(), SoundSource.BLOCKS, 0.75F, 1.2F);
 
 					te.lastBlockCoords = nextPos;
 

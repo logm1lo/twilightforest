@@ -4,11 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
-
-import java.util.function.Supplier;
 
 public class UpdateShieldPacket {
 
@@ -40,8 +38,8 @@ public class UpdateShieldPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(UpdateShieldPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(UpdateShieldPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() -> {
 				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
 				if (entity instanceof LivingEntity) {
 					entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
@@ -51,7 +49,7 @@ public class UpdateShieldPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

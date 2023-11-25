@@ -23,15 +23,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.block.entity.TomeSpawnerBlockEntity;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.block.entity.TomeSpawnerBlockEntity;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFSounds;
 
 public class TomeSpawnerBlock extends BaseEntityBlock {
-
-	public static final IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, 10);
+	public static final int MAX_STAGES = 10;
+	public static final IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, MAX_STAGES);
 	public static final BooleanProperty SPAWNER = BooleanProperty.create("spawner");
 
 	public TomeSpawnerBlock(Properties properties) {
@@ -48,7 +47,8 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
 		if(level.getDifficulty() != Difficulty.PEACEFUL && level.getBlockState(pos).getValue(SPAWNER) && level.getBlockEntity(pos) instanceof TomeSpawnerBlockEntity ts && level instanceof ServerLevel serverLevel) {
 			for(int i = 0; i < state.getValue(BOOK_STAGES); i++) {
-				ts.attemptSpawnTome(serverLevel, pos, true);
+				ts.attemptSpawnTome(serverLevel, pos, true, igniter);
+
 			}
 			level.destroyBlock(pos, false);
 		}
@@ -68,7 +68,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	@Override
 	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity entity, ItemStack stack) {
 		if(!level.isClientSide && state.getValue(SPAWNER)) {
-			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			for (int i = 0; i < 20; ++i) {
 				double d3 = level.random.nextGaussian() * 0.02D;
 				double d1 = level.random.nextGaussian() * 0.02D;
@@ -98,7 +98,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return state.getValue(SPAWNER) ? createTickerHelper(type, TFBlockEntities.TOME_SPAWNER.get(), TomeSpawnerBlockEntity::tick) : null;
+		return state.getValue(SPAWNER) ? createTickerHelper(type, TFBlockEntities.TOME_SPAWNER.value(), TomeSpawnerBlockEntity::tick) : null;
 	}
 
 	@Override

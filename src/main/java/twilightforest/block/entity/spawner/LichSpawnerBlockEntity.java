@@ -7,7 +7,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
@@ -15,7 +15,7 @@ import twilightforest.init.TFEntities;
 public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	public LichSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.LICH_SPAWNER.get(), TFEntities.LICH.get(), pos, state);
+		super(TFBlockEntities.LICH_SPAWNER.value(), TFEntities.LICH.value(), pos, state);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 		Lich myCreature = this.makeMyCreature();
 
 		myCreature.moveTo(this.getBlockPos(), accessor.getLevel().random.nextFloat() * 360F, 0.0F);
-		ForgeEventFactory.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null, null);
+		EventHooks.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null, null);
 		myCreature.setAttackCooldown(40);
 		myCreature.setExtinguishTimer();
 

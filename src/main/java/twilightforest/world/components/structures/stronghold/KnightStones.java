@@ -15,11 +15,11 @@ public class KnightStones extends StructurePiece.BlockSelector {
 			float f = random.nextFloat();
 
 			if (f < 0.2F) {
-				this.next = TFBlocks.CRACKED_UNDERBRICK.get().defaultBlockState();
+				this.next = TFBlocks.CRACKED_UNDERBRICK.value().defaultBlockState();
 			} else if (f < 0.5F) {
-				this.next = TFBlocks.MOSSY_UNDERBRICK.get().defaultBlockState();
+				this.next = TFBlocks.MOSSY_UNDERBRICK.value().defaultBlockState();
 			} else {
-				this.next = TFBlocks.UNDERBRICK.get().defaultBlockState();
+				this.next = TFBlocks.UNDERBRICK.value().defaultBlockState();
 			}
 		}
 	}

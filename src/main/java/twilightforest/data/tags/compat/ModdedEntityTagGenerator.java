@@ -7,7 +7,7 @@ import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.EntityTagGenerator;
@@ -36,19 +36,19 @@ public class ModdedEntityTagGenerator extends EntityTypeTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		tag(AC_RESISTS_ACID).add(TFEntities.HYDRA.get(), TFEntities.NAGA.get());
+		tag(AC_RESISTS_ACID).add(TFEntities.HYDRA.value(), TFEntities.NAGA.value());
 		tag(AC_RESISTS_MAGNETS).addTag(EntityTagGenerator.BOSSES);
-		tag(AC_RESISTS_TREMORSAURUS_ROAR).add(TFEntities.HYDRA.get(), TFEntities.UR_GHAST.get());
+		tag(AC_RESISTS_TREMORSAURUS_ROAR).add(TFEntities.HYDRA.value(), TFEntities.UR_GHAST.value());
 
 		tag(AETHER_DEFLECTABLE_PROJECTILES).add(
-				TFEntities.NATURE_BOLT.get(),
-				TFEntities.LICH_BOLT.get(),
-				TFEntities.WAND_BOLT.get(),
-				TFEntities.SLIME_BLOB.get(),
-				TFEntities.ICE_SNOWBALL.get());
+				TFEntities.NATURE_BOLT.value(),
+				TFEntities.LICH_BOLT.value(),
+				TFEntities.WAND_BOLT.value(),
+				TFEntities.SLIME_BLOB.value(),
+				TFEntities.ICE_SNOWBALL.value());
 
-		tag(AETHER_FIRE_MOB).add(TFEntities.FIRE_BEETLE.get());
-		tag(AETHER_PIGS).add(TFEntities.BOAR.get());
+		tag(AETHER_FIRE_MOB).add(TFEntities.FIRE_BEETLE.value());
+		tag(AETHER_PIGS).add(TFEntities.BOAR.value());
 
 		tag(AN_JAR_BLACKLIST).addTag(EntityTagGenerator.BOSSES);
 		tag(AN_JAR_RELEASE_BLACKLIST).addTag(EntityTagGenerator.BOSSES);

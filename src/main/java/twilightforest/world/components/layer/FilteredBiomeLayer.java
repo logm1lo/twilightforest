@@ -57,12 +57,12 @@ public record FilteredBiomeLayer(ResourceKey<Biome> biomeFirst) implements AreaT
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.filteredBiomeLayer.run(contextFactory.apply(this.salt), this.fallbackLayer.get().build(contextFactory), this.filteredLayer.get().build(contextFactory));
+			return this.filteredBiomeLayer.run(contextFactory.apply(this.salt), this.fallbackLayer.value().build(contextFactory), this.filteredLayer.value().build(contextFactory));
 		}
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.FILTERED.get();
+			return BiomeLayerTypes.FILTERED.value();
 		}
 
 		public long salt() {

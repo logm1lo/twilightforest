@@ -16,12 +16,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.entity.GhastTrapBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 public class GhastTrapBlock extends BaseEntityBlock {
 	public static final int ACTIVATE_EVENT = 0;
@@ -56,7 +55,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 			}
 
 			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
-			level.playSound(null, pos, TFSounds.JET_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.playSound(null, pos, TFSounds.JET_START.value(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			level.blockEvent(pos, this, ACTIVATE_EVENT, 0);
 		}
 	}
@@ -124,6 +123,6 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.GHAST_TRAP.get(), GhastTrapBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.GHAST_TRAP.value(), GhastTrapBlockEntity::tick);
 	}
 }

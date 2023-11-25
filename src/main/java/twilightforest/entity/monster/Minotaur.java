@@ -24,14 +24,13 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.entity.boss.Minoshroom;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 public class Minotaur extends Monster implements ITFCharger {
 
@@ -45,14 +44,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new ChargeAttackGoal(this, 1.5F, this instanceof Minoshroom));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false) {
-			//normally, the minoshroom attack reach is 9.5. It can hit you from nearly 2 blocks away!
-			//lowering this to make the fight a bit more fair and more doable hitless with melee
-			@Override
-			protected double getAttackReachSqr(LivingEntity entity) {
-				return this.mob instanceof Minoshroom ? 5.0D : super.getAttackReachSqr(entity);
-			}
-		});
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -87,7 +79,7 @@ public class Minotaur extends Monster implements ITFCharger {
 		float additionalDiff = difficulty.getEffectiveDifficulty() + 1;
 		int result = (int) (random / additionalDiff);
 		if (result == 0)
-			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GOLDEN_MINOTAUR_AXE.get()));
+			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GOLDEN_MINOTAUR_AXE.value()));
 		else
 			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
 	}
@@ -143,7 +135,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	}
 
 	protected SoundEvent getChargeSound() {
-		return TFSounds.MINOTAUR_ATTACK.get();
+		return TFSounds.MINOTAUR_ATTACK.value();
 	}
 
 	@Override
@@ -156,28 +148,23 @@ public class Minotaur extends Monster implements ITFCharger {
 	}
 
 	@Override
-	public double getMyRidingOffset() {
-		return -0.5D;
-	}
-
-	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINOTAUR_AMBIENT.get();
+		return TFSounds.MINOTAUR_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.MINOTAUR_HURT.get();
+		return TFSounds.MINOTAUR_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINOTAUR_DEATH.get();
+		return TFSounds.MINOTAUR_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		playSound(TFSounds.MINOTAUR_STEP.get(), 0.15F, 0.8F);
+		playSound(TFSounds.MINOTAUR_STEP.value(), 0.15F, 0.8F);
 	}
 
 	@Override

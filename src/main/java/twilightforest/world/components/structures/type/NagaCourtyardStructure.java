@@ -13,13 +13,12 @@ import net.minecraft.world.level.levelgen.structure.*;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
-import twilightforest.world.components.structures.util.LandmarkStructure;
+import twilightforest.world.components.structures.util.ConquerableStructure;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class NagaCourtyardStructure extends LandmarkStructure {
+public class NagaCourtyardStructure extends ConquerableStructure {
     public static final Codec<NagaCourtyardStructure> CODEC = RecordCodecBuilder.create(instance -> landmarkCodec(instance).apply(instance, NagaCourtyardStructure::new));
 
     public NagaCourtyardStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
@@ -33,7 +32,7 @@ public class NagaCourtyardStructure extends LandmarkStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.NAGA_COURTYARD.get();
+        return TFStructureTypes.NAGA_COURTYARD.value();
     }
 
     public static NagaCourtyardStructure buildStructureConfig(BootstapContext<Structure> context) {

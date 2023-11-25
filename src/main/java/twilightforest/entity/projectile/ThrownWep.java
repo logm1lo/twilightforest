@@ -10,8 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.KnightPhantom;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
@@ -76,7 +76,7 @@ public class ThrownWep extends TFThrowable {
 		}
 
 		if (!this.level().isClientSide()) {
-			result.getEntity().hurt(TFDamageTypes.getDamageSource(this.level(), this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageTypes.THROWN_PICKAXE : TFDamageTypes.THROWN_AXE), this.projectileDamage);
+			result.getEntity().hurt(TFDamageTypes.getDamageSource(this.level(), this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.value() ? TFDamageTypes.THROWN_PICKAXE : TFDamageTypes.THROWN_AXE), this.projectileDamage);
 		}
 	}
 

@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-
 import org.jetbrains.annotations.Nullable;
 
 public class EtchedNagastoneBlock extends DirectionalBlock {
@@ -20,9 +19,7 @@ public class EtchedNagastoneBlock extends DirectionalBlock {
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(FACING, context.getPlayer() != null && context.getPlayer().isShiftKeyDown()
-						? context.getNearestLookingDirection().getOpposite()
-						: context.getNearestLookingDirection());
+		return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection());
 	}
 
 	@Override

@@ -12,8 +12,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
@@ -25,7 +25,7 @@ public class LichBolt extends TFThrowable {
 	}
 
 	public LichBolt(Level level, LivingEntity owner) {
-		super(TFEntities.LICH_BOLT.get(), level, owner);
+		super(TFEntities.LICH_BOLT.value(), level, owner);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class LichBolt extends TFThrowable {
 
 		if (!this.level().isClientSide()) {
 			if (hit instanceof LivingEntity) {
-				hit.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.LICH_BOLT, TFEntities.LICH.get()), 6);
+				hit.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.LICH_BOLT, TFEntities.LICH.value()), 6);
 			}
 			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();

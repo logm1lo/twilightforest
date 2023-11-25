@@ -36,7 +36,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	protected int treasureFloor = -1;
 
 	public IceTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFITWin.get(), nbt);
+		this(TFStructurePieceTypes.TFITWin.value(), nbt);
 	}
 
 	public IceTowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -141,7 +141,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			return false;
 		}
 
-		IceTowerWingComponent wing = new IceTowerWingComponent(TFStructurePieceTypes.TFITWin.get(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		IceTowerWingComponent wing = new IceTowerWingComponent(TFStructurePieceTypes.TFITWin.value(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {

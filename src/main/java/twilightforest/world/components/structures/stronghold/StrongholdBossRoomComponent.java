@@ -18,20 +18,20 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent {
+public class StrongholdBossRoomComponent extends KnightStrongholdComponent {
 
 	public StrongholdBossRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSBR.get(), nbt);
+		super(TFStructurePieceTypes.TFSBR.value(), nbt);
 	}
 
 	public StrongholdBossRoomComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSBR.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSBR.value(), i, facing, x, y, z);
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 27, 7, 27, facing);
+		return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 27, 7, 27, facing);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent 
 		this.generateBox(world, sbb, 12, 1, 3, 14, 4, 3, Blocks.IRON_BARS.defaultBlockState(), Blocks.IRON_BARS.defaultBlockState(), false);
 
 		//spawner
-		placeBlock(world, TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get().defaultBlockState(), 13, 2, 13, sbb);
+		placeBlock(world, TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.value().defaultBlockState(), 13, 2, 13, sbb);
 
 		// doors
 		placeDoors(world, sbb);

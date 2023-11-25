@@ -49,7 +49,7 @@ public class TFBiomeProvider extends BiomeSource {
 
 		//this.genBiomes = buildLayers((salt) -> new LazyAreaContext(25, salt));
 		this.genBiomeConfig = biomeLayerFactory;
-		this.genBiomes = Suppliers.memoize(() -> this.genBiomeConfig.get().build(salt -> new LazyAreaContext(25, salt)));
+		this.genBiomes = Suppliers.memoize(() -> this.genBiomeConfig.value().build(salt -> new LazyAreaContext(25, salt)));
 
 		this.baseOffset = offset;
 		this.baseFactor = factor;

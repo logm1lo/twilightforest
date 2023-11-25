@@ -7,11 +7,10 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 public class ParticlePacket {
 	private final List<QueuedParticle> queuedParticles = new ArrayList<>();
@@ -64,8 +63,8 @@ public class ParticlePacket {
 	}
 
 	public static class Handler {
-		public static boolean onMessage(ParticlePacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(ParticlePacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() -> {
 				ClientLevel level = Minecraft.getInstance().level;
 				if (level == null)
 					return;
@@ -73,7 +72,7 @@ public class ParticlePacket {
 					level.addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
 				}
 			});
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

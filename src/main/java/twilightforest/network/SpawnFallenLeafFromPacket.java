@@ -7,11 +7,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.client.particle.data.LeafParticleData;
 
 import java.util.Random;
-import java.util.function.Supplier;
 
 public class SpawnFallenLeafFromPacket {
 
@@ -38,8 +37,8 @@ public class SpawnFallenLeafFromPacket {
 	public static class Handler {
 
 		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(SpawnFallenLeafFromPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(SpawnFallenLeafFromPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					Random rand = new Random();
@@ -59,7 +58,7 @@ public class SpawnFallenLeafFromPacket {
 					);
 				}
 			});
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

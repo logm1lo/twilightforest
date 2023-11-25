@@ -10,9 +10,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class SeekerArrow extends TFArrow {
@@ -30,7 +30,7 @@ public class SeekerArrow extends TFArrow {
 	}
 
 	public SeekerArrow(Level world, Entity shooter) {
-		super(TFEntities.SEEKER_ARROW.get(), world, shooter);
+		super(TFEntities.SEEKER_ARROW.value(), world, shooter);
 		this.setBaseDamage(1.0D);
 	}
 

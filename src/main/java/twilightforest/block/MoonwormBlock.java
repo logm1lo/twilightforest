@@ -8,10 +8,9 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.MoonwormBlockEntity;
 import twilightforest.init.TFBlockEntities;
-
-import org.jetbrains.annotations.Nullable;
 import twilightforest.loot.TFLootTables;
 
 public class MoonwormBlock extends CritterBlock {
@@ -29,7 +28,7 @@ public class MoonwormBlock extends CritterBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.MOONWORM.get(), MoonwormBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.MOONWORM.value(), MoonwormBlockEntity::tick);
 	}
 
 	@Override

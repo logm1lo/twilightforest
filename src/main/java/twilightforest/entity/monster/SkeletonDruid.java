@@ -53,22 +53,22 @@ public class SkeletonDruid extends AbstractSkeleton {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.SKELETON_DRUID_AMBIENT.get();
+		return TFSounds.SKELETON_DRUID_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.SKELETON_DRUID_HURT.get();
+		return TFSounds.SKELETON_DRUID_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.SKELETON_DRUID_DEATH.get();
+		return TFSounds.SKELETON_DRUID_DEATH.value();
 	}
 
 	@Override
 	protected SoundEvent getStepSound() {
-		return TFSounds.SKELETON_DRUID_STEP.get();
+		return TFSounds.SKELETON_DRUID_STEP.value();
 	}
 
 
@@ -100,7 +100,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 	public void performRangedAttack(LivingEntity attackTarget, float extraDamage) {
 		if (this.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof HoeItem) {
 			NatureBolt natureBolt = new NatureBolt(this.level(), this);
-			playSound(TFSounds.SKELETON_DRUID_SHOOT.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			playSound(TFSounds.SKELETON_DRUID_SHOOT.value(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 
 			double tx = attackTarget.getX() - this.getX();
 			double ty = attackTarget.getY() + attackTarget.getEyeHeight() - 2.7D - this.getY();
@@ -163,7 +163,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 		this.getEntityData().set(DATA_BABY_ID, shouldBaby);
 		if (!this.level().isClientSide()) {
 			AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
-			attributeinstance.removeModifier(SPEED_MODIFIER_BABY);
+			attributeinstance.removeModifier(SPEED_MODIFIER_BABY.getId());
 			if (shouldBaby) {
 				attributeinstance.addTransientModifier(SPEED_MODIFIER_BABY);
 			}
@@ -177,11 +177,6 @@ public class SkeletonDruid extends AbstractSkeleton {
 		}
 
 		super.onSyncedDataUpdated(dataAccessor);
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return this.isBaby() ? -0.35D : -0.6D;
 	}
 
 	@Override

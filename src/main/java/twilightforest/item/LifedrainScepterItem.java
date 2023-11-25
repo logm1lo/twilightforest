@@ -22,8 +22,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFDamageTypes;
@@ -155,7 +155,7 @@ public class LifedrainScepterItem extends Item {
 							if (target instanceof Mob mob) {
 								mob.spawnAnim();
 							}
-							target.playSound(TFSounds.SCEPTER_DRAIN.get(), 1.0F, living.getVoicePitch());
+							target.playSound(TFSounds.SCEPTER_DRAIN.value(), 1.0F, living.getVoicePitch());
 							SoundEvent deathSound = EntityUtil.getDeathSound(target);
 							if (deathSound != null) {
 								level.playSound(null, target.blockPosition(), deathSound, SoundSource.HOSTILE, 1.0F, target.getVoicePitch());

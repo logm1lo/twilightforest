@@ -1,15 +1,15 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -18,12 +18,12 @@ import twilightforest.util.FeatureUtil;
 
 public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 
-	final BlockState mossPatch = TFBlocks.MOSS_PATCH.get().defaultBlockState();
-	final BlockState oakLeaves = TFBlocks.TWILIGHT_OAK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
-	final BlockState oakLogWithZAxis = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
-	final BlockState oakLogWithXAxis = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+	final BlockState mossPatch = TFBlocks.MOSS_PATCH.value().defaultBlockState();
+	final BlockState oakLeaves = TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
+	final BlockState oakLogWithZAxis = TFBlocks.TWILIGHT_OAK_LOG.value().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+	final BlockState oakLogWithXAxis = TFBlocks.TWILIGHT_OAK_LOG.value().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 	final BlockState grass = Blocks.GRASS_BLOCK.defaultBlockState();
-	final BlockState firefly = TFBlocks.FIREFLY.get().defaultBlockState();
+	final BlockState firefly = TFBlocks.FIREFLY.value().defaultBlockState();
 
 	public FallenHollowLogFeature(Codec<NoneFeatureConfiguration> configIn) {
 		super(configIn);

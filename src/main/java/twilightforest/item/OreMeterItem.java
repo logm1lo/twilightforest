@@ -77,8 +77,8 @@ public class OreMeterItem extends Item {
 				countCopper += results.getOrDefault(Blocks.COPPER_ORE.defaultBlockState(), dummy).count;
 				countExposedDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.defaultBlockState(), dummy).exposedCount;
 
-				countRoots += results.getOrDefault(TFBlocks.ROOT_BLOCK.get().defaultBlockState(), dummy).count;
-				countOreRoots += results.getOrDefault(TFBlocks.LIVEROOT_BLOCK.get().defaultBlockState(), dummy).count;
+				countRoots += results.getOrDefault(TFBlocks.ROOT_BLOCK.value().defaultBlockState(), dummy).count;
+				countOreRoots += results.getOrDefault(TFBlocks.LIVEROOT_BLOCK.value().defaultBlockState(), dummy).count;
 			}
 		}
 
@@ -93,8 +93,8 @@ public class OreMeterItem extends Item {
 		player.sendSystemMessage(Component.translatable(Blocks.LAPIS_ORE.getDescriptionId()).append(" - " + countLapis + " " + percent(countLapis, total)));
 		player.sendSystemMessage(Component.translatable(Blocks.REDSTONE_ORE.getDescriptionId()).append(" - " + countRedstone + " " + percent(countRedstone, total)));
 		player.sendSystemMessage(Component.translatable(Blocks.COPPER_ORE.getDescriptionId()).append(" - " + countCopper + " " + percent(countCopper, total)));
-		player.sendSystemMessage(Component.translatable(TFBlocks.ROOT_BLOCK.get().getDescriptionId()).append(" - " + countRoots + " " + percent(countRoots, total)));
-		player.sendSystemMessage(Component.translatable(TFBlocks.LIVEROOT_BLOCK.get().getDescriptionId()).append(" - " + countOreRoots + " " + percent(countOreRoots, total)));
+		player.sendSystemMessage(Component.translatable(TFBlocks.ROOT_BLOCK.value().getDescriptionId()).append(" - " + countRoots + " " + percent(countRoots, total)));
+		player.sendSystemMessage(Component.translatable(TFBlocks.LIVEROOT_BLOCK.value().getDescriptionId()).append(" - " + countOreRoots + " " + percent(countOreRoots, total)));
 	}
 
 	private String percent(int count, int total) {

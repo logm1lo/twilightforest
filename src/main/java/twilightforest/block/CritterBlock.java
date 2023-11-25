@@ -41,13 +41,12 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
-
-import org.jetbrains.annotations.Nullable;
 
 public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
@@ -120,7 +119,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		Direction facing = state.getValue(DirectionalBlock.FACING);
 		BlockPos restingPos = pos.relative(facing.getOpposite());
-		return canSupportCenter(reader, restingPos, facing);
+		return canSupportCenter(reader, restingPos, facing) || reader.getBlockState(restingPos).getBlock() instanceof LeavesBlock;
 	}
 
 	@Override
@@ -132,16 +131,16 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (stack.getItem() == Items.GLASS_BOTTLE) {
-			if (this == TFBlocks.FIREFLY.get()) {
+			if (this == TFBlocks.FIREFLY.value()) {
 				if (!player.isCreative()) stack.shrink(1);
-				player.getInventory().add(new ItemStack(TFBlocks.FIREFLY_JAR.get()));
+				player.getInventory().add(new ItemStack(TFBlocks.FIREFLY_JAR.value()));
 				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 				return InteractionResult.sidedSuccess(level.isClientSide());
-			} else if (this == TFBlocks.CICADA.get()) {
+			} else if (this == TFBlocks.CICADA.value()) {
 				if (!player.isCreative()) stack.shrink(1);
-				player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.get()));
+				player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.value()));
 				if (level.isClientSide())
-					Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
+					Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.value().getLocation(), SoundSource.NEUTRAL);
 				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
@@ -154,9 +153,9 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 		if ((entity instanceof Projectile && !entity.getType().is(EntityTagGenerator.DONT_KILL_BUGS)) || entity instanceof FallingBlockEntity) {
 			level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 			if (level.isClientSide())
-				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
+				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.value().getLocation(), SoundSource.NEUTRAL);
 
-			level.playSound(null, pos, TFSounds.BUG_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.playSound(null, pos, TFSounds.BUG_SQUISH.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 
 			if (level instanceof ServerLevel serverLevel && this.getSquishLootTable() != null) {
 				LootParams ctx = new LootParams.Builder(serverLevel).withParameter(LootContextParams.BLOCK_STATE, state).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).create(LootContextParamSets.BLOCK);
@@ -172,7 +171,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 						0.0D, 0.0D, 0.0D);
 			}
 			if (entity instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
-				player.awardStat(TFStats.BUGS_SQUISHED.get());
+				player.awardStat(TFStats.BUGS_SQUISHED.value());
 				TFAdvancements.KILL_BUG.trigger(player, state);
 			}
 		}

@@ -21,13 +21,13 @@ import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
-import twilightforest.init.TFBlocks;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.client.model.TFModelLayers;
+import twilightforest.init.TFBlocks;
 
 /**
  * Keepsake Casket Model - MCVinnyq
@@ -79,7 +79,7 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidB
     public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         Level world = tileEntityIn.getLevel();
         boolean flag = world != null;
-        BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState();
+        BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.KEEPSAKE_CASKET.value().defaultBlockState();
         Block block = blockstate.getBlock();
         if (block instanceof KeepsakeCasketBlock) {
             int damage = blockstate.getValue(KeepsakeCasketBlock.BREAKAGE);

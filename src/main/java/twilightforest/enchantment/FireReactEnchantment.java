@@ -60,6 +60,6 @@ public class FireReactEnchantment extends LootOnlyEnchantment {
 
 	@Override
 	protected boolean checkCompatibility(Enchantment other) {
-		return super.checkCompatibility(other) && other != TFEnchantments.CHILL_AURA.get() && other != Enchantments.THORNS;
+		return super.checkCompatibility(other) && other != TFEnchantments.CHILL_AURA.value() && other != Enchantments.THORNS;
 	}
 }

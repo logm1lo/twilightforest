@@ -27,9 +27,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
@@ -138,7 +138,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			this.level().setBlockAndUpdate(this.blockPosition().offset(0, 1, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
+			this.level().setBlockAndUpdate(this.blockPosition().offset(0, 1, 0), TFBlocks.HYDRA_BOSS_SPAWNER.value().defaultBlockState());
 			this.discard();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -570,7 +570,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (this.deathTime <= 0 && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		if (this.deathTime <= 0 && EventHooks.getMobGriefingEvent(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -701,17 +701,17 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HYDRA_GROWL.get();
+		return TFSounds.HYDRA_GROWL.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HYDRA_HURT.get();
+		return TFSounds.HYDRA_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HYDRA_DEATH.get();
+		return TFSounds.HYDRA_DEATH.value();
 	}
 
 	@Override
@@ -730,7 +730,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.value().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
@@ -777,7 +777,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 		if (this.deathTime == 200) {
 			if (this.level() instanceof ServerLevel && !this.wasExperienceConsumed() && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
-				int reward = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, this.getExperienceReward());
+				int reward = EventHooks.getExperienceDrop(this, this.lastHurtByPlayer, this.getExperienceReward());
 				ExperienceOrb.award((ServerLevel) this.level(), this.position(), reward);
 			}
 

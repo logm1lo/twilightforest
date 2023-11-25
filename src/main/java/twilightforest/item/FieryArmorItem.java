@@ -19,9 +19,9 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -45,8 +45,8 @@ public class FieryArmorItem extends ArmorItem {
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
 		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
-			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.CHILL_AURA.get(), enchantment)
-					|| Objects.equals(TFEnchantments.FIRE_REACT.get(), enchantment)
+			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.CHILL_AURA.value(), enchantment)
+					|| Objects.equals(TFEnchantments.FIRE_REACT.value(), enchantment)
 					|| Objects.equals(Enchantments.FROST_WALKER, enchantment)) {
 				badEnchant.set(true);
 			}
@@ -57,9 +57,9 @@ public class FieryArmorItem extends ArmorItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !TFEnchantments.FIRE_REACT.get().equals(enchantment) &&
+		return !TFEnchantments.FIRE_REACT.value().equals(enchantment) &&
 				!Enchantments.THORNS.equals(enchantment) &&
-				!TFEnchantments.CHILL_AURA.get().equals(enchantment) &&
+				!TFEnchantments.CHILL_AURA.value().equals(enchantment) &&
 				!Enchantments.FROST_WALKER.equals(enchantment) &&
 				super.canApplyAtEnchantingTable(stack, enchantment);
 	}

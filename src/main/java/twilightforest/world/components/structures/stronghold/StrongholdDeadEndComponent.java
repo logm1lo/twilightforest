@@ -19,17 +19,17 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 
 
-public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
+public class StrongholdDeadEndComponent extends KnightStrongholdComponent {
 
 	private boolean chestTrapped;
 
 	public StrongholdDeadEndComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSDE.get(), nbt);
+		super(TFStructurePieceTypes.TFSDE.value(), nbt);
 		this.chestTrapped = nbt.getBoolean("chestTrapped");
 	}
 
 	public StrongholdDeadEndComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSDE.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSDE.value(), i, facing, x, y, z);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 6, 9, facing);
+		return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 6, 9, facing);
 	}
 
 	@Override

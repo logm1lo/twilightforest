@@ -1,16 +1,16 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import twilightforest.init.TFEntities;
 import twilightforest.entity.passive.Raven;
+import twilightforest.init.TFEntities;
 import twilightforest.util.FeatureUtil;
 
 /**
@@ -88,7 +88,7 @@ public class MonolithFeature extends Feature<NoneFeatureConfiguration> {
 			dPos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, dPos);
 
 			if (dPos.getY() > 0) {
-				Raven raven = TFEntities.RAVEN.get().create(world.getLevel());
+				Raven raven = TFEntities.RAVEN.value().create(world.getLevel());
 				raven.moveTo(dPos, rand.nextFloat() * 360.0F, 0.0F);
 
 				world.addFreshEntity(raven);

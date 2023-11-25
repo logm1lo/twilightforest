@@ -10,11 +10,11 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public final class SideTowerCover extends TwilightTemplateStructurePiece {
     private final int thickness = 2;
 
     public SideTowerCover(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.get(), compoundTag, ctx, readSettings(compoundTag));
+        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.value(), compoundTag, ctx, readSettings(compoundTag));
         this.width = compoundTag.getInt("width");
     }
 
@@ -44,7 +44,7 @@ public final class SideTowerCover extends TwilightTemplateStructurePiece {
     }
 
     private SideTowerCover(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int width) {
-        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.get(), 0, structureManager, templateLocation, placeSettings, startPosition);
+        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.value(), 0, structureManager, templateLocation, placeSettings, startPosition);
         this.width = width;
     }
 

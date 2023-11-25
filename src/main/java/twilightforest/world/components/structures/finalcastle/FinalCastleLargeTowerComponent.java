@@ -14,20 +14,20 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 
 
 public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 
 	public FinalCastleLargeTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCLaTo.get(), nbt);
+		super(TFStructurePieceTypes.TFFCLaTo.value(), nbt);
 	}
 
 	public FinalCastleLargeTowerComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFFCLaTo.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCLaTo.value(), i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 13;
 		this.height = 61;
@@ -65,13 +65,13 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 		this.placeBlock(world, deco.blockState, 4, -7, 4, sbb);
 
 		// door, first floor
-		final BlockState castleDoor = TFBlocks.YELLOW_CASTLE_DOOR.get().defaultBlockState();
+		final BlockState castleDoor = TFBlocks.YELLOW_CASTLE_DOOR.value().defaultBlockState();
 		this.generateBox(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
 
 		this.placeSignAtCurrentPosition(world, 6, 1, 6, "Parkour area 1", "Unique monster?", sbb);
 	}
 
 	public BlockState getGlyphMeta() {
-		return TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return TFBlocks.BLUE_CASTLE_RUNE_BRICK.value().defaultBlockState();
 	}
 }

@@ -19,11 +19,10 @@ import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.block.LightableBlock;
-import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.init.TFSounds;
@@ -79,7 +78,7 @@ public class PeacockFanItem extends Item {
 							lookVec.x(), lookVec.y(), lookVec.z());
 				}
 			}
-			player.playSound(TFSounds.FAN_WHOOSH.get(), 1.0F + level.getRandom().nextFloat(), level.getRandom().nextFloat() * 0.7F + 0.3F);
+			player.playSound(TFSounds.FAN_WHOOSH.value(), 1.0F + level.getRandom().nextFloat(), level.getRandom().nextFloat() * 0.7F + 0.3F);
 			return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 		}
 
@@ -148,7 +147,7 @@ public class PeacockFanItem extends Item {
 		BlockState state = level.getBlockState(pos);
 		if (state.getBlock() instanceof FlowerBlock) {
 			if (level.getRandom().nextInt(3) == 0) {
-				if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
+				if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player)).isCanceled()) {
 					level.destroyBlock(pos, true);
 					cost++;
 				}

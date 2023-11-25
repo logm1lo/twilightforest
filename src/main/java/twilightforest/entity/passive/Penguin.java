@@ -40,7 +40,7 @@ public class Penguin extends Bird {
 
 	@Override
 	public Animal getBreedOffspring(ServerLevel level, AgeableMob ageableMob) {
-		return TFEntities.PENGUIN.get().create(level);
+		return TFEntities.PENGUIN.value().create(level);
 	}
 
 	@Override

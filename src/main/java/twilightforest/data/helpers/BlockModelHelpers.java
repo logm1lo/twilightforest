@@ -1,14 +1,17 @@
 package twilightforest.data.helpers;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.properties.*;
-import net.minecraftforge.client.model.generators.*;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
+import net.neoforged.neoforge.client.model.generators.*;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
 
@@ -382,20 +385,20 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		}, BanisterBlock.WATERLOGGED);
 	}
 
-	protected void bisectedStairsBlock(RegistryObject<StairBlock> block, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
+	protected void bisectedStairsBlock(DeferredHolder<Block, StairBlock> block, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
 		this.bisectedStairsBlock(block, block.getId().getPath(), side, end, middle);
 	}
 
-	protected void bisectedStairsBlock(RegistryObject<StairBlock> block, String name, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
+	protected void bisectedStairsBlock(DeferredHolder<Block, StairBlock> block, String name, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
 		ModelFile stairs = this.models().withExistingParent(name, TwilightForestMod.prefix("block/util/bisected_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
 		ModelFile stairsInner = this.models().withExistingParent(name + "_inner", TwilightForestMod.prefix("block/util/bisected_inner_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
 		ModelFile stairsOuter = this.models().withExistingParent(name + "_outer", TwilightForestMod.prefix("block/util/bisected_outer_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
 
-		this.stairsBlock(block.get(), stairs, stairsInner, stairsOuter);
+		this.stairsBlock(block.value(), stairs, stairsInner, stairsOuter);
 	}
 
 	protected ResourceLocation key(Block block) {
-		return ForgeRegistries.BLOCKS.getKey(block);
+		return BuiltInRegistries.BLOCK.getKey(block);
 	}
 
 	protected String name(Block block) {

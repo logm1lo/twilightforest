@@ -16,8 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.init.TFEntities;
@@ -45,7 +45,7 @@ public class ZombieWandItem extends Item {
 			BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
 
 			if (result.getType() != HitResult.Type.MISS) {
-				LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.get().create(level);
+				LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.value().create(level);
 				zombie.moveTo(result.getLocation());
 				if (!level.noCollision(zombie, zombie.getBoundingBox())) {
 					return InteractionResultHolder.pass(stack);
@@ -58,7 +58,7 @@ public class ZombieWandItem extends Item {
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
 
 				stack.hurt(1, level.getRandom(), null);
-				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON.get(), 1.0F, zombie.getVoicePitch());
+				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON.value(), 1.0F, zombie.getVoicePitch());
 			}
 		}
 

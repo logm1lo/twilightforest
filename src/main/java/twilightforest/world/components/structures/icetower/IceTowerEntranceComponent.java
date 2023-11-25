@@ -19,11 +19,11 @@ import twilightforest.world.components.structures.TFStructureComponent;
 public class IceTowerEntranceComponent extends IceTowerWingComponent {
 
 	public IceTowerEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFITEnt.get(), nbt);
+		super(TFStructurePieceTypes.TFITEnt.value(), nbt);
 	}
 
 	public IceTowerEntranceComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFITEnt.get(), i, x, y, z, pSize, pHeight, direction);
+		super(TFStructurePieceTypes.TFITEnt.value(), i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override

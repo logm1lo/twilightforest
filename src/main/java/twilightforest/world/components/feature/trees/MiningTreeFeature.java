@@ -1,13 +1,13 @@
 package twilightforest.world.components.feature.trees;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
@@ -29,7 +29,7 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 
 		// check soil
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.MINING_SAPLING.get())) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.MINING_SAPLING.value())) {
 			return false;
 		}
 
@@ -52,8 +52,8 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 6, -5), false, config);
 
 		// place minewood core
-		world.setBlock(pos.above(), TFBlocks.MINING_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
-		world.scheduleTick(pos.above(), TFBlocks.MINING_LOG_CORE.get(), 20);
+		world.setBlock(pos.above(), TFBlocks.MINING_LOG_CORE.value().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
+		world.scheduleTick(pos.above(), TFBlocks.MINING_LOG_CORE.value(), 20);
 
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {

@@ -21,8 +21,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Vector3f;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -78,7 +78,7 @@ public class VanishingBlock extends Block {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!this.isVanished(state) && !state.getValue(ACTIVE)) {
 			if (areBlocksLocked(level, pos)) {
-				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.get(), SoundSource.BLOCKS, 1.0F, 0.3F);
+				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.value(), SoundSource.BLOCKS, 1.0F, 0.3F);
 			} else {
 				this.activate(level, pos);
 			}
@@ -107,7 +107,7 @@ public class VanishingBlock extends Block {
 		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
 			BlockPos cur = queue.pop();
 			BlockState state = getter.getBlockState(cur);
-			if (state.getBlock() == TFBlocks.LOCKED_VANISHING_BLOCK.get() && state.getValue(LockedVanishingBlock.LOCKED)) {
+			if (state.getBlock() == TFBlocks.LOCKED_VANISHING_BLOCK.value() && state.getValue(LockedVanishingBlock.LOCKED)) {
 				return true;
 			}
 
@@ -152,7 +152,7 @@ public class VanishingBlock extends Block {
 				level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
 				level.scheduleTick(pos, this, 15);
 			}
-			level.playSound(null, pos, TFSounds.REAPPEAR_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.playSound(null, pos, TFSounds.REAPPEAR_BLOCK.value(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		} else {
 			if (state.getValue(ACTIVE)) {
 				if (state.hasProperty(VANISHED)) {
@@ -162,7 +162,7 @@ public class VanishingBlock extends Block {
 					level.removeBlock(pos, false);
 				}
 
-				level.playSound(null, pos, state.getBlock() == TFBlocks.REAPPEARING_BLOCK.get() ? TFSounds.REAPPEAR_POOF.get() : TFSounds.VANISHING_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.5F);
+				level.playSound(null, pos, state.getBlock() == TFBlocks.REAPPEARING_BLOCK.value() ? TFSounds.REAPPEAR_POOF.value() : TFSounds.VANISHING_BLOCK.value(), SoundSource.BLOCKS, 0.3F, 0.5F);
 
 				for (Direction e : Direction.values()) {
 					this.activate(level, pos.relative(e));

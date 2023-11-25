@@ -1,35 +1,36 @@
 package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 
-public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instance> {
+import java.util.Optional;
+
+public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.TriggerInstance> {
 	public static final ResourceLocation ID = TwilightForestMod.prefix("kill_bug");
 
 	@Override
-	public ResourceLocation getId() {
-		return ID;
-	}
-
-	@Override
-	protected Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext ctx) {
+	protected KillBugTrigger.TriggerInstance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
 		Block bug = deserializeBug(json);
-		return new Instance(player, bug);
+		return new KillBugTrigger.TriggerInstance(player, bug);
 	}
 
 	@Nullable
 	private static Block deserializeBug(JsonObject object) {
 		if (object.has("bug")) {
 			ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(object, "bug"));
-			return ForgeRegistries.BLOCKS.getValue(resourcelocation);
+			return BuiltInRegistries.BLOCK.get(resourcelocation);
 		} else {
 			return null;
 		}
@@ -39,18 +40,18 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instan
 		this.trigger(player, (instance) -> instance.matches(bug));
 	}
 
-	public static class Instance extends AbstractCriterionTriggerInstance {
+	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
 
 		@Nullable
 		private final Block bugType;
 
-		public Instance(ContextAwarePredicate player, @Nullable Block bugType) {
-			super(ID, player);
+		public TriggerInstance(Optional<ContextAwarePredicate> player, @Nullable Block bugType) {
+			super(player);
 			this.bugType = bugType;
 		}
 
-		public static Instance killBug(Block bug) {
-			return new Instance(ContextAwarePredicate.ANY, bug);
+		public static Criterion<TriggerInstance> killBug(Block bug) {
+			return TFAdvancements.KILL_BUG.createCriterion(new TriggerInstance(Optional.empty(), bug));
 		}
 
 		public boolean matches(BlockState bug) {
@@ -58,11 +59,10 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instan
 		}
 
 		@Override
-		@SuppressWarnings("deprecation")
-		public JsonObject serializeToJson(SerializationContext ctx) {
-			JsonObject object = super.serializeToJson(ctx);
+		public JsonObject serializeToJson() {
+			JsonObject object = super.serializeToJson();
 			if (bugType != null) {
-				object.addProperty("bug", ForgeRegistries.BLOCKS.getKey(this.bugType).toString());
+				object.addProperty("bug", BuiltInRegistries.BLOCK.getKey(this.bugType).toString());
 			}
 			return object;
 		}

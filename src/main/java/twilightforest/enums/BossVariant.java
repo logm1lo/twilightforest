@@ -23,6 +23,7 @@ public enum BossVariant implements StringRepresentable {
 	FINAL_BOSS    (TrophyType.GOLD    , TFBlockEntities.FINAL_BOSS_SPAWNER::get);
 
 	private final TrophyType trophyType;
+	@Nullable
 	private final Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType;
 
 	BossVariant(TrophyType trophyType, @Nullable Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType) {

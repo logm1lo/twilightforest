@@ -2,9 +2,7 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class ThrowPlayerPacket {
 	private final double motionX;
@@ -31,10 +29,10 @@ public class ThrowPlayerPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(ThrowPlayerPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() ->
+		public static boolean onMessage(ThrowPlayerPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() ->
 					Minecraft.getInstance().player.push(message.motionX, message.motionY, message.motionZ));
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

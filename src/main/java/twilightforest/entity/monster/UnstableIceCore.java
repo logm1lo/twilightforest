@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.util.ColorUtil;
@@ -50,17 +50,17 @@ public class UnstableIceCore extends BaseIceMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_CORE_AMBIENT.get();
+		return TFSounds.ICE_CORE_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_CORE_HURT.get();
+		return TFSounds.ICE_CORE_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_CORE_DEATH.get();
+		return TFSounds.ICE_CORE_DEATH.value();
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class UnstableIceCore extends BaseIceMob {
 
 		if (this.deathTime == 60) { // delay until 3 seconds
 			if (!this.level().isClientSide()) {
-				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(this.level(), this);
+				boolean mobGriefing = EventHooks.getMobGriefingEvent(this.level(), this);
 				this.level().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, Level.ExplosionInteraction.MOB);
 
 				if (mobGriefing) {
@@ -127,7 +127,7 @@ public class UnstableIceCore extends BaseIceMob {
 	}
 
 	private boolean shouldTransformGlass(BlockState state, BlockPos pos) {
-		return !state.isAir() && isBlockNormalBounds(state, pos) && (!state.isSolid() || state.is(BlockTags.LEAVES) || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK.get()));
+		return !state.isAir() && isBlockNormalBounds(state, pos) && (!state.isSolid() || state.is(BlockTags.LEAVES) || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK.value()));
 	}
 
 	private boolean isBlockNormalBounds(BlockState state, BlockPos pos) {

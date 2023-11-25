@@ -4,21 +4,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.Kobold;
@@ -29,7 +31,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 import twilightforest.world.components.structures.util.ProgressionStructure;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -42,20 +44,56 @@ import java.util.Optional;
  */
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class ProgressionEvents {
-
 	/**
 	 * Check if the player is trying to break a block in a structure that's considered unbreakable for progression reasons
+	 * FIXME If there is a way to check on the client, it would be ideal to prevent the block-breaking in the first place
 	 */
 	@SubscribeEvent
 	public static void breakBlock(BlockEvent.BreakEvent event) {
 		Player player = event.getPlayer();
-		BlockPos pos = event.getPos();
 
 		if (!(event.getLevel() instanceof Level level) || level.isClientSide()) return;
 
+		BlockPos pos = event.getPos();
 		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
 			event.setCanceled(true);
+		}
+	}
 
+	/**
+	 * Check if the player is trying to place a block in a structure that's considered inaccessible for progression reasons
+	 * FIXME If there is a way to check on the client, it would be ideal to prevent the block placement in the first place.
+	 *  Currently makes a desync from server that the item appeared consumed to the placer's client, despite it being unconsumed on serverside
+	 */
+	@SubscribeEvent
+	public static void placeBlock(BlockEvent.EntityPlaceEvent event) {
+		Entity entity = event.getEntity();
+
+		if (!(event.getLevel() instanceof Level level) || !(entity instanceof Player player)) return;
+
+		BlockPos pos = event.getPos();
+		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
+			event.setCanceled(true);
+		}
+	}
+
+	/**
+	 * Check if the player is trying to break a multi-block that intersects a structure that's considered inaccessible for progression reasons
+	 * FIXME If there is a way to check on the client, it would be ideal to prevent the block placement in the first place.
+	 *  Currently makes a desync from server that the item appeared consumed to the placer's client, despite it being unconsumed on serverside
+	 */
+	@SubscribeEvent
+	public static void placeMultiBlock(BlockEvent.EntityMultiPlaceEvent event) {
+		Entity entity = event.getEntity();
+
+		if (!(event.getLevel() instanceof Level level) || !(entity instanceof Player player)) return;
+
+		for (BlockSnapshot snapshot : event.getReplacedBlockSnapshots()) {
+			BlockPos pos = snapshot.getPos();
+
+			if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
+				event.setCanceled(true);
+			}
 		}
 	}
 
@@ -92,9 +130,7 @@ public class ProgressionEvents {
 			return false;
 		}
 
-		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(level);
-
-		if (chunkGenerator != null) {
+		if (level.isClientSide || WorldUtil.getChunkGenerator(level) != null) {
 			Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 			if (struct.isPresent()) {
 				StructureStart structureStart = struct.get();

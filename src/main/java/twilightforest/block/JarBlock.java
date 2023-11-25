@@ -29,8 +29,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFParticleType;
@@ -56,15 +56,15 @@ public class JarBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		ItemEntity jarStuff = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), this == TFBlocks.FIREFLY_JAR.get() ? TFBlocks.FIREFLY.get().asItem().getDefaultInstance() : TFBlocks.CICADA.get().asItem().getDefaultInstance());
+		ItemEntity jarStuff = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), this == TFBlocks.FIREFLY_JAR.value() ? TFBlocks.FIREFLY.value().asItem().getDefaultInstance() : TFBlocks.CICADA.value().asItem().getDefaultInstance());
 		if (player.isShiftKeyDown()) {
 			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			jarStuff.spawnAtLocation(jarStuff.getItem());
 			jarStuff.spawnAtLocation(Items.GLASS_BOTTLE);
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		} else {
-			if (player.getItemInHand(hand).is(Items.POPPY) && this == TFBlocks.FIREFLY_JAR.get()) {
-				level.setBlockAndUpdate(pos, TFBlocks.FIREFLY_SPAWNER.get().defaultBlockState().setValue(AbstractParticleSpawnerBlock.RADIUS, 1));
+			if (player.getItemInHand(hand).is(Items.POPPY) && this == TFBlocks.FIREFLY_JAR.value()) {
+				level.setBlockAndUpdate(pos, TFBlocks.FIREFLY_SPAWNER.value().defaultBlockState().setValue(AbstractParticleSpawnerBlock.RADIUS, 1));
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
@@ -75,7 +75,7 @@ public class JarBlock extends Block implements SimpleWaterloggedBlock {
 	public void destroy(LevelAccessor accessor, BlockPos pos, BlockState state) {
 		super.destroy(accessor, pos, state);
 		if (accessor.isClientSide())
-			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.BLOCKS);
+			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.value().getLocation(), SoundSource.BLOCKS);
 	}
 
 	@Override
@@ -86,13 +86,13 @@ public class JarBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
-		if (this == TFBlocks.FIREFLY_JAR.get()) {
+		if (this == TFBlocks.FIREFLY_JAR.value()) {
 			for (int i = 0; i < 2; i++) {
 				double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 				double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
 				double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 
-				level.addParticle(TFParticleType.FIREFLY.get(), dx, dy, dz, 0, 0, 0);
+				level.addParticle(TFParticleType.FIREFLY.value(), dx, dy, dz, 0, 0, 0);
 			}
 		} else {
 			double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
@@ -102,7 +102,7 @@ public class JarBlock extends Block implements SimpleWaterloggedBlock {
 			level.addParticle(ParticleTypes.NOTE, dx, dy, dz, 0, 0, 0);
 
 			if (!TFConfig.CLIENT_CONFIG.silentCicadas.get() && level.getRandom().nextInt(75) == 0) {
-				level.playLocalSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, TFSounds.CICADA.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+				level.playLocalSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, TFSounds.CICADA.value(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
 			}
 		}
 	}

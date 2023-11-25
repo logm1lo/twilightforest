@@ -2,10 +2,8 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
-
-import java.util.function.Supplier;
 
 public class EnforceProgressionStatusPacket {
 
@@ -25,10 +23,10 @@ public class EnforceProgressionStatusPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(EnforceProgressionStatusPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() ->
+		public static boolean onMessage(EnforceProgressionStatusPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() ->
 					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null));
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

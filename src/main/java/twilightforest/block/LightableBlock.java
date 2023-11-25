@@ -79,7 +79,7 @@ public interface LightableBlock {
 			}
 		}
 
-		level.addParticle(ominous ? TFParticleType.OMINOUS_FLAME.get() : ParticleTypes.SMALL_FLAME, x, y, z, 0.0D, 0.0D, 0.0D);
+		level.addParticle(ominous ? TFParticleType.OMINOUS_FLAME.value() : ParticleTypes.SMALL_FLAME, x, y, z, 0.0D, 0.0D, 0.0D);
 	}
 
 	//still, we should include the vector method because im too lazy to convert :P
@@ -92,7 +92,7 @@ public interface LightableBlock {
 			}
 		}
 
-		level.addParticle(ominous ? TFParticleType.OMINOUS_FLAME.get() : ParticleTypes.SMALL_FLAME, vec.x, vec.y, vec.z, 0.0D, 0.0D, 0.0D);
+		level.addParticle(ominous ? TFParticleType.OMINOUS_FLAME.value() : ParticleTypes.SMALL_FLAME, vec.x, vec.y, vec.z, 0.0D, 0.0D, 0.0D);
 	}
 
 	default void extinguish(@Nullable Player player, BlockState state, LevelAccessor accessor, BlockPos pos) {

@@ -7,7 +7,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.thrown.YetiThrowCapabilityHandler;
 import twilightforest.data.tags.EntityTagGenerator;
@@ -50,10 +50,8 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 	// Vanilla Copy with edits
 	@Override
-	protected void checkAndPerformAttack(LivingEntity victim, double p_190102_2_) {
-		double d0 = this.getAttackReachSqr(victim);
-
-		if (p_190102_2_ <= d0 && this.getTicksUntilNextAttack() <= 0 && this.mob.getPassengers().isEmpty() && this.cooldown-- == 0) {
+	protected void checkAndPerformAttack(LivingEntity victim) {
+		if (this.canPerformAttack(victim) && this.getTicksUntilNextAttack() <= 0 && this.mob.getPassengers().isEmpty() && this.cooldown-- == 0) {
 			this.cooldown = 3; // Gives the thrower a pause so it doesn't pick the target back up immediately after throwing; for whatever reason the attack cooldown isn't enough...
 			this.resetAttackCooldown();
 			this.mob.swing(InteractionHand.MAIN_HAND);

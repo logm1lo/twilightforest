@@ -29,7 +29,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 	private int blocksSkipped;
 
 	public GrowingBeanstalkBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.BEANSTALK_GROWER.get(), pos, state);
+		super(TFBlockEntities.BEANSTALK_GROWER.value(), pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, GrowingBeanstalkBlockEntity te) {
@@ -127,7 +127,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 					}
 					te.layer++;
 				} else {
-					level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
+					level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.value().defaultBlockState());
 					level.removeBlockEntity(pos);
 				}
 			}
@@ -136,7 +136,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 
 	private void placeLeaves(Level world, BlockPos pos) {
 		// stalk at center
-		world.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
+		world.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.value().defaultBlockState());
 
 		// small squares
 		for (int dx = -1; dx <= 1; dx++) {
@@ -161,18 +161,18 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 	 */
 	private boolean tryToPlaceStalk(Level level, BlockPos pos, boolean checkBlocked) {
 		BlockState state = level.getBlockState(pos);
-		if (state.isAir() || (state.canBeReplaced() && !state.is(TFBlocks.BEANSTALK_GROWER.get())) || (state.isAir() || state.is(BlockTags.LEAVES)) || state.getBlock().equals(TFBlocks.FLUFFY_CLOUD.get())) {
-			level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
+		if (state.isAir() || (state.canBeReplaced() && !state.is(TFBlocks.BEANSTALK_GROWER.value())) || (state.isAir() || state.is(BlockTags.LEAVES)) || state.getBlock().equals(TFBlocks.FLUFFY_CLOUD.value())) {
+			level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.value().defaultBlockState());
 			if (pos.getY() > 150) {
 				for (int i = 0; i < 7; i++) {
-					if (level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.WISPY_CLOUD.get()) || level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.FLUFFY_CLOUD.get())) {
+					if (level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.WISPY_CLOUD.value()) || level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.FLUFFY_CLOUD.value())) {
 						level.setBlockAndUpdate(pos.relative(Direction.UP, i), Blocks.AIR.defaultBlockState());
 					}
 				}
 			}
 			return true;
 		} else {
-			if (!state.is(TFBlocks.HUGE_STALK.get()) && checkBlocked) {
+			if (!state.is(TFBlocks.HUGE_STALK.value()) && checkBlocked) {
 				blocksSkipped++;
 			}
 			return blocksSkipped < 15;
@@ -182,7 +182,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 	private void tryToPlaceLeaves(Level world, BlockPos pos, int distance) {
 		BlockState state = world.getBlockState(pos);
 		if (state.isAir() || state.is(BlockTags.LEAVES)) {
-			world.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, distance), 2);
+			world.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.value().defaultBlockState().setValue(LeavesBlock.DISTANCE, distance), 2);
 		}
 	}
 

@@ -3,13 +3,11 @@ package twilightforest.network;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraftforge.client.DimensionSpecialEffectsManager;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.client.DimensionSpecialEffectsManager;
+import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
-
-import java.util.function.Supplier;
 
 public class StructureProtectionPacket {
 
@@ -36,8 +34,8 @@ public class StructureProtectionPacket {
 	}
 
 	public static class Handler {
-		public static boolean onMessage(StructureProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(StructureProtectionPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() -> {
 				DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
 
 				// add weather box if needed
@@ -46,7 +44,7 @@ public class StructureProtectionPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

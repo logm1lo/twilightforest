@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
 import twilightforest.capabilities.CapabilityList;
@@ -40,7 +40,7 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 
 	private void renderShields(PoseStack stack, MultiBufferSource buffer, T entity, float partialTicks) {
 		float age = entity.tickCount + partialTicks;
-		float rotateAngleY = age / 5.0F;
+		float rotateAngleY = age / -5.0F;
 		float rotateAngleX = Mth.sin(age / 5.0F) / 4.0F;
 		float rotateAngleZ = Mth.cos(age / 5.0F) / 4.0F;
 
@@ -48,15 +48,9 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 		for (int c = 0; c < count; c++) {
 			stack.pushPose();
 
-			// shift to the torso
-			stack.translate(-0.5, 0.5, -0.5);
-
-			// invert Y
-			stack.scale(1, -1, 1);
-
 			// perform the rotations, accounting for the fact that baked models are corner-based
-			stack.translate(0.5, 0.5, 0.5);
-			stack.mulPose(Axis.ZP.rotationDegrees(rotateAngleZ * (180F / (float) Math.PI)));
+			// Z gets extra 180 degrees to flip visual upside-down, since scaling y by -1 will cause back-faces to render instead
+			stack.mulPose(Axis.ZP.rotationDegrees(180 + rotateAngleZ * (180F / (float) Math.PI)));
 			stack.mulPose(Axis.YP.rotationDegrees(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count))));
 			stack.mulPose(Axis.XP.rotationDegrees(rotateAngleX * (180F / (float) Math.PI)));
 			stack.translate(-0.5, -0.5, -0.5);

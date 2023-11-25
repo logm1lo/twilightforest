@@ -31,20 +31,21 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.*;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable {
@@ -95,7 +96,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.KEEPSAKE_CASKET.get(), KeepsakeCasketBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.KEEPSAKE_CASKET.value(), KeepsakeCasketBlockEntity::tick);
 	}
 
 	@Override
@@ -121,7 +122,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		boolean flag = false;
 		if (state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR || state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() != Fluids.EMPTY) {
 			ItemStack stack = player.getItemInHand(hand);
-			if (!(stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get())) {
+			if (!(stack.getItem() == TFItems.CHARM_OF_KEEPING_3.value())) {
 				if (level.isClientSide()) {
 					return InteractionResult.SUCCESS;
 				} else {
@@ -133,10 +134,10 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 					flag = true;
 				}
 			} else {
-				if (stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get() && state.getValue(BREAKAGE) > 0) {
+				if (stack.getItem() == TFItems.CHARM_OF_KEEPING_3.value() && state.getValue(BREAKAGE) > 0) {
 					if (!player.isCreative()) stack.shrink(1);
 					level.setBlockAndUpdate(pos, state.setValue(BREAKAGE, state.getValue(BREAKAGE) - 1));
-					level.playSound(null, pos, TFSounds.CASKET_REPAIR.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+					level.playSound(null, pos, TFSounds.CASKET_REPAIR.value(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 					flag = true;
 				}
 			}

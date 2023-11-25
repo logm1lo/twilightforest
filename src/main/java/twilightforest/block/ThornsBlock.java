@@ -23,10 +23,9 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
-
-import org.jetbrains.annotations.Nullable;
 
 public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
 
@@ -54,9 +53,9 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	@Override
 	public boolean canConnectTo(Direction.Axis thisAxis, Direction facing, BlockState facingState, boolean solidSide) {
 		return (facingState.getBlock() instanceof ThornsBlock
-						|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.get())
-						|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.get())
-						|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.get()));
+						|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.value())
+						|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.value())
+						|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.value()));
 	}
 
 	@Override
@@ -144,7 +143,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 			BlockPos dPos = pos.relative(dir, i);
 
 			if (level.isEmptyBlock(dPos)) {
-				level.setBlock(dPos, TFBlocks.GREEN_THORNS.get().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
+				level.setBlock(dPos, TFBlocks.GREEN_THORNS.value().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
 			} else {
 				break;
 			}

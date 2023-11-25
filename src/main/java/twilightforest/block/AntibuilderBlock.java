@@ -8,10 +8,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.AntibuilderBlockEntity;
 import twilightforest.init.TFBlockEntities;
-
-import org.jetbrains.annotations.Nullable;
 
 public class AntibuilderBlock extends BaseEntityBlock {
 
@@ -33,6 +32,6 @@ public class AntibuilderBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.ANTIBUILDER.get(), AntibuilderBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.ANTIBUILDER.value(), AntibuilderBlockEntity::tick);
 	}
 }

@@ -1,6 +1,5 @@
 package twilightforest.entity.monster;
 
-import org.joml.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.sounds.SoundEvent;
@@ -20,8 +19,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
 import twilightforest.init.TFSounds;
 
 public class CarminiteGolem extends Monster {
@@ -66,17 +66,17 @@ public class CarminiteGolem extends Monster {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.CARMINITE_GOLEM_HURT.get();
+		return TFSounds.CARMINITE_GOLEM_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.CARMINITE_GOLEM_DEATH.get();
+		return TFSounds.CARMINITE_GOLEM_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.CARMINITE_GOLEM_STEP.get(), 1.0F, 1.0F);
+		this.playSound(TFSounds.CARMINITE_GOLEM_STEP.value(), 1.0F, 1.0F);
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class CarminiteGolem extends Monster {
 	public void handleEntityEvent(byte id) {
 		if (id == 4) {
 			this.attackTimer = 10;
-			this.playSound(TFSounds.CARMINITE_GOLEM_ATTACK.get(), 1.0F, 1.0F);
+			this.playSound(TFSounds.CARMINITE_GOLEM_ATTACK.value(), 1.0F, 1.0F);
 		} else {
 			super.handleEntityEvent(id);
 		}

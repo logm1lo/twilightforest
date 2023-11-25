@@ -20,9 +20,9 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMazeMapData;
+import twilightforest.item.mapdata.TFMazeMapData;
 import twilightforest.init.TFItems;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
@@ -40,7 +40,7 @@ public class MazeMapItem extends MapItem {
 	}
 
 	public static ItemStack setupNewMap(Level level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
-		ItemStack itemstack = new ItemStack(mapOres ? TFItems.FILLED_ORE_MAP.get() : TFItems.FILLED_MAZE_MAP.get());
+		ItemStack itemstack = new ItemStack(mapOres ? TFItems.FILLED_ORE_MAP.value() : TFItems.FILLED_MAZE_MAP.value());
 		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension(), worldY, mapOres);
 		return itemstack;
 	}
@@ -217,7 +217,7 @@ public class MazeMapItem extends MapItem {
 					if (yProximity < -YSEARCH || yProximity > YSEARCH) {
 						MapDecoration decoration = mapdata.decorations.get(entityplayer.getName().getString());
 						if (decoration != null) {
-							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecoration.Type.PLAYER_OFF_MAP, decoration.getX(), decoration.getY(), decoration.getRot(), null));
+							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecoration.Type.PLAYER_OFF_MAP, decoration.x(), decoration.y(), decoration.rot(), null));
 						}
 					}
 				}

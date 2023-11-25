@@ -18,9 +18,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.level.BlockEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import twilightforest.init.TFRecipes;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
@@ -40,7 +40,7 @@ public class CrumbleHornItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		player.startUsingItem(hand);
-		player.playSound(TFSounds.QUEST_RAM_AMBIENT.get(), 1.0F, 0.8F);
+		player.playSound(TFSounds.QUEST_RAM_AMBIENT.value(), 1.0F, 0.8F);
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 	}
 
@@ -53,7 +53,7 @@ public class CrumbleHornItem extends Item {
 				stack.hurtAndBreak(crumbled, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
 			}
 
-			living.level().playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.get(), living.getSoundSource(), 1.0F, 0.8F);
+			living.level().playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.value(), living.getSoundSource(), 1.0F, 0.8F);
 		}
 	}
 
@@ -97,7 +97,7 @@ public class CrumbleHornItem extends Item {
 			if (crumbleBlock(world, living, pos)) {
 				crumbled++;
 				if (living instanceof Player player && player instanceof ServerPlayer) {
-					player.awardStat(TFStats.BLOCKS_CRUMBLED.get());
+					player.awardStat(TFStats.BLOCKS_CRUMBLED.value());
 				}
 			}
 		}
@@ -113,34 +113,37 @@ public class CrumbleHornItem extends Item {
 		if (state.isAir()) return false;
 
 		if (living instanceof Player) {
-			if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (Player) living)))
+			if (NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (Player) living)).isCanceled())
 				return false;
 		}
 
 		if (world instanceof ServerLevel level) {
-			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipe -> {
+			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.value()).forEach(recipeHolder -> {
 				if (flag.get()) return;
-				if (recipe.result().is(Blocks.AIR)) {
-					if (recipe.input().is(block) && world.getRandom().nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
-						if (living instanceof Player) {
+				if (recipeHolder.value().result() == Blocks.AIR) {
+					if (recipeHolder.value().input() == block && world.getRandom().nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
+						if (living instanceof Player player) {
 							if (block.canHarvestBlock(state, world, pos, (Player) living)) {
 								world.removeBlock(pos, false);
 								block.playerDestroy(world, (Player) living, pos, state, world.getBlockEntity(pos), ItemStack.EMPTY);
 								world.levelEvent(2001, pos, Block.getId(state));
-								postTrigger(living);
+								if (player instanceof ServerPlayer) {
+									player.awardStat(Stats.ITEM_USED.get(this));
+								}
 								flag.set(true);
 							}
-						} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
+						} else if (EventHooks.getMobGriefingEvent(world, living)) {
 							world.destroyBlock(pos, true);
-							postTrigger(living);
 							flag.set(true);
 						}
 					}
 				} else {
-					if (recipe.input().is(block) && world.getRandom().nextInt(CHANCE_CRUMBLE) == 0 && !flag.get()) {
-						world.setBlock(pos, recipe.result().getBlock().withPropertiesOf(state), 3);
+					if (recipeHolder.value().input() == block && world.getRandom().nextInt(CHANCE_CRUMBLE) == 0 && !flag.get()) {
+						world.setBlock(pos, recipeHolder.value().result().withPropertiesOf(state), 3);
 						world.levelEvent(2001, pos, Block.getId(state));
-						postTrigger(living);
+						if (living instanceof ServerPlayer player) {
+							player.awardStat(Stats.ITEM_USED.get(this));
+						}
 						flag.set(true);
 					}
 				}
@@ -148,12 +151,5 @@ public class CrumbleHornItem extends Item {
 		}
 
 		return flag.get();
-	}
-
-	private void postTrigger(LivingEntity living) {
-		if (living instanceof ServerPlayer) {
-			Player player = (Player) living;
-			player.awardStat(Stats.ITEM_USED.get(this));
-		}
 	}
 }

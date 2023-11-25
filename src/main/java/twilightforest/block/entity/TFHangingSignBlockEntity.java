@@ -14,6 +14,6 @@ public class TFHangingSignBlockEntity extends HangingSignBlockEntity {
 
 	@Override
 	public BlockEntityType<?> getType() {
-		return TFBlockEntities.TF_HANGING_SIGN.get();
+		return TFBlockEntities.TF_HANGING_SIGN.value();
 	}
 }

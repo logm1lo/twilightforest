@@ -20,7 +20,7 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 		super(config);
 	}
 
-	private final BlockState state = TFBlocks.FALLEN_LEAVES.get().defaultBlockState();
+	private final BlockState state = TFBlocks.FALLEN_LEAVES.value().defaultBlockState();
 
 	@Override
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
@@ -103,6 +103,6 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 
 	private boolean canPlace(BlockPos pos, WorldGenLevel level) {
 		BlockState state = level.getBlockState(pos.below());
-		return !level.getBlockState(pos).is(this.state.getBlock()) && (level.isEmptyBlock(pos) || level.getBlockState(pos).is(TFBlocks.MAYAPPLE.get()) || level.getBlockState(pos).canBeReplaced()) && (state.is(BlockTags.DIRT) || level.getFluidState(pos.below()).is(Fluids.WATER));
+		return !level.getBlockState(pos).is(this.state.getBlock()) && (level.isEmptyBlock(pos) || level.getBlockState(pos).is(TFBlocks.MAYAPPLE.value()) || level.getBlockState(pos).canBeReplaced()) && (state.is(BlockTags.DIRT) || level.getFluidState(pos.below()).is(Fluids.WATER));
 	}
 }

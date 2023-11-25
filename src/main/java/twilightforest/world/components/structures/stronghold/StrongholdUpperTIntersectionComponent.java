@@ -16,14 +16,14 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdUpperTIntersectionComponent extends StructureTFStrongholdComponent {
+public class StrongholdUpperTIntersectionComponent extends KnightStrongholdComponent {
 
 	public StrongholdUpperTIntersectionComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSUTI.get(), nbt);
+		super(TFStructurePieceTypes.TFSUTI.value(), nbt);
 	}
 
 	public StrongholdUpperTIntersectionComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSUTI.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSUTI.value(), i, facing, x, y, z);
 	}
 
 	@Override

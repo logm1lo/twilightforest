@@ -18,19 +18,19 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 
 
-public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdComponent {
+public class StrongholdTreasureCorridorComponent extends KnightStrongholdComponent {
 
 	public StrongholdTreasureCorridorComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSTC.get(), nbt);
+		super(TFStructurePieceTypes.TFSTC.value(), nbt);
 	}
 
 	public StrongholdTreasureCorridorComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSTC.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSTC.value(), i, facing, x, y, z);
 	}
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 27, facing);
+		return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 27, facing);
 	}
 
 	@Override

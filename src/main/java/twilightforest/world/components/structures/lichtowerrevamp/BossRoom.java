@@ -28,7 +28,7 @@ public final class BossRoom extends TwilightTemplateStructurePiece {
     static final int HEIGHT = 46;
 
     public BossRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-        super(TFStructurePieceTypes.TOWER_BOSS_ROOM.get(), compoundTag, ctx, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
+        super(TFStructurePieceTypes.TOWER_BOSS_ROOM.value(), compoundTag, ctx, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
     }
 
     public BossRoom(StructureTemplateManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
@@ -36,7 +36,7 @@ public final class BossRoom extends TwilightTemplateStructurePiece {
     }
 
     private BossRoom(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
-        super(TFStructurePieceTypes.TOWER_BOSS_ROOM.get(), 0, structureManager, templateLocation, placeSettings, startPosition);
+        super(TFStructurePieceTypes.TOWER_BOSS_ROOM.value(), 0, structureManager, templateLocation, placeSettings, startPosition);
     }
 
     @Override

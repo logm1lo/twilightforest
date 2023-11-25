@@ -1,11 +1,10 @@
 package twilightforest.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.TFConfig;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class SyncUncraftingTableConfigPacket {
 
@@ -59,8 +58,8 @@ public class SyncUncraftingTableConfigPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(SyncUncraftingTableConfigPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(SyncUncraftingTableConfigPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() -> {
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.set(message.uncraftingMultiplier);
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.set(message.repairingMultiplier);
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.set(message.allowShapeless);
@@ -71,7 +70,7 @@ public class SyncUncraftingTableConfigPacket {
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.set(message.disabledModids);
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.set(message.flipModidList);
 			});
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

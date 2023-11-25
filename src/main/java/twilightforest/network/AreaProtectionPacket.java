@@ -6,13 +6,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.entity.ProtectionBox;
 import twilightforest.init.TFParticleType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 public class AreaProtectionPacket {
 
@@ -48,8 +47,8 @@ public class AreaProtectionPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(AreaProtectionPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					ClientLevel level = Minecraft.getInstance().level;
@@ -65,7 +64,7 @@ public class AreaProtectionPacket {
 						double y = message.pos.getY() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
 						double z = message.pos.getZ() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
 
-						level.addParticle(TFParticleType.PROTECTION.get(), x, y, z, vx, vy, vz);
+						level.addParticle(TFParticleType.PROTECTION.value(), x, y, z, vx, vy, vz);
 					}
 				}
 
@@ -80,10 +79,10 @@ public class AreaProtectionPacket {
 						}
 					}
 
-					level.putNonPlayerEntity(0, new ProtectionBox(level, sbb));
+					level.addEntity(new ProtectionBox(level, sbb));
 				}
 			});
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

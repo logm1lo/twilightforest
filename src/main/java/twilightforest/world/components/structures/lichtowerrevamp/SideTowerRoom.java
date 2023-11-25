@@ -12,12 +12,12 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.ArrayUtil;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -51,7 +51,7 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     private final Rotation externalRotation;
 
     public SideTowerRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-        super(TFStructurePieceTypes.SIDE_TOWER_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
+        super(TFStructurePieceTypes.SIDE_TOWER_ROOM.value(), compoundTag, ctx, readSettings(compoundTag));
         this.squareDiameter = compoundTag.getInt("square_diameter");
         this.externalRotation = ArrayUtil.wrapped(Rotation.values(), compoundTag.getInt("ext_rotation"));
     }
@@ -68,7 +68,7 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     }
 
     private SideTowerRoom(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int squareDiameter, Rotation externalRotation) {
-        super(TFStructurePieceTypes.SIDE_TOWER_ROOM.get(), 0, structureManager, templateLocation, placeSettings, startPosition);
+        super(TFStructurePieceTypes.SIDE_TOWER_ROOM.value(), 0, structureManager, templateLocation, placeSettings, startPosition);
         this.squareDiameter = squareDiameter;
         this.externalRotation = externalRotation;
     }

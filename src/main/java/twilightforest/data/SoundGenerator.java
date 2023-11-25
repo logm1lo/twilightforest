@@ -3,8 +3,8 @@ package twilightforest.data;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.SoundDefinition;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.SoundDefinition;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.helpers.TFSoundProvider;
 import twilightforest.init.TFSounds;
@@ -267,18 +267,18 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.YETI_THROW, "mob/alpha_yeti/throw", 1);
 
 
-		this.generateParrotSound(TFSounds.ALPHA_YETI_PARROT, TFSounds.ALPHA_YETI_GROWL.get());
-		this.generateParrotSound(TFSounds.CARMINITE_GOLEM_PARROT, TFSounds.CARMINITE_GOLEM_HURT.get());
-		this.generateParrotSound(TFSounds.DEATH_TOME_PARROT, TFSounds.DEATH_TOME_AMBIENT.get());
-		this.generateParrotSound(TFSounds.HOSTILE_WOLF_PARROT, TFSounds.HOSTILE_WOLF_AMBIENT.get());
-		this.generateParrotSound(TFSounds.HYDRA_PARROT, TFSounds.HYDRA_GROWL.get());
-		this.generateParrotSound(TFSounds.ICE_CORE_PARROT, TFSounds.ICE_CORE_AMBIENT.get());
-		this.generateParrotSound(TFSounds.KOBOLD_PARROT, TFSounds.KOBOLD_AMBIENT.get());
-		this.generateParrotSound(TFSounds.MINOTAUR_PARROT, TFSounds.MINOTAUR_AMBIENT.get());
-		this.generateParrotSound(TFSounds.MOSQUITO_PARROT, TFSounds.MOSQUITO.get());
-		this.generateParrotSound(TFSounds.NAGA_PARROT, TFSounds.NAGA_HISS.get());
-		this.generateParrotSound(TFSounds.REDCAP_PARROT, TFSounds.REDCAP_AMBIENT.get());
-		this.generateParrotSound(TFSounds.WRAITH_PARROT, TFSounds.WRAITH_AMBIENT.get());
+		this.generateParrotSound(TFSounds.ALPHA_YETI_PARROT, TFSounds.ALPHA_YETI_GROWL.value());
+		this.generateParrotSound(TFSounds.CARMINITE_GOLEM_PARROT, TFSounds.CARMINITE_GOLEM_HURT.value());
+		this.generateParrotSound(TFSounds.DEATH_TOME_PARROT, TFSounds.DEATH_TOME_AMBIENT.value());
+		this.generateParrotSound(TFSounds.HOSTILE_WOLF_PARROT, TFSounds.HOSTILE_WOLF_AMBIENT.value());
+		this.generateParrotSound(TFSounds.HYDRA_PARROT, TFSounds.HYDRA_GROWL.value());
+		this.generateParrotSound(TFSounds.ICE_CORE_PARROT, TFSounds.ICE_CORE_AMBIENT.value());
+		this.generateParrotSound(TFSounds.KOBOLD_PARROT, TFSounds.KOBOLD_AMBIENT.value());
+		this.generateParrotSound(TFSounds.MINOTAUR_PARROT, TFSounds.MINOTAUR_AMBIENT.value());
+		this.generateParrotSound(TFSounds.MOSQUITO_PARROT, TFSounds.MOSQUITO.value());
+		this.generateParrotSound(TFSounds.NAGA_PARROT, TFSounds.NAGA_HISS.value());
+		this.generateParrotSound(TFSounds.REDCAP_PARROT, TFSounds.REDCAP_AMBIENT.value());
+		this.generateParrotSound(TFSounds.WRAITH_PARROT, TFSounds.WRAITH_AMBIENT.value());
 
 
 		this.generateNewSoundWithSubtitle(TFSounds.BEANSTALK_GROWTH, "random/beanstalk_grow", 1);
@@ -297,7 +297,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.DOOR_ACTIVATED, SoundEvents.COMPARATOR_CLICK);
 		this.generateExistingSoundWithSubtitle(TFSounds.DOOR_REAPPEAR, SoundEvents.FIRE_EXTINGUISH);
 		this.generateExistingSoundWithSubtitle(TFSounds.DOOR_VANISH, SoundEvents.FIRE_EXTINGUISH);
-		this.generateExistingSoundWithSubtitle(TFSounds.GHAST_TRAP_AMBIENT, SoundEvents.NOTE_BLOCK_HARP.get());
+		this.generateExistingSoundWithSubtitle(TFSounds.GHAST_TRAP_AMBIENT, SoundEvents.NOTE_BLOCK_HARP.value());
 		this.generateNewSoundWithSubtitle(TFSounds.GHAST_TRAP_ON, "mob/ur_ghast/trap_on", 5);
 		this.generateNewSoundWithSubtitle(TFSounds.GHAST_TRAP_SPINDOWN, "mob/ur_ghast/trap_spin_down", 1);
 		this.generateNewSoundWithSubtitle(TFSounds.GHAST_TRAP_WARMUP, "mob/ur_ghast/trap_warmup", 1);
@@ -314,7 +314,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.SLIDER, "random/creakgo2", 1);
 		this.generateExistingSoundWithSubtitle(TFSounds.SMOKER_START, SoundEvents.COMPARATOR_CLICK);
 		this.generateExistingSoundWithSubtitle(TFSounds.TIME_CORE, SoundEvents.COMPARATOR_CLICK);
-		this.generateExistingSoundWithSubtitle(TFSounds.TRANSFORMATION_CORE, SoundEvents.NOTE_BLOCK_HARP.get());
+		this.generateExistingSoundWithSubtitle(TFSounds.TRANSFORMATION_CORE, SoundEvents.NOTE_BLOCK_HARP.value());
 		this.generateExistingSound(TFSounds.UNCRAFTING_TABLE_ACTIVATE, SoundEvents.END_PORTAL_SPAWN, false);
 		this.generateExistingSoundWithSubtitle(TFSounds.UNLOCK_VANISHING_BLOCK, SoundEvents.COMPARATOR_CLICK);
 		this.generateExistingSoundWithSubtitle(TFSounds.VANISHING_BLOCK, SoundEvents.ITEM_PICKUP);

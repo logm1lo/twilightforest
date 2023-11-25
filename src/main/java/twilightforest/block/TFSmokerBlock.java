@@ -8,10 +8,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TFSmokerBlockEntity;
 import twilightforest.init.TFBlockEntities;
-
-import org.jetbrains.annotations.Nullable;
 
 public class TFSmokerBlock extends BaseEntityBlock {
 
@@ -33,6 +32,6 @@ public class TFSmokerBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.SMOKER.get(), TFSmokerBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.SMOKER.value(), TFSmokerBlockEntity::tick);
 	}
 }
