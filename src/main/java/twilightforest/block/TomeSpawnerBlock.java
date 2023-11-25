@@ -29,8 +29,8 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 
 public class TomeSpawnerBlock extends BaseEntityBlock {
-
-	public static final IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, 10);
+	public static final int MAX_STAGES = 10;
+	public static final IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, MAX_STAGES);
 	public static final BooleanProperty SPAWNER = BooleanProperty.create("spawner");
 
 	public TomeSpawnerBlock(Properties properties) {
@@ -47,7 +47,8 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
 		if(level.getDifficulty() != Difficulty.PEACEFUL && level.getBlockState(pos).getValue(SPAWNER) && level.getBlockEntity(pos) instanceof TomeSpawnerBlockEntity ts && level instanceof ServerLevel serverLevel) {
 			for(int i = 0; i < state.getValue(BOOK_STAGES); i++) {
-				ts.attemptSpawnTome(serverLevel, pos, true);
+				ts.attemptSpawnTome(serverLevel, pos, true, igniter);
+
 			}
 			level.destroyBlock(pos, false);
 		}

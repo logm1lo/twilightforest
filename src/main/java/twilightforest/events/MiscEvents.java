@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,6 +23,7 @@ import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TomeSpawnerBlock;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;
@@ -81,23 +83,38 @@ public class MiscEvents {
 	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
 		Player player = event.getEntity();
 		ItemStack stack = player.getItemInHand(event.getHand());
-		if (stack.getItem() instanceof SpawnEggItem spawnEggItem && spawnEggItem.getType(stack.getTag()) == TFEntities.DEATH_TOME.value()) {
-			BlockPos pos = event.getPos();
-			BlockState state = event.getLevel().getBlockState(pos);
-			if (state.getBlock() instanceof LecternBlock && !state.getValue(BlockStateProperties.HAS_BOOK)) {
+
+        if (!(stack.getItem() instanceof SpawnEggItem spawnEggItem) || spawnEggItem.getType(stack.getTag()) != TFEntities.DEATH_TOME.value())
+            return;
+
+        BlockPos pos = event.getPos();
+		Level level = event.getLevel();
+		BlockState state = level.getBlockState(pos);
+
+        if (state.getBlock() instanceof LecternBlock && !state.getValue(BlockStateProperties.HAS_BOOK)) {
+            event.setCanceled(true);
+            level.playSound(null, pos, SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+            if (level instanceof ServerLevel serverLevel) {
+                DeathTome tome = TFEntities.DEATH_TOME.value().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
+                if (tome != null) {
+                    if (!player.getAbilities().instabuild) stack.shrink(1);
+                    serverLevel.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
+                    tome.setOnLectern(true);
+                }
+            }
+        } else if (state.is(TFBlocks.DEATH_TOME_SPAWNER) && state.getValue(TomeSpawnerBlock.SPAWNER)) {
+			int bookCount = state.getValue(TomeSpawnerBlock.BOOK_STAGES);
+			if (bookCount < TomeSpawnerBlock.MAX_STAGES) {
+				level.setBlockAndUpdate(pos, state.setValue(TomeSpawnerBlock.BOOK_STAGES, bookCount + 1));
+
 				event.setCanceled(true);
-				event.getLevel().playSound(null, pos, SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-				if (event.getLevel() instanceof ServerLevel serverLevel) {
-					DeathTome tome = TFEntities.DEATH_TOME.value().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
-					if (tome != null) {
-						if (!player.getAbilities().instabuild) stack.shrink(1);
-						serverLevel.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
-						tome.setOnLectern(true);
-					}
-				}
-
 			}
+		} else if (state.is(TFBlocks.EMPTY_CANOPY_BOOKSHELF)) {
+			BlockState newState = TFBlocks.DEATH_TOME_SPAWNER.value().defaultBlockState().setValue(TomeSpawnerBlock.SPAWNER, true).setValue(TomeSpawnerBlock.BOOK_STAGES, 1);
+			level.setBlockAndUpdate(pos, newState);
+
+			event.setCanceled(true);
 		}
-	}
+    }
 }
