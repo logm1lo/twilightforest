@@ -534,6 +534,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		trimmedArmor(TFItems.PHANTOM_HELMET);
 		trimmedArmor(TFItems.PHANTOM_CHESTPLATE);
 		singleTex(TFItems.LAMP_OF_CINDERS);
+		singleTex(TFItems.POCKET_WATCH);
 		singleTex(TFItems.ALPHA_YETI_FUR);
 		//yeti helmets cant be trimmed
 		singleTex(TFItems.YETI_HELMET);

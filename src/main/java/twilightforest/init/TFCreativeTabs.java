@@ -23,7 +23,6 @@ import twilightforest.TFConfig;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.MagicPainting;
-import twilightforest.init.custom.MagicPaintingVariants;
 import twilightforest.entity.MagicPaintingVariant;
 
 import java.util.Collection;
@@ -412,6 +411,7 @@ public class TFCreativeTabs {
 				output.accept(TFItems.ORE_MAP.value());
 				output.accept(TFItems.ORE_METER.value());
 				output.accept(TFItems.MOON_DIAL.value());
+				output.accept(TFItems.POCKET_WATCH.value());
 				output.accept(TFItems.LIVEROOT.value());
 				output.accept(TFItems.RAW_IRONWOOD.value());
 				output.accept(TFItems.IRONWOOD_INGOT.value());

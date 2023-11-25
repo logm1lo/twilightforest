@@ -200,7 +200,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 				TFBlocks.AURORALIZED_GLASS.value().asItem(),
 				TFBlocks.SLIDER.value().asItem(),
 				TFItems.ORE_METER.value(),
-				TFItems.MAGIC_PAINTING.value()
+				TFItems.MAGIC_PAINTING.value(),
+				TFItems.POCKET_WATCH.value()
 		);
 
 		tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);

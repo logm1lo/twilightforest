@@ -1,4 +1,4 @@
-// 1.20.2	2023-11-13T20:53:08.5196859	TwilightForest Item and BlockItem models
+// 1.20.2	2023-11-19T17:34:01.1793053	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -599,6 +599,7 @@ bf81b7da7483a7cb79e848de49ff41d1c6c832f9 assets/twilightforest/models/item/pigli
 b27493eda49748814ba36a9543ccdcd33d7b44e2 assets/twilightforest/models/item/pink_castle_rune_brick.json
 bafbdd124434e7c4e216b9a36dc79bb302e97ecb assets/twilightforest/models/item/pink_force_field.json
 bf81b7da7483a7cb79e848de49ff41d1c6c832f9 assets/twilightforest/models/item/player_skull_candle.json
+29942577b2493cf382c15ea1af34e34e7ed6bc1c assets/twilightforest/models/item/pocket_watch.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/quest_ram_banner_pattern.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/quest_ram_spawn_egg.json
 621a3a44e9aa5fc8a52bf833e473ca652f4c15b9 assets/twilightforest/models/item/quest_ram_trophy.json
