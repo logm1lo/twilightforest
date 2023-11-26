@@ -32,7 +32,11 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+		Direction facing = context.getNearestLookingDirection();
+		if (facing.getAxis().equals(Direction.Axis.Y)) {
+			facing = facing.getOpposite();
+		}
+		return defaultBlockState().setValue(FACING, facing);
 	}
 
 	@Override
