@@ -222,6 +222,17 @@
         },
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
           "name": "twilightforest:brittle_potion_flask"
         }
       ],
@@ -243,7 +254,8 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:golden_apple"
+          "name": "minecraft:golden_apple",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
@@ -258,11 +270,8 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:blaze_rod"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:brewing_stand"
+          "name": "minecraft:blaze_rod",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
@@ -272,7 +281,8 @@
               "tag": "{Potion:\"minecraft:strong_healing\"}"
             }
           ],
-          "name": "minecraft:potion"
+          "name": "minecraft:potion",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
@@ -282,7 +292,8 @@
               "tag": "{Potion:\"minecraft:swiftness\"}"
             }
           ],
-          "name": "minecraft:potion"
+          "name": "minecraft:potion",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
@@ -292,11 +303,18 @@
               "tag": "{Potion:\"minecraft:regeneration\"}"
             }
           ],
-          "name": "minecraft:potion"
+          "name": "minecraft:potion",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:greater_potion_flask"
+          "name": "minecraft:brewing_stand",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:greater_potion_flask",
+          "weight": 25
         }
       ],
       "rolls": 1.0

@@ -182,12 +182,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		);
 
 		tag(WIP).add(
-				TFBlocks.KEEPSAKE_CASKET.value().asItem(),
-				TFBlocks.CANDELABRA.value().asItem(),
-				TFItems.BRITTLE_FLASK.value(),
-				TFItems.GREATER_FLASK.value(),
-				TFItems.CUBE_OF_ANNIHILATION.value(),
-				TFBlocks.WROUGHT_IRON_FENCE.value().asItem()
+				TFItems.CUBE_OF_ANNIHILATION.value()
 		);
 
 		tag(NYI).add(
