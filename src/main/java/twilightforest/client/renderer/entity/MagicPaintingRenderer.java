@@ -22,7 +22,6 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import twilightforest.client.MagicPaintingTextureManager;
 import twilightforest.entity.MagicPainting;
-import twilightforest.init.custom.MagicPaintingVariants;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.MagicPaintingVariant.Layer.OpacityModifier;
 import twilightforest.entity.MagicPaintingVariant.Layer.Parallax;
@@ -71,8 +70,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
         float y = (float)(-height) / 2.0F;
         float z = 0.5F;
 
-        double widthFactor = 16.0D / (double)widthAsBlock;
-        double heightFactor = 16.0D / (double)heightAsBlock;
+        double widthFactor = 1.0D / (double)widthAsBlock;
+        double heightFactor = 1.0D / (double)heightAsBlock;
 
         Direction direction = painting.getDirection();
         int posX = painting.getBlockX();
@@ -90,8 +89,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
             double layerWidthAsBlock = layerWidth / 16.0D;
             double layerHeightAsBlock = layerHeight / 16.0D;
 
-            double layerWidthFactor = 16.0D / layerWidthAsBlock;
-            double layerHeightFactor = 16.0D / layerHeightAsBlock;
+            double layerWidthFactor = 1.0D / layerWidthAsBlock;
+            double layerHeightFactor = 1.0D / layerHeightAsBlock;
 
             double widthDiff = parallax != null ? (widthFactor - layerWidthFactor) * (double)widthAsBlock * 0.5D : 0.0D;
             double widthOffset = widthDiff != 0.0D ? this.getWidthOffset(parallax, painting, widthDiff) : 0.0D;
