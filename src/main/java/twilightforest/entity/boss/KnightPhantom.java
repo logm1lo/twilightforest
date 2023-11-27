@@ -36,6 +36,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -235,7 +236,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 				// make treasure for killing the last knight
 				// This one won't receive the same loot treatment like the other bosses because this chest is supposed to reward for all of them instead of just the last one killed
-				TFLootTables.STRONGHOLD_BOSS.generateChest(serverLevel, treasurePos, Direction.NORTH, false);
+				TFLootTables.STRONGHOLD_BOSS.generateLootContainer(serverLevel, treasurePos, TFBlocks.DARK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, Direction.NORTH), 2, this.getLootTableSeed());
 
 				//trigger criteria for killing every phantom in a group
 				if (cause.getEntity() instanceof ServerPlayer player) {
