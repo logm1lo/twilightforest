@@ -44,9 +44,8 @@ public class TFSurfaceRules {
 								SurfaceRules.ON_FLOOR,
 								SurfaceRules.sequence(
 										//mix coarse dirt and podzol like we used to
-										PODZOL,
-										SurfaceRules.ifTrue(surfaceNoiseAbove(1.75D), COARSE_DIRT),
-										SurfaceRules.ifTrue(surfaceNoiseAbove(-0.95D), PODZOL)))));
+										SurfaceRules.ifTrue(surfaceNoiseAbove(2.25D), COARSE_DIRT),
+										SurfaceRules.ifTrue(surfaceNoiseAbove(-2.25D), PODZOL)))));
 
 		SurfaceRules.RuleSource deadrockLands = SurfaceRules.sequence(
 				SurfaceRules.ifTrue(

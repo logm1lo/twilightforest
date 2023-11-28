@@ -15,7 +15,9 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -84,6 +86,12 @@ public class Bighorn extends Sheep {
 		Bighorn babySheep = TFEntities.BIGHORN_SHEEP.value().create(world);
 		babySheep.setColor(getOffspringColor(this, otherParent));
 		return babySheep;
+	}
+
+	@Override
+	public float getWalkTargetValue(BlockPos pos, LevelReader reader) {
+		BlockState state = reader.getBlockState(pos.below());
+		return state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.PODZOL) ? 10.0F : reader.getPathfindingCostFromLightLevels(pos);
 	}
 
 	@Override
