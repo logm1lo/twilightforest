@@ -30,7 +30,7 @@ public class NewHydraHeadRenderer extends TFPartRenderer<HydraHead, NewHydraHead
 
 		if (headCon != null) {
 			// see whether we want to render these
-			if (headCon.shouldRenderHead()) {
+			if (entity.isActive()) {
 				stack.mulPose(Axis.YP.rotationDegrees(-180));
 				super.render(entity, yaw, partialTicks, stack, buffer, light);
 			}

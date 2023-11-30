@@ -122,6 +122,7 @@ public class TwilightForestMod {
 		TFStructureTypes.STRUCTURE_TYPES.register(bus);
 		TFFeatureModifiers.TRUNK_PLACERS.register(bus);
 		BiomeLayerTypes.BIOME_LAYER_TYPES.register(bus);
+		TFDataSerializers.DATA_SERIALIZERS.register(bus);
 		TFFeatureModifiers.FOLIAGE_PLACERS.register(bus);
 		TFFeatureModifiers.TREE_DECORATORS.register(bus);
 		TinyBirdVariants.TINY_BIRD_VARIANTS.register(bus);
