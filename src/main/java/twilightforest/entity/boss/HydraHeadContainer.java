@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -394,6 +395,9 @@ public class HydraHeadContainer {
 			// mark parts as dead so they explode and die off
 			if (this.deathTime == 1) {
 				this.headEntity.markedDead = true;
+				//clear name. The head died, so the name shouldn't persist
+				this.hydra.setHeadNameFor(this.headNum, "");
+				this.headEntity.setCustomName(Component.literal(""));
 			} else if (this.deathTime == 10) {
 				this.getNeckArray()[0].markedDead = true;
 			} else if (this.deathTime == 20) {

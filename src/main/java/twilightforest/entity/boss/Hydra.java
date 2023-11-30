@@ -35,6 +35,7 @@ import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
@@ -260,7 +261,13 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		this.saveHomePointToNbt(compound);
-		compound.putByte("NumHeads", (byte) this.countActiveHeads());
+		byte headData = 0;
+		for (int i = 0; i < this.numHeads; i++) {
+			if (this.hc[i].isActive()) {
+				headData |= 1 << i;
+			}
+		}
+		compound.putByte("NumHeads", headData);
 		ListTag headNames = new ListTag();
 		for (int i = 0; i < this.numHeads; i++) {
 			headNames.add(StringTag.valueOf(this.getEntityData().get(HEAD_NAMES).get(i)));
@@ -273,7 +280,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		this.loadHomePointFromNbt(compound);
-		this.activateNumberOfHeads(compound.getByte("NumHeads"));
+		this.activateHeadsOnLoad(compound.getByte("NumHeads"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -286,6 +293,19 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 				this.hc[i].headEntity.setCustomName(Component.literal(name));
 			}
 			this.getEntityData().set(HEAD_NAMES, names);
+		}
+	}
+
+	/**
+	 * Activates heads based on a byte saved to nbt.
+	 * This allows all the same heads to activate on world reload as heads are randomly chosen when one is killed
+	 */
+	private void activateHeadsOnLoad(byte heads) {
+		for (int i = 0; i < this.numHeads; i++) {
+			if ((heads & 1 << i) != 0) {
+				this.hc[i].setNextState(HydraHeadContainer.State.IDLE);
+				this.hc[i].endCurrentAction();
+			}
 		}
 	}
 
