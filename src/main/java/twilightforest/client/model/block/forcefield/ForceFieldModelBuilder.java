@@ -39,7 +39,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 	}
 
 	protected ForceFieldModelBuilder(T parent, ExistingFileHelper helper) {
-		super(TwilightForestMod.prefix("force_field"), parent, helper);
+		super(TwilightForestMod.prefix("force_field"), parent, helper, false);
 	}
 
 	public ForceFieldElementBuilder forceFieldElement() {

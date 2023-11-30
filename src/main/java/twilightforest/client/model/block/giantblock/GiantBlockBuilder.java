@@ -19,7 +19,7 @@ public class GiantBlockBuilder<T extends ModelBuilder<T>> extends CustomLoaderBu
 	private ResourceLocation parentBlock;
 
 	protected GiantBlockBuilder(T parent, ExistingFileHelper helper) {
-		super(TwilightForestMod.prefix("giant_block"), parent, helper);
+		super(TwilightForestMod.prefix("giant_block"), parent, helper, false);
 	}
 
 	public GiantBlockBuilder<T> parentBlock(Block block) {

@@ -8,7 +8,7 @@ import twilightforest.TwilightForestMod;
 public class CastleDoorBuilder<T extends ModelBuilder<T>> extends CustomLoaderBuilder<T> {
 
 	protected CastleDoorBuilder(T parent, ExistingFileHelper existingFileHelper) {
-		super(TwilightForestMod.prefix("castle_door"), parent, existingFileHelper);
+		super(TwilightForestMod.prefix("castle_door"), parent, existingFileHelper, false);
 	}
 
 	public static <T extends ModelBuilder<T>> CastleDoorBuilder<T> begin(T parent, ExistingFileHelper helper) {
