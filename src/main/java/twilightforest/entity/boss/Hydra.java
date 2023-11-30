@@ -50,7 +50,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 140;
-	private static final int HEAD_MAX_DAMAGE = 1;
+	private static final int HEAD_MAX_DAMAGE = 120;
 	private static final float ARMOR_MULTIPLIER = 8.0F;
 	private static final int MAX_HEALTH = 360;
 	private static float HEADS_ACTIVITY_FACTOR = 0.3F;
