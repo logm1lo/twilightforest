@@ -14,7 +14,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.TFPart;
-import twilightforest.init.TFParticleType;
 
 public abstract class HydraPart extends TFPart<Hydra> {
 
@@ -25,7 +24,8 @@ public abstract class HydraPart extends TFPart<Hydra> {
 
 	public HydraPart(Hydra parent, float width, float height) {
 		super(parent);
-		this.cacheSize = EntityDimensions.scalable(width, height);
+		this.setSize(EntityDimensions.scalable(width, height));
+		this.refreshDimensions();
 	}
 
 	@Override
@@ -51,6 +51,12 @@ public abstract class HydraPart extends TFPart<Hydra> {
 		Vec3 vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 		Vec3 vector3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
 		return this.level().clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+	}
+
+	@Override
+	protected void setSize(EntityDimensions size) {
+		super.setSize(size);
+		this.cacheSize = size;
 	}
 
 	@Override
@@ -126,15 +132,12 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	}
 
 	public void activate() {
+		this.dimensions = this.cacheSize;
 		this.getEntityData().set(DATA_SIZEACTIVE, true);
 	}
 
 	public void deactivate() {
+		this.dimensions = EntityDimensions.scalable(0, 0);
 		this.getEntityData().set(DATA_SIZEACTIVE, false);
-	}
-
-	@Override
-	public EntityDimensions getDimensions(Pose pose) {
-		return this.isActive() ? this.cacheSize : EntityDimensions.scalable(0.0F, 0.0F);
 	}
 }
