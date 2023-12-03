@@ -1,4 +1,4 @@
-// 1.20.2	2023-11-19T17:34:01.1793053	TwilightForest Item and BlockItem models
+// 1.20.2	2023-12-03T02:28:57.1884815	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -142,6 +142,7 @@ c0905c2fad082d3d418febd423b7b90cdee47d03 assets/twilightforest/models/item/cinde
 5084f55df6adb38957ad4c8bd6b8369dfe286124 assets/twilightforest/models/item/clover_patch.json
 672edc91d696882be7a512bd4b0016095d10bd5b assets/twilightforest/models/item/cooked_meef.json
 55102a381f3b4f01bc9e6a243790d044a95cd5c8 assets/twilightforest/models/item/cooked_venison.json
+3d1d20d22ef2f10f8d9520d9ef4be82f92eb2f2c assets/twilightforest/models/item/cord.json
 224e219e1b2f6fb388c7322635359dd1e73d7000 assets/twilightforest/models/item/cracked_castle_brick.json
 aab2deb218129c314139eb8f9446f9f19be2f404 assets/twilightforest/models/item/cracked_castle_brick_stairs.json
 66a6e390de0a47c05ebea4b26bd3c5684390cece assets/twilightforest/models/item/cracked_deadrock.json

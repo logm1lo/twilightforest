@@ -100,6 +100,12 @@ public class BlockstateGenerator extends BlockModelBuilders {
 					.condition(LadderBlock.FACING, d).condition(IronLadderBlock.RIGHT, true).end();
 		}
 
+		getMultipartBuilder(TFBlocks.CORD.value())
+				.part().modelFile(models().getExistingFile(prefix("block/cord_down"))).addModel().condition(CordBlock.DOWN, true).end()
+				.part().modelFile(models().getExistingFile(prefix("block/cord_up"))).addModel().condition(CordBlock.UP, true).end()
+				.part().modelFile(models().getExistingFile(prefix("block/cord_x"))).addModel().condition(CordBlock.X, true).end()
+				.part().modelFile(models().getExistingFile(prefix("block/cord_z"))).addModel().condition(CordBlock.Z, true).end();
+
 		towerBlocks();
 
 		simpleBlock(TFBlocks.FAKE_GOLD.value(), models().getExistingFile(new ResourceLocation("block/gold_block")));

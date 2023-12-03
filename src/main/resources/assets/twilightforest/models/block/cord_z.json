@@ -1,0 +1,29 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"particle": "twilightforest:block/cord",
+		"all": "twilightforest:block/cord"
+	},
+	"elements": [
+		{
+			"from": [6.5, 8, 0],
+			"to": [9.5, 8, 16],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 8, 8]},
+			"faces": {
+				"up": {"uv": [0, 0, 3, 16], "texture": "#all"},
+				"down": {"uv": [3, 0, 0, 16], "rotation": 180, "texture": "#all"}
+			}
+		},
+		{
+			"from": [8, 6.5, 0],
+			"to": [8, 9.5, 16],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [3, 0, 6, 16], "rotation": 90, "texture": "#all"},
+				"west": {"uv": [6, 0, 3, 16], "rotation": 270, "texture": "#all"}
+			}
+		}
+	]
+}

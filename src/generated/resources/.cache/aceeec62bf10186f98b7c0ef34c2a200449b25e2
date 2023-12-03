@@ -1,4 +1,4 @@
-// 1.20.2	2023-11-13T20:53:08.5276672	Twilight Forest Block Tags
+// 1.20.2	2023-12-03T02:19:35.1711351	Twilight Forest Block Tags
 a10ef0864e630b44949959994b373ec7ee07dcb1 data/alexscaves/tags/blocks/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/blocks/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/blocks/underzealot_light_sources.json
@@ -18,7 +18,7 @@ c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/blocks/underzealot
 82ad1b0beb97d202d619464e397341cab3fc4ea1 data/forge/tags/blocks/storage_blocks.json
 82ad1b0beb97d202d619464e397341cab3fc4ea1 data/minecraft/tags/blocks/beacon_base_blocks.json
 6fe1e441c4085be357b16f3ef9158eda9139f939 data/minecraft/tags/blocks/ceiling_hanging_signs.json
-421e214e66436fb5f6d5903b7cdce6c73e7c4ef8 data/minecraft/tags/blocks/climbable.json
+5b3854516760162041842b5396dab6b1c6e107d7 data/minecraft/tags/blocks/climbable.json
 d3606357bb7f5a88902b70183dfd0b2ef323608d data/minecraft/tags/blocks/dampens_vibrations.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/blocks/dirt.json
 1094f05635217cf3ce4a1062e85d14129a347cef data/minecraft/tags/blocks/dragon_immune.json

@@ -1,0 +1,36 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "twilightforest:block/cord_down"
+      },
+      "when": {
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/cord_up"
+      },
+      "when": {
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/cord_x"
+      },
+      "when": {
+        "x": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/cord_z"
+      },
+      "when": {
+        "z": "true"
+      }
+    }
+  ]
+}

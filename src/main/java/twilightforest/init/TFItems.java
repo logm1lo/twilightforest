@@ -111,6 +111,7 @@ public class TFItems {
 	public static final DeferredItem<Item> BORER_ESSENCE = ITEMS.register("borer_essence", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> CARMINITE = ITEMS.register("carminite", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> EXPERIMENT_115 = ITEMS.register("experiment_115", () -> new Experiment115Item(TFBlocks.EXPERIMENT_115.value(), new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).build())));
+	public static final DeferredItem<Item> CORD = ITEMS.register("cord", () -> new CordItem(TFBlocks.CORD.value(), new Item.Properties()));
 	public static final DeferredItem<Item> ARMOR_SHARD = ITEMS.register("armor_shard", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> ARMOR_SHARD_CLUSTER = ITEMS.register("armor_shard_cluster", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> KNIGHTMETAL_INGOT = ITEMS.register("knightmetal_ingot", () -> new Item(new Item.Properties()));
