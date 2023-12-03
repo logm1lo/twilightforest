@@ -202,6 +202,7 @@ public class SoundGenerator extends TFSoundProvider {
 
 		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_ADD, SoundEvents.CHICKEN_EGG);
 		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_BREAK, SoundEvents.ITEM_BREAK);
+		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_BLOCK, SoundEvents.TRIDENT_HIT);
 
 		this.generateExistingSoundWithSubtitle(TFSounds.SKELETON_DRUID_AMBIENT, SoundEvents.STRAY_AMBIENT);
 		this.generateExistingSoundWithSubtitle(TFSounds.SKELETON_DRUID_DEATH, SoundEvents.STRAY_DEATH);

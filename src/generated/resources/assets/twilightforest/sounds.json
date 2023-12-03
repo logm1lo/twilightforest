@@ -1706,6 +1706,15 @@
     ],
     "subtitle": "subtitles.twilightforest.entity.shield.add"
   },
+  "entity.twilightforest.shield.block": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.trident.hit"
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.entity.shield.block"
+  },
   "entity.twilightforest.shield.break": {
     "sounds": [
       {

@@ -11,6 +11,7 @@ import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFParticleType;
 
 public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
@@ -43,6 +44,6 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	@Override
 	public ParticleOptions getSpawnerParticle() {
-		return ParticleTypes.ANGRY_VILLAGER;
+		return TFParticleType.OMINOUS_FLAME.value();
 	}
 }
