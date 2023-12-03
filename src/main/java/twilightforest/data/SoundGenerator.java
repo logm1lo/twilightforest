@@ -339,7 +339,8 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.MOONWORM_SQUISH, SoundEvents.SLIME_SQUISH_SMALL);
 		this.generateExistingSoundWithSubtitle(TFSounds.POWDER_USE, SoundEvents.ZOMBIE_VILLAGER_CURE);
 		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_DRAIN, SoundEvents.GENERIC_BIG_FALL);
-		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_PEARL, SoundEvents.FLINTANDSTEEL_USE);
+		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_PEARL, SoundEvents.FIRECHARGE_USE);
+		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_USE, SoundEvents.FLINTANDSTEEL_USE);
 		this.generateExistingSoundWithSubtitle(TFSounds.WOOD_SHIELD_SHATTERS, SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR);
 
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_RADIANCE, "radiance");

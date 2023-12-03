@@ -142,6 +142,8 @@ public class LifedrainScepterItem extends Item {
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
 				if (level.isClientSide()) {
 					this.makeRedMagicTrail(level, living, target.getEyePosition());
+				} else {
+					level.playSound(null, living.blockPosition(), TFSounds.SCEPTER_USE.value(), SoundSource.PLAYERS);
 				}
 
 				if (target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), 1)) {

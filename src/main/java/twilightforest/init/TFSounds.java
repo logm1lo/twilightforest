@@ -209,7 +209,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> REDCAP_HURT = createEvent("entity.twilightforest.redcap.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SCEPTER_DRAIN = createEvent("item.twilightforest.scepter.drain");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SCEPTER_PEARL = createEvent("item.twilightforest.scepter.pearl");
-	//public static final DeferredHolder<SoundEvent, SoundEvent> SCEPTER_USE = createEvent("item.twilightforest.scepter.use");
+	public static final DeferredHolder<SoundEvent, SoundEvent> SCEPTER_USE = createEvent("item.twilightforest.scepter.use");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SHIELD_ADD = createEvent("entity.twilightforest.shield.add");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SHIELD_BLOCK = createEvent("entity.twilightforest.shield.block");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SHIELD_BREAK = createEvent("entity.twilightforest.shield.break");

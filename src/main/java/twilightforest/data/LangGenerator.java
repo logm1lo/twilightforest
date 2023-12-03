@@ -982,8 +982,9 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.METAL_SHIELD_SHATTERS, "Metal Shield shatters");
 		this.addSubtitle(TFSounds.MOONWORM_SQUISH, "Moonworm fires");
 		this.addSubtitle(TFSounds.POWDER_USE, "Mob Transforms");
-		this.addSubtitle(TFSounds.SCEPTER_DRAIN, "Life Scepter drains");
+		this.addSubtitle(TFSounds.SCEPTER_DRAIN, "Mob explodes");
 		this.addSubtitle(TFSounds.SCEPTER_PEARL, "Twilight Scepter throws pearl");
+		this.addSubtitle(TFSounds.SCEPTER_USE, "Life Scepter drains");
 		this.addSubtitle(TFSounds.WOOD_SHIELD_SHATTERS, "Wooden Shield shatters");
 
 		this.addDeathMessage("ghastTear", "%1$s was scalded by fiery tears");
