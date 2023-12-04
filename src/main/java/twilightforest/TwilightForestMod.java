@@ -108,6 +108,7 @@ public class TwilightForestMod {
 		TFEntities.ENTITIES.register(bus);
 		TFFeatures.FEATURES.register(bus);
 		TFCreativeTabs.TABS.register(bus);
+		TFLoot.CONDITIONALS.register(bus);
 		TFEntities.SPAWN_EGGS.register(bus);
 		TFMenuTypes.CONTAINERS.register(bus);
 		TFRecipes.RECIPE_TYPES.register(bus);

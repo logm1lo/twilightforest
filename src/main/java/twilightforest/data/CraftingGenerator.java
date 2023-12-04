@@ -147,7 +147,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 								.define('#', Blocks.CRAFTING_TABLE)
 								.define('X', TFItems.MAZE_MAP_FOCUS.value())
 								.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.value()))
-				.save(output/*.withConditions(UncraftingTableCondition.INSTANCE)*/, TwilightForestMod.prefix("uncrafting_table"));
+				.save(output.withConditions(UncraftingTableCondition.INSTANCE), TwilightForestMod.prefix("uncrafting_table"));
 
 		cookingRecipes(output, "smelted", RecipeSerializer.SMELTING_RECIPE, 200);
 		cookingRecipes(output, "smoked", RecipeSerializer.SMOKING_RECIPE, 100);
