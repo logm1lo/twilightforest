@@ -101,8 +101,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		}
 
 		getMultipartBuilder(TFBlocks.ROPE.value())
-				.part().modelFile(models().getExistingFile(prefix("block/rope_down"))).addModel().condition(RopeBlock.DOWN, true).end()
-				.part().modelFile(models().getExistingFile(prefix("block/rope_up"))).addModel().condition(RopeBlock.UP, true).end()
+				.part().modelFile(models().getExistingFile(prefix("block/rope_y"))).addModel().condition(RopeBlock.Y, true).end()
 				.part().modelFile(models().getExistingFile(prefix("block/rope_x"))).addModel().condition(RopeBlock.X, true).end()
 				.part().modelFile(models().getExistingFile(prefix("block/rope_z"))).addModel().condition(RopeBlock.Z, true).end();
 

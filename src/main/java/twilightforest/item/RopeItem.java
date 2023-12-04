@@ -66,13 +66,11 @@ public class RopeItem extends BlockItem {
     }
 
     protected boolean stateHasValue(BlockState state, Direction direction) {
-        if (direction.getAxis() == Direction.Axis.X) {
-            return state.getValue(RopeBlock.X);
-        } else if (direction.getAxis() == Direction.Axis.Z) {
-            return state.getValue(RopeBlock.Z);
-        } else {
-            return direction == Direction.UP ? state.getValue(RopeBlock.UP) : state.getValue(RopeBlock.DOWN);
-        }
+        return switch (direction.getAxis()) {
+            case X -> state.getValue(RopeBlock.X);
+            case Y -> state.getValue(RopeBlock.Y);
+            default -> state.getValue(RopeBlock.Z);
+        };
     }
 
     @Nullable
@@ -87,8 +85,8 @@ public class RopeItem extends BlockItem {
             Direction direction = context.getClickedFace();
             if (direction.getAxis() == Direction.Axis.X && !state.getValue(RopeBlock.X)) {
                 return state.setValue(RopeBlock.X, true);
-            } else if (direction.getAxis() == Direction.Axis.Y && !state.getValue(RopeBlock.UP)) {
-                return state.setValue(RopeBlock.UP, true).setValue(RopeBlock.DOWN, true);
+            } else if (direction.getAxis() == Direction.Axis.Y && !state.getValue(RopeBlock.Y)) {
+                return state.setValue(RopeBlock.Y, true);
             } else if (direction.getAxis() == Direction.Axis.Z && !state.getValue(RopeBlock.Z)) {
                 return state.setValue(RopeBlock.Z, true);
             } else {
@@ -102,12 +100,21 @@ public class RopeItem extends BlockItem {
     protected Direction getForward(BlockPlaceContext context, BlockState state) {
         if (context.isSecondaryUseActive()) {
             return context.isInside() ? context.getClickedFace().getOpposite() : context.getClickedFace();//TODO
-        } else if (context.getClickedFace().getAxis() != Direction.Axis.Y) {
-            return Direction.DOWN;
         } else {
-            Direction tempDir = context.getHorizontalDirection();
-            if (tempDir.getAxis() == Direction.Axis.X ? state.getValue(RopeBlock.X) : state.getValue(RopeBlock.Z)) return tempDir;
-            else return Direction.DOWN;
+            for (Direction dir : context.getNearestLookingDirections()) {
+                switch (dir.getAxis()) {
+                    case X -> {
+                        if (state.getValue(RopeBlock.X)) return dir;
+                    }
+                    case Y -> {
+                        if (state.getValue(RopeBlock.Y)) return Direction.DOWN; // Ropes don't go up
+                    }
+                    case Z -> {
+                        if (state.getValue(RopeBlock.Z)) return dir;
+                    }
+                }
+            }
+            return Direction.DOWN;
         }
     }
 

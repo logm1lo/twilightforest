@@ -2,18 +2,10 @@
   "multipart": [
     {
       "apply": {
-        "model": "twilightforest:block/rope_down"
+        "model": "twilightforest:block/rope_y"
       },
       "when": {
-        "down": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "twilightforest:block/rope_up"
-      },
-      "when": {
-        "up": "true"
+        "y": "true"
       }
     },
     {
