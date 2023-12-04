@@ -137,7 +137,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.PIGLIN_SKULL_CANDLE.value(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.value(), models().getExistingFile(new ResourceLocation("block/skull")));
 
-		getVariantBuilder(TFBlocks.SPIRAL_BRICKS.value()).forAllStates(state -> ConfiguredModel.builder().modelFile(models().getExistingFile(TwilightForestMod.prefix("block/spiral_bricks/" + state.getValue(SpiralBrickBlock.AXIS_FACING).getName() + "_spiral_" + state.getValue(SpiralBrickBlock.DIAGONAL).getSerializedName()))).build());
+		getVariantBuilder(TFBlocks.SPIRAL_BRICKS.value()).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(models().getExistingFile(TwilightForestMod.prefix("block/spiral_bricks/" + state.getValue(SpiralBrickBlock.AXIS_FACING).getName() + "_spiral_" + state.getValue(SpiralBrickBlock.DIAGONAL).getSerializedName()))).build(), BlockStateProperties.WATERLOGGED);
 
 		ModelFile shieldModel = models().cubeTop(TFBlocks.STRONGHOLD_SHIELD.getId().getPath(), prefix("block/shield_outside"), prefix("block/shield_inside"));
 		getVariantBuilder(TFBlocks.STRONGHOLD_SHIELD.value())
@@ -430,6 +430,15 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		builtinEntity(TFBlocks.TRANSFORMATION_CHEST.value(), "twilightforest:block/wood/planks_trans_0");
 		builtinEntity(TFBlocks.MINING_CHEST.value(), "twilightforest:block/wood/planks_mine_0");
 		builtinEntity(TFBlocks.SORTING_CHEST.value(), "twilightforest:block/wood/planks_sort_0");
+
+		builtinEntity(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.value(), "twilightforest:block/wood/planks_twilight_oak_0");
+		builtinEntity(TFBlocks.CANOPY_TRAPPED_CHEST.value(), "twilightforest:block/wood/planks_canopy_0");
+		builtinEntity(TFBlocks.MANGROVE_TRAPPED_CHEST.value(), "twilightforest:block/wood/planks_mangrove_0");
+		builtinEntity(TFBlocks.DARK_TRAPPED_CHEST.value(), "twilightforest:block/wood/planks_darkwood_0");
+		builtinEntity(TFBlocks.TIME_TRAPPED_CHEST.value(), "twilightforest:block/wood/planks_time_0");
+		builtinEntity(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.value(), "twilightforest:block/wood/planks_trans_0");
+		builtinEntity(TFBlocks.MINING_TRAPPED_CHEST.value(), "twilightforest:block/wood/planks_mine_0");
+		builtinEntity(TFBlocks.SORTING_TRAPPED_CHEST.value(), "twilightforest:block/wood/planks_sort_0");
 
 		casketStuff();
 		stonePillar();

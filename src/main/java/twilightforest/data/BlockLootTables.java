@@ -327,6 +327,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.value(), createSingleItemTable(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.value().asItem()));
 		dropSelf(TFBlocks.TWILIGHT_OAK_BANISTER.value());
 		dropSelf(TFBlocks.TWILIGHT_OAK_CHEST.value());
+		dropSelf(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.value());
 
 		dropSelf(TFBlocks.CANOPY_LOG.value());
 		dropSelf(TFBlocks.STRIPPED_CANOPY_LOG.value());
@@ -350,6 +351,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.CANOPY_BOOKSHELF.value(), createSingleItemTableWithSilkTouch(TFBlocks.CANOPY_BOOKSHELF.value(), Items.BOOK, ConstantValue.exactly(2.0F)));
 		dropSelf(TFBlocks.CANOPY_BANISTER.value());
 		dropSelf(TFBlocks.CANOPY_CHEST.value());
+		dropSelf(TFBlocks.CANOPY_TRAPPED_CHEST.value());
 
 		dropSelf(TFBlocks.MANGROVE_LOG.value());
 		dropSelf(TFBlocks.STRIPPED_MANGROVE_LOG.value());
@@ -372,6 +374,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.MANGROVE_WALL_HANGING_SIGN.value(), createSingleItemTable(TFBlocks.MANGROVE_HANGING_SIGN.value().asItem()));
 		dropSelf(TFBlocks.MANGROVE_BANISTER.value());
 		dropSelf(TFBlocks.MANGROVE_CHEST.value());
+		dropSelf(TFBlocks.MANGROVE_TRAPPED_CHEST.value());
 
 		dropSelf(TFBlocks.DARK_LOG.value());
 		dropSelf(TFBlocks.STRIPPED_DARK_LOG.value());
@@ -395,6 +398,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.DARK_WALL_HANGING_SIGN.value(), createSingleItemTable(TFBlocks.DARK_HANGING_SIGN.value().asItem()));
 		dropSelf(TFBlocks.DARK_BANISTER.value());
 		dropSelf(TFBlocks.DARK_CHEST.value());
+		dropSelf(TFBlocks.DARK_TRAPPED_CHEST.value());
 
 		dropSelf(TFBlocks.TIME_LOG.value());
 		dropSelf(TFBlocks.STRIPPED_TIME_LOG.value());
@@ -418,6 +422,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.TIME_WALL_HANGING_SIGN.value(), createSingleItemTable(TFBlocks.TIME_HANGING_SIGN.value().asItem()));
 		dropSelf(TFBlocks.TIME_BANISTER.value());
 		dropSelf(TFBlocks.TIME_CHEST.value());
+		dropSelf(TFBlocks.TIME_TRAPPED_CHEST.value());
 
 		dropSelf(TFBlocks.TRANSFORMATION_LOG.value());
 		dropSelf(TFBlocks.STRIPPED_TRANSFORMATION_LOG.value());
@@ -441,6 +446,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.value(), createSingleItemTable(TFBlocks.TRANSFORMATION_HANGING_SIGN.value().asItem()));
 		dropSelf(TFBlocks.TRANSFORMATION_BANISTER.value());
 		dropSelf(TFBlocks.TRANSFORMATION_CHEST.value());
+		dropSelf(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.value());
 
 		dropSelf(TFBlocks.MINING_LOG.value());
 		dropSelf(TFBlocks.STRIPPED_MINING_LOG.value());
@@ -464,6 +470,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.MINING_WALL_HANGING_SIGN.value(), createSingleItemTable(TFBlocks.MINING_HANGING_SIGN.value().asItem()));
 		dropSelf(TFBlocks.MINING_BANISTER.value());
 		dropSelf(TFBlocks.MINING_CHEST.value());
+		dropSelf(TFBlocks.MINING_TRAPPED_CHEST.value());
 
 		dropSelf(TFBlocks.SORTING_LOG.value());
 		dropSelf(TFBlocks.STRIPPED_SORTING_LOG.value());
@@ -487,6 +494,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.SORTING_WALL_HANGING_SIGN.value(), createSingleItemTable(TFBlocks.SORTING_HANGING_SIGN.value().asItem()));
 		dropSelf(TFBlocks.SORTING_BANISTER.value());
 		dropSelf(TFBlocks.SORTING_CHEST.value());
+		dropSelf(TFBlocks.SORTING_TRAPPED_CHEST.value());
 
 	}
 

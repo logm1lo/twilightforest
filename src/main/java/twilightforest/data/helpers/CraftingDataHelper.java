@@ -25,6 +25,7 @@ import net.neoforged.neoforge.common.crafting.PartialNBTIngredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFChestBlock;
+import twilightforest.block.TFTrappedChestBlock;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 
@@ -306,8 +307,8 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(output, locWood(name + "_banister"));
 	}
 
-	protected final void chestBlock(RecipeOutput output, String name, DeferredHolder<Block, ? extends TFChestBlock> result, DeferredHolder<Block, ? extends Block> material) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result.value(), 2)
+	protected final void chestBlock(RecipeOutput output, String name, DeferredHolder<Block, ? extends TFChestBlock> chest, DeferredHolder<Block, ? extends TFTrappedChestBlock> trapped, DeferredHolder<Block, ? extends Block> material) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, chest.value(), 2)
 				.pattern("###")
 				.pattern("#C#")
 				.pattern("###")
@@ -315,6 +316,12 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.define('C', Tags.Items.CHESTS_WOODEN)
 				.unlockedBy("has_item", has(material.value()))
 				.save(output, locWood(name + "_chest"));
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, trapped.value())
+				.requires(chest.value())
+				.requires(Items.TRIPWIRE_HOOK)
+				.unlockedBy("has_tripwire_hook", has(Items.TRIPWIRE_HOOK))
+				.save(output, locWood(name + "_trapped_chest"));
 	}
 
 	protected final void fieryConversion(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, Item armor, int vials) {

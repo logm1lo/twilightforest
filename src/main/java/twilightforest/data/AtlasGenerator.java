@@ -1,7 +1,6 @@
 package twilightforest.data;
 
 import net.minecraft.client.renderer.texture.atlas.sources.SingleFile;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +8,6 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SpriteSourceProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MagicPaintingTextureManager;
-import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import twilightforest.entity.MagicPaintingVariant;
 
 import java.util.HashMap;
@@ -26,8 +24,6 @@ public class AtlasGenerator extends SpriteSourceProvider {
 
 	@Override
 	protected void gather() {
-		TwilightChestRenderer.MATERIALS.values().stream().flatMap(e -> e.values().stream()).map(Material::texture)
-				.forEach(resourceLocation -> this.atlas(CHESTS_ATLAS).addSource(new SingleFile(resourceLocation, Optional.empty())));
 		this.atlas(SHIELD_PATTERNS_ATLAS).addSource(new SingleFile(TwilightForestMod.prefix("model/knightmetal_shield"), Optional.empty()));
 
 		this.atlas(MagicPaintingTextureManager.ATLAS_INFO_LOCATION).addSource(new SingleFile(MagicPaintingTextureManager.BACK_SPRITE_LOCATION, Optional.empty()));

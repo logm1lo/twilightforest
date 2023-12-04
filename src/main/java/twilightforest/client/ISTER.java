@@ -35,12 +35,10 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.AbstractSkullCandleBlock;
-import twilightforest.block.AbstractTrophyBlock;
-import twilightforest.block.KeepsakeCasketBlock;
-import twilightforest.block.TFChestBlock;
+import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
-import twilightforest.block.entity.TwilightChestEntity;
+import twilightforest.block.entity.TFChestBlockEntity;
+import twilightforest.block.entity.TFTrappedChestBlockEntity;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
@@ -64,7 +62,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	});
 
 	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.value().defaultBlockState());
-	private final Map<Block, TwilightChestEntity> chestEntities = Util.make(new HashMap<>(), map -> {
+	private final Map<Block, TFChestBlockEntity> chestEntities = Util.make(new HashMap<>(), map -> {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
 		makeInstance(map, TFBlocks.CANOPY_CHEST);
 		makeInstance(map, TFBlocks.MANGROVE_CHEST);
@@ -73,6 +71,16 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		makeInstance(map, TFBlocks.TRANSFORMATION_CHEST);
 		makeInstance(map, TFBlocks.MINING_CHEST);
 		makeInstance(map, TFBlocks.SORTING_CHEST);
+	});
+	private final Map<Block, TFTrappedChestBlockEntity> trappedChestEntities = Util.make(new HashMap<>(), map -> {
+		makeTrappedInstance(map, TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.CANOPY_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.MANGROVE_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.DARK_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.TIME_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.TRANSFORMATION_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.MINING_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.SORTING_TRAPPED_CHEST);
 	});
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 	private Map<BossVariant, GenericTrophyModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
@@ -135,6 +143,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.casket, ms, buffers, light, overlay);
 			} else if (block instanceof TFChestBlock) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), ms, buffers, light, overlay);
+			} else if (block instanceof TFTrappedChestBlock) {
+				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.trappedChestEntities.get(block), ms, buffers, light, overlay);
 			} else if (block instanceof AbstractSkullCandleBlock candleBlock) {
 				CompoundTag compoundtag = stack.getTag();
 				GameProfile gameprofile = compoundtag != null ? SkullBlockEntity.getOrResolveGameProfile(compoundtag) : null;
@@ -170,8 +180,13 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		}
 	}
 
-	public static void makeInstance(Map<Block, TwilightChestEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
+	public static void makeInstance(Map<Block, TFChestBlockEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
 		ChestBlock block = registryObject.value();
-		map.put(block, new TwilightChestEntity(BlockPos.ZERO, block.defaultBlockState()));
+		map.put(block, new TFChestBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
+	}
+
+	public static void makeTrappedInstance(Map<Block, TFTrappedChestBlockEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
+		ChestBlock block = registryObject.value();
+		map.put(block, new TFTrappedChestBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
 	}
 }

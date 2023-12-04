@@ -614,14 +614,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 		banisterBlock(output, "bamboo", TFBlocks.BAMBOO_BANISTER, Blocks.BAMBOO_SLAB);
 		banisterBlock(output, "cherry", TFBlocks.CHERRY_BANISTER, Blocks.CHERRY_SLAB);
 
-		chestBlock(output, "twilight_oak", TFBlocks.TWILIGHT_OAK_CHEST, TFBlocks.TWILIGHT_OAK_PLANKS);
-		chestBlock(output, "canopy", TFBlocks.CANOPY_CHEST, TFBlocks.CANOPY_PLANKS);
-		chestBlock(output, "mangrove", TFBlocks.MANGROVE_CHEST, TFBlocks.MANGROVE_PLANKS);
-		chestBlock(output, "dark", TFBlocks.DARK_CHEST, TFBlocks.DARK_PLANKS);
-		chestBlock(output, "time", TFBlocks.TIME_CHEST, TFBlocks.TIME_PLANKS);
-		chestBlock(output, "transformation", TFBlocks.TRANSFORMATION_CHEST, TFBlocks.TRANSFORMATION_PLANKS);
-		chestBlock(output, "mining", TFBlocks.MINING_CHEST, TFBlocks.MINING_PLANKS);
-		chestBlock(output, "sorting", TFBlocks.SORTING_CHEST, TFBlocks.SORTING_PLANKS);
+		chestBlock(output, "twilight_oak", TFBlocks.TWILIGHT_OAK_CHEST, TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST, TFBlocks.TWILIGHT_OAK_PLANKS);
+		chestBlock(output, "canopy", TFBlocks.CANOPY_CHEST, TFBlocks.CANOPY_TRAPPED_CHEST, TFBlocks.CANOPY_PLANKS);
+		chestBlock(output, "mangrove", TFBlocks.MANGROVE_CHEST, TFBlocks.MANGROVE_TRAPPED_CHEST, TFBlocks.MANGROVE_PLANKS);
+		chestBlock(output, "dark", TFBlocks.DARK_CHEST, TFBlocks.DARK_TRAPPED_CHEST, TFBlocks.DARK_PLANKS);
+		chestBlock(output, "time", TFBlocks.TIME_CHEST, TFBlocks.TIME_TRAPPED_CHEST, TFBlocks.TIME_PLANKS);
+		chestBlock(output, "transformation", TFBlocks.TRANSFORMATION_CHEST, TFBlocks.TRANSFORMATION_TRAPPED_CHEST, TFBlocks.TRANSFORMATION_PLANKS);
+		chestBlock(output, "mining", TFBlocks.MINING_CHEST, TFBlocks.MINING_TRAPPED_CHEST, TFBlocks.MINING_PLANKS);
+		chestBlock(output, "sorting", TFBlocks.SORTING_CHEST, TFBlocks.SORTING_TRAPPED_CHEST, TFBlocks.SORTING_PLANKS);
 
 		buildBoats(output, TFItems.TWILIGHT_OAK_BOAT, TFItems.TWILIGHT_OAK_CHEST_BOAT, TFBlocks.TWILIGHT_OAK_PLANKS);
 		buildBoats(output, TFItems.CANOPY_BOAT, TFItems.CANOPY_CHEST_BOAT, TFBlocks.CANOPY_PLANKS);

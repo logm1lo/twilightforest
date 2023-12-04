@@ -5,8 +5,8 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlockEntities;
 
-public class TwilightChestEntity extends ChestBlockEntity {
-	public TwilightChestEntity(BlockPos pos, BlockState state) {
+public class TFChestBlockEntity extends ChestBlockEntity {
+	public TFChestBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.TF_CHEST.value(), pos, state);
 	}
 }
