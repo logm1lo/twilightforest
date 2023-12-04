@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "twilightforest:block/cord_down"
+        "model": "twilightforest:block/rope_down"
       },
       "when": {
         "down": "true"
@@ -10,7 +10,7 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/cord_up"
+        "model": "twilightforest:block/rope_up"
       },
       "when": {
         "up": "true"
@@ -18,7 +18,7 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/cord_x"
+        "model": "twilightforest:block/rope_x"
       },
       "when": {
         "x": "true"
@@ -26,7 +26,7 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/cord_z"
+        "model": "twilightforest:block/rope_z"
       },
       "when": {
         "z": "true"

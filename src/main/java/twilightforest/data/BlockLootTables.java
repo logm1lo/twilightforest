@@ -209,7 +209,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.value(), createSingleItemTable(Blocks.PIGLIN_HEAD));
 
 		dropSelf(TFBlocks.IRON_LADDER.value());
-		dropSelf(TFBlocks.CORD.value());
+		dropSelf(TFBlocks.ROPE.value());
 		dropSelf(TFBlocks.TWISTED_STONE.value());
 		dropSelf(TFBlocks.TWISTED_STONE_PILLAR.value());
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR.value());

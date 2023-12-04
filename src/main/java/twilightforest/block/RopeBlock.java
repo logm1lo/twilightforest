@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.TwilightForestMod;
 
-public class CordBlock extends Block implements SimpleWaterloggedBlock {
+public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty DOWN = PipeBlock.DOWN;
     public static final BooleanProperty UP = PipeBlock.UP;
@@ -40,7 +40,7 @@ public class CordBlock extends Block implements SimpleWaterloggedBlock {
     protected static final VoxelShape NORTH_SHAPE = Block.box(7.0D, 7.0D, 0.0D, 9.0D, 9.0D, 7.0D);
     protected static final VoxelShape SOUTH_SHAPE = Block.box(7.0D, 7.0D, 9.0D, 9.0D, 9.0D, 16.0D);
 
-    public CordBlock(BlockBehaviour.Properties properties) {
+    public RopeBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(WATERLOGGED, false)

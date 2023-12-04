@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "twilightforest:cord"
+          "name": "twilightforest:rope"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "twilightforest:blocks/cord"
+  "random_sequence": "twilightforest:blocks/rope"
 }

@@ -12,12 +12,12 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.CordBlock;
+import twilightforest.block.RopeBlock;
 
 import javax.annotation.Nullable;
 
-public class CordItem extends BlockItem {
-    public CordItem(Block block, Item.Properties properties) {
+public class RopeItem extends BlockItem {
+    public RopeItem(Block block, Item.Properties properties) {
         super(block, properties);
     }
 
@@ -67,11 +67,11 @@ public class CordItem extends BlockItem {
 
     protected boolean stateHasValue(BlockState state, Direction direction) {
         if (direction.getAxis() == Direction.Axis.X) {
-            return state.getValue(CordBlock.X);
+            return state.getValue(RopeBlock.X);
         } else if (direction.getAxis() == Direction.Axis.Z) {
-            return state.getValue(CordBlock.Z);
+            return state.getValue(RopeBlock.Z);
         } else {
-            return direction == Direction.UP ? state.getValue(CordBlock.UP) : state.getValue(CordBlock.DOWN);
+            return direction == Direction.UP ? state.getValue(RopeBlock.UP) : state.getValue(RopeBlock.DOWN);
         }
     }
 
@@ -85,12 +85,12 @@ public class CordItem extends BlockItem {
 
         if (state.is(this.getBlock())) {
             Direction direction = context.getClickedFace();
-            if (direction.getAxis() == Direction.Axis.X && !state.getValue(CordBlock.X)) {
-                return state.setValue(CordBlock.X, true);
-            } else if (direction.getAxis() == Direction.Axis.Y && !state.getValue(CordBlock.UP)) {
-                return state.setValue(CordBlock.UP, true).setValue(CordBlock.DOWN, true);
-            } else if (direction.getAxis() == Direction.Axis.Z && !state.getValue(CordBlock.Z)) {
-                return state.setValue(CordBlock.Z, true);
+            if (direction.getAxis() == Direction.Axis.X && !state.getValue(RopeBlock.X)) {
+                return state.setValue(RopeBlock.X, true);
+            } else if (direction.getAxis() == Direction.Axis.Y && !state.getValue(RopeBlock.UP)) {
+                return state.setValue(RopeBlock.UP, true).setValue(RopeBlock.DOWN, true);
+            } else if (direction.getAxis() == Direction.Axis.Z && !state.getValue(RopeBlock.Z)) {
+                return state.setValue(RopeBlock.Z, true);
             } else {
                 //TODO
             }
@@ -106,7 +106,7 @@ public class CordItem extends BlockItem {
             return Direction.DOWN;
         } else {
             Direction tempDir = context.getHorizontalDirection();
-            if (tempDir.getAxis() == Direction.Axis.X ? state.getValue(CordBlock.X) : state.getValue(CordBlock.Z)) return tempDir;
+            if (tempDir.getAxis() == Direction.Axis.X ? state.getValue(RopeBlock.X) : state.getValue(RopeBlock.Z)) return tempDir;
             else return Direction.DOWN;
         }
     }

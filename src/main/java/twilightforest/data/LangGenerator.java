@@ -303,6 +303,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.CINDER_WOOD, "Cinder Wood");
 
 		this.addBlock(TFBlocks.IRON_LADDER, "Iron Ladder");
+		this.addBlock(TFBlocks.ROPE, "Rope");
 		this.addBlock(TFBlocks.SLIDER, "Slide Trap");
 
 		this.addBlock(TFBlocks.TWILIGHT_OAK_LEAVES, "Twilight Oak Leaves");
