@@ -176,14 +176,11 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 			}
 
 			object.add("key", keys);
+			object.add("input", this.input.toJson(false));
 
-			JsonObject inputJson = new JsonObject();
-			inputJson.add("ingredient", this.input.toJson(false));
 			if (this.count > 1) {
-				inputJson.addProperty("count", this.count);
+				object.addProperty("input_count", this.count);
 			}
-
-			object.add("input", inputJson);
 
 			if (this.cost > -1) {
 				object.addProperty("cost", this.cost);

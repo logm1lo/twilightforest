@@ -1,4 +1,4 @@
-// 1.20.2	2023-11-20T18:19:31.4231717	Recipes
+// 1.20.2	2023-12-04T14:27:51.6959673	Recipes
 539d39555a9990627587c49ee448c3a780314aba data/twilightforest/advancements/recipes/building_blocks/aurora_pillar.json
 16b5e3e2414855c9fa253f4ed3e7e823971f9a7b data/twilightforest/advancements/recipes/building_blocks/canopy_bookshelf.json
 5351f0334791ab7f2aaf8c3f49ea26bb3af99ec4 data/twilightforest/advancements/recipes/building_blocks/castleblock/bold_castle_brick_pillar.json
@@ -630,8 +630,8 @@ d0100d7673177326564c7264d39cdb1fbfec1b78 data/twilightforest/recipes/time_boat.j
 2ac849d1523b2aff0adc636eb5060477373a9dc2 data/twilightforest/recipes/transformation_chest_boat.json
 d2df57e26c7e64f0d6c3c06fb1de3c27d7b45090 data/twilightforest/recipes/twilight_oak_boat.json
 df8e51ef7b71a366ed52ad4554095630345979c6 data/twilightforest/recipes/twilight_oak_chest_boat.json
-51de0b405fdb6c0bce0f8823378fe16b630b6021 data/twilightforest/recipes/uncrafting/tipped_arrow.json
-f059b62daabe14c14b1be34fd0da37d7cb714032 data/twilightforest/recipes/uncrafting/written_book.json
+f89821e2ab5495d65dea496535ef26ee8d474a7c data/twilightforest/recipes/uncrafting/tipped_arrow.json
+53a0506d267467c82127d69255947c09301f4dcb data/twilightforest/recipes/uncrafting/written_book.json
 511bd4a8bab171e7aa3cc98cad2471f8fe83e9e6 data/twilightforest/recipes/uncrafting_table.json
 116ebbe4b19a735dc164f293560f8cbf8bcc6e8b data/twilightforest/recipes/ur_ghast_banner_pattern.json
 059e3e2dfd006404ce1ef022edce2539a821cf3b data/twilightforest/recipes/vanilla_to_tf_lilypad.json

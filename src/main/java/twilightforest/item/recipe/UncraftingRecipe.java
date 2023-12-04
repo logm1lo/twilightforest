@@ -199,7 +199,7 @@ public record UncraftingRecipe(int cost, int width, int height, Ingredient input
 					instance.group(
 									Codec.INT.fieldOf("cost").forGetter(o -> o.cost),
 									Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(o -> o.input),
-									Codec.INT.optionalFieldOf("count", 1).forGetter(o -> o.count),
+									Codec.INT.optionalFieldOf("input_count", 1).forGetter(o -> o.count),
 									ExtraCodecs.strictUnboundedMap(ShapedRecipe.Serializer.SINGLE_CHARACTER_STRING_CODEC, Ingredient.CODEC_NONEMPTY).fieldOf("key").forGetter(o -> o.key),
 									ShapedRecipe.Serializer.PATTERN_CODEC.fieldOf("pattern").forGetter(o -> o.pattern))
 							.apply(instance, RawRecipe::new)
