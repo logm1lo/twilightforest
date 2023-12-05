@@ -104,10 +104,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.part().modelFile(models().getExistingFile(prefix("block/rope_y"))).addModel().condition(RopeBlock.Y, true).end()
 				.part().modelFile(models().getExistingFile(prefix("block/rope_x"))).addModel().condition(RopeBlock.X, true).end()
 				.part().modelFile(models().getExistingFile(prefix("block/rope_z"))).addModel().condition(RopeBlock.Z, true).end()
-				.part().modelFile(models().getExistingFile(prefix("block/rope_knot"))).addModel().nestedGroup().useOr()
-				.nestedGroup().condition(RopeBlock.X, true).condition(RopeBlock.Y, true).endNestedGroup()
-				.nestedGroup().condition(RopeBlock.Y, true).condition(RopeBlock.Z, true).endNestedGroup()
-				.nestedGroup().condition(RopeBlock.Z, true).condition(RopeBlock.X, true).endNestedGroup()
+				.part().modelFile(models().getExistingFile(prefix("block/rope_knot"))).addModel().useOr()
+				.nestedGroup().condition(RopeBlock.X, true).condition(RopeBlock.Y, true).end()
+				.nestedGroup().condition(RopeBlock.Y, true).condition(RopeBlock.Z, true).end()
+				.nestedGroup().condition(RopeBlock.Z, true).condition(RopeBlock.X, true).end()
 				.end();
 
 		towerBlocks();

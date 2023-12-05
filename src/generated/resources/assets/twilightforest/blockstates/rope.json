@@ -29,22 +29,18 @@
         "model": "twilightforest:block/rope_knot"
       },
       "when": {
-        "AND": [
+        "OR": [
           {
-            "OR": [
-              {
-                "x": "true",
-                "y": "true"
-              },
-              {
-                "y": "true",
-                "z": "true"
-              },
-              {
-                "x": "true",
-                "z": "true"
-              }
-            ]
+            "x": "true",
+            "y": "true"
+          },
+          {
+            "y": "true",
+            "z": "true"
+          },
+          {
+            "x": "true",
+            "z": "true"
           }
         ]
       }
