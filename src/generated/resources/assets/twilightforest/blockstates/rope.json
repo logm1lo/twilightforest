@@ -23,6 +23,31 @@
       "when": {
         "z": "true"
       }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/rope_knot"
+      },
+      "when": {
+        "AND": [
+          {
+            "OR": [
+              {
+                "x": "true",
+                "y": "true"
+              },
+              {
+                "y": "true",
+                "z": "true"
+              },
+              {
+                "x": "true",
+                "z": "true"
+              }
+            ]
+          }
+        ]
+      }
     }
   ]
 }
