@@ -1,4 +1,4 @@
-// 1.20.2	2023-11-28T13:56:42.098136	Registries
+// 1.20.2	2023-12-05T15:33:50.4071269	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -163,7 +163,7 @@ a6ebebfc0e249c985caeb4cb92efdbefa08fc5b0 data/twilightforest/worldgen/configured
 61ed61389b68efed2c636c323ee8c54a5499fb3d data/twilightforest/worldgen/configured_feature/tree/dark_forest_oak_tree.json
 7ff4ae7465ec347df003c7e65d7a1a81c3378ebb data/twilightforest/worldgen/configured_feature/tree/dead_canopy_tree.json
 cbc01407f81c547e1384753574d83f4983bc738b data/twilightforest/worldgen/configured_feature/tree/dummy.json
-ba599aa94413c449edec5bfe545189302e250ea9 data/twilightforest/worldgen/configured_feature/tree/firefly_canopy_tree.json
+49117e2d88929558ad370b7c4f1851c58cbcf156 data/twilightforest/worldgen/configured_feature/tree/firefly_canopy_tree.json
 228d9dc9e14d01bba6c7b25f87d8be7231d6b99e data/twilightforest/worldgen/configured_feature/tree/forest_canopy_oak_tree.json
 42df7a4c70b4eabf79f0f9c822818f10ede3b52a data/twilightforest/worldgen/configured_feature/tree/hollow_tree.json
 070bede66fbe4c3e5470e432f2082f27e9064826 data/twilightforest/worldgen/configured_feature/tree/homegrown_darkwood_tree.json
