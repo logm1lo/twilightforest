@@ -11,7 +11,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.conditions.TrueCondition;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.UncraftingGenerator;
@@ -20,7 +19,6 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
-import twilightforest.item.recipe.UncraftingTableCondition;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -96,6 +94,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('#', Ingredient.of(Blocks.IRON_BARS))
 				.define('-', Tags.Items.NUGGETS_IRON)
 				.unlockedBy("has_iron_bars", has(Blocks.IRON_BARS))
+				.save(output);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.ROPE.value(), 8)
+				.pattern("#")
+				.pattern("#")
+				.pattern("#")
+				.define('#', Ingredient.of(TFBlocks.ROOT_STRAND.value()))
+				.unlockedBy("has_root_strand", has(TFBlocks.ROOT_STRAND.value()))
 				.save(output);
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_JAR.value())
