@@ -1,4 +1,4 @@
-// 1.20.2	2023-11-28T13:56:42.098136	Registries
+// 1.20.2	2023-12-05T13:00:17.1281988	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -84,7 +84,7 @@ f98ed32ec5ec3cb155a7dbbb0ca7aef884d79d37 data/twilightforest/worldgen/biome/clea
 44470fc5b373a78554d550de0bfee619ee97feb4 data/twilightforest/worldgen/biome/fire_swamp.json
 ab4e3165e554a0b5996c0234aacf91947607ce73 data/twilightforest/worldgen/biome/forest.json
 99a43ac068d5161e868e7b10d9d63fcda1b427a5 data/twilightforest/worldgen/biome/glacier.json
-8ca8e3733ef1e2cee8b02f42b2f195970563f919 data/twilightforest/worldgen/biome/highlands.json
+038d28a1d7bb2ea9819d901d88f0aa8d873b5e9f data/twilightforest/worldgen/biome/highlands.json
 eb589a765bca75bb4f5f69d451cc86f76651b571 data/twilightforest/worldgen/biome/lake.json
 9f57849b2cd9c552e8ec763741dc0d79c68d9bbf data/twilightforest/worldgen/biome/mushroom_forest.json
 164c9bd3ba4c1b2fb3cca29ab0139bfd1eb761b1 data/twilightforest/worldgen/biome/oak_savannah.json
@@ -250,6 +250,7 @@ cd7fb39f381c7b9ee5df8a7264ee2ba713b73459 data/twilightforest/worldgen/placed_fea
 be2a4e58ede93dd07f178136df39ab7950906006 data/twilightforest/worldgen/placed_feature/small_granite.json
 38028922ed95c74e215e3d73b03aba6f35d7bcf5 data/twilightforest/worldgen/placed_feature/smoker.json
 d0914a5b0f3a2ee56393aee240d07ef50d8cd0c0 data/twilightforest/worldgen/placed_feature/snow_under_trees.json
+94c65233419c08cfb5f77cf4ca20233527ef30c7 data/twilightforest/worldgen/placed_feature/sparse_mushglooms.json
 ebe517f9aa93c9f4afa975cbc0089e268cd5d66f data/twilightforest/worldgen/placed_feature/spruce_fallen_log.json
 dbdc5f432f14056363950b5e98e4528640e25f74 data/twilightforest/worldgen/placed_feature/stone_circle.json
 b7dbc3d804d397faed24c09d58d197717faa7254 data/twilightforest/worldgen/placed_feature/tf_oak_fallen_log.json
