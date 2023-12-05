@@ -15,6 +15,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.RopeBlock;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class RopeItem extends BlockItem {
     public RopeItem(Block block, Item.Properties properties) {
@@ -32,7 +35,7 @@ public class RopeItem extends BlockItem {
         if (!blockstate.is(block)) {
             return context;
         } else {
-            Direction direction = this.getForward(context, blockstate);
+            Direction direction = this.getForward(context, blockstate, blockpos, level);
 
             int i = 0;
             BlockPos.MutableBlockPos mutableBlockPos = blockpos.mutable();
@@ -89,37 +92,40 @@ public class RopeItem extends BlockItem {
                 return state.setValue(RopeBlock.Y, true);
             } else if (direction.getAxis() == Direction.Axis.Z && !state.getValue(RopeBlock.Z)) {
                 return state.setValue(RopeBlock.Z, true);
-            } else {
-                //TODO
             }
         }
 
         return super.getPlacementState(context);
     }
 
-    protected Direction getForward(BlockPlaceContext context, BlockState state) {
-        if (context.isSecondaryUseActive()) {
-            return context.isInside() ? context.getClickedFace().getOpposite() : context.getClickedFace();//TODO
-        } else {
-            for (Direction dir : context.getNearestLookingDirections()) {
-                switch (dir.getAxis()) {
-                    case X -> {
-                        if (state.getValue(RopeBlock.X)) return dir;
-                    }
-                    case Y -> {
-                        if (state.getValue(RopeBlock.Y)) return Direction.DOWN; // Ropes don't go up
-                    }
-                    case Z -> {
-                        if (state.getValue(RopeBlock.Z)) return dir;
-                    }
+    protected Direction getForward(BlockPlaceContext context, BlockState state, BlockPos pos, Level level) {
+        Direction face = context.getClickedFace().getOpposite();
+        if (RopeBlock.canConnectTo(level.getBlockState(pos.relative(face)), face, level, pos.relative(face))) {
+            return face;
+        }
+
+        List<Direction> directions = Arrays.asList(context.getNearestLookingDirections());
+
+        if (context.isSecondaryUseActive()) Collections.reverse(directions);
+
+        for (Direction dir : directions) {
+            if (dir == Direction.UP) continue;
+            Direction op = dir.getOpposite();
+            if (RopeBlock.canConnectTo(level.getBlockState(pos.relative(op)), op, level, pos.relative(op))) {
+                return dir;
+            }
+            switch (dir.getAxis()) {
+                case X -> {
+                    if (state.getValue(RopeBlock.X)) return dir;
+                }
+                case Y -> {
+                    if (state.getValue(RopeBlock.Y)) return Direction.DOWN; // Ropes don't go up
+                }
+                case Z -> {
+                    if (state.getValue(RopeBlock.Z)) return dir;
                 }
             }
-            return Direction.DOWN;
         }
-    }
-
-    @Override
-    protected boolean mustSurvive() {
-        return false;
+        return Direction.DOWN;
     }
 }

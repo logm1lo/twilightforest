@@ -4,15 +4,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.SupportType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -25,20 +23,16 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+//TODO: Break when shot, knots when intersect, actual item texture, world generation, multiple drops depending on blockstate
 public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty X = BooleanProperty.create("x");
     public static final BooleanProperty Y = BooleanProperty.create("y");
     public static final BooleanProperty Z = BooleanProperty.create("z");
 
-    protected static final VoxelShape BASE_SHAPE = Block.box(7.0D, 7.0D, 7.0D, 9.0D, 9.0D, 9.0D);
-
-    protected static final VoxelShape WEST_SHAPE = Block.box(0.0D, 7.0D, 7.0D, 7.0D, 9.0D, 9.0D);
-    protected static final VoxelShape EAST_SHAPE = Block.box(9.0D, 7.0D, 7.0D, 16.0D, 9.0D, 9.0D);
-    protected static final VoxelShape DOWN_SHAPE = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 7.0D, 9.0D);
-    protected static final VoxelShape UP_SHAPE = Block.box(7.0D, 9.0D, 7.0D, 9.0D, 16.0D, 9.0D);
-    protected static final VoxelShape NORTH_SHAPE = Block.box(7.0D, 7.0D, 0.0D, 9.0D, 9.0D, 7.0D);
-    protected static final VoxelShape SOUTH_SHAPE = Block.box(7.0D, 7.0D, 9.0D, 9.0D, 9.0D, 16.0D);
+    protected static final VoxelShape X_SHAPE = Block.box(0.0D, 7.0D, 7.0D, 16.0D, 9.0D, 9.0D);
+    protected static final VoxelShape Y_SHAPE = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
+    protected static final VoxelShape Z_SHAPE = Block.box(7.0D, 7.0D, 0.0D, 9.0D, 9.0D, 16.0D);
 
     public RopeBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -68,26 +62,27 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        VoxelShape shape = BASE_SHAPE;
+        VoxelShape shape = Shapes.empty();
 
-        boolean y = state.getValue(Y);
-        boolean x = state.getValue(X);
-        boolean z = state.getValue(Z);
-
-        if (y) {
-            shape = Shapes.or(shape, DOWN_SHAPE);
-            shape = Shapes.or(shape, UP_SHAPE);
-        }
-        if (z) {
-            shape = Shapes.or(shape, NORTH_SHAPE);
-            shape = Shapes.or(shape, SOUTH_SHAPE);
-        }
-        if (x) {
-            shape = Shapes.or(shape, WEST_SHAPE);
-            shape = Shapes.or(shape, EAST_SHAPE);
-        }
+        if (state.getValue(X)) shape = Shapes.or(shape, X_SHAPE);
+        if (state.getValue(Y)) shape = Shapes.or(shape, Y_SHAPE);
+        if (state.getValue(Z)) shape = Shapes.or(shape, Z_SHAPE);
 
         return shape;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = Shapes.empty();
+        if (state.getValue(X) && context.isAbove(X_SHAPE, pos, false) && !context.isDescending()) shape = Shapes.or(shape, X_SHAPE);
+        if (state.getValue(Z) && context.isAbove(Z_SHAPE, pos, false) && !context.isDescending()) shape = Shapes.or(shape, Z_SHAPE);
+        return shape;
+    }
+
+    @Override
+    public boolean isScaffolding(BlockState state, LevelReader level, BlockPos pos, LivingEntity entity) {
+        return true;
     }
 
     @Override
@@ -151,21 +146,22 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         if (state.getValue(X)) {
-            if (this.canConnectTo(level.getBlockState(pos.relative(Direction.WEST)), Direction.WEST, level, pos)) return true;
-            if (this.canConnectTo(level.getBlockState(pos.relative(Direction.EAST)), Direction.EAST, level, pos)) return true;
+            if (canConnectTo(level.getBlockState(pos.relative(Direction.WEST)), Direction.WEST, level, pos)) return true;
+            if (canConnectTo(level.getBlockState(pos.relative(Direction.EAST)), Direction.EAST, level, pos)) return true;
         }
         if (state.getValue(Y)) {
-            if (this.canConnectTo(level.getBlockState(pos.relative(Direction.UP)), Direction.UP, level, pos)) return true;
+            if (canConnectTo(level.getBlockState(pos.relative(Direction.UP)), Direction.UP, level, pos)) return true;
         }
         if (state.getValue(Z)) {
-            if (this.canConnectTo(level.getBlockState(pos.relative(Direction.NORTH)), Direction.NORTH, level, pos)) return true;
-            return this.canConnectTo(level.getBlockState(pos.relative(Direction.SOUTH)), Direction.SOUTH, level, pos);
+            if (canConnectTo(level.getBlockState(pos.relative(Direction.NORTH)), Direction.NORTH, level, pos)) return true;
+            return canConnectTo(level.getBlockState(pos.relative(Direction.SOUTH)), Direction.SOUTH, level, pos);
         }
         return false;
     }
 
-    protected boolean canConnectTo(BlockState state, Direction dir, LevelReader level, BlockPos pos) {
-        return state.getBlock() instanceof LeavesBlock || (state.is(this) && hasAxis(state, dir.getAxis())) || state.isFaceSturdy(level, pos, dir.getOpposite(), SupportType.CENTER);
+    public static boolean canConnectTo(BlockState state, Direction dir, LevelReader level, BlockPos pos) {
+        if (dir == Direction.DOWN) return false;
+        return state.getBlock() instanceof LeavesBlock || (state.getBlock() instanceof RopeBlock && hasAxis(state, dir.getAxis())) || state.isFaceSturdy(level, pos, dir.getOpposite(), SupportType.CENTER);
     }
 
     protected boolean checkConnection(LevelReader level, BlockPos pos, Direction dir) {
@@ -173,7 +169,7 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
         while (true) {
             if (!level.getBlockState(mutable).is(this)) return true;
             mutable.move(dir);
-            if (!this.canConnectTo(level.getBlockState(mutable), dir, level, mutable)) return false;
+            if (!canConnectTo(level.getBlockState(mutable), dir, level, mutable)) return false;
         }
     }
 
