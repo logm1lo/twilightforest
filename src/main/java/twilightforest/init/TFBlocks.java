@@ -170,12 +170,7 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> GIANT_COBBLESTONE = register("giant_cobblestone", () -> new GiantBlock(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().strength(128.0F, 50.0F)));
 	public static final DeferredBlock<Block> GIANT_LOG = register("giant_log", () -> new GiantBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().strength(128.0F, 30.0F)));
 	public static final DeferredBlock<Block> GIANT_LEAVES = register("giant_leaves", () -> new GiantLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES).noOcclusion().pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.AZALEA_LEAVES).strength(0.2F * 64.0F, 15.0F)));
-	public static final DeferredBlock<Block> GIANT_OBSIDIAN = register("giant_obsidian", () -> new GiantBlock(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().strength(50.0F * 64.0F * 64.0F, 2000.0F * 64.0F * 64.0F).isValidSpawn((state, getter, pos, type) -> false)){
-		@Override
-		public boolean isPortalFrame(BlockState state, BlockGetter level, BlockPos pos) {
-			return true;
-		}
-	});
+	public static final DeferredBlock<Block> GIANT_OBSIDIAN = register("giant_obsidian", () -> new GiantBlock(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().strength(50.0F * 64.0F * 64.0F, 2000.0F * 64.0F * 64.0F).isValidSpawn((state, getter, pos, type) -> false)));
 	public static final DeferredBlock<Block> UBEROUS_SOIL = register("uberous_soil", () -> new UberousSoilBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(0.6F)));
 	public static final DeferredBlock<RotatedPillarBlock> HUGE_STALK = register("huge_stalk", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.PLANT).sound(SoundType.STEM).strength(1.5F, 3.0F)));
 	public static final DeferredBlock<Block> BEANSTALK_GROWER = BLOCKS.register("beanstalk_grower", () -> new GrowingBeanstalkBlock(BlockBehaviour.Properties.of().noCollission().noLootTable().noOcclusion().noTerrainParticles().strength(-1.0F, 6000000.0F)));
