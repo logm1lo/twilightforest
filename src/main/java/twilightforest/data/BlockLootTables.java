@@ -209,7 +209,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.value(), createSingleItemTable(Blocks.PIGLIN_HEAD));
 
 		dropSelf(TFBlocks.IRON_LADDER.value());
-		dropSelf(TFBlocks.ROPE.value());
+		add(TFBlocks.ROPE.value(), this.rope());
 		dropSelf(TFBlocks.TWISTED_STONE.value());
 		dropSelf(TFBlocks.TWISTED_STONE_PILLAR.value());
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR.value());
@@ -581,6 +581,25 @@ public class BlockLootTables extends BlockLootSubProvider {
 										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.value())
 												.setProperties(StatePropertiesPredicate.Builder.properties()
 														.hasProperty(PipeBlock.DOWN, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
+	}
+
+	protected LootTable.Builder rope() {
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.add(this.applyExplosionDecay(TFBlocks.ROPE.value(), LootItem.lootTableItem(TFBlocks.ROPE.value())
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.value())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(RopeBlock.X, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.value())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(RopeBlock.Y, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.value())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(RopeBlock.Z, true))))
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
 	}
 

@@ -10,7 +10,10 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -23,7 +26,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-//TODO: Break when shot, knots when intersect, actual item texture, world generation, multiple drops depending on blockstate
+//TODO: Break when shot, knots when intersect, actual item texture, world generation
 public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty X = BooleanProperty.create("x");
@@ -121,24 +124,32 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         boolean flag = true;
+        int drops = 0;
         BlockState newState = state;
         if (state.getValue(X)) {
-            if (!this.checkConnection(level, pos, Direction.WEST) && !this.checkConnection(level, pos, Direction.EAST)) newState = newState.setValue(X, false);
-            else flag = false;
+            if (!this.checkConnection(level, pos, Direction.WEST) && !this.checkConnection(level, pos, Direction.EAST)) {
+                newState = newState.setValue(X, false);
+                drops++;
+            } else flag = false;
         }
         if (state.getValue(Y)) {
-            if (!this.checkConnection(level, pos, Direction.UP)) newState = newState.setValue(Y, false);
-            else flag = false;
+            if (!this.checkConnection(level, pos, Direction.UP)) {
+                newState = newState.setValue(Y, false);
+                drops++;
+            } else flag = false;
         }
         if (state.getValue(Z)) {
-            if (!this.checkConnection(level, pos, Direction.NORTH) && !this.checkConnection(level, pos, Direction.SOUTH)) newState = newState.setValue(Z, false);
-            else flag = false;
+            if (!this.checkConnection(level, pos, Direction.NORTH) && !this.checkConnection(level, pos, Direction.SOUTH)) {
+                newState = newState.setValue(Z, false);
+                drops++;
+            } else flag = false;
         }
 
         if (flag) {
             level.destroyBlock(pos, true);
-        } else if (!state.equals(newState)) {
+        } else if (drops > 0) {
             level.setBlockAndUpdate(pos, newState);
+            for (int i = 0; i < drops; i++) dropResources(this.defaultBlockState(), level, pos);
         }
     }
 
