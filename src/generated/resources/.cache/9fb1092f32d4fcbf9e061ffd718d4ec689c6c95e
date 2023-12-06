@@ -1,4 +1,4 @@
-// 1.20.2	2023-12-04T16:49:52.0106243	Recipes
+// 1.20.2	2023-12-05T19:15:23.0109685	Recipes
 539d39555a9990627587c49ee448c3a780314aba data/twilightforest/advancements/recipes/building_blocks/aurora_pillar.json
 16b5e3e2414855c9fa253f4ed3e7e823971f9a7b data/twilightforest/advancements/recipes/building_blocks/canopy_bookshelf.json
 5351f0334791ab7f2aaf8c3f49ea26bb3af99ec4 data/twilightforest/advancements/recipes/building_blocks/castleblock/bold_castle_brick_pillar.json
@@ -216,6 +216,7 @@ fa2f6c219b72ee4579506e96cd8fd01dab016dab data/twilightforest/advancements/recipe
 9a7c55fc005c704e994e9ef6a688dc8b48c98502 data/twilightforest/advancements/recipes/combat/equipment/twilight_scepter.json
 7406fd2276c4cbfd013e638bb5bfa766977146a2 data/twilightforest/advancements/recipes/combat/equipment/zombie_scepter.json
 7fb5700d412faed00c6c97b644bbcafac6599e11 data/twilightforest/advancements/recipes/decorations/berry_torch.json
+ebe9acb8859e41b7bceba3731908cd62b5f740c1 data/twilightforest/advancements/recipes/decorations/candelabra.json
 bc2a011a004bb8b4075f6a9367828af07647b957 data/twilightforest/advancements/recipes/decorations/cicada_jar.json
 f47acbe21c93f845c444b5b6c736f73ae4b734bf data/twilightforest/advancements/recipes/decorations/firefly_jar.json
 59b52c3506619ee06e12b96610333e9c311fd4db data/twilightforest/advancements/recipes/decorations/firefly_particle_spawner.json
@@ -394,6 +395,7 @@ c999d609386d2505a39863d05cbd913835161b2d data/twilightforest/advancements/recipe
 09f2bd910673a89e1acad7511336eb1a2790aaf4 data/twilightforest/recipes/alpha_yeti_banner_pattern.json
 6cd9cc1a7a1e0eb1ef5db7caa0a498c95470d952 data/twilightforest/recipes/aurora_pillar.json
 acfef956c24a0fec0124c016df011e91f0fde32b data/twilightforest/recipes/berry_torch.json
+01d60064cbce75bac53635bb0fb148dde9426f18 data/twilightforest/recipes/candelabra.json
 0402961987705d5ae4bcd1f95b9874f7d286468f data/twilightforest/recipes/canopy_boat.json
 8fa8fe72684d558cd3b3e07ef0947f18e2add07a data/twilightforest/recipes/canopy_bookshelf.json
 dcbd1f400a24291a728f60272cc9a23896781b21 data/twilightforest/recipes/canopy_chest_boat.json

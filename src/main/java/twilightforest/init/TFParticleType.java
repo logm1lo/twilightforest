@@ -42,6 +42,7 @@ public class TFParticleType {
 			return LeafParticleData.codecLeaf();
 		}
 	});
+	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> DIM_FLAME = PARTICLE_TYPES.register("dim_flame", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> OMINOUS_FLAME = PARTICLE_TYPES.register("ominous_flame", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SORTING_PARTICLE = PARTICLE_TYPES.register("sorting_particle", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> TRANSFORMATION_PARTICLE = PARTICLE_TYPES.register("transformation_particle", () -> new SimpleParticleType(false));
@@ -67,6 +68,7 @@ public class TFParticleType {
 		event.registerSpriteSet(TFParticleType.WANDERING_FIREFLY.value(), FireflyParticle.WanderingProvider::new);
 		event.registerSpriteSet(TFParticleType.PARTICLE_SPAWNER_FIREFLY.value(), FireflyParticle.ParticleSpawnerProvider::new);
 		event.registerSpriteSet(TFParticleType.FALLEN_LEAF.value(), LeafParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.DIM_FLAME.value(), FlameParticle.SmallFlameProvider::new);
 		event.registerSpriteSet(TFParticleType.OMINOUS_FLAME.value(), FlameParticle.SmallFlameProvider::new);
 		event.registerSpriteSet(TFParticleType.SORTING_PARTICLE.value(), SortingParticle.Factory::new);
 		event.registerSpriteSet(TFParticleType.TRANSFORMATION_PARTICLE.value(), TransformationParticle.Factory::new);

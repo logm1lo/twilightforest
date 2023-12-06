@@ -36,9 +36,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
-import twilightforest.block.entity.KeepsakeCasketBlockEntity;
-import twilightforest.block.entity.TFChestBlockEntity;
-import twilightforest.block.entity.TFTrappedChestBlockEntity;
+import twilightforest.block.entity.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
@@ -60,7 +58,6 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			return INSTANCE.get();
 		}
 	});
-
 	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.value().defaultBlockState());
 	private final Map<Block, TFChestBlockEntity> chestEntities = Util.make(new HashMap<>(), map -> {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
@@ -85,6 +82,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 	private Map<BossVariant, GenericTrophyModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
 	private Map<SkullBlock.Type, SkullModelBase> skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
+	private final CandelabraBlockEntity candelabra = new CandelabraBlockEntity(BlockPos.ZERO, TFBlocks.CANDELABRA.value().defaultBlockState());
 
 	// Use the cached INSTANCE.get instead
 	private ISTER() {
@@ -155,19 +153,27 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 
 				//we put the candle
 				ms.translate(0.0F, 0.5F, 0.0F);
-				CompoundTag tag = stack.getTagElement("BlockEntityTag");
+				CompoundTag tag = BlockItem.getBlockEntityData(stack);
 				if (tag != null && tag.contains("CandleColor") && tag.contains("CandleAmount")) {
 					if (tag.getInt("CandleAmount") <= 0) tag.putInt("CandleAmount", 1);
 					Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
 							AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")))
 									.defaultBlockState().setValue(CandleBlock.CANDLES, tag.getInt("CandleAmount")), ms, buffers, light, overlay, ModelData.EMPTY, RenderType.cutout());
 				}
-			} else {
-				if (block instanceof EntityBlock be) {
-					BlockEntity blockEntity = be.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
-					if (blockEntity != null) {
-						Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
-					}
+			} else if (block instanceof CandelabraBlock) {
+				//we need to render the candelabra block here since we have to use builtin/entity on the item.
+				//This doesnt allow us to set the item parent to the candelabra block, and without it, only the candles render, if any
+				Minecraft.getInstance().getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.value().defaultBlockState(), ms, buffers, light, overlay);
+				CompoundTag tag = BlockItem.getBlockEntityData(stack);
+				if (tag != null && tag.contains("Candles")) {
+					CandelabraBlockEntity copy = this.candelabra;
+					copy.load(tag);
+					Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(copy, ms, buffers, light, overlay);
+				}
+			} else if (block instanceof CritterBlock critter) {
+				BlockEntity blockEntity = critter.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
+				if (blockEntity != null) {
+					Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
 				}
 			}
 		} else if (item instanceof KnightmetalShieldItem) {

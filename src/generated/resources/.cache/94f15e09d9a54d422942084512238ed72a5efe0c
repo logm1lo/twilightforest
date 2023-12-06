@@ -1,4 +1,4 @@
-// 1.20.2	2023-12-04T15:54:02.1399271	TwilightForest Item and BlockItem models
+// 1.20.2	2023-12-04T20:34:19.9537886	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -97,7 +97,6 @@ d545882f9f495a8375818400535be2adf1af9cfd assets/twilightforest/models/item/britt
 7fe947c2f29429f24e536e3d4ad586212ce4fec7 assets/twilightforest/models/item/brittle_potion_flask.json
 820c37ce361c42fa08780fa95348363f3896eca2 assets/twilightforest/models/item/brown_thorns.json
 467cebcf3cd3374114448574b195816d14b53a81 assets/twilightforest/models/item/burnt_thorns.json
-d404dcffd014ea0eb89122556e589a11bed66d85 assets/twilightforest/models/item/candelabra.json
 1639d7fb985d33b297dd58da1b489820665447bb assets/twilightforest/models/item/canopy_banister.json
 f530b5269751cdcc82e3e8c32377525d10d714e7 assets/twilightforest/models/item/canopy_boat.json
 1df5a2758ad31a70e41c2cd47e8cb5d949c6aefc assets/twilightforest/models/item/canopy_bookshelf.json
