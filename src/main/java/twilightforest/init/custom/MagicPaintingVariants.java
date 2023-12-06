@@ -45,8 +45,8 @@ public class MagicPaintingVariants {
                 new Layer("background", null, null, true),
                 new Layer("clouds", new Parallax(Parallax.Type.SINE_TIME, 0.01F, 48, 32), null, true),
                 new Layer("volcanic_lands", null, null, true),
-                new Layer("agate_jungle", new Parallax(Parallax.Type.VIEW_ANGLE, 0.02F, 44, 32), null, true),
-                new Layer("crystal_plains", new Parallax(Parallax.Type.VIEW_ANGLE, 0.025F, 58, 32), null, true)
+                new Layer("agate_jungle", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 44, 32), null, true),
+                new Layer("crystal_plains", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 58, 32), null, true)
         ));
     }
 
