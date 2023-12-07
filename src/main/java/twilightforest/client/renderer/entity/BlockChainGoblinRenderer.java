@@ -26,15 +26,16 @@ import twilightforest.entity.monster.BlockChainGoblin;
 
 public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends BlockChainGoblinModel<T>> extends HumanoidMobRenderer<T, M> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
+	private static final ResourceLocation GOBLIN_TEXTURE = TwilightForestMod.getModelTexture("blockgoblin.png");
+	private static final ResourceLocation BLOCK_AND_CHAIN_TEXTURE = TwilightForestMod.getModelTexture("block_and_chain.png");
 
 	private final Model model;
 	private final Model chainModel;
 
 	public BlockChainGoblinRenderer(EntityRendererProvider.Context manager, M goblinModel, float shadowSize) {
 		super(manager, goblinModel, shadowSize);
-		model = new SpikeBlockModel(manager.bakeLayer(TFModelLayers.CHAIN_BLOCK));
-		chainModel = new ChainModel(manager.bakeLayer(TFModelLayers.CHAIN));
+		this.model = new SpikeBlockModel(manager.bakeLayer(TFModelLayers.CHAIN_BLOCK));
+		this.chainModel = new ChainModel(manager.bakeLayer(TFModelLayers.CHAIN));
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Bloc
 		double blockInY = (goblin.block.getY() - goblin.getY());
 		double blockInZ = (goblin.block.getZ() - goblin.getZ());
 
-		VertexConsumer ivertexbuilder = buffer.getBuffer(this.model.renderType(textureLoc));
+		VertexConsumer consumer = buffer.getBuffer(this.model.renderType(BLOCK_AND_CHAIN_TEXTURE));
 		stack.translate(blockInX, blockInY, blockInZ);
 
 		float pitch = goblin.xRotO + (goblin.getXRot() - goblin.xRotO) * partialTicks;
@@ -55,26 +56,12 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Bloc
 		stack.mulPose(Axis.XP.rotationDegrees(pitch));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		this.model.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.popPose();
 
-		BlockChainRenderer.renderChain(goblin, goblin.chain1, yaw, partialTicks, stack, buffer, light, chainModel);
-		BlockChainRenderer.renderChain(goblin, goblin.chain2, yaw, partialTicks, stack, buffer, light, chainModel);
-		BlockChainRenderer.renderChain(goblin, goblin.chain3, yaw, partialTicks, stack, buffer, light, chainModel);
-		
-		//when you allowed debugBoundingBox, you can see Hitbox
-		if (this.entityRenderDispatcher.shouldRenderHitBoxes() && !goblin.block.isInvisible() && !Minecraft.getInstance().showOnlyReducedInfo()) {
-			stack.pushPose();
-			stack.translate(blockInX, blockInY, blockInZ);
-			this.renderMultiBoundingBox(stack, buffer.getBuffer(RenderType.lines()), goblin.block, 0.25F, 1.0F, 0.0F);
-			stack.popPose();
-		}
-
-	}
-
-	private void renderMultiBoundingBox(PoseStack stack, VertexConsumer builder, Entity entity, float red, float grean, float blue) {
-		AABB axisalignedbb = entity.getBoundingBox().move(-entity.getX(), -entity.getY(), -entity.getZ());
-		LevelRenderer.renderLineBox(stack, builder, axisalignedbb, red, grean, blue, 1.0F);
+		BlockChainRenderer.renderChain(goblin, goblin.chain1, yaw, partialTicks, stack, buffer, light, this.chainModel);
+		BlockChainRenderer.renderChain(goblin, goblin.chain2, yaw, partialTicks, stack, buffer, light, this.chainModel);
+		BlockChainRenderer.renderChain(goblin, goblin.chain3, yaw, partialTicks, stack, buffer, light, this.chainModel);
 	}
 
 	@Override
@@ -99,6 +86,6 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Bloc
 
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return textureLoc;
+		return GOBLIN_TEXTURE;
 	}
 }

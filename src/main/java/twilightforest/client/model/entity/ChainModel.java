@@ -22,11 +22,11 @@ public class ChainModel extends ListModel<Entity> {
 		PartDefinition partRoot = mesh.getRoot();
 
 		partRoot.addOrReplaceChild("chain", CubeListBuilder.create()
-						.texOffs(56, 36)
+						.texOffs(24, 0)
 						.addBox(-1F, -1F, -1F, 2, 2, 2),
 				PartPose.ZERO);
 
-		return LayerDefinition.create(mesh, 64, 64);
+		return LayerDefinition.create(mesh, 32, 16);
 	}
 
 	@Override
