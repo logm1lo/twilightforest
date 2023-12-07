@@ -79,7 +79,7 @@ public class Minotaur extends Monster implements ITFCharger {
 		float additionalDiff = difficulty.getEffectiveDifficulty() + 1;
 		int result = (int) (random / additionalDiff);
 		if (result == 0)
-			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GOLDEN_MINOTAUR_AXE.value()));
+			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GOLDEN_MINOTAUR_AXE.get()));
 		else
 			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
 	}
@@ -135,7 +135,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	}
 
 	protected SoundEvent getChargeSound() {
-		return TFSounds.MINOTAUR_ATTACK.value();
+		return TFSounds.MINOTAUR_ATTACK.get();
 	}
 
 	@Override
@@ -149,22 +149,22 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINOTAUR_AMBIENT.value();
+		return TFSounds.MINOTAUR_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.MINOTAUR_HURT.value();
+		return TFSounds.MINOTAUR_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINOTAUR_DEATH.value();
+		return TFSounds.MINOTAUR_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		playSound(TFSounds.MINOTAUR_STEP.value(), 0.15F, 0.8F);
+		playSound(TFSounds.MINOTAUR_STEP.get(), 0.15F, 0.8F);
 	}
 
 	@Override

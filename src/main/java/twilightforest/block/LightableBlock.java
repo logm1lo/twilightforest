@@ -81,8 +81,8 @@ public interface LightableBlock {
 
 		ParticleOptions particle = switch (lighting) {
 			default -> ParticleTypes.SMALL_FLAME;
-			case DIM -> TFParticleType.DIM_FLAME.value();
-			case OMINOUS -> TFParticleType.OMINOUS_FLAME.value();
+			case DIM -> TFParticleType.DIM_FLAME.get();
+			case OMINOUS -> TFParticleType.OMINOUS_FLAME.get();
 		};
 
 		level.addParticle(particle, x, y, z, 0.0D, 0.0D, 0.0D);

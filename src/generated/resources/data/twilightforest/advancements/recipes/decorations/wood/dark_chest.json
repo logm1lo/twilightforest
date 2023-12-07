@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/dark_chest"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

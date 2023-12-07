@@ -116,7 +116,7 @@ public class OreMagnetItem extends Item {
 
 			if (moved > 0) {
 				stack.hurtAndBreak(moved, living, user -> user.broadcastBreakEvent(living.getUsedItemHand()));
-				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.value(), living.getSoundSource(), 1.0F, 1.0F);
+				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.get(), living.getSoundSource(), 1.0F, 1.0F);
 			}
 		}
 	}
@@ -197,7 +197,7 @@ public class OreMagnetItem extends Item {
 								ParticlePacket particlePacket = new ParticlePacket();
 								for (int i = 0; i < 16; i++) {
 									Vec3 offset = new Vec3((level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D);
-									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.value(), false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
+									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
 								}
 								TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
 							}

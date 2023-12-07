@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -26,11 +27,17 @@ import twilightforest.init.TFBlockEntities;
 
 public class FireJetBlock extends BaseEntityBlock {
 
+	public static final MapCodec<FireJetBlock> CODEC = simpleCodec(FireJetBlock::new);
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
 	public FireJetBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, FireJetVariant.IDLE));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -95,6 +102,6 @@ public class FireJetBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.FLAME_JET.value(), FireJetBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.FLAME_JET.get(), FireJetBlockEntity::tick);
 	}
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:castleblock/mossy_castle_brick_stairs"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

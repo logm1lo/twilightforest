@@ -143,7 +143,7 @@ public class LifedrainScepterItem extends Item {
 				if (level.isClientSide()) {
 					this.makeRedMagicTrail(level, living, target.getEyePosition());
 				} else {
-					level.playSound(null, living.blockPosition(), TFSounds.SCEPTER_USE.value(), SoundSource.PLAYERS);
+					level.playSound(null, living.blockPosition(), TFSounds.SCEPTER_USE.get(), SoundSource.PLAYERS);
 				}
 
 				if (target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), 1)) {
@@ -157,7 +157,7 @@ public class LifedrainScepterItem extends Item {
 							if (target instanceof Mob mob) {
 								mob.spawnAnim();
 							}
-							target.playSound(TFSounds.SCEPTER_DRAIN.value(), 1.0F, living.getVoicePitch());
+							target.playSound(TFSounds.SCEPTER_DRAIN.get(), 1.0F, living.getVoicePitch());
 							SoundEvent deathSound = EntityUtil.getDeathSound(target);
 							if (deathSound != null) {
 								level.playSound(null, target.blockPosition(), deathSound, SoundSource.HOSTILE, 1.0F, target.getVoicePitch());

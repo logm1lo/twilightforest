@@ -27,11 +27,11 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundation13Component {
 
 	public FinalCastleFoundation13ComponentThorns(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCFTh21.value(), nbt);
+		super(TFStructurePieceTypes.TFFCFTh21.get(), nbt);
 	}
 
 	public FinalCastleFoundation13ComponentThorns(int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCFTh21.value(), i, sideTower, x, y, z);
+		super(TFStructurePieceTypes.TFFCFTh21.get(), i, sideTower, x, y, z);
 
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 5, sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().minZ() - 5, sideTower.getBoundingBox().maxX() + 5, sideTower.getBoundingBox().maxY(), sideTower.getBoundingBox().maxZ() + 5);
 	}
@@ -56,9 +56,9 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 		int twist = decoRNG.nextInt(4);
 		int twistMod = 3 + decoRNG.nextInt(3);
 
-		final BlockState thorns = TFBlocks.BROWN_THORNS.value().defaultBlockState();
+		final BlockState thorns = TFBlocks.BROWN_THORNS.get().defaultBlockState();
 
-		while (!this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation).is(TFBlocks.DEADROCK.value()) && this.getWorldY(y) > 90) {
+		while (!this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation).is(TFBlocks.DEADROCK) && this.getWorldY(y) > 90) {
 			this.setBlockStateRotated(world, thorns, x, y, z, rotation, sbb);
 			// twist vines around the center block
 			switch (twist) {
@@ -126,7 +126,7 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 			for (int i = 0; i < dist; i++) {
 				// go out that far
 				final Rotation add = dir.getRotated(rotation).getRotated(this.getRotation());
-				BlockState thorns = TFBlocks.GREEN_THORNS.value().defaultBlockState()
+				BlockState thorns = TFBlocks.GREEN_THORNS.get().defaultBlockState()
 						.setValue(
 								RotatedPillarBlock.AXIS,
 								add == Rotation.NONE || add == Rotation.CLOCKWISE_180 ? Direction.Axis.X : Direction.Axis.Z

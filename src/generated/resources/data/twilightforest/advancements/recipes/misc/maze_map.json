@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:maze_map"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -6,7 +6,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.quest_ram.desc",
       "with": [
@@ -16,11 +15,9 @@
       ]
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:quest_ram_trophy"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.quest_ram"
     }

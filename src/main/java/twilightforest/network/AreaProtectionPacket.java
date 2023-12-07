@@ -64,7 +64,7 @@ public class AreaProtectionPacket {
 						double y = message.pos.getY() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
 						double z = message.pos.getZ() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
 
-						level.addParticle(TFParticleType.PROTECTION.value(), x, y, z, vx, vy, vz);
+						level.addParticle(TFParticleType.PROTECTION.get(), x, y, z, vx, vy, vz);
 					}
 				}
 

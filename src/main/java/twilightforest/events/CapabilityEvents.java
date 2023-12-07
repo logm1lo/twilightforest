@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -15,11 +16,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.fan.FeatherFanFallCapability;
-import twilightforest.capabilities.shield.IShieldCapability;
-import twilightforest.capabilities.thrown.YetiThrowCapability;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.network.UpdateFeatherFanFallPacket;
 import twilightforest.network.UpdateShieldPacket;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -28,10 +27,20 @@ public class CapabilityEvents {
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 
 	@SubscribeEvent
-	public static void updateCaps(LivingEvent.LivingTickEvent event) {
-		event.getEntity().getCapability(CapabilityList.SHIELDS).ifPresent(IShieldCapability::update);
-		event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
-		event.getEntity().getCapability(CapabilityList.YETI_THROWN).ifPresent(YetiThrowCapability::update);
+	public static void updateShields(LivingEvent.LivingTickEvent event) {
+		event.getEntity().getData(TFDataAttachments.FORTIFICATION_SHIELDS).tick(event.getEntity());
+	}
+
+	@SubscribeEvent
+	public static void updatePlayerCaps(TickEvent.PlayerTickEvent event) {
+		if (event.player.getData(TFDataAttachments.FEATHER_FAN)) {
+			event.player.resetFallDistance();
+
+			if (event.player.onGround() || event.player.isSwimming() || event.player.isInWater()) {
+				event.player.setData(TFDataAttachments.FEATHER_FAN, false);
+			}
+		}
+		event.player.getData(TFDataAttachments.YETI_THROWING).tick(event.player);
 	}
 
 	@SubscribeEvent
@@ -40,21 +49,17 @@ public class CapabilityEvents {
 		// shields
 		if (event.getEntity() instanceof Player player && player.getAbilities().invulnerable) return;
 		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
-			living.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
-				if (cap.shieldsLeft() > 0) {
-					cap.breakShield();
-					event.setCanceled(true);
-				}
-			});
+			var attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
+			if (attachment.shieldsLeft() > 0) {
+				attachment.breakShield(living);
+				event.setCanceled(true);
+			}
 		}
 	}
 
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
-		if (event.isEndConquered()) {
-			updateCapabilities(serverPlayer, serverPlayer);
-		}
 
 		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && serverPlayer.getRespawnPosition() == null) {
 			CompoundTag tagCompound = serverPlayer.getPersistentData();
@@ -90,11 +95,10 @@ public class CapabilityEvents {
 
 	// send any capabilities that are needed client-side
 	private static void updateCapabilities(ServerPlayer clientTarget, Entity shielded) {
-		shielded.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
-			if (cap.shieldsLeft() > 0) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> clientTarget), new UpdateShieldPacket(shielded, cap));
-			}
-		});
+		var attachment = shielded.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
+		if (attachment.shieldsLeft() > 0) {
+			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> clientTarget), new UpdateShieldPacket(shielded.getId(), attachment));
+		}
 	}
 
 	// Teleport first-time players to Twilight Forest

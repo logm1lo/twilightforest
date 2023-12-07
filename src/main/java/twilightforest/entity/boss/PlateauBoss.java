@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
@@ -67,7 +67,7 @@ public class PlateauBoss extends Monster implements EnforcedHomePoint {
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.FINAL_BOSS_BOSS_SPAWNER.value().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -90,10 +90,10 @@ public class PlateauBoss extends Monster implements EnforcedHomePoint {
 			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.FINAL_CASTLE, true);
 			for(ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
+				TFAdvancements.HURT_BOSS.get().trigger(player, this);
 			}
 		}
-		TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.SORTING_CHEST.value().defaultBlockState(), EntityUtil.bossChestLocation(this));
+		TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.SORTING_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 	}
 
 	@Override

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/mangrove_trapped_chest"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

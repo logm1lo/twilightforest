@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:tf_moss_to_vanilla"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

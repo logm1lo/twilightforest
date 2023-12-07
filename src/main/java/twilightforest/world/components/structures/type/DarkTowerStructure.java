@@ -40,29 +40,29 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.DARK_TOWER.value();
+        return TFStructureTypes.DARK_TOWER.get();
     }
 
     public static DarkTowerStructure buildDarkTowerConfig(BootstapContext<Structure> context) {
         return new DarkTowerStructure(
                 ControlledSpawningConfig.create(List.of(List.of(
-                        new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GOLEM.value(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GOLEM.get(), 10, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 5, 1, 1),
                         new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 2, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1),
-                        new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GHASTLING.value(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_BROODLING.value(), 10, 4, 4),
-                        new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.value(), 10, 1, 1)
+                        new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GHASTLING.get(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_BROODLING.get(), 10, 4, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), 10, 1, 1)
                 ), List.of(
                         // roof ghasts
-                        new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GHASTGUARD.value(), 10, 1, 2)
+                        new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GHASTGUARD.get(), 10, 1, 2)
                 )), List.of(), List.of(
                         // aquarium squids (only in aquariums between y = 35 and y = 64. :/
                         new MobSpawnSettings.SpawnerData(EntityType.SQUID, 10, 4, 4)
                 )),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_knights"))),
-                new HintConfig(HintConfig.book("darktower", 3), TFEntities.KOBOLD.value()),
+                new HintConfig(HintConfig.book("darktower", 3), TFEntities.KOBOLD.get()),
                 new DecorationConfig(1, false, true, true),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_DARK_TOWER_BIOMES),

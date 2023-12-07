@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -14,8 +15,15 @@ import twilightforest.init.TFBlockEntities;
 
 public class AntibuilderBlock extends BaseEntityBlock {
 
-	public AntibuilderBlock(Properties props) {
-		super(props);
+	public static final MapCodec<AntibuilderBlock> CODEC = simpleCodec(AntibuilderBlock::new);
+
+	public AntibuilderBlock(Properties properties) {
+		super(properties);
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -32,6 +40,6 @@ public class AntibuilderBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.ANTIBUILDER.value(), AntibuilderBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.ANTIBUILDER.get(), AntibuilderBlockEntity::tick);
 	}
 }

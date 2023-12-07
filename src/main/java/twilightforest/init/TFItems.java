@@ -110,7 +110,7 @@ public class TFItems {
 	public static final DeferredItem<Item> TOWER_KEY = ITEMS.register("tower_key", () -> new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> BORER_ESSENCE = ITEMS.register("borer_essence", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> CARMINITE = ITEMS.register("carminite", () -> new Item(new Item.Properties()));
-	public static final DeferredItem<Item> EXPERIMENT_115 = ITEMS.register("experiment_115", () -> new Experiment115Item(TFBlocks.EXPERIMENT_115.value(), new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).build())));
+	public static final DeferredItem<Item> EXPERIMENT_115 = ITEMS.register("experiment_115", () -> new Experiment115Item(TFBlocks.EXPERIMENT_115.get(), new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).build())));
 	public static final DeferredItem<Item> ARMOR_SHARD = ITEMS.register("armor_shard", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> ARMOR_SHARD_CLUSTER = ITEMS.register("armor_shard_cluster", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> KNIGHTMETAL_INGOT = ITEMS.register("knightmetal_ingot", () -> new Item(new Item.Properties()));
@@ -152,9 +152,9 @@ public class TFItems {
 	public static final DeferredItem<Item> MOON_DIAL = ITEMS.register("moon_dial", () -> new MoonDialItem(new Item.Properties()));
 	public static final DeferredItem<Item> POCKET_WATCH = ITEMS.register("pocket_watch", () -> new PocketWatchItem(new Item.Properties()));
 
-	public static final DeferredItem<Item> HUGE_LILY_PAD = ITEMS.register("huge_lily_pad", () -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.value(), new Item.Properties()));
-	public static final DeferredItem<Item> HUGE_WATER_LILY = ITEMS.register("huge_water_lily", () -> new HugeWaterLilyItem(TFBlocks.HUGE_WATER_LILY.value(), new Item.Properties()));
-	public static final DeferredItem<Item> FALLEN_LEAVES = ITEMS.register("fallen_leaves", () -> new BlockItem(TFBlocks.FALLEN_LEAVES.value(), new Item.Properties()) {
+	public static final DeferredItem<Item> HUGE_LILY_PAD = ITEMS.register("huge_lily_pad", () -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), new Item.Properties()));
+	public static final DeferredItem<Item> HUGE_WATER_LILY = ITEMS.register("huge_water_lily", () -> new PlaceOnWaterBlockItem(TFBlocks.HUGE_WATER_LILY.get(), new Item.Properties()));
+	public static final DeferredItem<Item> FALLEN_LEAVES = ITEMS.register("fallen_leaves", () -> new BlockItem(TFBlocks.FALLEN_LEAVES.get(), new Item.Properties()) {
 		@Override
 		public InteractionResult useOn(UseOnContext context) {
 			return context.getLevel().getBlockState(context.getClickedPos()).is(this.getBlock()) ? super.useOn(context) : InteractionResult.PASS;
@@ -169,26 +169,22 @@ public class TFItems {
 		}
 	});
 
-	public static final DeferredItem<Item> FIREFLY = ITEMS.register("firefly", () -> new WearableItem(TFBlocks.FIREFLY.value(), new Item.Properties()));
-	public static final DeferredItem<Item> CICADA = ITEMS.register("cicada", () -> new WearableItem(TFBlocks.CICADA.value(), new Item.Properties()));
-	public static final DeferredItem<Item> MOONWORM = ITEMS.register("moonworm", () -> new WearableItem(TFBlocks.MOONWORM.value(), new Item.Properties()));
+	public static final DeferredItem<Item> ZOMBIE_SKULL_CANDLE = ITEMS.register("zombie_skull_candle", () -> new SkullCandleItem(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final DeferredItem<Item> SKELETON_SKULL_CANDLE = ITEMS.register("skeleton_skull_candle", () -> new SkullCandleItem(TFBlocks.SKELETON_SKULL_CANDLE.get(), TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final DeferredItem<Item> WITHER_SKELETON_SKULL_CANDLE = ITEMS.register("wither_skeleton_skull_candle", () -> new SkullCandleItem(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final DeferredItem<Item> CREEPER_SKULL_CANDLE = ITEMS.register("creeper_skull_candle", () -> new SkullCandleItem(TFBlocks.CREEPER_SKULL_CANDLE.get(), TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final DeferredItem<Item> PLAYER_SKULL_CANDLE = ITEMS.register("player_skull_candle", () -> new SkullCandleItem(TFBlocks.PLAYER_SKULL_CANDLE.get(), TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final DeferredItem<Item> PIGLIN_SKULL_CANDLE = ITEMS.register("piglin_skull_candle", () -> new SkullCandleItem(TFBlocks.PIGLIN_SKULL_CANDLE.get(), TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
 
-	public static final DeferredItem<Item> ZOMBIE_SKULL_CANDLE = ITEMS.register("zombie_skull_candle", () -> new SkullCandleItem(TFBlocks.ZOMBIE_SKULL_CANDLE.value(), TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.value(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final DeferredItem<Item> SKELETON_SKULL_CANDLE = ITEMS.register("skeleton_skull_candle", () -> new SkullCandleItem(TFBlocks.SKELETON_SKULL_CANDLE.value(), TFBlocks.SKELETON_WALL_SKULL_CANDLE.value(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final DeferredItem<Item> WITHER_SKELETON_SKULL_CANDLE = ITEMS.register("wither_skeleton_skull_candle", () -> new SkullCandleItem(TFBlocks.WITHER_SKELE_SKULL_CANDLE.value(), TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.value(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final DeferredItem<Item> CREEPER_SKULL_CANDLE = ITEMS.register("creeper_skull_candle", () -> new SkullCandleItem(TFBlocks.CREEPER_SKULL_CANDLE.value(), TFBlocks.CREEPER_WALL_SKULL_CANDLE.value(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final DeferredItem<Item> PLAYER_SKULL_CANDLE = ITEMS.register("player_skull_candle", () -> new SkullCandleItem(TFBlocks.PLAYER_SKULL_CANDLE.value(), TFBlocks.PLAYER_WALL_SKULL_CANDLE.value(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final DeferredItem<Item> PIGLIN_SKULL_CANDLE = ITEMS.register("piglin_skull_candle", () -> new SkullCandleItem(TFBlocks.PIGLIN_SKULL_CANDLE.value(), TFBlocks.PIGLIN_WALL_SKULL_CANDLE.value(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-
-	public static final DeferredItem<Item> NAGA_TROPHY = ITEMS.register("naga_trophy", () -> new TrophyItem(TFBlocks.NAGA_TROPHY.value(), TFBlocks.NAGA_WALL_TROPHY.value(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final DeferredItem<Item> LICH_TROPHY = ITEMS.register("lich_trophy", () -> new TrophyItem(TFBlocks.LICH_TROPHY.value(), TFBlocks.LICH_WALL_TROPHY.value(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final DeferredItem<Item> MINOSHROOM_TROPHY = ITEMS.register("minoshroom_trophy", () -> new TrophyItem(TFBlocks.MINOSHROOM_TROPHY.value(), TFBlocks.MINOSHROOM_WALL_TROPHY.value(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final DeferredItem<Item> HYDRA_TROPHY = ITEMS.register("hydra_trophy", () -> new TrophyItem(TFBlocks.HYDRA_TROPHY.value(), TFBlocks.HYDRA_WALL_TROPHY.value(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final DeferredItem<Item> KNIGHT_PHANTOM_TROPHY = ITEMS.register("knight_phantom_trophy", () -> new TrophyItem(TFBlocks.KNIGHT_PHANTOM_TROPHY.value(), TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.value(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final DeferredItem<Item> UR_GHAST_TROPHY = ITEMS.register("ur_ghast_trophy", () -> new TrophyItem(TFBlocks.UR_GHAST_TROPHY.value(), TFBlocks.UR_GHAST_WALL_TROPHY.value(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final DeferredItem<Item> ALPHA_YETI_TROPHY = ITEMS.register("alpha_yeti_trophy", () -> new TrophyItem(TFBlocks.ALPHA_YETI_TROPHY.value(), TFBlocks.ALPHA_YETI_WALL_TROPHY.value(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final DeferredItem<Item> SNOW_QUEEN_TROPHY = ITEMS.register("snow_queen_trophy", () -> new TrophyItem(TFBlocks.SNOW_QUEEN_TROPHY.value(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.value(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final DeferredItem<Item> QUEST_RAM_TROPHY = ITEMS.register("quest_ram_trophy", () -> new TrophyItem(TFBlocks.QUEST_RAM_TROPHY.value(), TFBlocks.QUEST_RAM_WALL_TROPHY.value(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
+	public static final DeferredItem<Item> NAGA_TROPHY = ITEMS.register("naga_trophy", () -> new TrophyItem(TFBlocks.NAGA_TROPHY.get(), TFBlocks.NAGA_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
+	public static final DeferredItem<Item> LICH_TROPHY = ITEMS.register("lich_trophy", () -> new TrophyItem(TFBlocks.LICH_TROPHY.get(), TFBlocks.LICH_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
+	public static final DeferredItem<Item> MINOSHROOM_TROPHY = ITEMS.register("minoshroom_trophy", () -> new TrophyItem(TFBlocks.MINOSHROOM_TROPHY.get(), TFBlocks.MINOSHROOM_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
+	public static final DeferredItem<Item> HYDRA_TROPHY = ITEMS.register("hydra_trophy", () -> new TrophyItem(TFBlocks.HYDRA_TROPHY.get(), TFBlocks.HYDRA_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
+	public static final DeferredItem<Item> KNIGHT_PHANTOM_TROPHY = ITEMS.register("knight_phantom_trophy", () -> new TrophyItem(TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
+	public static final DeferredItem<Item> UR_GHAST_TROPHY = ITEMS.register("ur_ghast_trophy", () -> new TrophyItem(TFBlocks.UR_GHAST_TROPHY.get(), TFBlocks.UR_GHAST_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
+	public static final DeferredItem<Item> ALPHA_YETI_TROPHY = ITEMS.register("alpha_yeti_trophy", () -> new TrophyItem(TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
+	public static final DeferredItem<Item> SNOW_QUEEN_TROPHY = ITEMS.register("snow_queen_trophy", () -> new TrophyItem(TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
+	public static final DeferredItem<Item> QUEST_RAM_TROPHY = ITEMS.register("quest_ram_trophy", () -> new TrophyItem(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
 
 	public static final DeferredItem<HollowLogItem> HOLLOW_TWILIGHT_OAK_LOG = ITEMS.register("hollow_twilight_oak_log", () -> new HollowLogItem(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, new Item.Properties()));
 	public static final DeferredItem<HollowLogItem> HOLLOW_CANOPY_LOG = ITEMS.register("hollow_canopy_log", () -> new HollowLogItem(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, new Item.Properties()));
@@ -210,22 +206,22 @@ public class TFItems {
 	public static final DeferredItem<HollowLogItem> HOLLOW_VANGROVE_LOG = ITEMS.register("hollow_vangrove_log", () -> new HollowLogItem(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL, TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE, new Item.Properties()));
 	public static final DeferredItem<HollowLogItem> HOLLOW_CHERRY_LOG = ITEMS.register("hollow_cherry_log", () -> new HollowLogItem(TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CHERRY_LOG_VERTICAL, TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE, new Item.Properties()));
 
-	public static final DeferredItem<Item> TWILIGHT_OAK_SIGN = ITEMS.register("twilight_oak_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TWILIGHT_OAK_SIGN.value(), TFBlocks.TWILIGHT_WALL_SIGN.value()));
-	public static final DeferredItem<Item> TWILIGHT_OAK_HANGING_SIGN = ITEMS.register("twilight_oak_hanging_sign", () -> new HangingSignItem(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.value(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.value(), new Item.Properties().stacksTo(16)));
-	public static final DeferredItem<Item> CANOPY_SIGN = ITEMS.register("canopy_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.CANOPY_SIGN.value(), TFBlocks.CANOPY_WALL_SIGN.value()));
-	public static final DeferredItem<Item> CANOPY_HANGING_SIGN = ITEMS.register("canopy_hanging_sign", () -> new HangingSignItem(TFBlocks.CANOPY_HANGING_SIGN.value(), TFBlocks.CANOPY_WALL_HANGING_SIGN.value(), new Item.Properties().stacksTo(16)));
-	public static final DeferredItem<Item> MANGROVE_SIGN = ITEMS.register("mangrove_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.MANGROVE_SIGN.value(), TFBlocks.MANGROVE_WALL_SIGN.value()));
-	public static final DeferredItem<Item> MANGROVE_HANGING_SIGN = ITEMS.register("mangrove_hanging_sign", () -> new HangingSignItem(TFBlocks.MANGROVE_HANGING_SIGN.value(), TFBlocks.MANGROVE_WALL_HANGING_SIGN.value(), new Item.Properties().stacksTo(16)));
-	public static final DeferredItem<Item> DARK_SIGN = ITEMS.register("dark_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.DARK_SIGN.value(), TFBlocks.DARK_WALL_SIGN.value()));
-	public static final DeferredItem<Item> DARK_HANGING_SIGN = ITEMS.register("dark_hanging_sign", () -> new HangingSignItem(TFBlocks.DARK_HANGING_SIGN.value(), TFBlocks.DARK_WALL_HANGING_SIGN.value(), new Item.Properties().stacksTo(16)));
-	public static final DeferredItem<Item> TIME_SIGN = ITEMS.register("time_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TIME_SIGN.value(), TFBlocks.TIME_WALL_SIGN.value()));
-	public static final DeferredItem<Item> TIME_HANGING_SIGN = ITEMS.register("time_hanging_sign", () -> new HangingSignItem(TFBlocks.TIME_HANGING_SIGN.value(), TFBlocks.TIME_WALL_HANGING_SIGN.value(), new Item.Properties().stacksTo(16)));
-	public static final DeferredItem<Item> TRANSFORMATION_SIGN = ITEMS.register("transformation_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TRANSFORMATION_SIGN.value(), TFBlocks.TRANSFORMATION_WALL_SIGN.value()));
-	public static final DeferredItem<Item> TRANSFORMATION_HANGING_SIGN = ITEMS.register("transformation_hanging_sign", () -> new HangingSignItem(TFBlocks.TRANSFORMATION_HANGING_SIGN.value(), TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.value(), new Item.Properties().stacksTo(16)));
-	public static final DeferredItem<Item> MINING_SIGN = ITEMS.register("mining_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.MINING_SIGN.value(), TFBlocks.MINING_WALL_SIGN.value()));
-	public static final DeferredItem<Item> MINING_HANGING_SIGN = ITEMS.register("mining_hanging_sign", () -> new HangingSignItem(TFBlocks.MINING_HANGING_SIGN.value(), TFBlocks.MINING_WALL_HANGING_SIGN.value(), new Item.Properties().stacksTo(16)));
-	public static final DeferredItem<Item> SORTING_SIGN = ITEMS.register("sorting_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.SORTING_SIGN.value(), TFBlocks.SORTING_WALL_SIGN.value()));
-	public static final DeferredItem<Item> SORTING_HANGING_SIGN = ITEMS.register("sorting_hanging_sign", () -> new HangingSignItem(TFBlocks.SORTING_HANGING_SIGN.value(), TFBlocks.SORTING_WALL_HANGING_SIGN.value(), new Item.Properties().stacksTo(16)));
+	public static final DeferredItem<Item> TWILIGHT_OAK_SIGN = ITEMS.register("twilight_oak_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get()));
+	public static final DeferredItem<Item> TWILIGHT_OAK_HANGING_SIGN = ITEMS.register("twilight_oak_hanging_sign", () -> new HangingSignItem(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+	public static final DeferredItem<Item> CANOPY_SIGN = ITEMS.register("canopy_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.CANOPY_SIGN.get(), TFBlocks.CANOPY_WALL_SIGN.get()));
+	public static final DeferredItem<Item> CANOPY_HANGING_SIGN = ITEMS.register("canopy_hanging_sign", () -> new HangingSignItem(TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+	public static final DeferredItem<Item> MANGROVE_SIGN = ITEMS.register("mangrove_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.MANGROVE_SIGN.get(), TFBlocks.MANGROVE_WALL_SIGN.get()));
+	public static final DeferredItem<Item> MANGROVE_HANGING_SIGN = ITEMS.register("mangrove_hanging_sign", () -> new HangingSignItem(TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+	public static final DeferredItem<Item> DARK_SIGN = ITEMS.register("dark_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.DARK_SIGN.get(), TFBlocks.DARK_WALL_SIGN.get()));
+	public static final DeferredItem<Item> DARK_HANGING_SIGN = ITEMS.register("dark_hanging_sign", () -> new HangingSignItem(TFBlocks.DARK_HANGING_SIGN.get(), TFBlocks.DARK_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+	public static final DeferredItem<Item> TIME_SIGN = ITEMS.register("time_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TIME_SIGN.get(), TFBlocks.TIME_WALL_SIGN.get()));
+	public static final DeferredItem<Item> TIME_HANGING_SIGN = ITEMS.register("time_hanging_sign", () -> new HangingSignItem(TFBlocks.TIME_HANGING_SIGN.get(), TFBlocks.TIME_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+	public static final DeferredItem<Item> TRANSFORMATION_SIGN = ITEMS.register("transformation_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get()));
+	public static final DeferredItem<Item> TRANSFORMATION_HANGING_SIGN = ITEMS.register("transformation_hanging_sign", () -> new HangingSignItem(TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+	public static final DeferredItem<Item> MINING_SIGN = ITEMS.register("mining_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get()));
+	public static final DeferredItem<Item> MINING_HANGING_SIGN = ITEMS.register("mining_hanging_sign", () -> new HangingSignItem(TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.MINING_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+	public static final DeferredItem<Item> SORTING_SIGN = ITEMS.register("sorting_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get()));
+	public static final DeferredItem<Item> SORTING_HANGING_SIGN = ITEMS.register("sorting_hanging_sign", () -> new HangingSignItem(TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
 
 	public static final DeferredItem<Item> TWILIGHT_OAK_BOAT = ITEMS.register("twilight_oak_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.TWILIGHT_OAK, new Item.Properties().stacksTo(1)));
 	public static final DeferredItem<Item> TWILIGHT_OAK_CHEST_BOAT = ITEMS.register("twilight_oak_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.TWILIGHT_OAK, new Item.Properties().stacksTo(1)));
@@ -266,13 +262,13 @@ public class TFItems {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void addItemModelProperties() {
-		ItemProperties.register(CUBE_OF_ANNIHILATION.value(), TwilightForestMod.prefix("thrown"), (stack, world, entity, idk) ->
+		ItemProperties.register(CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity, idk) ->
 				CubeOfAnnihilationItem.getThrownUuid(stack) != null ? 1 : 0);
 
-		ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.value(), new ResourceLocation("blocking"), (stack, world, entity, idk) ->
+		ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), new ResourceLocation("blocking"), (stack, world, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(MOON_DIAL.value(), new ResourceLocation("phase"), new ClampedItemPropertyFunction() {
+		ItemProperties.register(MOON_DIAL.get(), new ResourceLocation("phase"), new ClampedItemPropertyFunction() {
 			@Override
 			public float unclampedCall(ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entityBase, int idk) {
 				boolean flag = entityBase != null;
@@ -304,7 +300,7 @@ public class TFItems {
 			}
 		});
 
-		ItemProperties.register(MOONWORM_QUEEN.value(), TwilightForestMod.prefix("alt"), (stack, world, entity, idk) -> {
+		ItemProperties.register(MOONWORM_QUEEN.get(), TwilightForestMod.prefix("alt"), (stack, world, entity, idk) -> {
 			if (entity != null && entity.getUseItem() == stack) {
 				int useTime = stack.getUseDuration() - entity.getUseItemRemainingTicks();
 				if (useTime >= MoonwormQueenItem.FIRING_TIME && (useTime >>> 1) % 2 == 0) {
@@ -314,43 +310,43 @@ public class TFItems {
 			return 0;
 		});
 
-		ItemProperties.register(TFItems.ENDER_BOW.value(), new ResourceLocation("pull"), (stack, world, entity, idk) -> {
+		ItemProperties.register(TFItems.ENDER_BOW.get(), new ResourceLocation("pull"), (stack, world, entity, idk) -> {
 			if (entity == null) return 0.0F;
 			else
 				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
 		});
 
-		ItemProperties.register(TFItems.ENDER_BOW.value(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
+		ItemProperties.register(TFItems.ENDER_BOW.get(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(TFItems.ICE_BOW.value(), new ResourceLocation("pull"), (stack, world, entity, idk) -> {
+		ItemProperties.register(TFItems.ICE_BOW.get(), new ResourceLocation("pull"), (stack, world, entity, idk) -> {
 			if (entity == null) return 0.0F;
 			else
 				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
 		});
 
-		ItemProperties.register(TFItems.ICE_BOW.value(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
+		ItemProperties.register(TFItems.ICE_BOW.get(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(TFItems.SEEKER_BOW.value(), new ResourceLocation("pull"), (stack, world, entity, idk) -> {
+		ItemProperties.register(TFItems.SEEKER_BOW.get(), new ResourceLocation("pull"), (stack, world, entity, idk) -> {
 			if (entity == null) return 0.0F;
 			else
 				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
 		});
 
-		ItemProperties.register(TFItems.SEEKER_BOW.value(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
+		ItemProperties.register(TFItems.SEEKER_BOW.get(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(TFItems.TRIPLE_BOW.value(), new ResourceLocation("pull"), (stack, world, entity, idk) -> {
+		ItemProperties.register(TFItems.TRIPLE_BOW.get(), new ResourceLocation("pull"), (stack, world, entity, idk) -> {
 			if (entity == null) return 0.0F;
 			else
 				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
 		});
 
-		ItemProperties.register(TFItems.TRIPLE_BOW.value(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
+		ItemProperties.register(TFItems.TRIPLE_BOW.get(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(ORE_MAGNET.value(), new ResourceLocation("pull"), (stack, world, entity, idk) -> {
+		ItemProperties.register(ORE_MAGNET.get(), new ResourceLocation("pull"), (stack, world, entity, idk) -> {
 			if (entity == null) return 0.0F;
 			else {
 				ItemStack itemstack = entity.getUseItem();
@@ -358,25 +354,25 @@ public class TFItems {
 			}
 		});
 
-		ItemProperties.register(ORE_MAGNET.value(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
+		ItemProperties.register(ORE_MAGNET.get(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(BLOCK_AND_CHAIN.value(), TwilightForestMod.prefix("thrown"), (stack, world, entity, idk) ->
+		ItemProperties.register(BLOCK_AND_CHAIN.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity, idk) ->
 				ChainBlockItem.getThrownUuid(stack) != null ? 1 : 0);
 
-		ItemProperties.register(EXPERIMENT_115.value(), Experiment115Item.THINK, (stack, world, entity, idk) ->
+		ItemProperties.register(EXPERIMENT_115.get(), Experiment115Item.THINK, (stack, world, entity, idk) ->
 				stack.getTag() != null && stack.getTag().contains("think") ? 1 : 0);
 
-		ItemProperties.register(EXPERIMENT_115.value(), Experiment115Item.FULL, (stack, world, entity, idk) ->
+		ItemProperties.register(EXPERIMENT_115.get(), Experiment115Item.FULL, (stack, world, entity, idk) ->
 				stack.getTag() != null && stack.getTag().contains("full") ? 1 : 0);
 
-		ItemProperties.register(TFItems.BRITTLE_FLASK.value(), TwilightForestMod.prefix("breakage"), (stack, world, entity, i) ->
+		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("breakage"), (stack, world, entity, i) ->
 				stack.getOrCreateTag().getInt("Breakage"));
 
-		ItemProperties.register(TFItems.BRITTLE_FLASK.value(), TwilightForestMod.prefix("potion_level"), (stack, world, entity, i) ->
+		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, world, entity, i) ->
 				stack.getOrCreateTag().getInt("Uses"));
 
-		ItemProperties.register(TFItems.GREATER_FLASK.value(), TwilightForestMod.prefix("potion_level"), (stack, world, entity, i) ->
+		ItemProperties.register(TFItems.GREATER_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, world, entity, i) ->
 				stack.getOrCreateTag().getInt("Uses"));
 	}
 }

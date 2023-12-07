@@ -50,7 +50,7 @@ public class BiomeForcedLandmarkPlacement extends StructurePlacement {
 
     @Override
     public StructurePlacementType<?> type() {
-        return TFStructurePlacementTypes.FORCED_LANDMARK_PLACEMENT_TYPE.value();
+        return TFStructurePlacementTypes.FORCED_LANDMARK_PLACEMENT_TYPE.get();
     }
 
     public TFLandmark getLandmark() {

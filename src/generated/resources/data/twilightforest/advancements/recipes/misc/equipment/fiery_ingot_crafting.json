@@ -28,6 +28,5 @@
     "recipes": [
       "twilightforest:equipment/fiery_ingot_crafting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

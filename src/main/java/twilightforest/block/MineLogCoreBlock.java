@@ -11,8 +11,8 @@ import twilightforest.util.WorldUtil;
 
 public class MineLogCoreBlock extends SpecialMagicLogBlock {
 
-	public MineLogCoreBlock(Properties props) {
-		super(props);
+	public MineLogCoreBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class MineLogCoreBlock extends SpecialMagicLogBlock {
 		int moved = OreMagnetItem.doMagnet(level, pos, dPos, true);
 
 		if (moved > 0) {
-			level.playSound(null, pos, TFSounds.MAGNET_GRAB.value(), SoundSource.BLOCKS, 0.1F, 1.0F);
+			level.playSound(null, pos, TFSounds.MAGNET_GRAB.get(), SoundSource.BLOCKS, 0.1F, 1.0F);
 		}
 	}
 }

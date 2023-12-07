@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/stone/bold_stone_pillar"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

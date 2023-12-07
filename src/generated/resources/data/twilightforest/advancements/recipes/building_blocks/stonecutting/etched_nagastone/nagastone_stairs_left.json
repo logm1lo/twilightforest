@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/etched_nagastone/nagastone_stairs_left"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

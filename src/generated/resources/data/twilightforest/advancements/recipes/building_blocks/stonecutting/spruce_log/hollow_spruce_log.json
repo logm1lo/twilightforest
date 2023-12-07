@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/spruce_log/hollow_spruce_log"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

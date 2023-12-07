@@ -35,8 +35,7 @@ import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
 import twilightforest.init.*;
@@ -60,7 +59,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	private static final int SECONDARY_MORTAR_CHANCE = 16;
 
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Hydra.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
-	private static final EntityDataAccessor<List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST.value());
+	private static final EntityDataAccessor<List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST.get());
 
 	private final HydraPart[] partArray;
 
@@ -142,7 +141,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			this.level().setBlockAndUpdate(this.blockPosition().offset(0, 1, 0), TFBlocks.HYDRA_BOSS_SPAWNER.value().defaultBlockState());
+			this.level().setBlockAndUpdate(this.blockPosition().offset(0, 1, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
 			this.discard();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -739,17 +738,17 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HYDRA_GROWL.value();
+		return TFSounds.HYDRA_GROWL.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HYDRA_HURT.value();
+		return TFSounds.HYDRA_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HYDRA_DEATH.value();
+		return TFSounds.HYDRA_DEATH.get();
 	}
 
 	@Override
@@ -765,10 +764,10 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.HYDRA_LAIR, true);
 			for (ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
+				TFAdvancements.HURT_BOSS.get().trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.value().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 

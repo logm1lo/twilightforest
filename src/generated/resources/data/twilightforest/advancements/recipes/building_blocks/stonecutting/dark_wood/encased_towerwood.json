@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/dark_wood/encased_towerwood"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

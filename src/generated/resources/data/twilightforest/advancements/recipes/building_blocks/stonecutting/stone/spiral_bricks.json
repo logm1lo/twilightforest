@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/stone/spiral_bricks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

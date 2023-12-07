@@ -38,14 +38,14 @@ public class Enforcements {
 
 	public static final DeferredHolder<Enforcement, Enforcement> FROST = ENFORCEMENTS.register("frost", () -> new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 60 == 0) {
-			player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.value(), 100, (int) restriction.multiplier(), false, true));
+			player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 100, (int) restriction.multiplier(), false, true));
 		}
 	}));
 
 	public static final DeferredHolder<Enforcement, Enforcement> ACID_RAIN = ENFORCEMENTS.register("acid_rain", () -> new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 5 == 0) {
 			if (player.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.ACID_RAIN), restriction.multiplier())) {
-				level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
+				level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 			}
 		}
 	}));

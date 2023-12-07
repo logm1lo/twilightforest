@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -15,12 +16,20 @@ import twilightforest.block.entity.RedThreadBlockEntity;
 import twilightforest.init.TFBlocks;
 
 public class RedThreadBlock extends MultifaceBlock implements EntityBlock {
+
+	public static final MapCodec<RedThreadBlock> CODEC = simpleCodec(RedThreadBlock::new);
+
 	public RedThreadBlock(Properties properties) {
 		super(properties);
 	}
 
+	@Override
+	protected MapCodec<? extends MultifaceBlock> codec() {
+		return CODEC;
+	}
+
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext ctx) {
-		return ctx.getItemInHand().is(TFBlocks.RED_THREAD.value().asItem());
+		return ctx.getItemInHand().is(TFBlocks.RED_THREAD.asItem());
 	}
 
 	@Override

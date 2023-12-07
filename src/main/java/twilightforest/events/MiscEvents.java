@@ -74,7 +74,7 @@ public class MiscEvents {
 //			}
 		}
 
-		if (living != null && !living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.value().asItem())) {
+		if (living != null && !living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.asItem())) {
 			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> living), new CreateMovingCicadaSoundPacket(living.getId()));
 		}
 	}
@@ -84,7 +84,7 @@ public class MiscEvents {
 		Player player = event.getEntity();
 		ItemStack stack = player.getItemInHand(event.getHand());
 
-        if (!(stack.getItem() instanceof SpawnEggItem spawnEggItem) || spawnEggItem.getType(stack.getTag()) != TFEntities.DEATH_TOME.value())
+        if (!(stack.getItem() instanceof SpawnEggItem spawnEggItem) || spawnEggItem.getType(stack.getTag()) != TFEntities.DEATH_TOME.get())
             return;
 
         BlockPos pos = event.getPos();
@@ -96,7 +96,7 @@ public class MiscEvents {
             level.playSound(null, pos, SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1.0F, 1.0F);
 
             if (level instanceof ServerLevel serverLevel) {
-                DeathTome tome = TFEntities.DEATH_TOME.value().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
+                DeathTome tome = TFEntities.DEATH_TOME.get().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
                 if (tome != null) {
                     if (!player.getAbilities().instabuild) stack.shrink(1);
                     serverLevel.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
@@ -111,7 +111,7 @@ public class MiscEvents {
 				event.setCanceled(true);
 			}
 		} else if (state.is(TFBlocks.EMPTY_CANOPY_BOOKSHELF)) {
-			BlockState newState = TFBlocks.DEATH_TOME_SPAWNER.value().defaultBlockState().setValue(TomeSpawnerBlock.SPAWNER, true).setValue(TomeSpawnerBlock.BOOK_STAGES, 1);
+			BlockState newState = TFBlocks.DEATH_TOME_SPAWNER.get().defaultBlockState().setValue(TomeSpawnerBlock.SPAWNER, true).setValue(TomeSpawnerBlock.BOOK_STAGES, 1);
 			level.setBlockAndUpdate(pos, newState);
 
 			event.setCanceled(true);

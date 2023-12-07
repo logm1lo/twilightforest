@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:nagastone/cracked_nagastone_stairs_left"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

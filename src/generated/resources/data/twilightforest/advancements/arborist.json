@@ -2379,16 +2379,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.arborist.desc"
     },
     "frame": "challenge",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:twilight_oak_fence"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.arborist"
     }

@@ -41,7 +41,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.PhantomAttackStartGoal;
@@ -115,9 +115,9 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 	@Override
 	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
-		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.value()));
-		this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(TFItems.PHANTOM_CHESTPLATE.value()));
-		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFItems.PHANTOM_HELMET.value()));
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
+		this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(TFItems.PHANTOM_CHESTPLATE.get()));
+		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFItems.PHANTOM_HELMET.get()));
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.getRestrictionPoint() != null && this.getNumber() == 0) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.value().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -200,7 +200,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 		if (this.isChargingAtPlayer()) {
 			// make particles
 			for (int i = 0; i < 4; ++i) {
-				Item particleID = this.getRandom().nextBoolean() ? TFItems.PHANTOM_HELMET.value() : TFItems.KNIGHTMETAL_SWORD.value();
+				Item particleID = this.getRandom().nextBoolean() ? TFItems.PHANTOM_HELMET.get() : TFItems.KNIGHTMETAL_SWORD.get();
 
 				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(particleID)), this.getX() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 0, -0.1, 0);
 				this.level().addParticle(ParticleTypes.SMOKE, this.getX() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 0, 0.1, 0);
@@ -240,18 +240,18 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 				//trigger criteria for killing every phantom in a group
 				if (cause.getEntity() instanceof ServerPlayer player) {
-					TFAdvancements.KILL_ALL_PHANTOMS.trigger(player);
+					TFAdvancements.KILL_ALL_PHANTOMS.get().trigger(player);
 				}
 
 				// mark the stronghold as defeated
 				LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.KNIGHT_STRONGHOLD, true);
 
 				for (ServerPlayer player : this.hurtBy) {
-					TFAdvancements.HURT_BOSS.trigger(player, this);
+					TFAdvancements.HURT_BOSS.get().trigger(player, this);
 				}
 
-				for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, new AABB(treasurePos).inflate(64.0D))) {
-					TFAdvancements.HURT_BOSS.trigger(player, this);
+				for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, new AABB(treasurePos).inflate(32.0D))) {
+					TFAdvancements.HURT_BOSS.get().trigger(player, this);
 				}
 			}
 		}
@@ -388,17 +388,17 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.KNIGHT_PHANTOM_AMBIENT.value();
+		return TFSounds.KNIGHT_PHANTOM_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.KNIGHT_PHANTOM_HURT.value();
+		return TFSounds.KNIGHT_PHANTOM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.KNIGHT_PHANTOM_DEATH.value();
+		return TFSounds.KNIGHT_PHANTOM_DEATH.get();
 	}
 
 	private void switchToFormationByNumber(int formationNumber) {
@@ -431,15 +431,15 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	}
 
 	public boolean isSwordKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_SWORD.value());
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_SWORD);
 	}
 
 	public boolean isAxeKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_AXE.value());
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_AXE);
 	}
 
 	public boolean isPickKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_PICKAXE.value());
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_PICKAXE);
 	}
 
 	public int getNumber() {
@@ -453,9 +453,9 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 		// set weapon per number
 		switch (number % 3) {
-			case 0 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.value()));
-			case 1 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_AXE.value()));
-			case 2 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.value()));
+			case 0 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
+			case 1 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
+			case 2 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
 		}
 	}
 

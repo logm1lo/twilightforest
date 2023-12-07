@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,10 +17,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -55,8 +53,8 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
     private static final VoxelShape EAST_SHAPE = Block.box(8.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
     private static final VoxelShape WEST_SHAPE = Block.box(0.0D, 0.0D, 7.0D, 8.0D, 16.0D, 9.0D);
 
-    public WroughtIronFenceBlock(Properties props) {
-        super(props);
+    public WroughtIronFenceBlock(Properties properties) {
+        super(properties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(POST, PostState.POST).setValue(EAST_FENCE, FenceSide.NONE).setValue(NORTH_FENCE, FenceSide.NONE).setValue(SOUTH_FENCE, FenceSide.NONE).setValue(WEST_FENCE, FenceSide.NONE).setValue(WATERLOGGED, false));
     }
 
@@ -116,14 +114,14 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
     }
 
     private boolean connectsTo(BlockState state, boolean solid) {
-        return state.is(this) || !isExceptionForConnection(state) && solid;
+        return state.is(BlockTags.WALLS) || !isExceptionForConnection(state) && solid || state.getBlock() instanceof IronBarsBlock;
     }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if ((player.getItemInHand(hand).is(Tags.Items.INGOTS_IRON) || player.getItemInHand(hand).is(Tags.Items.NUGGETS_IRON)) && state.getValue(POST) != PostState.CAPPED && level.getBlockState(pos.above()).isAir()) {
             level.setBlock(pos, state.setValue(POST, PostState.CAPPED), 3);
-            level.playSound(null, pos, TFSounds.WROUGHT_IRON_FENCE_EXTENDED.value(), SoundSource.BLOCKS, 0.35F, level.getRandom().nextFloat() * 0.1F + 0.75F);
+            level.playSound(null, pos, TFSounds.WROUGHT_IRON_FENCE_EXTENDED.get(), SoundSource.BLOCKS, 0.35F, level.getRandom().nextFloat() * 0.1F + 0.75F);
             return InteractionResult.SUCCESS;
         }
         return super.use(state, level, pos, player, hand, result);

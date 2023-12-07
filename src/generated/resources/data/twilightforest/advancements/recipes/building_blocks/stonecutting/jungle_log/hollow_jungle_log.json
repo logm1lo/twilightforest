@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/jungle_log/hollow_jungle_log"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

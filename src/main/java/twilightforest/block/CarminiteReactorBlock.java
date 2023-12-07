@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -21,11 +22,17 @@ import java.util.Arrays;
 
 public class CarminiteReactorBlock extends BaseEntityBlock {
 
+	public static final MapCodec<CarminiteReactorBlock> CODEC = simpleCodec(CarminiteReactorBlock::new);
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	public CarminiteReactorBlock(Properties props) {
-		super(props);
+	public CarminiteReactorBlock(Properties properties) {
+		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -67,6 +74,6 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.CARMINITE_REACTOR.value(), CarminiteReactorBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.CARMINITE_REACTOR.get(), CarminiteReactorBlockEntity::tick);
 	}
 }

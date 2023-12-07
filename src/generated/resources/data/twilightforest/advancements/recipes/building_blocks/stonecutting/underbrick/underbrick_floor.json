@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/underbrick/underbrick_floor"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

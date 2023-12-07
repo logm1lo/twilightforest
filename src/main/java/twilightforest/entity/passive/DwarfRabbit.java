@@ -69,7 +69,7 @@ public class DwarfRabbit extends Animal {
 	@Nullable
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
-		DwarfRabbit dwarf = TFEntities.DWARF_RABBIT.value().create(level);
+		DwarfRabbit dwarf = TFEntities.DWARF_RABBIT.get().create(level);
 		DwarfRabbitVariant variant = DwarfRabbitVariant.getRandomVariant(this.getRandom());
 		if (this.getRandom().nextInt(20) != 0) {
 			if (mob instanceof DwarfRabbit rabbit && this.getRandom().nextBoolean()) {
@@ -102,7 +102,7 @@ public class DwarfRabbit extends Animal {
 	}
 
 	public DwarfRabbitVariant getBunnyType() {
-		return DwarfRabbitVariant.getVariant(this.getEntityData().get(TYPE)).orElse(DwarfRabbitVariants.BROWN.value());
+		return DwarfRabbitVariant.getVariant(this.getEntityData().get(TYPE)).orElse(DwarfRabbitVariants.BROWN.get());
 	}
 
 	public void setBunnyType(String type) {
@@ -145,18 +145,18 @@ public class DwarfRabbit extends Animal {
 	@Nullable
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.DWARF_RABBIT_DEATH.value();
+		return TFSounds.DWARF_RABBIT_DEATH.get();
 	}
 
 	@Nullable
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.DWARF_RABBIT_HURT.value();
+		return TFSounds.DWARF_RABBIT_HURT.get();
 	}
 
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.DWARF_RABBIT_AMBIENT.value();
+		return TFSounds.DWARF_RABBIT_AMBIENT.get();
 	}
 }

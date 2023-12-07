@@ -65,22 +65,22 @@ public class SwarmSpider extends Spider {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.SWARM_SPIDER_AMBIENT.value();
+		return TFSounds.SWARM_SPIDER_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.SWARM_SPIDER_HURT.value();
+		return TFSounds.SWARM_SPIDER_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.SWARM_SPIDER_DEATH.value();
+		return TFSounds.SWARM_SPIDER_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.SWARM_SPIDER_STEP.value(), 0.15F, 1.0F);
+		this.playSound(TFSounds.SWARM_SPIDER_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class SwarmSpider extends Spider {
 	}
 
 	protected boolean spawnAnother() {
-		SwarmSpider another = new SwarmSpider(TFEntities.SWARM_SPIDER.value(), this.level(), false);
+		SwarmSpider another = new SwarmSpider(TFEntities.SWARM_SPIDER.get(), this.level(), false);
 
 		double sx = this.getX() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
 		double sy = this.getY();
@@ -173,7 +173,7 @@ public class SwarmSpider extends Spider {
 		livingData = super.finalizeSpawn(accessor, difficulty, reason, livingData, dataTag);
 
 		if (this.getFirstPassenger() != null || accessor.getRandom().nextInt(20) <= difficulty.getDifficulty().getId()) {
-			SkeletonDruid druid = TFEntities.SKELETON_DRUID.value().create(this.level());
+			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level());
 			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 			druid.setBaby(true);
 			EventHooks.onFinalizeSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null, null);

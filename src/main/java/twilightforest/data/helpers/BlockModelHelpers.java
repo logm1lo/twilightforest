@@ -394,7 +394,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		ModelFile stairsInner = this.models().withExistingParent(name + "_inner", TwilightForestMod.prefix("block/util/bisected_inner_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
 		ModelFile stairsOuter = this.models().withExistingParent(name + "_outer", TwilightForestMod.prefix("block/util/bisected_outer_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
 
-		this.stairsBlock(block.value(), stairs, stairsInner, stairsOuter);
+		this.stairsBlock(block.get(), stairs, stairsInner, stairsOuter);
 	}
 
 	protected ResourceLocation key(Block block) {

@@ -11,7 +11,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -36,7 +38,7 @@ import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
-public abstract class AbstractTrophyBlock extends BaseEntityBlock {
+public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equipable {
 
 	private final BossVariant variant;
 	private final int comparatorValue;
@@ -82,7 +84,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.TROPHY.value(), TrophyBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.TROPHY.get(), TrophyBlockEntity::tick);
 	}
 
 	public BossVariant getVariant() {
@@ -107,40 +109,40 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 			float pitch = 0.9F;
 			switch (this.variant) {
 				case NAGA -> {
-					sound = TFSounds.NAGA_RATTLE.value();
+					sound = TFSounds.NAGA_RATTLE.get();
 					volume = 1.25F;
 					pitch = 1.2F;
 				}
 				case LICH -> {
-					sound = TFSounds.LICH_AMBIENT.value();
+					sound = TFSounds.LICH_AMBIENT.get();
 					volume = 0.35F;
 					pitch = 1.1F;
 				}
 				case HYDRA -> {
-					sound = TFSounds.HYDRA_GROWL.value();
+					sound = TFSounds.HYDRA_GROWL.get();
 					pitch = 1.2F;
 				}
 				case UR_GHAST -> {
-					sound = TFSounds.UR_GHAST_AMBIENT.value();
+					sound = TFSounds.UR_GHAST_AMBIENT.get();
 					pitch = 0.6F;
 				}
-				case SNOW_QUEEN -> sound = TFSounds.SNOW_QUEEN_AMBIENT.value();
+				case SNOW_QUEEN -> sound = TFSounds.SNOW_QUEEN_AMBIENT.get();
 				case KNIGHT_PHANTOM -> {
-					sound = TFSounds.KNIGHT_PHANTOM_AMBIENT.value();
+					sound = TFSounds.KNIGHT_PHANTOM_AMBIENT.get();
 					pitch = 1.1F;
 				}
 				case MINOSHROOM -> {
-					sound = TFSounds.MINOSHROOM_AMBIENT.value();
+					sound = TFSounds.MINOSHROOM_AMBIENT.get();
 					volume = 0.75F;
 					pitch = 0.7F;
 				}
 				case ALPHA_YETI -> {
-					sound = world.getRandom().nextInt(50) == 0 ? TFSounds.ALPHA_YETI_ROAR.value() : TFSounds.ALPHA_YETI_GROWL.value();
+					sound = world.getRandom().nextInt(50) == 0 ? TFSounds.ALPHA_YETI_ROAR.get() : TFSounds.ALPHA_YETI_GROWL.get();
 					volume = 0.75F;
 					pitch = 0.75F;
 				}
 				case QUEST_RAM -> {
-					sound = TFSounds.QUEST_RAM_AMBIENT.value();
+					sound = TFSounds.QUEST_RAM_AMBIENT.get();
 					pitch = 0.7F;
 				}
 				default -> {
@@ -187,7 +189,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 						break;
 					case KNIGHT_PHANTOM:
 						for (int brek = 0; brek < 10; brek++) {
-							server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.value())),
+							server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get())),
 									pos.getX() + 0.5 + (rand.nextFloat() - 0.5),
 									pos.getY() + rand.nextFloat() + 0.5,
 									pos.getZ() + 0.5 + (rand.nextFloat() - 0.5),
@@ -215,7 +217,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 						break;
 					case SNOW_QUEEN:
 						for (int b = 0; b < 20; b++) {
-							server.sendParticles(TFParticleType.SNOW_WARNING.value(),
+							server.sendParticles(TFParticleType.SNOW_WARNING.get(),
 									(double) pos.getX() - 1 + (rand.nextDouble() * 3.25),
 									(double) pos.getY() + 5,
 									(double) pos.getZ() - 1 + (rand.nextDouble() * 3.25), 1,
@@ -236,5 +238,10 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 				}
 			}
 		}
+	}
+
+	@Override
+	public EquipmentSlot getEquipmentSlot() {
+		return EquipmentSlot.HEAD;
 	}
 }

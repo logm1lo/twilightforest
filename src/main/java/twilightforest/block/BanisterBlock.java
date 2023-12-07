@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,6 +39,8 @@ import twilightforest.enums.BanisterShape;
 import java.util.List;
 
 public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+
+	public static final MapCodec<BanisterBlock> CODEC = simpleCodec(BanisterBlock::new);
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final EnumProperty<BanisterShape> SHAPE = EnumProperty.create("shape", BanisterShape.class);
 	public static final BooleanProperty EXTENDED = BooleanProperty.create("extended");
@@ -46,6 +49,11 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 		super(properties);
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(SHAPE, BanisterShape.TALL).setValue(EXTENDED, false).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return CODEC;
 	}
 
 	@Override

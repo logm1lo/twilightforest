@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/sorting_chest"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -18,9 +19,16 @@ import twilightforest.util.EntityUtil;
 
 public class StrongholdShieldBlock extends DirectionalBlock {
 
-	public StrongholdShieldBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public static final MapCodec<StrongholdShieldBlock> CODEC = simpleCodec(StrongholdShieldBlock::new);
+
+	public StrongholdShieldBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.DOWN));
+	}
+
+	@Override
+	protected MapCodec<? extends DirectionalBlock> codec() {
+		return CODEC;
 	}
 
 	@Override

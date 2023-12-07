@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:firefly_particle_spawner"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

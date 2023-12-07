@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/decorative_mazestone/mazestone_mosaic"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

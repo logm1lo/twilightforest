@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -26,7 +26,7 @@ public class MangroveSaplingBlock extends SaplingBlock implements SimpleWaterlog
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public MangroveSaplingBlock(AbstractTreeGrower tree, BlockBehaviour.Properties properties) {
+	public MangroveSaplingBlock(TreeGrower tree, BlockBehaviour.Properties properties) {
 		super(tree, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
 	}

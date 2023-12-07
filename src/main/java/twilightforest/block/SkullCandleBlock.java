@@ -1,6 +1,8 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -10,10 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SkullBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -28,6 +27,10 @@ import java.util.List;
 
 public class SkullCandleBlock extends AbstractSkullCandleBlock {
 
+	public static final MapCodec<SkullCandleBlock> CODEC = RecordCodecBuilder.mapCodec(
+			instance -> instance.group(SkullBlock.Type.CODEC.fieldOf("kind").forGetter(AbstractSkullCandleBlock::getType), propertiesCodec())
+					.apply(instance, SkullCandleBlock::new)
+	);
 	public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 
 	protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
@@ -59,6 +62,11 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	public SkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(type, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ROTATION, 0));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override

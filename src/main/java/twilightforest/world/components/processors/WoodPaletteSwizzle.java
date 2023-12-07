@@ -35,6 +35,6 @@ public final class WoodPaletteSwizzle extends StructureProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return TFStructureProcessors.PLANK_SWIZZLE.value();
+        return TFStructureProcessors.PLANK_SWIZZLE.get();
     }
 }

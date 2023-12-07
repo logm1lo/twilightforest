@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/castle_brick/castle_roof_tile"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

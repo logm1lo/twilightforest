@@ -10,6 +10,6 @@ public class BeanstalkLeavesBlock extends TFAlternativeStemLeavesBlock {
 
     @Override
     protected boolean isStem(BlockState state) {
-        return state.is(TFBlocks.HUGE_STALK.value());
+        return state.is(TFBlocks.HUGE_STALK);
     }
 }

@@ -104,7 +104,7 @@ public enum StabilizeLayer implements AreaTransformer1 {
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.STABILIZE.value();
+			return BiomeLayerTypes.STABILIZE.get();
 		}
 	}
 }

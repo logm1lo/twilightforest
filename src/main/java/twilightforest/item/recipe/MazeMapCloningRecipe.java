@@ -24,14 +24,14 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 		for(int j = 0; j < container.getContainerSize(); j++) {
 			ItemStack itemstack1 = container.getItem(j);
 			if (!itemstack1.isEmpty()) {
-				if (itemstack1.is(TFItems.FILLED_MAZE_MAP.value())) {
+				if (itemstack1.is(TFItems.FILLED_MAZE_MAP)) {
 					if (!itemstack.isEmpty()) {
 						return false;
 					}
 
 					itemstack = itemstack1;
 				} else {
-					if (!itemstack1.is(TFItems.MAZE_MAP.value())) {
+					if (!itemstack1.is(TFItems.MAZE_MAP)) {
 						return false;
 					}
 
@@ -51,14 +51,14 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 		for(int j = 0; j < container.getContainerSize(); j++) {
 			ItemStack itemstack1 = container.getItem(j);
 			if (!itemstack1.isEmpty()) {
-				if (itemstack1.is(TFItems.FILLED_MAZE_MAP.value())) {
+				if (itemstack1.is(TFItems.FILLED_MAZE_MAP)) {
 					if (!itemstack.isEmpty()) {
 						return ItemStack.EMPTY;
 					}
 
 					itemstack = itemstack1;
 				} else {
-					if (!itemstack1.is(TFItems.MAZE_MAP.value())) {
+					if (!itemstack1.is(TFItems.MAZE_MAP)) {
 						return ItemStack.EMPTY;
 					}
 
@@ -81,6 +81,6 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 	}
 
 	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.MAZE_MAP_CLONING_RECIPE.value();
+		return TFRecipes.MAZE_MAP_CLONING_RECIPE.get();
 	}
 }

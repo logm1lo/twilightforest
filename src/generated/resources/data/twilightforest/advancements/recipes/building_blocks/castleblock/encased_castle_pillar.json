@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:castleblock/encased_castle_pillar"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

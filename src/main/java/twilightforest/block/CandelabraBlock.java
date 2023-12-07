@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import com.google.common.collect.Iterables;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -49,6 +50,8 @@ import java.util.Optional;
 
 @SuppressWarnings("deprecation")
 public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, SimpleWaterloggedBlock {
+
+	public static final MapCodec<CandelabraBlock> CODEC = simpleCodec(CandelabraBlock::new);
 	public static final BooleanProperty ON_WALL = BooleanProperty.create("on_wall");
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -81,6 +84,11 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 
 		this.registerDefaultState(state);
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	public static int getCandleCount(BlockState state) {
@@ -426,9 +434,9 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter getter, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader reader, BlockPos pos, Player player) {
 		ItemStack newStack = new ItemStack(this);
-		if (getter.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
+		if (reader.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
 			CompoundTag tag = new CompoundTag();
 			candelabra.saveAdditional(tag);
 			newStack.addTagElement("BlockEntityTag", tag);

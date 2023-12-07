@@ -28,7 +28,7 @@ public class CandelabraBlockEntity extends BlockEntity {
 	private final Block[] candles = {Blocks.AIR, Blocks.AIR, Blocks.AIR};
 
 	public CandelabraBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.CANDELABRA.value(), pos, state);
+		super(TFBlockEntities.CANDELABRA.get(), pos, state);
 	}
 
 	public Block[] getCandles() {

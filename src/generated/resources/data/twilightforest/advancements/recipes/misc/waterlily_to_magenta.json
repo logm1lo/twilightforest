@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:waterlily_to_magenta"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

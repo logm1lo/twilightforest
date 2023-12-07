@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:giant_cobblestone_to_cobblestone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/canopy_log/hollow_canopy_log"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

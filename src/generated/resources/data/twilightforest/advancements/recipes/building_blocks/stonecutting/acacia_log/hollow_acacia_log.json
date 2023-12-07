@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/acacia_log/hollow_acacia_log"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -1,4 +1,4 @@
-// 1.20.2	2023-11-13T20:53:08.5276672	Twilight Forest Block Tags
+// 1.20.3	2023-12-06T23:46:54.8214451	Twilight Forest Block Tags
 a10ef0864e630b44949959994b373ec7ee07dcb1 data/alexscaves/tags/blocks/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/blocks/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/blocks/underzealot_light_sources.json
@@ -51,6 +51,7 @@ bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/blocks/slabs.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/blocks/stairs.json
 0074c60e923669a4539ccbc5bd0c293f255ff5a5 data/minecraft/tags/blocks/standing_signs.json
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/minecraft/tags/blocks/strider_warm_blocks.json
+e67d2a0a3001de2207130c3fffff8d6665f26fbf data/minecraft/tags/blocks/walls.json
 f1654e579781c2bce8d458efa0cdb304b5ad052c data/minecraft/tags/blocks/wall_hanging_signs.json
 8b7e0d4d896e5e197798d761800abbb1510d92e8 data/minecraft/tags/blocks/wall_signs.json
 21d68ed46d202a9b9c5b709deebf8105df972ec0 data/minecraft/tags/blocks/wither_immune.json
@@ -80,7 +81,7 @@ e222b54e9f838dbf2e905bf0b137ed8b0c60b328 data/twilightforest/tags/blocks/hollow_
 e76ac35d93be5d3604434978c6f388542c03f06a data/twilightforest/tags/blocks/hollow_logs_climbable.json
 bb8b9b62d506ca43da000c49146b02a02db94cba data/twilightforest/tags/blocks/hollow_logs_horizontal.json
 0c4ebe5892c15ecdc495af7c56d4ed1e0f61e511 data/twilightforest/tags/blocks/hollow_logs_vertical.json
-c8fafdcc498cb38e705f74c899c6adee8c1c137e data/twilightforest/tags/blocks/ice_bomb_replaceables.json
+f1c96c713b5d5a966247c1b17cb52da4c125d4a9 data/twilightforest/tags/blocks/ice_bomb_replaceables.json
 33bdeefc5a85e9afb7b260809bec0d2a615d1f0f data/twilightforest/tags/blocks/logs.json
 089e4347e6320066de4cd4d08b3e04a9442f4090 data/twilightforest/tags/blocks/mangrove_logs.json
 dd1f6af3c96cc308a52726613452fddc17b9833c data/twilightforest/tags/blocks/mazebreaker_accelerated_mining.json
@@ -90,10 +91,10 @@ dd1f6af3c96cc308a52726613452fddc17b9833c data/twilightforest/tags/blocks/mazebre
 d82abba18e7ff90d2c891453ddff813ffdb8e55d data/twilightforest/tags/blocks/ore_magnet/ore_safe_replace_block.json
 52413a870520da3227b0d97b44e5455211b16e49 data/twilightforest/tags/blocks/penguins_spawnable_on.json
 0ce6b55aef503d7bff8b5dd86b38092ba2b14c46 data/twilightforest/tags/blocks/plants_hang_on.json
-d4d7d54d79277a6c260cc8c5db9307be24aa4d9e data/twilightforest/tags/blocks/portal/decoration.json
+779ee3ea84bb3bf4df58d52a42e9b8326baea01c data/twilightforest/tags/blocks/portal/decoration.json
 17f5f40a39ad2e8e8411db23ecf39507a1131725 data/twilightforest/tags/blocks/portal/edge.json
 cf3608bd187922aeb48c566c19e8482b0dca34c7 data/twilightforest/tags/blocks/portal/fluid.json
-44dc958d8a99b82a63e4cc95f42038fdd4e2909c data/twilightforest/tags/blocks/portal/generated_decoration.json
+843ba474e71a542ef634fe664ef97ce079a3186c data/twilightforest/tags/blocks/portal/generated_decoration.json
 58275c15a8c2699ac23fb5057a9ef14b13b733d9 data/twilightforest/tags/blocks/progression_allow_breaking.json
 e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/blocks/sortwood_logs.json
 894142a18566c008a63daa05efba2dde1ef6eb26 data/twilightforest/tags/blocks/storage_blocks/arctic_fur.json

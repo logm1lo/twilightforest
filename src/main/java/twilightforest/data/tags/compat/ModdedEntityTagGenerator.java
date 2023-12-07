@@ -36,19 +36,19 @@ public class ModdedEntityTagGenerator extends EntityTypeTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		tag(AC_RESISTS_ACID).add(TFEntities.HYDRA.value(), TFEntities.NAGA.value());
+		tag(AC_RESISTS_ACID).add(TFEntities.HYDRA.get(), TFEntities.NAGA.get());
 		tag(AC_RESISTS_MAGNETS).addTag(EntityTagGenerator.BOSSES);
-		tag(AC_RESISTS_TREMORSAURUS_ROAR).add(TFEntities.HYDRA.value(), TFEntities.UR_GHAST.value());
+		tag(AC_RESISTS_TREMORSAURUS_ROAR).add(TFEntities.HYDRA.get(), TFEntities.UR_GHAST.get());
 
 		tag(AETHER_DEFLECTABLE_PROJECTILES).add(
-				TFEntities.NATURE_BOLT.value(),
-				TFEntities.LICH_BOLT.value(),
-				TFEntities.WAND_BOLT.value(),
-				TFEntities.SLIME_BLOB.value(),
-				TFEntities.ICE_SNOWBALL.value());
+				TFEntities.NATURE_BOLT.get(),
+				TFEntities.LICH_BOLT.get(),
+				TFEntities.WAND_BOLT.get(),
+				TFEntities.SLIME_BLOB.get(),
+				TFEntities.ICE_SNOWBALL.get());
 
-		tag(AETHER_FIRE_MOB).add(TFEntities.FIRE_BEETLE.value());
-		tag(AETHER_PIGS).add(TFEntities.BOAR.value());
+		tag(AETHER_FIRE_MOB).add(TFEntities.FIRE_BEETLE.get());
+		tag(AETHER_PIGS).add(TFEntities.BOAR.get());
 
 		tag(AN_JAR_BLACKLIST).addTag(EntityTagGenerator.BOSSES);
 		tag(AN_JAR_RELEASE_BLACKLIST).addTag(EntityTagGenerator.BOSSES);

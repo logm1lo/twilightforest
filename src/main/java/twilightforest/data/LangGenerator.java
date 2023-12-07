@@ -262,32 +262,32 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addStoneVariants("castle_brick", "Castle Brick");
 		this.addStoneVariants("castle_brick_stairs", "Castle Brick Stairs");
-		this.add(TFBlocks.WORN_CASTLE_BRICK.value(), "Worn Castle Brick");
-		this.add(TFBlocks.THICK_CASTLE_BRICK.value(), "Thick Castle Brick");
-		this.add(TFBlocks.CASTLE_ROOF_TILE.value(), "Castle Roof Tile");
-		this.add(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.value(), "Encased Castle Brick Pillar");
-		this.add(TFBlocks.ENCASED_CASTLE_BRICK_TILE.value(), "Encased Castle Brick Tile");
-		this.add(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.value(), "Bold Castle Brick Pillar");
-		this.add(TFBlocks.BOLD_CASTLE_BRICK_TILE.value(), "Bold Castle Brick Tile");
-		this.add(TFBlocks.WORN_CASTLE_BRICK_STAIRS.value(), "Worn Castle Brick Stairs");
-		this.add(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.value(), "Encased Castle Brick Stairs");
-		this.add(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.value(), "Bold Castle Brick Stairs");
+		this.add(TFBlocks.WORN_CASTLE_BRICK.get(), "Worn Castle Brick");
+		this.add(TFBlocks.THICK_CASTLE_BRICK.get(), "Thick Castle Brick");
+		this.add(TFBlocks.CASTLE_ROOF_TILE.get(), "Castle Roof Tile");
+		this.add(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), "Encased Castle Brick Pillar");
+		this.add(TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), "Encased Castle Brick Tile");
+		this.add(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), "Bold Castle Brick Pillar");
+		this.add(TFBlocks.BOLD_CASTLE_BRICK_TILE.get(), "Bold Castle Brick Tile");
+		this.add(TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(), "Worn Castle Brick Stairs");
+		this.add(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(), "Encased Castle Brick Stairs");
+		this.add(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(), "Bold Castle Brick Stairs");
 
-		this.add(TFBlocks.PINK_CASTLE_RUNE_BRICK.value(), "Magenta Castle Rune Brick");
-		this.add(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.value(), "Yellow Castle Rune Brick");
-		this.add(TFBlocks.BLUE_CASTLE_RUNE_BRICK.value(), "Blue Castle Rune Brick");
-		this.add(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.value(), "Violet Castle Rune Brick");
+		this.add(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), "Magenta Castle Rune Brick");
+		this.add(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), "Yellow Castle Rune Brick");
+		this.add(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), "Blue Castle Rune Brick");
+		this.add(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), "Violet Castle Rune Brick");
 
-		this.add(TFBlocks.PINK_CASTLE_DOOR.value(), "Magenta Castle Door");
-		this.add(TFBlocks.YELLOW_CASTLE_DOOR.value(), "Yellow Castle Door");
-		this.add(TFBlocks.BLUE_CASTLE_DOOR.value(), "Blue Castle Door");
-		this.add(TFBlocks.VIOLET_CASTLE_DOOR.value(), "Violet Castle Door");
+		this.add(TFBlocks.PINK_CASTLE_DOOR.get(), "Magenta Castle Door");
+		this.add(TFBlocks.YELLOW_CASTLE_DOOR.get(), "Yellow Castle Door");
+		this.add(TFBlocks.BLUE_CASTLE_DOOR.get(), "Blue Castle Door");
+		this.add(TFBlocks.VIOLET_CASTLE_DOOR.get(), "Violet Castle Door");
 
-		this.add(TFBlocks.PINK_FORCE_FIELD.value(), "Magenta Force Field");
-		this.add(TFBlocks.ORANGE_FORCE_FIELD.value(), "Orange Force Field");
-		this.add(TFBlocks.GREEN_FORCE_FIELD.value(), "Green Force Field");
-		this.add(TFBlocks.BLUE_FORCE_FIELD.value(), "Blue Force Field");
-		this.add(TFBlocks.VIOLET_FORCE_FIELD.value(), "Violet Force Field");
+		this.add(TFBlocks.PINK_FORCE_FIELD.get(), "Magenta Force Field");
+		this.add(TFBlocks.ORANGE_FORCE_FIELD.get(), "Orange Force Field");
+		this.add(TFBlocks.GREEN_FORCE_FIELD.get(), "Green Force Field");
+		this.add(TFBlocks.BLUE_FORCE_FIELD.get(), "Blue Force Field");
+		this.add(TFBlocks.VIOLET_FORCE_FIELD.get(), "Violet Force Field");
 
 		this.addBlock(TFBlocks.IRONWOOD_BLOCK, "Block of Ironwood");
 		this.addBlock(TFBlocks.STEELEAF_BLOCK, "Block of Steeleaf");

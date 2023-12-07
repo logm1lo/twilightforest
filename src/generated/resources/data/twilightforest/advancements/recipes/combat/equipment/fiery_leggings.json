@@ -28,6 +28,5 @@
     "recipes": [
       "twilightforest:equipment/fiery_leggings"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

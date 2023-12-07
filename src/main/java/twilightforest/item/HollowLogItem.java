@@ -21,10 +21,10 @@ public class HollowLogItem extends BlockItem {
     private final HollowLogClimbable climbable;
 
     public HollowLogItem(DeferredHolder<Block, HollowLogHorizontal> horizontalLog, DeferredHolder<Block, HollowLogVertical> verticalLog, DeferredHolder<Block, HollowLogClimbable> climbable, Properties properties) {
-        super(verticalLog.value(), properties);
-        this.horizontalLog = horizontalLog.value();
-        this.verticalLog = verticalLog.value();
-        this.climbable = climbable.value();
+        super(verticalLog.get(), properties);
+        this.horizontalLog = horizontalLog.get();
+        this.verticalLog = verticalLog.get();
+        this.climbable = climbable.get();
     }
 
     @Nullable

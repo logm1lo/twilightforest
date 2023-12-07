@@ -62,7 +62,7 @@ public record FilteredBiomeLayer(ResourceKey<Biome> biomeFirst) implements AreaT
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.FILTERED.value();
+			return BiomeLayerTypes.FILTERED.get();
 		}
 
 		public long salt() {

@@ -82,10 +82,10 @@ public class TFClientEvents {
 	public static class ModBusEvents {
 		@SubscribeEvent
 		public static void registerLoaders(ModelEvent.RegisterGeometryLoaders event) {
-			event.register("patch", PatchModelLoader.INSTANCE);
-			event.register("giant_block", GiantBlockModelLoader.INSTANCE);
-			event.register("force_field", ForceFieldModelLoader.INSTANCE);
-			event.register("castle_door", CastleDoorModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("castle_door"), CastleDoorModelLoader.INSTANCE);
 		}
 
 		@SubscribeEvent

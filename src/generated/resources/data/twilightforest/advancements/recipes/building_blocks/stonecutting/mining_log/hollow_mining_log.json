@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/mining_log/hollow_mining_log"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

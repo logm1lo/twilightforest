@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:thorn_rose_to_red"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

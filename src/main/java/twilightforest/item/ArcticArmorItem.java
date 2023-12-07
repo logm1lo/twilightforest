@@ -121,7 +121,7 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 
 	@Override
 	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
-		return stack.is(TFItems.ARCTIC_BOOTS.value());
+		return stack.is(TFItems.ARCTIC_BOOTS);
 	}
 
 	@Override

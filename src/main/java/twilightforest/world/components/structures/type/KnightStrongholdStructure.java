@@ -40,23 +40,23 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.KNIGHT_STRONGHOLD.value();
+        return TFStructureTypes.KNIGHT_STRONGHOLD.get();
     }
 
     public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstapContext<Structure> context) {
         return new KnightStrongholdStructure(
                 ControlledSpawningConfig.firstIndexMonsters(
-                        new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.value(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.LOWER_GOBLIN_KNIGHT.value(), 5, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.HELMET_CRAB.value(), 10, 2, 4),
-                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.value(), 10, 2, 3),
-                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.value(), 2, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.value(), 10, 2, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.get(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.LOWER_GOBLIN_KNIGHT.get(), 5, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.HELMET_CRAB.get(), 10, 2, 4),
+                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 10, 2, 3),
+                        new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 2, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 10, 2, 4),
                         new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 5, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.SLIME, 5, 4, 4)
                 ),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_trophy_pedestal"))),
-                new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD.value()),
+                new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD.get()),
                 new DecorationConfig(3, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_KNIGHT_STRONGHOLD_BIOMES),

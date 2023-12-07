@@ -31,7 +31,7 @@ public class TFOverlays {
 
 	@SubscribeEvent
 	public static void registerOverlays(RegisterGuiOverlaysEvent event) {
-		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "quest_ram_indicator", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), TwilightForestMod.prefix("quest_ram_indicator"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			if (player != null && !minecraft.options.hideGui && TFConfig.CLIENT_CONFIG.showQuestRamCrosshairIndicator.get()) {

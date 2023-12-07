@@ -40,7 +40,7 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 
     @Override
     protected TrunkPlacerType<BranchingTrunkPlacer> type() {
-        return TFFeatureModifiers.TRUNK_BRANCHING.value();
+        return TFFeatureModifiers.TRUNK_BRANCHING.get();
     }
 
     @Override

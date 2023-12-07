@@ -37,78 +37,78 @@ public class ModdedItemTagGenerator extends ItemTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		tag(AC_FERNS).add(TFBlocks.FIDDLEHEAD.value().asItem());
+		tag(AC_FERNS).add(TFBlocks.FIDDLEHEAD.get().asItem());
 		tag(AC_FERROMAGNETIC_ITEMS)
 				.addTag(ItemTagGenerator.STORAGE_BLOCKS_IRONWOOD)
 				.addTag(ItemTagGenerator.STORAGE_BLOCKS_STEELEAF)
 				.addTag(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL)
-				.add(TFBlocks.CANDELABRA.value().asItem(), TFBlocks.WROUGHT_IRON_FENCE.value().asItem())
-				.add(TFItems.RAW_IRONWOOD.value(), TFItems.IRONWOOD_INGOT.value(), TFItems.STEELEAF_INGOT.value(),
-						TFItems.ARMOR_SHARD.value(), TFItems.ARMOR_SHARD_CLUSTER.value(), TFItems.KNIGHTMETAL_INGOT.value(), TFItems.KNIGHTMETAL_RING.value(),
-						TFItems.FIERY_INGOT.value(), TFItems.CHARM_OF_KEEPING_2.value(), TFItems.ORE_MAGNET.value(),
-						TFItems.IRONWOOD_HELMET.value(), TFItems.IRONWOOD_CHESTPLATE.value(), TFItems.IRONWOOD_LEGGINGS.value(), TFItems.IRONWOOD_BOOTS.value(),
-						TFItems.STEELEAF_HELMET.value(), TFItems.STEELEAF_CHESTPLATE.value(), TFItems.STEELEAF_LEGGINGS.value(), TFItems.STEELEAF_BOOTS.value(),
-						TFItems.KNIGHTMETAL_HELMET.value(), TFItems.KNIGHTMETAL_CHESTPLATE.value(), TFItems.KNIGHTMETAL_LEGGINGS.value(), TFItems.KNIGHTMETAL_BOOTS.value(),
-						TFItems.FIERY_HELMET.value(), TFItems.FIERY_CHESTPLATE.value(), TFItems.FIERY_LEGGINGS.value(), TFItems.FIERY_BOOTS.value(),
-						TFItems.IRONWOOD_SWORD.value(), TFItems.IRONWOOD_PICKAXE.value(), TFItems.IRONWOOD_AXE.value(), TFItems.IRONWOOD_SHOVEL.value(), TFItems.IRONWOOD_HOE.value(),
-						TFItems.STEELEAF_SWORD.value(), TFItems.STEELEAF_PICKAXE.value(), TFItems.STEELEAF_AXE.value(), TFItems.STEELEAF_SHOVEL.value(), TFItems.STEELEAF_HOE.value(),
-						TFItems.KNIGHTMETAL_SWORD.value(), TFItems.KNIGHTMETAL_PICKAXE.value(), TFItems.KNIGHTMETAL_AXE.value(), TFItems.BLOCK_AND_CHAIN.value(), TFItems.KNIGHTMETAL_SHIELD.value(),
-						TFItems.FIERY_SWORD.value(), TFItems.FIERY_PICKAXE.value(), TFItems.MAZEBREAKER_PICKAXE.value());
+				.add(TFBlocks.CANDELABRA.get().asItem(), TFBlocks.WROUGHT_IRON_FENCE.get().asItem())
+				.add(TFItems.RAW_IRONWOOD.get(), TFItems.IRONWOOD_INGOT.get(), TFItems.STEELEAF_INGOT.get(),
+						TFItems.ARMOR_SHARD.get(), TFItems.ARMOR_SHARD_CLUSTER.get(), TFItems.KNIGHTMETAL_INGOT.get(), TFItems.KNIGHTMETAL_RING.get(),
+						TFItems.FIERY_INGOT.get(), TFItems.CHARM_OF_KEEPING_2.get(), TFItems.ORE_MAGNET.get(),
+						TFItems.IRONWOOD_HELMET.get(), TFItems.IRONWOOD_CHESTPLATE.get(), TFItems.IRONWOOD_LEGGINGS.get(), TFItems.IRONWOOD_BOOTS.get(),
+						TFItems.STEELEAF_HELMET.get(), TFItems.STEELEAF_CHESTPLATE.get(), TFItems.STEELEAF_LEGGINGS.get(), TFItems.STEELEAF_BOOTS.get(),
+						TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get(),
+						TFItems.FIERY_HELMET.get(), TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get(),
+						TFItems.IRONWOOD_SWORD.get(), TFItems.IRONWOOD_PICKAXE.get(), TFItems.IRONWOOD_AXE.get(), TFItems.IRONWOOD_SHOVEL.get(), TFItems.IRONWOOD_HOE.get(),
+						TFItems.STEELEAF_SWORD.get(), TFItems.STEELEAF_PICKAXE.get(), TFItems.STEELEAF_AXE.get(), TFItems.STEELEAF_SHOVEL.get(), TFItems.STEELEAF_HOE.get(),
+						TFItems.KNIGHTMETAL_SWORD.get(), TFItems.KNIGHTMETAL_PICKAXE.get(), TFItems.KNIGHTMETAL_AXE.get(), TFItems.BLOCK_AND_CHAIN.get(), TFItems.KNIGHTMETAL_SHIELD.get(),
+						TFItems.FIERY_SWORD.get(), TFItems.FIERY_PICKAXE.get(), TFItems.MAZEBREAKER_PICKAXE.get());
 
-		tag(AC_RAW_MEATS).add(TFItems.RAW_VENISON.value(), TFItems.RAW_MEEF.value());
+		tag(AC_RAW_MEATS).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
 
 		tag(CURIOS_CHARM).add(
-				TFItems.CHARM_OF_LIFE_1.value(), TFItems.CHARM_OF_LIFE_2.value(),
-				TFItems.CHARM_OF_KEEPING_1.value(), TFItems.CHARM_OF_KEEPING_2.value(), TFItems.CHARM_OF_KEEPING_3.value()
+				TFItems.CHARM_OF_LIFE_1.get(), TFItems.CHARM_OF_LIFE_2.get(),
+				TFItems.CHARM_OF_KEEPING_1.get(), TFItems.CHARM_OF_KEEPING_2.get(), TFItems.CHARM_OF_KEEPING_3.get()
 		);
 
 		tag(CURIOS_HEAD).add(
-				TFItems.NAGA_TROPHY.value(),
-				TFItems.LICH_TROPHY.value(),
-				TFItems.MINOSHROOM_TROPHY.value(),
-				TFItems.HYDRA_TROPHY.value(),
-				TFItems.KNIGHT_PHANTOM_TROPHY.value(),
-				TFItems.UR_GHAST_TROPHY.value(),
-				TFItems.ALPHA_YETI_TROPHY.value(),
-				TFItems.SNOW_QUEEN_TROPHY.value(),
-				TFItems.QUEST_RAM_TROPHY.value(),
-				TFItems.CICADA.value(),
-				TFItems.FIREFLY.value(),
-				TFItems.MOONWORM.value(),
-				TFItems.CREEPER_SKULL_CANDLE.value(),
-				TFItems.PIGLIN_SKULL_CANDLE.value(),
-				TFItems.PLAYER_SKULL_CANDLE.value(),
-				TFItems.SKELETON_SKULL_CANDLE.value(),
-				TFItems.WITHER_SKELETON_SKULL_CANDLE.value(),
-				TFItems.ZOMBIE_SKULL_CANDLE.value());
+				TFItems.NAGA_TROPHY.get(),
+				TFItems.LICH_TROPHY.get(),
+				TFItems.MINOSHROOM_TROPHY.get(),
+				TFItems.HYDRA_TROPHY.get(),
+				TFItems.KNIGHT_PHANTOM_TROPHY.get(),
+				TFItems.UR_GHAST_TROPHY.get(),
+				TFItems.ALPHA_YETI_TROPHY.get(),
+				TFItems.SNOW_QUEEN_TROPHY.get(),
+				TFItems.QUEST_RAM_TROPHY.get(),
+				TFBlocks.CICADA.get().asItem(),
+				TFBlocks.FIREFLY.get().asItem(),
+				TFBlocks.MOONWORM.get().asItem(),
+				TFItems.CREEPER_SKULL_CANDLE.get(),
+				TFItems.PIGLIN_SKULL_CANDLE.get(),
+				TFItems.PLAYER_SKULL_CANDLE.get(),
+				TFItems.SKELETON_SKULL_CANDLE.get(),
+				TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
+				TFItems.ZOMBIE_SKULL_CANDLE.get());
 
-		tag(CA_PLANT_FOODS).add(TFItems.TORCHBERRIES.value());
+		tag(CA_PLANT_FOODS).add(TFItems.TORCHBERRIES.get());
 
-		tag(CA_PLANTS).add(TFItems.LIVEROOT.value(), TFItems.MAGIC_BEANS.value(),
-				TFBlocks.HUGE_WATER_LILY.value().asItem(), TFBlocks.HUGE_LILY_PAD.value().asItem(),
-				TFBlocks.TROLLVIDR.value().asItem(), TFBlocks.UNRIPE_TROLLBER.value().asItem(),
-				TFBlocks.TROLLBER.value().asItem(), TFBlocks.HUGE_STALK.value().asItem(),
-				TFBlocks.THORN_ROSE.value().asItem(), TFBlocks.MAYAPPLE.value().asItem(),
-				TFBlocks.CLOVER_PATCH.value().asItem(), TFBlocks.FIDDLEHEAD.value().asItem(),
-				TFBlocks.MUSHGLOOM.value().asItem(), TFBlocks.TORCHBERRY_PLANT.value().asItem(),
-				TFBlocks.ROOT_STRAND.value().asItem(), TFBlocks.FALLEN_LEAVES.value().asItem(),
-				TFBlocks.HEDGE.value().asItem(), TFBlocks.ROOT_BLOCK.value().asItem(), TFBlocks.LIVEROOT_BLOCK.value().asItem());
+		tag(CA_PLANTS).add(TFItems.LIVEROOT.get(), TFItems.MAGIC_BEANS.get(),
+				TFBlocks.HUGE_WATER_LILY.get().asItem(), TFBlocks.HUGE_LILY_PAD.get().asItem(),
+				TFBlocks.TROLLVIDR.get().asItem(), TFBlocks.UNRIPE_TROLLBER.get().asItem(),
+				TFBlocks.TROLLBER.get().asItem(), TFBlocks.HUGE_STALK.get().asItem(),
+				TFBlocks.THORN_ROSE.get().asItem(), TFBlocks.MAYAPPLE.get().asItem(),
+				TFBlocks.CLOVER_PATCH.get().asItem(), TFBlocks.FIDDLEHEAD.get().asItem(),
+				TFBlocks.MUSHGLOOM.get().asItem(), TFBlocks.TORCHBERRY_PLANT.get().asItem(),
+				TFBlocks.ROOT_STRAND.get().asItem(), TFBlocks.FALLEN_LEAVES.get().asItem(),
+				TFBlocks.HEDGE.get().asItem(), TFBlocks.ROOT_BLOCK.get().asItem(), TFBlocks.LIVEROOT_BLOCK.get().asItem());
 
-		tag(FD_CABBAGE_ROLL_INGREDIENTS).add(TFItems.RAW_VENISON.value(), TFItems.RAW_MEEF.value());
+		tag(FD_CABBAGE_ROLL_INGREDIENTS).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
 
-		tag(RANDOMIUM_BLACKLIST).addTag(ItemTagGenerator.NYI).addTag(ItemTagGenerator.WIP).add(TFItems.GLASS_SWORD.value(), //this one is here because the ore can give the unbreakable one
-				TFBlocks.TIME_LOG_CORE.value().asItem(), TFBlocks.TRANSFORMATION_LOG_CORE.value().asItem(),
-				TFBlocks.MINING_LOG_CORE.value().asItem(), TFBlocks.SORTING_LOG_CORE.value().asItem(),
-				TFBlocks.ANTIBUILDER.value().asItem(), TFBlocks.STRONGHOLD_SHIELD.value().asItem(),
-				TFBlocks.LOCKED_VANISHING_BLOCK.value().asItem(), TFBlocks.BROWN_THORNS.value().asItem(),
-				TFBlocks.GREEN_THORNS.value().asItem(), TFBlocks.BURNT_THORNS.value().asItem(),
-				TFBlocks.PINK_FORCE_FIELD.value().asItem(), TFBlocks.ORANGE_FORCE_FIELD.value().asItem(),
-				TFBlocks.GREEN_FORCE_FIELD.value().asItem(), TFBlocks.BLUE_FORCE_FIELD.value().asItem(),
-				TFBlocks.VIOLET_FORCE_FIELD.value().asItem(), TFBlocks.FINAL_BOSS_BOSS_SPAWNER.value().asItem(),
-				TFBlocks.NAGA_BOSS_SPAWNER.value().asItem(), TFBlocks.LICH_BOSS_SPAWNER.value().asItem(),
-				TFBlocks.MINOSHROOM_BOSS_SPAWNER.value().asItem(), TFBlocks.HYDRA_BOSS_SPAWNER.value().asItem(),
-				TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.value().asItem(), TFBlocks.UR_GHAST_BOSS_SPAWNER.value().asItem(),
-				TFBlocks.ALPHA_YETI_BOSS_SPAWNER.value().asItem(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.value().asItem());
+		tag(RANDOMIUM_BLACKLIST).addTag(ItemTagGenerator.NYI).addTag(ItemTagGenerator.WIP).add(TFItems.GLASS_SWORD.get(), //this one is here because the ore can give the unbreakable one
+				TFBlocks.TIME_LOG_CORE.get().asItem(), TFBlocks.TRANSFORMATION_LOG_CORE.get().asItem(),
+				TFBlocks.MINING_LOG_CORE.get().asItem(), TFBlocks.SORTING_LOG_CORE.get().asItem(),
+				TFBlocks.ANTIBUILDER.get().asItem(), TFBlocks.STRONGHOLD_SHIELD.get().asItem(),
+				TFBlocks.LOCKED_VANISHING_BLOCK.get().asItem(), TFBlocks.BROWN_THORNS.get().asItem(),
+				TFBlocks.GREEN_THORNS.get().asItem(), TFBlocks.BURNT_THORNS.get().asItem(),
+				TFBlocks.PINK_FORCE_FIELD.get().asItem(), TFBlocks.ORANGE_FORCE_FIELD.get().asItem(),
+				TFBlocks.GREEN_FORCE_FIELD.get().asItem(), TFBlocks.BLUE_FORCE_FIELD.get().asItem(),
+				TFBlocks.VIOLET_FORCE_FIELD.get().asItem(), TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get().asItem(),
+				TFBlocks.NAGA_BOSS_SPAWNER.get().asItem(), TFBlocks.LICH_BOSS_SPAWNER.get().asItem(),
+				TFBlocks.MINOSHROOM_BOSS_SPAWNER.get().asItem(), TFBlocks.HYDRA_BOSS_SPAWNER.get().asItem(),
+				TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get().asItem(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().asItem(),
+				TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get().asItem(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get().asItem());
 	}
 
 	private static TagKey<Item> createTagFor(String modid, String tagName) {

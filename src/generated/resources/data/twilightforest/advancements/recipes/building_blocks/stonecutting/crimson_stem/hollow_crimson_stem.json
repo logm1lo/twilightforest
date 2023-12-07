@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/crimson_stem/hollow_crimson_stem"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

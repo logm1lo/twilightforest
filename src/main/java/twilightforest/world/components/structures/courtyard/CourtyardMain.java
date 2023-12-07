@@ -29,11 +29,11 @@ public class CourtyardMain extends StructureMazeGenerator {
 	static final BlockRotProcessor WALL_DECAY_PROCESSOR = new BlockRotProcessor(CourtyardMain.WALL_DECAY);
 
 	public CourtyardMain(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn.value(), nbt);
+		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn.get(), nbt);
 	}
 
 	public CourtyardMain(RandomSource rand, int i, int x, int y, int z, StructureTemplateManager structureManager) {
-		super(TFStructurePieceTypes.TFNCMn.value(), rand, i, ROW_OF_CELLS, ROW_OF_CELLS, x, y, z, structureManager);
+		super(TFStructurePieceTypes.TFNCMn.get(), rand, i, ROW_OF_CELLS, ROW_OF_CELLS, x, y, z, structureManager);
 
 		this.setOrientation(Direction.NORTH);
 
@@ -44,6 +44,6 @@ public class CourtyardMain extends StructureMazeGenerator {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// naga spawner seems important
-		placeBlock(world, TFBlocks.NAGA_BOSS_SPAWNER.value().defaultBlockState(), RADIUS/2, 3, RADIUS/2, sbb);
+		placeBlock(world, TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState(), RADIUS/2, 3, RADIUS/2, sbb);
 	}
 }

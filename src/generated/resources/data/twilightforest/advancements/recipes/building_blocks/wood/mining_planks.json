@@ -28,6 +28,5 @@
     "recipes": [
       "twilightforest:wood/mining_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

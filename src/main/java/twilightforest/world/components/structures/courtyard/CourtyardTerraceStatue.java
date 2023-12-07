@@ -20,11 +20,11 @@ import twilightforest.world.components.structures.TwilightTemplateStructurePiece
 
 public class CourtyardTerraceStatue extends TwilightTemplateStructurePiece {
     public CourtyardTerraceStatue(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-        super(TFStructurePieceTypes.TFNCSt.value(), nbt, ctx, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
+        super(TFStructurePieceTypes.TFNCSt.get(), nbt, ctx, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
     }
 
     public CourtyardTerraceStatue(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager) {
-        super(TFStructurePieceTypes.TFNCSt.value(), i, structureManager, TwilightForestMod.prefix("terrace_statue/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y + 3, z));
+        super(TFStructurePieceTypes.TFNCSt.get(), i, structureManager, TwilightForestMod.prefix("terrace_statue/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y + 3, z));
     }
 
     @Override

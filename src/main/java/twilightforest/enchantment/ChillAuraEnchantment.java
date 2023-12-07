@@ -57,7 +57,7 @@ public class ChillAuraEnchantment extends LootOnlyEnchantment {
 					!victim.getItemBySlot(EquipmentSlot.LEGS).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
 					!victim.getItemBySlot(EquipmentSlot.FEET).is(ItemTags.FREEZE_IMMUNE_WEARABLES)) {
 				if (!(victim instanceof Player player) || !player.isCreative()) {
-					victim.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.value(), duration, amplifier));
+					victim.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), duration, amplifier));
 				}
 			}
 		}
@@ -73,6 +73,6 @@ public class ChillAuraEnchantment extends LootOnlyEnchantment {
 
 	@Override
 	protected boolean checkCompatibility(Enchantment other) {
-		return super.checkCompatibility(other) && other != TFEnchantments.FIRE_REACT.value() && other != Enchantments.THORNS;
+		return super.checkCompatibility(other) && other != TFEnchantments.FIRE_REACT.get() && other != Enchantments.THORNS;
 	}
 }

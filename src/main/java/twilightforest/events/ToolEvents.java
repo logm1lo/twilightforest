@@ -79,7 +79,7 @@ public class ToolEvents {
 
 	@SubscribeEvent
 	public static void fieryToolSetFire(LivingAttackEvent event) {
-		if (event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD.value()) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE.value())) && !event.getEntity().fireImmune()) {
+		if (event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE)) && !event.getEntity().fireImmune()) {
 			event.getEntity().setSecondsOnFire(1);
 		}
 	}
@@ -92,7 +92,7 @@ public class ToolEvents {
 			ItemStack weapon = living.getMainHandItem();
 
 			if (!weapon.isEmpty()) {
-				if (target.getArmorValue() > 0 && (weapon.is(TFItems.KNIGHTMETAL_PICKAXE.value()) || weapon.is(TFItems.KNIGHTMETAL_SWORD.value()))) {
+				if (target.getArmorValue() > 0 && (weapon.is(TFItems.KNIGHTMETAL_PICKAXE) || weapon.is(TFItems.KNIGHTMETAL_SWORD))) {
 					if (target.getArmorCoverPercentage() > 0) {
 						int moreBonus = (int) (KNIGHTMETAL_BONUS_DAMAGE * target.getArmorCoverPercentage());
 						event.setAmount(event.getAmount() + moreBonus);
@@ -101,7 +101,7 @@ public class ToolEvents {
 					}
 					// enchantment attack sparkles
 					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
-				} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.value())) {
+				} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE)) {
 					event.setAmount(event.getAmount() + KNIGHTMETAL_BONUS_DAMAGE);
 					// enchantment attack sparkles
 					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));

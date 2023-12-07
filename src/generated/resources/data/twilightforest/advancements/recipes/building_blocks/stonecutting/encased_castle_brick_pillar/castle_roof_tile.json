@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/encased_castle_brick_pillar/castle_roof_tile"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

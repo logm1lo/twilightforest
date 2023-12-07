@@ -1,6 +1,8 @@
 package twilightforest.block;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -13,14 +15,17 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -40,7 +45,7 @@ import twilightforest.init.TFBlockEntities;
 
 import java.util.*;
 
-public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implements LightableBlock {
+public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implements LightableBlock, Equipable {
 
 	private final SkullBlock.Type type;
 
@@ -151,10 +156,10 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult result, BlockGetter getter, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		ItemStack newStack = new ItemStack(this);
 		CompoundTag tag = new CompoundTag();
-		if (getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			if (sc.getOwnerProfile() != null)
 				newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), sc.getOwnerProfile()));
 			tag.putInt("CandleColor", sc.getCandleColor());
@@ -206,7 +211,12 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.value(), SkullCandleBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.get(), SkullCandleBlockEntity::tick);
+	}
+
+	@Override
+	public EquipmentSlot getEquipmentSlot() {
+		return EquipmentSlot.HEAD;
 	}
 
 	public enum CandleColors implements StringRepresentable {

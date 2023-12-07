@@ -551,7 +551,7 @@ public class HydraHeadContainer {
 				dy *= velocity;
 				dz *= velocity;
 
-				this.headEntity.level().addAlwaysVisibleParticle(TFParticleType.LARGE_FLAME.value(), px, py, pz, dx, dy, dz);
+				this.headEntity.level().addAlwaysVisibleParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
 			}
 		}
 
@@ -567,15 +567,15 @@ public class HydraHeadContainer {
 	private void playSounds() {
 		if (this.headEntity.getState() == State.FLAMING && this.headEntity.tickCount % 5 == 0) {
 			// fire breathing!
-			this.headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE.value(), 0.5F + this.headEntity.level().getRandom().nextFloat(), this.headEntity.level().getRandom().nextFloat() * 0.7F + 0.3F);
+			this.headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE.get(), 0.5F + this.headEntity.level().getRandom().nextFloat(), this.headEntity.level().getRandom().nextFloat() * 0.7F + 0.3F);
 			this.headEntity.gameEvent(GameEvent.PROJECTILE_SHOOT);
 		}
 		if (this.headEntity.getState() == State.ROAR_RAWR) {
-			this.headEntity.playSound(TFSounds.HYDRA_ROAR.value(), 1.25F, this.headEntity.level().getRandom().nextFloat() * 0.3F + 0.7F);
+			this.headEntity.playSound(TFSounds.HYDRA_ROAR.get(), 1.25F, this.headEntity.level().getRandom().nextFloat() * 0.3F + 0.7F);
 			this.headEntity.gameEvent(GameEvent.ENTITY_ACTION);
 		}
 		if (this.headEntity.getState() == State.BITE_READY && this.ticksProgress == 60) {
-			this.headEntity.playSound(TFSounds.HYDRA_WARN.value(), 2.0F, this.headEntity.level().getRandom().nextFloat() * 0.3F + 0.7F);
+			this.headEntity.playSound(TFSounds.HYDRA_WARN.get(), 2.0F, this.headEntity.level().getRandom().nextFloat() * 0.3F + 0.7F);
 		}
 	}
 
@@ -657,14 +657,14 @@ public class HydraHeadContainer {
 
 	private void executeAttacks() {
 		if (this.currentState == State.MORTAR_SHOOTING && this.ticksProgress % 10 == 0) {
-			HydraMortar mortar = new HydraMortar(TFEntities.HYDRA_MORTAR.value(), this.headEntity.level(), this.headEntity);
+			HydraMortar mortar = new HydraMortar(TFEntities.HYDRA_MORTAR.get(), this.headEntity.level(), this.headEntity);
 
 			// launch blasting mortars if the player is hiding
 			if (this.targetEntity != null && !this.headEntity.canEntityBeSeen(this.targetEntity)) {
 				mortar.setToBlasting();
 			}
 
-			this.headEntity.playSound(TFSounds.HYDRA_SHOOT.value(), 10.0F, (this.headEntity.level().getRandom().nextFloat() - this.headEntity.level().getRandom().nextFloat()) * 0.2F + 1.0F);
+			this.headEntity.playSound(TFSounds.HYDRA_SHOOT.get(), 10.0F, (this.headEntity.level().getRandom().nextFloat() - this.headEntity.level().getRandom().nextFloat()) * 0.2F + 1.0F);
 			this.headEntity.level().addFreshEntity(mortar);
 
 		}
@@ -678,7 +678,7 @@ public class HydraHeadContainer {
 					if (nearby instanceof Player player && player.isBlocking()) {
 						if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
 							//cause severe damage and play a shatter sound
-							this.headEntity.level().playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS.value() : TFSounds.METAL_SHIELD_SHATTERS.value(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
+							this.headEntity.level().playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS.get() : TFSounds.METAL_SHIELD_SHATTERS.get(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
 							player.getUseItem().hurtAndBreak(112, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
 						}
 						//add cooldown and knockback
@@ -688,7 +688,7 @@ public class HydraHeadContainer {
 					}
 
 					// bite it!
-					nearby.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, this.hydra, TFEntities.HYDRA.value()), BITE_DAMAGE);
+					nearby.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, this.hydra, TFEntities.HYDRA.get()), BITE_DAMAGE);
 
 					//knockback!
 					if (living instanceof Player player) {
@@ -704,7 +704,7 @@ public class HydraHeadContainer {
 			Entity target = getHeadLookTarget();
 
 			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent())) {
-				if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.value()), FLAME_DAMAGE)) {
+				if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
 					target.setSecondsOnFire(FLAME_BURN_FACTOR);
 				}
 			}

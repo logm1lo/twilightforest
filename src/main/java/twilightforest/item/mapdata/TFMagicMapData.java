@@ -126,18 +126,18 @@ public class TFMagicMapData extends MapItemSavedData {
 
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
-	public static TFMagicMapData getMagicMapData(Level world, String name) {
-		if (world.isClientSide) return CLIENT_DATA.get(name);
-		else return ((ServerLevel)world).getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
+	public static TFMagicMapData getMagicMapData(Level level, String name) {
+		if (level.isClientSide()) return CLIENT_DATA.get(name);
+		else return (TFMagicMapData) ((ServerLevel)level).getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
-	public static void registerMagicMapData(Level world, TFMagicMapData data, String id) {
-		if (world.isClientSide) CLIENT_DATA.put(id, data);
-		else ((ServerLevel)world).getServer().overworld().getDataStorage().set(id, data);
+	public static void registerMagicMapData(Level level, TFMagicMapData data, String id) {
+		if (level.isClientSide()) CLIENT_DATA.put(id, data);
+		else ((ServerLevel)level).getServer().overworld().getDataStorage().set(id, data);
 	}
 
-	public static SavedData.Factory<MapItemSavedData> factory() {
+	public static Factory<MapItemSavedData> factory() {
 		return new SavedData.Factory<>(() -> {
 			throw new IllegalStateException("Should never create an empty map saved data");
 		}, TFMagicMapData::load, DataFixTypes.SAVED_DATA_MAP_DATA);

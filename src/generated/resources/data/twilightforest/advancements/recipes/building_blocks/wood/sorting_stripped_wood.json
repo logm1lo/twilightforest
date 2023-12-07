@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/sorting_stripped_wood"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

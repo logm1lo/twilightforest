@@ -100,7 +100,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 					if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player)).isCanceled()) {
 						if (this.canAnnihilate(pos, state, player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted())) {
 							this.level().removeBlock(pos, false);
-							this.playSound(TFSounds.BLOCK_ANNIHILATED.value(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
+							this.playSound(TFSounds.BLOCK_ANNIHILATED.get(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
 							this.annihilateParticles(this.level(), pos);
 							this.gameEvent(GameEvent.BLOCK_DESTROY);
 						} else {
@@ -134,7 +134,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 
 						double speed = rand.nextGaussian() * 0.2D;
 
-						server.sendParticles(TFParticleType.ANNIHILATE.value(), x, y, z, 1, 0, 0, 0, speed);
+						server.sendParticles(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
 					}
 				}
 			}
@@ -194,7 +194,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().is(TFItems.CUBE_OF_ANNIHILATION.value())) {
+		if (thrower != null && thrower.getUseItem().is(TFItems.CUBE_OF_ANNIHILATION)) {
 			thrower.stopUsingItem();
 		}
 	}

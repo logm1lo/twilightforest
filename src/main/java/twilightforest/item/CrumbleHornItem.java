@@ -40,7 +40,7 @@ public class CrumbleHornItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		player.startUsingItem(hand);
-		player.playSound(TFSounds.QUEST_RAM_AMBIENT.value(), 1.0F, 0.8F);
+		player.playSound(TFSounds.QUEST_RAM_AMBIENT.get(), 1.0F, 0.8F);
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 	}
 
@@ -53,7 +53,7 @@ public class CrumbleHornItem extends Item {
 				stack.hurtAndBreak(crumbled, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
 			}
 
-			living.level().playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.value(), living.getSoundSource(), 1.0F, 0.8F);
+			living.level().playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.get(), living.getSoundSource(), 1.0F, 0.8F);
 		}
 	}
 
@@ -97,7 +97,7 @@ public class CrumbleHornItem extends Item {
 			if (crumbleBlock(world, living, pos)) {
 				crumbled++;
 				if (living instanceof Player player && player instanceof ServerPlayer) {
-					player.awardStat(TFStats.BLOCKS_CRUMBLED.value());
+					player.awardStat(TFStats.BLOCKS_CRUMBLED.get());
 				}
 			}
 		}
@@ -118,7 +118,7 @@ public class CrumbleHornItem extends Item {
 		}
 
 		if (world instanceof ServerLevel level) {
-			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.value()).forEach(recipeHolder -> {
+			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipeHolder -> {
 				if (flag.get()) return;
 				if (recipeHolder.value().result() == Blocks.AIR) {
 					if (recipeHolder.value().input() == block && world.getRandom().nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {

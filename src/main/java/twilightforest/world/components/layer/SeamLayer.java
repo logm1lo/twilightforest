@@ -86,7 +86,7 @@ public record SeamLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<B
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.SEAM.value();
+			return BiomeLayerTypes.SEAM.get();
 		}
 
 		public long salt() {

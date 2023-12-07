@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/dark_log/towerwood"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/twisted_stone/twisted_stone_pillar"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

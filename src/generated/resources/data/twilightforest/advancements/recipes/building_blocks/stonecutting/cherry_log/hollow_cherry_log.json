@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/cherry_log/hollow_cherry_log"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

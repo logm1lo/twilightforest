@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/dark_oak_log/hollow_dark_oak_log"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

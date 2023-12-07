@@ -27,7 +27,7 @@ public class WoodPalette {
 	).apply(instance, WoodPalette::new));
 
 	public WoodPalette(DeferredHolder<Block, Block> planks, DeferredHolder<Block, StairBlock> stairs, DeferredHolder<Block, Block> slab, DeferredHolder<Block, Block> button, DeferredHolder<Block, Block> fence, DeferredHolder<Block, Block> gate, DeferredHolder<Block, Block> plate, DeferredHolder<Block, BanisterBlock> banister) {
-		this(planks.value(), stairs.value(), slab.value(), button.value(), fence.value(), gate.value(), plate.value(), banister.value());
+		this(planks.get(), stairs.get(), slab.get(), button.get(), fence.get(), gate.get(), plate.get(), banister.get());
 	}
 
 	private final Set<Block> blocks;

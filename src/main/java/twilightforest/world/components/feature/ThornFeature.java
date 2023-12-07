@@ -47,7 +47,7 @@ public class ThornFeature extends Feature<ThornsConfig> {
 			// Makes it avoid the troll clouds
 			if (!avoidGiantCloud || dPos.getY() - 64 <= WorldUtil.getBaseHeight(world, dPos.getX(), dPos.getZ(), Heightmap.Types.MOTION_BLOCKING_NO_LEAVES)) {
 				if (Math.abs(dPos.getX() - oPos.getX()) < config.maxSpread() && Math.abs(dPos.getZ() - oPos.getZ()) < config.maxSpread() && canPlaceThorns(world, dPos)) {
-					world.setBlock(dPos, TFBlocks.BROWN_THORNS.value().defaultBlockState().setValue(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
+					world.setBlock(dPos, TFBlocks.BROWN_THORNS.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
 					world.getChunk(dPos).markPosForPostprocessing(dPos);
 
 					// did we make it to the end?
@@ -57,10 +57,10 @@ public class ThornFeature extends Feature<ThornsConfig> {
 						if (rand.nextInt(config.chanceOfLeaf()) == 0 && world.isEmptyBlock(dPos.relative(dir))) {
 							if (rand.nextInt(config.chanceLeafIsRose()) > 0) {
 								// leaf
-								world.setBlock(dPos.relative(dir), TFBlocks.THORN_LEAVES.value().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1), 3);
+								world.setBlock(dPos.relative(dir), TFBlocks.THORN_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1), 3);
 							} else {
 								// rose
-								world.setBlock(dPos.relative(dir), TFBlocks.THORN_ROSE.value().defaultBlockState().setValue(DirectionalBlock.FACING, dir), 3);
+								world.setBlock(dPos.relative(dir), TFBlocks.THORN_ROSE.get().defaultBlockState().setValue(DirectionalBlock.FACING, dir), 3);
 							}
 						}
 					}
@@ -106,7 +106,7 @@ public class ThornFeature extends Feature<ThornsConfig> {
 			BlockPos nextPos = pos.relative(dir, middle).relative(nextDir);
 
 			if (world.isEmptyBlock(nextPos)) {
-				world.setBlock(nextPos, TFBlocks.THORN_LEAVES.value().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
+				world.setBlock(nextPos, TFBlocks.THORN_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
 			}
 		}
 	}

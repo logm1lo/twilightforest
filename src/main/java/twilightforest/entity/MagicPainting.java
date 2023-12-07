@@ -39,7 +39,7 @@ public class MagicPainting extends HangingEntity {
     }
 
     private MagicPainting(Level level, BlockPos pos) {
-        super(TFEntities.MAGIC_PAINTING.value(), level, pos);
+        super(TFEntities.MAGIC_PAINTING.get(), level, pos);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class MagicPainting extends HangingEntity {
                 }
             }
 
-            this.spawnAtLocation(Util.make(new ItemStack(TFItems.MAGIC_PAINTING.value()), stack -> {
+            this.spawnAtLocation(Util.make(new ItemStack(TFItems.MAGIC_PAINTING.get()), stack -> {
                 CompoundTag tag = stack.getOrCreateTagElement("EntityTag");
                 tag.putString("variant", this.entityData.get(DATA_PAINTING_VARIANT_ID));
             }));
@@ -173,6 +173,6 @@ public class MagicPainting extends HangingEntity {
 
     @Override
     public ItemStack getPickResult() {
-        return new ItemStack(TFItems.MAGIC_PAINTING.value());
+        return new ItemStack(TFItems.MAGIC_PAINTING.get());
     }
 }

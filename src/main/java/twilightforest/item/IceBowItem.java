@@ -15,8 +15,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class IceBowItem extends BowItem {
 
-	public IceBowItem(Properties props) {
-		super(props);
+	public IceBowItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override

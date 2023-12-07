@@ -32,7 +32,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.GroundAttackGoal;
 import twilightforest.entity.monster.Minotaur;
@@ -162,27 +162,27 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINOSHROOM_AMBIENT.value();
+		return TFSounds.MINOSHROOM_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.MINOSHROOM_HURT.value();
+		return TFSounds.MINOSHROOM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINOSHROOM_DEATH.value();
+		return TFSounds.MINOSHROOM_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.MINOSHROOM_STEP.value(), 0.15F, 0.8F);
+		this.playSound(TFSounds.MINOSHROOM_STEP.get(), 0.15F, 0.8F);
 	}
 
 	@Override
 	protected SoundEvent getChargeSound() {
-		return TFSounds.MINOSHROOM_ATTACK.value();
+		return TFSounds.MINOSHROOM_ATTACK.get();
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -197,7 +197,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	@Override
 	protected void populateDefaultEquipmentSlots(RandomSource source, DifficultyInstance difficulty) {
 		super.populateDefaultEquipmentSlots(source, difficulty);
-		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.DIAMOND_MINOTAUR_AXE.value()));
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.DIAMOND_MINOTAUR_AXE.get()));
 	}
 
 	@Override
@@ -226,10 +226,10 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.LABYRINTH, true);
 			for(ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
+				TFAdvancements.HURT_BOSS.get().trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.value().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
@@ -247,7 +247,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.MINOSHROOM_BOSS_SPAWNER.value().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.MINOSHROOM_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {

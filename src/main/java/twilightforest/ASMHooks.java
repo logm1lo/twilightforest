@@ -97,7 +97,7 @@ public class ASMHooks {
 	}
 
 	private static boolean isOurMap(ItemStack stack) {
-		return stack.is(TFItems.FILLED_MAGIC_MAP.value()) || stack.is(TFItems.FILLED_MAZE_MAP.value()) || stack.is(TFItems.FILLED_ORE_MAP.value());
+		return stack.is(TFItems.FILLED_MAGIC_MAP) || stack.is(TFItems.FILLED_MAZE_MAP) || stack.is(TFItems.FILLED_ORE_MAP);
 	}
 
 	/**
@@ -303,7 +303,7 @@ public class ASMHooks {
 			for (int z = -1; z <= 1; z++) {
 				if (x == 0 && z == 0)
 					continue;
-				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL.value()))
+				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL))
 					return 0;
 			}
 		}
@@ -338,6 +338,6 @@ public class ASMHooks {
 	 */
 	public static boolean lead(boolean o, LeashFenceKnotEntity entity) {
 		BlockState fenceState = entity.level().getBlockState(entity.getPos());
-		return o || (fenceState.is(TFBlocks.WROUGHT_IRON_FENCE.value()) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE);
+		return o || (fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE);
 	}
 }

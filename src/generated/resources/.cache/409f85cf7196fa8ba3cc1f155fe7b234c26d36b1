@@ -1,4 +1,4 @@
-// 1.20.2	2023-12-04T20:37:44.331894	TwilightForest blockstates and block models
+// 1.20.3	2023-12-06T19:57:21.9314412	TwilightForest blockstates and block models
 cab88029518a1647ec691d136328ed93c18108be assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -729,7 +729,7 @@ fd36cd1548cbba7231909348555cf6e0c1a637f6 assets/twilightforest/models/block/holl
 8e755b90085f0ede1335dcb7999f59c03d8b1d32 assets/twilightforest/models/block/hollow_jungle_log_horizontal_snow.json
 001287c5ac8a7e6e85a22eace3549de3b6c68b32 assets/twilightforest/models/block/hollow_jungle_log_vertical.json
 10331fbaeae6bc37161a5f7cf26d0a65da22aa2d assets/twilightforest/models/block/hollow_log_moss.json
-b4d07dc18b0f201529a6462f3e40db4d6597f391 assets/twilightforest/models/block/hollow_log_moss_grass.json
+0cef86eda1ba2b35a27a4692775e2d92681cde37 assets/twilightforest/models/block/hollow_log_moss_grass.json
 6cc2b58eaeb777a62999bed87306d78659cb8a91 assets/twilightforest/models/block/hollow_log_snow.json
 c251aa0da85bcd4776de66ee170d675e9eda0495 assets/twilightforest/models/block/hollow_mangrove_log_climbable_ladder.json
 002ffb19f3b6cd50c75c1d004cba7752727a712e assets/twilightforest/models/block/hollow_mangrove_log_climbable_vine.json

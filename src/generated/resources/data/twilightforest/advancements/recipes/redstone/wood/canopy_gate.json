@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/canopy_gate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

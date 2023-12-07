@@ -32,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.GhastguardHomedFlightGoal;
@@ -116,7 +116,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.UR_GHAST_BOSS_SPAWNER.value().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -126,27 +126,27 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.UR_GHAST_AMBIENT.value();
+		return TFSounds.UR_GHAST_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.UR_GHAST_HURT.value();
+		return TFSounds.UR_GHAST_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.UR_GHAST_DEATH.value();
+		return TFSounds.UR_GHAST_DEATH.get();
 	}
 
 	@Override
 	public SoundEvent getFireSound() {
-		return TFSounds.UR_GHAST_SHOOT.value();
+		return TFSounds.UR_GHAST_SHOOT.get();
 	}
 
 	@Override
 	public SoundEvent getWarnSound() {
-		return TFSounds.UR_GHAST_WARN.value();
+		return TFSounds.UR_GHAST_WARN.get();
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 		} else {
 			if (this.isInTantrum() && !this.isDeadOrDying()) {
-				this.level().addParticle(TFParticleType.BOSS_TEAR.value(),
+				this.level().addParticle(TFParticleType.BOSS_TEAR.get(),
 						this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
 						this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 0.5D,
 						this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
@@ -281,7 +281,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		this.level().addFreshEntity(bolt);
 
 		for (int i = 0; i < tries; i++) {
-			CarminiteGhastling minion = TFEntities.CARMINITE_GHASTLING.value().create(this.level());
+			CarminiteGhastling minion = TFEntities.CARMINITE_GHASTLING.get().create(this.level());
 
 			double sx = x + ((this.getRandom().nextDouble() - this.getRandom().nextDouble()) * rangeXZ);
 			double sy = y + (this.getRandom().nextDouble() * rangeY);
@@ -314,7 +314,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 		if (this.tickCount % 60 == 0 && !this.getTrapLocations().isEmpty()) {
 			//validate traps positions are still actually usable traps. If not, remove them
-			this.getTrapLocations().removeIf(pos -> !this.level().getBlockState(pos).is(TFBlocks.GHAST_TRAP.value()) || !this.level().canSeeSky(pos.above()));
+			this.getTrapLocations().removeIf(pos -> !this.level().getBlockState(pos).is(TFBlocks.GHAST_TRAP) || !this.level().canSeeSky(pos.above()));
 		}
 
 		if (this.firstTick || this.tickCount % 100 == 0) {
@@ -330,7 +330,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 			// cry?
 			if (--this.nextTantrumCry <= 0) {
-				this.playSound(TFSounds.UR_GHAST_TANTRUM.value(), this.getSoundVolume(), this.getVoicePitch());
+				this.playSound(TFSounds.UR_GHAST_TANTRUM.get(), this.getSoundVolume(), this.getVoicePitch());
 				this.ambientSoundTime = -this.getAmbientSoundInterval();
 				this.nextTantrumCry = 20 + this.getRandom().nextInt(30);
 			}
@@ -365,7 +365,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 		for (Player player : this.level().getEntitiesOfClass(Player.class, below)) {
 			if (this.level().canSeeSkyFromBelowWater(player.blockPosition())) {
-				player.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.GHAST_TEAR, this, TFEntities.UR_GHAST.value()), 3);
+				player.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.GHAST_TEAR, this, TFEntities.UR_GHAST.get()), 3);
 			}
 		}
 
@@ -382,7 +382,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		int trapsWithEnoughGhasts = 0;
 
 		for (BlockPos trap : this.getTrapLocations()) {
-			AABB aabb = new AABB(trap, trap.offset(1, 1, 1)).inflate(8D, 16D, 8D);
+			AABB aabb = new AABB(trap.getCenter(), trap.offset(1, 1, 1).getCenter()).inflate(8D, 16D, 8D);
 
 			List<CarminiteGhastling> nearbyGhasts = this.level().getEntitiesOfClass(CarminiteGhastling.class, aabb);
 
@@ -488,7 +488,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 			IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.DARK_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
+				TFAdvancements.HURT_BOSS.get().trigger(player, this);
 			}
 
 			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
@@ -561,7 +561,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	@Override
 	public void remove(RemovalReason reason) {
 		if (reason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
-			IBossLootBuffer.depositDropsIntoChest(this, TFBlocks.DARK_CHEST.value().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
+			IBossLootBuffer.depositDropsIntoChest(this, TFBlocks.DARK_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 		super.remove(reason);
 	}

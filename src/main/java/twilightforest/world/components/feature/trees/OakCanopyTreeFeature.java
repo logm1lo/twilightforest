@@ -46,7 +46,7 @@ public class OakCanopyTreeFeature extends CanopyTreeFeature {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.CANOPY_SAPLING.value())) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.CANOPY_SAPLING.get())) {
 			return false;
 		}
 
@@ -117,7 +117,7 @@ public class OakCanopyTreeFeature extends CanopyTreeFeature {
 				bugPos.set(pos.offset(direction == Direction.EAST ? 1 : 0, rand.nextInt(treeHeight) / 2 + 10, direction == Direction.SOUTH ? 1 : 0));
 				bugPos.move(direction).move(axis == Direction.Axis.Z ? rand.nextInt(2) : 0, 0, axis == Direction.Axis.X ? rand.nextInt(2) : 0);
 				if (!world.getBlockState(bugPos).isSolidRender(world, bugPos)) {
-					BlockState bugState = TFBlocks.FIREFLY.value().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
+					BlockState bugState = TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
 					this.setBlock(world, bugPos, bugState);
 				}
 			}

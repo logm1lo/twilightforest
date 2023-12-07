@@ -6,7 +6,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.ghast_trap.desc",
       "with": [
@@ -21,12 +20,9 @@
         }
       ]
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:ghast_trap"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.ghast_trap"
     }

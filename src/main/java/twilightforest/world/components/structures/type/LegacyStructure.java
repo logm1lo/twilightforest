@@ -39,7 +39,7 @@ public class LegacyStructure extends ControlledSpawningStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.LEGACY_LANDMARK.value();
+        return TFStructureTypes.LEGACY_LANDMARK.get();
     }
 
     public TFLandmark getFeatureType() {

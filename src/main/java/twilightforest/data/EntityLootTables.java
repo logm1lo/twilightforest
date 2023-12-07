@@ -43,81 +43,81 @@ public class EntityLootTables extends EntityLootSubProvider {
 
 	@Override
 	public void generate() {
-		add(TFEntities.ADHERENT.value(), emptyLootTable());
-		add(TFEntities.LICH_MINION.value(), emptyLootTable());
-		add(TFEntities.LOYAL_ZOMBIE.value(), emptyLootTable());
-		add(TFEntities.KNIGHT_PHANTOM.value(), emptyLootTable());
+		add(TFEntities.ADHERENT.get(), emptyLootTable());
+		add(TFEntities.LICH_MINION.get(), emptyLootTable());
+		add(TFEntities.LOYAL_ZOMBIE.get(), emptyLootTable());
+		add(TFEntities.KNIGHT_PHANTOM.get(), emptyLootTable());
 		//haha no loot for you
-		add(TFEntities.PLATEAU_BOSS.value(), emptyLootTable());
-		add(TFEntities.HARBINGER_CUBE.value(), emptyLootTable());
-		add(TFEntities.MOSQUITO_SWARM.value(), emptyLootTable());
-		add(TFEntities.PINCH_BEETLE.value(), emptyLootTable());
-		add(TFEntities.QUEST_RAM.value(), emptyLootTable());
-		add(TFEntities.ROVING_CUBE.value(), emptyLootTable());
-		add(TFEntities.SQUIRREL.value(), emptyLootTable());
-		add(TFEntities.DWARF_RABBIT.value(), fromEntityLootTable(EntityType.RABBIT));
-		add(TFEntities.HEDGE_SPIDER.value(), fromEntityLootTable(EntityType.SPIDER));
-		add(TFEntities.FIRE_BEETLE.value(), fromEntityLootTable(EntityType.CREEPER));
-		add(TFEntities.HOSTILE_WOLF.value(), fromEntityLootTable(EntityType.WOLF));
-		add(TFEntities.KING_SPIDER.value(), fromEntityLootTable(EntityType.SPIDER));
-		add(TFEntities.MIST_WOLF.value(), fromEntityLootTable(EntityType.WOLF));
-		add(TFEntities.REDCAP_SAPPER.value(), fromEntityLootTable(TFEntities.REDCAP.value()));
-		add(TFEntities.SWARM_SPIDER.value(), fromEntityLootTable(EntityType.SPIDER));
-		add(TFEntities.CARMINITE_BROODLING.value(), fromEntityLootTable(EntityType.SPIDER));
-		add(TFEntities.CARMINITE_GHASTGUARD.value(), fromEntityLootTable(EntityType.GHAST));
-		add(TFEntities.BIGHORN_SHEEP.value(), fromEntityLootTable(EntityType.SHEEP));
-		add(TFEntities.RISING_ZOMBIE.value(), fromEntityLootTable(EntityType.ZOMBIE));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_CYAN, sheepLootTableBuilderWithDrop(Blocks.CYAN_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_GRAY, sheepLootTableBuilderWithDrop(Blocks.GRAY_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_GREEN, sheepLootTableBuilderWithDrop(Blocks.GREEN_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_LIGHT_BLUE, sheepLootTableBuilderWithDrop(Blocks.LIGHT_BLUE_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_LIGHT_GRAY, sheepLootTableBuilderWithDrop(Blocks.LIGHT_GRAY_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_LIME, sheepLootTableBuilderWithDrop(Blocks.LIME_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_MAGENTA, sheepLootTableBuilderWithDrop(Blocks.MAGENTA_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_ORANGE, sheepLootTableBuilderWithDrop(Blocks.ORANGE_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_PINK, sheepLootTableBuilderWithDrop(Blocks.PINK_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_PURPLE, sheepLootTableBuilderWithDrop(Blocks.PURPLE_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_RED, sheepLootTableBuilderWithDrop(Blocks.RED_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_WHITE, sheepLootTableBuilderWithDrop(Blocks.WHITE_WOOL));
-		add(TFEntities.BIGHORN_SHEEP.value(), TFLootTables.BIGHORN_SHEEP_YELLOW, sheepLootTableBuilderWithDrop(Blocks.YELLOW_WOOL));
+		add(TFEntities.PLATEAU_BOSS.get(), emptyLootTable());
+		add(TFEntities.HARBINGER_CUBE.get(), emptyLootTable());
+		add(TFEntities.MOSQUITO_SWARM.get(), emptyLootTable());
+		add(TFEntities.PINCH_BEETLE.get(), emptyLootTable());
+		add(TFEntities.QUEST_RAM.get(), emptyLootTable());
+		add(TFEntities.ROVING_CUBE.get(), emptyLootTable());
+		add(TFEntities.SQUIRREL.get(), emptyLootTable());
+		add(TFEntities.DWARF_RABBIT.get(), fromEntityLootTable(EntityType.RABBIT));
+		add(TFEntities.HEDGE_SPIDER.get(), fromEntityLootTable(EntityType.SPIDER));
+		add(TFEntities.FIRE_BEETLE.get(), fromEntityLootTable(EntityType.CREEPER));
+		add(TFEntities.HOSTILE_WOLF.get(), fromEntityLootTable(EntityType.WOLF));
+		add(TFEntities.KING_SPIDER.get(), fromEntityLootTable(EntityType.SPIDER));
+		add(TFEntities.MIST_WOLF.get(), fromEntityLootTable(EntityType.WOLF));
+		add(TFEntities.REDCAP_SAPPER.get(), fromEntityLootTable(TFEntities.REDCAP.get()));
+		add(TFEntities.SWARM_SPIDER.get(), fromEntityLootTable(EntityType.SPIDER));
+		add(TFEntities.CARMINITE_BROODLING.get(), fromEntityLootTable(EntityType.SPIDER));
+		add(TFEntities.CARMINITE_GHASTGUARD.get(), fromEntityLootTable(EntityType.GHAST));
+		add(TFEntities.BIGHORN_SHEEP.get(), fromEntityLootTable(EntityType.SHEEP));
+		add(TFEntities.RISING_ZOMBIE.get(), fromEntityLootTable(EntityType.ZOMBIE));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_CYAN, sheepLootTableBuilderWithDrop(Blocks.CYAN_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_GRAY, sheepLootTableBuilderWithDrop(Blocks.GRAY_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_GREEN, sheepLootTableBuilderWithDrop(Blocks.GREEN_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_LIGHT_BLUE, sheepLootTableBuilderWithDrop(Blocks.LIGHT_BLUE_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_LIGHT_GRAY, sheepLootTableBuilderWithDrop(Blocks.LIGHT_GRAY_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_LIME, sheepLootTableBuilderWithDrop(Blocks.LIME_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_MAGENTA, sheepLootTableBuilderWithDrop(Blocks.MAGENTA_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_ORANGE, sheepLootTableBuilderWithDrop(Blocks.ORANGE_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_PINK, sheepLootTableBuilderWithDrop(Blocks.PINK_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_PURPLE, sheepLootTableBuilderWithDrop(Blocks.PURPLE_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_RED, sheepLootTableBuilderWithDrop(Blocks.RED_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_WHITE, sheepLootTableBuilderWithDrop(Blocks.WHITE_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_YELLOW, sheepLootTableBuilderWithDrop(Blocks.YELLOW_WOOL));
 
-		add(TFEntities.ARMORED_GIANT.value(),
+		add(TFEntities.ARMORED_GIANT.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.GIANT_SWORD.value()))
+								.add(LootItem.lootTableItem(TFItems.GIANT_SWORD.get()))
 								.when(LootItemKilledByPlayerCondition.killedByPlayer())));
 
-		add(TFEntities.GIANT_MINER.value(),
+		add(TFEntities.GIANT_MINER.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.GIANT_PICKAXE.value()))
+								.add(LootItem.lootTableItem(TFItems.GIANT_PICKAXE.get()))
 								.when(LootItemKilledByPlayerCondition.killedByPlayer())));
 
-		add(TFEntities.BLOCKCHAIN_GOBLIN.value(),
+		add(TFEntities.BLOCKCHAIN_GOBLIN.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.ARMOR_SHARD.value())
+								.add(LootItem.lootTableItem(TFItems.ARMOR_SHARD.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.CARMINITE_GHASTLING.value(),
+		add(TFEntities.CARMINITE_GHASTLING.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootTableReference.lootTableReference(EntityType.GHAST.getDefaultLootTable()))
 								.when(IsMinionCondition.builder(true))));
 
-		/*registerLootTable(TFEntities.BOGGARD.value(),
+		/*registerLootTable(TFEntities.BOGGARD.get(),
 				LootTable.builder()
 						.addLootPool(LootPool.builder()
 								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.MAZE_MAP_FOCUS.value())
+								.addEntry(ItemLootEntry.builder(TFItems.MAZE_MAP_FOCUS.get())
 										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(1.0F, 1.0F))))
 								.acceptCondition(RandomChance.builder(0.2F)))
 						.addLootPool(LootPool.builder()
@@ -131,7 +131,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(1.0F, 1.0F))))
 								.acceptCondition(RandomChance.builder(0.1111F))));*/
 
-		add(TFEntities.BOAR.value(),
+		add(TFEntities.BOAR.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -144,11 +144,11 @@ public class EntityLootTables extends EntityLootSubProvider {
 												.when(LootItemRandomChanceCondition.randomChance(0.002F))
 												.when(LootItemKilledByPlayerCondition.killedByPlayer())))));
 
-		add(TFEntities.HELMET_CRAB.value(),
+		add(TFEntities.HELMET_CRAB.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.ARMOR_SHARD.value())
+								.add(LootItem.lootTableItem(TFItems.ARMOR_SHARD.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
@@ -160,23 +160,23 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
 								.when((LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.5F, 0.1F)))));
 
-		add(TFEntities.UPPER_GOBLIN_KNIGHT.value(),
+		add(TFEntities.UPPER_GOBLIN_KNIGHT.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.ARMOR_SHARD.value())
+								.add(LootItem.lootTableItem(TFItems.ARMOR_SHARD.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.LOWER_GOBLIN_KNIGHT.value(),
+		add(TFEntities.LOWER_GOBLIN_KNIGHT.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.ARMOR_SHARD.value())
+								.add(LootItem.lootTableItem(TFItems.ARMOR_SHARD.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.WRAITH.value(),
+		add(TFEntities.WRAITH.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -184,7 +184,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.REDCAP.value(),
+		add(TFEntities.REDCAP.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -192,31 +192,23 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.YETI.value(),
+		add(TFEntities.YETI.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.ARCTIC_FUR.value())
+								.add(LootItem.lootTableItem(TFItems.ARCTIC_FUR.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.WINTER_WOLF.value(),
+		add(TFEntities.WINTER_WOLF.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.ARCTIC_FUR.value())
+								.add(LootItem.lootTableItem(TFItems.ARCTIC_FUR.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.TINY_BIRD.value(),
-				LootTable.lootTable()
-						.withPool(LootPool.lootPool()
-								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(Items.FEATHER)
-										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
-
-		add(TFEntities.PENGUIN.value(),
+		add(TFEntities.TINY_BIRD.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -224,7 +216,15 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.ICE_CRYSTAL.value(),
+		add(TFEntities.PENGUIN.get(),
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.FEATHER)
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
+
+		add(TFEntities.ICE_CRYSTAL.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -232,7 +232,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.UNSTABLE_ICE_CORE.value(),
+		add(TFEntities.UNSTABLE_ICE_CORE.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -240,7 +240,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.STABLE_ICE_CORE.value(),
+		add(TFEntities.STABLE_ICE_CORE.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -248,7 +248,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.SNOW_GUARDIAN.value(),
+		add(TFEntities.SNOW_GUARDIAN.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -256,23 +256,23 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.RAVEN.value(),
+		add(TFEntities.RAVEN.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.RAVEN_FEATHER.value())
+								.add(LootItem.lootTableItem(TFItems.RAVEN_FEATHER.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.TOWERWOOD_BORER.value(),
+		add(TFEntities.TOWERWOOD_BORER.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.BORER_ESSENCE.value())
+								.add(LootItem.lootTableItem(TFItems.BORER_ESSENCE.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.SKELETON_DRUID.value(),
+		add(TFEntities.SKELETON_DRUID.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -281,11 +281,11 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.TORCHBERRIES.value())
+								.add(LootItem.lootTableItem(TFItems.TORCHBERRIES.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.DEER.value(),
+		add(TFEntities.DEER.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -294,13 +294,13 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.RAW_VENISON.value())
+								.add(LootItem.lootTableItem(TFItems.RAW_VENISON.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
 										.apply(SmeltItemFunction.smelted()
 												.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.KOBOLD.value(),
+		add(TFEntities.KOBOLD.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -314,7 +314,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
 								.when(LootItemKilledByPlayerCondition.killedByPlayer())));
 
-		add(TFEntities.MAZE_SLIME.value(),
+		add(TFEntities.MAZE_SLIME.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -323,24 +323,24 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1.value()))
+								.add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1.get()))
 								.when((LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.015F, 0.005F)))));
 
-		add(TFEntities.MINOTAUR.value(),
+		add(TFEntities.MINOTAUR.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.RAW_MEEF.value())
+								.add(LootItem.lootTableItem(TFItems.RAW_MEEF.get())
 										.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
 										.apply(SmeltItemFunction.smelted()
 												.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS.value()))
+								.add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS.get()))
 								.when((LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.01F)))));
 
-		add(TFEntities.CARMINITE_GOLEM.value(),
+		add(TFEntities.CARMINITE_GOLEM.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -349,11 +349,11 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFBlocks.TOWERWOOD.value()))
+								.add(LootItem.lootTableItem(TFBlocks.TOWERWOOD.get()))
 								.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 								.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))));
 
-		add(TFEntities.SLIME_BEETLE.value(),
+		add(TFEntities.SLIME_BEETLE.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1.0F))
@@ -361,14 +361,14 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
-		add(TFEntities.TROLL.value(),
+		add(TFEntities.TROLL.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.MAGIC_BEANS.value()))
+								.add(LootItem.lootTableItem(TFItems.MAGIC_BEANS.get()))
 								.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.01F))));
 
-		add(TFEntities.DEATH_TOME.value(),
+		add(TFEntities.DEATH_TOME.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -382,16 +382,16 @@ public class EntityLootTables extends EntityLootSubProvider {
 						.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 								.when(LootItemKilledByPlayerCondition.killedByPlayer())
 								.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.005F))
-								.add(LootItem.lootTableItem(TFItems.MAGIC_MAP_FOCUS.value()))));
+								.add(LootItem.lootTableItem(TFItems.MAGIC_MAP_FOCUS.get()))));
 
-		add(TFEntities.DEATH_TOME.value(), TFLootTables.DEATH_TOME_HURT,
+		add(TFEntities.DEATH_TOME.get(), TFLootTables.DEATH_TOME_HURT,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootTableReference.lootTableReference(BuiltInLootTables.EMPTY))
 								.add(LootItem.lootTableItem(Items.PAPER))));
 
-		add(TFEntities.DEATH_TOME.value(), TFLootTables.DEATH_TOME_BOOKS,
+		add(TFEntities.DEATH_TOME.get(), TFLootTables.DEATH_TOME_BOOKS,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -404,25 +404,25 @@ public class EntityLootTables extends EntityLootSubProvider {
 								.add(LootItem.lootTableItem(Items.BOOK).setWeight(1)
 										.apply(EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(31, 40))))));
 
-		add(TFEntities.NAGA.value(),
+		add(TFEntities.NAGA.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.NAGA_SCALE.value())
+								.add(LootItem.lootTableItem(TFItems.NAGA_SCALE.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 11)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFBlocks.NAGA_TROPHY.value().asItem()))));
+								.add(LootItem.lootTableItem(TFBlocks.NAGA_TROPHY.get().asItem()))));
 
-		add(TFEntities.LICH.value(),
+		add(TFEntities.LICH.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.TWILIGHT_SCEPTER.value()))
-								.add(LootItem.lootTableItem(TFItems.LIFEDRAIN_SCEPTER.value()))
-								.add(LootItem.lootTableItem(TFItems.ZOMBIE_SCEPTER.value()))
-								.add(LootItem.lootTableItem(TFItems.FORTIFICATION_SCEPTER.value())))
+								.add(LootItem.lootTableItem(TFItems.TWILIGHT_SCEPTER.get()))
+								.add(LootItem.lootTableItem(TFItems.LIFEDRAIN_SCEPTER.get()))
+								.add(LootItem.lootTableItem(TFItems.ZOMBIE_SCEPTER.get()))
+								.add(LootItem.lootTableItem(TFItems.FORTIFICATION_SCEPTER.get())))
 						.withPool(LootPool.lootPool()
 								.setRolls(UniformGenerator.between(2, 4))
 								.add(LootItem.lootTableItem(Items.GOLDEN_SWORD)
@@ -447,75 +447,75 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFBlocks.LICH_TROPHY.value().asItem()))));
+								.add(LootItem.lootTableItem(TFBlocks.LICH_TROPHY.get().asItem()))));
 
-		add(TFEntities.MINOSHROOM.value(),
+		add(TFEntities.MINOSHROOM.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(UniformGenerator.between(2, 5))
-								.add(LootItem.lootTableItem(TFItems.MEEF_STROGANOFF.value())
+								.add(LootItem.lootTableItem(TFItems.MEEF_STROGANOFF.get())
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFBlocks.MINOSHROOM_TROPHY.value().asItem())))
+								.add(LootItem.lootTableItem(TFBlocks.MINOSHROOM_TROPHY.get().asItem())))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.DIAMOND_MINOTAUR_AXE.value()))));
+								.add(LootItem.lootTableItem(TFItems.DIAMOND_MINOTAUR_AXE.get()))));
 
-		add(TFEntities.HYDRA.value(),
+		add(TFEntities.HYDRA.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.HYDRA_CHOP.value())
+								.add(LootItem.lootTableItem(TFItems.HYDRA_CHOP.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 35)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.FIERY_BLOOD.value())
+								.add(LootItem.lootTableItem(TFItems.FIERY_BLOOD.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(7, 10)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 2)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFBlocks.HYDRA_TROPHY.value().asItem()))));
+								.add(LootItem.lootTableItem(TFBlocks.HYDRA_TROPHY.get().asItem()))));
 
-		add(TFEntities.UR_GHAST.value(),
+		add(TFEntities.UR_GHAST.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(4))
-								.add(LootItem.lootTableItem(TFItems.CARMINITE.value())
+								.add(LootItem.lootTableItem(TFItems.CARMINITE.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(2))
-								.add(LootItem.lootTableItem(TFItems.FIERY_TEARS.value())
+								.add(LootItem.lootTableItem(TFItems.FIERY_TEARS.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFBlocks.UR_GHAST_TROPHY.value().asItem()))));
+								.add(LootItem.lootTableItem(TFBlocks.UR_GHAST_TROPHY.get().asItem()))));
 
-		add(TFEntities.ALPHA_YETI.value(),
+		add(TFEntities.ALPHA_YETI.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.ALPHA_YETI_FUR.value())
+								.add(LootItem.lootTableItem(TFItems.ALPHA_YETI_FUR.get())
 										.apply(SetItemCountFunction.setCount(ConstantValue.exactly(6)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.ICE_BOMB.value())
+								.add(LootItem.lootTableItem(TFItems.ICE_BOMB.get())
 										.apply(SetItemCountFunction.setCount(ConstantValue.exactly(6)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFBlocks.ALPHA_YETI_TROPHY.value().asItem()))));
+								.add(LootItem.lootTableItem(TFBlocks.ALPHA_YETI_TROPHY.get().asItem()))));
 
-		add(TFEntities.SNOW_QUEEN.value(),
+		add(TFEntities.SNOW_QUEEN.get(),
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.TRIPLE_BOW.value()))
-								.add(LootItem.lootTableItem(TFItems.SEEKER_BOW.value())))
+								.add(LootItem.lootTableItem(TFItems.TRIPLE_BOW.get()))
+								.add(LootItem.lootTableItem(TFItems.SEEKER_BOW.get())))
 						.withPool(LootPool.lootPool()
 								.setRolls(UniformGenerator.between(1, 4))
 								.add(LootItem.lootTableItem(Blocks.PACKED_ICE.asItem())
@@ -527,13 +527,13 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(ConstantValue.exactly(16)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFBlocks.SNOW_QUEEN_TROPHY.value().asItem()))));
+								.add(LootItem.lootTableItem(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem()))));
 
-		add(TFEntities.QUEST_RAM.value(), TFLootTables.QUESTING_RAM_REWARDS,
+		add(TFEntities.QUEST_RAM.get(), TFLootTables.QUESTING_RAM_REWARDS,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFItems.CRUMBLE_HORN.value())))
+								.add(LootItem.lootTableItem(TFItems.CRUMBLE_HORN.get())))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.BUNDLE)
@@ -541,14 +541,14 @@ public class EntityLootTables extends EntityLootSubProvider {
 											ListTag items = new ListTag();
 
 											// Do NOT overstuff the bag.
-											items.add(new ItemStack(TFBlocks.QUEST_RAM_TROPHY.value()).serializeNBT());
-											items.add(new ItemStack(Blocks.COAL_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.IRON_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.COPPER_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.LAPIS_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.GOLD_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.DIAMOND_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.EMERALD_BLOCK).serializeNBT());
+											items.add(new ItemStack(TFBlocks.QUEST_RAM_TROPHY.get()).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.COAL_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.IRON_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.COPPER_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.LAPIS_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.GOLD_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.DIAMOND_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.EMERALD_BLOCK).save(new CompoundTag()));
 
 											nbt.put("Items", items);
 										}))))));

@@ -11,6 +11,6 @@ public class TFPOITypes {
 
 	public static final DeferredRegister<PoiType> POIS = DeferredRegister.create(Registries.POINT_OF_INTEREST_TYPE, TwilightForestMod.ID);
 
-	public static final DeferredHolder<PoiType, PoiType> GHAST_TRAP = POIS.register("ghast_trap", () -> new PoiType(ImmutableSet.copyOf(TFBlocks.GHAST_TRAP.value().getStateDefinition().getPossibleStates()), 0, 1));
+	public static final DeferredHolder<PoiType, PoiType> GHAST_TRAP = POIS.register("ghast_trap", () -> new PoiType(ImmutableSet.copyOf(TFBlocks.GHAST_TRAP.get().getStateDefinition().getPossibleStates()), 0, 1));
 
 }

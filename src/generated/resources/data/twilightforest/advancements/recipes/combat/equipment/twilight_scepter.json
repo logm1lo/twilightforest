@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:equipment/twilight_scepter"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

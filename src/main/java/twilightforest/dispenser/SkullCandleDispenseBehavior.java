@@ -62,24 +62,24 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 			switch (type) {
 
 				case SKELETON -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.SKELETON_WALL_SKULL_CANDLE.value(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.SKELETON_SKULL_CANDLE.value(), candle);
+					if (wall) makeWallSkull(level, pos, TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), candle);
+					else makeFloorSkull(level, pos, TFBlocks.SKELETON_SKULL_CANDLE.get(), candle);
 				}
 				case WITHER_SKELETON -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.value(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.WITHER_SKELE_SKULL_CANDLE.value(), candle);
+					if (wall) makeWallSkull(level, pos, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), candle);
+					else makeFloorSkull(level, pos, TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), candle);
 				}
 				case PLAYER -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.PLAYER_WALL_SKULL_CANDLE.value(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.PLAYER_SKULL_CANDLE.value(), candle);
+					if (wall) makeWallSkull(level, pos, TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), candle);
+					else makeFloorSkull(level, pos, TFBlocks.PLAYER_SKULL_CANDLE.get(), candle);
 				}
 				case ZOMBIE -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.value(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.ZOMBIE_SKULL_CANDLE.value(), candle);
+					if (wall) makeWallSkull(level, pos, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), candle);
+					else makeFloorSkull(level, pos, TFBlocks.ZOMBIE_SKULL_CANDLE.get(), candle);
 				}
 				case CREEPER -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.CREEPER_WALL_SKULL_CANDLE.value(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.CREEPER_SKULL_CANDLE.value(), candle);
+					if (wall) makeWallSkull(level, pos, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), candle);
+					else makeFloorSkull(level, pos, TFBlocks.CREEPER_SKULL_CANDLE.get(), candle);
 				}
 				default -> {
 					return false;

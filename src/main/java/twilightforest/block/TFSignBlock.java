@@ -9,8 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TFSignBlockEntity;
 
 public class TFSignBlock extends StandingSignBlock {
-	public TFSignBlock(Properties properties, WoodType type) {
-		super(properties, type);
+	public TFSignBlock(WoodType type, Properties properties) {
+		super(type, properties);
 	}
 
 	@Nullable

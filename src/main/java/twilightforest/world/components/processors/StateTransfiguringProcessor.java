@@ -46,6 +46,6 @@ public class StateTransfiguringProcessor extends StructureProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return TFStructureProcessors.STATE_TRANSFIGURING.value();
+        return TFStructureProcessors.STATE_TRANSFIGURING.get();
     }
 }

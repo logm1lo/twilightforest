@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:giant_obsidian_to_obsidian"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:material/blasted_ironwood_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

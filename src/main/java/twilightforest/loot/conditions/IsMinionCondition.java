@@ -17,7 +17,7 @@ public record IsMinionCondition(boolean inverse) implements LootItemCondition {
 
 	@Override
 	public LootItemConditionType getType() {
-		return TFLoot.IS_MINION.value();
+		return TFLoot.IS_MINION.get();
 	}
 
 	@Override

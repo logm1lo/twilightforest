@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/transformation_door"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

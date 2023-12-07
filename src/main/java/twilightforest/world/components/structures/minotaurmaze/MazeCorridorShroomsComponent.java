@@ -19,11 +19,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeCorridorShroomsComponent extends MazeCorridorComponent {
 
 	public MazeCorridorShroomsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMCS.value(), nbt);
+		super(TFStructurePieceTypes.TFMMCS.get(), nbt);
 	}
 
 	public MazeCorridorShroomsComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMCS.value(), i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMCS.get(), i, x, y, z, rotation);
 	}
 
 	@Override

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/mossy_castle_brick/thick_castle_brick"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

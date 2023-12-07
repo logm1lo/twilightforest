@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:maze_stone/smelted_maze_stone_cracked"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

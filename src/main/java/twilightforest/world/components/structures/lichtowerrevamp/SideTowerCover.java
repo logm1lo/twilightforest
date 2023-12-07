@@ -35,7 +35,7 @@ public final class SideTowerCover extends TwilightTemplateStructurePiece {
     private final int thickness = 2;
 
     public SideTowerCover(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.value(), compoundTag, ctx, readSettings(compoundTag));
+        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.get(), compoundTag, ctx, readSettings(compoundTag));
         this.width = compoundTag.getInt("width");
     }
 
@@ -44,7 +44,7 @@ public final class SideTowerCover extends TwilightTemplateStructurePiece {
     }
 
     private SideTowerCover(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int width) {
-        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.value(), 0, structureManager, templateLocation, placeSettings, startPosition);
+        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.get(), 0, structureManager, templateLocation, placeSettings, startPosition);
         this.width = width;
     }
 

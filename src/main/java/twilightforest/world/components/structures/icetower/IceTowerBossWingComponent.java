@@ -16,13 +16,13 @@ import twilightforest.init.TFStructurePieceTypes;
 public class IceTowerBossWingComponent extends IceTowerWingComponent {
 
 	public IceTowerBossWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFITBoss.value(), nbt);
+		super(TFStructurePieceTypes.TFITBoss.get(), nbt);
 		// no spawns
 		this.spawnListIndex = -1;
 	}
 
 	public IceTowerBossWingComponent(int index, int x, int y, int z, int wingSize, int wingHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFITBoss.value(), index, x, y, z, wingSize, wingHeight, direction);
+		super(TFStructurePieceTypes.TFITBoss.get(), index, x, y, z, wingSize, wingHeight, direction);
 		// no spawns
 		this.spawnListIndex = -1;
 	}
@@ -91,7 +91,7 @@ public class IceTowerBossWingComponent extends IceTowerWingComponent {
 			}
 		}
 
-		final BlockState snowQueenSpawner = TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.value().defaultBlockState();
+		final BlockState snowQueenSpawner = TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get().defaultBlockState();
 
 		this.setBlockStateRotated(world, snowQueenSpawner, 7, top - 6, 7, Rotation.NONE, sbb);
 

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:material/carminite"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

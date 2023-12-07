@@ -35,6 +35,5 @@
     "recipes": [
       "twilightforest:uncrafting_table"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

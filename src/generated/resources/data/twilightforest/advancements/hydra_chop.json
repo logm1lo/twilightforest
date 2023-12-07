@@ -6,7 +6,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.hydra_chop.desc",
       "with": [
@@ -15,12 +14,9 @@
         }
       ]
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:hydra_chop"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.hydra_chop"
     }

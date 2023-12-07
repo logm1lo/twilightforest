@@ -58,7 +58,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			return INSTANCE.get();
 		}
 	});
-	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.value().defaultBlockState());
+	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState());
 	private final Map<Block, TFChestBlockEntity> chestEntities = Util.make(new HashMap<>(), map -> {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
 		makeInstance(map, TFBlocks.CANOPY_CHEST);
@@ -82,7 +82,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 	private Map<BossVariant, GenericTrophyModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
 	private Map<SkullBlock.Type, SkullModelBase> skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
-	private final CandelabraBlockEntity candelabra = new CandelabraBlockEntity(BlockPos.ZERO, TFBlocks.CANDELABRA.value().defaultBlockState());
+	private final CandelabraBlockEntity candelabra = new CandelabraBlockEntity(BlockPos.ZERO, TFBlocks.CANDELABRA.get().defaultBlockState());
 
 	// Use the cached INSTANCE.get instead
 	private ISTER() {
@@ -163,7 +163,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			} else if (block instanceof CandelabraBlock) {
 				//we need to render the candelabra block here since we have to use builtin/entity on the item.
 				//This doesnt allow us to set the item parent to the candelabra block, and without it, only the candles render, if any
-				Minecraft.getInstance().getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.value().defaultBlockState(), ms, buffers, light, overlay);
+				Minecraft.getInstance().getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.get().defaultBlockState(), ms, buffers, light, overlay);
 				CompoundTag tag = BlockItem.getBlockEntityData(stack);
 				if (tag != null && tag.contains("Candles")) {
 					CandelabraBlockEntity copy = this.candelabra;
@@ -179,7 +179,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		} else if (item instanceof KnightmetalShieldItem) {
 			ms.pushPose();
 			ms.scale(1.0F, -1.0F, -1.0F);
-			Material material = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(TwilightForestMod.ID, "model/knightmetal_shield"));
+			Material material = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(TwilightForestMod.ID, "entity/knightmetal_shield"));
 			VertexConsumer vertexconsumer = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(buffers, this.shield.renderType(material.atlasLocation()), true, stack.hasFoil()));
 			this.shield.renderToBuffer(ms, vertexconsumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
 			ms.popPose();
@@ -187,12 +187,12 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	}
 
 	public static void makeInstance(Map<Block, TFChestBlockEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
-		ChestBlock block = registryObject.value();
+		ChestBlock block = registryObject.get();
 		map.put(block, new TFChestBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
 	}
 
 	public static void makeTrappedInstance(Map<Block, TFTrappedChestBlockEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
-		ChestBlock block = registryObject.value();
+		ChestBlock block = registryObject.get();
 		map.put(block, new TFTrappedChestBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
 	}
 }

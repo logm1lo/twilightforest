@@ -16,7 +16,7 @@ import twilightforest.init.TFParticleType;
 public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	public LichSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.LICH_SPAWNER.value(), TFEntities.LICH.value(), pos, state);
+		super(TFBlockEntities.LICH_SPAWNER.get(), TFEntities.LICH.get(), pos, state);
 	}
 
 	@Override
@@ -44,6 +44,6 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	@Override
 	public ParticleOptions getSpawnerParticle() {
-		return TFParticleType.OMINOUS_FLAME.value();
+		return TFParticleType.OMINOUS_FLAME.get();
 	}
 }

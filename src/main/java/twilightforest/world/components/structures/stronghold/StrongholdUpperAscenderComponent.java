@@ -24,12 +24,12 @@ public class StrongholdUpperAscenderComponent extends KnightStrongholdComponent 
 	boolean exitTop;
 
 	public StrongholdUpperAscenderComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSUA.value(), nbt);
+		super(TFStructurePieceTypes.TFSUA.get(), nbt);
 		this.exitTop = nbt.getBoolean("exitTop");
 	}
 
 	public StrongholdUpperAscenderComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSUA.value(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSUA.get(), i, facing, x, y, z);
 	}
 
 	@Override

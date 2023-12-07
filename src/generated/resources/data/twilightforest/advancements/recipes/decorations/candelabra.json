@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:candelabra"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -18,49 +18,49 @@ public enum TwilightArmorMaterial implements ArmorMaterial {
 		map.put(ArmorItem.Type.LEGGINGS, 6);
 		map.put(ArmorItem.Type.CHESTPLATE, 7);
 		map.put(ArmorItem.Type.HELMET, 2);
-	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0.5F, () -> Ingredient.of(TFItems.NAGA_SCALE.value())),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0.5F, () -> Ingredient.of(TFItems.NAGA_SCALE.get())),
 	ARMOR_IRONWOOD("ironwood", 20, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 2);
 		map.put(ArmorItem.Type.LEGGINGS, 5);
 		map.put(ArmorItem.Type.CHESTPLATE, 7);
 		map.put(ArmorItem.Type.HELMET, 2);
-	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0F, () -> Ingredient.of(TFItems.IRONWOOD_INGOT.value())),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0F, () -> Ingredient.of(TFItems.IRONWOOD_INGOT.get())),
 	ARMOR_FIERY("fiery", 25, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 4);
 		map.put(ArmorItem.Type.LEGGINGS, 7);
 		map.put(ArmorItem.Type.CHESTPLATE, 9);
 		map.put(ArmorItem.Type.HELMET, 4);
-	}), 10, SoundEvents.ARMOR_EQUIP_GENERIC, 1.5F, () -> Ingredient.of(TFItems.FIERY_INGOT.value())),
+	}), 10, SoundEvents.ARMOR_EQUIP_GENERIC, 1.5F, () -> Ingredient.of(TFItems.FIERY_INGOT.get())),
 	ARMOR_STEELEAF("steeleaf", 10, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 3);
 		map.put(ArmorItem.Type.LEGGINGS, 6);
 		map.put(ArmorItem.Type.CHESTPLATE, 8);
 		map.put(ArmorItem.Type.HELMET, 3);
-	}), 9, SoundEvents.ARMOR_EQUIP_GENERIC, 0F, () -> Ingredient.of(TFItems.STEELEAF_INGOT.value())),
+	}), 9, SoundEvents.ARMOR_EQUIP_GENERIC, 0F, () -> Ingredient.of(TFItems.STEELEAF_INGOT.get())),
 	ARMOR_KNIGHTLY("knightly", 20, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 3);
 		map.put(ArmorItem.Type.LEGGINGS, 6);
 		map.put(ArmorItem.Type.CHESTPLATE, 8);
 		map.put(ArmorItem.Type.HELMET, 3);
-	}), 8, TFSounds.KNIGHTMETAL_EQUIP.value(), 1.0F, () -> Ingredient.of(TFItems.KNIGHTMETAL_INGOT.value())),
+	}), 8, TFSounds.KNIGHTMETAL_EQUIP.get(), 1.0F, () -> Ingredient.of(TFItems.KNIGHTMETAL_INGOT.get())),
 	ARMOR_PHANTOM("phantom", 30, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 3);
 		map.put(ArmorItem.Type.LEGGINGS, 6);
 		map.put(ArmorItem.Type.CHESTPLATE, 8);
 		map.put(ArmorItem.Type.HELMET, 3);
-	}), 8, SoundEvents.ARMOR_EQUIP_GENERIC, 2.5F, () -> Ingredient.of(TFItems.KNIGHTMETAL_INGOT.value())),
+	}), 8, SoundEvents.ARMOR_EQUIP_GENERIC, 2.5F, () -> Ingredient.of(TFItems.KNIGHTMETAL_INGOT.get())),
 	ARMOR_YETI("yetiarmor", 20, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 3);
 		map.put(ArmorItem.Type.LEGGINGS, 6);
 		map.put(ArmorItem.Type.CHESTPLATE, 7);
 		map.put(ArmorItem.Type.HELMET, 4);
-	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 3F, () -> Ingredient.of(TFItems.ALPHA_YETI_FUR.value())),
+	}), 15, SoundEvents.ARMOR_EQUIP_GENERIC, 3F, () -> Ingredient.of(TFItems.ALPHA_YETI_FUR.get())),
 	ARMOR_ARCTIC("arcticarmor", 10, Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 2);
 		map.put(ArmorItem.Type.LEGGINGS, 5);
 		map.put(ArmorItem.Type.CHESTPLATE, 7);
 		map.put(ArmorItem.Type.HELMET, 2);
-	}), 8, SoundEvents.ARMOR_EQUIP_GENERIC, 2F, () -> Ingredient.of(TFItems.ARCTIC_FUR.value()));
+	}), 8, SoundEvents.ARMOR_EQUIP_GENERIC, 2F, () -> Ingredient.of(TFItems.ARCTIC_FUR.get()));
 
 	private static final EnumMap<ArmorItem.Type, Integer> HEALTH_FUNCTION_FOR_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 13);

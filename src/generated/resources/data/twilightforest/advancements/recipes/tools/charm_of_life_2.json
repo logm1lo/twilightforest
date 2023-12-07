@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:charm_of_life_2"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

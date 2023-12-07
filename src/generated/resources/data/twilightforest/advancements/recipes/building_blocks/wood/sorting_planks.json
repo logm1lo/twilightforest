@@ -28,6 +28,5 @@
     "recipes": [
       "twilightforest:wood/sorting_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

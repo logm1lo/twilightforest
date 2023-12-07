@@ -31,10 +31,10 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 
     private Player trackedPlayer;
 
-	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.value().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
+	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.get().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
 
 	public CarminiteBuilderBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.TOWER_BUILDER.value(), pos, state);
+		super(TFBlockEntities.TOWER_BUILDER.get(), pos, state);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 				if (te.blocksMade <= RANGE && level.isEmptyBlock(nextPos)) {
 					level.setBlock(nextPos, te.blockBuiltState, 3);
 
-					level.playSound(null, pos, TFSounds.BUILDER_CREATE.value(), SoundSource.BLOCKS, 0.75F, 1.2F);
+					level.playSound(null, pos, TFSounds.BUILDER_CREATE.get(), SoundSource.BLOCKS, 0.75F, 1.2F);
 
 					te.lastBlockCoords = nextPos;
 

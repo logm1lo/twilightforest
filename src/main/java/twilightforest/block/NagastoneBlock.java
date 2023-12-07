@@ -38,7 +38,7 @@ public class NagastoneBlock extends Block {
 
 		for (Direction side : Direction.values()) {
 			BlockState neighborState = accessor.getBlockState(pos.relative(side));
-			if (neighborState.getBlock() == this || (neighborState.getBlock() == TFBlocks.NAGASTONE_HEAD.value() && side == neighborState.getValue(TFHorizontalBlock.FACING))) {
+			if (neighborState.getBlock() == this || (neighborState.getBlock() == TFBlocks.NAGASTONE_HEAD.get() && side == neighborState.getValue(TFHorizontalBlock.FACING))) {
 				facings[connectionCount++] = side;
 				if (connectionCount >= 2) {
 					break;

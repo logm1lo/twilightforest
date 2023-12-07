@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/transformation_log/hollow_transformation_log"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

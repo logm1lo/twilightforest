@@ -94,7 +94,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	public void addMusicDisc(DeferredHolder<Item, RecordItem> disc, String description) {
 		this.addItem(disc, "Music Disc");
-		this.add(disc.value().getDescriptionId() + ".desc", description);
+		this.add(disc.get().getDescriptionId() + ".desc", description);
 	}
 
 	public void addStructure(ResourceKey<Structure> biome, String name) {

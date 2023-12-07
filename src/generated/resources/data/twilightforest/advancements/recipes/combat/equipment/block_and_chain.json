@@ -52,6 +52,5 @@
     "recipes": [
       "twilightforest:equipment/block_and_chain"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

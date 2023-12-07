@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:encased_smoker"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

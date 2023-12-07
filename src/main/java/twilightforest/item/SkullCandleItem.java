@@ -17,7 +17,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
@@ -54,7 +53,7 @@ public class SkullCandleItem extends StandingAndWallBlockItem implements CurioIt
 
 	@Override
 	public Component getName(ItemStack stack) {
-		if (stack.is(TFBlocks.PLAYER_SKULL_CANDLE.value().asItem()) && stack.hasTag()) {
+		if (stack.is(TFBlocks.PLAYER_SKULL_CANDLE.asItem()) && stack.hasTag()) {
 			String s = null;
 			CompoundTag compoundtag = stack.getTag();
 			if (compoundtag != null && compoundtag.contains("SkullOwner", 8)) {
@@ -78,40 +77,6 @@ public class SkullCandleItem extends StandingAndWallBlockItem implements CurioIt
 	public void verifyTagAfterLoad(CompoundTag tag) {
 		super.verifyTagAfterLoad(tag);
 		SkullBlockEntity.resolveGameProfile(tag);
-	}
-
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		ItemStack itemstack = player.getItemInHand(hand);
-		EquipmentSlot equipmentslot = Mob.getEquipmentSlotForItem(itemstack);
-		ItemStack itemstack1 = player.getItemBySlot(equipmentslot);
-		if (itemstack1.isEmpty()) {
-			player.setItemSlot(equipmentslot, itemstack.split(1));
-			if (!level.isClientSide()) {
-				player.awardStat(Stats.ITEM_USED.get(this));
-			}
-
-			return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
-		} else {
-			return InteractionResultHolder.fail(itemstack);
-		}
-	}
-
-	@Override
-	public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
-		return slot == EquipmentSlot.HEAD;
-	}
-
-	@Override
-	@Nullable
-	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
-		return EquipmentSlot.HEAD;
-	}
-
-	@Nullable
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-		return this.setupCurio(stack, super.initCapabilities(stack, nbt));
 	}
 
 	@Override
