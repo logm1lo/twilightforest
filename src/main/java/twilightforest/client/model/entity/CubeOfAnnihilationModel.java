@@ -23,24 +23,24 @@ public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("box", CubeListBuilder.create()
+		definition.addOrReplaceChild("box", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-8F, -8F, -8F, 16, 16, 16),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("box_x", CubeListBuilder.create()
+		definition.addOrReplaceChild("box_x", CubeListBuilder.create()
 						.texOffs(0, 32)
 						.addBox(-8F, -8F, -8F, 16, 16, 16),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("box_y", CubeListBuilder.create()
+		definition.addOrReplaceChild("box_y", CubeListBuilder.create()
 						.texOffs(0, 32)
 						.addBox(-8F, -8F, -8F, 16, 16, 16),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("box_z", CubeListBuilder.create()
+		definition.addOrReplaceChild("box_z", CubeListBuilder.create()
 						.texOffs(0, 32)
 						.addBox(-8F, -8F, -8F, 16, 16, 16),
 				PartPose.ZERO);

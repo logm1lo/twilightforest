@@ -21,14 +21,14 @@ public class MinoshroomTrophyLegacyModel extends GenericTrophyModel {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(96, 16)
 						.addBox(-4F, -8F, -4F, 8, 8, 8),
 				PartPose.offset(0F, -6F, -9F));
 
-		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+		definition.addOrReplaceChild("hat", CubeListBuilder.create(),
 				PartPose.ZERO);
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()

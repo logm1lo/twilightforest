@@ -20,9 +20,9 @@ public class SpikeBlockModel extends ListModel<SpikeBlock> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var block = partRoot.addOrReplaceChild("block", CubeListBuilder.create()
+		var block = definition.addOrReplaceChild("block", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4F, -8F, -4F, 8, 8, 8),
 				PartPose.ZERO);
