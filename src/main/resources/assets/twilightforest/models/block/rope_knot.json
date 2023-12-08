@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "twilightforest:block/rope",
-		"all": "twilightforest:block/rope"
+		"all": "twilightforest:block/rope_knot"
 	},
 	"elements": [
 		{
@@ -11,12 +11,12 @@
 			"shade": false,
 			"rotation": {"angle": 0, "axis": "x", "origin": [8, 8, 8]},
 			"faces": {
-				"north": {"uv": [1, 12, 5, 16], "rotation": 90, "texture": "#all"},
-				"east": {"uv": [1, 8, 5, 12], "rotation": 90, "texture": "#all"},
-				"south": {"uv": [1, 4, 5, 8], "rotation": 90, "texture": "#all"},
-				"west": {"uv": [1, 0, 5, 4], "rotation": 90, "texture": "#all"},
-				"up": {"uv": [1, 2, 5, 6], "rotation": 90, "texture": "#all"},
-				"down": {"uv": [1, 10, 5, 14], "rotation": 90, "texture": "#all"}
+				"north": { "rotation": 90, "texture": "#all"},
+				"east": { "rotation": 90, "texture": "#all"},
+				"south": { "rotation": 90, "texture": "#all"},
+				"west": { "rotation": 90, "texture": "#all"},
+				"up": { "rotation": 90, "texture": "#all"},
+				"down": { "rotation": 90, "texture": "#all"}
 			}
 		}
 	]

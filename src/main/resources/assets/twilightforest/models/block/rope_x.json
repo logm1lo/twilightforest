@@ -1,28 +1,29 @@
 {
 	"parent": "block/block",
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"particle": "twilightforest:block/rope",
 		"all": "twilightforest:block/rope"
 	},
 	"elements": [
 		{
-			"from": [0, 8, 6.5],
-			"to": [16, 8, 9.5],
+			"from": [0, 8, 0],
+			"to": [16, 8, 16],
 			"shade": false,
-			"rotation": {"angle": -45, "axis": "x", "origin": [8, 8, 8]},
+			"rotation": { "angle": -45, "axis": "x", "origin": [8, 8, 8]},
 			"faces": {
-				"up": {"uv": [0, 0, 3, 16], "rotation": 270, "texture": "#all"},
-				"down": {"uv": [3, 0, 0, 16], "rotation": 270, "texture": "#all"}
+				"up": { "rotation": 270, "texture": "#all"},
+				"down": { "rotation": 270, "texture": "#all"}
 			}
 		},
 		{
-			"from": [0, 6.5, 8],
-			"to": [16, 9.5, 8],
+			"from": [0, 0, 8],
+			"to": [16, 16, 8],
 			"shade": false,
-			"rotation": {"angle": -45, "axis": "x", "origin": [8, 8, 8]},
+			"rotation": { "angle": -45, "axis": "x", "origin": [8, 8, 8]},
 			"faces": {
-				"north": {"uv": [3, 0, 6, 16], "rotation": 90, "texture": "#all"},
-				"south": {"uv": [6, 0, 3, 16], "rotation": 270, "texture": "#all"}
+				"north": { "rotation": 90, "texture": "#all"},
+				"south": { "rotation": 270, "texture": "#all"}
 			}
 		}
 	]
