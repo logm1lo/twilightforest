@@ -3,6 +3,7 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -38,9 +39,8 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 		stack.pushPose();
 		VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(buffer, this.model.renderType(TEXTURE), false, chainBlock.isFoil());
 
-		float pitch = chainBlock.xRotO + (chainBlock.getXRot() - chainBlock.xRotO) * partialTicks;
-		stack.mulPose(Axis.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
-		stack.mulPose(Axis.XP.rotationDegrees(pitch));
+		stack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, chainBlock.yRotO, chainBlock.getYRot()) - 90.0F));
+		stack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, chainBlock.xRotO, chainBlock.getXRot())));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -49,11 +49,12 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 		Entity owner = chainBlock.getOwner();
 		if (owner != null) {
 			Vec3 xyz = owner.getEyePosition(partialTicks).subtract(chainBlock.getEyePosition(partialTicks));
-			renderChain(chainBlock, xyz, 0.0D, yaw, partialTicks, stack, buffer, light, this.chainModel);
-			renderChain(chainBlock, xyz, 0.2D, yaw, partialTicks, stack, buffer, light, this.chainModel);
-			renderChain(chainBlock, xyz, 0.4D, yaw, partialTicks, stack, buffer, light, this.chainModel);
-			renderChain(chainBlock, xyz, 0.6D, yaw, partialTicks, stack, buffer, light, this.chainModel);
-			renderChain(chainBlock, xyz, 0.8D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+			double links = xyz.length();
+			xyz = xyz.normalize();
+			int ownerLight = Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(owner, partialTicks);
+			for (int i = 1; i < links; i++) {
+				renderChain(chainBlock, xyz, links - i, yaw, partialTicks, stack, buffer, Math.max(light, ownerLight), this.chainModel);
+			}
 		}
 	}
 
@@ -69,9 +70,6 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 		}
 
 		stack.translate(pos.x(), pos.y(), pos.z());
-		float pitch = chainBlock.xRotO + (chainBlock.getXRot() - chainBlock.xRotO) * partialTicks;
-		stack.mulPose(Axis.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
-		stack.mulPose(Axis.XP.rotationDegrees(pitch));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		chainModel.renderToBuffer(stack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
