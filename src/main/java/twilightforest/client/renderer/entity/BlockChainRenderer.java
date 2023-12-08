@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -13,7 +12,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ChainModel;
@@ -47,28 +46,30 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.popPose();
 
-		renderChain(chainBlock, chainBlock.chain1, yaw, partialTicks, stack, buffer, light, this.chainModel);
-		renderChain(chainBlock, chainBlock.chain2, yaw, partialTicks, stack, buffer, light, this.chainModel);
-		renderChain(chainBlock, chainBlock.chain3, yaw, partialTicks, stack, buffer, light, this.chainModel);
-		renderChain(chainBlock, chainBlock.chain4, yaw, partialTicks, stack, buffer, light, this.chainModel);
-		renderChain(chainBlock, chainBlock.chain5, yaw, partialTicks, stack, buffer, light, this.chainModel);
+		Entity owner = chainBlock.getOwner();
+		if (owner != null) {
+			Vec3 xyz = owner.getEyePosition(partialTicks).subtract(chainBlock.getEyePosition(partialTicks));
+			renderChain(chainBlock, xyz, 0.0D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+			renderChain(chainBlock, xyz, 0.2D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+			renderChain(chainBlock, xyz, 0.4D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+			renderChain(chainBlock, xyz, 0.6D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+			renderChain(chainBlock, xyz, 0.8D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+		}
 	}
 
-	public static void renderChain(Entity parent, Entity chain, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
-		double chainInX = (Mth.lerp(partialTicks, chain.xOld, chain.getX()) - Mth.lerp(partialTicks, parent.xOld, parent.getX()));
-		double chainInY = (Mth.lerp(partialTicks, chain.yOld, chain.getY()) - Mth.lerp(partialTicks, parent.yOld, parent.getY()));
-		double chainInZ = (Mth.lerp(partialTicks, chain.zOld, chain.getZ()) - Mth.lerp(partialTicks, parent.zOld, parent.getZ()));
+	public static void renderChain(Entity chainBlock, Vec3 xyz, double scale, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
+		Vec3 pos = xyz.scale(scale);
 
 		stack.pushPose();
 		VertexConsumer vertexConsumer;
-		if(parent instanceof ChainBlock blocc) {
-			vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, chainModel.renderType(TEXTURE), false, blocc.isFoil());
+		if(chainBlock instanceof ChainBlock block) {
+			vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, chainModel.renderType(TEXTURE), false, block.isFoil());
 		} else {
 			vertexConsumer = buffer.getBuffer(chainModel.renderType(TEXTURE));
 		}
 
-		stack.translate(chainInX, chainInY, chainInZ);
-		float pitch = chain.xRotO + (chain.getXRot() - chain.xRotO) * partialTicks;
+		stack.translate(pos.x(), pos.y(), pos.z());
+		float pitch = chainBlock.xRotO + (chainBlock.getXRot() - chainBlock.xRotO) * partialTicks;
 		stack.mulPose(Axis.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
 		stack.mulPose(Axis.XP.rotationDegrees(pitch));
 

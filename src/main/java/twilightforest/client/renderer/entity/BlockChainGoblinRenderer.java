@@ -3,11 +3,8 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
@@ -56,12 +53,18 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Bloc
 		stack.mulPose(Axis.XP.rotationDegrees(pitch));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
+
 		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.popPose();
 
-		BlockChainRenderer.renderChain(goblin, goblin.chain1, yaw, partialTicks, stack, buffer, light, this.chainModel);
-		BlockChainRenderer.renderChain(goblin, goblin.chain2, yaw, partialTicks, stack, buffer, light, this.chainModel);
-		BlockChainRenderer.renderChain(goblin, goblin.chain3, yaw, partialTicks, stack, buffer, light, this.chainModel);
+		stack.pushPose();
+		stack.translate(0.0D, goblin.getEyeHeight(), 0.0D);
+		Vec3 xyz = goblin.block.getEyePosition(partialTicks).subtract(goblin.getEyePosition(partialTicks)).multiply(1.0D, 0.5D, 1.0D);
+		BlockChainRenderer.renderChain(goblin.block, xyz, 0.00D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+		BlockChainRenderer.renderChain(goblin.block, xyz, 0.25D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+		BlockChainRenderer.renderChain(goblin.block, xyz, 0.50D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+		BlockChainRenderer.renderChain(goblin.block, xyz, 0.75D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+		stack.popPose();
 	}
 
 	@Override
