@@ -20,6 +20,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class RopeItem extends BlockItem {
+    public static final int EXTEND_RANGE = 7;
+
+
     public RopeItem(Block block, Item.Properties properties) {
         super(block, properties);
     }
@@ -36,11 +39,12 @@ public class RopeItem extends BlockItem {
             return context;
         } else {
             Direction direction = this.getForward(context, blockstate, blockpos, level);
+            if (direction == Direction.UP) return null;
 
             int i = 0;
             BlockPos.MutableBlockPos mutableBlockPos = blockpos.mutable();
 
-            while(i < 7) {
+            while(i < EXTEND_RANGE) {
                 if (!level.isClientSide && !level.isInWorldBounds(mutableBlockPos)) {
                     Player player = context.getPlayer();
                     int j = level.getMaxBuildHeight();
@@ -105,27 +109,39 @@ public class RopeItem extends BlockItem {
         }
 
         List<Direction> directions = Arrays.asList(context.getNearestLookingDirections());
-
         if (context.isSecondaryUseActive()) Collections.reverse(directions);
 
-        for (Direction dir : directions) {
-            if (dir == Direction.UP) continue;
-            Direction op = dir.getOpposite();
-            if (RopeBlock.canConnectTo(level.getBlockState(pos.relative(op)), op, level, pos.relative(op))) {
-                return dir;
-            }
+        for (Direction dir : new Direction[]{ directions.get(0), directions.get(3), directions.get(1), directions.get(4), directions.get(2), directions.get(5) }) {
             switch (dir.getAxis()) {
                 case X -> {
-                    if (state.getValue(RopeBlock.X)) return dir;
+                    if (state.getValue(RopeBlock.X)) {
+                        BlockPos.MutableBlockPos mutableBlockPos = pos.mutable();
+                        for (int x = 1; x < EXTEND_RANGE; x++) {
+                            mutableBlockPos.move(dir);
+                            BlockState relativeState = level.getBlockState(mutableBlockPos);
+                            if (relativeState.canBeReplaced()) {
+                                return dir;
+                            } else if(!relativeState.is(this.getBlock())) break;
+                        }
+                    }
                 }
                 case Y -> {
                     if (state.getValue(RopeBlock.Y)) return Direction.DOWN; // Ropes don't go up
                 }
                 case Z -> {
-                    if (state.getValue(RopeBlock.Z)) return dir;
+                    if (state.getValue(RopeBlock.Z)) {
+                        BlockPos.MutableBlockPos mutableBlockPos = pos.mutable();
+                        for (int z = 1; z < EXTEND_RANGE; z++) {
+                            mutableBlockPos.move(dir);
+                            BlockState relativeState = level.getBlockState(mutableBlockPos);
+                            if (relativeState.canBeReplaced()) {
+                                return dir;
+                            } else if(!relativeState.is(this.getBlock())) break;
+                        }
+                    }
                 }
             }
         }
-        return Direction.DOWN;
+        return Direction.UP;
     }
 }
