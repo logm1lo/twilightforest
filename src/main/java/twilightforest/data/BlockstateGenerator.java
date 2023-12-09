@@ -9,13 +9,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.model.block.doors.CastleDoorBuilder;
@@ -443,6 +441,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		casketStuff();
 		stonePillar();
 		candelabra();
+
+		this.terrorcotta();
 	}
 
 	private void registerForceFields() {
@@ -1387,6 +1387,77 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		getMultipartBuilder(b).part().modelFile(modelOutside).uvLock(true).rotationX(270).addModel().condition(HugeMushroomBlock.UP, true).end();
 		getMultipartBuilder(b).part().modelFile(modelInside).uvLock(true).rotationX(90).addModel().condition(HugeMushroomBlock.DOWN, false).end();
 		getMultipartBuilder(b).part().modelFile(modelOutside).uvLock(true).rotationX(90).addModel().condition(HugeMushroomBlock.DOWN, true).end();
+	}
+
+	private void terrorcotta() {
+		this.getVariantBuilder(TFBlocks.TERRORCOTTA_CURVES.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(this.makeTerrorcottaCurvesModel("terrorcotta_curves", state.getValue(GlazedTerracottaBlock.FACING).get2DDataValue())).build());
+		this.getVariantBuilder(TFBlocks.TERRORCOTTA_LINES.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(this.makeTerrorcottaLinesModel("terrorcotta_lines", state.getValue(BinaryRotatedBlock.ROTATED))).build());
+	}
+
+	private BlockModelBuilder makeTerrorcottaCurvesModel(String type, int rotation) {
+		return this.models().withExistingParent(type + "_" + (rotation * 90), new ResourceLocation("block/cube"))
+				.texture("particle", prefix("block/" + type + "_a"))
+				.texture("up", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.UP)))
+				.texture("down", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.DOWN)))
+				.texture("south", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.SOUTH)))
+				.texture("west", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.WEST)))
+				.texture("north", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.NORTH)))
+				.texture("east", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.EAST)));
+	}
+
+	@NotNull
+	private static String curvesSuffixForFacing(int blockRotation, Direction blockFace) {
+		int rotationForFace = switch (blockFace) {
+			case UP -> 2 - blockRotation;
+			case DOWN -> 1 + blockRotation;
+			case SOUTH -> switch (blockRotation) {
+				case 3  -> 2;
+				case 2  -> 1;
+				case 1  -> 3;
+				default -> 0;
+			};
+			case WEST -> switch (blockRotation) {
+				case 3  -> 1;
+				case 2  -> 3;
+				case 1  -> 0;
+				default -> 2;
+			};
+			case NORTH -> switch (blockRotation) {
+				case 3  -> 3;
+				case 2  -> 0;
+				case 1  -> 2;
+				default -> 1;
+			};
+			case EAST -> switch (blockRotation) {
+				case 3  -> 0;
+				case 2  -> 2;
+				case 1  -> 1;
+				default -> 3;
+			};
+		};
+
+		return switch (Math.floorMod(rotationForFace, 4)) {
+			case 3  -> "_d";
+			case 2  -> "_c";
+			case 1  -> "_b";
+			default -> "_a";
+		};
+	}
+
+	private BlockModelBuilder makeTerrorcottaLinesModel(String type, boolean rotated) {
+		return this.models().withExistingParent(type + "_" + (rotated ? 90 : 0), new ResourceLocation("block/cube"))
+				.texture("particle", prefix("block/" + type + "_a"))
+				.texture("up", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.UP)))
+				.texture("down", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.DOWN)))
+				.texture("south", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.SOUTH)))
+				.texture("west", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.WEST)))
+				.texture("north", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.NORTH)))
+				.texture("east", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.EAST)));
+	}
+
+	@NotNull
+	private static String linesSuffixForFacing(boolean blockRotation, Direction blockFace) {
+		return (blockFace.getAxis() == Direction.Axis.Z) != blockRotation ? "_a" : "_b";
 	}
 
 	private void hollowLogs(Block originalLog, Block strippedLog, DeferredHolder<Block, HollowLogHorizontal> horizontalHollowLog, DeferredHolder<Block, HollowLogVertical> verticalHollowLog, DeferredHolder<Block, HollowLogClimbable> climbableHollowLog, ModelFile emptyLog, ModelFile mossLog, ModelFile grassLog, ModelFile snowLog, ModelFile hollowLog, ModelFile vineLog, ModelFile ladderLog) {

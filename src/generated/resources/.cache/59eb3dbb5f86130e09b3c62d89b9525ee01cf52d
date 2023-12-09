@@ -1,4 +1,4 @@
-// 1.20.3	2023-12-06T19:57:21.9129057	Loot Tables
+// 1.20.4	2023-12-08T22:58:42.0718497	Loot Tables
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_tables/blocks/acacia_banister.json
 d29388fb46e8211e8d3624b744d195b3a6f4c6ff data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 3f04f0369241cf99202c72b4d56bc5368396e367 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -335,6 +335,8 @@ aa8ae90c70b759bb9d566bfb086b728c0240f529 data/twilightforest/loot_tables/blocks/
 d7d61f53f772be7084a74eb6c5baa720a09aa8b8 data/twilightforest/loot_tables/blocks/stripped_transformation_wood.json
 395791d90b70cd80182326d2366efb785717eb75 data/twilightforest/loot_tables/blocks/stripped_twilight_oak_log.json
 4379d8b5c0905b7291001a8cc8fd67ff080336c0 data/twilightforest/loot_tables/blocks/stripped_twilight_oak_wood.json
+69d1df548afcf140a5285c56384e87cd5488a2bb data/twilightforest/loot_tables/blocks/terrorcotta_curves.json
+49d0a7dc0010db51bc768f62337ba51d987a9d94 data/twilightforest/loot_tables/blocks/terrorcotta_lines.json
 3bef7cfdd04875ab87bbfe59a451e23fc4448dee data/twilightforest/loot_tables/blocks/thick_castle_brick.json
 d814c4d3dd43467af50062a0fb84fc53d490b1d6 data/twilightforest/loot_tables/blocks/thorn_leaves.json
 99d5725721200250543a401337734ea5e5fda1ed data/twilightforest/loot_tables/blocks/thorn_rose.json

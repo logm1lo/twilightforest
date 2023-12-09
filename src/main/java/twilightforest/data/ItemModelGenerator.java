@@ -227,6 +227,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get());
 		toBlock(TFBlocks.CANOPY_BOOKSHELF.get());
 
+		toBlockModel(TFBlocks.TERRORCOTTA_LINES.get(), prefix("block/terrorcotta_lines_0"));
+		toBlockModel(TFBlocks.TERRORCOTTA_CURVES.get(), prefix("block/terrorcotta_curves_90"));
+
 		withExistingParent(TFBlocks.OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/oak_planks");
 		withExistingParent(TFBlocks.SPRUCE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/spruce_planks");
 		withExistingParent(TFBlocks.BIRCH_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/birch_planks");

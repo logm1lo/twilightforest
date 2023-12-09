@@ -681,7 +681,9 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.TWISTED_STONE.get(),
 				TFBlocks.TWISTED_STONE_PILLAR.get(),
 				TFBlocks.KEEPSAKE_CASKET.get(),
-				TFBlocks.BOLD_STONE_PILLAR.get()
+				TFBlocks.BOLD_STONE_PILLAR.get(),
+				TFBlocks.TERRORCOTTA_LINES.get(),
+				TFBlocks.TERRORCOTTA_CURVES.get()
 		).addTags(MAZESTONE, CASTLE_BLOCKS);
 
 		tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
@@ -709,6 +711,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.TWISTED_STONE.get(),
 				TFBlocks.TWISTED_STONE_PILLAR.get(),
 				TFBlocks.BOLD_STONE_PILLAR.get(),
+				TFBlocks.TERRORCOTTA_LINES.get(),
+				TFBlocks.TERRORCOTTA_CURVES.get(),
 				TFBlocks.AURORA_PILLAR.get(),
 				TFBlocks.AURORA_SLAB.get(),
 				TFBlocks.TROLLSTEINN.get()
