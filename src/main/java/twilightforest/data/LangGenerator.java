@@ -411,7 +411,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.UR_GHAST_TROPHY, "Ur-Ghast Trophy");
 		this.addBlock(TFBlocks.ALPHA_YETI_TROPHY, "Alpha Yeti Trophy");
 		this.addBlock(TFBlocks.SNOW_QUEEN_TROPHY, "Snow Queen Trophy");
-		this.addBlock(TFBlocks.QUEST_RAM_TROPHY, "Quest Ram Trophy");
+		this.addBlock(TFBlocks.QUEST_RAM_TROPHY, "Questing Ram Trophy");
 
 		this.addBlock(TFBlocks.NAGA_BOSS_SPAWNER, "Naga Boss Spawner");
 		this.addBlock(TFBlocks.LICH_BOSS_SPAWNER, "Lich Boss Spawner");
@@ -431,7 +431,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBannerPattern("ur_ghast", "Carminite Border");
 		this.addBannerPattern("alpha_yeti", "Alpha Yeti Face");
 		this.addBannerPattern("snow_queen", "Snow Queen Crown");
-		this.addBannerPattern("quest_ram", "Quest Ram Swirls");
+		this.addBannerPattern("quest_ram", "Questing Ram Swirls");
 
 		this.addBlock(TFBlocks.ZOMBIE_SKULL_CANDLE, "Zombie Skull Candle");
 		this.addBlock(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE, "Zombie Wall Skull Candle");
@@ -639,7 +639,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addEntityAndEgg(TFEntities.NAGA, "Naga");
 		this.addEntityAndEgg(TFEntities.PENGUIN, "Penguin");
 		this.addEntityAndEgg(TFEntities.PINCH_BEETLE, "Pinch Beetle");
-		this.addEntityAndEgg(TFEntities.QUEST_RAM, "Quest Ram");
+		this.addEntityAndEgg(TFEntities.QUEST_RAM, "Questing Ram");
 		this.addEntityAndEgg(TFEntities.RAVEN, "Raven");
 		this.addEntityAndEgg(TFEntities.REDCAP, "Redcap");
 		this.addEntityAndEgg(TFEntities.REDCAP_SAPPER, "Redcap Sapper");
@@ -848,9 +848,9 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.PINCH_BEETLE_DEATH, "Pinch Beetle dies");
 		this.addSubtitle(TFSounds.PINCH_BEETLE_HURT, "Pinch Beetle hurts");
 
-		this.addSubtitle(TFSounds.QUEST_RAM_AMBIENT, "Quest Ram bleats");
-		this.addSubtitle(TFSounds.QUEST_RAM_DEATH, "Quest Ram dies");
-		this.addSubtitle(TFSounds.QUEST_RAM_HURT, "Quest Ram hurts");
+		this.addSubtitle(TFSounds.QUEST_RAM_AMBIENT, "Questing Ram bleats");
+		this.addSubtitle(TFSounds.QUEST_RAM_DEATH, "Questing Ram dies");
+		this.addSubtitle(TFSounds.QUEST_RAM_HURT, "Questing Ram hurts");
 
 		this.addSubtitle(TFSounds.RAVEN_CAW, "Raven caws");
 		this.addSubtitle(TFSounds.RAVEN_SQUAWK, "Raven squawks in pain");
@@ -1065,7 +1065,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addStat("trophy_pedestals_activated", "Trophy Pedestals Activated");
 		this.addStat("uncrafting_table_interactions", "Interactions with Uncrafting Table");
 
-		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Quest Ram Wool");
+		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Questing Ram Wool");
 
 		this.add("twilightforest.book.author", "a forgotten explorer");
 
@@ -1209,7 +1209,7 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("ore_magnet", "The Ore Magnet can pull ore veins up to the surface.");
 		this.createTip("peacock_feather_fan", "The Peacock Feather Fan can be used to extinguish Candles.");
 		this.createTip("phantom_armor", "Phantom Armor is automatically kept on death.");
-		this.createTip("quest_ram", "The Quest Ram will reward anyone who gives it what it's missing.");
+		this.createTip("quest_ram", "The Questing Ram will reward anyone who gives it what it's missing.");
 		this.createTip("red_thread", "Red Thread can be seen through walls.");
 		this.createTip("redcap", "Redcaps can place and light TNT.");
 		this.createTip("skull_candle", "Candles can be placed on top of mob heads to create a fancy light source.");

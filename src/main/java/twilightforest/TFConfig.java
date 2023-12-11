@@ -356,7 +356,7 @@ public class TFConfig {
 					define("disableLockedBiomeToasts", false);
 			showQuestRamCrosshairIndicator = builder.
 					translation(config + "ram_indicator").
-					comment("Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.").
+					comment("Renders a little check mark or x above your crosshair depending on if fed the Questing Ram that color of wool. Turn this off if you find it intrusive.").
 					define("questRamWoolIndicator", true);
 			cloudBlockPrecipitationDistanceClient = builder.
 					translation(config + "cloud_block_precipitation_distance").
