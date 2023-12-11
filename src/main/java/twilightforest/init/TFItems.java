@@ -354,7 +354,18 @@ public class TFItems {
 			}
 		});
 
-		ItemProperties.register(ORE_MAGNET.get(), new ResourceLocation("pulling"), (stack, world, entity, idk) ->
+		ItemProperties.register(TFBlocks.RED_THREAD.get().asItem(), TwilightForestMod.prefix("size"), (stack, level, entity, idk) -> {
+			if (stack.getCount() >= 32) {
+				return 1.0F;
+			} else if (stack.getCount() >= 16) {
+				return 0.5F;
+			} else if (stack.getCount() >= 4) {
+				return 0.25F;
+			}
+			return 0.0F;
+		});
+
+		ItemProperties.register(ORE_MAGNET.get(), new ResourceLocation("pulling"), (stack, level, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
 		ItemProperties.register(BLOCK_AND_CHAIN.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity, idk) ->

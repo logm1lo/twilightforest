@@ -175,7 +175,13 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.MOSSY_MAZESTONE.get());
 		toBlock(TFBlocks.MAZESTONE_MOSAIC.get());
 		toBlock(TFBlocks.MAZESTONE_BORDER.get());
-		singleTex(TFBlocks.RED_THREAD);
+		ModelFile bundle = generated("red_thread_bundle", prefix("item/red_thread_bundle_0"));
+		ModelFile spool = generated("red_thread_spool", prefix("item/red_thread_bundle_1"));
+		ModelFile large_spool = generated("red_thread_large_spool", prefix("item/red_thread_bundle_2"));
+		singleTex(TFBlocks.RED_THREAD)
+				.override().predicate(prefix("size"), 0.25F).model(bundle).end()
+				.override().predicate(prefix("size"), 0.5F).model(spool).end()
+				.override().predicate(prefix("size"), 1.0F).model(large_spool).end();
 		toBlock(TFBlocks.HEDGE.get());
 		toBlock(TFBlocks.ROOT_BLOCK.get());
 		toBlock(TFBlocks.LIVEROOT_BLOCK.get());
