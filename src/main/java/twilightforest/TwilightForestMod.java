@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.Bindings;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
@@ -33,6 +34,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.init.TFAdvancements;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
@@ -138,9 +140,9 @@ public class TwilightForestMod {
 		bus.addListener(this::setRegistriesForDatapack);
 
 		if (ModList.get().isLoaded("curios")) {
-//			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
-//			bus.addListener(CuriosCompat::registerCurioRenderers);
-//			bus.addListener(CuriosCompat::registerCurioLayers);
+			NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+			bus.addListener(CuriosCompat::registerCurioRenderers);
+			bus.addListener(CuriosCompat::registerCurioLayers);
 		}
 
 		BiomeGrassColors.init();

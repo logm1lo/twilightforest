@@ -4,13 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.TooltipFlag;
@@ -26,7 +19,7 @@ import twilightforest.init.TFBlocks;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class SkullCandleItem extends StandingAndWallBlockItem implements CurioItem {
+public class SkullCandleItem extends StandingAndWallBlockItem {
 
 	public SkullCandleItem(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall, Properties properties) {
 		super(floor, wall, properties, Direction.DOWN);
