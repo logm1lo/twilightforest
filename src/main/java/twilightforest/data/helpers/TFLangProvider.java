@@ -1,6 +1,14 @@
 package twilightforest.data.helpers;
 
+import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import net.minecraft.ChatFormatting;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
@@ -14,9 +22,19 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
 public abstract class TFLangProvider extends LanguageProvider {
+
+	private final Map<String, String> TF_TIPS = new HashMap<>();
+	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	private final PackOutput output;
+
 	public TFLangProvider(PackOutput output) {
 		super(output, TwilightForestMod.ID, "en_us");
+		this.output = output;
 	}
 
 	public void addBiome(ResourceKey<Biome> biome, String name) {
@@ -152,5 +170,25 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	public void addScreenMessage(String key, String name) {
 		this.add("gui.twilightforest." + key, name);
+	}
+
+	public void createTip(String key, String translation) {
+		String fullKey = "twilightforest.tips." + key;
+		this.add(fullKey, translation);
+		TF_TIPS.put(fullKey, key);
+	}
+
+	@Override
+	public CompletableFuture<?> run(CachedOutput cache) {
+		CompletableFuture<?> languageGen = super.run(cache);
+		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
+		futuresBuilder.add(languageGen);
+
+		for (Map.Entry<String, String> entry : TF_TIPS.entrySet()) {
+			JsonObject object = new JsonObject();
+			object.add("tip", Component.Serializer.toJsonTree(Component.translatable(entry.getKey()).withStyle(ChatFormatting.GREEN)));
+			futuresBuilder.add(DataProvider.saveStable(cache, GSON.toJsonTree(object), this.output.getOutputFolder().resolve("assets/twilightforest/tips/" + entry.getValue() + ".json")));
+		}
+		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
 	}
 }
