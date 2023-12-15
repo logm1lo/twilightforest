@@ -106,6 +106,16 @@ public class BuilderBlock extends BaseEntityBlock {
 		}
 	}
 
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
+		if (!newState.is(state.getBlock())) {
+			for (Direction e : Direction.values()) {
+				activateBuiltBlocks(level, pos.relative(e));
+			}
+		}
+		super.onRemove(state, level, pos, newState, moving);
+	}
+
 	private void letsBuild(Level level, BlockPos pos) {
 		CarminiteBuilderBlockEntity tileEntity = (CarminiteBuilderBlockEntity) level.getBlockEntity(pos);
 

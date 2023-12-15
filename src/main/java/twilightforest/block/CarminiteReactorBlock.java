@@ -14,9 +14,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CarminiteReactorBlockEntity;
 import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.util.WorldUtil;
 
 import java.util.Arrays;
 
@@ -63,6 +66,19 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 	private boolean isReactorReady(Level level, BlockPos pos) {
 		return Arrays.stream(Direction.values())
 				.allMatch(e -> level.getBlockState(pos.relative(e)).getBlock() == Blocks.REDSTONE_BLOCK);
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
+		if (!newState.is(state.getBlock())) {
+			for (BlockPos offset : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
+				BlockState checkState = level.getBlockState(offset);
+				if (checkState.is(TFBlocks.FAKE_GOLD) || checkState.is(TFBlocks.FAKE_DIAMOND)) {
+					level.destroyBlock(offset, false);
+				}
+			}
+		}
+		super.onRemove(state, level, pos, newState, moving);
 	}
 
 	@Nullable
