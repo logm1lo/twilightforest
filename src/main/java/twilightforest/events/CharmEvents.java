@@ -28,12 +28,11 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import org.jetbrains.annotations.Nullable;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.CharmEffect;
 import twilightforest.enums.BlockLoggingEnum;
@@ -42,7 +41,6 @@ import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CharmEvents {
@@ -319,12 +317,7 @@ public class CharmEvents {
 
 	private static boolean hasCharmCurio(Item item, Player player) {
 		if (ModList.get().isLoaded("curios")) {
-			Optional<SlotResult> slot = CuriosApi.getCuriosInventory(player).flatMap(handler -> handler.findFirstCurio(item));
-
-			if (slot.isPresent()) {
-				slot.get().stack().shrink(1);
-				return true;
-			}
+			return CuriosCompat.findAndConsumeCurio(item, player);
 		}
 
 		return false;

@@ -326,7 +326,7 @@ public class TFClientEvents {
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
 		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
+			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
 		}
 		return false;
 	}

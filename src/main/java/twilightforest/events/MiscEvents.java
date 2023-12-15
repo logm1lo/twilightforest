@@ -70,7 +70,7 @@ public class MiscEvents {
 
 		//if we have a cicada in our curios slot, dont try to run this
 		if (ModList.get().isLoaded("curios")) {
-			if (CuriosCompat.isCicadaEquipped(living)) {
+			if (CuriosCompat.isCurioEquipped(living, stack -> stack.is(TFBlocks.CICADA.asItem()))) {
 				return;
 			}
 		}

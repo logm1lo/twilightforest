@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -25,13 +26,12 @@ import twilightforest.compat.curios.renderer.CurioHeadRenderer;
 import twilightforest.events.CharmEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
-import twilightforest.item.SkullCandleItem;
-import twilightforest.item.TrophyItem;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class CuriosCompat {
 
@@ -122,17 +122,21 @@ public class CuriosCompat {
 		});
 	}
 
-	public static boolean isCicadaEquipped(LivingEntity entity) {
-		return CuriosApi.getCuriosInventory(entity).flatMap(handler -> handler.findFirstCurio(TFBlocks.CICADA.asItem())).isPresent();
+	public static boolean isCurioEquipped(LivingEntity entity, Predicate<ItemStack> stackPredicate) {
+		return CuriosApi.getCuriosInventory(entity).flatMap(handler -> handler.findFirstCurio(stackPredicate)).isPresent();
 	}
 
-	public static boolean isTrophyCurioEquipped(LivingEntity entity) {
-		Optional<SlotResult> slot = CuriosApi.getCuriosInventory(entity).flatMap(handler -> handler.findFirstCurio(stack -> stack.getItem() instanceof TrophyItem));
+	public static boolean isCurioEquippedAndVisible(LivingEntity entity, Predicate<ItemStack> stackPredicate) {
+		Optional<SlotResult> slot = CuriosApi.getCuriosInventory(entity).flatMap(handler -> handler.findFirstCurio(stackPredicate));
 		return slot.isPresent() && slot.get().slotContext() != null && slot.get().slotContext().visible();
 	}
 
-	public static boolean isSkullCurioEquipped(LivingEntity entity) {
-		Optional<SlotResult> slot = CuriosApi.getCuriosInventory(entity).flatMap(handler -> handler.findFirstCurio(stack -> stack.getItem() instanceof SkullCandleItem));
-		return slot.isPresent() && slot.get().slotContext() != null && slot.get().slotContext().visible();
+	public static boolean findAndConsumeCurio(Item item, Player player) {
+		Optional<SlotResult> slot = CuriosApi.getCuriosInventory(player).flatMap(handler -> handler.findFirstCurio(item));
+		if (slot.isPresent()) {
+			slot.get().stack().shrink(1);
+			return true;
+		}
+		return false;
 	}
 }

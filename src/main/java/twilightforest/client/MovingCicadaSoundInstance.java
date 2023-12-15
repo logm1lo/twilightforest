@@ -38,7 +38,7 @@ public class MovingCicadaSoundInstance extends AbstractTickableSoundInstance {
 
 	private boolean isWearingCicadaCurio() {
 		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isCicadaEquipped(this.wearer);
+			return CuriosCompat.isCurioEquipped(this.wearer, stack -> stack.is(TFBlocks.CICADA.asItem()));
 		}
 		return false;
 	}

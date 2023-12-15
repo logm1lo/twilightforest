@@ -141,6 +141,7 @@ public class TwilightForestMod {
 
 		if (ModList.get().isLoaded("curios")) {
 			NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+			bus.addListener(CuriosCompat::registerCuriosCapabilities);
 			bus.addListener(CuriosCompat::registerCurioRenderers);
 			bus.addListener(CuriosCompat::registerCurioLayers);
 		}
