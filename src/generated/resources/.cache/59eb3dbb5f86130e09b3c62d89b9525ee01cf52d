@@ -1,4 +1,4 @@
-// 1.20.4	2023-12-08T22:58:42.0718497	Loot Tables
+// 1.20.4	2023-12-19T15:25:18.9378776	Loot Tables
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_tables/blocks/acacia_banister.json
 d29388fb46e8211e8d3624b744d195b3a6f4c6ff data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 3f04f0369241cf99202c72b4d56bc5368396e367 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -289,6 +289,7 @@ d4cf2ba1c9d5ad6b35a2ef1b173496f27a7c789f data/twilightforest/loot_tables/blocks/
 6575da0cee084bff5caab6b006d0b86fe22001b1 data/twilightforest/loot_tables/blocks/red_thread.json
 7a1a62c933a562e1ad0abff252fb72d3a8c5dc33 data/twilightforest/loot_tables/blocks/root.json
 7af2b7ae2db4231a3998eee4866773da816842b8 data/twilightforest/loot_tables/blocks/root_strand.json
+fb7868a21fc15bb2227693e0604831ce049a0772 data/twilightforest/loot_tables/blocks/rope.json
 ef904a158987dbd9963909ef8fb80667071025b7 data/twilightforest/loot_tables/blocks/skeleton_skull_candle.json
 ae6d7a73102bfb46c3fe678debd0a35187e9125f data/twilightforest/loot_tables/blocks/skeleton_wall_skull_candle.json
 b7336d3399cc73483a2b33de9185b17f64d19c1d data/twilightforest/loot_tables/blocks/smoker.json

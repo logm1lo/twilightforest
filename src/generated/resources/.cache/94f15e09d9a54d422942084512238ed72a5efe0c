@@ -1,4 +1,4 @@
-// 1.20.4	2023-12-08T23:28:40.0245236	TwilightForest Item and BlockItem models
+// 1.20.4	2023-12-19T15:25:18.9418664	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -623,6 +623,7 @@ c17e41e6f645f3a0e369c10497df587fcf1631e8 assets/twilightforest/models/item/rainy
 fcbf4ee3bdfc26cb430f28f4e76771da074a5aa0 assets/twilightforest/models/item/red_thread_spool.json
 40f22ccfa085414838c7cab1bb685b6270733126 assets/twilightforest/models/item/root.json
 8537a6ba9f4a50d69cf01630607b3b2bbdd7c50e assets/twilightforest/models/item/root_strand.json
+9906e876cf4bf9bb6e28032e6129c3dba7081de4 assets/twilightforest/models/item/rope.json
 d595f519d3b0bc04d05df292af27f32faafa1c7f assets/twilightforest/models/item/seeker_bow.json
 014ac2a2d0d5ddb4e3d41552c2d7ff2e5527ab33 assets/twilightforest/models/item/seeker_bow_pulling_0.json
 02dbf7d47b4be510da10aa9eeca37841abd09fae assets/twilightforest/models/item/seeker_bow_pulling_1.json

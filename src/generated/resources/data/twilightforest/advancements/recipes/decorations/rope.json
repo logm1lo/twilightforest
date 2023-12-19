@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:rope"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
