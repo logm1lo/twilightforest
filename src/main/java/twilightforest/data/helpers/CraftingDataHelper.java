@@ -13,15 +13,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.crafting.PartialNBTIngredient;
+import net.neoforged.neoforge.common.crafting.NBTIngredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFChestBlock;
@@ -30,26 +28,15 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public abstract class CraftingDataHelper extends RecipeProvider {
 	public CraftingDataHelper(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, provider);
 	}
 
-	public final PartialNBTIngredient scepter(Item scepter) {
-		return PartialNBTIngredient.of(scepter, Util.make(() -> {
-			CompoundTag nbt = new CompoundTag();
-			nbt.putInt(ItemStack.TAG_DAMAGE, scepter.getMaxDamage());
-			return nbt;
-		}));
-	}
-
-	public final PartialNBTIngredient potion(Potion potion) {
-		return PartialNBTIngredient.of(Items.POTION, Util.make(() -> {
-			CompoundTag nbt = new CompoundTag();
-			nbt.putString("Potion", BuiltInRegistries.POTION.getKey(potion).toString());
-			return nbt;
-		}));
+	public final NBTIngredient nbtItem(Item scepter, Consumer<CompoundTag> tag) {
+		return NBTIngredient.of(false, Util.make(new CompoundTag(), tag), scepter);
 	}
 
 	protected final void charmRecipe(RecipeOutput output, String name, DeferredHolder<Item, ? extends Item> result, DeferredHolder<Item, ? extends Item> item) {

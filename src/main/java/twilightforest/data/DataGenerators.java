@@ -8,6 +8,7 @@ import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.util.InclusiveRange;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
@@ -20,6 +21,7 @@ import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -63,9 +65,10 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new StalactiteGenerator(output));
 		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
 						Component.literal("Resources for Twilight Forest"),
-						DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
-						Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
+						DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
+						Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
 		generator.addProvider(event.includeClient(), new AtlasGenerator(output, provider, helper));
 		generator.addProvider(event.includeClient(), new LangGenerator(output));
+		generator.addProvider(event.includeClient(), new ParticleGenerator(output, helper));
 	}
 }

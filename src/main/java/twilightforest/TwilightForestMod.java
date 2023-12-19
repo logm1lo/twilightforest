@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.Bindings;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
@@ -34,26 +33,25 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import twilightforest.compat.curios.CuriosCompat;
-import twilightforest.init.TFAdvancements;
-import twilightforest.client.ClientInitiator;
+import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
+import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateGamerulePacket;
-import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.util.Restriction;
 import twilightforest.util.TFRemapper;
 import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 import twilightforest.world.components.chunkgenerators.ControlledSpawnsCache;
+import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -88,7 +86,7 @@ public class TwilightForestMod {
 		}
 
 		if (dist.isClient()) {
-			ClientInitiator.call();
+			TFClientSetup.init(bus);
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
 		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);

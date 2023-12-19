@@ -3,11 +3,9 @@
   "category": "equipment",
   "ingredients": [
     {
-      "type": "neoforge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "twilightforest:twilight_scepter",
-      "tag": {
-        "Damage": 99
-      }
+      "tag": "{Damage:99}"
     },
     {
       "tag": "forge:ender_pearls"

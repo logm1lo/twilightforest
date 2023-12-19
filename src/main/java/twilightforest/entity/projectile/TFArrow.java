@@ -6,6 +6,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 
@@ -13,8 +14,8 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 		super(type, level, new ItemStack(Items.ARROW));
 	}
 
-	public TFArrow(EntityType<? extends TFArrow> type, Level level, Entity shooter) {
-		super(type, level, new ItemStack(Items.ARROW));
+	public TFArrow(EntityType<? extends TFArrow> type, Level level, @Nullable Entity shooter, ItemStack stack) {
+		super(type, level, stack);
 		this.setOwner(shooter);
 		this.setPos(shooter.getX(), shooter.getEyeY() - 0.1D, shooter.getZ());
 	}

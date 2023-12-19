@@ -1,7 +1,8 @@
 {
   "neoforge:conditions": [
     {
-      "type": "twilightforest:uncrafting_table_enabled"
+      "type": "twilightforest:uncrafting_table_enabled",
+      "value": {}
     }
   ],
   "type": "minecraft:crafting_shaped",

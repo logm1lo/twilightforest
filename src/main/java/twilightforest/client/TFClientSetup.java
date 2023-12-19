@@ -23,7 +23,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
@@ -56,9 +55,8 @@ public class TFClientSetup {
 
 	public static boolean optifinePresent = false;
 
-	public static void init() {
-		IEventBus busMod = FMLJavaModLoadingContext.get().getModEventBus();
-		TFShaders.init(busMod);
+	public static void init(IEventBus bus) {
+		TFShaders.init(bus);
 	}
 
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
