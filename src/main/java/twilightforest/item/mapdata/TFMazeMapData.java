@@ -74,9 +74,9 @@ public class TFMazeMapData extends MapItemSavedData {
 
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
-	public static TFMazeMapData getMazeMapData(Level world, String name) {
-		if (world.isClientSide) return CLIENT_DATA.get(name);
-		else return ((ServerLevel)world).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
+	public static TFMazeMapData getMazeMapData(Level level, String name) {
+		if (level.isClientSide()) return CLIENT_DATA.get(name);
+		else return (TFMazeMapData) ((ServerLevel)level).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
 	}
 
 	public static SavedData.Factory<MapItemSavedData> factory() {
@@ -86,9 +86,9 @@ public class TFMazeMapData extends MapItemSavedData {
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
-	public static void registerMazeMapData(Level world, TFMazeMapData data, String id) {
-		if (world.isClientSide) CLIENT_DATA.put(id, data);
-		else ((ServerLevel) world).getServer().overworld().getDataStorage().set(id, data);
+	public static void registerMazeMapData(Level level, TFMazeMapData data, String id) {
+		if (level.isClientSide()) CLIENT_DATA.put(id, data);
+		else ((ServerLevel) level).getServer().overworld().getDataStorage().set(id, data);
 	}
 
 	@Nullable

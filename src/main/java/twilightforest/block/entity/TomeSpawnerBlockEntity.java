@@ -30,7 +30,7 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 	private int playerDistance;
 
 	public TomeSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.TOME_SPAWNER.value(), pos, state);
+		super(TFBlockEntities.TOME_SPAWNER.get(), pos, state);
 		if (state.getValue(TomeSpawnerBlock.SPAWNER)) {
 			this.entityType = "twilightforest:death_tome";
 			this.spawnTime = 400;
@@ -50,8 +50,8 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
                 int tomesLeft = state.getValue(TomeSpawnerBlock.BOOK_STAGES);
 
                 if (tomesLeft <= 1) {
-                    te.invalidateCaps();
-                    level.setBlockAndUpdate(pos, TFBlocks.EMPTY_CANOPY_BOOKSHELF.value().defaultBlockState());
+                    te.invalidateCapabilities();
+                    level.setBlockAndUpdate(pos, TFBlocks.EMPTY_CANOPY_BOOKSHELF.get().defaultBlockState());
                 } else {
                     level.setBlockAndUpdate(pos, state.setValue(TomeSpawnerBlock.BOOK_STAGES, tomesLeft - 1));
                 }
@@ -69,7 +69,7 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 					double y = (double) pos.getY() + (level.getRandom().nextDouble() - level.getRandom().nextDouble());
 					double z = pos.relative(dir).getZ() + (level.getRandom().nextDouble() - level.getRandom().nextDouble()) * 2.0D;
 
-					EntityType<?> type = nbtType.orElse(TFEntities.DEATH_TOME.value());
+					EntityType<?> type = nbtType.orElse(TFEntities.DEATH_TOME.get());
 					if (level.noCollision(type.getAABB(x, y, z))) {
                         Entity entity = type.create(level);
 						entity.moveTo(BlockPos.containing(x, y, z), entity.getYRot(), entity.getXRot());

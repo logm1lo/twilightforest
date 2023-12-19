@@ -20,11 +20,11 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 
 	public MazeUpperEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMUE.value(), nbt);
+		super(TFStructurePieceTypes.TFMMUE.get(), nbt);
 	}
 
 	public MazeUpperEntranceComponent(int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMUE.value(), i, x, y, z);
+		super(TFStructurePieceTypes.TFMMUE.get(), i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
 		this.boundingBox = new BoundingBox(x, y, z, x + 15, y + 4, z + 15);
@@ -42,12 +42,12 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// ceiling
-		this.generateMaybeBox(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.MAZESTONE.value().defaultBlockState(), AIR, true, false);
+		this.generateMaybeBox(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.MAZESTONE.get().defaultBlockState(), AIR, true, false);
 
-		this.generateBox(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.MAZESTONE_MOSAIC.value().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.DECORATIVE_MAZESTONE.value().defaultBlockState(), AIR, true);
-		this.generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.MAZESTONE_BRICK.value().defaultBlockState(), AIR, true);
-		this.generateBox(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.DECORATIVE_MAZESTONE.value().defaultBlockState(), AIR, true);
+		this.generateBox(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, true);
+		this.generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, true);
+		this.generateBox(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, true);
 		this.generateMaybeBox(world, sbb, rand, 0.2F, 0, 0, 0, 15, 5, 15, Blocks.GRAVEL.defaultBlockState(), AIR, true, false);
 
 		// doorways
@@ -64,8 +64,8 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 		this.generateAirBox(world, sbb, 1, 1, 1, 14, 4, 14);
 
 		// entrance pit
-		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.DECORATIVE_MAZESTONE.value().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.DECORATIVE_MAZESTONE.value().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
 		this.generateMaybeBox(world, sbb, rand, 0.7F, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS.defaultBlockState(), AIR, false, false);
 //		this.fillWithBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, AIR, false);
 

@@ -49,17 +49,17 @@ public class Deer extends Animal {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.DEER_AMBIENT.value();
+		return TFSounds.DEER_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.DEER_HURT.value();
+		return TFSounds.DEER_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.DEER_DEATH.value();
+		return TFSounds.DEER_DEATH.get();
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class Deer extends Animal {
 
 	@Override
 	public Deer getBreedOffspring(ServerLevel level, AgeableMob mate) {
-		return TFEntities.DEER.value().create(level);
+		return TFEntities.DEER.get().create(level);
 	}
 
 	@Override

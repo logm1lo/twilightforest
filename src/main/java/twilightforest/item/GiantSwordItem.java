@@ -13,8 +13,8 @@ import twilightforest.init.TFItems;
 
 public class GiantSwordItem extends SwordItem implements GiantItem {
 
-	public GiantSwordItem(Tier material, Properties props) {
-		super(material, 10, -3.5F, props);
+	public GiantSwordItem(Tier material, Properties properties) {
+		super(material, 10, -3.5F, properties);
 	}
 
 	@Override
@@ -28,6 +28,6 @@ public class GiantSwordItem extends SwordItem implements GiantItem {
 
 	@Override
 	public boolean isValidRepairItem(ItemStack stack, ItemStack material) {
-		return material.getItem() == TFItems.IRONWOOD_INGOT.value() || super.isValidRepairItem(stack, material);
+		return material.is(TFItems.IRONWOOD_INGOT) || super.isValidRepairItem(stack, material);
 	}
 }

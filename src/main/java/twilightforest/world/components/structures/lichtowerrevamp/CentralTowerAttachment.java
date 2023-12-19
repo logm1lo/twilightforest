@@ -24,7 +24,7 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     private final int length = 2; // Determines how far out the piece should gen
 
     public CentralTowerAttachment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.value(), compoundTag, ctx, TwilightTemplateStructurePiece.readSettings(compoundTag));
+        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.get(), compoundTag, ctx, TwilightTemplateStructurePiece.readSettings(compoundTag));
         this.width = compoundTag.getInt("width");
     }
 
@@ -33,7 +33,7 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     }
 
     private CentralTowerAttachment(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int width) {
-        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.value(), 0, structureManager, templateLocation, placeSettings, startPosition);
+        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.get(), 0, structureManager, templateLocation, placeSettings, startPosition);
         this.width = width;
     }
 

@@ -268,18 +268,18 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.YETI_THROW, "mob/alpha_yeti/throw", 1);
 
 
-		this.generateParrotSound(TFSounds.ALPHA_YETI_PARROT, TFSounds.ALPHA_YETI_GROWL.value());
-		this.generateParrotSound(TFSounds.CARMINITE_GOLEM_PARROT, TFSounds.CARMINITE_GOLEM_HURT.value());
-		this.generateParrotSound(TFSounds.DEATH_TOME_PARROT, TFSounds.DEATH_TOME_AMBIENT.value());
-		this.generateParrotSound(TFSounds.HOSTILE_WOLF_PARROT, TFSounds.HOSTILE_WOLF_AMBIENT.value());
-		this.generateParrotSound(TFSounds.HYDRA_PARROT, TFSounds.HYDRA_GROWL.value());
-		this.generateParrotSound(TFSounds.ICE_CORE_PARROT, TFSounds.ICE_CORE_AMBIENT.value());
-		this.generateParrotSound(TFSounds.KOBOLD_PARROT, TFSounds.KOBOLD_AMBIENT.value());
-		this.generateParrotSound(TFSounds.MINOTAUR_PARROT, TFSounds.MINOTAUR_AMBIENT.value());
-		this.generateParrotSound(TFSounds.MOSQUITO_PARROT, TFSounds.MOSQUITO.value());
-		this.generateParrotSound(TFSounds.NAGA_PARROT, TFSounds.NAGA_HISS.value());
-		this.generateParrotSound(TFSounds.REDCAP_PARROT, TFSounds.REDCAP_AMBIENT.value());
-		this.generateParrotSound(TFSounds.WRAITH_PARROT, TFSounds.WRAITH_AMBIENT.value());
+		this.generateParrotSound(TFSounds.ALPHA_YETI_PARROT, TFSounds.ALPHA_YETI_GROWL.get());
+		this.generateParrotSound(TFSounds.CARMINITE_GOLEM_PARROT, TFSounds.CARMINITE_GOLEM_HURT.get());
+		this.generateParrotSound(TFSounds.DEATH_TOME_PARROT, TFSounds.DEATH_TOME_AMBIENT.get());
+		this.generateParrotSound(TFSounds.HOSTILE_WOLF_PARROT, TFSounds.HOSTILE_WOLF_AMBIENT.get());
+		this.generateParrotSound(TFSounds.HYDRA_PARROT, TFSounds.HYDRA_GROWL.get());
+		this.generateParrotSound(TFSounds.ICE_CORE_PARROT, TFSounds.ICE_CORE_AMBIENT.get());
+		this.generateParrotSound(TFSounds.KOBOLD_PARROT, TFSounds.KOBOLD_AMBIENT.get());
+		this.generateParrotSound(TFSounds.MINOTAUR_PARROT, TFSounds.MINOTAUR_AMBIENT.get());
+		this.generateParrotSound(TFSounds.MOSQUITO_PARROT, TFSounds.MOSQUITO.get());
+		this.generateParrotSound(TFSounds.NAGA_PARROT, TFSounds.NAGA_HISS.get());
+		this.generateParrotSound(TFSounds.REDCAP_PARROT, TFSounds.REDCAP_AMBIENT.get());
+		this.generateParrotSound(TFSounds.WRAITH_PARROT, TFSounds.WRAITH_AMBIENT.get());
 
 
 		this.generateNewSoundWithSubtitle(TFSounds.BEANSTALK_GROWTH, "random/beanstalk_grow", 1);

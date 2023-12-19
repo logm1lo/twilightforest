@@ -57,7 +57,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
 // TODO override getBaseHeight and getBaseColumn for our advanced structure terraforming
-@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "SuspiciousNameCombination", "deprecation"})
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "deprecation"})
 public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 	public static final Codec<TwilightChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
@@ -583,14 +583,14 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 						final int oceanFloor = primer.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
 
 						if (dist < 7 || cv < 0.05F) {
-							primer.setBlock(movingPos.setY(y), TFBlocks.WISPY_CLOUD.value().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), 3);
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.value().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), 3);
 							}
-							primer.setBlock(movingPos.setY(y - depth), TFBlocks.WISPY_CLOUD.value().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y - depth), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), 3);
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.value().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), 3);
 							}
 						}
 
@@ -805,7 +805,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 
 					treeBottom -= noise;
 
-					BlockState darkLeaves = TFBlocks.HARDENED_DARK_LEAVES.value().defaultBlockState();
+					BlockState darkLeaves = TFBlocks.HARDENED_DARK_LEAVES.get().defaultBlockState();
 
 					for (int y = treeBottom; y < treeTop; y++) {
 						primer.setBlock(pos.atY(y), darkLeaves, 3);
@@ -918,9 +918,9 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 		ChunkPos chunkpos = chunk.getPos();
 		SectionPos sectionpos = SectionPos.bottomOf(chunk);
 		RandomState randomstate = state.randomState();
-		state.possibleStructureSets().forEach((p_255564_) -> {
-			StructurePlacement structureplacement = p_255564_.value().placement();
-			List<StructureSet.StructureSelectionEntry> list = p_255564_.value().structures();
+		state.possibleStructureSets().forEach(holder -> {
+			StructurePlacement structureplacement = holder.value().placement();
+			List<StructureSet.StructureSelectionEntry> list = holder.value().structures();
 
 			for(StructureSet.StructureSelectionEntry structureset$structureselectionentry : list) {
 				StructureStart structurestart = manager.getStartForStructure(sectionpos, structureset$structureselectionentry.structure().value(), chunk);

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/mazestone_border/cut_mazestone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

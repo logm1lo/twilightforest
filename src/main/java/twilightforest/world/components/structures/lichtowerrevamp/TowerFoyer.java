@@ -31,11 +31,11 @@ import java.util.Map;
 
 public final class TowerFoyer extends TwilightTemplateStructurePiece {
     public TowerFoyer(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-        super(TFStructurePieceTypes.TOWER_FOYER.value(), compoundTag, ctx, readSettings(compoundTag));
+        super(TFStructurePieceTypes.TOWER_FOYER.get(), compoundTag, ctx, readSettings(compoundTag));
     }
 
     public TowerFoyer(StructureTemplateManager structureManager, BlockPos startPosition) {
-        super(TFStructurePieceTypes.TOWER_FOYER.value(), 0, structureManager, TwilightForestMod.prefix("lich_tower/foyer"), makeSettings(Rotation.NONE), startPosition.above(3));
+        super(TFStructurePieceTypes.TOWER_FOYER.get(), 0, structureManager, TwilightForestMod.prefix("lich_tower/foyer"), makeSettings(Rotation.NONE), startPosition.above(3));
     }
 
     @Override

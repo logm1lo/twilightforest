@@ -106,17 +106,17 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.WRAITH_AMBIENT.value();
+		return TFSounds.WRAITH_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.WRAITH_HURT.value();
+		return TFSounds.WRAITH_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.WRAITH_DEATH.value();
+		return TFSounds.WRAITH_DEATH.get();
 	}
 
 	public static boolean checkMonsterSpawnRules(EntityType<? extends Wraith> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {

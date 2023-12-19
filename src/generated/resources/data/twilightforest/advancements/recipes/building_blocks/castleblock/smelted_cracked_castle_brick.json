@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:castleblock/smelted_cracked_castle_brick"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

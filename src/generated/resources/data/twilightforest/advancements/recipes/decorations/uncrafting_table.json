@@ -1,4 +1,9 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "twilightforest:uncrafting_table_enabled"
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_the_recipe": {
@@ -30,6 +35,5 @@
     "recipes": [
       "twilightforest:uncrafting_table"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

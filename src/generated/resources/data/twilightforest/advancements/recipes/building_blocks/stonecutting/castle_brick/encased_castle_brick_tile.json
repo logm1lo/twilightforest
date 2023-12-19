@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/castle_brick/encased_castle_brick_tile"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

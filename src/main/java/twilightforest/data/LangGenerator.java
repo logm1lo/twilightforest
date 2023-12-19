@@ -178,6 +178,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.CANDELABRA, "Candelabra");
 		this.addBlock(TFBlocks.WROUGHT_IRON_FENCE, "Wrought Iron Fence");
 		this.add("block.twilightforest.wrought_iron_fence.cap", "Right-click with an Iron Ingot or Nugget to add a finial");
+		this.addBlock(TFBlocks.TERRORCOTTA_LINES, "Terrorcotta Lines");
+		this.addBlock(TFBlocks.TERRORCOTTA_CURVES, "Terrorcotta Curves");
 
 		this.addBlock(TFBlocks.KEEPSAKE_CASKET, "Keepsake Casket");
 		this.add("block.twilightforest.casket.broken", "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.");
@@ -262,32 +264,32 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addStoneVariants("castle_brick", "Castle Brick");
 		this.addStoneVariants("castle_brick_stairs", "Castle Brick Stairs");
-		this.add(TFBlocks.WORN_CASTLE_BRICK.value(), "Worn Castle Brick");
-		this.add(TFBlocks.THICK_CASTLE_BRICK.value(), "Thick Castle Brick");
-		this.add(TFBlocks.CASTLE_ROOF_TILE.value(), "Castle Roof Tile");
-		this.add(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.value(), "Encased Castle Brick Pillar");
-		this.add(TFBlocks.ENCASED_CASTLE_BRICK_TILE.value(), "Encased Castle Brick Tile");
-		this.add(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.value(), "Bold Castle Brick Pillar");
-		this.add(TFBlocks.BOLD_CASTLE_BRICK_TILE.value(), "Bold Castle Brick Tile");
-		this.add(TFBlocks.WORN_CASTLE_BRICK_STAIRS.value(), "Worn Castle Brick Stairs");
-		this.add(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.value(), "Encased Castle Brick Stairs");
-		this.add(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.value(), "Bold Castle Brick Stairs");
+		this.add(TFBlocks.WORN_CASTLE_BRICK.get(), "Worn Castle Brick");
+		this.add(TFBlocks.THICK_CASTLE_BRICK.get(), "Thick Castle Brick");
+		this.add(TFBlocks.CASTLE_ROOF_TILE.get(), "Castle Roof Tile");
+		this.add(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), "Encased Castle Brick Pillar");
+		this.add(TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), "Encased Castle Brick Tile");
+		this.add(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), "Bold Castle Brick Pillar");
+		this.add(TFBlocks.BOLD_CASTLE_BRICK_TILE.get(), "Bold Castle Brick Tile");
+		this.add(TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(), "Worn Castle Brick Stairs");
+		this.add(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(), "Encased Castle Brick Stairs");
+		this.add(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(), "Bold Castle Brick Stairs");
 
-		this.add(TFBlocks.PINK_CASTLE_RUNE_BRICK.value(), "Magenta Castle Rune Brick");
-		this.add(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.value(), "Yellow Castle Rune Brick");
-		this.add(TFBlocks.BLUE_CASTLE_RUNE_BRICK.value(), "Blue Castle Rune Brick");
-		this.add(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.value(), "Violet Castle Rune Brick");
+		this.add(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), "Magenta Castle Rune Brick");
+		this.add(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), "Yellow Castle Rune Brick");
+		this.add(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), "Blue Castle Rune Brick");
+		this.add(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), "Violet Castle Rune Brick");
 
-		this.add(TFBlocks.PINK_CASTLE_DOOR.value(), "Magenta Castle Door");
-		this.add(TFBlocks.YELLOW_CASTLE_DOOR.value(), "Yellow Castle Door");
-		this.add(TFBlocks.BLUE_CASTLE_DOOR.value(), "Blue Castle Door");
-		this.add(TFBlocks.VIOLET_CASTLE_DOOR.value(), "Violet Castle Door");
+		this.add(TFBlocks.PINK_CASTLE_DOOR.get(), "Magenta Castle Door");
+		this.add(TFBlocks.YELLOW_CASTLE_DOOR.get(), "Yellow Castle Door");
+		this.add(TFBlocks.BLUE_CASTLE_DOOR.get(), "Blue Castle Door");
+		this.add(TFBlocks.VIOLET_CASTLE_DOOR.get(), "Violet Castle Door");
 
-		this.add(TFBlocks.PINK_FORCE_FIELD.value(), "Magenta Force Field");
-		this.add(TFBlocks.ORANGE_FORCE_FIELD.value(), "Orange Force Field");
-		this.add(TFBlocks.GREEN_FORCE_FIELD.value(), "Green Force Field");
-		this.add(TFBlocks.BLUE_FORCE_FIELD.value(), "Blue Force Field");
-		this.add(TFBlocks.VIOLET_FORCE_FIELD.value(), "Violet Force Field");
+		this.add(TFBlocks.PINK_FORCE_FIELD.get(), "Magenta Force Field");
+		this.add(TFBlocks.ORANGE_FORCE_FIELD.get(), "Orange Force Field");
+		this.add(TFBlocks.GREEN_FORCE_FIELD.get(), "Green Force Field");
+		this.add(TFBlocks.BLUE_FORCE_FIELD.get(), "Blue Force Field");
+		this.add(TFBlocks.VIOLET_FORCE_FIELD.get(), "Violet Force Field");
 
 		this.addBlock(TFBlocks.IRONWOOD_BLOCK, "Block of Ironwood");
 		this.addBlock(TFBlocks.STEELEAF_BLOCK, "Block of Steeleaf");
@@ -410,7 +412,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.UR_GHAST_TROPHY, "Ur-Ghast Trophy");
 		this.addBlock(TFBlocks.ALPHA_YETI_TROPHY, "Alpha Yeti Trophy");
 		this.addBlock(TFBlocks.SNOW_QUEEN_TROPHY, "Snow Queen Trophy");
-		this.addBlock(TFBlocks.QUEST_RAM_TROPHY, "Quest Ram Trophy");
+		this.addBlock(TFBlocks.QUEST_RAM_TROPHY, "Questing Ram Trophy");
 
 		this.addBlock(TFBlocks.NAGA_BOSS_SPAWNER, "Naga Boss Spawner");
 		this.addBlock(TFBlocks.LICH_BOSS_SPAWNER, "Lich Boss Spawner");
@@ -430,7 +432,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBannerPattern("ur_ghast", "Carminite Border");
 		this.addBannerPattern("alpha_yeti", "Alpha Yeti Face");
 		this.addBannerPattern("snow_queen", "Snow Queen Crown");
-		this.addBannerPattern("quest_ram", "Quest Ram Swirls");
+		this.addBannerPattern("quest_ram", "Questing Ram Swirls");
 
 		this.addBlock(TFBlocks.ZOMBIE_SKULL_CANDLE, "Zombie Skull Candle");
 		this.addBlock(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE, "Zombie Wall Skull Candle");
@@ -638,7 +640,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addEntityAndEgg(TFEntities.NAGA, "Naga");
 		this.addEntityAndEgg(TFEntities.PENGUIN, "Penguin");
 		this.addEntityAndEgg(TFEntities.PINCH_BEETLE, "Pinch Beetle");
-		this.addEntityAndEgg(TFEntities.QUEST_RAM, "Quest Ram");
+		this.addEntityAndEgg(TFEntities.QUEST_RAM, "Questing Ram");
 		this.addEntityAndEgg(TFEntities.RAVEN, "Raven");
 		this.addEntityAndEgg(TFEntities.REDCAP, "Redcap");
 		this.addEntityAndEgg(TFEntities.REDCAP_SAPPER, "Redcap Sapper");
@@ -847,9 +849,9 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.PINCH_BEETLE_DEATH, "Pinch Beetle dies");
 		this.addSubtitle(TFSounds.PINCH_BEETLE_HURT, "Pinch Beetle hurts");
 
-		this.addSubtitle(TFSounds.QUEST_RAM_AMBIENT, "Quest Ram bleats");
-		this.addSubtitle(TFSounds.QUEST_RAM_DEATH, "Quest Ram dies");
-		this.addSubtitle(TFSounds.QUEST_RAM_HURT, "Quest Ram hurts");
+		this.addSubtitle(TFSounds.QUEST_RAM_AMBIENT, "Questing Ram bleats");
+		this.addSubtitle(TFSounds.QUEST_RAM_DEATH, "Questing Ram dies");
+		this.addSubtitle(TFSounds.QUEST_RAM_HURT, "Questing Ram hurts");
 
 		this.addSubtitle(TFSounds.RAVEN_CAW, "Raven caws");
 		this.addSubtitle(TFSounds.RAVEN_SQUAWK, "Raven squawks in pain");
@@ -1064,7 +1066,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addStat("trophy_pedestals_activated", "Trophy Pedestals Activated");
 		this.addStat("uncrafting_table_interactions", "Interactions with Uncrafting Table");
 
-		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Quest Ram Wool");
+		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Questing Ram Wool");
 
 		this.add("twilightforest.book.author", "a forgotten explorer");
 
@@ -1162,5 +1164,70 @@ public class LangGenerator extends TFLangProvider {
 			this.add(location.toLanguageKey("magic_painting", "title"), stringStringPair.getFirst());
 			this.add(location.toLanguageKey("magic_painting", "author"), stringStringPair.getSecond());
 		});
+
+		this.createTip("anvil_squashing", "Bugs can be squashed by Anvils.");
+		this.createTip("arctic_armor", "Arctic Armor can be dyed any color.");
+		this.createTip("banister_shape", "Banisters can be right-clicked with an axe to change their height.");
+		this.createTip("block_and_chain", "Enchanting a Block and Chain with Destruction allows it to break blocks.");
+		this.createTip("boggard", "What the heck is a Boggard?");
+		this.createTip("bugs_on_head", "Bugs will happily sit on your head.");
+		this.createTip("burnt_thorns", "Burnt Thorns will disintegrate when stepped on.");
+		this.createTip("carminite_builder", "Carminite Builders place temporary blocks in the direction you're looking.");
+		this.createTip("charm_of_keeping", "A Charm of Keeping will return parts of your inventory after death.");
+		this.createTip("charm_of_life", "A Charm of Life can save you from a fatal blow.");
+		this.createTip("crumble_horn", "The Crumble Horn will deteriorate nearby blocks when used.");
+		this.createTip("druid_hut", "Druid huts sometimes have hidden basements.");
+		this.createTip("e115_pickup", "Sneak + right-click placed Experiment 115 to pick it back up.");
+		this.createTip("e115_sprinkle", "Redstone can be sprinkled on top of Experiment 115.");
+		this.createTip("experiment_115", "Does anyone know what Experiment 115 really is?");
+		this.createTip("fiery_pickaxe", "A Fiery Pickaxe will smelt any blocks it breaks.");
+		this.createTip("ghast_trap", "Killing Carminite Ghastlings near a Ghast Trap will charge it.");
+		this.createTip("glass_sword", "Glass Swords break after a single hit.");
+		this.createTip("hollow_log", "Various things can be placed inside Hollow Logs such as snow, moss, or ladders.");
+		this.createTip("hollow_oak_sapling", "Saplings that grow into giant hollow trees can be found in Druid Huts.");
+		this.createTip("hollow_oak_tree", "Hollow Oak trees sometimes have dungeon-like rooms with unique loot in their leaves.");
+		this.createTip("hydra_chop", "Hydra Chops fill up your hunger bar completely when eaten.");
+		this.createTip("hydra_heads", "For each head slain, the Hydra will regrow two in its place!");
+		this.createTip("hydra_mortars", "You can deflect the Hydra's mortar attack.");
+		this.createTip("ice_core", "Ice Cores and Snow Guardians melt in hot biomes.");
+		this.createTip("jars", "Fireflies and Cicadas can be put into jars.");
+		this.createTip("kobold", "Kobold");
+		this.createTip("labyrinth_vault", "The Labyrinth contains a secret room.");
+		this.createTip("lich_scepters", "The Lich drops a variety of magic-based scepters.");
+		this.createTip("liveroot", "Liveroot is found under most trees.");
+		this.createTip("magic_beans", "Planting Magic Beans on Uberous Soil sprouts a mighty beanstalk.");
+		this.createTip("magic_leaves", "Magic Tree Leaves won't drop saplings when broken.");
+		this.createTip("magic_map", "Magic Maps are used to easily locate structures.");
+		this.createTip("magic_saplings", "Special magic saplings can be found inside Hollow Oak trees.");
+		this.createTip("mazebreaker", "The Mazebreaker can break Mazestone blocks 16 times faster and doesn't take extra durability damage.");
+		this.createTip("mining_tree", "The Miner's Tree will pull ores up to the surface.");
+		this.createTip("moon_dial", "The Moon Dial shows the current phase of the moon.");
+		this.createTip("moonworm_queen", "The Moonworm Queen can be fed Torchberries.");
+		this.createTip("mushglooms", "Mushglooms cannot be bonemealed into giant mushrooms. However, placing them on Uberous Soil will make them grow.");
+		this.createTip("music_disc", "Music Discs are found outside of dungeons.");
+		this.createTip("naga", "The Naga can be stunned by making it ram something hard!");
+		this.createTip("netherite_axe", "There will never be a Netherite Minotaur Axe.");
+		this.createTip("ore_magnet", "The Ore Magnet can pull ore veins up to the surface.");
+		this.createTip("peacock_feather_fan", "The Peacock Feather Fan can be used to extinguish Candles.");
+		this.createTip("phantom_armor", "Phantom Armor is automatically kept on death.");
+		this.createTip("quest_ram", "The Questing Ram will reward anyone who gives it what it's missing.");
+		this.createTip("red_thread", "Red Thread can be seen through walls.");
+		this.createTip("redcap", "Redcaps can place and light TNT.");
+		this.createTip("skull_candle", "Candles can be placed on top of mob heads to create a fancy light source.");
+		this.createTip("sorting_tree", "The Sorting Tree will sort chests next to it into other chests nearby.");
+		this.createTip("spooky_forest", "The Spooky Forest is not Halloween themed.");
+		this.createTip("structure_conquering", "Killing a boss will make mobs stop spawning in that structure.");
+		this.createTip("structure_spawning", "Structures spawn in a grid-like pattern.");
+		this.createTip("time_tree", "The Tree of Time will accelerate the growth of nearby crops.");
+		this.createTip("torchberries", "We did glow berries first!");
+		this.createTip("towerwood", "Towerwood Planks are very resistant, but not immune, to fire.");
+		this.createTip("transformation_tree", "The Tree of Transformation will convert the area around it into an Enchanted Forest.");
+		this.createTip("trollber_ripening", "Killing a Troll will ripen nearby Trollber.");
+		this.createTip("twilight_portal", "Throw a diamond into a pool of water surrounded by flowers.");
+		this.createTip("ur_ghast", "The Ur-Ghast can be pulled down from the sky using Ghast Traps.");
+		this.createTip("vanishing_block", "Vanishing Blocks will disappear forever when activated.");
+		this.createTip("worldgen_features", "The forest is filled with many ruins. Some may even contain unique items.");
+		this.createTip("yeti", "Yetis love throwing things.");
+		this.createTip("zombie_healing", "Zombies summoned with a Zombie Scepter can be healed with Rotten Flesh.");
 	}
 }

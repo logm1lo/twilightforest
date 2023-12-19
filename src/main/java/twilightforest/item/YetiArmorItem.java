@@ -44,7 +44,7 @@ public class YetiArmorItem extends ArmorItem {
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
 		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
-			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.FIRE_REACT.value(), enchantment)) {
+			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.FIRE_REACT.get(), enchantment) || Objects.equals(TFEnchantments.CHILL_AURA.get(), enchantment)) {
 				badEnchant.set(true);
 			}
 		});
@@ -54,9 +54,9 @@ public class YetiArmorItem extends ArmorItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !TFEnchantments.FIRE_REACT.value().equals(enchantment) &&
+		return !TFEnchantments.FIRE_REACT.get().equals(enchantment) &&
 				!Enchantments.THORNS.equals(enchantment) &&
-				!TFEnchantments.CHILL_AURA.value().equals(enchantment) &&
+				!TFEnchantments.CHILL_AURA.get().equals(enchantment) &&
 				super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
@@ -77,7 +77,7 @@ public class YetiArmorItem extends ArmorItem {
 
 	@Override
 	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
-		return stack.is(TFItems.YETI_BOOTS.value());
+		return stack.is(TFItems.YETI_BOOTS);
 	}
 
 	@Override

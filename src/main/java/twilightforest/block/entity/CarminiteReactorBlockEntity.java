@@ -30,7 +30,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 
 	public CarminiteReactorBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.CARMINITE_REACTOR.value(), pos, state);
+		super(TFBlockEntities.CARMINITE_REACTOR.get(), pos, state);
 		RandomSource rand = RandomSource.create();
 
 		// determine the two smaller bursts
@@ -61,8 +61,8 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 				if (te.counter % 5 == 0) {
 					if (te.counter == 5) {
-						BlockState fakeGold = TFBlocks.FAKE_GOLD.value().defaultBlockState();
-						BlockState fakeDiamond = TFBlocks.FAKE_DIAMOND.value().defaultBlockState();
+						BlockState fakeGold = TFBlocks.FAKE_GOLD.get().defaultBlockState();
+						BlockState fakeDiamond = TFBlocks.FAKE_DIAMOND.get().defaultBlockState();
 
 						// transformation!
 						te.createFakeBlock(pos.offset(1, 1, 1), fakeDiamond);
@@ -107,7 +107,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 						te.drawBlob(pos, (primary - offset) / 40, Blocks.AIR.defaultBlockState(), primary - offset, false);
 					}
 					if (primary <= 200) {
-						te.drawBlob(pos, primary / 40, TFBlocks.REACTOR_DEBRIS.value().defaultBlockState(), te.counter, false);
+						te.drawBlob(pos, primary / 40, TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), te.counter, false);
 					}
 
 					// secondary burst
@@ -135,7 +135,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 				if (te.counter >= 350) {
 					// deactivate & explode
 					level.explode(null, TFDamageTypes.getDamageSource(level, TFDamageTypes.REACTOR), null, pos.getX(), pos.getY(), pos.getZ(), 4.0F, true, Level.ExplosionInteraction.BLOCK);
-					level.removeBlock(pos, false);
+					level.destroyBlock(pos, false);
 
 					// spawn mini ghasts near the secondary & tertiary points
 					for (int i = 0; i < 3; i++) {
@@ -146,7 +146,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 			} else {
 				if (te.counter % 5 == 0 && te.counter <= 250) {
-					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT.value(), SoundSource.BLOCKS, te.counter / 100F, te.counter / 100F, false);
+					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT.get(), SoundSource.BLOCKS, te.counter / 100F, te.counter / 100F, false);
 				}
 			}
 		}
@@ -154,7 +154,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 
 	private void spawnGhastNear(int x, int y, int z) {
-		CarminiteGhastling ghast = TFEntities.CARMINITE_GHASTLING.value().create(this.getLevel());
+		CarminiteGhastling ghast = TFEntities.CARMINITE_GHASTLING.get().create(this.getLevel());
 		ghast.moveTo(x - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, y - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, z - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, this.getLevel().getRandom().nextFloat() * 360F, 0.0F);
 		ghast.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 200));
 		this.getLevel().addFreshEntity(ghast);

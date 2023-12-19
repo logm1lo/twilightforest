@@ -79,7 +79,7 @@ public class EntityEvents {
 		if (stack.is(Items.LEAD)) {
 			BlockPos pos = event.getPos();
 			BlockState state = event.getLevel().getBlockState(pos);
-			if (state.is(TFBlocks.WROUGHT_IRON_FENCE.value()) && state.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE) {
+			if (state.is(TFBlocks.WROUGHT_IRON_FENCE) && state.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE) {
 				if (!event.getLevel().isClientSide()) {
 					LeadItem.bindPlayerMobs(player, event.getLevel(), event.getPos());
 					event.setCanceled(true);
@@ -112,7 +112,7 @@ public class EntityEvents {
 		// triple bow strips invulnerableTime
 		if (source.getMsgId().equals("arrow") && trueSource instanceof Player player) {
 
-			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW.value())) {
+			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW)) {
 				living.invulnerableTime = 0;
 			}
 		}
@@ -125,7 +125,7 @@ public class EntityEvents {
 		Player player = event.getPlayer();
 		BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
 		UUID checker;
-		if (block == TFBlocks.KEEPSAKE_CASKET.value()) {
+		if (block == TFBlocks.KEEPSAKE_CASKET.get()) {
 			if (te instanceof KeepsakeCasketBlockEntity casket) {
 				checker = casket.playeruuid;
 			} else checker = null;
@@ -144,7 +144,7 @@ public class EntityEvents {
 		ItemStack itemStack = event.getCrafting();
 
 		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-		if (itemStack.is(Items.OAK_PLANKS) && itemStack.getCount() == 64 && event.getInventory().countItem(TFBlocks.GIANT_LOG.value().asItem()) > 0) {
+		if (itemStack.is(Items.OAK_PLANKS) && itemStack.getCount() == 64 && event.getInventory().countItem(TFBlocks.GIANT_LOG.get().asItem()) > 0) {
 			Player player = event.getEntity();
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
@@ -156,11 +156,11 @@ public class EntityEvents {
 	public static void onLivingHurtEvent(LivingHurtEvent event) {
 		LivingEntity living = event.getEntity();
 		if (living != null) {
-			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.value())).ifPresent(mobEffectInstance -> {
+			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
 				if (event.getSource().is(DamageTypes.FREEZE)) {
 					event.setAmount(event.getAmount() + (float)(mobEffectInstance.getAmplifier() / 2));
 				} else if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
-					living.removeEffect(TFMobEffects.FROSTY.value());
+					living.removeEffect(TFMobEffects.FROSTY.get());
 					mobEffectInstance.amplifier -= 1;
 					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
 				}
@@ -213,28 +213,28 @@ public class EntityEvents {
 					boolean wall = state.getBlock() instanceof WallSkullBlock;
 					switch (type) {
 						case SKELETON -> {
-							if (wall) makeWallSkull(event, TFBlocks.SKELETON_WALL_SKULL_CANDLE.value());
-							else makeFloorSkull(event, TFBlocks.SKELETON_SKULL_CANDLE.value());
+							if (wall) makeWallSkull(event, TFBlocks.SKELETON_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.SKELETON_SKULL_CANDLE.get());
 						}
 						case WITHER_SKELETON -> {
-							if (wall) makeWallSkull(event, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.value());
-							else makeFloorSkull(event, TFBlocks.WITHER_SKELE_SKULL_CANDLE.value());
+							if (wall) makeWallSkull(event, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.WITHER_SKELE_SKULL_CANDLE.get());
 						}
 						case PLAYER -> {
-							if (wall) makeWallSkull(event, TFBlocks.PLAYER_WALL_SKULL_CANDLE.value());
-							else makeFloorSkull(event, TFBlocks.PLAYER_SKULL_CANDLE.value());
+							if (wall) makeWallSkull(event, TFBlocks.PLAYER_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.PLAYER_SKULL_CANDLE.get());
 						}
 						case ZOMBIE -> {
-							if (wall) makeWallSkull(event, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.value());
-							else makeFloorSkull(event, TFBlocks.ZOMBIE_SKULL_CANDLE.value());
+							if (wall) makeWallSkull(event, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.ZOMBIE_SKULL_CANDLE.get());
 						}
 						case CREEPER -> {
-							if (wall) makeWallSkull(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.value());
-							else makeFloorSkull(event, TFBlocks.CREEPER_SKULL_CANDLE.value());
+							if (wall) makeWallSkull(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.CREEPER_SKULL_CANDLE.get());
 						}
 						case PIGLIN -> {
-							if (wall) makeWallSkull(event, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.value());
-							else makeFloorSkull(event, TFBlocks.PIGLIN_SKULL_CANDLE.value());
+							if (wall) makeWallSkull(event, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.PIGLIN_SKULL_CANDLE.get());
 						}
 						default -> {
 							return;
@@ -243,7 +243,7 @@ public class EntityEvents {
 					if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
 					event.getEntity().swing(event.getHand());
 					if (event.getEntity() instanceof ServerPlayer)
-						event.getEntity().awardStat(TFStats.SKULL_CANDLES_MADE.value());
+						event.getEntity().awardStat(TFStats.SKULL_CANDLES_MADE.get());
 					//this is to prevent anything from being placed afterwords
 					event.setCanceled(true);
 				}

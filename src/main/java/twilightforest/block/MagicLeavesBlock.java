@@ -11,13 +11,13 @@ import twilightforest.init.TFParticleType;
 
 public class MagicLeavesBlock extends TFLeavesBlock {
 
-	public MagicLeavesBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public MagicLeavesBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 	}
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-		if (state.getBlock() == TFBlocks.TRANSFORMATION_LEAVES.value()) {
+		if (state.getBlock() == TFBlocks.TRANSFORMATION_LEAVES.get()) {
 			for (int i = 0; i < 1; ++i) {
 				this.sparkleRunes(level, pos, random);
 			}
@@ -57,7 +57,7 @@ public class MagicLeavesBlock extends TFLeavesBlock {
 		}
 
 		if (rx < pos.getX() || rx > pos.getX() + 1 || ry < pos.getY() || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1) {
-			level.addParticle(TFParticleType.LEAF_RUNE.value(), rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			level.addParticle(TFParticleType.LEAF_RUNE.get(), rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 }

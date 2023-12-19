@@ -14,21 +14,21 @@ public class TransformationPowderGenerator extends TransformationPowderProvider 
 
 	@Override
 	public void registerTransforms() {
-		addTwoWayTransform(TFEntities.MINOTAUR.value(), EntityType.ZOMBIFIED_PIGLIN);
-		addTwoWayTransform(TFEntities.DEER.value(), EntityType.COW);
-		addTwoWayTransform(TFEntities.BOAR.value(), EntityType.PIG);
-		addTwoWayTransform(TFEntities.BIGHORN_SHEEP.value(), EntityType.SHEEP);
-		addTwoWayTransform(TFEntities.DWARF_RABBIT.value(), EntityType.RABBIT);
-		addTwoWayTransform(TFEntities.TINY_BIRD.value(), EntityType.PARROT);
-		addTwoWayTransform(TFEntities.RAVEN.value(), EntityType.BAT);
-		addTwoWayTransform(TFEntities.HOSTILE_WOLF.value(), EntityType.WOLF);
-		addTwoWayTransform(TFEntities.PENGUIN.value(), EntityType.CHICKEN);
-		addTwoWayTransform(TFEntities.HEDGE_SPIDER.value(), EntityType.SPIDER);
-		addTwoWayTransform(TFEntities.SWARM_SPIDER.value(), EntityType.CAVE_SPIDER);
-		addTwoWayTransform(TFEntities.WRAITH.value(), EntityType.VEX);
-		addTwoWayTransform(TFEntities.SKELETON_DRUID.value(), EntityType.WITCH);
-		addTwoWayTransform(TFEntities.CARMINITE_GHASTGUARD.value(), EntityType.GHAST);
-		addTwoWayTransform(TFEntities.TOWERWOOD_BORER.value(), EntityType.SILVERFISH);
-		addTwoWayTransform(TFEntities.MAZE_SLIME.value(), EntityType.SLIME);
+		addTwoWayTransform(TFEntities.MINOTAUR.get(), EntityType.ZOMBIFIED_PIGLIN);
+		addTwoWayTransform(TFEntities.DEER.get(), EntityType.COW);
+		addTwoWayTransform(TFEntities.BOAR.get(), EntityType.PIG);
+		addTwoWayTransform(TFEntities.BIGHORN_SHEEP.get(), EntityType.SHEEP);
+		addTwoWayTransform(TFEntities.DWARF_RABBIT.get(), EntityType.RABBIT);
+		addTwoWayTransform(TFEntities.TINY_BIRD.get(), EntityType.PARROT);
+		addTwoWayTransform(TFEntities.RAVEN.get(), EntityType.BAT);
+		addTwoWayTransform(TFEntities.HOSTILE_WOLF.get(), EntityType.WOLF);
+		addTwoWayTransform(TFEntities.PENGUIN.get(), EntityType.CHICKEN);
+		addTwoWayTransform(TFEntities.HEDGE_SPIDER.get(), EntityType.SPIDER);
+		addTwoWayTransform(TFEntities.SWARM_SPIDER.get(), EntityType.CAVE_SPIDER);
+		addTwoWayTransform(TFEntities.WRAITH.get(), EntityType.VEX);
+		addTwoWayTransform(TFEntities.SKELETON_DRUID.get(), EntityType.WITCH);
+		addTwoWayTransform(TFEntities.CARMINITE_GHASTGUARD.get(), EntityType.GHAST);
+		addTwoWayTransform(TFEntities.TOWERWOOD_BORER.get(), EntityType.SILVERFISH);
+		addTwoWayTransform(TFEntities.MAZE_SLIME.get(), EntityType.SLIME);
 	}
 }

@@ -26,11 +26,11 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
 	@SuppressWarnings("unused")
 	public FinalCastleBossGazeboComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCBoGaz.value(), nbt);
+		super(TFStructurePieceTypes.TFFCBoGaz.get(), nbt);
 	}
 
 	public FinalCastleBossGazeboComponent(int i, TFStructureComponentOld keep, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCBoGaz.value(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCBoGaz.get(), i, x, y, z);
 		this.spawnListIndex = -1; // no monsters
 
 		this.setOrientation(keep.getOrientation());
@@ -41,14 +41,14 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.value().defaultBlockState();
+		this.deco.blockState = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState();
 
-		this.deco.fenceState = TFBlocks.VIOLET_FORCE_FIELD.value().defaultBlockState();
+		this.deco.fenceState = TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState();
 	}
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		BlockState state = TFBlocks.VIOLET_FORCE_FIELD.value().defaultBlockState();
+		BlockState state = TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState();
 
 		// walls
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
@@ -73,6 +73,6 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 		setInvisibleTextEntity(world, 10, 0, 10, sbb, "follow development of the mod:",true, 1.0f);
 		setInvisibleTextEntity(world, 10, 0, 10, sbb, "discord.experiment115.com", true, 0.7f);
 
-		//placeBlock(world, TFBlocks.boss_spawner_final_boss.value().defaultBlockState(), 10, 1, 10, sbb);
+		//placeBlock(world, TFBlocks.boss_spawner_final_boss.get().defaultBlockState(), 10, 1, 10, sbb);
 	}
 }

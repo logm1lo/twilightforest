@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:food/smelted_meef"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

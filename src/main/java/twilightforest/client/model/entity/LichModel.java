@@ -27,44 +27,44 @@ public class LichModel extends HumanoidModel<Lich> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
+		definition.addOrReplaceChild("hat", CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-4.0F, -12.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("collar", CubeListBuilder.create()
+		definition.addOrReplaceChild("collar", CubeListBuilder.create()
 						.texOffs(32, 16)
 						.addBox(-6.0F, -2.0F, -4.0F, 12.0F, 12.0F, 1.0F, new CubeDeformation(-0.1F)),
 				PartPose.offsetAndRotation(0.0F, -3.0F, -1.0F, 2.164208F, 0F, 0F));
 
-		partRoot.addOrReplaceChild("cloak", CubeListBuilder.create()
+		definition.addOrReplaceChild("cloak", CubeListBuilder.create()
 						.texOffs(0, 44)
 						.addBox(-6.0F, 2.0F, 0.0F, 12.0F, 19.0F, 1.0F),
 				PartPose.offset(0.0F, -4.0F, 2.5F));
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(8, 16)
 						.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
 				PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
 				PartPose.offset(-5.0F, -2.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
 						.texOffs(0, 16)
 						.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
 				PartPose.offset(5.0F, 2.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
 				PartPose.offset(-2.0F, 12.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
 						.texOffs(0, 16)
 						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
 				PartPose.offset(2.0F, 12.0F, 0.0F));

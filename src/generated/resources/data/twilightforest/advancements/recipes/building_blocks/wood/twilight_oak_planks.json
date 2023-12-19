@@ -28,6 +28,5 @@
     "recipes": [
       "twilightforest:wood/twilight_oak_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

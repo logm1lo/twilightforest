@@ -30,11 +30,11 @@ import java.util.function.Predicate;
 public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	public TrollCaveGardenComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFTCGard.value(), nbt);
+		super(TFStructurePieceTypes.TFTCGard.get(), nbt);
 	}
 
 	public TrollCaveGardenComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFTCGard.value(), index, x, y, z);
+		super(TFStructurePieceTypes.TFTCGard.get(), index, x, y, z);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);

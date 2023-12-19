@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:berry_torch"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

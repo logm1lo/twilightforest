@@ -66,7 +66,7 @@ public record BorderLayer(ResourceKey<Biome> targetBiome, ResourceKey<Biome> bor
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.BORDER.value();
+			return BiomeLayerTypes.BORDER.get();
 		}
 
 		public long salt() {

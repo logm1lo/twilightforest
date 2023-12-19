@@ -50,17 +50,17 @@ public class UnstableIceCore extends BaseIceMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_CORE_AMBIENT.value();
+		return TFSounds.ICE_CORE_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_CORE_HURT.value();
+		return TFSounds.ICE_CORE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_CORE_DEATH.value();
+		return TFSounds.ICE_CORE_DEATH.get();
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class UnstableIceCore extends BaseIceMob {
 	}
 
 	private boolean shouldTransformGlass(BlockState state, BlockPos pos) {
-		return !state.isAir() && isBlockNormalBounds(state, pos) && (!state.isSolid() || state.is(BlockTags.LEAVES) || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK.value()));
+		return !state.isAir() && isBlockNormalBounds(state, pos) && (!state.isSolid() || state.is(BlockTags.LEAVES) || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK));
 	}
 
 	private boolean isBlockNormalBounds(BlockState state, BlockPos pos) {

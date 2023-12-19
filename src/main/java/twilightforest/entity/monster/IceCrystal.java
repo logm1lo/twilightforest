@@ -20,7 +20,7 @@ public class IceCrystal extends BaseIceMob {
 	private int maxCrystalAge = -1;
 
 	public IceCrystal(Level worldIn) {
-		super(TFEntities.ICE_CRYSTAL.value(), worldIn);
+		super(TFEntities.ICE_CRYSTAL.get(), worldIn);
 	}
 
 	public IceCrystal(EntityType<? extends IceCrystal> type, Level world) {
@@ -52,17 +52,17 @@ public class IceCrystal extends BaseIceMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_CORE_AMBIENT.value();
+		return TFSounds.ICE_CORE_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_CORE_HURT.value();
+		return TFSounds.ICE_CORE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_CORE_DEATH.value();
+		return TFSounds.ICE_CORE_DEATH.get();
 	}
 
 	public void setToDieIn30Seconds() {

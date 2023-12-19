@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/mossy_towerwood"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

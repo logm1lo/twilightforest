@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.inventory.UncraftingMenu;
 import twilightforest.item.recipe.UncraftingRecipe;
@@ -85,7 +85,7 @@ public class UncraftingSlot extends Slot {
 		ItemStack inputStack = this.inputSlot.getItem(0);
 		if (!inputStack.isEmpty()) {
 			if (player instanceof ServerPlayer server) {
-				TFAdvancements.UNCRAFT_ITEM.trigger(server, inputStack);
+				TFAdvancements.UNCRAFT_ITEM.get().trigger(server, inputStack);
 			}
 			this.inputSlot.removeItem(0, this.uncraftingMatrix.numberOfInputItems);
 		}

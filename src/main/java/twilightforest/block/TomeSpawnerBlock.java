@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -29,6 +30,8 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 
 public class TomeSpawnerBlock extends BaseEntityBlock {
+
+	public static final MapCodec<TomeSpawnerBlock> CODEC = simpleCodec(TomeSpawnerBlock::new);
 	public static final int MAX_STAGES = 10;
 	public static final IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, MAX_STAGES);
 	public static final BooleanProperty SPAWNER = BooleanProperty.create("spawner");
@@ -36,6 +39,11 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	public TomeSpawnerBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(BOOK_STAGES, 10).setValue(SPAWNER, true));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -68,7 +76,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	@Override
 	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity entity, ItemStack stack) {
 		if(!level.isClientSide && state.getValue(SPAWNER)) {
-			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			for (int i = 0; i < 20; ++i) {
 				double d3 = level.random.nextGaussian() * 0.02D;
 				double d1 = level.random.nextGaussian() * 0.02D;
@@ -98,7 +106,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return state.getValue(SPAWNER) ? createTickerHelper(type, TFBlockEntities.TOME_SPAWNER.value(), TomeSpawnerBlockEntity::tick) : null;
+		return state.getValue(SPAWNER) ? createTickerHelper(type, TFBlockEntities.TOME_SPAWNER.get(), TomeSpawnerBlockEntity::tick) : null;
 	}
 
 	@Override

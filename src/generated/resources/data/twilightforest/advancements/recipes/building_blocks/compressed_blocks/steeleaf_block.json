@@ -28,6 +28,5 @@
     "recipes": [
       "twilightforest:compressed_blocks/steeleaf_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

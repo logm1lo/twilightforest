@@ -8,10 +8,10 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.thrown.YetiThrowCapabilityHandler;
+import twilightforest.capabilities.YetiThrowAttachment;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.events.HostileMountEvents;
+import twilightforest.init.TFDataAttachments;
 
 public class ThrowRiderGoal extends MeleeAttackGoal {
 
@@ -28,7 +28,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 		return this.mob.getPassengers().isEmpty() &&
 				this.mob.getTarget() != null &&
 				!this.mob.getTarget().getType().is(Tags.EntityTypes.BOSSES) &&
-				this.mob.getTarget().getCapability(CapabilityList.YETI_THROWN).map(cap -> cap.getThrowCooldown() <= 0).orElse(true) &&
+				this.mob.getData(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
 				super.canUse();
 	}
 
@@ -76,13 +76,12 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * 2.0D, 0.9, this.mob.getLookAngle().z() * 2.0D);
 
-			if (rider instanceof LivingEntity living) {
-				living.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> {
-					if (living instanceof Player) cap.setThrown(true, this.mob);
-					// Make it so other yetis won't try to pick us up for a bit, 10 seconds seems fair
-					cap.setThrowVector(throwVec);
-					cap.setThrowCooldown(YetiThrowCapabilityHandler.THROW_COOLDOWN);
-				});
+			if (rider instanceof Player player) {
+				var attachment = player.getData(TFDataAttachments.YETI_THROWING);
+				attachment.setThrown(player, true, this.mob);
+				// Make it so other yetis won't try to pick us up for a bit, 10 seconds seems fair
+				attachment.setThrowVector(throwVec);
+				attachment.setThrowCooldown(player, YetiThrowAttachment.THROW_COOLDOWN);
 			} else rider.push(throwVec.x(), throwVec.y(), throwVec.z());
 		}
 		super.stop();

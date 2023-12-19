@@ -42,8 +42,8 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	private static final float THORN_DAMAGE = 4.0F;
 
-	public ThornsBlock(Properties props) {
-		super(props, 10);
+	public ThornsBlock(Properties properties) {
+		super(properties, 10);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y)
 				.setValue(DOWN, false).setValue(UP, false)
 				.setValue(NORTH, false).setValue(SOUTH, false)
@@ -53,9 +53,9 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	@Override
 	public boolean canConnectTo(Direction.Axis thisAxis, Direction facing, BlockState facingState, boolean solidSide) {
 		return (facingState.getBlock() instanceof ThornsBlock
-						|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.value())
-						|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.value())
-						|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.value()));
+						|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.get())
+						|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.get())
+						|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.get()));
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 			BlockPos dPos = pos.relative(dir, i);
 
 			if (level.isEmptyBlock(dPos)) {
-				level.setBlock(dPos, TFBlocks.GREEN_THORNS.value().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
+				level.setBlock(dPos, TFBlocks.GREEN_THORNS.get().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
 			} else {
 				break;
 			}

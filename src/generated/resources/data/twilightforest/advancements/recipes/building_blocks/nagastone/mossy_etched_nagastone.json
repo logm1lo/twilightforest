@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:nagastone/mossy_etched_nagastone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

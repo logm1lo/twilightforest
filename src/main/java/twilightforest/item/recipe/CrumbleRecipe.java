@@ -39,12 +39,12 @@ public record CrumbleRecipe(Block input, Block result) implements Recipe<Contain
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.CRUMBLE_SERIALIZER.value();
+		return TFRecipes.CRUMBLE_SERIALIZER.get();
 	}
 
 	@Override
 	public RecipeType<?> getType() {
-		return TFRecipes.CRUMBLE_RECIPE.value();
+		return TFRecipes.CRUMBLE_RECIPE.get();
 	}
 
 	public static class Serializer implements RecipeSerializer<CrumbleRecipe> {

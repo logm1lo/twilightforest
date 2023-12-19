@@ -19,7 +19,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFSounds;
 
 import java.util.List;
@@ -69,7 +69,7 @@ public class BrittleFlaskItem extends Item {
 							player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
 						}
 						flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-						player.playSound(TFSounds.FLASK_FILL.value(), flaskTag.getInt("Uses") * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
+						player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 						return true;
 					} else if (!flaskTag.contains("Potion")) {
 						if (!player.getAbilities().instabuild) {
@@ -78,7 +78,7 @@ public class BrittleFlaskItem extends Item {
 						}
 						flaskTag.putString("Potion", potionTag.getString("Potion"));
 						flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-						player.playSound(TFSounds.FLASK_FILL.value(), flaskTag.getInt("Uses") * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
+						player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 						return true;
 					}
 				}
@@ -138,11 +138,11 @@ public class BrittleFlaskItem extends Item {
 				if (this.canBreak() && !player.getAbilities().instabuild) {
 					if (tag.getInt("Uses") <= 0) {
 						stack.shrink(1);
-						level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK.value(), player.getSoundSource(), 1.5F, 0.7F);
+						level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK.get(), player.getSoundSource(), 1.5F, 0.7F);
 					} else {
 						tag.putInt("Breakage", tag.getInt("Breakage") + 1);
 						tag.putBoolean("Refillable", false);
-						level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK.value(), player.getSoundSource(), 1.5F, 2.0F);
+						level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK.get(), player.getSoundSource(), 1.5F, 2.0F);
 					}
 				}
 			}
@@ -164,7 +164,7 @@ public class BrittleFlaskItem extends Item {
 		}
 
 		if (drinker instanceof ServerPlayer player && drinker.isAlive() && advancementWindow) {
-			TFAdvancements.DRINK_FROM_FLASK.trigger(player, timesUsed, lastUsedPotion);
+			TFAdvancements.DRINK_FROM_FLASK.get().trigger(player, timesUsed, lastUsedPotion);
 		}
 	}
 
@@ -192,7 +192,7 @@ public class BrittleFlaskItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
+		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F, level == null ? 20.0F : level.tickRateManager().tickrate());
 		if (stack.getTag() != null) {
 			tooltip.add(Component.translatable("item.twilightforest.flask.doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
 			if (stack.getTag().contains("Refillable") && !stack.getTag().getBoolean("Refillable"))

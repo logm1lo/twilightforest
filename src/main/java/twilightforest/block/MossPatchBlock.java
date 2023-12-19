@@ -12,8 +12,8 @@ import net.neoforged.neoforge.common.PlantType;
 
 public class MossPatchBlock extends PatchBlock {
 
-	public MossPatchBlock(Properties props) {
-		super(props);
+	public MossPatchBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override

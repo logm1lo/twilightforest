@@ -16,8 +16,8 @@ public class DiagonalBlock extends Block {
 
 	public static final BooleanProperty IS_ROTATED = BooleanProperty.create("is_rotated");
 
-	public DiagonalBlock(Properties props) {
-		super(props);
+	public DiagonalBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override

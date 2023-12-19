@@ -8,8 +8,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.giant_pick.GiantPickMineCapability;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFLoot;
 
 import java.util.Set;
@@ -20,7 +19,7 @@ public record GiantPickUsedCondition(LootContext.EntityTarget target) implements
 
     @Override
     public LootItemConditionType getType() {
-        return TFLoot.GIANT_PICK_USED_CONDITION.value();
+        return TFLoot.GIANT_PICK_USED_CONDITION.get();
     }
 
     @Override
@@ -31,10 +30,8 @@ public record GiantPickUsedCondition(LootContext.EntityTarget target) implements
     @Override
     public boolean test(LootContext context) {
         if (context.getParamOrNull(this.target.getParam()) instanceof Player player) {
-            GiantPickMineCapability capability = player.getCapability(CapabilityList.GIANT_PICK_MINE).resolve().orElse(null);
-            if (capability != null) {
-                return player.level().getGameTime() == capability.getMining() && capability.canMakeGiantBlock();
-            }
+            var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+            return player.level().getGameTime() == attachment.getMining() && attachment.canMakeGiantBlock();
         }
         return false;
     }

@@ -37,7 +37,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
 import twilightforest.init.TFSounds;
@@ -127,7 +127,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		rewards.forEach(stack -> this.spawnAtLocation(stack, 1.0F));
 
 		for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
-			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
+			TFAdvancements.QUEST_RAM_COMPLETED.get().trigger(player);
 		}
 
 		LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.QUEST_GROVE, true);
@@ -255,22 +255,22 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.QUEST_RAM_AMBIENT.value();
+		return TFSounds.QUEST_RAM_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.QUEST_RAM_HURT.value();
+		return TFSounds.QUEST_RAM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.QUEST_RAM_DEATH.value();
+		return TFSounds.QUEST_RAM_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.QUEST_RAM_STEP.value(), 0.15F, 1.0F);
+		this.playSound(TFSounds.QUEST_RAM_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override

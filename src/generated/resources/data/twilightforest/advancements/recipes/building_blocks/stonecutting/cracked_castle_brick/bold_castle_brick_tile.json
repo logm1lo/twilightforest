@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/cracked_castle_brick/bold_castle_brick_tile"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

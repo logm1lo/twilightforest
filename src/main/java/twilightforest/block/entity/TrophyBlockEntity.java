@@ -15,11 +15,11 @@ public class TrophyBlockEntity extends BlockEntity {
 	private boolean animated;
 
 	public TrophyBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.TROPHY.value(), pos, state);
+		super(TFBlockEntities.TROPHY.get(), pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, TrophyBlockEntity te) {
-		if (state.is(TFBlocks.UR_GHAST_TROPHY.value()) || state.is(TFBlocks.UR_GHAST_WALL_TROPHY.value())) {
+		if (state.is(TFBlocks.UR_GHAST_TROPHY) || state.is(TFBlocks.UR_GHAST_WALL_TROPHY)) {
 			te.animated = true;
 			++te.animatedTicks;
 		}

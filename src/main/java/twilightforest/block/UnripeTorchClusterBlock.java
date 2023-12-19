@@ -9,15 +9,15 @@ import twilightforest.init.TFBlocks;
 public class UnripeTorchClusterBlock extends TrollRootBlock {
 	private static final int RIPEN_THRESHOLD = 6;
 
-	public UnripeTorchClusterBlock(Properties props) {
-		super(props);
+	public UnripeTorchClusterBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (level.getMaxLocalRawBrightness(pos) >= RIPEN_THRESHOLD) {
 			// ripen!
-			level.setBlockAndUpdate(pos, TFBlocks.TROLLBER.value().defaultBlockState());
+			level.setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
 		}
 	}
 }

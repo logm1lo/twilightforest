@@ -23,11 +23,11 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.block.LightableBlock;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.fan.FeatherFanFallCapability;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFSounds;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
+import twilightforest.network.UpdateFeatherFanFallPacket;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
@@ -43,12 +43,15 @@ public class PeacockFanItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		boolean flag = !player.onGround() && !player.isSwimming() && !player.getCapability(CapabilityList.FEATHER_FAN_FALLING).map(FeatherFanFallCapability::getFalling).orElse(true);
+		boolean flag = !player.onGround() && !player.isSwimming() && !player.getData(TFDataAttachments.FEATHER_FAN);
 
 		if (!level.isClientSide()) {
 			int fanned = this.doFan(level, player);
 			stack.hurtAndBreak(fanned + 1, player, (user) -> user.broadcastBreakEvent(hand));
-			if (flag) player.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(cap -> cap.setFalling(true));
+			if (flag) {
+				player.setData(TFDataAttachments.FEATHER_FAN, true);
+				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new UpdateFeatherFanFallPacket(player.getId(), true));
+			}
 		} else {
 			if (player.isFallFlying()) {
 				Vec3 look = player.getLookAngle();
@@ -78,7 +81,7 @@ public class PeacockFanItem extends Item {
 							lookVec.x(), lookVec.y(), lookVec.z());
 				}
 			}
-			player.playSound(TFSounds.FAN_WHOOSH.value(), 1.0F + level.getRandom().nextFloat(), level.getRandom().nextFloat() * 0.7F + 0.3F);
+			player.playSound(TFSounds.FAN_WHOOSH.get(), 1.0F + level.getRandom().nextFloat(), level.getRandom().nextFloat() * 0.7F + 0.3F);
 			return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 		}
 

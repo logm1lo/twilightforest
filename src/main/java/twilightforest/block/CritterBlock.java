@@ -13,9 +13,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -42,13 +44,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 
-public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, Equipable {
+
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private final VoxelShape DOWN_BB = Shapes.create(new AABB(0.2F, 0.85F, 0.2F, 0.8F, 1.0F, 0.8F));
@@ -131,16 +134,16 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (stack.getItem() == Items.GLASS_BOTTLE) {
-			if (this == TFBlocks.FIREFLY.value()) {
+			if (this == TFBlocks.FIREFLY.get()) {
 				if (!player.isCreative()) stack.shrink(1);
-				player.getInventory().add(new ItemStack(TFBlocks.FIREFLY_JAR.value()));
+				player.getInventory().add(new ItemStack(TFBlocks.FIREFLY_JAR.get()));
 				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 				return InteractionResult.sidedSuccess(level.isClientSide());
-			} else if (this == TFBlocks.CICADA.value()) {
+			} else if (this == TFBlocks.CICADA.get()) {
 				if (!player.isCreative()) stack.shrink(1);
-				player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.value()));
+				player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.get()));
 				if (level.isClientSide())
-					Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.value().getLocation(), SoundSource.NEUTRAL);
+					Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
 				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
@@ -153,9 +156,9 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 		if ((entity instanceof Projectile && !entity.getType().is(EntityTagGenerator.DONT_KILL_BUGS)) || entity instanceof FallingBlockEntity) {
 			level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 			if (level.isClientSide())
-				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.value().getLocation(), SoundSource.NEUTRAL);
+				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
 
-			level.playSound(null, pos, TFSounds.BUG_SQUISH.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.playSound(null, pos, TFSounds.BUG_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 
 			if (level instanceof ServerLevel serverLevel && this.getSquishLootTable() != null) {
 				LootParams ctx = new LootParams.Builder(serverLevel).withParameter(LootContextParams.BLOCK_STATE, state).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).create(LootContextParamSets.BLOCK);
@@ -171,8 +174,8 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 						0.0D, 0.0D, 0.0D);
 			}
 			if (entity instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
-				player.awardStat(TFStats.BUGS_SQUISHED.value());
-				TFAdvancements.KILL_BUG.trigger(player, state);
+				player.awardStat(TFStats.BUGS_SQUISHED.get());
+				TFAdvancements.KILL_BUG.get().trigger(player, state);
 			}
 		}
 	}
@@ -182,6 +185,11 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	@Nullable
 	@Override
 	public abstract BlockEntity newBlockEntity(BlockPos pos, BlockState state);
+
+	@Override
+	public EquipmentSlot getEquipmentSlot() {
+		return EquipmentSlot.HEAD;
+	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

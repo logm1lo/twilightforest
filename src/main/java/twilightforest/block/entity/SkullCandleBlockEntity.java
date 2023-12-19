@@ -29,7 +29,7 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 
 	@Override
 	public BlockEntityType<?> getType() {
-		return TFBlockEntities.SKULL_CANDLE.value();
+		return TFBlockEntities.SKULL_CANDLE.get();
 	}
 
 	@Override

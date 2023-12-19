@@ -1,4 +1,9 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "twilightforest:uncrafting_table_enabled"
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
@@ -16,6 +21,5 @@
   ],
   "result": {
     "item": "twilightforest:uncrafting_table"
-  },
-  "show_notification": true
+  }
 }

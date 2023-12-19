@@ -28,6 +28,5 @@
     "recipes": [
       "twilightforest:carminite_builder"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

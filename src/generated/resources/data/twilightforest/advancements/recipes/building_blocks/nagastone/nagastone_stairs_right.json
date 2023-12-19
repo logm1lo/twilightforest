@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:nagastone/nagastone_stairs_right"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

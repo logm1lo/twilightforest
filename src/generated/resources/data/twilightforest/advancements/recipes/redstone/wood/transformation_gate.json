@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/transformation_gate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

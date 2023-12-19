@@ -23,17 +23,17 @@ public class Raven extends FlyingBird {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.RAVEN_CAW.value();
+		return TFSounds.RAVEN_CAW.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.RAVEN_SQUAWK.value();
+		return TFSounds.RAVEN_SQUAWK.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.RAVEN_SQUAWK.value();
+		return TFSounds.RAVEN_SQUAWK.get();
 	}
 
 	@Override

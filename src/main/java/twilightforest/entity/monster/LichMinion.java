@@ -25,7 +25,7 @@ public class LichMinion extends Zombie {
 	}
 
 	public LichMinion(Level world, Lich entityTFLich) {
-		super(TFEntities.LICH_MINION.value(), world);
+		super(TFEntities.LICH_MINION.get(), world);
 		this.master = entityTFLich;
 	}
 
@@ -48,22 +48,22 @@ public class LichMinion extends Zombie {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINION_AMBIENT.value();
+		return TFSounds.MINION_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.MINION_HURT.value();
+		return TFSounds.MINION_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINION_DEATH.value();
+		return TFSounds.MINION_DEATH.get();
 	}
 
 	@Override
 	protected SoundEvent getStepSound() {
-		return TFSounds.MINION_STEP.value();
+		return TFSounds.MINION_STEP.get();
 	}
 
 	@Override

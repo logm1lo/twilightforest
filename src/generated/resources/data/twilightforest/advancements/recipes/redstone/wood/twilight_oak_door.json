@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/twilight_oak_door"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

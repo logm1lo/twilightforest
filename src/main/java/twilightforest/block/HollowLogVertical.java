@@ -70,14 +70,14 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (stack.is(Blocks.VINE.asItem())) {
-			level.setBlock(pos, this.climbable.value().defaultBlockState().setValue(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.VINE).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
+			level.setBlock(pos, this.climbable.get().defaultBlockState().setValue(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.VINE).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
 			level.playSound(null, pos, SoundEvents.VINE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.isCreative()) stack.shrink(1);
 
 			return InteractionResult.sidedSuccess(level.isClientSide());
 
 		} else if (stack.is(Blocks.LADDER.asItem())) {
-			level.setBlock(pos, this.climbable.value().defaultBlockState().setValue(HollowLogClimbable.VARIANT, state.getValue(WATERLOGGED) ? HollowLogVariants.Climbable.LADDER_WATERLOGGED : HollowLogVariants.Climbable.LADDER).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
+			level.setBlock(pos, this.climbable.get().defaultBlockState().setValue(HollowLogClimbable.VARIANT, state.getValue(WATERLOGGED) ? HollowLogVariants.Climbable.LADDER_WATERLOGGED : HollowLogVariants.Climbable.LADDER).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
 			level.playSound(null, pos, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.isCreative()) stack.shrink(1);
 

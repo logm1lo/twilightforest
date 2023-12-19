@@ -5,8 +5,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.NetworkEvent;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.capabilities.FortificationShieldAttachment;
+import twilightforest.init.TFDataAttachments;
 
 public class UpdateShieldPacket {
 
@@ -14,14 +14,10 @@ public class UpdateShieldPacket {
 	private final int temporaryShields;
 	private final int permanentShields;
 
-	public UpdateShieldPacket(int id, IShieldCapability cap) {
+	public UpdateShieldPacket(int id, FortificationShieldAttachment attachment) {
 		this.entityID = id;
-		this.temporaryShields = cap.temporaryShieldsLeft();
-		this.permanentShields = cap.permanentShieldsLeft();
-	}
-
-	public UpdateShieldPacket(Entity entity, IShieldCapability cap) {
-		this(entity.getId(), cap);
+		this.temporaryShields = attachment.temporaryShieldsLeft();
+		this.permanentShields = attachment.permanentShieldsLeft();
 	}
 
 	public UpdateShieldPacket(FriendlyByteBuf buf) {
@@ -41,11 +37,10 @@ public class UpdateShieldPacket {
 		public static boolean onMessage(UpdateShieldPacket message, NetworkEvent.Context ctx) {
 			ctx.enqueueWork(() -> {
 				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
-				if (entity instanceof LivingEntity) {
-					entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
-						cap.setShields(message.temporaryShields, true);
-						cap.setShields(message.permanentShields, false);
-					});
+				if (entity instanceof LivingEntity living) {
+					var attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
+					attachment.setShields(living, message.temporaryShields, true);
+					attachment.setShields(living, message.permanentShields, false);
 				}
 			});
 

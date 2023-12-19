@@ -75,7 +75,7 @@ public abstract class CrumbleHornProvider implements DataProvider {
 	private JsonObject serializeToJson(BlockState transformFrom, BlockState transformTo) {
 		JsonObject jsonobject = new JsonObject();
 
-		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.CRUMBLE_SERIALIZER.value()).toString());
+		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.CRUMBLE_SERIALIZER.get()).toString());
 		jsonobject.addProperty("from", BuiltInRegistries.BLOCK.getKey(transformFrom.getBlock()).toString());
 		jsonobject.addProperty("to", BuiltInRegistries.BLOCK.getKey(transformTo.getBlock()).toString());
 		return jsonobject;

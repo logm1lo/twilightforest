@@ -129,22 +129,22 @@ public class LoyalZombie extends TamableAnimal {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.LOYAL_ZOMBIE_AMBIENT.value();
+		return TFSounds.LOYAL_ZOMBIE_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.LOYAL_ZOMBIE_HURT.value();
+		return TFSounds.LOYAL_ZOMBIE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.LOYAL_ZOMBIE_DEATH.value();
+		return TFSounds.LOYAL_ZOMBIE_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		playSound(TFSounds.LOYAL_ZOMBIE_STEP.value(), 0.15F, 1.0F);
+		playSound(TFSounds.LOYAL_ZOMBIE_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override

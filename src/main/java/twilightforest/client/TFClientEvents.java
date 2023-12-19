@@ -64,6 +64,7 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFItems;
@@ -82,10 +83,10 @@ public class TFClientEvents {
 	public static class ModBusEvents {
 		@SubscribeEvent
 		public static void registerLoaders(ModelEvent.RegisterGeometryLoaders event) {
-			event.register("patch", PatchModelLoader.INSTANCE);
-			event.register("giant_block", GiantBlockModelLoader.INSTANCE);
-			event.register("force_field", ForceFieldModelLoader.INSTANCE);
-			event.register("castle_door", CastleDoorModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("castle_door"), CastleDoorModelLoader.INSTANCE);
 		}
 
 		@SubscribeEvent
@@ -325,7 +326,7 @@ public class TFClientEvents {
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
 		if (ModList.get().isLoaded("curios")) {
-			//return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
+			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
 		}
 		return false;
 	}

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/mining_gate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

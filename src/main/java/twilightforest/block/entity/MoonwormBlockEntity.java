@@ -14,7 +14,7 @@ public class MoonwormBlockEntity extends BlockEntity {
 	public final float randRot = RandomSource.create().nextInt(4) * 90.0F;
 
 	public MoonwormBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.MOONWORM.value(), pos, state);
+		super(TFBlockEntities.MOONWORM.get(), pos, state);
 		currentYaw = -1;
 		yawDelay = 0;
 		desiredYaw = 0;

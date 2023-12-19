@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,12 +18,14 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.block.entity.GhastTrapBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 
 public class GhastTrapBlock extends BaseEntityBlock {
+
+	public static final MapCodec<GhastTrapBlock> CODEC = simpleCodec(GhastTrapBlock::new);
 	public static final int ACTIVATE_EVENT = 0;
 	public static final int DEACTIVATE_EVENT = 1;
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -30,6 +33,11 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	public GhastTrapBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -51,11 +59,11 @@ public class GhastTrapBlock extends BaseEntityBlock {
 
 		if (!state.getValue(ACTIVE) && isInactiveTrapCharged(level, pos) && level.hasNeighborSignal(pos)) {
 			for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(6.0D))) {
-				TFAdvancements.ACTIVATED_GHAST_TRAP.trigger(player);
+				TFAdvancements.ACTIVATED_GHAST_TRAP.get().trigger(player);
 			}
 
 			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
-			level.playSound(null, pos, TFSounds.JET_START.value(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.playSound(null, pos, TFSounds.JET_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			level.blockEvent(pos, this, ACTIVATE_EVENT, 0);
 		}
 	}
@@ -123,6 +131,6 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.GHAST_TRAP.value(), GhastTrapBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.GHAST_TRAP.get(), GhastTrapBlockEntity::tick);
 	}
 }

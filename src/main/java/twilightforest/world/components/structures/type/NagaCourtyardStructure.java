@@ -32,7 +32,7 @@ public class NagaCourtyardStructure extends ConquerableStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.NAGA_COURTYARD.value();
+        return TFStructureTypes.NAGA_COURTYARD.get();
     }
 
     public static NagaCourtyardStructure buildStructureConfig(BootstapContext<Structure> context) {

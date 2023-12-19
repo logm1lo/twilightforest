@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/dark_door"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

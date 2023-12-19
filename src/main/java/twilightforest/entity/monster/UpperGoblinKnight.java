@@ -154,17 +154,17 @@ public class UpperGoblinKnight extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.GOBLIN_KNIGHT_AMBIENT.value();
+		return TFSounds.GOBLIN_KNIGHT_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.GOBLIN_KNIGHT_DEATH.value();
+		return TFSounds.GOBLIN_KNIGHT_DEATH.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.GOBLIN_KNIGHT_HURT.value();
+		return TFSounds.GOBLIN_KNIGHT_HURT.get();
 	}
 
 	@Override

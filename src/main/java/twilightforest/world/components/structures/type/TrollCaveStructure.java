@@ -42,12 +42,12 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 
     @Override
     protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.value(), 0, x, y, z);
+        return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), 0, x, y, z);
     }
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.TROLL_CAVE.value();
+        return TFStructureTypes.TROLL_CAVE.get();
     }
 
     @Override
@@ -65,15 +65,15 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
                 ControlledSpawningConfig.create(List.of(List.of(
                         new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 5, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.TROLL.value(), 20, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.TROLL.get(), 20, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.WITCH, 5, 1, 1)
                 ), List.of(
                         // cloud monsters
-                        new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.value(), 10, 1, 1),
-                        new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.value(), 10, 1, 1)
+                        new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), 10, 1, 1),
+                        new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), 10, 1, 1)
                 )), List.of(), List.of()),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
-                new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.value()),
+                new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get()),
                 new DecorationConfig(4, true, true, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_TROLL_CAVE_BIOMES),

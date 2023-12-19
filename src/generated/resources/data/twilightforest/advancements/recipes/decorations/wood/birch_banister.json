@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/birch_banister"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

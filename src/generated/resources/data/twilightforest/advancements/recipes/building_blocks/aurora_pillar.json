@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:aurora_pillar"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

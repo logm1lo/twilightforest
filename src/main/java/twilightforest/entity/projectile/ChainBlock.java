@@ -32,8 +32,6 @@ import net.neoforged.neoforge.entity.IEntityAdditionalSpawnData;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import twilightforest.entity.Chain;
-import twilightforest.entity.monster.BlockChainGoblin;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFItems;
@@ -56,36 +54,16 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	private double velY;
 	private double velZ;
 
-	public final Chain chain1;
-	public final Chain chain2;
-	public final Chain chain3;
-	public final Chain chain4;
-	public final Chain chain5;
-	private final BlockChainGoblin.MultipartGenericsAreDumb[] partsArray;
-
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world) {
 		super(type, world);
-
-		this.chain1 = new Chain(this);
-		this.chain2 = new Chain(this);
-		this.chain3 = new Chain(this);
-		this.chain4 = new Chain(this);
-		this.chain5 = new Chain(this);
-		this.partsArray = new BlockChainGoblin.MultipartGenericsAreDumb[]{this.chain1, this.chain2, this.chain3, this.chain4, this.chain5};
 	}
 
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
 		super(type, thrower, world);
 		this.isReturning = false;
-		this.canSmashBlocks = EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.value(), stack) > 0 && !thrower.hasEffect(MobEffects.DIG_SLOWDOWN);
+		this.canSmashBlocks = EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0 && !thrower.hasEffect(MobEffects.DIG_SLOWDOWN);
 		this.stack = stack;
 		this.setHand(hand);
-		this.chain1 = new Chain(this);
-		this.chain2 = new Chain(this);
-		this.chain3 = new Chain(this);
-		this.chain4 = new Chain(this);
-		this.chain5 = new Chain(this);
-		this.partsArray = new BlockChainGoblin.MultipartGenericsAreDumb[]{this.chain1, this.chain2, this.chain3, this.chain4, this.chain5};
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
 		this.getEntityData().set(IS_FOIL, stack.hasFoil());
 	}
@@ -142,7 +120,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 			if (damage > 0.0F) {
 				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.getOwner()), damage)) {
-					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.value(), 1.0f, this.random.nextFloat());
+					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;
 					this.isReturning = true;
@@ -165,7 +143,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 			boolean restrictedPlaceMode = this.getOwner() instanceof ServerPlayer player && player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted();
 			if (!state.isAir() && !this.canBreakBlockAt(pos, state, restrictedPlaceMode)) {
 				if (!this.isReturning && !this.hitEntity) {
-					this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.value(), 0.125f, this.random.nextFloat());
+					this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
 					this.gameEvent(GameEvent.HIT_GROUND);
 				}
 
@@ -263,33 +241,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	public void tick() {
 		super.tick();
 
-		if (this.level().isClientSide()) {
-			this.chain1.tick();
-			this.chain2.tick();
-			this.chain3.tick();
-			this.chain4.tick();
-			this.chain5.tick();
-
-			// set chain positions
-			if (this.getOwner() != null) {
-				// interpolate chain position
-				Vec3 handVec = this.getOwner().getLookAngle().yRot(getHand() == InteractionHand.MAIN_HAND ? -0.4F : 0.4F);
-
-				double sx = this.getOwner().getX() + handVec.x();
-				double sy = this.getOwner().getY() + handVec.y() - 0.4F + this.getOwner().getEyeHeight();
-				double sz = this.getOwner().getZ() + handVec.z();
-
-				double ox = sx - this.getX();
-				double oy = sy - this.getY() - 0.25F;
-				double oz = sz - this.getZ();
-
-				this.chain1.setPos(sx - ox * 0.05, sy - oy * 0.05, sz - oz * 0.05);
-				this.chain2.setPos(sx - ox * 0.25, sy - oy * 0.25, sz - oz * 0.25);
-				this.chain3.setPos(sx - ox * 0.45, sy - oy * 0.45, sz - oz * 0.45);
-				this.chain4.setPos(sx - ox * 0.65, sy - oy * 0.65, sz - oz * 0.65);
-				this.chain5.setPos(sx - ox * 0.85, sy - oy * 0.85, sz - oz * 0.85);
-			}
-		} else {
+		if (!this.level().isClientSide()) {
 			if (this.getOwner() == null) {
 				this.discard();
 			} else {
@@ -334,7 +286,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().is(TFItems.BLOCK_AND_CHAIN.value())) {
+		if (thrower != null && thrower.getUseItem().is(TFItems.BLOCK_AND_CHAIN)) {
 			thrower.stopUsingItem();
 		}
 	}

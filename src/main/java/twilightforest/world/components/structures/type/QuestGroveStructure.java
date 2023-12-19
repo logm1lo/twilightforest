@@ -33,7 +33,7 @@ public class QuestGroveStructure extends ConquerableStructure {
 
     @Override
     public StructureType<?> type() {
-        return TFStructureTypes.QUEST_GROVE.value();
+        return TFStructureTypes.QUEST_GROVE.get();
     }
 
     public static QuestGroveStructure buildStructureConfig(BootstapContext<Structure> context) {

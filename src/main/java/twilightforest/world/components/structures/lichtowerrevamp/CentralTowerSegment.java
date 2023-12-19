@@ -30,7 +30,7 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     static final int ATTACHMENT_POINT_RANGE = 13;
 
     public CentralTowerSegment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-        super(TFStructurePieceTypes.CENTRAL_TOWER.value(), compoundTag, ctx, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
+        super(TFStructurePieceTypes.CENTRAL_TOWER.get(), compoundTag, ctx, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
     }
 
     public CentralTowerSegment(StructureTemplateManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
@@ -38,7 +38,7 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     }
 
     private CentralTowerSegment(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
-        super(TFStructurePieceTypes.CENTRAL_TOWER.value(), 0, structureManager, templateLocation, placeSettings, startPosition);
+        super(TFStructurePieceTypes.CENTRAL_TOWER.get(), 0, structureManager, templateLocation, placeSettings, startPosition);
     }
 
     @Override

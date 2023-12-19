@@ -48,17 +48,17 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.PINCH_BEETLE_HURT.value();
+		return TFSounds.PINCH_BEETLE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.PINCH_BEETLE_DEATH.value();
+		return TFSounds.PINCH_BEETLE_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		playSound(TFSounds.PINCH_BEETLE_STEP.value(), 0.15F, 1.0F);
+		playSound(TFSounds.PINCH_BEETLE_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override

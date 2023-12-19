@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/mossy_nagastone_stairs_left/mossy_nagastone_stairs_right"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

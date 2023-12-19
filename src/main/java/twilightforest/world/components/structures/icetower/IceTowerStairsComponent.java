@@ -20,11 +20,11 @@ import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 public class IceTowerStairsComponent extends TowerWingComponent {
 
 	public IceTowerStairsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFITSt.value(), nbt);
+		super(TFStructurePieceTypes.TFITSt.get(), nbt);
 	}
 
 	public IceTowerStairsComponent(int index, int x, int y, int z, int size, int height, Direction direction) {
-		super(TFStructurePieceTypes.TFITSt.value(), index, x, y, z, size, height, direction);
+		super(TFStructurePieceTypes.TFITSt.get(), index, x, y, z, size, height, direction);
 	}
 
 	@Override

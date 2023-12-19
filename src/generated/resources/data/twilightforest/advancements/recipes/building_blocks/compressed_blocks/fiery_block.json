@@ -28,6 +28,5 @@
     "recipes": [
       "twilightforest:compressed_blocks/fiery_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

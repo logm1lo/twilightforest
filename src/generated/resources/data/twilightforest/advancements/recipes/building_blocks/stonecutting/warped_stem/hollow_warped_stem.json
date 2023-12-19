@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/warped_stem/hollow_warped_stem"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

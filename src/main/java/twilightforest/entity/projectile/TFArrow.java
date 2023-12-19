@@ -9,18 +9,13 @@ import net.minecraft.world.level.Level;
 
 public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 
-	public TFArrow(EntityType<? extends TFArrow> type, Level worldIn) {
-		super(type, worldIn);
+	public TFArrow(EntityType<? extends TFArrow> type, Level level) {
+		super(type, level, new ItemStack(Items.ARROW));
 	}
 
-	public TFArrow(EntityType<? extends TFArrow> type, Level worldIn, Entity shooter) {
-		super(type, worldIn);
+	public TFArrow(EntityType<? extends TFArrow> type, Level level, Entity shooter) {
+		super(type, level, new ItemStack(Items.ARROW));
 		this.setOwner(shooter);
 		this.setPos(shooter.getX(), shooter.getEyeY() - 0.1D, shooter.getZ());
-	}
-
-	@Override
-	protected ItemStack getPickupItem() {
-		return new ItemStack(Items.ARROW);
 	}
 }

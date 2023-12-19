@@ -31,9 +31,9 @@ public class TFGhastModel<T extends CarminiteGhastguard> extends HierarchicalMod
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		var body = definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16),
 				PartPose.offset(0, 8, 0));
@@ -57,7 +57,7 @@ public class TFGhastModel<T extends CarminiteGhastguard> extends HierarchicalMod
 
 		// Please ensure the model is working accurately before we port
 		float xPoint = ((i % 3 - i / 3.0F % 2 * 0.5F + 0.25F) / 2.0F * 2.0F - 1.0F) * 5.0F;
-		float zPoint = (i / 3.0F / 2.0F * 2.0F - 1.0F) * 5.0F;
+		float zPoint = ((i % 3 - i)) * 1.5F + 4.0F;
 
 		return parent.addOrReplaceChild(name, CubeListBuilder.create()
 						.addBox(-1.0F, 0.0F, -1.0F, 2, length, 2),

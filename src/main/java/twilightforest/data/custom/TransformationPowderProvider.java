@@ -71,7 +71,7 @@ public abstract class TransformationPowderProvider implements DataProvider {
 	private JsonObject serializeToJson(EntityType<?> transformFrom, EntityType<?> transformTo, boolean reversible) {
 		JsonObject jsonobject = new JsonObject();
 
-		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.TRANSFORMATION_SERIALIZER.value()).toString());
+		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.TRANSFORMATION_SERIALIZER.get()).toString());
 		jsonobject.addProperty("from", BuiltInRegistries.ENTITY_TYPE.getKey(transformFrom).toString());
 		jsonobject.addProperty("to", BuiltInRegistries.ENTITY_TYPE.getKey(transformTo).toString());
 		jsonobject.addProperty("reversible", reversible);

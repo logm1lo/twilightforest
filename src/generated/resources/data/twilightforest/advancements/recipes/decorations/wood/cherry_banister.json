@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/cherry_banister"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

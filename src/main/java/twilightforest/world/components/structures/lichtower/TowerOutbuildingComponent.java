@@ -21,11 +21,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class TowerOutbuildingComponent extends TowerWingComponent {
 
 	public TowerOutbuildingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFLTOut.value(), nbt);
+		super(TFStructurePieceTypes.TFLTOut.get(), nbt);
 	}
 
 	protected TowerOutbuildingComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFLTOut.value(), i, x, y, z, pSize, pHeight, direction);
+		super(TFStructurePieceTypes.TFLTOut.get(), i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**

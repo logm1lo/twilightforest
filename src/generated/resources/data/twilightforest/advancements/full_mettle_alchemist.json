@@ -10,7 +10,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.full_mettle_alchemist.desc"
     },
@@ -20,7 +19,6 @@
       "item": "twilightforest:greater_potion_flask",
       "nbt": "{Potion:\"minecraft:strong_harming\",Uses:4}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.full_mettle_alchemist"
     }

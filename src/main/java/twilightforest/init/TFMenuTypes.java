@@ -21,6 +21,6 @@ public class TFMenuTypes {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void renderScreens() {
-		MenuScreens.register(UNCRAFTING.value(), UncraftingScreen::new);
+		MenuScreens.register(UNCRAFTING.get(), UncraftingScreen::new);
 	}
 }

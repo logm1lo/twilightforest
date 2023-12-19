@@ -17,12 +17,12 @@ public class MushgloomBlock extends MushroomBlock {
 	private static final VoxelShape MUSHGLOOM_SHAPE = box(2, 0, 2, 14, 8, 14);
 
 	public MushgloomBlock(Properties properties) {
-		super(properties, TFConfiguredFeatures.BIG_MUSHGLOOM);
+		super(TFConfiguredFeatures.BIG_MUSHGLOOM, properties);
 	}
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
-		return reader.getBlockState(pos.below()).isFaceSturdy(reader, pos, Direction.UP) || reader.getBlockState(pos.below()).is(TFBlocks.UBEROUS_SOIL.value());
+		return reader.getBlockState(pos.below()).isFaceSturdy(reader, pos, Direction.UP) || reader.getBlockState(pos.below()).is(TFBlocks.UBEROUS_SOIL);
 	}
 
 	@Override

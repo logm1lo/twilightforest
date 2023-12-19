@@ -10,6 +10,6 @@ public class ThornLeavesBlock extends TFAlternativeStemLeavesBlock {
 
     @Override
     protected boolean isStem(BlockState state) {
-        return state.is(TFBlocks.BROWN_THORNS.value()) || state.is(TFBlocks.GREEN_THORNS.value());
+        return state.is(TFBlocks.BROWN_THORNS) || state.is(TFBlocks.GREEN_THORNS);
     }
 }

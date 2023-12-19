@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:giant_leaves_to_oak_leaves"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

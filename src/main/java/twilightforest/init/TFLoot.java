@@ -19,7 +19,7 @@ public class TFLoot {
 
 	public static final DeferredRegister<LootItemConditionType> CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, TwilightForestMod.ID);
 	public static final DeferredRegister<LootItemFunctionType> FUNCTIONS = DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, TwilightForestMod.ID);
-	private static final DeferredRegister<Codec<? extends ICondition>> CONDITIONALS = DeferredRegister.create(NeoForgeRegistries.Keys.CONDITION_CODECS, TwilightForestMod.ID);
+	public static final DeferredRegister<Codec<? extends ICondition>> CONDITIONALS = DeferredRegister.create(NeoForgeRegistries.Keys.CONDITION_CODECS, TwilightForestMod.ID);
 
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> IS_MINION = CONDITIONS.register("is_minion", () -> new LootItemConditionType(IsMinionCondition.CODEC));
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> MOD_EXISTS = CONDITIONS.register("mod_exists", () -> new LootItemConditionType(ModExistsCondition.CODEC));

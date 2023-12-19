@@ -22,11 +22,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class StrongholdCrossingComponent extends KnightStrongholdComponent {
 
 	public StrongholdCrossingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSCr.value(), nbt);
+		super(TFStructurePieceTypes.TFSCr.get(), nbt);
 	}
 
 	public StrongholdCrossingComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSCr.value(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSCr.get(), i, facing, x, y, z);
 	}
 
 	@Override

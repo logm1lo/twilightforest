@@ -70,6 +70,6 @@ public class ChunkBlanketingModifier extends PlacementModifier {
 
     @Override
     public PlacementModifierType<?> type() {
-        return TFFeatureModifiers.CHUNK_BLANKETING.value();
+        return TFFeatureModifiers.CHUNK_BLANKETING.get();
     }
 }

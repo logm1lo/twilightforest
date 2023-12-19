@@ -20,8 +20,8 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.GiantBlock;
-import twilightforest.capabilities.CapabilityList;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
 
 import java.util.List;
 
@@ -51,23 +51,22 @@ public class GiantPickItem extends PickaxeItem implements GiantItem {
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		float destroySpeed = super.getDestroySpeed(stack, state);
 		// extra 64X strength vs giant obsidian
-		destroySpeed *= (state.getBlock() == TFBlocks.GIANT_OBSIDIAN.value()) ? 64 : 1;
+		destroySpeed *= (state.is(TFBlocks.GIANT_OBSIDIAN)) ? 64 : 1;
 		// 64x strength vs giant blocks
 		return state.getBlock() instanceof GiantBlock ? destroySpeed * 64 : destroySpeed;
 	}
 
 	@Override
-	public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
-		ItemStack stack = pPlayer.getMainHandItem();
+	public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
+		ItemStack stack = player.getMainHandItem();
 		if (stack.is(this)) {
-			pPlayer.getCapability(CapabilityList.GIANT_PICK_MINE).ifPresent(cap -> {
-				if (cap.getMining() != pLevel.getGameTime()) {
-					cap.setMining(pLevel.getGameTime());
-					cap.setBreaking(false);
-					cap.setGiantBlockConversion(0);
-				}
-			});
+			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+			if (attachment.getMining() != level.getGameTime()) {
+				attachment.setMining(level.getGameTime());
+				attachment.setBreaking(false);
+				attachment.setGiantBlockConversion(0);
+			}
 		}
-		return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
+		return super.canAttackBlock(state, level, pos, player);
 	}
 }

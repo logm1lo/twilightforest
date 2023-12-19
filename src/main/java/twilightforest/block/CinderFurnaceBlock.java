@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -32,12 +33,18 @@ import twilightforest.init.TFBlockEntities;
 
 public class CinderFurnaceBlock extends BaseEntityBlock {
 
+	public static final MapCodec<CinderFurnaceBlock> CODEC = simpleCodec(CinderFurnaceBlock::new);
 	public static final BooleanProperty LIT = BooleanProperty.create("lit");
 	private static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 
 	public CinderFurnaceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -65,7 +72,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.CINDER_FURNACE.value(), CinderFurnaceBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.CINDER_FURNACE.get(), CinderFurnaceBlockEntity::tick);
 	}
 
 	@Override

@@ -19,8 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.entity.boss.Lich;
 
 public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
@@ -35,7 +34,7 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 	private int getShieldCount(T entity) {
 		return entity instanceof Lich
 						? ((Lich) entity).getShieldStrength()
-						: entity.getCapability(CapabilityList.SHIELDS).map(IShieldCapability::shieldsLeft).orElse(0);
+						: entity.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 	}
 
 	private void renderShields(PoseStack stack, MultiBufferSource buffer, T entity, float partialTicks) {

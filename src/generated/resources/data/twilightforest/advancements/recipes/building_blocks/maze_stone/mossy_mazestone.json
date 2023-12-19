@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:maze_stone/mossy_mazestone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

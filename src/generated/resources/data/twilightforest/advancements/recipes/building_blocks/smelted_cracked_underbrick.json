@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:smelted_cracked_underbrick"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

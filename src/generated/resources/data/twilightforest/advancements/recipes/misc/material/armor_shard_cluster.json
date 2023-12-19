@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:material/armor_shard_cluster"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

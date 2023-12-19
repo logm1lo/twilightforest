@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/sorting_gate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

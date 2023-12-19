@@ -42,6 +42,7 @@ public class TFParticleType {
 			return LeafParticleData.codecLeaf();
 		}
 	});
+	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> DIM_FLAME = PARTICLE_TYPES.register("dim_flame", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> OMINOUS_FLAME = PARTICLE_TYPES.register("ominous_flame", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SORTING_PARTICLE = PARTICLE_TYPES.register("sorting_particle", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> TRANSFORMATION_PARTICLE = PARTICLE_TYPES.register("transformation_particle", () -> new SimpleParticleType(false));
@@ -51,26 +52,27 @@ public class TFParticleType {
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void registerFactories(RegisterParticleProvidersEvent event) {
-		event.registerSpriteSet(TFParticleType.LARGE_FLAME.value(), LargeFlameParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.LEAF_RUNE.value(), LeafRuneParticle.Factory::new);
-		event.registerSpecial(TFParticleType.BOSS_TEAR.value(), new GhastTearParticle.Factory());
-		event.registerSpriteSet(TFParticleType.GHAST_TRAP.value(), GhastTrapParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.PROTECTION.value(), ProtectionParticle.Factory::new); //probably not a good idea, but worth a shot
-		event.registerSpriteSet(TFParticleType.SNOW.value(), SnowParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.SNOW_GUARDIAN.value(), SnowGuardianParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.SNOW_WARNING.value(), SnowWarningParticle.SimpleFactory::new);
-		event.registerSpriteSet(TFParticleType.EXTENDED_SNOW_WARNING.value(), SnowWarningParticle.ExtendedFactory::new);
-		event.registerSpriteSet(TFParticleType.ICE_BEAM.value(), IceBeamParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.ANNIHILATE.value(), AnnihilateParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.HUGE_SMOKE.value(), SmokeScaleParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.FIREFLY.value(), FireflyParticle.StationaryProvider::new);
-		event.registerSpriteSet(TFParticleType.WANDERING_FIREFLY.value(), FireflyParticle.WanderingProvider::new);
-		event.registerSpriteSet(TFParticleType.PARTICLE_SPAWNER_FIREFLY.value(), FireflyParticle.ParticleSpawnerProvider::new);
-		event.registerSpriteSet(TFParticleType.FALLEN_LEAF.value(), LeafParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.OMINOUS_FLAME.value(), FlameParticle.SmallFlameProvider::new);
-		event.registerSpriteSet(TFParticleType.SORTING_PARTICLE.value(), SortingParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.TRANSFORMATION_PARTICLE.value(), TransformationParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.LOG_CORE_PARTICLE.value(), LogCoreParticle.Factory::new);
-		event.registerSpriteSet(TFParticleType.CLOUD_PUFF.value(), CloudPuffParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.LARGE_FLAME.get(), LargeFlameParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.LEAF_RUNE.get(), LeafRuneParticle.Factory::new);
+		event.registerSpecial(TFParticleType.BOSS_TEAR.get(), new GhastTearParticle.Factory());
+		event.registerSpriteSet(TFParticleType.GHAST_TRAP.get(), GhastTrapParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.PROTECTION.get(), ProtectionParticle.Factory::new); //probably not a good idea, but worth a shot
+		event.registerSpriteSet(TFParticleType.SNOW.get(), SnowParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.SNOW_GUARDIAN.get(), SnowGuardianParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.SNOW_WARNING.get(), SnowWarningParticle.SimpleFactory::new);
+		event.registerSpriteSet(TFParticleType.EXTENDED_SNOW_WARNING.get(), SnowWarningParticle.ExtendedFactory::new);
+		event.registerSpriteSet(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.FIREFLY.get(), FireflyParticle.StationaryProvider::new);
+		event.registerSpriteSet(TFParticleType.WANDERING_FIREFLY.get(), FireflyParticle.WanderingProvider::new);
+		event.registerSpriteSet(TFParticleType.PARTICLE_SPAWNER_FIREFLY.get(), FireflyParticle.ParticleSpawnerProvider::new);
+		event.registerSpriteSet(TFParticleType.FALLEN_LEAF.get(), LeafParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.DIM_FLAME.get(), FlameParticle.SmallFlameProvider::new);
+		event.registerSpriteSet(TFParticleType.OMINOUS_FLAME.get(), FlameParticle.SmallFlameProvider::new);
+		event.registerSpriteSet(TFParticleType.SORTING_PARTICLE.get(), SortingParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.TRANSFORMATION_PARTICLE.get(), TransformationParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.LOG_CORE_PARTICLE.get(), LogCoreParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.CLOUD_PUFF.get(), CloudPuffParticle.Factory::new);
 	}
 }

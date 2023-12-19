@@ -28,6 +28,5 @@
     "recipes": [
       "twilightforest:equipment/fiery_iron_sword"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

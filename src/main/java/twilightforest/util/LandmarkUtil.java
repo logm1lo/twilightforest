@@ -3,6 +3,7 @@ package twilightforest.util;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -12,8 +13,10 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFAdvancements;
 import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -76,6 +79,10 @@ public final class LandmarkUtil {
             if (nearStart.isEmpty() || !(nearStart.get() instanceof TFStructureStart twilightStart)) return;
 
             twilightStart.setConquered(conquered, level);
+
+            for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos.pos()).inflate(32.0F))) {
+                TFAdvancements.STRUCTURE_CLEARED.get().trigger(player, structureKey);
+            }
         }
     }
 

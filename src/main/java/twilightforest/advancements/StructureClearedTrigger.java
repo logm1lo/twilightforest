@@ -1,47 +1,44 @@
 package twilightforest.advancements;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.GsonHelper;
-import twilightforest.TwilightForestMod;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import twilightforest.init.TFAdvancements;
 
 import java.util.Optional;
 
 public class StructureClearedTrigger extends SimpleCriterionTrigger<StructureClearedTrigger.TriggerInstance> {
 
-	public static final ResourceLocation ID = TwilightForestMod.prefix("structure_cleared");
-
 	@Override
-	public StructureClearedTrigger.TriggerInstance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext condition) {
-		String structureName = GsonHelper.getAsString(json, "structure");
-		return new StructureClearedTrigger.TriggerInstance(player, structureName);
+	public Codec<StructureClearedTrigger.TriggerInstance> codec() {
+		return StructureClearedTrigger.TriggerInstance.CODEC;
 	}
 
-	public void trigger(ServerPlayer player, String structureName) {
-		this.trigger(player, (instance) -> instance.test(structureName));
+	public void trigger(ServerPlayer player, ResourceKey<Structure> structure) {
+		this.trigger(player, (instance) -> instance.test(structure));
 	}
 
-	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+	public record TriggerInstance(Optional<ContextAwarePredicate> player, ResourceKey<Structure> structure) implements SimpleInstance {
 
-		private final String structureName;
+		public static final Codec<StructureClearedTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+						ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(StructureClearedTrigger.TriggerInstance::player),
+						ResourceKey.codec(Registries.STRUCTURE).fieldOf("structure").forGetter(StructureClearedTrigger.TriggerInstance::structure))
+				.apply(instance, StructureClearedTrigger.TriggerInstance::new));
 
-		public TriggerInstance(Optional<ContextAwarePredicate> player, String structureName) {
-			super(player);
-			this.structureName = structureName;
+		public static Criterion<StructureClearedTrigger.TriggerInstance> clearedStructure(ResourceKey<Structure> structure) {
+			return TFAdvancements.STRUCTURE_CLEARED.get().createCriterion(new StructureClearedTrigger.TriggerInstance(Optional.empty(), structure));
 		}
 
-		public static Criterion<StructureClearedTrigger.TriggerInstance> clearedStructure(String name) {
-			return TFAdvancements.STRUCTURE_CLEARED.createCriterion(new StructureClearedTrigger.TriggerInstance(Optional.empty(), name));
-		}
-
-		boolean test(String structureName) {
-			return this.structureName.equals(structureName);
+		boolean test(ResourceKey<Structure> structure) {
+			return this.structure.equals(structure);
 		}
 	}
 }

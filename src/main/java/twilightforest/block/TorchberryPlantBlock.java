@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -28,12 +30,18 @@ import twilightforest.init.TFStats;
 
 public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBlock {
 
+	public static final MapCodec<TorchberryPlantBlock> CODEC = simpleCodec(TorchberryPlantBlock::new);
 	public static final BooleanProperty HAS_BERRIES = BooleanProperty.create("has_torchberries");
 	private static final VoxelShape TORCHBERRY_SHAPE = Block.box(1, 2, 1, 15, 16, 15);
 
 	public TorchberryPlantBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(HAS_BERRIES, false));
+	}
+
+	@Override
+	protected MapCodec<? extends BushBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -55,10 +63,10 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (state.getValue(HAS_BERRIES)) {
 			level.setBlockAndUpdate(pos, state.setValue(HAS_BERRIES, false));
-			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
-			ItemEntity torchberries = new ItemEntity(level, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, new ItemStack(TFItems.TORCHBERRIES.value()));
+			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			ItemEntity torchberries = new ItemEntity(level, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, new ItemStack(TFItems.TORCHBERRIES.get()));
 			level.addFreshEntity(torchberries);
-			if (player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.value());
+			if (player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return super.use(state, level, pos, player, hand, result);

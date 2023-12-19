@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:encased_fire_jet"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

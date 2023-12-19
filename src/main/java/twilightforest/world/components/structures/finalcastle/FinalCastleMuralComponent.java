@@ -25,11 +25,11 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	private byte[][] mural;
 
 	public FinalCastleMuralComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCMur.value(), nbt);
+		super(TFStructurePieceTypes.TFFCMur.get(), nbt);
 	}
 
 	public FinalCastleMuralComponent(int i, int x, int y, int z, int width, int height, Direction direction) {
-		super(TFStructurePieceTypes.TFFCMur.value(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCMur.get(), i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
 	}
@@ -66,7 +66,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 			makeStripes(decoRNG);
 		}
 
-		final BlockState castleMagic = TFBlocks.YELLOW_CASTLE_RUNE_BRICK.value().defaultBlockState();
+		final BlockState castleMagic = TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
 
 		// copy mural to world
 		for (int x = 0; x < width; x++) {

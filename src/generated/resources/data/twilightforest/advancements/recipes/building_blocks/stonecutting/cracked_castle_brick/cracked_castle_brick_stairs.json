@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/cracked_castle_brick/cracked_castle_brick_stairs"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:tf_to_vanilla_lilypad"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

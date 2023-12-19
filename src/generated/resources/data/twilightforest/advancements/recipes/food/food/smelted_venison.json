@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:food/smelted_venison"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/smoked_cracked_towerwood"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

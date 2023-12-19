@@ -28,6 +28,5 @@
     "recipes": [
       "twilightforest:compressed_blocks/reversed/knightmetal_block_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

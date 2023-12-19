@@ -26,12 +26,9 @@
     "description": {
       "translate": "advancement.twilightforest.root.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:twilight_portal_miniature_structure"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.root"
     }

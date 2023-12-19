@@ -4,22 +4,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.NetworkEvent;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.fan.FeatherFanCapabilityHandler;
-import twilightforest.capabilities.fan.FeatherFanFallCapability;
+import twilightforest.init.TFDataAttachments;
 
 public class UpdateFeatherFanFallPacket {
 	private final int entityID;
 	private final boolean falling;
 
-	public UpdateFeatherFanFallPacket(int id, FeatherFanFallCapability cap) {
+	public UpdateFeatherFanFallPacket(int id, boolean falling) {
 		this.entityID = id;
-		this.falling = cap.getFalling();
-	}
-
-	public UpdateFeatherFanFallPacket(Entity entity, FeatherFanCapabilityHandler cap) {
-		this(entity.getId(), cap);
+		this.falling = falling;
 	}
 
 	public UpdateFeatherFanFallPacket(FriendlyByteBuf buf) {
@@ -37,10 +32,8 @@ public class UpdateFeatherFanFallPacket {
 		public static boolean onMessage(UpdateFeatherFanFallPacket message, NetworkEvent.Context ctx) {
 			ctx.enqueueWork(() -> {
 				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
-				if (entity instanceof LivingEntity) {
-					entity.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(cap -> {
-						cap.setFalling(message.falling);
-					});
+				if (entity instanceof Player) {
+					entity.setData(TFDataAttachments.FEATHER_FAN, message.falling);
 				}
 			});
 

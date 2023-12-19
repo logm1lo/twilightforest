@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:stonecutting/worn_castle_brick/bold_castle_brick_stairs"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

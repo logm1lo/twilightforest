@@ -43,13 +43,14 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.control.NagaMoveControl;
@@ -337,17 +338,17 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.NAGA_HISS.value();
+		return TFSounds.NAGA_HISS.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.NAGA_HURT.value();
+		return TFSounds.NAGA_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.NAGA_HURT.value();
+		return TFSounds.NAGA_HURT.get();
 	}
 
 	@Override
@@ -432,7 +433,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.NAGA_BOSS_SPAWNER.value().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -443,7 +444,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	public void remove(RemovalReason reason) {
 		if (reason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
-			IBossLootBuffer.depositDropsIntoChest(this, this.getRandom().nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.value().defaultBlockState() : TFBlocks.CANOPY_CHEST.value().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
+			IBossLootBuffer.depositDropsIntoChest(this, this.getRandom().nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 		super.remove(reason);
 		if (this.level() instanceof ServerLevel) {
@@ -568,7 +569,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			this.setDazed(false);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.NAGA_COURTYARD, true);
 			for (ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
+				TFAdvancements.HURT_BOSS.get().trigger(player, this);
 			}
 
 			IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
@@ -623,7 +624,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 							if (preciseTime < 0.0D) continue;
 							double factor = preciseTime / (double) (maxDeath - renderEnd);
 							Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(preciseTime * Math.PI * 0.075D) * xMul, Math.sin(preciseTime * Math.PI * 0.025D) * 0.1D, Math.cos(preciseTime * Math.PI * 0.0625D) * zMul);//Some sine waves to make it slither-y;
-							BlockHitResult blockhitresult = this.level().clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, null));
+							BlockHitResult blockhitresult = this.level().clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, CollisionContext.empty()));
 							particlePacket.queueParticle(ParticleTypes.COMPOSTER, false, blockhitresult.getLocation().add(0.0D, 0.15D, 0.0D), Vec3.ZERO);
 						}
 					}

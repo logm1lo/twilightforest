@@ -30,6 +30,5 @@
     "recipes": [
       "twilightforest:wood/mangrove_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

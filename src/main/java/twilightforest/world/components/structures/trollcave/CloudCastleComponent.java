@@ -29,13 +29,13 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	private boolean warriorPlaced = false;
 
 	public CloudCastleComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFClCa.value(), nbt);
+		super(TFStructurePieceTypes.TFClCa.get(), nbt);
 		this.minerPlaced = nbt.getBoolean("minerPlaced");
 		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
 	}
 
 	public CloudCastleComponent(int index, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFClCa.value(), index, x, y, z);
+		super(TFStructurePieceTypes.TFClCa.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// round to nearest mult of 4
@@ -79,9 +79,9 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// make haus
-		this.generateBox(world, sbb, 8, 0, 8, 23, 3, 23, TFBlocks.FLUFFY_CLOUD.value().defaultBlockState(), TFBlocks.FLUFFY_CLOUD.value().defaultBlockState(), false);
-		this.generateBox(world, sbb, 8, 4, 8, 23, 15, 23, TFBlocks.GIANT_COBBLESTONE.value().defaultBlockState(), TFBlocks.GIANT_COBBLESTONE.value().defaultBlockState(), false);
-		this.generateBox(world, sbb, 8, 16, 8, 23, 19, 23, TFBlocks.GIANT_LOG.value().defaultBlockState(), TFBlocks.GIANT_LOG.value().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 0, 8, 23, 3, 23, TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 4, 8, 23, 15, 23, TFBlocks.GIANT_COBBLESTONE.get().defaultBlockState(), TFBlocks.GIANT_COBBLESTONE.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 16, 8, 23, 19, 23, TFBlocks.GIANT_LOG.get().defaultBlockState(), TFBlocks.GIANT_LOG.get().defaultBlockState(), false);
 
 		// clear inside
 		this.generateAirBox(world, sbb, 12, 4, 12, 19, 15, 19);
@@ -99,7 +99,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 			if (sbb.isInside(pos)) {
 				this.minerPlaced = true;
 
-				GiantMiner miner = TFEntities.GIANT_MINER.value().create(world.getLevel());
+				GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel());
 				miner.setPos(bx, by, bz);
 				miner.setPersistenceRequired();
 				EventHooks.onFinalizeSpawn(miner, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
@@ -116,7 +116,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 			if (sbb.isInside(pos)) {
 				this.warriorPlaced = true;
 
-				ArmoredGiant warrior = TFEntities.ARMORED_GIANT.value().create(world.getLevel());
+				ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel());
 				warrior.setPos(bx, by, bz);
 				warrior.setPersistenceRequired();
 				EventHooks.onFinalizeSpawn(warrior, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);

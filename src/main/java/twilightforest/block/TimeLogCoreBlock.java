@@ -70,7 +70,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 						if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
 							ParticlePacket particlePacket = new ParticlePacket();
 							double yOffset = state.getBlock().getOcclusionShape(state, level, dPos).max(Direction.Axis.Y);
-							particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.value(), false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
+							particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
 							TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
 						}
 					}
@@ -81,6 +81,6 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {
-		level.playSound(null, pos, TFSounds.TIME_CORE.value(), SoundSource.BLOCKS, 0.35F, 0.5F);
+		level.playSound(null, pos, TFSounds.TIME_CORE.get(), SoundSource.BLOCKS, 0.35F, 0.5F);
 	}
 }
