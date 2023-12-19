@@ -35,7 +35,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.MagicPaintingVariant;
@@ -137,11 +136,11 @@ public class TwilightForestMod {
 		bus.addListener(this::createNewRegistries);
 		bus.addListener(this::setRegistriesForDatapack);
 
-		if (ModList.get().isLoaded("curios")) {
-			NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+		if (ModList.get().isLoaded("curios")) { //FIXME: When curios gets updated, uncomment this
+			/*NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
 			bus.addListener(CuriosCompat::registerCuriosCapabilities);
 			bus.addListener(CuriosCompat::registerCurioRenderers);
-			bus.addListener(CuriosCompat::registerCurioLayers);
+			bus.addListener(CuriosCompat::registerCurioLayers);*/
 		}
 
 		BiomeGrassColors.init();
