@@ -6,6 +6,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.ItemStack;
 import twilightforest.TFRegistries;
 
 import javax.annotation.Nullable;
@@ -76,12 +77,18 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers,  S
             }
         }
 
-        public record OpacityModifier(Type type, float multiplier, boolean invert) {
+        public record OpacityModifier(Type type, float multiplier, boolean invert, @Nullable ItemStack item) {
             public static final Codec<OpacityModifier> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
                     OpacityModifier.Type.CODEC.fieldOf("type").forGetter(OpacityModifier::type),
                     ExtraCodecs.POSITIVE_FLOAT.fieldOf("multiplier").forGetter(OpacityModifier::multiplier),
-                    Codec.BOOL.fieldOf("invert").forGetter(OpacityModifier::invert)
-            ).apply(recordCodecBuilder, OpacityModifier::new));
+                    Codec.BOOL.fieldOf("invert").forGetter(OpacityModifier::invert),
+                    ItemStack.CODEC.optionalFieldOf("item_stack").forGetter((modifier) -> Optional.ofNullable(modifier.item()))
+            ).apply(recordCodecBuilder, OpacityModifier::create));
+
+            @SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this too
+            private static OpacityModifier create(Type type, float multiplier, boolean invert, Optional<ItemStack> item) {
+                return new OpacityModifier(type, multiplier, invert, item.orElse(null));
+            }
 
             public enum Type implements StringRepresentable {
                 DISTANCE("distance"),
@@ -89,7 +96,10 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers,  S
                 LIGHTNING("lightning"),
                 DAY_TIME("day_time"),
                 DAY_TIME_SHARP("day_time_sharp"),
-                SINE_TIME("sine_time");
+                SINE_TIME("sine_time"),
+                HEALTH("health"),
+                HUNGER("hunger"),
+                HOLDING_ITEM("holding_item");
 
                 static final Codec<OpacityModifier.Type> CODEC = StringRepresentable.fromEnum(OpacityModifier.Type::values);
                 private final String name;

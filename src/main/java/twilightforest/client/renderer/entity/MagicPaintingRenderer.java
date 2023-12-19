@@ -17,6 +17,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -292,12 +296,12 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
                 }
             }
             case DAY_TIME -> {
-                float dayTime =  Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
+                float dayTime = Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
                 if (opacityModifier.invert()) dayTime = 1.0F - dayTime;
                 a = (float) Math.pow(dayTime, opacityModifier.multiplier());
             }
             case DAY_TIME_SHARP -> {
-                float dayTime =  Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
+                float dayTime = Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
                 if (opacityModifier.invert()) dayTime = 1.0F - dayTime;
                 float threshold = 1.0F - opacityModifier.multiplier();
 
@@ -308,8 +312,32 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
                 else if (dayTime <= threshold + ONE_SECOND) a = (dayTime - threshold) / ONE_SECOND;
             }
             case SINE_TIME -> {
-                a = (float)(Math.sin((painting.tickCount + Minecraft.getInstance().getPartialTick()) * opacityModifier.multiplier())) * 0.5F + 0.5F;
+                a = (float) (Math.sin((painting.tickCount + Minecraft.getInstance().getPartialTick()) * opacityModifier.multiplier())) * 0.5F + 0.5F;
                 if (opacityModifier.invert()) a = 1.0F - a;
+            }
+            case HEALTH -> {
+                if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
+                    a = (living.getHealth() / living.getMaxHealth()) * opacityModifier.multiplier();
+                }
+                if (opacityModifier.invert()) a = 1.0F - a;
+            }
+            case HUNGER -> {
+                if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
+                    FoodData food = player.getFoodData();
+                    a = ((float) food.getFoodLevel() / 20.0F) * opacityModifier.multiplier();
+                }
+                if (opacityModifier.invert()) a = 1.0F - a;
+            }
+            case HOLDING_ITEM -> {
+                if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
+                    ItemStack key = opacityModifier.item();
+                    if (key != null) {
+                        if (!living.isHolding(stack -> ItemStack.isSameItemSameTags(stack, key) &&
+                                (opacityModifier.multiplier() <= 0.0F || Mth.equal(stack.getCount(), opacityModifier.multiplier()))))
+                            a = 0.0F;
+                        if (opacityModifier.invert()) a = 1.0F - a;
+                    }
+                }
             }
         }
         return Mth.clamp(a, 0.0F, 1.0F);
