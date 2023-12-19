@@ -99,6 +99,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_iron_bars", has(Blocks.IRON_BARS))
 				.save(output);
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.ROPE.get(), 8)
+				.pattern("#")
+				.pattern("#")
+				.pattern("#")
+				.define('#', Ingredient.of(TFBlocks.ROOT_STRAND.get()))
+				.unlockedBy("has_root_strand", has(TFBlocks.ROOT_STRAND.get()))
+				.save(output);
+
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_JAR.get())
 				.requires(Ingredient.of(TFBlocks.FIREFLY.get()))
 				.requires(Ingredient.of(Items.GLASS_BOTTLE))

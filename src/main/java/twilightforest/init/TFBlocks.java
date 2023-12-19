@@ -1,13 +1,16 @@
 package twilightforest.init;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -60,6 +63,7 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> HUGE_WATER_LILY = BLOCKS.register("huge_water_lily", () -> new HugeWaterLilyBlock(BlockBehaviour.Properties.of().instabreak().mapColor(MapColor.PLANT).noCollission().pushReaction(PushReaction.DESTROY).sound(SoundType.GRASS)));
 	public static final DeferredBlock<Block> SLIDER = register("slider", () -> new SliderBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).noLootTable().noOcclusion().randomTicks().strength(2.0F, 10.0F)));
 	public static final DeferredBlock<Block> IRON_LADDER = register("iron_ladder", () -> new IronLadderBlock(BlockBehaviour.Properties.of().forceSolidOff().noOcclusion().pushReaction(PushReaction.DESTROY).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(5.0F, 6.0F)));
+	public static final DeferredBlock<Block> ROPE = BLOCKS.register("rope", () -> new RopeBlock(BlockBehaviour.Properties.of().forceSolidOff().noOcclusion().pushReaction(PushReaction.DESTROY).sound(SoundType.WOOL).strength(0.3F, 3.0F)));//FIXME strength
 
 	//naga courtyard
 	public static final DeferredBlock<Block> NAGASTONE_HEAD = register("nagastone_head", () -> new TFHorizontalBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));

@@ -209,6 +209,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PIGLIN_HEAD));
 
 		dropSelf(TFBlocks.IRON_LADDER.get());
+		add(TFBlocks.ROPE.get(), this.rope());
 		dropSelf(TFBlocks.TWISTED_STONE.get());
 		dropSelf(TFBlocks.TWISTED_STONE_PILLAR.get());
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR.get());
@@ -591,6 +592,25 @@ public class BlockLootTables extends BlockLootSubProvider {
 										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
 												.setProperties(StatePropertiesPredicate.Builder.properties()
 														.hasProperty(PipeBlock.DOWN, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
+	}
+
+	protected LootTable.Builder rope() {
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.add(this.applyExplosionDecay(TFBlocks.ROPE.get(), LootItem.lootTableItem(TFBlocks.ROPE.get())
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(RopeBlock.X, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(RopeBlock.Y, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(RopeBlock.Z, true))))
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
 	}
 

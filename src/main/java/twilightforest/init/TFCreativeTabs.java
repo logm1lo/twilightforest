@@ -405,6 +405,7 @@ public class TFCreativeTabs {
 				output.accept(TFBlocks.SLIDER);
 				output.accept(TFBlocks.UNCRAFTING_TABLE);
 				output.accept(TFBlocks.IRON_LADDER);
+				output.accept(TFBlocks.ROPE);
 			}).build());
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ITEMS = TABS.register("items", () -> CreativeModeTab.builder()
