@@ -38,7 +38,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 	@Override
 	@SuppressWarnings("unchecked")
 	// Vanilla also makes this dirty cast on block entity tickers, poor mojank design.
-	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
+	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		int numticks = 8 * 3 * this.tickRate();
 
 		for (int i = 0; i < numticks; i++) {
@@ -51,7 +51,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 				boolean worked = false;
 
 				if (state.isRandomlyTicking()) {
-					state.randomTick((ServerLevel) level, dPos, rand);
+					state.randomTick(level, dPos, rand);
 					worked = true;
 				}
 
@@ -66,7 +66,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 				if (worked) {
 					Vec3 xyz = Vec3.atCenterOf(dPos);
-					for (ServerPlayer serverplayer : ((ServerLevel) level).players()) { // This is just particle math, we send a particle packet to every player in range
+					for (ServerPlayer serverplayer : level.players()) { // This is just particle math, we send a particle packet to every player in range
 						if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
 							ParticlePacket particlePacket = new ParticlePacket();
 							double yOffset = state.getBlock().getOcclusionShape(state, level, dPos).max(Direction.Axis.Y);

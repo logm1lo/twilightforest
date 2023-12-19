@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -35,7 +34,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 	}
 
 	@Override
-	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
+	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		Map<List<IItemHandler>, Vec3> inputMap = new HashMap<>();
 		Map<IItemHandler, Vec3> outputMap = new HashMap<>();
 
@@ -133,7 +132,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 									Vec3 xyz = outputMap.get(outputIItemHandler);
 									Vec3 diff = inputHandlers.getValue().subtract(xyz);
 
-									for (ServerPlayer serverplayer : ((ServerLevel) level).players()) { // This is just particle math, we send a particle packet to every player in range
+									for (ServerPlayer serverplayer : level.players()) { // This is just particle math, we send a particle packet to every player in range
 										if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
 											ParticlePacket particlePacket = new ParticlePacket();
 											double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
