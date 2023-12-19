@@ -525,7 +525,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.ORE_MAGNET)
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.5).model(magnetPull1).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 1).model(magnetPull2).end();
-		singleTexTool(TFItems.CRUMBLE_HORN);
+		crumbleHorn(TFItems.CRUMBLE_HORN);
 		singleTexTool(TFItems.PEACOCK_FEATHER_FAN);
 		ModelFile queenAlt = fullbrightTool("moonworm_queen_alt", prefix("item/moonworm_queen_alt"));
 		singleTexFullbrightTool(TFItems.MOONWORM_QUEEN).override().predicate(prefix("alt"), 1).model(queenAlt).end();
@@ -878,6 +878,17 @@ public class ItemModelGenerator extends ItemModelProvider {
 					.texture("layer2", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
 			base.override().predicate(new ResourceLocation("trim_type"), trim.itemModelIndex()).model(trimModel).end();
 		}
+	}
+
+
+	private void crumbleHorn(DeferredHolder<Item, Item> item) {
+		String name = item.getId().getPath();
+		ItemModelBuilder tooting = withExistingParent("tooting_" + name, this.mcLoc("item/tooting_goat_horn"))
+				.texture("layer0", prefix("item/" + name));
+
+		withExistingParent(name, this.mcLoc("item/goat_horn"))
+				.texture("layer0", prefix("item/" + name))
+				.override().predicate(TwilightForestMod.prefix("tooting"), 1).model(tooting);
 	}
 
 	@Override

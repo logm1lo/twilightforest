@@ -1,4 +1,4 @@
-// 1.20.4	2023-12-19T15:25:18.9418664	TwilightForest Item and BlockItem models
+// 1.20.4	2023-12-19T22:57:29.2131297	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -154,7 +154,7 @@ e1ffc6d6a57fdbbb38445efa9a7d08cb95d0086c assets/twilightforest/models/item/crack
 6b6a25ad9ce64efc5c2dc11c2409bab06ca245a3 assets/twilightforest/models/item/cracked_underbrick.json
 bf81b7da7483a7cb79e848de49ff41d1c6c832f9 assets/twilightforest/models/item/creeper_skull_candle.json
 ddf1661fe44de18c06718d5e915599ffe8a54b32 assets/twilightforest/models/item/crimson_banister.json
-f49a7461b6de4822b4190d497c6db54a7c5d8721 assets/twilightforest/models/item/crumble_horn.json
+fe2455115203978f14e2618c1cea45aada2ae3b0 assets/twilightforest/models/item/crumble_horn.json
 e5bc6e6bd2d27099d01f8c97ef219a4490508ca4 assets/twilightforest/models/item/cube_of_annihilation.json
 1ce5d3fe1b3c3104bee4bab8dd23df16c5393881 assets/twilightforest/models/item/cube_of_annihilation_thrown.json
 a7c7d75939e66246dbb6064fad965191f4da748e assets/twilightforest/models/item/cube_talisman.json
@@ -762,6 +762,7 @@ b8b14f90fb2dce3e231361082d926fe478c962a4 assets/twilightforest/models/item/time_
 6ba07d1a8d6b8f67ea3f66939d6ba5aa7e960e44 assets/twilightforest/models/item/time_trapped_chest.json
 06d56cdcc57225e0463b41c881a26b912cf89951 assets/twilightforest/models/item/time_wood.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/tiny_bird_spawn_egg.json
+84b6e8abf533a1367db9f8aefcbdcc30c3b90496 assets/twilightforest/models/item/tooting_crumble_horn.json
 8df22476335a530097aae297d910fc47c72eb659 assets/twilightforest/models/item/torchberries.json
 04b469cff60997a1388783e97ea012da256a12df assets/twilightforest/models/item/torchberry_plant.json
 dc4655f39194eac0cda7a76f744d12f7d3266940 assets/twilightforest/models/item/towerwood.json
