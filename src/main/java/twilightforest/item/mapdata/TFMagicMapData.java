@@ -159,9 +159,6 @@ public class TFMagicMapData extends MapItemSavedData {
 	}
 
 	public static class TFMapDecoration {
-		
-		private static final RenderType MAP_ICONS = RenderType.text(TwilightForestMod.prefix("textures/gui/mapicons.png"));
-		private static final RenderType VANILLA_ICONS = RenderType.text(new ResourceLocation("textures/map/map_icons.png"));
 
 		private static final Int2ObjectArrayMap<TFLandmark> ICONS = new Int2ObjectArrayMap<>(){{
 			defaultReturnValue(TFLandmark.NOTHING);
@@ -218,7 +215,7 @@ public class TFMagicMapData extends MapItemSavedData {
 				float vMax = (featureId / 8 + 1) / 8.0F;
 				Matrix4f matrix4f = stack.last().pose();
 				float depth = idx * -0.004F;
-				VertexConsumer mapIconVertices = buffer.getBuffer(MAP_ICONS);
+				VertexConsumer mapIconVertices = buffer.getBuffer(DecorationRenderTypes.MAP_ICONS);
 				mapIconVertices.vertex(matrix4f, -1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(uMin, vMin).uv2(light).endVertex();
 				mapIconVertices.vertex(matrix4f, 1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(uMax, vMin).uv2(light).endVertex();
 				mapIconVertices.vertex(matrix4f, 1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(uMax, vMax).uv2(light).endVertex();
@@ -230,7 +227,7 @@ public class TFMagicMapData extends MapItemSavedData {
 					uMax = 11f/16f;
 					vMax = 2f/16f;
 					depth -= 0.002f;
-					VertexConsumer vanillaIconVertices = buffer.getBuffer(VANILLA_ICONS);
+					VertexConsumer vanillaIconVertices = buffer.getBuffer(DecorationRenderTypes.VANILLA_ICONS);
 					vanillaIconVertices.vertex(matrix4f, -1, 0, depth).color(255, 255, 255, 255).uv(uMin, vMin).uv2(light).endVertex();
 					vanillaIconVertices.vertex(matrix4f, 0, 0, depth).color(255, 255, 255, 255).uv(uMax, vMin).uv2(light).endVertex();
 					vanillaIconVertices.vertex(matrix4f, 0, -1, depth).color(255, 255, 255, 255).uv(uMax, vMax).uv2(light).endVertex();
@@ -252,6 +249,12 @@ public class TFMagicMapData extends MapItemSavedData {
 		@Override
 		public int hashCode() {
 			return Objects.hash(featureId, x, y, rot, conquered);
+		}
+
+		@OnlyIn(Dist.CLIENT)
+		private static class DecorationRenderTypes {
+			private static final RenderType MAP_ICONS = RenderType.text(TwilightForestMod.prefix("textures/gui/mapicons.png"));
+			private static final RenderType VANILLA_ICONS = RenderType.text(new ResourceLocation("textures/map/map_icons.png"));
 		}
 	}
 }
