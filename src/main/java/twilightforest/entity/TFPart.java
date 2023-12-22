@@ -21,7 +21,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
 	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("noop");
 
-	protected EntityDimensions realSize;
+	protected EntityDimensions realSize = EntityDimensions.fixed(1F, 1F);
 
 	protected int newPosRotationIncrements;
 	protected double interpTargetX;
@@ -144,7 +144,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		final float h = data.height();
 		this.setSize(data.fixed() ? EntityDimensions.fixed(w, h) : EntityDimensions.scalable(w, h));
 		this.refreshDimensions();
-		if (data.dirty())
+		if (data.dirty() && data.data() != null)
 			getEntityData().assignValues(data.data());
 	}
 

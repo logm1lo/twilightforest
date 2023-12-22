@@ -9,19 +9,20 @@ import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.entity.TFPart;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateTFMultipartPacket {
 
 	private int id;
+	@Nullable
 	private Entity entity;
-	private int len;
 	private final List<PartDataHolder> data = new ArrayList<>();
 
 	public UpdateTFMultipartPacket(FriendlyByteBuf buf) {
 		this.id = buf.readInt();
-		this.len = buf.readInt();
+		int len = buf.readInt();
 		for (int i = 0; i < len; i++) {
 			if (buf.readBoolean()) {
 				data.add(PartDataHolder.decode(buf));
@@ -34,6 +35,8 @@ public class UpdateTFMultipartPacket {
 	}
 
 	public void encode(FriendlyByteBuf buf) {
+		if (entity == null)
+			throw new IllegalStateException("Null Entity while encoding UpdateTFMultipartPacket");
 		buf.writeInt(this.entity.getId());
 		PartEntity<?>[] parts = this.entity.getParts();
 		// We assume the client and server part arrays are identical, else everything will crash and burn. Don't even bother handling it.
@@ -91,7 +94,7 @@ public class UpdateTFMultipartPacket {
 								 float height,
 								 boolean fixed,
 								 boolean dirty,
-								 List<SynchedEntityData.DataValue<?>> data) {
+								 @Nullable List<SynchedEntityData.DataValue<?>> data) {
 
 
 		public void encode(FriendlyByteBuf buffer) {
@@ -104,7 +107,7 @@ public class UpdateTFMultipartPacket {
 			buffer.writeFloat(this.height);
 			buffer.writeBoolean(this.fixed);
 			buffer.writeBoolean(this.dirty);
-			if (this.dirty) {
+			if (this.dirty && this.data != null) {
 				for(SynchedEntityData.DataValue<?> datavalue : this.data) {
 					datavalue.write(buffer);
 				}
