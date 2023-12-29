@@ -11,6 +11,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -177,6 +178,11 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add(fullKey, translation);
 		TF_TIPS.put(fullKey, key);
 	}
+
+	public void translateTag(TagKey<?> tag, String name) {
+		this.add(String.format("tag.%s.%s.%s", tag.registry().location().getPath(), tag.location().getNamespace(), tag.location().getPath().replace('/', '.')), name);
+	}
+
 
 	@Override
 	public CompletableFuture<?> run(CachedOutput cache) {

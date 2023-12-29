@@ -26,15 +26,13 @@ import java.util.List;
 
 public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 	public static final RecipeType<CraftingRecipe> UNCRAFTING = RecipeType.create(TwilightForestMod.ID, "uncrafting", CraftingRecipe.class);
-	public static final int width = 116;
-	public static final int height = 54;
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final Component localizedName;
 
 	public JEIUncraftingCategory(IGuiHelper guiHelper) {
 		ResourceLocation location = TwilightForestMod.getGuiTexture("uncrafting_jei.png");
-		this.background = guiHelper.createDrawable(location, 0, 0, width, height);
+		this.background = guiHelper.createDrawable(location, 0, 0, RecipeViewerConstants.UNCRAFTING_WIDTH, RecipeViewerConstants.UNCRAFTING_HEIGHT);
 		this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()));
 		this.localizedName = Component.translatable("gui.twilightforest.uncrafting_jei");
 	}

@@ -4,6 +4,8 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.data.helpers.TFLangProvider;
+import twilightforest.data.tags.FluidTagGenerator;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
 
 import java.util.HashMap;
@@ -1229,5 +1231,41 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("worldgen_features", "The forest is filled with many ruins. Some may even contain unique items.");
 		this.createTip("yeti", "Yetis love throwing things.");
 		this.createTip("zombie_healing", "Zombies summoned with a Zombie Scepter can be healed with Rotten Flesh.");
+
+		this.translateTag(ItemTagGenerator.CARMINITE_GEMS, "Carminite Gems");
+		this.translateTag(ItemTagGenerator.FIERY_INGOTS, "Fiery Ingots");
+		this.translateTag(ItemTagGenerator.IRONWOOD_INGOTS, "Ironwood Ingots");
+		this.translateTag(ItemTagGenerator.KNIGHTMETAL_INGOTS, "Knightmetal Ingots");
+		this.translateTag(ItemTagGenerator.STEELEAF_INGOTS, "Steeleaf Ingots");
+		this.translateTag(ItemTagGenerator.PAPER, "Papers");
+		this.translateTag(ItemTagGenerator.RAW_MATERIALS_IRONWOOD, "Raw Ironwood");
+		this.translateTag(ItemTagGenerator.RAW_MATERIALS_KNIGHTMETAL, "Raw Knightmetal");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR, "Arctic Fur Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_CARMINITE, "Carminite Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_FIERY, "Fiery Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_IRONWOOD, "Ironwood Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL, "Knightmetal Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_STEELEAF, "Steeleaf Storage Blocks");
+		this.translateTag(ItemTagGenerator.ARCTIC_FUR, "Arctic Fur");
+		this.translateTag(ItemTagGenerator.BANNED_UNCRAFTABLES, "Can't be Uncrafted");
+		this.translateTag(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS, "Banned Uncrafting Ingredients");
+		this.translateTag(ItemTagGenerator.CANOPY_LOGS, "Canopy Logs");
+		this.translateTag(ItemTagGenerator.DARKWOOD_LOGS, "Darkwood Logs");
+		this.translateTag(ItemTagGenerator.FIERY_VIAL, "Fiery Vials");
+		this.translateTag(ItemTagGenerator.KEPT_ON_DEATH, "Kept on Death");
+		this.translateTag(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS, "Kobold Pacification Items");
+		this.translateTag(ItemTagGenerator.TWILIGHT_LOGS, "Twilight Forest Logs");
+		this.translateTag(ItemTagGenerator.MANGROVE_LOGS, "Mangrove Logs");
+		this.translateTag(ItemTagGenerator.MINING_LOGS, "Miningwood Logs");
+		this.translateTag(ItemTagGenerator.NYI, "Not Yet Implemented Items");
+		this.translateTag(ItemTagGenerator.PORTAL_ACTIVATOR, "Twilight Forest Portal Activators");
+		this.translateTag(ItemTagGenerator.SORTING_LOGS, "Sortingwood Logs");
+		this.translateTag(ItemTagGenerator.TIME_LOGS, "Timewood Logs");
+		this.translateTag(ItemTagGenerator.TOWERWOOD, "Towerwood Blocks");
+		this.translateTag(ItemTagGenerator.TRANSFORMATION_LOGS, "Transformationwood Logs");
+		this.translateTag(ItemTagGenerator.TWILIGHT_OAK_LOGS, "Twilight Oak Logs");
+		this.translateTag(ItemTagGenerator.UNCRAFTING_IGNORES_COST, "Uncrafting Table Ignores Cost");
+		this.translateTag(ItemTagGenerator.WIP, "Work In Progress Items");
+		this.translateTag(FluidTagGenerator.FIRE_JET_FUEL, "Fire Jet Fuel");
 	}
 }

@@ -22,8 +22,6 @@ import twilightforest.item.recipe.TransformPowderRecipe;
 
 public class TransformationPowderCategory implements IRecipeCategory<TransformPowderRecipe> {
 	public static final RecipeType<TransformPowderRecipe> TRANSFORMATION = RecipeType.create(TwilightForestMod.ID, "transformation", TransformPowderRecipe.class);
-	public static final int WIDTH = 116;
-	public static final int HEIGHT = 54;
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final IDrawable arrow;
@@ -33,7 +31,7 @@ public class TransformationPowderCategory implements IRecipeCategory<TransformPo
 
 	public TransformationPowderCategory(IGuiHelper helper) {
 		ResourceLocation location = TwilightForestMod.getGuiTexture("transformation_jei.png");
-		this.background = helper.createDrawable(location, 0, 0, WIDTH, HEIGHT);
+		this.background = helper.createDrawable(location, 0, 0, RecipeViewerConstants.TRANSFORMATION_POWDER_WIDTH, RecipeViewerConstants.TRANSFORMATION_POWDER_HEIGHT);
 		this.arrow = helper.createDrawable(location, 116, 0, 23, 15);
 		this.doubleArrow = helper.createDrawable(location, 116, 16, 23, 15);
 		this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, TFItems.TRANSFORMATION_POWDER.get().getDefaultInstance());

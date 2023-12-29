@@ -59,7 +59,7 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 				PoseStack modelView = RenderSystem.getModelViewStack();
 				modelView.pushPose();
 				modelView.mulPoseMatrix(graphics.pose().last().pose());
-				this.renderItemEntity(item.stack(), level);
+				EntityRenderingUtil.renderItemEntity(item.stack(), level, this.bobOffs);
 				modelView.popPose();
 				RenderSystem.applyModelViewMatrix();
 			} catch (Exception e) {
@@ -78,55 +78,5 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 		return tooltip;
 	}
 
-	private void renderItemEntity(ItemStack stack, Level level) {
-		PoseStack posestack = RenderSystem.getModelViewStack();
-		posestack.pushPose();
-		posestack.translate(16.0D, 32.0D, 1050.0D);
-		posestack.scale(1.0F, 1.0F, -1.0F);
-		RenderSystem.applyModelViewMatrix();
-		PoseStack posestack1 = new PoseStack();
-		posestack1.translate(0.0D, 0.0D, 1000.0D);
-		posestack1.scale(50.0F, 50.0F, 50.0F);
-		Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
-		Quaternionf quaternion1 = Axis.XP.rotationDegrees(20.0F);
-		quaternion.mul(quaternion1);
-		posestack1.mulPose(quaternion);
-		posestack1.mulPose(Axis.XN.rotationDegrees(35.0F));
-		posestack1.mulPose(Axis.YN.rotationDegrees(145.0F));
-		Lighting.setupForEntityInInventory();
-		quaternion1.conjugate();
-		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-		ItemEntity item = EntityType.ITEM.create(level);
-		Objects.requireNonNull(item).setItem(stack);
-		RenderSystem.runAsFancy(() ->
-				this.render(item, Minecraft.getInstance().getDeltaFrameTime(), posestack1, buffer, 15728880));
-		buffer.endBatch();
-		posestack.popPose();
-		RenderSystem.applyModelViewMatrix();
-		Lighting.setupFor3DItems();
-	}
 
-	//[VanillaCopy] of ItemEntityRenderer.render. I have to add my own bob offset and ticker since using the vanilla method has issues
-	public void render(ItemEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
-		stack.pushPose();
-		ItemStack itemstack = entity.getItem();
-		BakedModel bakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entity.level(), null, entity.getId());
-		float f1 = Mth.sin((Objects.requireNonNull(Minecraft.getInstance().level).getGameTime() + partialTicks) / 10.0F + this.bobOffs) * 0.1F + 0.1F;
-		float f2 = bakedmodel.getTransforms().getTransform(ItemDisplayContext.GROUND).scale.y();
-		stack.translate(0.0D, f1 + 0.25F * f2, 0.0D);
-		float f3 = this.getSpin(partialTicks);
-		stack.mulPose(Axis.YP.rotation(f3));
-
-		stack.pushPose();
-
-		Minecraft.getInstance().getItemRenderer().render(itemstack, ItemDisplayContext.GROUND, false, stack, buffer, light, OverlayTexture.NO_OVERLAY, bakedmodel);
-		stack.popPose();
-
-
-		stack.popPose();
-	}
-
-	public float getSpin(float pPartialTicks) {
-		return (Objects.requireNonNull(Minecraft.getInstance().level).getGameTime() + pPartialTicks) / 20.0F + this.bobOffs;
-	}
 }
