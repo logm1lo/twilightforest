@@ -166,7 +166,7 @@ public class PeacockFanItem extends Item {
 			}
 		} else if (state.getBlock() instanceof AbstractCandleBlock && state.getValue(AbstractCandleBlock.LIT)) {
 			AbstractCandleBlock.extinguish(null, state, level, pos);
-		} else if (state.getBlock() instanceof LightableBlock lightable && state.getValue(LightableBlock.LIGHTING) != LightableBlock.Lighting.NONE) {
+		} else if (state.getBlock() instanceof LightableBlock lightable && (state.getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.NORMAL || state.getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.DIM)) {
 			lightable.extinguish(null, state, level, pos);
 		}
 
