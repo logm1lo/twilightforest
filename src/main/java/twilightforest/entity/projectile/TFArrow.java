@@ -17,6 +17,8 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 	public TFArrow(EntityType<? extends TFArrow> type, Level level, @Nullable Entity shooter, ItemStack stack) {
 		super(type, level, stack);
 		this.setOwner(shooter);
-		this.setPos(shooter.getX(), shooter.getEyeY() - 0.1D, shooter.getZ());
+		if (shooter != null) {
+			this.setPos(shooter.getX(), shooter.getEyeY() - 0.1D, shooter.getZ());
+		}
 	}
 }
