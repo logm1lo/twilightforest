@@ -86,13 +86,7 @@ public class Yeti extends Monster implements IHostileMount {
 
 	@Override
 	public void aiStep() {
-
 		super.aiStep();
-
-		// if we no longer have a target, lets calm down
-		if (this.getTarget() == null && this.isAngry()) {
-			this.setAngry(false);
-		}
 
 		// look at things in our jaws
 		if (!this.getPassengers().isEmpty()) {
