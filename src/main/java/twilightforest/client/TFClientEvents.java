@@ -228,7 +228,7 @@ public class TFClientEvents {
 
 			// add weather box if needed
 			if (mc.level != null && info instanceof TwilightForestRenderInfo) {
-				TFWeatherRenderer.tick();
+				TFWeatherRenderer.tick(mc.level);
 			}
 
 			if (TFConfig.CLIENT_CONFIG.firstPersonEffects.get() && mc.level != null && mc.player != null) {

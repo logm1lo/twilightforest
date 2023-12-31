@@ -78,8 +78,10 @@ public class TFWeatherRenderer {
 		}
 	}
 
-	public static void tick() {
-		++rendererUpdateCount;
+	public static void tick(ClientLevel level) {
+		if (level.tickRateManager().runsNormally()) {
+			++rendererUpdateCount;
+		}
 	}
 
 	//Helpful tip: x, y, and z relate to the looking entity's position.
