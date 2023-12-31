@@ -106,8 +106,8 @@ public interface LightableBlock {
 
 	enum Lighting implements StringRepresentable {
 		NONE,
-		DIM,
 		NORMAL,
+		DIM,
 		OMINOUS;
 
 		@Override
