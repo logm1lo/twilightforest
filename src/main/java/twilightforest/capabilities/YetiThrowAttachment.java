@@ -6,8 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.ThrowPlayerPacket;
+import twilightforest.network.MovePlayerPacket;
 import twilightforest.network.UpdateThrownPacket;
 
 public class YetiThrowAttachment {
@@ -31,7 +30,7 @@ public class YetiThrowAttachment {
 				player.push(this.throwVector.x(), this.throwVector.y(), this.throwVector.z());
 
 				if (player instanceof ServerPlayer server) {
-					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> server), new ThrowPlayerPacket(this.throwVector.x(), this.throwVector.y(), this.throwVector.z()));
+					PacketDistributor.PLAYER.with(server).send(new MovePlayerPacket(this.throwVector.x(), this.throwVector.y(), this.throwVector.z()));
 				}
 				this.throwVector = Vec3.ZERO;
 			}
@@ -68,7 +67,9 @@ public class YetiThrowAttachment {
 
 	private void sendUpdatePacket(Player player) {
 		if (!player.level().isClientSide()) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new UpdateThrownPacket(player.getId(), this));
+			int throwerID = 0;
+			if (this.thrower != null) throwerID = this.thrower.getId();
+			PacketDistributor.TRACKING_ENTITY_AND_SELF.with(player).send(new UpdateThrownPacket(player.getId(), this.thrown, throwerID, this.throwCooldown));
 		}
 	}
 }

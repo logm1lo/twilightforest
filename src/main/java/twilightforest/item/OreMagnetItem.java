@@ -34,7 +34,6 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
@@ -199,7 +198,7 @@ public class OreMagnetItem extends Item {
 									Vec3 offset = new Vec3((level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D);
 									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
 								}
-								TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
+								PacketDistributor.PLAYER.with(serverplayer).send(particlePacket);
 							}
 						}
 					}

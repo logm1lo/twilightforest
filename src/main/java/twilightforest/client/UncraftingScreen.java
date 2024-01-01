@@ -15,11 +15,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.inventory.UncraftingMenu;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UncraftingGuiPacket;
 
 public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> implements RecipeUpdateListener {
@@ -46,12 +46,12 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		this.setInitialFocus(this.recipeBookComponent);
 
 		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 22, true, button -> {
-			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(0));
+			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(0));
 			this.menu.unrecipeInCycle++;
 			this.menu.slotsChanged(this.menu.tinkerInput);
 		}));
 		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 55, false, button -> {
-			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(1));
+			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(1));
 			this.menu.unrecipeInCycle--;
 			this.menu.slotsChanged(this.menu.tinkerInput);
 		}));
@@ -59,12 +59,12 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		//this.buttonList.add(new ModeButton(uiLeft + 7, guiTop + 57));
 
 		this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 56, true, button -> {
-			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(2));
+			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(2));
 			this.menu.ingredientsInCycle++;
 			this.menu.slotsChanged(this.menu.tinkerInput);
 		}));
 		this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 63, false, button -> {
-			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(3));
+			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(3));
 			this.menu.ingredientsInCycle--;
 			this.menu.slotsChanged(this.menu.tinkerInput);
 		}));
@@ -72,12 +72,12 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		//this.buttonList.add(new RefreshButton(uiLeft + 26, guiTop + 57));
 
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 22, true, button -> {
-			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(4));
+			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(4));
 			this.menu.recipeInCycle++;
 			this.menu.slotsChanged(this.menu.assemblyMatrix);
 		}));
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 55, false, button -> {
-			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(5));
+			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(5));
 			this.menu.recipeInCycle--;
 			this.menu.slotsChanged(this.menu.assemblyMatrix);
 		}));
@@ -96,10 +96,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		//ingredient buttons
 		if (x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
 			if (vertScroll > 0) {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(2));
+				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(2));
 				this.menu.ingredientsInCycle++;
 			} else {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(3));
+				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(3));
 				this.menu.ingredientsInCycle--;
 			}
 			this.menu.slotsChanged(this.menu.tinkerInput);
@@ -108,10 +108,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		//uncrafting recipe buttons
 		if (x > this.leftPos + 40 && x < this.leftPos + 54 && y > this.topPos + 22 && y < this.topPos + 64) {
 			if (vertScroll > 0) {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(0));
+				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(0));
 				this.menu.unrecipeInCycle++;
 			} else {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(1));
+				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(1));
 				this.menu.unrecipeInCycle--;
 			}
 			this.menu.slotsChanged(this.menu.tinkerInput);
@@ -120,10 +120,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		//recrafting recipe buttons
 		if (x > this.leftPos + 121 && x < this.leftPos + 135 && y > this.topPos + 22 && y < this.topPos + 64) {
 			if (vertScroll > 0) {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(4));
+				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(4));
 				this.menu.recipeInCycle++;
 			} else {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(5));
+				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(5));
 				this.menu.recipeInCycle--;
 			}
 			this.menu.slotsChanged(this.menu.assemblyMatrix);

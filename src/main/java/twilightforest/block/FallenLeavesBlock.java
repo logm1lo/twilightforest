@@ -30,7 +30,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.client.particle.data.LeafParticleData;
 import twilightforest.network.SpawnFallenLeafFromPacket;
-import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nullable;
 
@@ -159,7 +158,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 						(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
 				);
 			} else if (level instanceof ServerLevel)
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
+				PacketDistributor.TRACKING_ENTITY.with(entity).send(new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
 		}
 	}
 }

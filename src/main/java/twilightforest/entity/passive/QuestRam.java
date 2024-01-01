@@ -44,7 +44,6 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LandmarkUtil;
 
 import java.util.Optional;
@@ -233,7 +232,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 								red, green, blue);
 					}
 
-					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), packet);
+					PacketDistributor.PLAYER.with(serverplayer).send(packet);
 				}
 			}
 		}

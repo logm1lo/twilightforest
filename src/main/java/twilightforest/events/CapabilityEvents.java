@@ -17,8 +17,6 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.init.TFDataAttachments;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.UpdateFeatherFanFallPacket;
 import twilightforest.network.UpdateShieldPacket;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -97,7 +95,7 @@ public class CapabilityEvents {
 	private static void updateCapabilities(ServerPlayer clientTarget, Entity shielded) {
 		var attachment = shielded.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
 		if (attachment.shieldsLeft() > 0) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> clientTarget), new UpdateShieldPacket(shielded.getId(), attachment));
+			PacketDistributor.PLAYER.with(clientTarget).send(new UpdateShieldPacket(shielded.getId(), attachment.temporaryShieldsLeft(), attachment.permanentShieldsLeft()));
 		}
 	}
 

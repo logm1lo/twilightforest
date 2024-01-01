@@ -22,7 +22,6 @@ import twilightforest.init.TFBiomes;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
 
 import java.util.List;
@@ -84,7 +83,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 						Vec3 offset = new Vec3(Math.cos(angle), 0.0D, Math.sin(angle)).scale(2.0D);
 						particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), false, xyz.add(offset), Vec3.ZERO.subtract(offset));
 					}
-					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
+					PacketDistributor.PLAYER.with(serverplayer).send(particlePacket);
 				}
 			}
 			break;

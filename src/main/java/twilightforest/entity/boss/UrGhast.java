@@ -43,7 +43,6 @@ import twilightforest.entity.projectile.UrGhastFireball;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
@@ -549,7 +548,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 				double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
 				particlePacket.queueParticle(DustParticleOptions.REDSTONE, false, particlePos.add(x, y, z), Vec3.ZERO);
 			}
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+			PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
 		}
 	}
 

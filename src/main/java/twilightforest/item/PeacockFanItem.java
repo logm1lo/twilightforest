@@ -28,8 +28,7 @@ import twilightforest.block.LightableBlock;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.ThrowPlayerPacket;
+import twilightforest.network.MovePlayerPacket;
 import twilightforest.network.UpdateFeatherFanFallPacket;
 import twilightforest.util.WorldUtil;
 
@@ -53,7 +52,7 @@ public class PeacockFanItem extends Item {
 			stack.hurtAndBreak(fanned + 1, player, (user) -> user.broadcastBreakEvent(hand));
 			if (flag) {
 				player.setData(TFDataAttachments.FEATHER_FAN, true);
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new UpdateFeatherFanFallPacket(player.getId(), true));
+				PacketDistributor.TRACKING_ENTITY_AND_SELF.with(player).send(new UpdateFeatherFanFallPacket(player.getId(), true));
 			} else {
 				AABB fanBox = this.getEffectAABB(player);
 				Vec3 lookVec = player.getLookAngle();
@@ -68,7 +67,7 @@ public class PeacockFanItem extends Item {
 									fanBox.minZ + level.getRandom().nextFloat() * (fanBox.maxZ - fanBox.minZ),
 									lookVec.x(), lookVec.y(), lookVec.z());
 						}
-						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), packet);
+						PacketDistributor.PLAYER.with(serverplayer).send(packet);
 					}
 				}
 			}
@@ -127,7 +126,7 @@ public class PeacockFanItem extends Item {
 			}
 
 			if (entity instanceof ServerPlayer pushedPlayer && pushedPlayer != player && !pushedPlayer.isShiftKeyDown()) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> pushedPlayer), new ThrowPlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
+				PacketDistributor.PLAYER.with(pushedPlayer).send(new MovePlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
 				player.getCooldowns().addCooldown(fan, 40);
 				fannedEntities += 2;
 			}

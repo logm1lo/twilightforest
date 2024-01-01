@@ -17,7 +17,6 @@ import twilightforest.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
 
 import java.util.*;
@@ -139,7 +138,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 											double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
 											double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
 											particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
-											TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
+											PacketDistributor.PLAYER.with(serverplayer).send(particlePacket);
 										}
 									}
 									break;

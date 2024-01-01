@@ -28,7 +28,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
@@ -150,7 +149,7 @@ public class CloudBlock extends Block {
             particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(),  false, x, y, z, xSpeed, ySpeed, zSpeed);
         }
 
-        TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(pos)), particlePacket);
+        PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(pos)).send(particlePacket);
 
         return true;
     }

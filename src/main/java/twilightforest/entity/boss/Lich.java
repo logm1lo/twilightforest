@@ -59,7 +59,6 @@ import twilightforest.entity.monster.LichMinion;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
@@ -446,7 +445,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 					}
 				}
 
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+				PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
 			} else if (this.deathTime == 70) {
 				ParticlePacket particlePacket = new ParticlePacket();
 				for (int i = 0; i < 3; i++) {
@@ -455,7 +454,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 					particlePacket.queueParticle(ParticleTypes.CLOUD, false, this.position().add(x, 0.0D, z), Vec3.ZERO);
 				}
 
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+				PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
 			} else if (this.deathTime > 70) {
 				boolean flag = this.deathTime >= maxDeath && !this.isRemoved();
 
@@ -489,7 +488,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 					particlePacket.queueParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.add(x, -0.25D, z), Vec3.ZERO);
 				}
 
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+				PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
 
 				if (flag) this.remove(RemovalReason.KILLED);
 			}
@@ -709,7 +708,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 						packet.queueParticle(ParticleTypes.ENTITY_EFFECT, false, tx, ty, tz, red, green, blue);
 					}
 
-					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), packet);
+					PacketDistributor.TRACKING_ENTITY.with(this).send(packet);
 				}
 			}
 		}

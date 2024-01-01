@@ -27,6 +27,8 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -41,8 +43,7 @@ import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.UpdateGamerulePacket;
+import twilightforest.network.*;
 import twilightforest.util.Restriction;
 import twilightforest.util.TFRemapper;
 import twilightforest.util.WoodPalette;
@@ -67,7 +68,10 @@ public class TwilightForestMod {
 	// odd one out, as armor textures are a stringy mess at present
 	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
-	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true, (server, enforced) -> TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateGamerulePacket(enforced.get())))); //Putting it in UPDATES since other world stuff is here
+	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression",
+			GameRules.Category.UPDATES,  //Putting it in UPDATES since other world stuff is here
+			GameRules.BooleanValue.create(true, (server, enforced) ->
+			PacketDistributor.ALL.noArg().send(new EnforceProgressionStatusPacket(enforced.get())))); //sends a packet to every player online when this changes so weather effects update accordingly
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
@@ -133,6 +137,7 @@ public class TwilightForestMod {
 
 		bus.addListener(this::init);
 		bus.addListener(this::sendIMCs);
+		bus.addListener(this::setupPackets);
 		bus.addListener(this::registerExtraStuff);
 		bus.addListener(this::createNewRegistries);
 		bus.addListener(this::setRegistriesForDatapack);
@@ -177,10 +182,28 @@ public class TwilightForestMod {
 		}
 	}
 
-	public void init(FMLCommonSetupEvent evt) {
-		TFPacketHandler.init();
-		TFAdvancements.init();
+	public void setupPackets(RegisterPayloadHandlerEvent event) {
+		IPayloadRegistrar registrar = event.registrar(ID).versioned("1.0.0").optional();
+		registrar.play(AreaProtectionPacket.ID, AreaProtectionPacket::new, payload -> payload.client(AreaProtectionPacket::handle));
+		registrar.play(CreateMovingCicadaSoundPacket.ID, CreateMovingCicadaSoundPacket::new, payload -> payload.client(CreateMovingCicadaSoundPacket::handle));
+		registrar.play(EnforceProgressionStatusPacket.ID, EnforceProgressionStatusPacket::new, payload -> payload.client(EnforceProgressionStatusPacket::handle));
+		registrar.play(MagicMapPacket.ID, MagicMapPacket::new, payload -> payload.client(MagicMapPacket::handle));
+		registrar.play(MazeMapPacket.ID, MazeMapPacket::new, payload -> payload.client(MazeMapPacket::handle));
+		registrar.play(MissingAdvancementToastPacket.ID, MissingAdvancementToastPacket::new, payload -> payload.client(MissingAdvancementToastPacket::handle));
+		registrar.play(MovePlayerPacket.ID, MovePlayerPacket::new, payload -> payload.client(MovePlayerPacket::handle));
+		registrar.play(ParticlePacket.ID, ParticlePacket::new, payload -> payload.client(ParticlePacket::handle));
+		registrar.play(SpawnFallenLeafFromPacket.ID, SpawnFallenLeafFromPacket::new, payload -> payload.client(SpawnFallenLeafFromPacket::handle));
+		registrar.play(StructureProtectionClearPacket.ID, buf -> new StructureProtectionClearPacket(), payload -> payload.client(StructureProtectionClearPacket::handle));
+		registrar.play(StructureProtectionPacket.ID, StructureProtectionPacket::new, payload -> payload.client(StructureProtectionPacket::handle));
+		registrar.play(SyncUncraftingTableConfigPacket.ID, SyncUncraftingTableConfigPacket::new, payload -> payload.client(SyncUncraftingTableConfigPacket::handle));
+		registrar.play(UncraftingGuiPacket.ID, UncraftingGuiPacket::new, payload -> payload.server(UncraftingGuiPacket::handle));
+		registrar.play(UpdateFeatherFanFallPacket.ID, UpdateFeatherFanFallPacket::new, payload -> payload.client(UpdateFeatherFanFallPacket::handle));
+		registrar.play(UpdateShieldPacket.ID, UpdateShieldPacket::new, payload -> payload.client(UpdateShieldPacket::handle));
+		registrar.play(UpdateTFMultipartPacket.ID, UpdateTFMultipartPacket::new, payload -> payload.client(UpdateTFMultipartPacket::handle));
+		registrar.play(UpdateThrownPacket.ID, UpdateThrownPacket::new, payload -> payload.client(UpdateThrownPacket::handle));
+	}
 
+	public void init(FMLCommonSetupEvent evt) {
 		evt.enqueueWork(() -> {
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();

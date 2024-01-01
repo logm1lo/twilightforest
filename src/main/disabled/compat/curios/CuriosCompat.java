@@ -27,7 +27,6 @@ import twilightforest.events.CharmEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
-import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;

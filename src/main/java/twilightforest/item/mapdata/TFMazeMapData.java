@@ -3,6 +3,7 @@ package twilightforest.item.mapdata;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -11,11 +12,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.neoforged.neoforge.network.PlayNetworkDirection;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFLandmark;
 import twilightforest.network.MazeMapPacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -95,6 +94,6 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(int mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MazeMapPacket(mapItemDataPacket, ore, yCenter), PlayNetworkDirection.PLAY_TO_CLIENT) : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new ClientboundCustomPayloadPacket(new MazeMapPacket(mapItemDataPacket, this.ore, this.yCenter)) : packet;
 	}
 }

@@ -58,7 +58,6 @@ import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.TFItems;
 import twilightforest.item.GiantItem;
 import twilightforest.item.mapdata.TFMagicMapData;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.world.components.structures.util.CustomStructureData;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -147,7 +146,7 @@ public class ASMHooks {
 	 */
 	public static Entity updateMultiparts(Entity entity) {
 		if (entity.isMultipartEntity())
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateTFMultipartPacket(entity));
+			PacketDistributor.TRACKING_ENTITY.with(entity).send(new UpdateTFMultipartPacket(entity));
 		return entity;
 	}
 

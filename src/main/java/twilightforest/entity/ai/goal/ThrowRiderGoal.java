@@ -1,5 +1,6 @@
 package twilightforest.entity.ai.goal;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,10 +9,12 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.capabilities.YetiThrowAttachment;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataAttachments;
+import twilightforest.network.MovePlayerPacket;
 
 public class ThrowRiderGoal extends MeleeAttackGoal {
 
@@ -82,6 +85,11 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 				// Make it so other yetis won't try to pick us up for a bit, 10 seconds seems fair
 				attachment.setThrowVector(throwVec);
 				attachment.setThrowCooldown(player, YetiThrowAttachment.THROW_COOLDOWN);
+				player.push(throwVec.x(), throwVec.y(), throwVec.z());
+
+				if (player instanceof ServerPlayer server) {
+					PacketDistributor.PLAYER.with(server).send(new MovePlayerPacket(throwVec.x(), throwVec.y(), throwVec.z()));
+				}
 			} else rider.push(throwVec.x(), throwVec.y(), throwVec.z());
 		}
 		super.stop();

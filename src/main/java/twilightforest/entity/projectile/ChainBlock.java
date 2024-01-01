@@ -28,7 +28,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.ToolActions;
-import net.neoforged.neoforge.entity.IEntityAdditionalSpawnData;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -38,7 +38,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
-public class ChainBlock extends ThrowableProjectile implements IEntityAdditionalSpawnData {
+public class ChainBlock extends ThrowableProjectile implements IEntityWithComplexSpawn {
 
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;

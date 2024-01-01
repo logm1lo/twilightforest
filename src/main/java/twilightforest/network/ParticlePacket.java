@@ -1,24 +1,27 @@
 package twilightforest.network;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParticlePacket {
+public class ParticlePacket implements CustomPacketPayload {
+
+	public static final ResourceLocation ID = TwilightForestMod.prefix("particle_queue");
+
 	private final List<QueuedParticle> queuedParticles = new ArrayList<>();
 
 	public ParticlePacket() {
 	}
 
-	@SuppressWarnings("deprecation")
 	public ParticlePacket(FriendlyByteBuf buf) {
 		int size = buf.readInt();
 		for (int i = 0; i < size; i++) {
@@ -33,8 +36,8 @@ public class ParticlePacket {
 		return particleType.getDeserializer().fromNetwork(particleType, buf);
 	}
 
-	@SuppressWarnings("deprecation")
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeInt(this.queuedParticles.size());
 		for (QueuedParticle queuedParticle : this.queuedParticles) {
 			int d = BuiltInRegistries.PARTICLE_TYPE.getId(queuedParticle.particleOptions.getType());
@@ -50,6 +53,11 @@ public class ParticlePacket {
 		}
 	}
 
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
+
 	public void queueParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2, double y2, double z2) {
 		this.queuedParticles.add(new QueuedParticle(particleOptions, b, x, y, z, x2, y2, z2));
 	}
@@ -62,18 +70,11 @@ public class ParticlePacket {
 								  double y2, double z2) {
 	}
 
-	public static class Handler {
-		public static boolean onMessage(ParticlePacket message, NetworkEvent.Context ctx) {
-			ctx.enqueueWork(() -> {
-				ClientLevel level = Minecraft.getInstance().level;
-				if (level == null)
-					return;
-				for (QueuedParticle queuedParticle : message.queuedParticles) {
-					level.addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
-				}
-			});
-			ctx.setPacketHandled(true);
-			return true;
-		}
+	public static void handle(ParticlePacket message, PlayPayloadContext ctx) {
+		ctx.workHandler().execute(() -> {
+			for (QueuedParticle queuedParticle : message.queuedParticles) {
+				ctx.level().orElseThrow().addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
+			}
+		});
 	}
 }

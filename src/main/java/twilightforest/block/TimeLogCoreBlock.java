@@ -18,7 +18,6 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
 
 public class TimeLogCoreBlock extends SpecialMagicLogBlock {
@@ -71,7 +70,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 							ParticlePacket particlePacket = new ParticlePacket();
 							double yOffset = state.getBlock().getOcclusionShape(state, level, dPos).max(Direction.Axis.Y);
 							particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
-							TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
+							PacketDistributor.PLAYER.with(serverplayer).send(particlePacket);
 						}
 					}
 				}

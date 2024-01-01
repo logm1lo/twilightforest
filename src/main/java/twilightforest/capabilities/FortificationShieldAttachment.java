@@ -2,7 +2,6 @@ package twilightforest.capabilities;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
 
 public class FortificationShieldAttachment {
@@ -106,6 +104,6 @@ public class FortificationShieldAttachment {
 
 	private void sendUpdatePacket(LivingEntity entity) {
 		if (entity instanceof ServerPlayer)
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new UpdateShieldPacket(entity.getId(), this));
+			PacketDistributor.TRACKING_ENTITY_AND_SELF.with(entity).send(new UpdateShieldPacket(entity.getId(), this.temporaryShields, this.permanentShields));
 	}
 }

@@ -2,43 +2,38 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.MovingCicadaSoundInstance;
 
-public class CreateMovingCicadaSoundPacket {
+public record CreateMovingCicadaSoundPacket(int entityID) implements CustomPacketPayload {
 
-	private final int entityID;
-
-	public CreateMovingCicadaSoundPacket(int id) {
-		this.entityID = id;
-	}
+	public static final ResourceLocation ID = TwilightForestMod.prefix("create_cicada_sound");
 
 	public CreateMovingCicadaSoundPacket(FriendlyByteBuf buf) {
-		this.entityID = buf.readInt();
+		this(buf.readInt());
 	}
 
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(this.entityID);
+	@Override
+	public void write(FriendlyByteBuf buf) {
+		buf.writeInt(this.entityID());
 	}
 
-	public static class Handler {
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
 
-		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(CreateMovingCicadaSoundPacket message, NetworkEvent.Context ctx) {
-			ctx.enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
-					if (entity instanceof LivingEntity living) {
-						Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
-					}
-				}
-			});
-
-			ctx.setPacketHandled(true);
-			return true;
-		}
+	public static void handle(CreateMovingCicadaSoundPacket message, PlayPayloadContext ctx) {
+		ctx.workHandler().execute(() -> {
+			Entity entity = ctx.level().orElseThrow().getEntity(message.entityID());
+			if (entity instanceof LivingEntity living) {
+				Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
+			}
+		});
 	}
 }

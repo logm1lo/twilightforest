@@ -22,6 +22,4 @@ public class TFAdvancements {
     public static final DeferredHolder<CriterionTrigger<?>, HurtBossTrigger> HURT_BOSS = TRIGGERS.register("hurt_boss", HurtBossTrigger::new);
     public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> KILL_ALL_PHANTOMS = TRIGGERS.register("kill_all_phantoms", SimpleAdvancementTrigger::new);
     public static final DeferredHolder<CriterionTrigger<?>, UncraftItemTrigger> UNCRAFT_ITEM = TRIGGERS.register("uncraft_item", UncraftItemTrigger::new);
-
-    public static void init() {}
 }

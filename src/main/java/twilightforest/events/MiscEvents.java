@@ -32,7 +32,6 @@ import twilightforest.entity.passive.TinyBird;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
-import twilightforest.network.TFPacketHandler;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class MiscEvents {
@@ -73,7 +72,7 @@ public class MiscEvents {
 		}
 
 		if (living != null && !living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.asItem())) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> living), new CreateMovingCicadaSoundPacket(living.getId()));
+			PacketDistributor.TRACKING_ENTITY_AND_SELF.with(living).send(new CreateMovingCicadaSoundPacket(living.getId()));
 		}
 	}
 

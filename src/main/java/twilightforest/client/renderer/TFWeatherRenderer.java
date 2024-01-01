@@ -504,7 +504,7 @@ public class TFWeatherRenderer {
 		return protectedBox != null && protectedBox.intersects(px - range, pz - range, px + range, pz + range);
 	}
 
-	public static void setProtectedBox(BoundingBox protectedBox) {
+	public static void setProtectedBox(@Nullable BoundingBox protectedBox) {
 		TFWeatherRenderer.protectedBox = protectedBox;
 	}
 

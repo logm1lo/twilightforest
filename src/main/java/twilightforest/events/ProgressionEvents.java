@@ -27,11 +27,9 @@ import twilightforest.entity.monster.Kobold;
 import twilightforest.init.TFLandmark;
 import twilightforest.network.AreaProtectionPacket;
 import twilightforest.network.EnforceProgressionStatusPacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 import twilightforest.world.components.structures.util.ProgressionStructure;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -165,7 +163,7 @@ public class ProgressionEvents {
 
 	private static void sendAreaProtectionPacket(Level level, BlockPos pos, List<BoundingBox> sbb) {
 		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, level.dimension());
-		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new AreaProtectionPacket(sbb, pos));
+		PacketDistributor.NEAR.with(targetPoint).send(new AreaProtectionPacket(sbb, pos));
 	}
 
 	@SubscribeEvent
@@ -177,25 +175,5 @@ public class ProgressionEvents {
 
 			event.setCanceled(true);
 		}
-	}
-
-	@SubscribeEvent
-	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			if (TFGenerationSettings.usesTwilightChunkGenerator((ServerLevel) player.level())) {
-				sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(player.level()));
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(event.getEntity().level()));
-		}
-	}
-
-	private static void sendEnforcedProgressionStatus(ServerPlayer player, boolean isEnforced) {
-		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EnforceProgressionStatusPacket(isEnforced));
 	}
 }

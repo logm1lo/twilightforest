@@ -1,19 +1,22 @@
 package twilightforest.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpdateTFMultipartPacket {
+public class UpdateTFMultipartPacket implements CustomPacketPayload {
+
+	public static final ResourceLocation ID = TwilightForestMod.prefix("update_multipart_entity");
 
 	private int id;
 	@Nullable
@@ -25,7 +28,7 @@ public class UpdateTFMultipartPacket {
 		int len = buf.readInt();
 		for (int i = 0; i < len; i++) {
 			if (buf.readBoolean()) {
-				data.add(PartDataHolder.decode(buf));
+				this.data.add(PartDataHolder.decode(buf));
 			}
 		}
 	}
@@ -34,8 +37,9 @@ public class UpdateTFMultipartPacket {
 		this.entity = entity;
 	}
 
-	public void encode(FriendlyByteBuf buf) {
-		if (entity == null)
+	@Override
+	public void write(FriendlyByteBuf buf) {
+		if (this.entity == null)
 			throw new IllegalStateException("Null Entity while encoding UpdateTFMultipartPacket");
 		buf.writeInt(this.entity.getId());
 		PartEntity<?>[] parts = this.entity.getParts();
@@ -55,60 +59,48 @@ public class UpdateTFMultipartPacket {
 		}
 	}
 
-	public static class Handler {
-
-		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(UpdateTFMultipartPacket message, NetworkEvent.Context ctx) {
-			ctx.enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Level world = Minecraft.getInstance().level;
-					if (world == null)
-						return;
-					Entity ent = world.getEntity(message.id);
-					if (ent != null && ent.isMultipartEntity()) {
-						PartEntity<?>[] parts = ent.getParts();
-						if (parts == null)
-							return;
-						int index = 0;
-						for (PartEntity<?> part : parts) {
-							if (part instanceof TFPart<?> tfPart) {
-								tfPart.readData(message.data.get(index));
-								index++;
-							}
-						}
-					}
-				}
-			});
-			ctx.setPacketHandled(true);
-			return true;
-		}
+	@Override
+	public ResourceLocation id() {
+		return ID;
 	}
 
-	public record PartDataHolder(double x,
-								 double y,
-								 double z,
-								 float yRot,
-								 float xRot,
-								 float width,
-								 float height,
-								 boolean fixed,
-								 boolean dirty,
+	public static void handle(UpdateTFMultipartPacket message, PlayPayloadContext ctx) {
+		ctx.workHandler().execute(() -> {
+			Entity ent = ctx.level().orElseThrow().getEntity(message.id);
+			if (ent != null && ent.isMultipartEntity()) {
+				PartEntity<?>[] parts = ent.getParts();
+				if (parts == null)
+					return;
+				int index = 0;
+				for (PartEntity<?> part : parts) {
+					if (part instanceof TFPart<?> tfPart) {
+						tfPart.readData(message.data.get(index));
+						index++;
+					}
+				}
+			}
+		});
+	}
+
+	public record PartDataHolder(double x, double y, double z,
+								 float yRot, float xRot,
+								 float width, float height,
+								 boolean fixed, boolean dirty,
 								 @Nullable List<SynchedEntityData.DataValue<?>> data) {
 
 
 		public void encode(FriendlyByteBuf buffer) {
-			buffer.writeDouble(this.x);
-			buffer.writeDouble(this.y);
-			buffer.writeDouble(this.z);
-			buffer.writeFloat(this.yRot);
-			buffer.writeFloat(this.xRot);
-			buffer.writeFloat(this.width);
-			buffer.writeFloat(this.height);
-			buffer.writeBoolean(this.fixed);
-			buffer.writeBoolean(this.dirty);
-			if (this.dirty && this.data != null) {
-				for(SynchedEntityData.DataValue<?> datavalue : this.data) {
+			buffer.writeDouble(this.x());
+			buffer.writeDouble(this.y());
+			buffer.writeDouble(this.z());
+			buffer.writeFloat(this.yRot());
+			buffer.writeFloat(this.xRot());
+			buffer.writeFloat(this.width());
+			buffer.writeFloat(this.height());
+			buffer.writeBoolean(this.fixed());
+			buffer.writeBoolean(this.dirty());
+			if (this.dirty() && this.data() != null) {
+				for (SynchedEntityData.DataValue<?> datavalue : this.data()) {
 					datavalue.write(buffer);
 				}
 
@@ -118,16 +110,10 @@ public class UpdateTFMultipartPacket {
 
 		static PartDataHolder decode(FriendlyByteBuf buffer) {
 			boolean dirty;
-			return new PartDataHolder(
-					buffer.readDouble(),
-					buffer.readDouble(),
-					buffer.readDouble(),
-					buffer.readFloat(),
-					buffer.readFloat(),
-					buffer.readFloat(),
-					buffer.readFloat(),
-					buffer.readBoolean(),
-					dirty = buffer.readBoolean(),
+			return new PartDataHolder(buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
+					buffer.readFloat(), buffer.readFloat(),
+					buffer.readFloat(), buffer.readFloat(),
+					buffer.readBoolean(), dirty = buffer.readBoolean(),
 					dirty ? unpack(buffer) : null
 			);
 		}
@@ -136,7 +122,7 @@ public class UpdateTFMultipartPacket {
 			List<SynchedEntityData.DataValue<?>> list = new ArrayList<>();
 
 			int i;
-			while((i = buf.readUnsignedByte()) != 255) {
+			while ((i = buf.readUnsignedByte()) != 255) {
 				list.add(SynchedEntityData.DataValue.read(buf, i));
 			}
 

@@ -20,7 +20,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.network.SyncUncraftingTableConfigPacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.PlayerHelper;
 
 import java.net.Proxy;
@@ -435,7 +434,7 @@ public class TFConfig {
 				//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things dont desync.
 				MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 				if (server != null && server.isDedicatedServer()) {
-					TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncUncraftingTableConfigPacket(
+					PacketDistributor.ALL.noArg().send(new SyncUncraftingTableConfigPacket(
 							COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
@@ -469,7 +468,7 @@ public class TFConfig {
 		public static void syncConfigOnLogin(PlayerEvent.PlayerLoggedInEvent event) {
 			MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 			if (server != null && server.isDedicatedServer() && event.getEntity() instanceof ServerPlayer player) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SyncUncraftingTableConfigPacket(
+				PacketDistributor.PLAYER.with(player).send(new SyncUncraftingTableConfigPacket(
 						COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),

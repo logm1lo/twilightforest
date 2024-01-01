@@ -26,11 +26,9 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
 import twilightforest.util.Enforcement;
-import twilightforest.item.BrittleFlaskItem;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.StructureProtectionPacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
@@ -84,14 +82,14 @@ public class TFTickHandler {
 	}
 
 	private static void sendStructureProtectionPacket(Player player, BoundingBox sbb) {
-		if (player instanceof ServerPlayer) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new StructureProtectionPacket(sbb));
+		if (player instanceof ServerPlayer sp) {
+			PacketDistributor.PLAYER.with(sp).send(new StructureProtectionPacket(sbb));
 		}
 	}
 
 	private static void sendAllClearPacket(Player player) {
-		if (player instanceof ServerPlayer) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new StructureProtectionClearPacket());
+		if (player instanceof ServerPlayer sp) {
+			PacketDistributor.PLAYER.with(sp).send(new StructureProtectionClearPacket());
 		}
 	}
 
@@ -146,7 +144,7 @@ public class TFTickHandler {
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.value().display().orElse(null);
-						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						PacketDistributor.PLAYER.with(player).send(info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
