@@ -14,17 +14,12 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpdateTFMultipartPacket implements CustomPacketPayload {
+public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nullable List<PartDataHolder> data) implements CustomPacketPayload {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("update_multipart_entity");
 
-	private int id;
-	@Nullable
-	private Entity entity;
-	private final List<PartDataHolder> data = new ArrayList<>();
-
 	public UpdateTFMultipartPacket(FriendlyByteBuf buf) {
-		this.id = buf.readInt();
+		this(buf.readInt(), null, new ArrayList<>());
 		int len = buf.readInt();
 		for (int i = 0; i < len; i++) {
 			if (buf.readBoolean()) {
@@ -34,7 +29,7 @@ public class UpdateTFMultipartPacket implements CustomPacketPayload {
 	}
 
 	public UpdateTFMultipartPacket(Entity entity) {
-		this.entity = entity;
+		this(-1, entity, null);
 	}
 
 	@Override
@@ -66,7 +61,8 @@ public class UpdateTFMultipartPacket implements CustomPacketPayload {
 
 	public static void handle(UpdateTFMultipartPacket message, PlayPayloadContext ctx) {
 		ctx.workHandler().execute(() -> {
-			Entity ent = ctx.level().orElseThrow().getEntity(message.id);
+			int eId = message.entity != null && message.entityId <= 0 ? message.entity.getId() : message.entityId; // Account for Singleplayer
+			Entity ent = ctx.level().orElseThrow().getEntity(eId);
 			if (ent != null && ent.isMultipartEntity()) {
 				PartEntity<?>[] parts = ent.getParts();
 				if (parts == null)
@@ -74,7 +70,10 @@ public class UpdateTFMultipartPacket implements CustomPacketPayload {
 				int index = 0;
 				for (PartEntity<?> part : parts) {
 					if (part instanceof TFPart<?> tfPart) {
-						tfPart.readData(message.data.get(index));
+						if (message.data == null && message.entity != null && message.entity.getParts()[index] instanceof TFPart<?> otherPart)
+							tfPart.readData(otherPart.writeData());  // Account for Singleplayer
+						else if (message.data != null)
+							tfPart.readData(message.data.get(index));
 						index++;
 					}
 				}
