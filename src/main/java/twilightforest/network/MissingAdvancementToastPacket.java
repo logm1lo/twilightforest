@@ -29,10 +29,16 @@ public record MissingAdvancementToastPacket(Component title, ItemStack icon) imp
 		return ID;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MissingAdvancementToastPacket packet, PlayPayloadContext ctx) {
 		//ensure this is only done on clients as this uses client only code
 		if (ctx.flow().isClientbound()) {
-			ctx.workHandler().execute(() -> Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title(), packet.icon())));
+			ctx.workHandler().execute(new Runnable() {
+				@Override
+				public void run() {
+					Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
+				}
+			});
 		}
 	}
 }

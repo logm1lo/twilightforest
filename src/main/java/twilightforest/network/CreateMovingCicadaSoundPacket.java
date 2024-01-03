@@ -28,11 +28,15 @@ public record CreateMovingCicadaSoundPacket(int entityID) implements CustomPacke
 		return ID;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(CreateMovingCicadaSoundPacket message, PlayPayloadContext ctx) {
-		ctx.workHandler().execute(() -> {
-			Entity entity = ctx.level().orElseThrow().getEntity(message.entityID());
-			if (entity instanceof LivingEntity living) {
-				Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
+		ctx.workHandler().execute(new Runnable() {
+			@Override
+			public void run() {
+				Entity entity = ctx.level().orElseThrow().getEntity(message.entityID());
+				if (entity instanceof LivingEntity living) {
+					Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
+				}
 			}
 		});
 	}
