@@ -8,10 +8,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBiomes;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.TFLandmark;
 
 import java.util.Map;
@@ -37,7 +39,7 @@ public class LegacyLandmarkPlacements {
     /**
      * @return The type of feature directly at the specified Chunk coordinates
      */
-    public static TFLandmark getLandmarkDirectlyAt(int chunkX, int chunkZ, WorldGenLevel world) {
+    public static TFLandmark getLandmarkDirectlyAt(int chunkX, int chunkZ, LevelReader world) {
         if (blockIsInLandmarkCenter(chunkX << 4, chunkZ << 4)) {
             return pickLandmarkAtBlock(chunkX << 4, chunkZ << 4, world);
         }
@@ -80,7 +82,7 @@ public class LegacyLandmarkPlacements {
         return Mth.abs(dX) + Mth.abs(dZ);
     }
 
-    public static TFLandmark pickLandmarkAtBlock(int blockX, int blockZ, WorldGenLevel world) {
+    public static TFLandmark pickLandmarkAtBlock(int blockX, int blockZ, LevelReader world) {
         return pickLandmarkForChunk(blockX >> 4, blockZ >> 4, world);
     }
 
@@ -88,17 +90,17 @@ public class LegacyLandmarkPlacements {
      * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
      * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
      */
-    public static TFLandmark pickLandmarkForChunk(int chunkX, int chunkZ, WorldGenLevel world) {
+    public static TFLandmark pickLandmarkForChunk(int chunkX, int chunkZ, LevelReader world) {
         // set the chunkX and chunkZ to the center of the biome
         chunkX = Math.round(chunkX / 16F) * 16;
         chunkZ = Math.round(chunkZ / 16F) * 16;
 
         // what biome is at the center of the chunk?
         Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8)).value();
-        return pickBiomeLandmarkLegacy(world.registryAccess(), chunkX, chunkZ, biomeAt, world.getSeed());
+        return pickBiomeLandmarkLegacy(world.registryAccess(), chunkX, chunkZ, biomeAt);
     }
 
-    public static TFLandmark pickBiomeLandmarkLegacy(RegistryAccess access, int chunkX, int chunkZ, Biome biome, long seed) {
+    public static TFLandmark pickBiomeLandmarkLegacy(RegistryAccess access, int chunkX, int chunkZ, Biome biome) {
         Optional<? extends Registry<Biome>> registryOpt = access.registry(Registries.BIOME);
 
         if (registryOpt.isPresent()) {
@@ -108,10 +110,10 @@ public class LegacyLandmarkPlacements {
                 return biomeFeature;
         }
 
-        return pickVarietyLandmark(chunkX, chunkZ, seed);
+        return pickVarietyLandmark(chunkX, chunkZ);
     }
 
-    public static TFLandmark pickVarietyLandmark(int chunkX, int chunkZ, long seed) {
+    public static TFLandmark pickVarietyLandmark(int chunkX, int chunkZ) {
         // set the chunkX and chunkZ to the center of the biome in case they arent already
         chunkX = Math.round(chunkX / 16F) * 16;
         chunkZ = Math.round(chunkZ / 16F) * 16;
@@ -131,7 +133,7 @@ public class LegacyLandmarkPlacements {
 
         // get random value
         // okay, well that takes care of most special cases
-        return switch (new Random(seed + chunkX * 25117L + chunkZ * 151121L).nextInt(16)) {
+        return switch (new Random(TFDimensionSettings.seed + chunkX * 25117L + chunkZ * 151121L).nextInt(16)) {
             case 6, 7, 8 -> TFLandmark.MEDIUM_HILL;
             case 9 -> TFLandmark.LARGE_HILL;
             case 10, 11 -> TFLandmark.HEDGE_MAZE;
@@ -155,7 +157,7 @@ public class LegacyLandmarkPlacements {
      * it will be set to relative block coordinates indicating the center of
      * that feature relative to the current chunk block coordinate system.
      */
-    public static TFLandmark getNearestLandmark(int cx, int cz, WorldGenLevel world, @Nullable Vec2i center) {
+    public static TFLandmark getNearestLandmark(int cx, int cz, LevelReader world, @Nullable Vec2i center) {
         int maxSize = TFLandmark.getMaxSearchSize();
         int diam = maxSize * 2 + 1;
         TFLandmark[] features = new TFLandmark[diam * diam];

@@ -904,7 +904,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 
 		return this.biomeLandmarkOverrides.containsKey(biomeKey.get())
 				? this.biomeGuaranteedLandmark(biomeKey.get(), landmark)
-				: landmark == LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, seed);
+				: landmark == LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ);
 	}
 
 	public boolean biomeGuaranteedLandmark(ResourceKey<Biome> biome, TFLandmark landmark) {

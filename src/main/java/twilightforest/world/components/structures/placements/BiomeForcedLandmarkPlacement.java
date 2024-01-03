@@ -37,7 +37,7 @@ public class BiomeForcedLandmarkPlacement extends StructurePlacement {
         if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))
             return false;
 
-        return LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, state.getLevelSeed()) == this.landmark;
+        return LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ) == this.landmark;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class BiomeForcedLandmarkPlacement extends StructurePlacement {
         if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))
             return false;
 
-        return LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, state.getLevelSeed()) == this.landmark;
+        return LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ) == this.landmark;
     }
 
     @Override
