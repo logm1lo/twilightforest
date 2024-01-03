@@ -579,9 +579,6 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 
 						BlockPos.MutableBlockPos movingPos = primer.getCenter().getWorldPosition().mutable().move(lx, 0, lz);
 
-						final int dY = primer.getHeight(Heightmap.Types.WORLD_SURFACE_WG, movingPos.getX(), movingPos.getZ());
-						final int oceanFloor = primer.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
-
 						if (dist < 7 || cv < 0.05F) {
 							primer.setBlock(movingPos.setY(y), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), 3);
 							for (int d = 1; d < depth; d++) {
@@ -593,12 +590,6 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), 3);
 							}
 						}
-
-						// What are you gonna do, call the cops?
-						forceHeightMapLevel(chunkAccess, Heightmap.Types.WORLD_SURFACE_WG, movingPos, dY);
-						forceHeightMapLevel(chunkAccess, Heightmap.Types.WORLD_SURFACE, movingPos, dY);
-						forceHeightMapLevel(chunkAccess, Heightmap.Types.OCEAN_FLOOR_WG, movingPos, oceanFloor);
-						forceHeightMapLevel(chunkAccess, Heightmap.Types.OCEAN_FLOOR, movingPos, oceanFloor);
 					}
 				}
 			}
@@ -753,9 +744,6 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 		Vec2i nearCenter = new Vec2i();
 		TFLandmark nearFeature = LegacyLandmarkPlacements.getNearestLandmark(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
 
-		double d = 0.03125D;
-		//depthBuffer = noiseGen4.generateNoiseOctaves(depthBuffer, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
-
 		for (int dZ = 0; dZ < 16; dZ++) {
 			for (int dX = 0; dX < 16; dX++) {
 				int qx = dX >> 2;
@@ -786,43 +774,26 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 
 				// TODO Clean up this math
 				if (thickness > 1) {
-					// We can use the Deltas here because the methods called will just
+					// We can use the Deltas here as they are offsets from chunk origin
 					final int dY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
-					final int oceanFloor = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, dX, dZ);
 					BlockPos pos = primer.getCenter().getWorldPosition().offset(dX, dY, dZ);
 
 					// Skip any blocks over water
 					if (chunk.getBlockState(pos).liquid())
 						continue;
 
-					// just use the same noise generator as the terrain uses for stones
-					//int noise = Math.min(3, (int) (depthBuffer[dZ & 15 | (dX & 15) << 4] / 1.25f));
-					int noise = 0;// FIXME [1.18] Math.min(3, (int) (this.surfaceNoiseGetter.getSurfaceNoiseValue((blockpos.getX() + dX) * 0.0625D, (blockpos.getZ() + dZ) * 0.0625D, 0.0625D, dX * 0.0625D) * 15F / 1.25F));
-
 					// manipulate top and bottom
 					int treeBottom = pos.getY() + height - (int) (thickness * 0.5F);
 					int treeTop = treeBottom + (int) (thickness * 1.5F);
-
-					treeBottom -= noise;
 
 					BlockState darkLeaves = TFBlocks.HARDENED_DARK_LEAVES.get().defaultBlockState();
 
 					for (int y = treeBottom; y < treeTop; y++) {
 						primer.setBlock(pos.atY(y), darkLeaves, 3);
 					}
-
-					// What are you gonna do, call the cops?
-					forceHeightMapLevel(chunk, Heightmap.Types.WORLD_SURFACE_WG, pos, dY);
-					forceHeightMapLevel(chunk, Heightmap.Types.WORLD_SURFACE, pos, dY);
-					forceHeightMapLevel(chunk, Heightmap.Types.OCEAN_FLOOR_WG, pos, oceanFloor);
-					forceHeightMapLevel(chunk, Heightmap.Types.OCEAN_FLOOR, pos, oceanFloor);
 				}
 			}
 		}
-	}
-
-	static void forceHeightMapLevel(ChunkAccess chunk, Heightmap.Types type, BlockPos pos, int dY) {
-		chunk.getOrCreateHeightmapUnprimed(type).setHeight(pos.getX() & 15, pos.getZ() & 15, dY + 1);
 	}
 
 	private static int getSpawnListIndexAt(StructureStart start, BlockPos pos) {
