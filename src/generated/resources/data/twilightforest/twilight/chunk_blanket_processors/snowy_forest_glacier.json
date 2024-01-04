@@ -1,7 +1,7 @@
 {
   "type": "twilightforest:glacier",
   "config": {
-    "biome_filter": [
+    "biome_mask": [
       "twilightforest:glacier"
     ],
     "body_block": {

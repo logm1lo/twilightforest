@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-03T23:27:32.442706	Registries
+// 1.20.4	2024-01-03T23:34:57.419231	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -55,7 +55,7 @@ de49903e456db111c78f2f0934ac3369f94953f3 data/twilightforest/trim_material/steel
 c01efe2b06b832718931f88ed9645b44b58409dd data/twilightforest/twilight/biome_layer_stack/biomes_along_streams.json
 87d0487a38fb84d85efb0cb0044f50fe8053d60e data/twilightforest/twilight/biome_layer_stack/random_forest_biomes.json
 c45ef4396103c85d75d91fc20c1b6f30296f02b2 data/twilightforest/twilight/chunk_blanket_processors/dark_forest_canopy.json
-f0c0f49c7ceecb4d81bcfee91c33fa28c75c3e36 data/twilightforest/twilight/chunk_blanket_processors/snowy_forest_glacier.json
+2e0b9c602a56bc304ef71158cb276c7fbf00a15d data/twilightforest/twilight/chunk_blanket_processors/snowy_forest_glacier.json
 13cb0c305a3bb789968b0411d485f46b992e2780 data/twilightforest/twilight/magic_paintings/darkness.json
 953dec6b38da4e9b1c88ec708e01c14a0708fce9 data/twilightforest/twilight/magic_paintings/lucid_lands.json
 88412ce3e8458a297b71848841406df4291ef208 data/twilightforest/twilight/restrictions/dark_forest.json
