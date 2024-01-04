@@ -164,8 +164,6 @@ public class TFDimensionSettings {
 				new TwilightChunkGenerator(
 						wrappedChunkGenerator,
 						noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN),
-						true,
-						Optional.of(19),
 						BiomeMaker.BIOME_FEATURES_SETS));
 
 		context.register(TWILIGHT_LEVEL_STEM, stem);

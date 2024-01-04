@@ -10,5 +10,6 @@
   "reach": "META-INF/asm/reach.js",
   "shroom": "META-INF/asm/shroom.js",
   "cloud": "META-INF/asm/cloud.js",
-  "lead": "META-INF/asm/lead.js"
+  "lead": "META-INF/asm/lead.js",
+  "chunkstatus": "META-INF/asm/chunkstatus.js"
 }

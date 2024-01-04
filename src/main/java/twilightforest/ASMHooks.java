@@ -56,6 +56,7 @@ import twilightforest.events.ToolEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.TFItems;
+import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.item.GiantItem;
 import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.network.UpdateTFMultipartPacket;
@@ -338,5 +339,15 @@ public class ASMHooks {
 	public static boolean lead(boolean o, LeashFenceKnotEntity entity) {
 		BlockState fenceState = entity.level().getBlockState(entity.getPos());
 		return o || (fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE);
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.level.chunk.ChunkStatus#getStatusList()}<br>
+	 * [HEAD]
+	 */
+	public static void assertChunkBlanketing() {
+		// Only need to touch this class to ensure it's classloaded before other classes cache our reconstructed ChunkStatus sequence
+		ChunkBlanketProcessors.init();
 	}
 }

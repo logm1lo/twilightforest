@@ -131,6 +131,7 @@ public class TwilightForestMod {
 		DwarfRabbitVariants.DWARF_RABBIT_VARIANTS.register(bus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(bus);
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(bus);
+		ChunkBlanketProcessors.CHUNK_BLANKETING_TYPES.register(bus);
 		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(bus);
 
 		TFRemapper.addRegistryAliases();
@@ -157,6 +158,7 @@ public class TwilightForestMod {
 		event.register(TFRegistries.DWARF_RABBIT_VARIANT);
 		event.register(TFRegistries.ENFORCEMENT);
 		event.register(TFRegistries.TINY_BIRD_VARIANT);
+		event.register(TFRegistries.CHUNK_BLANKET_TYPES);
 	}
 
 	public void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
@@ -165,6 +167,7 @@ public class TwilightForestMod {
 		event.dataPackRegistry(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC, Restriction.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors.DISPATCH_CODEC);
 	}
 
 	public void registerExtraStuff(RegisterEvent evt) {
