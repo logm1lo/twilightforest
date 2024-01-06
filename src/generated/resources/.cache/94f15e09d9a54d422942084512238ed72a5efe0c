@@ -1,4 +1,4 @@
-// 1.20.4	2023-12-30T23:18:25.2146792	TwilightForest Item and BlockItem models
+// 1.20.4	2024-01-01T11:15:57.0895402	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -562,7 +562,8 @@ bafbdd124434e7c4e216b9a36dc79bb302e97ecb assets/twilightforest/models/item/orang
 22e324b55d19e2071beef8f01398500b3eab3af4 assets/twilightforest/models/item/ore_magnet_pulling_1.json
 89c4694f967c2688ac73dfb92ab7da4bcac4e847 assets/twilightforest/models/item/ore_magnet_pulling_2.json
 87c22b18b60c3e3d7ac5c538c6e39460bd6d4766 assets/twilightforest/models/item/ore_map.json
-9e32f7687d91298eddf200a515772df2dfd03a6f assets/twilightforest/models/item/ore_meter.json
+4c22da76370fe7dc203a0221f05075a7b98e0450 assets/twilightforest/models/item/ore_meter.json
+c60eaa6b8f6bd0edde6aa7f5ee63b2f51bbeb570 assets/twilightforest/models/item/ore_meter_active.json
 4e8f03fef77b6c1268f8728996f584808cff1161 assets/twilightforest/models/item/peacock_feather_fan.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/penguin_spawn_egg.json
 61b788110fc9da6c40bbd6d16672d7ebac143f7f assets/twilightforest/models/item/phantom_chestplate.json

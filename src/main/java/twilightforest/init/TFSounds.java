@@ -188,6 +188,9 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> NAGA_HISS = createEvent("entity.twilightforest.naga.hiss");
 	public static final DeferredHolder<SoundEvent, SoundEvent> NAGA_HURT = createEvent("entity.twilightforest.naga.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> NAGA_RATTLE = createEvent("entity.twilightforest.naga.rattle");
+	public static final DeferredHolder<SoundEvent, SoundEvent> ORE_METER_CLEAR = createEvent("item.twilightforest.ore_meter.clear");
+	public static final DeferredHolder<SoundEvent, SoundEvent> ORE_METER_CRACKLE = createEvent("item.twilightforest.ore_meter.crackle");
+	public static final DeferredHolder<SoundEvent, SoundEvent> ORE_METER_TARGET_BLOCK = createEvent("item.twilightforest.ore_meter.target_block");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PEDESTAL_ACTIVATE = createEvent("block.twilightforest.trophy_pedestal.activate");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PICKED_TORCHBERRIES = createEvent("block.twilightforest.torchberry.harvest");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PINCH_BEETLE_DEATH = createEvent("entity.twilightforest.pinch_beetle.death");

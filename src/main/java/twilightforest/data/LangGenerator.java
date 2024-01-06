@@ -143,8 +143,14 @@ public class LangGenerator extends TFLangProvider {
 		this.addMessage("firefly_spawner_radius", "Firefly Particle Radius: %s Blocks");
 		this.addMessage("magic_map_fail", "The Magic faltered. Perhaps it doesn't work here?");
 		this.addMessage("nyi", "This feature has effects that are not yet implemented.");
-		this.addMessage("ore_meter_exposed", "Exposed: %s");
+		this.addMessage("ore_meter_info", "%s - %s (%s%%)");
+		this.addMessage("ore_meter_loading", "Loading");
+		this.addMessage("ore_meter_new_range", "Range set to %s chunks");
+		this.addMessage("ore_meter_no_blocks", "No blocks found nearby");
 		this.addMessage("ore_meter_range", "Radius: %s, Origin: [%s, %s]");
+		this.addMessage("ore_meter_set_block", "Targeted block set to %s");
+		this.addMessage("ore_meter_targeted_block", "Targeted block: %s");
+		this.addMessage("ore_meter_total", "Total blocks scanned: %s");
 		this.addMessage("pedestal_ineligible", "You are unworthy.");
 		this.addMessage("portal_unsafe", "It doesn't seem safe here...");
 		this.addMessage("portal_unworthy", "The Portal pool is unresponsive. Perhaps something was neglected?");
@@ -986,7 +992,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.MAGNET_GRAB, "Ore Magnet pulls up ore");
 		this.addSubtitle(TFSounds.METAL_SHIELD_SHATTERS, "Metal Shield shatters");
 		this.addSubtitle(TFSounds.MOONWORM_SQUISH, "Moonworm fires");
-		this.addSubtitle(TFSounds.POWDER_USE, "Mob Transforms");
+		this.addSubtitle(TFSounds.ORE_METER_CLEAR, "Ore Meter wipes information");
+		this.addSubtitle(TFSounds.ORE_METER_CRACKLE, "Ore Meter crackles");
+		this.addSubtitle(TFSounds.ORE_METER_TARGET_BLOCK, "Ore Meter locks onto block");
+		this.addSubtitle(TFSounds.POWDER_USE, "Mob transforms");
 		this.addSubtitle(TFSounds.SCEPTER_DRAIN, "Mob explodes");
 		this.addSubtitle(TFSounds.SCEPTER_PEARL, "Twilight Scepter throws pearl");
 		this.addSubtitle(TFSounds.SCEPTER_USE, "Life Scepter drains");

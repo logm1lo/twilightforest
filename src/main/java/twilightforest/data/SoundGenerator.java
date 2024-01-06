@@ -337,6 +337,9 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.MAGNET_GRAB, SoundEvents.CHORUS_FRUIT_TELEPORT);
 		this.generateExistingSoundWithSubtitle(TFSounds.METAL_SHIELD_SHATTERS, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR);
 		this.generateExistingSoundWithSubtitle(TFSounds.MOONWORM_SQUISH, SoundEvents.SLIME_SQUISH_SMALL);
+		this.generateNewSoundMC(TFSounds.ORE_METER_CLEAR, "block/crafter/craft", 1, true);
+		this.generateNewSoundMC(TFSounds.ORE_METER_CRACKLE, "ambient/nether/basalt_deltas/click", 5, true);
+		this.generateExistingSoundWithSubtitle(TFSounds.ORE_METER_TARGET_BLOCK, SoundEvents.LODESTONE_COMPASS_LOCK);
 		this.generateExistingSoundWithSubtitle(TFSounds.POWDER_USE, SoundEvents.ZOMBIE_VILLAGER_CURE);
 		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_DRAIN, SoundEvents.GENERIC_BIG_FALL);
 		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_PEARL, SoundEvents.FIRECHARGE_USE);

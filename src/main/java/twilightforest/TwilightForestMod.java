@@ -198,12 +198,14 @@ public class TwilightForestMod {
 		registrar.play(SpawnFallenLeafFromPacket.ID, SpawnFallenLeafFromPacket::new, payload -> payload.client(SpawnFallenLeafFromPacket::handle));
 		registrar.play(StructureProtectionClearPacket.ID, buf -> new StructureProtectionClearPacket(), payload -> payload.client(StructureProtectionClearPacket::handle));
 		registrar.play(StructureProtectionPacket.ID, StructureProtectionPacket::new, payload -> payload.client(StructureProtectionPacket::handle));
+		registrar.play(SyncOreMeterPacket.ID, SyncOreMeterPacket::new, payload -> payload.server(SyncOreMeterPacket::handle));
 		registrar.play(SyncUncraftingTableConfigPacket.ID, SyncUncraftingTableConfigPacket::new, payload -> payload.client(SyncUncraftingTableConfigPacket::handle));
 		registrar.play(UncraftingGuiPacket.ID, UncraftingGuiPacket::new, payload -> payload.server(UncraftingGuiPacket::handle));
 		registrar.play(UpdateFeatherFanFallPacket.ID, UpdateFeatherFanFallPacket::new, payload -> payload.client(UpdateFeatherFanFallPacket::handle));
 		registrar.play(UpdateShieldPacket.ID, UpdateShieldPacket::new, payload -> payload.client(UpdateShieldPacket::handle));
 		registrar.play(UpdateTFMultipartPacket.ID, UpdateTFMultipartPacket::new, payload -> payload.client(UpdateTFMultipartPacket::handle));
 		registrar.play(UpdateThrownPacket.ID, UpdateThrownPacket::new, payload -> payload.client(UpdateThrownPacket::handle));
+		registrar.play(WipeOreMeterPacket.ID, WipeOreMeterPacket::new, payload -> payload.server(WipeOreMeterPacket::handle));
 	}
 
 	public void init(FMLCommonSetupEvent evt) {

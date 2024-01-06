@@ -467,7 +467,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTexTool(TFItems.ZOMBIE_SCEPTER);
 		singleTexTool(TFItems.FORTIFICATION_SCEPTER);
 		singleTex(TFItems.MAGIC_PAINTING);
-		singleTex(TFItems.ORE_METER);
+		ModelFile active = generated("ore_meter_active", prefix("item/ore_meter_active"));
+		singleTex(TFItems.ORE_METER).override().predicate(TwilightForestMod.prefix("active"), 1).model(active).end();
 		singleTex(TFItems.FILLED_MAGIC_MAP);
 		singleTex(TFItems.FILLED_MAZE_MAP);
 		singleTex(TFItems.FILLED_ORE_MAP);

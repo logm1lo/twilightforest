@@ -31,6 +31,7 @@ public class CapabilityEvents {
 
 	@SubscribeEvent
 	public static void updatePlayerCaps(TickEvent.PlayerTickEvent event) {
+		if (event.phase != TickEvent.Phase.END) return;
 		if (event.player.getData(TFDataAttachments.FEATHER_FAN)) {
 			event.player.resetFallDistance();
 

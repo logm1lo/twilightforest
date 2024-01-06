@@ -43,6 +43,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
@@ -50,13 +51,13 @@ import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.enchantment.ChillAuraEnchantment;
 import twilightforest.entity.projectile.ITFProjectile;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFItems;
-import twilightforest.init.TFMobEffects;
-import twilightforest.init.TFStats;
+import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
+import twilightforest.item.OreMeterItem;
 import twilightforest.item.YetiArmorItem;
+import twilightforest.network.WipeOreMeterPacket;
 
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -86,6 +87,16 @@ public class EntityEvents {
 					event.setCancellationResult(InteractionResult.SUCCESS);
 				}
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void wipeOreMeterOnLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
+		if (event.getItemStack().is(TFItems.ORE_METER.get()) && (!OreMeterItem.getScanInfo(event.getItemStack()).isEmpty() || OreMeterItem.getAssignedBlock(event.getItemStack()) != null)) {
+			OreMeterItem.saveScanInfo(event.getItemStack(), new HashMap<>(), 0L, 0);
+			OreMeterItem.clearAssignedBlock(event.getItemStack());
+			event.getLevel().playSound(event.getEntity(), event.getEntity().blockPosition(), TFSounds.ORE_METER_CLEAR.get(), SoundSource.PLAYERS, 1.25F, event.getLevel().getRandom().nextFloat() * 0.2F + 0.6F);
+			PacketDistributor.SERVER.noArg().send(new WipeOreMeterPacket(event.getItemStack(), event.getHand()));
 		}
 	}
 

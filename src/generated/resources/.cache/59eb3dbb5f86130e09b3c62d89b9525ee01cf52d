@@ -1,4 +1,4 @@
-// 1.20.4	2023-12-19T15:25:18.9378776	Loot Tables
+// 1.20.4	2024-01-03T13:51:12.0156374	Loot Tables
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_tables/blocks/acacia_banister.json
 d29388fb46e8211e8d3624b744d195b3a6f4c6ff data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 3f04f0369241cf99202c72b4d56bc5368396e367 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -445,7 +445,7 @@ e39022114b8e70dcd22e24d6280daf10f58332b4 data/twilightforest/loot_tables/chests/
 8d32ef70bc230f0df7e3e9125190fc55ff377981 data/twilightforest/loot_tables/chests/foundation_basement.json
 89931785ef9737e20557dfe21b474b935ff4ab99 data/twilightforest/loot_tables/chests/graveyard.json
 4bb175bd44547ca1300f4543881eca94986a4caf data/twilightforest/loot_tables/chests/hedge_maze.json
-e265a3d1ee1f8c1d244a388cbe49302df695a09c data/twilightforest/loot_tables/chests/hill_1.json
+c650d0a3e3e89644d3c081e2a3c91eed15b69a82 data/twilightforest/loot_tables/chests/hill_1.json
 46903fe3f0fb957a2546567b7508a5ce5cd58ff0 data/twilightforest/loot_tables/chests/hill_2.json
 322338fc2a67e73393f96ce518ff33067a805425 data/twilightforest/loot_tables/chests/hill_3.json
 3434c20bcde20c27516f14da492dcc74ac7fd22a data/twilightforest/loot_tables/chests/hut_junk.json

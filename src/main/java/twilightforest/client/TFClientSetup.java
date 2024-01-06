@@ -1,6 +1,8 @@
 package twilightforest.client;
 
+import com.ibm.icu.text.RuleBasedNumberFormat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.SilverfishModel;
@@ -45,7 +47,10 @@ import twilightforest.init.TFMenuTypes;
 import twilightforest.util.TFWoodTypes;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
@@ -80,6 +85,20 @@ public class TFClientSetup {
 			}
 
 			firstTitleScreenShown = true;
+		}
+
+		@SubscribeEvent
+		public static void customizeSplashes(ScreenEvent.Init.Post event) {
+			if (event.getScreen() instanceof TitleScreen title) {
+				SplashRenderer renderer = title.splash;
+				if (renderer != null) {
+					LocalDate date = LocalDate.now();
+					if (date.getMonth() == Month.AUGUST && date.getDayOfMonth() == 19) {
+						RuleBasedNumberFormat formatter = new RuleBasedNumberFormat(Locale.US, RuleBasedNumberFormat.ORDINAL);
+						renderer.splash = String.format("Happy %s birthday to the Twilight Forest!", formatter.format(date.getYear() - 2011));
+					}
+				}
+			}
 		}
 	}
 
