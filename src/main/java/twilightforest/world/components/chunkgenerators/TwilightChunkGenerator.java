@@ -56,8 +56,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
-// TODO override getBaseHeight and getBaseColumn for our advanced structure terraforming
-@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "deprecation"})
+@Deprecated // TODO Split warper (thus all biome influences on terrain) and deformTerrainForFeature (all structure terrain influences) into distinct density functions
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType"})
 public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 	public static final Codec<TwilightChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
@@ -71,8 +71,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 
 	private final BlockState defaultBlock;
 	private final BlockState defaultFluid;
-	private final Optional<Climate.Sampler> surfaceNoiseGetter;
-	private final Optional<TFTerrainWarp> warper;
+    private final Optional<TFTerrainWarp> warper;
 
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
@@ -85,12 +84,10 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen && noiseGen.generatorSettings().isBound()) {
 			this.defaultBlock = noiseGen.generatorSettings().value().defaultBlock();
 			this.defaultFluid = noiseGen.generatorSettings().value().defaultFluid();
-			this.surfaceNoiseGetter = Optional.empty();//Optional.of(noiseGen.sampler);
-		} else {
+        } else {
 			this.defaultBlock = Blocks.STONE.defaultBlockState();
 			this.defaultFluid = Blocks.WATER.defaultBlockState();
-			this.surfaceNoiseGetter = Optional.empty();
-		}
+        }
 
 		//BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFLandmark>()
 		//		.put(TFBiomes.DARK_FOREST.location(), TFLandmark.KNIGHT_STRONGHOLD)
@@ -557,16 +554,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 
 		// raise the hill
 		int groundHeight = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
-		float noiseRaw = this.surfaceNoiseGetter.map(ns -> {
-			// FIXME Once the above FIXME is done, instantiate the noise chunk and build the hill from there
-
-			//ns.baseNoise.instantiate()
-
-			// (movingPos.getX() / 64f, movingPos.getZ() / 64f, 1.0f, 256) * 32f)
-
-			return 0f;
-		}).orElse(0f);
-		float totalHeightRaw = groundHeight * 0.75f + this.getSeaLevel() * 0.25f + hillHeight + noiseRaw;
+		float totalHeightRaw = groundHeight * 0.75f + this.getSeaLevel() * 0.25f + hillHeight;
 		int totalHeight = (int) (((int) totalHeightRaw >> 1) * 0.375f + totalHeightRaw * 0.625f);
 
 		for (int y = groundHeight; y <= totalHeight; y++) {
@@ -729,14 +717,6 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 			return WeightedRandomList.create(potentialStructureSpawns);
 
 		return super.getMobsAt(biome, structureManager, mobCategory, pos);
-	}
-
-	public TFLandmark pickLandmarkForChunk(final ChunkPos chunk, final WorldGenLevel world) {
-		return this.pickLandmarkForChunk(chunk.x, chunk.z, world);
-	}
-
-	public TFLandmark pickLandmarkForChunk(int x, int z, final WorldGenLevel world) {
-		return LegacyLandmarkPlacements.pickLandmarkForChunk(x, z, world);
 	}
 
 	public boolean isLandmarkPickedForChunk(TFLandmark landmark, Holder<Biome> biome, int chunkX, int chunkZ, long seed) {

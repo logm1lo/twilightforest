@@ -6,7 +6,6 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
@@ -16,11 +15,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
+import twilightforest.world.components.layer.vanillalegacy.BiomeTerrainData;
 import twilightforest.world.registration.biomes.BiomeMaker;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.OptionalLong;
 
 public class TFDimensionSettings {
@@ -146,25 +145,23 @@ public class TFDimensionSettings {
 	}
 
 	public static void bootstrapStem(BootstapContext<LevelStem> context) {
-		HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
 		HolderGetter<DimensionType> dimTypes = context.lookup(Registries.DIMENSION_TYPE);
 		HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);
 
+		HolderGetter<BiomeTerrainData> biomeDataRegistry = context.lookup(TFRegistries.Keys.BIOME_TERRAIN_DATA);
+
 		NoiseBasedChunkGenerator wrappedChunkGenerator = new NoiseBasedChunkGenerator(
-				new TFBiomeProvider(
-						BiomeMaker.makeBiomeList(biomeRegistry, biomeRegistry.getOrThrow(TFBiomes.UNDERGROUND)),
-						-1.25F,
-						2.5F,
-						context.lookup(TFRegistries.Keys.BIOME_STACK).getOrThrow(BiomeLayerStack.BIOMES_ALONG_STREAMS)
-				),
-				noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN));
+				new TFBiomeProvider(biomeDataRegistry.getOrThrow(BiomeLayerStack.BIOME_GRID)),
+				noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN)
+		);
 
 		LevelStem stem = new LevelStem(
 				dimTypes.getOrThrow(TFDimensionSettings.TWILIGHT_DIM_TYPE),
 				new TwilightChunkGenerator(
 						wrappedChunkGenerator,
 						noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN),
-						BiomeMaker.BIOME_FEATURES_SETS));
+						BiomeMaker.BIOME_FEATURES_SETS)
+		);
 
 		context.register(TWILIGHT_LEVEL_STEM, stem);
 	}

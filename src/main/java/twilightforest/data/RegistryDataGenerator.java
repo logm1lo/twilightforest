@@ -24,6 +24,7 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 			.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)
 			.add(Registries.NOISE_SETTINGS, TFDimensionSettings::bootstrapNoise)
 			.add(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack::bootstrap)
+			.add(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeLayerStack::bootstrapData)
 			.add(Registries.DIMENSION_TYPE, TFDimensionSettings::bootstrapType)
 			.add(Registries.LEVEL_STEM, TFDimensionSettings::bootstrapStem)
 			.add(Registries.BIOME, TFBiomes::bootstrap)

@@ -4,17 +4,18 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 import twilightforest.world.components.layer.*;
-import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
-import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
-import twilightforest.world.components.layer.vanillalegacy.SmoothLayer;
-import twilightforest.world.components.layer.vanillalegacy.ZoomLayer;
+import twilightforest.world.components.layer.vanillalegacy.*;
+import twilightforest.world.registration.biomes.BiomeMaker;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class BiomeLayerStack {
 
     public static final ResourceKey<BiomeLayerFactory> RANDOM_FOREST_BIOMES = registerKey("random_forest_biomes");
     public static final ResourceKey<BiomeLayerFactory> BIOMES_ALONG_STREAMS = registerKey("biomes_along_streams");
+
+    public static final ResourceKey<BiomeTerrainData> BIOME_GRID = ResourceKey.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, TwilightForestMod.prefix("biome_grid"));
 
     public static ResourceKey<BiomeLayerFactory> registerKey(String name) {
         return ResourceKey.create(TFRegistries.Keys.BIOME_STACK, TwilightForestMod.prefix(name));
@@ -77,5 +80,16 @@ public class BiomeLayerStack {
         riverLayer = new SmoothLayer.Factory(7000L, Holder.direct(riverLayer));
 
         context.register(BIOMES_ALONG_STREAMS, new FilteredBiomeLayer.Factory(100L, TFBiomes.STREAM, Holder.direct(riverLayer), randomBiomes));
+    }
+
+    public static void bootstrapData(BootstapContext<BiomeTerrainData> context) {
+        HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
+
+        context.register(BIOME_GRID, new BiomeTerrainData(
+                BiomeMaker.makeBiomeList(biomeRegistry, biomeRegistry.getOrThrow(TFBiomes.UNDERGROUND)),
+                -1.25F,
+                2.5F,
+                context.lookup(TFRegistries.Keys.BIOME_STACK).getOrThrow(BiomeLayerStack.BIOMES_ALONG_STREAMS)
+        ));
     }
 }
