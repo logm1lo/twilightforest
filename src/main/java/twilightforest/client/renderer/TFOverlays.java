@@ -28,6 +28,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.init.TFItems;
 import twilightforest.item.OreMeterItem;
+import twilightforest.util.ComponentAlignment;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -111,7 +112,7 @@ public class TFOverlays {
 	}
 
 
-	private static final DecimalFormat FORMAT = new DecimalFormat("#.###");
+	private static final DecimalFormat FORMAT = new DecimalFormat("0.000");
 
 	public static void initTooltips(long id, ItemStack meter) {
 		ChunkPos pos = OreMeterItem.getScannedChunk(meter);
@@ -127,7 +128,10 @@ public class TFOverlays {
 
         if (TFConfig.CLIENT_CONFIG.prettifyOreMeterGui.get()) {
 			columns.add(nameColumn(scanData.stream().map(Pair::getFirst).toList()));
-			columns.add(dataColumn(totalScanned, scanData.stream().map(Pair::getSecond).toList()));
+			columns.add(dashColumn(scanData.size()));
+			List<Integer> counts = scanData.stream().map(Pair::getSecond).toList();
+			columns.add(countColumn(counts));
+			columns.add(ratioColumn(totalScanned, counts));
 		} else {
 			columns.add(withoutPrettyPrinting(totalScanned, scanData));
 		}
@@ -144,7 +148,7 @@ public class TFOverlays {
 			tooltips.add(formattedEntry);
 		}
 
-		return ComponentColumn.build(tooltips);
+		return ComponentColumn.build(tooltips, ComponentAlignment.LEFT);
 	}
 
 	private static ComponentColumn nameColumn(List<String> oreNameKeys) {
@@ -155,29 +159,47 @@ public class TFOverlays {
 			toList.add(translatable);
         }
 
-        return ComponentColumn.build(toList.build());
+        return ComponentColumn.build(toList.build(), ComponentAlignment.LEFT);
 	}
 
-	private static ComponentColumn dataColumn(int totalScanned, List<Integer> oreCounts) {
+	private static ComponentColumn dashColumn(int size) {
+		ImmutableList.Builder<Component> toList = ImmutableList.builder();
+
+		for (int i = 0; i < size; i++) toList.add(Component.literal(" - "));
+
+		return ComponentColumn.build(toList.build(), ComponentAlignment.CENTER);
+	}
+
+	private static ComponentColumn countColumn(List<Integer> oreCounts) {
+		ImmutableList.Builder<Component> toList = ImmutableList.builder();
+
+        oreCounts.stream().mapToInt(count -> count).mapToObj(count -> Component.literal(String.valueOf(count))).forEach(toList::add);
+
+		return ComponentColumn.build(toList.build(), ComponentAlignment.RIGHT);
+	}
+
+	private static ComponentColumn ratioColumn(int totalScanned, List<Integer> oreCounts) {
 		ImmutableList.Builder<Component> toList = ImmutableList.builder();
 
 		for (int count : oreCounts) {
 			var percentage = FORMAT.format(count * 100.0F / totalScanned);
-			toList.add(Component.literal(" - " + count + " (" + percentage + "%)"));
+			toList.add(Component.literal(" (" + percentage + "%)"));
 		}
 
-		return ComponentColumn.build(toList.build());
+		return ComponentColumn.build(toList.build(), ComponentAlignment.RIGHT);
 	}
 
-	public record ComponentColumn(List<? extends Component> textRows, int maxPixelWidth) {
-		public static ComponentColumn build(List<? extends Component> rowTexts) {
+	public record ComponentColumn(List<? extends Component> textRows, int maxPixelWidth, ComponentAlignment textAlignment) {
+		public static ComponentColumn build(List<? extends Component> rowTexts, ComponentAlignment textAlignment) {
 			int maxColumnPixelWidth = rowTexts.stream().mapToInt(c -> Minecraft.getInstance().font.width(c)).max().orElse(0);
-			return new ComponentColumn(rowTexts, maxColumnPixelWidth);
+			return new ComponentColumn(rowTexts, maxColumnPixelWidth, textAlignment);
 		}
 
 		private int renderColumn(GuiGraphics graphics, ComponentColumn column, int xOff, int yOff, int verticalTextPixelsAdvance) {
 			for (Component rowText : column.textRows) {
-				graphics.drawString(Minecraft.getInstance().font, rowText, xOff, yOff, 0x00_ff_ff_ff, false);
+				int textPixelWidth = Minecraft.getInstance().font.width(rowText);
+				int textXPos = xOff + this.textAlignment.getTextOffset(textPixelWidth, this.maxPixelWidth);
+				graphics.drawString(Minecraft.getInstance().font, rowText, textXPos, yOff, 0x00_ff_ff_ff, false);
 				yOff += verticalTextPixelsAdvance;
 			}
 
