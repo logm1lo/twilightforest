@@ -57,7 +57,11 @@ public record StructureSpeleothemConfig(
 
     @NotNull
     private static Function<RandomSource, Stalactite> compileStalagmites(Supplier<SpeleothemVarietyConfig> varietyConfigSupplier) {
-        List<Stalactite> stalactites = StalactiteReloadListener.STALAGMITES_PER_HILL.get(varietyConfigSupplier.get().type());
+        SpeleothemVarietyConfig varietyConfig = varietyConfigSupplier.get();
+
+        TwilightForestMod.LOGGER.debug("Compiling Stalagmite configs for " + varietyConfig.type() + " type");
+
+        List<Stalactite> stalactites = StalactiteReloadListener.STALAGMITES_PER_HILL.get(varietyConfig.type());
 
         return compileSpeleothemsSimple(stalactites);
     }
@@ -65,6 +69,8 @@ public record StructureSpeleothemConfig(
     @NotNull
     private static Function<RandomSource, Stalactite> compileStalactites(Supplier<SpeleothemVarietyConfig> varietyConfigSupplier) {
         SpeleothemVarietyConfig varietyConfig = varietyConfigSupplier.get();
+
+        TwilightForestMod.LOGGER.debug("Compiling Stalactite configs for " + varietyConfig.type() + " type");
 
         // Ore Chance represents an interpolation between two weighted lists of A (stones) and B (ores)
         float weightedListInterpolation = Mth.clamp(varietyConfig.oreChance(), 0, 1);
@@ -113,7 +119,6 @@ public record StructureSpeleothemConfig(
             StringJoiner joiner = new StringJoiner("\n");
 
             joiner.add("")
-                    .add("Compiling Stalactites: " + varietyConfig.type())
                     .add("Ore interpolation factor: " + weightedListInterpolation)
                     .add("Stone Counterweight: " + stoneCounterweight)
                     .add("Ore Counterweight: " + oreCounterweight);
