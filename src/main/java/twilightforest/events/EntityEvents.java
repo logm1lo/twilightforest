@@ -96,7 +96,7 @@ public class EntityEvents {
 			OreMeterItem.saveScanInfo(event.getItemStack(), new HashMap<>(), 0L, 0);
 			OreMeterItem.clearAssignedBlock(event.getItemStack());
 			event.getLevel().playSound(event.getEntity(), event.getEntity().blockPosition(), TFSounds.ORE_METER_CLEAR.get(), SoundSource.PLAYERS, 1.25F, event.getLevel().getRandom().nextFloat() * 0.2F + 0.6F);
-			PacketDistributor.SERVER.noArg().send(new WipeOreMeterPacket(event.getItemStack(), event.getHand()));
+			PacketDistributor.SERVER.noArg().send(new WipeOreMeterPacket(event.getEntity().getInventory().selected + 36, event.getHand()));
 		}
 	}
 
