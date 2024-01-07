@@ -2,7 +2,6 @@ package twilightforest.world.components.chunkgenerators;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -18,7 +17,10 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -109,8 +111,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 			if (delegate.getBiomeSource() instanceof TFBiomeProvider source) {
 				WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
 				TFBlendedNoise blendedNoise = new TFBlendedNoise(random);
-				NoiseModifier modifier = NoiseModifier.PASS;
-				this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.height() / settings.getCellHeight(), source, new NoiseSlider(-10.0D, 3, 0), new NoiseSlider(15.0D, 3, 0), settings, blendedNoise, modifier));
+				this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.height() / settings.getCellHeight(), source, new NoiseSlider(-10.0D, 3, 0), new NoiseSlider(15.0D, 3, 0), settings, blendedNoise));
 			} else {
 				this.warper = Optional.empty();
 			}
@@ -159,7 +160,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 	}
 
 	//This logic only seems to concern very specific features, but it does need the Warp
-	protected OptionalInt iterateNoiseColumn(RandomState random, int x, int z, BlockState[] states, @Nullable Predicate<BlockState> predicate, int min, int max) {
+	protected OptionalInt iterateNoiseColumn(RandomState random, int x, int z, @Nullable BlockState[] states, @Nullable Predicate<BlockState> predicate, int min, int max) {
 		NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 		int cellWidth = settings.getCellWidth();
 		int cellHeight = settings.getCellHeight();
@@ -262,22 +263,17 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 		int minX = chunkpos.getMinBlockX();
 		int minZ = chunkpos.getMinBlockZ();
 		TFNoiseInterpolator interpolator = new TFNoiseInterpolator(cellCountX, max, cellCountZ, chunkpos, min, (columns, x, z, min1, max1, max12) -> fillNoiseColumn(x, z, min1, max1, max12));
-		List<TFNoiseInterpolator> list = Lists.newArrayList(interpolator);
-		list.forEach(noiseint -> noiseint.initialiseFirstX(random));
-		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+		interpolator.initialiseFirstX(random);
 
-		for (int cellX = 0; cellX < cellCountX; cellX++) {
-			int advX = cellX;
-			list.forEach((noiseint) -> noiseint.advanceX(random, advX));
+        for (int cellX = 0; cellX < cellCountX; cellX++) {
+            interpolator.advanceX(random, cellX);
 
 			for (int cellZ = 0; cellZ < cellCountZ; cellZ++) {
 				int sections = access.getSectionsCount() - 1;
 				LevelChunkSection section = access.getSection(sections);
 
 				for (int cellY = max - 1; cellY >= 0; cellY--) {
-					int advY = cellY;
-					int advZ = cellZ;
-					list.forEach((noiseint) -> noiseint.selectYZ(advY, advZ));
+                    interpolator.selectYZ(cellY, cellZ);
 
 					for(int height = cellHeight - 1; height >= 0; height--) {
 						int minheight = (min + cellY) * cellHeight + height;
@@ -289,14 +285,13 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 							section = access.getSection(minindexY);
 						}
 
-						double heightdiv = (double)height / (double)cellHeight;
-						list.forEach((noiseint) -> noiseint.updateY(heightdiv));
+                        interpolator.updateY((double)height / (double)cellHeight);
 
 						for (int widthX = 0; widthX < cellWidth; widthX++) {
 							int minwidthX = minX + cellX * cellWidth + widthX;
 							int mincellX = minwidthX & 15;
 							double widthdivX = (double)widthX / (double)cellWidth;
-							list.forEach((noiseint) -> noiseint.updateX(widthdivX));
+							interpolator.updateX(widthdivX);
 
 							for (int widthZ = 0; widthZ < cellWidth; widthZ++) {
 								int minwidthZ = minZ + cellZ * cellWidth + widthZ;
@@ -317,7 +312,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 				}
 			}
 
-			list.forEach(TFNoiseInterpolator::swapSlices);
+			interpolator.swapSlices();
 		}
 
 		return access;

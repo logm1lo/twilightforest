@@ -18,12 +18,17 @@ import java.util.function.BinaryOperator;
 import java.util.stream.Stream;
 
 public final class TerrainColumn implements Comparable<TerrainColumn> {
+    public static final float MINIMUM_DEPTH = -16;
+    public static final float MAXIMUM_DEPTH = 16;
+    public static final float MINIMUM_SCALE = 0;
+    public static final float MAXIMUM_SCALE = 1;
+
     public static final Codec<TerrainColumn> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     RegistryFixedCodec.create(Registries.BIOME).fieldOf("key_biome").forGetter(o -> o.keyBiome),
                     Codecs.floatTreeCodec(Biome.CODEC).fieldOf("biome_layers").forGetter(o -> o.biomes),
-                    Codec.FLOAT.fieldOf("depth").forGetter(o -> o.noiseDepth),
-                    Codec.FLOAT.fieldOf("scale").forGetter(o -> o.noiseScale)
+                    Codec.floatRange(MINIMUM_DEPTH, MAXIMUM_DEPTH).fieldOf("depth").forGetter(o -> o.noiseDepth),
+                    Codec.floatRange(MINIMUM_SCALE, MAXIMUM_SCALE).fieldOf("scale").forGetter(o -> o.noiseScale)
             ).apply(instance, TerrainColumn::new));
     private final ResourceKey<Biome> resourceKey;
     private final Holder<Biome> keyBiome;

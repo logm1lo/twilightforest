@@ -23,8 +23,8 @@ import java.util.stream.Stream;
 public class BiomeTerrainData {
     public static final Codec<BiomeTerrainData> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
             TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> m.values().stream().sorted(Comparator.comparing(TerrainColumn::getResourceKey)).toList()).forGetter(o -> o.biomeList),
-            Codec.FLOAT.fieldOf("base_offset").forGetter(o -> o.baseOffset),
-            Codec.FLOAT.fieldOf("base_factor").forGetter(o -> o.baseFactor),
+            Codec.floatRange(TerrainColumn.MINIMUM_DEPTH, TerrainColumn.MAXIMUM_DEPTH).fieldOf("base_offset").forGetter(o -> o.baseOffset),
+            Codec.floatRange(TerrainColumn.MINIMUM_SCALE, TerrainColumn.MAXIMUM_SCALE).fieldOf("base_factor").forGetter(o -> o.baseFactor),
             BiomeLayerStack.HOLDER_CODEC.fieldOf("biome_layer_config").forGetter(BiomeTerrainData::getBiomeConfig)
     ).apply(instance, instance.stable(BiomeTerrainData::new)));
 

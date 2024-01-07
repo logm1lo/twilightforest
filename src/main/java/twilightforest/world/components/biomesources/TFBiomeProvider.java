@@ -47,6 +47,11 @@ public class TFBiomeProvider extends BiomeSource {
 		return this.biomeTerrainDataHolder.value().getNoiseBiome(x, y, z);
 	}
 
+	@Deprecated
+	public BiomeTerrainData getBiomeTerrain() {
+		return this.biomeTerrainDataHolder.value();
+	}
+
 	@Deprecated // TODO Move to a DensityFunction
 	public float getBaseOffset() {
 		return this.biomeTerrainDataHolder.value().getBaseOffset();

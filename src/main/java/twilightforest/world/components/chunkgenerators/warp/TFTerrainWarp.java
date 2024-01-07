@@ -6,6 +6,7 @@ import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.levelgen.NoiseSettings;
 import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
+import twilightforest.world.components.layer.vanillalegacy.BiomeTerrainData;
 
 import java.util.Optional;
 
@@ -25,7 +26,6 @@ public class TFTerrainWarp {
     private final BlendedNoise blendedNoise;
     private final double dimensionDensityFactor;
     private final double dimensionDensityOffset;
-    public final NoiseModifier caveNoiseModifier;
     public static final float[] BIOME_WEIGHTS = Util.make(new float[25], (afloat) -> {
         for(int x = -2; x <= 2; ++x) {
             for(int z = -2; z <= 2; ++z) {
@@ -35,7 +35,7 @@ public class TFTerrainWarp {
         }
     });
 
-    public TFTerrainWarp(int width, int height, int yCount, BiomeSource source, NoiseSlider topslide, NoiseSlider bottomslide, NoiseSettings settings, BlendedNoise blend, NoiseModifier modifier) {
+    public TFTerrainWarp(int width, int height, int yCount, BiomeSource source, NoiseSlider topslide, NoiseSlider bottomslide, NoiseSettings settings, BlendedNoise blend) {
         this.cellWidth = width;
         this.cellHeight = height;
         this.cellCountY = yCount;
@@ -47,11 +47,12 @@ public class TFTerrainWarp {
         //Fallbacks will never be met as this will crash to enforce correct source
         this.dimensionDensityFactor = source instanceof TFBiomeProvider tfsource ? tfsource.getBaseFactor() : 1.0F;
         this.dimensionDensityOffset = source instanceof TFBiomeProvider tfsource ? tfsource.getBaseOffset() : 0.0F;
-        this.caveNoiseModifier = modifier;
     }
 
     public void fillNoiseColumn(double[] adouble, int x, int z, int min, int max) {
-        if (biomeSource instanceof TFBiomeProvider source) {
+        if (biomeSource instanceof TFBiomeProvider proxy) {
+            BiomeTerrainData source = proxy.getBiomeTerrain();
+
             float totalScale = 0.0F;
             float totalDepth = 0.0F;
             float totalContribution = 0.0F;
@@ -82,12 +83,6 @@ public class TFTerrainWarp {
             double offset = modifiedDepth * 0.265625D;
             double factor = 96.0D / modifiedScale;
 
-//            double scaleXZ = 684.412D * settings.noiseSamplingSettings().xzScale();
-//            double scaleY = 684.412D * settings.noiseSamplingSettings().yScale();
-//            double factorXZ = scaleXZ / settings.noiseSamplingSettings().xzFactor();
-//            double factorY = scaleY / settings.noiseSamplingSettings().yFactor();
-//            double density = -0.46875;
-
             if (blendedNoise instanceof TFBlendedNoise blend) {
                 double scaleXZ = 684.412D * blend.xzScale;
                 double scaleY = 684.412D * blend.yScale;
@@ -98,10 +93,8 @@ public class TFTerrainWarp {
                 for (int index = 0; index <= max; ++index) {
                     int y = index + min;
                     double noise = blend.sampleAndClampNoise(x, y, z, scaleXZ, scaleY, factorXZ, factorY);
-                    double totaldensity = this.computeInitialDensity(y, offset, factor, density) + noise;
-                    totaldensity = this.caveNoiseModifier.modifyNoise(totaldensity, y * this.cellHeight, z * this.cellWidth, x * this.cellWidth);
-                    totaldensity = this.applySlide(totaldensity, y);
-                    adouble[index] = totaldensity;
+                    double totaldensity = this.computeInitialDensity(y, offset, factor, density);
+                    adouble[index] = this.applySlide(totaldensity, y) + noise;
                 }
             } else {
                 throw new IllegalArgumentException("BlendedNoise is not an instance of TFBlendedNoise");
