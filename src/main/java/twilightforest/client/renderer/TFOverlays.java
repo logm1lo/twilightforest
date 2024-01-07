@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Gui;
@@ -127,10 +128,15 @@ public class TFOverlays {
 		List<Pair<String, Integer>> scanData = OreMeterItem.getScanInfo(meter).entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).toList();
 
         if (TFConfig.CLIENT_CONFIG.prettifyOreMeterGui.get()) {
-			columns.add(nameColumn(scanData.stream().map(Pair::getFirst).toList()));
-			columns.add(dashColumn(scanData.size()));
+			ComponentColumn padding = ComponentColumn.padding(1);
 			List<Integer> counts = scanData.stream().map(Pair::getSecond).toList();
+
+			columns.add(nameColumn(scanData.stream().map(Pair::getFirst).toList()));
+			columns.add(padding);
+			columns.add(dashColumn(scanData.size()));
+			columns.add(padding);
 			columns.add(countColumn(counts));
+			columns.add(padding);
 			columns.add(ratioColumn(totalScanned, counts));
 		} else {
 			columns.add(withoutPrettyPrinting(totalScanned, scanData));
@@ -142,9 +148,14 @@ public class TFOverlays {
 	private static ComponentColumn withoutPrettyPrinting(int totalScanned, List<Pair<String, Integer>> entries) {
 		List<Component> tooltips = new ArrayList<>();
 
-		for (Pair<String, Integer> entry : entries) {
-			float percentage = entry.getSecond() * 100.0F / totalScanned;
-			Component formattedEntry = Component.translatable("misc.twilightforest.ore_meter_info", Component.translatable(entry.getFirst()), entry.getSecond(), FORMAT.format(percentage));
+        for (Pair<String, Integer> entry : entries) {
+			String percentage = FORMAT.format(entry.getSecond() * 100.0F / totalScanned);
+			Component formattedEntry = Component.translatable(entry.getFirst())
+					.append(Component.literal(" "))
+					.append(Component.translatable("misc.twilightforest.ore_meter_separator"))
+					.append(Component.literal(" " + entry.getSecond() + " "))
+					.append(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
+
 			tooltips.add(formattedEntry);
 		}
 
@@ -153,6 +164,8 @@ public class TFOverlays {
 
 	private static ComponentColumn nameColumn(List<String> oreNameKeys) {
 		ImmutableList.Builder<Component> toList = ImmutableList.builder();
+
+		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_block").withColor(ChatFormatting.GRAY.getColor()));
 
         for (String oreNameKey : oreNameKeys) {
             MutableComponent translatable = Component.translatable(oreNameKey);
@@ -165,13 +178,19 @@ public class TFOverlays {
 	private static ComponentColumn dashColumn(int size) {
 		ImmutableList.Builder<Component> toList = ImmutableList.builder();
 
-		for (int i = 0; i < size; i++) toList.add(Component.literal(" - "));
+		toList.add(Component.empty());
+
+		MutableComponent dash = Component.translatable("misc.twilightforest.ore_meter_separator");
+		for (int i = 0; i < size; i++)
+			toList.add(dash);
 
 		return ComponentColumn.build(toList.build(), ComponentAlignment.CENTER);
 	}
 
 	private static ComponentColumn countColumn(List<Integer> oreCounts) {
 		ImmutableList.Builder<Component> toList = ImmutableList.builder();
+
+		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_count").withColor(ChatFormatting.GRAY.getColor()));
 
         oreCounts.stream().mapToInt(count -> count).mapToObj(count -> Component.literal(String.valueOf(count))).forEach(toList::add);
 
@@ -181,9 +200,11 @@ public class TFOverlays {
 	private static ComponentColumn ratioColumn(int totalScanned, List<Integer> oreCounts) {
 		ImmutableList.Builder<Component> toList = ImmutableList.builder();
 
+		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_ratio").withColor(ChatFormatting.GRAY.getColor()));
+
 		for (int count : oreCounts) {
 			var percentage = FORMAT.format(count * 100.0F / totalScanned);
-			toList.add(Component.literal(" (" + percentage + "%)"));
+			toList.add(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
 		}
 
 		return ComponentColumn.build(toList.build(), ComponentAlignment.RIGHT);
@@ -193,6 +214,10 @@ public class TFOverlays {
 		public static ComponentColumn build(List<? extends Component> rowTexts, ComponentAlignment textAlignment) {
 			int maxColumnPixelWidth = rowTexts.stream().mapToInt(c -> Minecraft.getInstance().font.width(c)).max().orElse(0);
 			return new ComponentColumn(rowTexts, maxColumnPixelWidth, textAlignment);
+		}
+
+		public static ComponentColumn padding(int forcedExtraMaxWidthBySpaces) {
+            return new ComponentColumn(List.of(), forcedExtraMaxWidthBySpaces * Minecraft.getInstance().font.width(" "), ComponentAlignment.LEFT);
 		}
 
 		private int renderColumn(GuiGraphics graphics, ComponentColumn column, int xOff, int yOff, int verticalTextPixelsAdvance) {

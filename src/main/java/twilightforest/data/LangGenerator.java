@@ -143,7 +143,11 @@ public class LangGenerator extends TFLangProvider {
 		this.addMessage("firefly_spawner_radius", "Firefly Particle Radius: %s Blocks");
 		this.addMessage("magic_map_fail", "The Magic faltered. Perhaps it doesn't work here?");
 		this.addMessage("nyi", "This feature has effects that are not yet implemented.");
-		this.addMessage("ore_meter_info", "%s - %s (%s%%)");
+		this.addMessage("ore_meter_separator", "-");
+		this.addMessage("ore_meter_ratio", "(%s%%)");
+		this.addMessage("ore_meter_header_block", "Block");
+		this.addMessage("ore_meter_header_count", "Count");
+		this.addMessage("ore_meter_header_ratio", "Ratio");
 		this.addMessage("ore_meter_loading", "Loading");
 		this.addMessage("ore_meter_new_range", "Range set to %s chunks");
 		this.addMessage("ore_meter_no_blocks", "No blocks found nearby");
