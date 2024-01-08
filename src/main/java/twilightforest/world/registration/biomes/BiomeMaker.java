@@ -2,13 +2,15 @@ package twilightforest.world.registration.biomes;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
-import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
+import it.unimi.dsi.fastutil.doubles.Double2ObjectAVLTreeMap;
+import it.unimi.dsi.fastutil.doubles.Double2ObjectSortedMap;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFLandmark;
 import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
@@ -64,27 +66,27 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 	}
 
-	private static TerrainColumn biomeColumnWithUnderground(float noiseDepth, float noiseScale, HolderGetter<Biome> biomeRegistry, ResourceKey<Biome> key, Holder<Biome> undergroundBiome) {
+	private static TerrainColumn biomeColumnWithUnderground(double noiseDepth, double noiseScale, HolderGetter<Biome> biomeRegistry, ResourceKey<Biome> key, Holder<Biome> undergroundBiome) {
 		Holder.Reference<Biome> biomeHolder = biomeRegistry.getOrThrow(key);
 
 		biomeHolder.bindKey(key);
 
-		return makeColumn(noiseDepth, noiseScale, biomeHolder, treeMap -> {
+		return makeColumn(DensityFunctions.constant(noiseDepth), DensityFunctions.constant(noiseScale), biomeHolder, treeMap -> {
 			// This will put the transition boundary around Y-8
 			treeMap.put(Math.min(noiseDepth - 1, -1), biomeHolder);
 			treeMap.put(Math.min(noiseDepth - 3, -3), undergroundBiome);
 		});
 	}
 
-	private static TerrainColumn biomeColumnToBedrock(float noiseDepth, float noiseScale, HolderGetter<Biome> biomeRegistry, ResourceKey<Biome> key) {
+	private static TerrainColumn biomeColumnToBedrock(double noiseDepth, double noiseScale, HolderGetter<Biome> biomeRegistry, ResourceKey<Biome> key) {
 		Holder.Reference<Biome> biomeHolder = biomeRegistry.getOrThrow(key);
 
 		biomeHolder.bindKey(key);
 
-		return makeColumn(noiseDepth, noiseScale, biomeHolder, treeMap -> treeMap.put(0, biomeHolder));
+		return makeColumn(DensityFunctions.constant(noiseDepth), DensityFunctions.constant(noiseScale), biomeHolder, treeMap -> treeMap.put(0, biomeHolder));
 	}
 
-	private static TerrainColumn makeColumn(float noiseDepth, float noiseScale, Holder<Biome> biomeHolder, Consumer<Float2ObjectSortedMap<Holder<Biome>>> layerBuilder) {
-		return new TerrainColumn(biomeHolder, Util.make(new Float2ObjectAVLTreeMap<>(), layerBuilder), noiseDepth, noiseScale);
+	private static TerrainColumn makeColumn(DensityFunction noiseDepth, DensityFunction noiseScale, Holder<Biome> biomeHolder, Consumer<Double2ObjectSortedMap<Holder<Biome>>> layerBuilder) {
+		return new TerrainColumn(biomeHolder, Util.make(new Double2ObjectAVLTreeMap<>(), layerBuilder), noiseDepth, noiseScale);
 	}
 }

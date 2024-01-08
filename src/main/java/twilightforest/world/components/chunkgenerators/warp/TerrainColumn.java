@@ -2,49 +2,48 @@ package twilightforest.world.components.chunkgenerators.warp;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
-import it.unimi.dsi.fastutil.floats.Float2ObjectMap;
-import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
+import it.unimi.dsi.fastutil.doubles.Double2ObjectAVLTreeMap;
+import it.unimi.dsi.fastutil.doubles.Double2ObjectMap;
+import it.unimi.dsi.fastutil.doubles.Double2ObjectSortedMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import twilightforest.util.Codecs;
 
 import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.stream.Stream;
 
-public final class TerrainColumn implements Comparable<TerrainColumn> {
+public final class TerrainColumn {
     public static final Codec<TerrainColumn> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     RegistryFixedCodec.create(Registries.BIOME).fieldOf("key_biome").forGetter(o -> o.keyBiome),
-                    Codecs.floatTreeCodec(Biome.CODEC).fieldOf("biome_layers").forGetter(o -> o.biomes),
-                    Codec.floatRange((float) -16, (float) 16).fieldOf("depth").forGetter(o -> o.noiseDepth),
-                    Codec.floatRange((float) 0, (float) 1).fieldOf("scale").forGetter(o -> o.noiseScale)
+                    Codecs.doubleTreeCodec(Biome.CODEC).fieldOf("biome_layers").forGetter(o -> o.biomes),
+                    DensityFunction.HOLDER_HELPER_CODEC.fieldOf("depth").forGetter(o -> o.noiseDepth),
+                    DensityFunction.HOLDER_HELPER_CODEC.fieldOf("scale").forGetter(o -> o.noiseScale)
             ).apply(instance, TerrainColumn::new));
     private final ResourceKey<Biome> resourceKey;
     private final Holder<Biome> keyBiome;
-    private final Float2ObjectSortedMap<Holder<Biome>> biomes;
+    private final Double2ObjectSortedMap<Holder<Biome>> biomes;
 
-    // TODO Convert to DensityFunction once TFTerrainWarp is finished
-    private final float noiseDepth, noiseScale;
+    private final DensityFunction noiseDepth, noiseScale;
 
-    public TerrainColumn(Holder<Biome> keyBiome, Float2ObjectSortedMap<Holder<Biome>> biomes, float noiseDepth, float noiseScale) {
+    public TerrainColumn(Holder<Biome> keyBiome, Double2ObjectSortedMap<Holder<Biome>> biomes, DensityFunction noiseDepth, DensityFunction noiseScale) {
         this.keyBiome = keyBiome;
         this.resourceKey = this.keyBiome.unwrapKey().get();
         this.biomes = biomes;
         this.noiseDepth = noiseDepth;
         this.noiseScale = noiseScale;
 
-        if (biomes instanceof Float2ObjectAVLTreeMap<Holder<Biome>> treeMap)
+        if (this.biomes instanceof Double2ObjectAVLTreeMap<Holder<Biome>> treeMap)
             treeMap.defaultReturnValue(this.keyBiome);
     }
 
     public Stream<Holder<Biome>> getBiomes() {
-        return this.biomes.float2ObjectEntrySet().stream().map(Map.Entry::getValue);
+        return this.biomes.double2ObjectEntrySet().stream().map(Map.Entry::getValue);
     }
 
     public boolean is(Holder<Biome> biome) {
@@ -57,31 +56,26 @@ public final class TerrainColumn implements Comparable<TerrainColumn> {
 
     public Holder<Biome> getBiome(int biomeElevation) {
         return this.reduce((a, b) -> {
-            float aDelta = a.getFloatKey() - biomeElevation;
-            float bDelta = b.getFloatKey() - biomeElevation;
+            double aDelta = a.getDoubleKey() - biomeElevation;
+            double bDelta = b.getDoubleKey() - biomeElevation;
 
             return Math.abs(aDelta) <= Math.abs(bDelta) ? a : b;
         }, this.keyBiome);
     }
 
-    private Holder<Biome> reduce(BinaryOperator<Float2ObjectMap.Entry<Holder<Biome>>> reducer, Holder<Biome> other) {
-        return this.biomes.float2ObjectEntrySet().stream().reduce(reducer).map(Map.Entry::getValue).orElse(other);
+    private Holder<Biome> reduce(BinaryOperator<Double2ObjectMap.Entry<Holder<Biome>>> reducer, Holder<Biome> other) {
+        return this.biomes.double2ObjectEntrySet().stream().reduce(reducer).map(Map.Entry::getValue).orElse(other);
     }
 
-    public float depth() {
-        return this.noiseDepth;
+    public double depth(DensityFunction.FunctionContext context) {
+        return this.noiseDepth.compute(context);
     }
 
-    public float scale() {
-        return this.noiseScale;
+    public double scale(DensityFunction.FunctionContext context) {
+        return this.noiseScale.compute(context);
     }
 
     public ResourceKey<Biome> getResourceKey() {
         return this.resourceKey;
-    }
-
-    @Override
-    public int compareTo(@NotNull TerrainColumn o) {
-        return (int) (this.noiseDepth - o.noiseDepth);
     }
 }

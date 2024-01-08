@@ -8,6 +8,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
@@ -63,12 +64,15 @@ public class BiomeDensitySource {
         return this.biomeList.get(this.genBiomes.get().getBiome(x, z)).getBiome(y);
     }
 
-    public float getBiomeDepth(int x, int z) {
-        return this.getBiomeDepth(this.genBiomes.get().getBiome(x, z));
+    public double getBiomeDepth(int x, int z, DensityFunction.FunctionContext context) {
+        return this.getBiomeDepth(this.genBiomes.get().getBiome(x, z), context);
     }
 
-    public float getBiomeDepth(ResourceKey<Biome> biome) {
-        return this.getBiomeValue(biome, TerrainColumn::depth, 0f);
+    @SuppressWarnings("OptionalIsPresent")
+    public double getBiomeDepth(ResourceKey<Biome> biome, DensityFunction.FunctionContext context) {
+        Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(biome);
+        if (terrainColumn.isEmpty()) return 0;
+        return terrainColumn.get().depth(context);
     }
 
     public Optional<TerrainColumn> getTerrainColumn(int x, int z) {
@@ -79,10 +83,6 @@ public class BiomeDensitySource {
         return this.biomeList.values().stream().filter(p -> p.is(biome)).findFirst();
     }
 
-    public <T> T getBiomeValue(ResourceKey<Biome> biome, Function<TerrainColumn, T> function, T other) {
-        return this.getTerrainColumn(biome).map(function).orElse(other);
-    }
-
     public Stream<Holder<Biome>> collectPossibleBiomes() {
         return this.biomeList.values().stream().flatMap(TerrainColumn::getBiomes);
     }
@@ -91,11 +91,11 @@ public class BiomeDensitySource {
         return this.genBiomes.get();
     }
 
-    public DensityData sampleTerrain(int biomeX, int biomeZ) {
-        float totalScale = 0.0F;
-        float totalDepth = 0.0F;
-        float totalContribution = 0.0F;
-        float centerDepth = this.getBiomeDepth(biomeX, biomeZ);
+    public DensityData sampleTerrain(int biomeX, int biomeZ, DensityFunction.FunctionContext context) {
+        double totalScale = 0.0F;
+        double totalDepth = 0.0F;
+        double totalContribution = 0.0F;
+        double centerDepth = this.getBiomeDepth(biomeX, biomeZ, context);
 
         for (int offX = -2; offX <= 2; ++offX) {
             for (int offZ = -2; offZ <= 2; ++offZ) {
@@ -103,29 +103,29 @@ public class BiomeDensitySource {
 
                 if (terrainColumn.isEmpty()) continue;
 
-                float neighborDepth = terrainColumn.get().depth();
-                float neighborScale = terrainColumn.get().scale();
+                double neighborDepth = terrainColumn.get().depth(context);
+                double neighborScale = terrainColumn.get().scale(context);
 
                 // If the center column is lower than the given neighboring column, then diminish its height contribution
-                float topographicContribution = neighborDepth > centerDepth ? 0.5F : 1.0F;
-                float piecewiseInfluence = topographicContribution * BIOME_WEIGHTS[offX + 2 + (offZ + 2) * 5] / (neighborDepth + 2.0F);
+                double topographicContribution = neighborDepth > centerDepth ? 0.5F : 1.0F;
+                double piecewiseInfluence = topographicContribution * BIOME_WEIGHTS[offX + 2 + (offZ + 2) * 5] / (neighborDepth + 2.0);
                 totalDepth += neighborDepth * piecewiseInfluence;
                 totalScale += neighborScale * piecewiseInfluence;
                 totalContribution += piecewiseInfluence;
             }
         }
 
-        float depthNormalized = totalDepth / totalContribution;
-        float scaleNormalized = totalScale / totalContribution;
+        double depthNormalized = totalDepth / totalContribution;
+        double scaleNormalized = totalScale / totalContribution;
 
         return new DensityData(depthNormalized, scaleNormalized);
     }
 
     public static final class DensityData {
-        public final float depth;
-        public final float scale;
+        public final double depth;
+        public final double scale;
 
-        public DensityData(float depth, float scale) {
+        public DensityData(double depth, double scale) {
             this.depth = depth;
             this.scale = scale;
         }

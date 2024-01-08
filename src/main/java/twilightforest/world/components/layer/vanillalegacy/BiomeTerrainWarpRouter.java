@@ -29,7 +29,7 @@ public record BiomeTerrainWarpRouter(Holder<BiomeDensitySource> biomeDensitySour
 
     @Override
     public double compute(FunctionContext context) {
-        BiomeDensitySource.DensityData densityData = this.biomeDensitySource.value().sampleTerrain(context.blockX() >> 2, context.blockZ() >> 2);
+        BiomeDensitySource.DensityData densityData = this.biomeDensitySource.value().sampleTerrain(context.blockX() >> 2, context.blockZ() >> 2, context);
 
         double gradientHeight = this.baseFactor.compute(context) * densityData.scale;
 
