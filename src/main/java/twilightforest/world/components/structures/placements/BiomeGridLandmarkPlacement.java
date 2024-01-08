@@ -45,7 +45,7 @@ public class BiomeGridLandmarkPlacement extends StructurePlacement {
 
     @Override
     public StructurePlacementType<?> type() {
-        return TFStructurePlacementTypes.FORCED_LANDMARK_PLACEMENT_TYPE.get();
+        return TFStructurePlacementTypes.GRID_LANDMARK_PLACEMENT_TYPE.get();
     }
 
     public TFLandmark getLandmark() {

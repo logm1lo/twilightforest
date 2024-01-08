@@ -1,6 +1,6 @@
 {
   "placement": {
-    "type": "twilightforest:forced_landmark",
+    "type": "twilightforest:landmark_grid",
     "landmark_set": "lich_tower",
     "legacy_special_biome_bypass": false
   },

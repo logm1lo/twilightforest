@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 public class TFStructurePlacementTypes {
 	public static final DeferredRegister<StructurePlacementType<?>> STRUCTURE_PLACEMENT_TYPES = DeferredRegister.create(Registries.STRUCTURE_PLACEMENT, TwilightForestMod.ID);
 
-	public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<BiomeGridLandmarkPlacement>> FORCED_LANDMARK_PLACEMENT_TYPE = registerPlacer("forced_landmark", () -> () -> BiomeGridLandmarkPlacement.CODEC);
+	public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<BiomeGridLandmarkPlacement>> GRID_LANDMARK_PLACEMENT_TYPE = registerPlacer("landmark_grid", () -> () -> BiomeGridLandmarkPlacement.CODEC);
 
     private static <P extends StructurePlacement> DeferredHolder<StructurePlacementType<?>, StructurePlacementType<P>> registerPlacer(String name, Supplier<StructurePlacementType<P>> factory) {
         return STRUCTURE_PLACEMENT_TYPES.register(name, factory);
