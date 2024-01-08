@@ -65,6 +65,5 @@
     }
   },
   "step": "surface_structures",
-  "terrain_adaptation": "beard_thin",
   "water_spawns": []
 }

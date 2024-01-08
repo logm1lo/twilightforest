@@ -18,23 +18,19 @@ import java.util.function.BinaryOperator;
 import java.util.stream.Stream;
 
 public final class TerrainColumn implements Comparable<TerrainColumn> {
-    public static final float MINIMUM_DEPTH = -16;
-    public static final float MAXIMUM_DEPTH = 16;
-    public static final float MINIMUM_SCALE = 0;
-    public static final float MAXIMUM_SCALE = 1;
-
     public static final Codec<TerrainColumn> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     RegistryFixedCodec.create(Registries.BIOME).fieldOf("key_biome").forGetter(o -> o.keyBiome),
                     Codecs.floatTreeCodec(Biome.CODEC).fieldOf("biome_layers").forGetter(o -> o.biomes),
-                    Codec.floatRange(MINIMUM_DEPTH, MAXIMUM_DEPTH).fieldOf("depth").forGetter(o -> o.noiseDepth),
-                    Codec.floatRange(MINIMUM_SCALE, MAXIMUM_SCALE).fieldOf("scale").forGetter(o -> o.noiseScale)
+                    Codec.floatRange((float) -16, (float) 16).fieldOf("depth").forGetter(o -> o.noiseDepth),
+                    Codec.floatRange((float) 0, (float) 1).fieldOf("scale").forGetter(o -> o.noiseScale)
             ).apply(instance, TerrainColumn::new));
     private final ResourceKey<Biome> resourceKey;
     private final Holder<Biome> keyBiome;
     private final Float2ObjectSortedMap<Holder<Biome>> biomes;
-    private final float noiseDepth;
-    private final float noiseScale;
+
+    // TODO Convert to DensityFunction once TFTerrainWarp is finished
+    private final float noiseDepth, noiseScale;
 
     public TerrainColumn(Holder<Biome> keyBiome, Float2ObjectSortedMap<Holder<Biome>> biomes, float noiseDepth, float noiseScale) {
         this.keyBiome = keyBiome;

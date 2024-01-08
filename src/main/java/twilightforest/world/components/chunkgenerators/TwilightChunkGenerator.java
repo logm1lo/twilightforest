@@ -3,16 +3,13 @@ package twilightforest.world.components.chunkgenerators;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
-import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.Util;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
@@ -29,16 +26,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
@@ -46,9 +39,11 @@ import twilightforest.init.TFLandmark;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.Vec2i;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.warp.*;
+import twilightforest.world.components.chunkgenerators.warp.NoiseSlider;
+import twilightforest.world.components.chunkgenerators.warp.TFBlendedNoise;
+import twilightforest.world.components.chunkgenerators.warp.TFNoiseInterpolator;
+import twilightforest.world.components.chunkgenerators.warp.TFTerrainWarp;
 import twilightforest.world.components.structures.TFStructureComponent;
-import twilightforest.world.components.structures.placements.BiomeForcedLandmarkPlacement;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.type.HollowHillStructure;
 import twilightforest.world.components.structures.util.ControlledSpawns;
@@ -712,122 +707,5 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 			return WeightedRandomList.create(potentialStructureSpawns);
 
 		return super.getMobsAt(biome, structureManager, mobCategory, pos);
-	}
-
-	public boolean isLandmarkPickedForChunk(TFLandmark landmark, Holder<Biome> biome, int chunkX, int chunkZ, long seed) {
-		if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ)) return false;
-
-		var biomeKey = biome.unwrapKey();
-		if (biomeKey.isEmpty()) return false;
-
-		return this.biomeLandmarkOverrides.containsKey(biomeKey.get())
-				? this.biomeGuaranteedLandmark(biomeKey.get(), landmark)
-				: landmark == LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ);
-	}
-
-	public boolean biomeGuaranteedLandmark(ResourceKey<Biome> biome, TFLandmark landmark) {
-		if (!this.biomeLandmarkOverrides.containsKey(biome)) return false;
-		return this.biomeLandmarkOverrides.getOrDefault(biome, ImmutableSet.of()).contains(landmark);
-	}
-
-	//copy of ChunkGenerator.createStructures, we just need to allow TF structures to correctly spawn
-	@Override
-	public void createStructures(RegistryAccess access, ChunkGeneratorStructureState state, StructureManager manager, ChunkAccess chunk, StructureTemplateManager templateManager) {
-		ChunkPos chunkpos = chunk.getPos();
-		SectionPos sectionpos = SectionPos.bottomOf(chunk);
-		RandomState randomstate = state.randomState();
-		state.possibleStructureSets().forEach(holder -> {
-			StructurePlacement structureplacement = holder.value().placement();
-			List<StructureSet.StructureSelectionEntry> list = holder.value().structures();
-
-			for(StructureSet.StructureSelectionEntry structureset$structureselectionentry : list) {
-				StructureStart structurestart = manager.getStartForStructure(sectionpos, structureset$structureselectionentry.structure().value(), chunk);
-				if (structurestart != null && structurestart.isValid()) {
-					return;
-				}
-			}
-
-			//TF: check if we're trying to add a TF structure and handle that accordingly. We need to still feed the chunk generator into the placement method, so we absolutely have to do this
-			//stupid mojang always changing everything
-			if ((structureplacement instanceof BiomeForcedLandmarkPlacement forced && forced.isTFPlacementChunk(this, state, chunkpos.x, chunkpos.z)) || structureplacement.isStructureChunk(state, chunkpos.x, chunkpos.z)) {
-				if (list.size() == 1) {
-					this.tryGenerateStructure(list.get(0), manager, access, randomstate, templateManager, state.getLevelSeed(), chunk, chunkpos, sectionpos);
-				} else {
-					ArrayList<StructureSet.StructureSelectionEntry> arraylist = new ArrayList<>(list.size());
-					arraylist.addAll(list);
-					WorldgenRandom worldgenrandom = new WorldgenRandom(new LegacyRandomSource(0L));
-					worldgenrandom.setLargeFeatureSeed(state.getLevelSeed(), chunkpos.x, chunkpos.z);
-					int i = 0;
-
-					for(StructureSet.StructureSelectionEntry structureset$structureselectionentry1 : arraylist) {
-						i += structureset$structureselectionentry1.weight();
-					}
-
-					while(!arraylist.isEmpty()) {
-						int j = worldgenrandom.nextInt(i);
-						int k = 0;
-
-						for(StructureSet.StructureSelectionEntry structureset$structureselectionentry2 : arraylist) {
-							j -= structureset$structureselectionentry2.weight();
-							if (j < 0) {
-								break;
-							}
-
-							++k;
-						}
-
-						StructureSet.StructureSelectionEntry structureset$structureselectionentry3 = arraylist.get(k);
-						if (this.tryGenerateStructure(structureset$structureselectionentry3, manager, access, randomstate, templateManager, state.getLevelSeed(), chunk, chunkpos, sectionpos)) {
-							return;
-						}
-
-						arraylist.remove(k);
-						i -= structureset$structureselectionentry3.weight();
-					}
-
-				}
-			}
-		});
-	}
-
-	@Nullable
-	@Override
-	public Pair<BlockPos, Holder<Structure>> findNearestMapStructure(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
-		ChunkGeneratorStructureState state = level.getChunkSource().getGeneratorState();
-
-		@Nullable
-		Pair<BlockPos, Holder<Structure>> nearest = super.findNearestMapStructure(level, targetStructures, pos, searchRadius, skipKnownStructures);
-
-		Map<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> placementSetMap = new Object2ObjectArrayMap<>();
-		for (Holder<Structure> holder : targetStructures) {
-			for (StructurePlacement structureplacement : state.getPlacementsForStructure(holder)) {
-				if (structureplacement instanceof BiomeForcedLandmarkPlacement landmarkPlacement) {
-					placementSetMap.computeIfAbsent(landmarkPlacement, v -> new ObjectArraySet<>()).add(holder);
-				}
-			}
-		}
-
-		if (placementSetMap.isEmpty()) return nearest;
-
-		double distance = nearest == null ? Double.MAX_VALUE : nearest.getFirst().distSqr(pos);
-
-		for (BlockPos landmarkCenterPosition : LegacyLandmarkPlacements.landmarkCenterScanner(pos, Mth.ceil(Mth.sqrt(searchRadius)))) {
-			for (Map.Entry<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> landmarkPlacement : placementSetMap.entrySet()) {
-				if (!landmarkPlacement.getKey().isTFPlacementChunk(this, state, landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
-
-				for (Holder<Structure> targetStructure : targetStructures) {
-					if (landmarkPlacement.getValue().contains(targetStructure)) {
-						final double newDistance = landmarkCenterPosition.distToLowCornerSqr(pos.getX(), landmarkCenterPosition.getY(), pos.getZ());
-
-						if (newDistance < distance) {
-							nearest = new Pair<>(landmarkCenterPosition, targetStructure);
-							distance = newDistance;
-						}
-					}
-				}
-			}
-		}
-
-		return nearest;
 	}
 }

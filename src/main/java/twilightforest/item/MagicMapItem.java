@@ -18,17 +18,17 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFLandmark;
+import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +113,7 @@ public class MagicMapItem extends MapItem {
 	@Override
 	public void update(Level level, Entity viewer, MapItemSavedData data) {
         if (level.dimension() == data.dimension && viewer instanceof Player && level instanceof ServerLevel serverLevel) {
-            TwilightChunkGenerator chunkGen = WorldUtil.getChunkGenerator(serverLevel);
+            ChunkGenerator chunkGen = WorldUtil.getChunkGenerator(serverLevel);
             if (chunkGen != null) {
                 int biomesPerPixel = 4;
                 int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it

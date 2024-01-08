@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.placements.BiomeForcedLandmarkPlacement;
+import twilightforest.world.components.structures.placements.BiomeGridLandmarkPlacement;
 
 public class TFStructureSets {
 
@@ -35,21 +35,23 @@ public class TFStructureSets {
 
 	public static void bootstrap(BootstapContext<StructureSet> context) {
 		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
-		context.register(HEDGE_MAZE, new StructureSet(structures.getOrThrow(TFStructures.HEDGE_MAZE), new BiomeForcedLandmarkPlacement(TFLandmark.HEDGE_MAZE, 256)));
-		context.register(QUEST_GROVE, new StructureSet(structures.getOrThrow(TFStructures.QUEST_GROVE), new BiomeForcedLandmarkPlacement(TFLandmark.QUEST_GROVE, 256)));
-		context.register(MUSHROOM_TOWER, new StructureSet(structures.getOrThrow(TFStructures.MUSHROOM_TOWER), new BiomeForcedLandmarkPlacement(TFLandmark.MUSHROOM_TOWER, 256)));
-		context.register(HOLLOW_HILL_SMALL, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL), new BiomeForcedLandmarkPlacement(TFLandmark.SMALL_HILL, 256)));
-		context.register(HOLLOW_HILL_MEDIUM, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_MEDIUM), new BiomeForcedLandmarkPlacement(TFLandmark.MEDIUM_HILL, 256)));
-		context.register(HOLLOW_HILL_LARGE, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_LARGE), new BiomeForcedLandmarkPlacement(TFLandmark.LARGE_HILL, 256)));
-		context.register(NAGA_COURTYARD, new StructureSet(structures.getOrThrow(TFStructures.NAGA_COURTYARD), new BiomeForcedLandmarkPlacement(TFLandmark.NAGA_COURTYARD, 256)));
-		context.register(LICH_TOWER, new StructureSet(structures.getOrThrow(TFStructures.LICH_TOWER), new BiomeForcedLandmarkPlacement(TFLandmark.LICH_TOWER, 256)));
-		context.register(LABYRINTH, new StructureSet(structures.getOrThrow(TFStructures.LABYRINTH), new BiomeForcedLandmarkPlacement(TFLandmark.LABYRINTH, 256)));
-		context.register(HYDRA_LAIR, new StructureSet(structures.getOrThrow(TFStructures.HYDRA_LAIR), new BiomeForcedLandmarkPlacement(TFLandmark.HYDRA_LAIR, 256)));
-		context.register(KNIGHT_STRONGHOLD, new StructureSet(structures.getOrThrow(TFStructures.KNIGHT_STRONGHOLD), new BiomeForcedLandmarkPlacement(TFLandmark.KNIGHT_STRONGHOLD, 256)));
-		context.register(DARK_TOWER, new StructureSet(structures.getOrThrow(TFStructures.DARK_TOWER), new BiomeForcedLandmarkPlacement(TFLandmark.DARK_TOWER, 256)));
-		context.register(YETI_CAVE, new StructureSet(structures.getOrThrow(TFStructures.YETI_CAVE), new BiomeForcedLandmarkPlacement(TFLandmark.YETI_CAVE, 256)));
-		context.register(AURORA_PALACE, new StructureSet(structures.getOrThrow(TFStructures.AURORA_PALACE), new BiomeForcedLandmarkPlacement(TFLandmark.ICE_TOWER, 256)));
-		context.register(TROLL_CAVE, new StructureSet(structures.getOrThrow(TFStructures.TROLL_CAVE), new BiomeForcedLandmarkPlacement(TFLandmark.TROLL_CAVE, 256)));
-		context.register(FINAL_CASTLE, new StructureSet(structures.getOrThrow(TFStructures.FINAL_CASTLE), new BiomeForcedLandmarkPlacement(TFLandmark.FINAL_CASTLE, 256)));
+
+		context.register(HEDGE_MAZE, new StructureSet(structures.getOrThrow(TFStructures.HEDGE_MAZE), BiomeGridLandmarkPlacement.forTag(TFLandmark.HEDGE_MAZE, false)));
+		context.register(QUEST_GROVE, new StructureSet(structures.getOrThrow(TFStructures.QUEST_GROVE), BiomeGridLandmarkPlacement.forTag(TFLandmark.QUEST_GROVE, true)));
+		context.register(MUSHROOM_TOWER, new StructureSet(structures.getOrThrow(TFStructures.MUSHROOM_TOWER), BiomeGridLandmarkPlacement.forTag(TFLandmark.MUSHROOM_TOWER, true)));
+		context.register(HOLLOW_HILL_SMALL, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL), BiomeGridLandmarkPlacement.forTag(TFLandmark.SMALL_HILL, false)));
+		context.register(HOLLOW_HILL_MEDIUM, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_MEDIUM), BiomeGridLandmarkPlacement.forTag(TFLandmark.MEDIUM_HILL, false)));
+		context.register(HOLLOW_HILL_LARGE, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_LARGE), BiomeGridLandmarkPlacement.forTag(TFLandmark.LARGE_HILL, false)));
+		context.register(NAGA_COURTYARD, new StructureSet(structures.getOrThrow(TFStructures.NAGA_COURTYARD), BiomeGridLandmarkPlacement.forTag(TFLandmark.NAGA_COURTYARD, false)));
+		context.register(LICH_TOWER, new StructureSet(structures.getOrThrow(TFStructures.LICH_TOWER), BiomeGridLandmarkPlacement.forTag(TFLandmark.LICH_TOWER, false)));
+
+		context.register(LABYRINTH, new StructureSet(structures.getOrThrow(TFStructures.LABYRINTH), BiomeGridLandmarkPlacement.forTag(TFLandmark.LABYRINTH, true)));
+		context.register(HYDRA_LAIR, new StructureSet(structures.getOrThrow(TFStructures.HYDRA_LAIR), BiomeGridLandmarkPlacement.forTag(TFLandmark.HYDRA_LAIR, true)));
+		context.register(KNIGHT_STRONGHOLD, new StructureSet(structures.getOrThrow(TFStructures.KNIGHT_STRONGHOLD), BiomeGridLandmarkPlacement.forTag(TFLandmark.KNIGHT_STRONGHOLD, true)));
+		context.register(DARK_TOWER, new StructureSet(structures.getOrThrow(TFStructures.DARK_TOWER), BiomeGridLandmarkPlacement.forTag(TFLandmark.DARK_TOWER, true)));
+		context.register(YETI_CAVE, new StructureSet(structures.getOrThrow(TFStructures.YETI_CAVE), BiomeGridLandmarkPlacement.forTag(TFLandmark.YETI_CAVE, true)));
+		context.register(AURORA_PALACE, new StructureSet(structures.getOrThrow(TFStructures.AURORA_PALACE), BiomeGridLandmarkPlacement.forTag(TFLandmark.ICE_TOWER, true)));
+		context.register(TROLL_CAVE, new StructureSet(structures.getOrThrow(TFStructures.TROLL_CAVE), BiomeGridLandmarkPlacement.forTag(TFLandmark.TROLL_CAVE, true)));
+		context.register(FINAL_CASTLE, new StructureSet(structures.getOrThrow(TFStructures.FINAL_CASTLE), BiomeGridLandmarkPlacement.forTag(TFLandmark.FINAL_CASTLE, true)));
 	}
 }

@@ -52,7 +52,7 @@ import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ControlledSpawnsCache;
 import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
-import twilightforest.world.components.layer.vanillalegacy.BiomeTerrainData;
+import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 import java.util.Locale;
@@ -129,6 +129,7 @@ public class TwilightForestMod {
 		TFFeatureModifiers.TREE_DECORATORS.register(bus);
 		TinyBirdVariants.TINY_BIRD_VARIANTS.register(bus);
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(bus);
+		TFDensityFunctions.DENSITY_FUNCTION_TYPES.register(bus);
 		DwarfRabbitVariants.DWARF_RABBIT_VARIANTS.register(bus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(bus);
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(bus);
@@ -165,7 +166,7 @@ public class TwilightForestMod {
 	public void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
 		event.dataPackRegistry(TFRegistries.Keys.WOOD_PALETTES, WoodPalette.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack.DISPATCH_CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeTerrainData.CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC, Restriction.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);

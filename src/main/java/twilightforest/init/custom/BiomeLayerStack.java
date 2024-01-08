@@ -27,7 +27,7 @@ public class BiomeLayerStack {
     public static final ResourceKey<BiomeLayerFactory> RANDOM_FOREST_BIOMES = registerKey("random_forest_biomes");
     public static final ResourceKey<BiomeLayerFactory> BIOMES_ALONG_STREAMS = registerKey("biomes_along_streams");
 
-    public static final ResourceKey<BiomeTerrainData> BIOME_GRID = ResourceKey.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, TwilightForestMod.prefix("biome_grid"));
+    public static final ResourceKey<BiomeDensitySource> BIOME_GRID = ResourceKey.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, TwilightForestMod.prefix("biome_grid"));
 
     public static ResourceKey<BiomeLayerFactory> registerKey(String name) {
         return ResourceKey.create(TFRegistries.Keys.BIOME_STACK, TwilightForestMod.prefix(name));
@@ -82,13 +82,11 @@ public class BiomeLayerStack {
         context.register(BIOMES_ALONG_STREAMS, new FilteredBiomeLayer.Factory(100L, TFBiomes.STREAM, Holder.direct(riverLayer), randomBiomes));
     }
 
-    public static void bootstrapData(BootstapContext<BiomeTerrainData> context) {
+    public static void bootstrapData(BootstapContext<BiomeDensitySource> context) {
         HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
 
-        context.register(BIOME_GRID, new BiomeTerrainData(
+        context.register(BIOME_GRID, new BiomeDensitySource(
                 BiomeMaker.makeBiomeList(biomeRegistry, biomeRegistry.getOrThrow(TFBiomes.UNDERGROUND)),
-                -1.25F,
-                2.5F,
                 context.lookup(TFRegistries.Keys.BIOME_STACK).getOrThrow(BiomeLayerStack.BIOMES_ALONG_STREAMS)
         ));
     }

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -20,19 +21,18 @@ import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFAdvancements;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
-import twilightforest.util.Enforcement;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.StructureProtectionPacket;
+import twilightforest.util.Enforcement;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -95,7 +95,7 @@ public class TFTickHandler {
 
 	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(Player player, ServerLevel world) {
-		TwilightChunkGenerator chunkGenerator = WorldUtil.getChunkGenerator(world);
+		ChunkGenerator chunkGenerator = WorldUtil.getChunkGenerator(world);
 		if (chunkGenerator == null)
 			return false;
 

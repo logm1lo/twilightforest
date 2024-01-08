@@ -7,28 +7,22 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 import twilightforest.TFRegistries;
-import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
-import twilightforest.world.components.layer.vanillalegacy.BiomeTerrainData;
+import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public class TFBiomeProvider extends BiomeSource {
-	public static final Codec<TFBiomeProvider> TF_CODEC = RegistryFileCodec.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeTerrainData.CODEC, false).xmap(TFBiomeProvider::new, TFBiomeProvider::getBiomeConfig).fieldOf("terrain_info").codec();
+	public static final Codec<TFBiomeProvider> TF_CODEC = RegistryFileCodec.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC, false).xmap(TFBiomeProvider::new, TFBiomeProvider::getBiomeConfig).fieldOf("terrain_data").codec();
 
-	private final Holder<BiomeTerrainData> biomeTerrainDataHolder;
+	private final Holder<BiomeDensitySource> biomeTerrainDataHolder;
 
-    public TFBiomeProvider(Holder<BiomeTerrainData> biomeTerrainDataHolder) {
+    public TFBiomeProvider(Holder<BiomeDensitySource> biomeTerrainDataHolder) {
 		super();
 
 		this.biomeTerrainDataHolder = biomeTerrainDataHolder;
     }
 
-	public Optional<TerrainColumn> getTerrainColumn(int x, int z) {
-		return this.biomeTerrainDataHolder.value().getTerrainColumn(x, z);
-	}
-
-	private Holder<BiomeTerrainData> getBiomeConfig() {
+	private Holder<BiomeDensitySource> getBiomeConfig() {
 		return this.biomeTerrainDataHolder;
 	}
 
@@ -48,22 +42,7 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	@Deprecated
-	public BiomeTerrainData getBiomeTerrain() {
+	public BiomeDensitySource getBiomeTerrain() {
 		return this.biomeTerrainDataHolder.value();
-	}
-
-	@Deprecated // TODO Move to a DensityFunction
-	public float getBaseOffset() {
-		return this.biomeTerrainDataHolder.value().getBaseOffset();
-	}
-
-	@Deprecated // TODO Move to a DensityFunction
-	public float getBaseFactor() {
-		return this.biomeTerrainDataHolder.value().getBaseFactor();
-	}
-
-	@Deprecated // TODO Move to a DensityFunction
-	public float getBiomeDepth(int x, int z) {
-		return this.biomeTerrainDataHolder.value().getBiomeDepth(x, z);
 	}
 }

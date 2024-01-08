@@ -1,44 +1,11 @@
 {
   "type": "twilightforest:twilight_forest_type",
   "generator": {
-    "type": "twilightforest:structure_locating_wrapper",
-    "landmark_placement_allowed_biomes": {
-      "twilightforest:dark_forest": [
-        "knight_stronghold"
-      ],
-      "twilightforest:dark_forest_center": [
-        "dark_tower"
-      ],
-      "twilightforest:enchanted_forest": [
-        "quest_grove"
-      ],
-      "twilightforest:final_plateau": [
-        "final_castle"
-      ],
-      "twilightforest:fire_swamp": [
-        "hydra_lair"
-      ],
-      "twilightforest:glacier": [
-        "ice_tower"
-      ],
-      "twilightforest:highlands": [
-        "troll_lairs"
-      ],
-      "twilightforest:snowy_forest": [
-        "yeti_lairs"
-      ],
-      "twilightforest:swamp": [
-        "labyrinth"
-      ]
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "twilightforest:twilight_biomes",
+      "terrain_data": "twilightforest:biome_grid"
     },
-    "noise_generation_settings": "twilightforest:twilight_noise_gen",
-    "wrapped_generator": {
-      "type": "minecraft:noise",
-      "biome_source": {
-        "type": "twilightforest:twilight_biomes",
-        "terrain_info": "twilightforest:biome_grid"
-      },
-      "settings": "twilightforest:twilight_noise_gen"
-    }
+    "settings": "twilightforest:twilight_noise_gen"
   }
 }

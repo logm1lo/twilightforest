@@ -6,7 +6,7 @@ import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.levelgen.NoiseSettings;
 import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.layer.vanillalegacy.BiomeTerrainData;
+import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
 
 import java.util.Optional;
 
@@ -45,13 +45,13 @@ public class TFTerrainWarp {
         this.bottomSlide = bottomslide;
         this.blendedNoise = blend;
         //Fallbacks will never be met as this will crash to enforce correct source
-        this.dimensionDensityFactor = source instanceof TFBiomeProvider tfsource ? tfsource.getBaseFactor() : 1.0F;
-        this.dimensionDensityOffset = source instanceof TFBiomeProvider tfsource ? tfsource.getBaseOffset() : 0.0F;
+        this.dimensionDensityFactor = 2.5F;
+        this.dimensionDensityOffset = -1.25F;
     }
 
     public void fillNoiseColumn(double[] adouble, int x, int z, int min, int max) {
         if (biomeSource instanceof TFBiomeProvider proxy) {
-            BiomeTerrainData source = proxy.getBiomeTerrain();
+            BiomeDensitySource source = proxy.getBiomeTerrain();
 
             float totalScale = 0.0F;
             float totalDepth = 0.0F;

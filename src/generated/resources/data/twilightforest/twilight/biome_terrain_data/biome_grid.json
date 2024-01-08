@@ -1,6 +1,4 @@
 {
-  "base_factor": 2.5,
-  "base_offset": -1.25,
   "biome_landscape": [
     {
       "biome_layers": {

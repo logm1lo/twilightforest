@@ -2,7 +2,7 @@
   "placement": {
     "type": "twilightforest:forced_landmark",
     "landmark_set": "medium_hollow_hill",
-    "scan_elevation": 256
+    "legacy_special_biome_bypass": false
   },
   "structures": [
     {

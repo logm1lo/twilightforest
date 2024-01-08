@@ -41,9 +41,9 @@ public final class WorldUtil {
 	}
 
 	@Nullable
-	public static TwilightChunkGenerator getChunkGenerator(LevelAccessor level) {
-		if (level.getChunkSource() instanceof ServerChunkCache chunkSource && chunkSource.chunkMap.generator() instanceof TwilightChunkGenerator chunkGenerator)
-			return chunkGenerator;
+	public static ChunkGenerator getChunkGenerator(LevelAccessor level) {
+		if (level.getChunkSource() instanceof ServerChunkCache chunkSource)
+			return chunkSource.chunkMap.generator();
 
 		return null;
 	}
