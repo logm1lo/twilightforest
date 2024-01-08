@@ -3,11 +3,12 @@ package twilightforest.world.components.layer.vanillalegacy;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.custom.BiomeLayerStack;
-import twilightforest.world.components.chunkgenerators.warp.TFTerrainWarp;
 import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
@@ -27,14 +28,19 @@ public class BiomeDensitySource {
             BiomeLayerStack.HOLDER_CODEC.fieldOf("biome_layer_config").forGetter(BiomeDensitySource::getBiomeConfig)
     ).apply(instance, instance.stable(BiomeDensitySource::new)));
 
-    public static final float[] BIOME_WEIGHTS = TFTerrainWarp.BIOME_WEIGHTS; // FIXME Inline
+    public static final float[] BIOME_WEIGHTS = Util.make(new float[25], (afloat) -> {
+        for(int x = -2; x <= 2; ++x) {
+            for(int z = -2; z <= 2; ++z) {
+                float weight = 10.0F / Mth.sqrt((float)(x * x + z * z) + 0.2F);
+                afloat[x + 2 + (z + 2) * 5] = weight;
+            }
+        }
+    });
 
     private final Map<ResourceKey<Biome>, TerrainColumn> biomeList;
 
     private final Holder<BiomeLayerFactory> genBiomeConfig;
     private final Supplier<LazyArea> genBiomes;
-
-    //private volatile Long2ObjectMap<TerrainSample> sampleCache = Long2ObjectMaps.synchronize(new Long2ObjectRBTreeMap<>());
 
     public BiomeDensitySource(List<TerrainColumn> list, Holder<BiomeLayerFactory> biomeLayerFactory) {
         this(list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), biomeLayerFactory);
@@ -43,7 +49,6 @@ public class BiomeDensitySource {
     public BiomeDensitySource(Map<ResourceKey<Biome>, TerrainColumn> list, Holder<BiomeLayerFactory> biomeLayerFactory) {
         super();
 
-        //this.genBiomes = buildLayers((salt) -> new LazyAreaContext(25, salt));
         this.genBiomeConfig = biomeLayerFactory;
         this.genBiomes = Suppliers.memoize(() -> this.genBiomeConfig.value().build(salt -> new LazyAreaContext(25, salt)));
 

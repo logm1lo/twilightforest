@@ -1,34 +1,25 @@
 package twilightforest.world.components.chunkgenerators;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.chunk.LevelChunkSection;
-import net.minecraft.world.level.levelgen.*;
-import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
@@ -38,304 +29,35 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFLandmark;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.Vec2i;
-import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.warp.NoiseSlider;
-import twilightforest.world.components.chunkgenerators.warp.TFBlendedNoise;
-import twilightforest.world.components.chunkgenerators.warp.TFNoiseInterpolator;
-import twilightforest.world.components.chunkgenerators.warp.TFTerrainWarp;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.type.HollowHillStructure;
 import twilightforest.world.components.structures.util.ControlledSpawns;
 
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.function.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Deprecated // TODO Split warper (thus all biome influences on terrain) and deformTerrainForFeature (all structure terrain influences) into distinct density functions
-@SuppressWarnings({"OptionalUsedAsFieldOrParameterType"})
 public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 	public static final Codec<TwilightChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
-			NoiseGeneratorSettings.CODEC.fieldOf("noise_generation_settings").forGetter(o -> o.noiseGeneratorSettings),
-			Codec.unboundedMap(ResourceKey.codec(Registries.BIOME), TFLandmark.CODEC.listOf().xmap(ImmutableSet::copyOf, ImmutableList::copyOf)).fieldOf("landmark_placement_allowed_biomes").forGetter(o -> o.biomeLandmarkOverrides)
+			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate)
 	).apply(instance, TwilightChunkGenerator::new));
 
-	private final Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides;
-
-	private final Holder<NoiseGeneratorSettings> noiseGeneratorSettings;
-
 	private final BlockState defaultBlock;
-	private final BlockState defaultFluid;
-    private final Optional<TFTerrainWarp> warper;
 
-	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
-
-	public TwilightChunkGenerator(ChunkGenerator delegate, Holder<NoiseGeneratorSettings> noiseGenSettings, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
+    public TwilightChunkGenerator(ChunkGenerator delegate) {
 		super(delegate);
 
-		this.biomeLandmarkOverrides = biomeLandmarkOverrides;
-		this.noiseGeneratorSettings = noiseGenSettings;
-
-		if (delegate instanceof NoiseBasedChunkGenerator noiseGen && noiseGen.generatorSettings().isBound()) {
+        if (delegate instanceof NoiseBasedChunkGenerator noiseGen && noiseGen.generatorSettings().isBound()) {
 			this.defaultBlock = noiseGen.generatorSettings().value().defaultBlock();
-			this.defaultFluid = noiseGen.generatorSettings().value().defaultFluid();
         } else {
 			this.defaultBlock = Blocks.STONE.defaultBlockState();
-			this.defaultFluid = Blocks.WATER.defaultBlockState();
         }
-
-		//BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFLandmark>()
-		//		.put(TFBiomes.DARK_FOREST.location(), TFLandmark.KNIGHT_STRONGHOLD)
-		//		.put(TFBiomes.DARK_FOREST_CENTER.location(), TFLandmark.DARK_TOWER)
-		//		//.put(TFBiomes.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
-		//		.put(TFBiomes.ENCHANTED_FOREST.location(), TFLandmark.QUEST_GROVE)
-		//		.put(TFBiomes.FINAL_PLATEAU.location(), TFLandmark.FINAL_CASTLE)
-		//		.put(TFBiomes.FIRE_SWAMP.location(), TFLandmark.HYDRA_LAIR)
-		//		.put(TFBiomes.GLACIER.location(), TFLandmark.ICE_TOWER)
-		//		.put(TFBiomes.HIGHLANDS.location(), TFLandmark.TROLL_CAVE)
-		//		.put(TFBiomes.SNOWY_FOREST.location(), TFLandmark.YETI_CAVE)
-		//		.put(TFBiomes.SWAMP.location(), TFLandmark.LABYRINTH)
-		//		.put(TFBiomes.LAKE.location(), TFLandmark.QUEST_ISLAND)
-		//		.build();
-
-		//FIXME Watch this space, make sure it worked
-		if (noiseGenSettings.isBound()) {
-			NoiseSettings settings = noiseGenSettings.value().noiseSettings();
-			if (delegate.getBiomeSource() instanceof TFBiomeProvider source) {
-				WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
-				TFBlendedNoise blendedNoise = new TFBlendedNoise(random);
-				this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.height() / settings.getCellHeight(), source, new NoiseSlider(-10.0D, 3, 0), new NoiseSlider(15.0D, 3, 0), settings, blendedNoise));
-			} else {
-				this.warper = Optional.empty();
-			}
-		} else {
-			this.warper = Optional.empty();
-		}
 	}
 
 	@Override
 	protected Codec<? extends ChunkGenerator> codec() {
 		return CODEC;
-	}
-
-	@Override
-	public int getBaseHeight(int x, int z, Heightmap.Types heightMap, LevelHeightAccessor level, RandomState random) {
-		if (warper.isEmpty()) {
-			return super.getBaseHeight(x, z, heightMap, level, random);
-		} else {
-			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
-			int minY = Math.max(settings.minY(), level.getMinBuildHeight());
-			int maxY = Math.min(settings.minY() + settings.height(), level.getMaxBuildHeight());
-			int minCell = Math.floorDiv(minY, settings.getCellHeight());
-			int maxCell = Math.floorDiv(maxY - minY, settings.getCellHeight());
-			return maxCell <= 0 ? level.getMinBuildHeight() : this.iterateNoiseColumn(random, x, z, null, heightMap.isOpaque(), minCell, maxCell).orElse(level.getMinBuildHeight());
-		}
-	}
-
-	@Override
-	public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level, RandomState random) {
-		if (warper.isEmpty()) {
-			return super.getBaseColumn(x, z, level, random);
-		} else {
-			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
-			int minY = Math.max(settings.minY(), level.getMinBuildHeight());
-			int maxY = Math.min(settings.minY() + settings.height(), level.getMaxBuildHeight());
-			int minCell = Math.floorDiv(minY, settings.getCellHeight());
-			int maxCell = Math.floorDiv(maxY - minY, settings.getCellHeight());
-			if (maxCell <= 0) {
-				return new NoiseColumn(minY, EMPTY_COLUMN);
-			} else {
-				BlockState[] ablockstate = new BlockState[maxCell * settings.getCellHeight()];
-				this.iterateNoiseColumn(random, x, z, ablockstate, null, minCell, maxCell);
-				return new NoiseColumn(minY, ablockstate);
-			}
-		}
-	}
-
-	//This logic only seems to concern very specific features, but it does need the Warp
-	protected OptionalInt iterateNoiseColumn(RandomState random, int x, int z, @Nullable BlockState[] states, @Nullable Predicate<BlockState> predicate, int min, int max) {
-		NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
-		int cellWidth = settings.getCellWidth();
-		int cellHeight = settings.getCellHeight();
-		int xDiv = Math.floorDiv(x, cellWidth);
-		int zDiv = Math.floorDiv(z, cellWidth);
-		int xMod = Math.floorMod(x, cellWidth);
-		int zMod = Math.floorMod(z, cellWidth);
-		int xMin = xMod / cellWidth;
-		int zMin = zMod / cellWidth;
-		double[][] columns = new double[][] {
-				this.makeAndFillNoiseColumn(random, xDiv, zDiv, min, max),
-				this.makeAndFillNoiseColumn(random, xDiv, zDiv + 1, min, max),
-				this.makeAndFillNoiseColumn(random, xDiv + 1, zDiv, min, max),
-				this.makeAndFillNoiseColumn(random, xDiv + 1, zDiv + 1, min, max)
-		};
-
-		for (int cell = max - 1; cell >= 0; cell--) {
-			double d00 = columns[0][cell];
-			double d10 = columns[1][cell];
-			double d20 = columns[2][cell];
-			double d30 = columns[3][cell];
-			double d01 = columns[0][cell + 1];
-			double d11 = columns[1][cell + 1];
-			double d21 = columns[2][cell + 1];
-			double d31 = columns[3][cell + 1];
-
-			for (int height = cellHeight - 1; height >= 0; height--) {
-				double dcell = height / (double)cellHeight;
-				double lcell = Mth.lerp3(dcell, xMin, zMin, d00, d01, d20, d21, d10, d11, d30, d31);
-				int layer = cell * cellHeight + height;
-				int maxlayer = layer + min * cellHeight;
-				BlockState state = this.generateBaseState(lcell, layer);
-
-				if (states != null) {
-					states[layer] = state;
-				}
-
-				if (predicate != null && predicate.test(state)) {
-					return OptionalInt.of(maxlayer + 1);
-				}
-			}
-		}
-
-		return OptionalInt.empty();
-	}
-
-	@Override
-	public CompletableFuture<ChunkAccess> createBiomes(Executor executor, RandomState random, Blender blender, StructureManager manager, ChunkAccess chunkAccess) {
-		//Mimic behaviour of ChunkGenerator, NoiseBasedChunkGenerator does weird things
-		return CompletableFuture.supplyAsync(Util.wrapThreadWithTaskName("init_biomes", () -> {
-			chunkAccess.fillBiomesFromNoise(this.getBiomeSource(), Climate.empty());
-			return chunkAccess;
-		}), Util.backgroundExecutor());
-	}
-
-	//VanillaCopy of NoiseBasedChunkGenerator#fillFromNoise, only so doFill can be ours
-	@Override
-	public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, RandomState random, StructureManager structureManager, ChunkAccess chunkAccess) {
-		if (warper.isEmpty()) {
-			return super.fillFromNoise(executor, blender, random, structureManager, chunkAccess);
-		} else {
-			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
-			int cellHeight = settings.getCellHeight();
-			int minY = Math.max(settings.minY(), chunkAccess.getMinBuildHeight());
-			int maxY = Math.min(settings.minY() + settings.height(), chunkAccess.getMaxBuildHeight());
-			int mincell = Math.floorDiv(minY, cellHeight);
-			int maxcell = Math.floorDiv(maxY - minY, cellHeight);
-
-			if (maxcell <= 0) {
-				return CompletableFuture.completedFuture(chunkAccess);
-			} else {
-				int maxIndex = chunkAccess.getSectionIndex(maxcell * cellHeight - 1 + minY);
-				int minIndex = chunkAccess.getSectionIndex(minY);
-				Set<LevelChunkSection> sections = Sets.newHashSet();
-
-				for (int index = maxIndex; index >= minIndex; index--) {
-					LevelChunkSection section = chunkAccess.getSection(index);
-					section.acquire();
-					sections.add(section);
-				}
-
-				return CompletableFuture.supplyAsync(() -> this.doFill(random, chunkAccess, mincell, maxcell), Util.backgroundExecutor()).whenCompleteAsync((chunk, throwable) -> {
-					for (LevelChunkSection section : sections) {
-						section.release();
-					}
-				}, executor);
-			}
-		}
-	}
-
-	private ChunkAccess doFill(RandomState random, ChunkAccess access, int min, int max) {
-		NoiseSettings settings = noiseGeneratorSettings.value().noiseSettings();
-		int cellWidth = settings.getCellWidth();
-		int cellHeight = settings.getCellHeight();
-		int cellCountX = 16 / cellWidth;
-		int cellCountZ = 16 / cellWidth;
-		Heightmap oceanfloor = access.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
-		Heightmap surface = access.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
-		ChunkPos chunkpos = access.getPos();
-		int minX = chunkpos.getMinBlockX();
-		int minZ = chunkpos.getMinBlockZ();
-		TFNoiseInterpolator interpolator = new TFNoiseInterpolator(cellCountX, max, cellCountZ, chunkpos, min, (columns, x, z, min1, max1, max12) -> fillNoiseColumn(x, z, min1, max1, max12));
-		interpolator.initialiseFirstX(random);
-
-        for (int cellX = 0; cellX < cellCountX; cellX++) {
-            interpolator.advanceX(random, cellX);
-
-			for (int cellZ = 0; cellZ < cellCountZ; cellZ++) {
-				int sections = access.getSectionsCount() - 1;
-				LevelChunkSection section = access.getSection(sections);
-
-				for (int cellY = max - 1; cellY >= 0; cellY--) {
-                    interpolator.selectYZ(cellY, cellZ);
-
-					for(int height = cellHeight - 1; height >= 0; height--) {
-						int minheight = (min + cellY) * cellHeight + height;
-						int mincellY = minheight & 15;
-						int minindexY = access.getSectionIndex(minheight);
-
-						if (sections != minindexY) {
-							sections = minindexY;
-							section = access.getSection(minindexY);
-						}
-
-                        interpolator.updateY((double)height / (double)cellHeight);
-
-						for (int widthX = 0; widthX < cellWidth; widthX++) {
-							int minwidthX = minX + cellX * cellWidth + widthX;
-							int mincellX = minwidthX & 15;
-							double widthdivX = (double)widthX / (double)cellWidth;
-							interpolator.updateX(widthdivX);
-
-							for (int widthZ = 0; widthZ < cellWidth; widthZ++) {
-								int minwidthZ = minZ + cellZ * cellWidth + widthZ;
-								int mincellZ = minwidthZ & 15;
-								double widthdivZ = (double)widthZ / (double)cellWidth;
-								double noiseval = interpolator.updateZ(widthdivZ);
-								//BlockState state = this.updateNoiseAndGenerateBaseState(beardifier, this.emptyAquifier, NoiseModifier.PASS, minwidthX, minheight, minwidthZ, noiseval); //TODO
-								BlockState state = this.generateBaseState(noiseval, minheight);
-
-								if (state != Blocks.AIR.defaultBlockState()) {
-									section.setBlockState(mincellX, mincellY, mincellZ, state, false);
-									oceanfloor.update(mincellX, minheight, mincellZ, state);
-									surface.update(mincellX, minheight, mincellZ, state);
-								}
-							}
-						}
-					}
-				}
-			}
-
-			interpolator.swapSlices();
-		}
-
-		return access;
-	}
-
-	private double[] makeAndFillNoiseColumn(RandomState state, int x, int z, int min, int max) {
-		double[] columns = new double[max + 1];
-		this.fillNoiseColumn(columns, x, z, min, max);
-		return columns;
-	}
-
-	private void fillNoiseColumn(double[] columns, int x, int z, int min, int max) {
-		this.warper.get().fillNoiseColumn(columns, x, z, min, max);
-	}
-
-	//Logic based on 1.16. Will only ever get the default Block, Fluid, or Air
-	private BlockState generateBaseState(double noiseVal, double level) {
-		BlockState state;
-
-		if (noiseVal > 0.0D) {
-			state = this.defaultBlock;
-		} else if (level < this.getSeaLevel()) {
-			state = this.defaultFluid;
-		} else {
-			state = Blocks.AIR.defaultBlockState();
-		}
-
-		return state;
 	}
 
 	@Override
