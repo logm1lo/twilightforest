@@ -42,7 +42,7 @@ public class DwarfRabbit extends Animal implements VariantHolder<DwarfRabbitVari
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0F));
 		this.goalSelector.addGoal(2, new BreedGoal(this, 0.8D));
-		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION), false));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.of(ItemTagGenerator.DWARF_RABBIT_TEMPT_ITEMS), false));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 2.0F, 0.8F, 1.33F));
 		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Ocelot.class, 8.0F, 0.8F, 1.1F));
 		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Cat.class, 8.0F, 0.8F, 1.1F));
@@ -146,13 +146,9 @@ public class DwarfRabbit extends Animal implements VariantHolder<DwarfRabbitVari
 		return this.level().getMaxLocalRawBrightness(pos) - 0.5F;
 	}
 
-	private static boolean isTemptingItem(ItemStack stack) {
-		return stack.is(Items.CARROT) || stack.is(Items.GOLDEN_CARROT) || stack.is(Blocks.DANDELION.asItem());
-	}
-
 	@Override
 	public boolean isFood(ItemStack stack) {
-		return isTemptingItem(stack);
+		return stack.is(ItemTagGenerator.DWARF_RABBIT_TEMPT_ITEMS);
 	}
 
 	@Nullable

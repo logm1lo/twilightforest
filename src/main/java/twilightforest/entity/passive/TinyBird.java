@@ -107,8 +107,11 @@ public class TinyBird extends FlyingBird implements VariantHolder<TinyBirdVarian
 	public boolean isSpooked() {
 		if (this.getLastHurtByMob() != null) return true;
 		Player closestPlayer = this.level().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 4.0D, true);
-		return closestPlayer != null
-				&& !SEEDS.test(closestPlayer.getMainHandItem())
-				&& !SEEDS.test(closestPlayer.getOffhandItem());
+		return closestPlayer != null && closestPlayer.isHolding(stack -> stack.is(this.getTemptItems()));
+	}
+
+	@Override
+	public TagKey<Item> getTemptItems() {
+		return ItemTagGenerator.TINY_BIRD_TEMPT_ITEMS;
 	}
 }
