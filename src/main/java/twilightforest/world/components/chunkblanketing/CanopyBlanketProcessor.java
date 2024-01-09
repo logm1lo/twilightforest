@@ -7,6 +7,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -80,6 +81,12 @@ public record CanopyBlanketProcessor(HolderSet<Biome> biomesForApplication, Bloc
                 int qx = dX >> 2;
                 int qz = dZ >> 2;
 
+                final int topOccupiedBlock = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
+                // We can use the Deltas here as they are offsets from chunk origin
+                BlockPos surfacePos = chunkOrigin.offset(dX, topOccupiedBlock, dZ);
+
+                if (chunk.getFluidState(surfacePos).is(FluidTags.WATER)) continue;
+
                 float xweight = (dX % 4) * 0.25F + 0.125F;
                 float zweight = (dZ % 4) * 0.25F + 0.125F;
 
@@ -100,9 +107,9 @@ public record CanopyBlanketProcessor(HolderSet<Biome> biomesForApplication, Bloc
                 }
 
                 if (thickness > 1) {
-                    // We can use the Deltas here as they are offsets from chunk origin
-                    final int dY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ) + 1;
-                    BlockPos pos = chunkOrigin.offset(dX, dY, dZ);
+                    // We can use the Delta here as it is offset from chunk origin
+                    final int dY = 1 + chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
+                    BlockPos pos = surfacePos.atY(dY);
 
                     // Skip any blocks over water
                     if (chunk.getBlockState(pos).liquid())
