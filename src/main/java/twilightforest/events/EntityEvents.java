@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,7 +15,9 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Interaction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
@@ -30,6 +33,7 @@ import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -39,6 +43,7 @@ import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -56,6 +61,7 @@ import twilightforest.item.FieryArmorItem;
 import twilightforest.item.OreMeterItem;
 import twilightforest.item.YetiArmorItem;
 import twilightforest.network.WipeOreMeterPacket;
+import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -329,6 +335,18 @@ public class EntityEvents {
 		LivingEntity living = event.getEntity();
 		if (living != null && living.level().isClientSide() && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock) {
 			for (int i = 0; i < 12; i++) CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onAttackEvent(AttackEntityEvent event) {
+		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise
+		// The tag distinguishes our Interaction entities from other Mods' utilization
+        if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
+				&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
+			AABB bounds = interaction.getBoundingBox();
+			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
+			interaction.discard();
 		}
 	}
 }
