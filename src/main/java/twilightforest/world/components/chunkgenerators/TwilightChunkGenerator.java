@@ -25,7 +25,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBiomes;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFLandmark;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.Vec2i;
@@ -115,9 +114,6 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 					this.deformTerrainForYetiLair(primer, nearFeature.size, xInChunk, zInChunk, featureDX, featureDZ);
 				}
 			}
-		} else if (nearFeature == TFLandmark.TROLL_CAVE) {
-			// troll cloud, more like
-			deformTerrainForTrollCloud2(primer, chunk, relativeFeatureX, relativeFeatureZ, 166);
 		}
 
 		// done!
@@ -176,82 +172,6 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 				if (!b.isAir() && !b.liquid()) {
 					BlockPos old = primer.getCenter().getWorldPosition().offset(x, 0, z);
 					primer.setBlock(old.atY(y), Blocks.AIR.defaultBlockState(), 3);
-				}
-			}
-		}
-	}
-
-	private static void deformTerrainForTrollCloud2(WorldGenRegion primer, ChunkAccess chunkAccess, int hx, int hz, int cloudHeight) {
-		for (int bx = 0; bx < 4; bx++) {
-			for (int bz = 0; bz < 4; bz++) {
-				int dx = bx * 4 - hx - 2;
-				int dz = bz * 4 - hz - 2;
-
-				// generate several centers for other clouds
-				int regionX = primer.getCenter().x + 8 >> 4;
-				int regionZ = primer.getCenter().z + 8 >> 4;
-
-				long seed = regionX * 3129871L ^ regionZ * 116129781L;
-				seed = seed * seed * 42317861L + seed * 7L;
-
-				int num0 = (int) (seed >> 12 & 3L);
-				int num1 = (int) (seed >> 15 & 3L);
-				int num2 = (int) (seed >> 18 & 3L);
-				int num3 = (int) (seed >> 21 & 3L);
-				int num4 = (int) (seed >> 9 & 3L);
-				int num5 = (int) (seed >> 6 & 3L);
-				int num6 = (int) (seed >> 3 & 3L);
-				int num7 = (int) (seed & 3L);
-
-				int dx2 = dx + num0 * 5 - num1 * 4;
-				int dz2 = dz + num2 * 4 - num3 * 5;
-				int dx3 = dx + num4 * 5 - num5 * 4;
-				int dz3 = dz + num6 * 4 - num7 * 5;
-
-				// take the minimum distance to any center
-				float dist0 = Mth.sqrt(dx * dx + dz * dz) / 4.0f;
-				float dist2 = Mth.sqrt(dx2 * dx2 + dz2 * dz2) / 3.5f;
-				float dist3 = Mth.sqrt(dx3 * dx3 + dz3 * dz3) / 4.5f;
-
-				double dist = Math.min(dist0, Math.min(dist2, dist3));
-
-				float pr = primer.getRandom().nextFloat();
-				double cv = dist - 7F - pr * 3.0F;
-
-				// randomize depth and height
-				int y = cloudHeight;
-				int depth = 4;
-
-				if (pr < 0.1F) {
-					y++;
-				}
-				if (pr > 0.6F) {
-					depth++;
-				}
-				if (pr > 0.9F) {
-					depth++;
-				}
-
-				// generate cloud
-				for (int sx = 0; sx < 4; sx++) {
-					for (int sz = 0; sz < 4; sz++) {
-						int lx = bx * 4 + sx;
-						int lz = bz * 4 + sz;
-
-						BlockPos.MutableBlockPos movingPos = primer.getCenter().getWorldPosition().mutable().move(lx, 0, lz);
-
-						if (dist < 7 || cv < 0.05F) {
-							primer.setBlock(movingPos.setY(y), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), 3);
-							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), 3);
-							}
-							primer.setBlock(movingPos.setY(y - depth), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), 3);
-						} else if (dist < 8 || cv < 1F) {
-							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), 3);
-							}
-						}
-					}
 				}
 			}
 		}

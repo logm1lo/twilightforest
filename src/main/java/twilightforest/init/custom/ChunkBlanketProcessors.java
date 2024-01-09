@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ThreadedLevelLightEngine;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -23,21 +23,19 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
-import twilightforest.world.components.chunkblanketing.CanopyBlanketProcessor;
-import twilightforest.world.components.chunkblanketing.ChunkBlanketProcessor;
-import twilightforest.world.components.chunkblanketing.ChunkBlanketType;
-import twilightforest.world.components.chunkblanketing.GlacierBlanketProcessor;
+import twilightforest.world.components.chunkblanketing.*;
 
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -54,9 +52,13 @@ public final class ChunkBlanketProcessors {
 
     public static final DeferredHolder<ChunkBlanketType, ChunkBlanketType> CANOPY = registerType("canopy", CanopyBlanketProcessor.CODEC);
     public static final DeferredHolder<ChunkBlanketType, ChunkBlanketType> GLACIER = registerType("glacier", GlacierBlanketProcessor.CODEC);
+    @Deprecated // TODO: Move to Troll Clouds Structure
+    public static final DeferredHolder<ChunkBlanketType, ChunkBlanketType> CLOUDS = registerType("clouds", TrollCloudProcessor.CODEC);
 
     public static final ResourceKey<ChunkBlanketProcessor> DARK_FOREST_CANOPY = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TwilightForestMod.prefix("dark_forest_canopy"));
     public static final ResourceKey<ChunkBlanketProcessor> SNOWY_FOREST_GLACIER = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TwilightForestMod.prefix("snowy_forest_glacier"));
+    @Deprecated // TODO: Move to Troll Clouds Structure
+    public static final ResourceKey<ChunkBlanketProcessor> TROLL_CLOUDS = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TwilightForestMod.prefix("troll_clouds"));
 
     public static DeferredHolder<ChunkBlanketType, ChunkBlanketType> registerType(String name, Codec<? extends ChunkBlanketProcessor> codec) {
         Codec<? extends ChunkBlanketProcessor> boxedCodec = codec.fieldOf("config").codec();
@@ -66,9 +68,11 @@ public final class ChunkBlanketProcessors {
 
     public static void bootstrap(BootstapContext<ChunkBlanketProcessor> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+        HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 
-        context.register(DARK_FOREST_CANOPY, new CanopyBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.DARK_FOREST), biomes.getOrThrow(TFBiomes.DARK_FOREST_CENTER)), BlockStateProvider.simple(TFBlocks.HARDENED_DARK_LEAVES.value()), 14, HolderSet.direct(context.lookup(Registries.STRUCTURE).getOrThrow(TFStructures.DARK_TOWER))));
+        context.register(DARK_FOREST_CANOPY, new CanopyBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.DARK_FOREST), biomes.getOrThrow(TFBiomes.DARK_FOREST_CENTER)), BlockStateProvider.simple(TFBlocks.HARDENED_DARK_LEAVES.value()), 14, HolderSet.direct(structures.getOrThrow(TFStructures.DARK_TOWER))));
         context.register(SNOWY_FOREST_GLACIER, new GlacierBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.GLACIER)), BlockStateProvider.simple(Blocks.PACKED_ICE), BlockStateProvider.simple(Blocks.ICE), 32));
+        context.register(TROLL_CLOUDS, new TrollCloudProcessor(biomes.getOrThrow(BiomeTagGenerator.IS_TWILIGHT), 165, structures.getOrThrow(TFStructures.TROLL_CAVE)));
     }
 
     public static void init() {
@@ -108,6 +112,8 @@ public final class ChunkBlanketProcessors {
         TwilightForestMod.LOGGER.info("Successfully processed injection for custom Chunk Status '" + name + "'");
     }
 
+    private static final ResourceLocation WORLDGEN_REGION_RANDOM = new ResourceLocation("worldgen_region_random");
+
     // ChunkStatus.SimpleGenerationTask function implementation
     private static void chunkBlanketing(ChunkStatus status, ServerLevel serverLevel, ChunkGenerator generator, List<ChunkAccess> chunkAccesses, ChunkAccess chunkAccess) {
         ChunkPos chunkPos = chunkAccess.getPos();
@@ -127,13 +133,12 @@ public final class ChunkBlanketProcessors {
                 .filter(modifier -> modifier.biomesForApplication().stream().anyMatch(biomesInChunk::contains))
                 .iterator();
 
-        XoroshiroRandomSource random = new XoroshiroRandomSource(serverLevel.getSeed());
         Function<BlockPos, Holder<Biome>> biomeGetter = serverLevel.getBiomeManager()::getBiome;
 
-        final long seed = serverLevel.getSeed() ^ Mth.getSeed(chunkPos.x, random.nextInt(256), chunkPos.z);
 
         while (modifierIterator.hasNext()) {
-            random.setSeed(seed); // Keep seed same for the processor stack so nothing goes awry when multiple run for a single chunk (e.g. multiple biomes qualifying)
+            // Hopefully, for keeping some level of parity with the WorldGenRegion's RandomSource setup
+            RandomSource random = serverLevel.getChunkSource().randomState().getOrCreateRandomFactory(WORLDGEN_REGION_RANDOM).at(chunkPos.getWorldPosition());
             modifierIterator.next().processChunk(random, biomeGetter, chunkAccess);
         }
     }
