@@ -15,14 +15,15 @@ import twilightforest.TFRegistries;
  * @param biomeDensitySource A BiomeDensitySource containing TerrainColumns, providing per-biome scaling and depth behavior that allows biomes to distinguish their landscapes.
  * @param lowerDensityBound Lower clamp bound
  * @param upperDensityBound Upper clamp bound
- * @param baseFactor Density function (can be constant) for the height of the vertical y-gradient at a given X-Z position. A biome makes its values increase/decrease faster vertically
+ * @param baseFactor Density function (can be constant) for the height of the vertical y-gradient at a given X-Z position. A biome speeds or slows this vertical rate of change.
  * @param baseOffset Density function (can be constant) for the elevation of the vertical y-gradient at a given X-Z position. A biome moves it up and down.
  */
-public record BiomeTerrainWarpRouter(Holder<BiomeDensitySource> biomeDensitySource, double lowerDensityBound, double upperDensityBound, DensityFunction baseFactor, DensityFunction baseOffset) implements DensityFunction.SimpleFunction {
+public record BiomeTerrainWarpRouter(Holder<BiomeDensitySource> biomeDensitySource, double lowerDensityBound, double upperDensityBound, double depthScalar, DensityFunction baseFactor, DensityFunction baseOffset) implements DensityFunction.SimpleFunction {
     public static final KeyDispatchDataCodec<BiomeTerrainWarpRouter> CODEC = KeyDispatchDataCodec.of(RecordCodecBuilder.create(inst -> inst.group(
             RegistryFileCodec.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC, false).fieldOf("terrain_source").forGetter(BiomeTerrainWarpRouter::biomeDensitySource),
             Codec.doubleRange(-64, 0).fieldOf("lower_density_bound").forGetter(BiomeTerrainWarpRouter::lowerDensityBound),
             Codec.doubleRange(0, 64).fieldOf("upper_density_bound").forGetter(BiomeTerrainWarpRouter::upperDensityBound),
+            Codec.doubleRange(0, 32).orElse(8.0).fieldOf("depth_scalar").forGetter(BiomeTerrainWarpRouter::depthScalar),
             DensityFunction.HOLDER_HELPER_CODEC.fieldOf("base_factor").forGetter(BiomeTerrainWarpRouter::baseFactor),
             DensityFunction.HOLDER_HELPER_CODEC.fieldOf("base_offset").forGetter(BiomeTerrainWarpRouter::baseOffset)
     ).apply(inst, BiomeTerrainWarpRouter::new)));
@@ -33,7 +34,7 @@ public record BiomeTerrainWarpRouter(Holder<BiomeDensitySource> biomeDensitySour
 
         double gradientHeight = this.baseFactor.compute(context) * densityData.scale;
 
-        double yOffset = this.baseOffset.compute(context) + densityData.depth * 8 - context.blockY();
+        double yOffset = (this.baseOffset.compute(context) + densityData.depth) * this.depthScalar - context.blockY();
 
         double yShiftedHeight = yOffset / gradientHeight;
 

@@ -60,41 +60,45 @@ public class TFDimensionSettings {
 
 		DensityFunction heightOffsetNoise = DensityFunctions.cache2d(DensityFunctions.mul(
 				DensityFunctions.noise(surfaceParams, 1, 0),
-				DensityFunctions.constant(12)
+				DensityFunctions.constant(2)
 		));
 
-        DensityFunction interpolatedBiomeWarped = DensityFunctions.interpolated(new BiomeTerrainWarpRouter(
-                biomeGrid,
-                -64,
-                64,
-                DensityFunctions.constant(2.5),
-                heightOffsetNoise
-        ));
+        DensityFunction routedBiomeWarpInterpolated = DensityFunctions.mul(
+				DensityFunctions.constant(1/32f),
+				DensityFunctions.interpolated(new BiomeTerrainWarpRouter(
+						biomeGrid,
+						-64,
+						64,
+						8,
+						DensityFunctions.constant(2.5),
+						heightOffsetNoise
+				))
+		);
 
-		DensityFunction noise3d = DensityFunctions.max(
-				DensityFunctions.zero(),
-				DensityFunctions.mul(
-						DensityFunctions.constant(8),
+		DensityFunction noise3d = DensityFunctions.add(
+				routedBiomeWarpInterpolated,
+				DensityFunctions.max(
+						DensityFunctions.zero(),
 						DensityFunctions.add(
-								DensityFunctions.constant(2),
-								DensityFunctions.noise(surfaceParams, 2, 1)
+								DensityFunctions.constant(0.1),
+								DensityFunctions.mul(
+										DensityFunctions.constant(0.2),
+										DensityFunctions.noise(surfaceParams, 4, 0.125)
+								)
 						)
 				)
 		);
 
-		DensityFunction finalDensity = DensityFunctions.max(
-				DensityFunctions.constant(-0.2),
-				DensityFunctions.add(
-						interpolatedBiomeWarped,
-						noise3d
-				)
-		);
+		DensityFunction finalDensity = DensityFunctions.add(
+				noise3d,
+				DensityFunctions.yClampedGradient(-8, 1, 1.5, 0).square()
+		).clamp(-0.2, 1);
 
 		NoiseSettings tfNoise = NoiseSettings.create(
 				-32, //TODO Deliberate over this. For now it'll be -32
 				256,
-				2,
-				1
+				4,
+				4
 		);
 
 		return new NoiseGeneratorSettings(
