@@ -108,7 +108,7 @@ public record CanopyBlanketProcessor(HolderSet<Biome> biomesForApplication, Bloc
 
                 if (thickness > 1) {
                     // We can use the Delta here as it is offset from chunk origin
-                    final int dY = 1 + chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
+                    final int dY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
                     BlockPos pos = surfacePos.atY(dY);
 
                     // Skip any blocks over water
