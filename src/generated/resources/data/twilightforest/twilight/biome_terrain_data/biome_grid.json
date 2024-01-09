@@ -58,7 +58,7 @@
       "biome_layers": {
         "0.0": "twilightforest:final_plateau"
       },
-      "depth": 13.75,
+      "depth": 12.0,
       "key_biome": "twilightforest:final_plateau",
       "scale": 0.02500000037252903
     },
@@ -109,12 +109,12 @@
     },
     {
       "biome_layers": {
-        "-2.9700000286102295": "twilightforest:lake",
-        "-4.9700000286102295": "twilightforest:underground"
+        "-2.9998": "twilightforest:lake",
+        "-4.9998000000000005": "twilightforest:underground"
       },
-      "depth": -1.9700000286102295,
+      "depth": -1.9998,
       "key_biome": "twilightforest:lake",
-      "scale": 0.0
+      "scale": 0.0010000000474974513
     },
     {
       "biome_layers": {
@@ -154,12 +154,12 @@
     },
     {
       "biome_layers": {
-        "-2.649999976158142": "twilightforest:stream",
-        "-4.649999976158142": "twilightforest:underground"
+        "-1.899999976158142": "twilightforest:stream",
+        "-3.899999976158142": "twilightforest:underground"
       },
-      "depth": -1.649999976158142,
+      "depth": -0.8999999761581421,
       "key_biome": "twilightforest:stream",
-      "scale": 0.25
+      "scale": 0.10000000149011612
     },
     {
       "biome_layers": {
@@ -174,7 +174,7 @@
       "biome_layers": {
         "0.0": "twilightforest:thornlands"
       },
-      "depth": 7.0,
+      "depth": 5.5,
       "key_biome": "twilightforest:thornlands",
       "scale": 0.10000000149011612
     }

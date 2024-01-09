@@ -42,8 +42,8 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeColumnWithUnderground(0.0625F, 0.05F, biomeRegistry, TFBiomes.FIREFLY_FOREST, undergroundBiome),
 				biomeColumnWithUnderground(0.005F, 0.005F, biomeRegistry, TFBiomes.CLEARING, undergroundBiome),
 				biomeColumnWithUnderground(0.05F, 0.1F, biomeRegistry, TFBiomes.OAK_SAVANNAH, undergroundBiome),
-				biomeColumnWithUnderground(-1.65F, 0.25F, biomeRegistry, TFBiomes.STREAM, undergroundBiome),
-				biomeColumnWithUnderground(-1.97F, 0.0F, biomeRegistry, TFBiomes.LAKE, undergroundBiome),
+				biomeColumnWithUnderground(-0.9F, 0.1F, biomeRegistry, TFBiomes.STREAM, undergroundBiome),
+				biomeColumnWithUnderground(-1.9998, 0.001F, biomeRegistry, TFBiomes.LAKE, undergroundBiome),
 
 				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, TFBiomes.MUSHROOM_FOREST, undergroundBiome),
 				biomeColumnWithUnderground(0.05F, 0.05F, biomeRegistry, TFBiomes.DENSE_MUSHROOM_FOREST, undergroundBiome),
@@ -60,9 +60,9 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeColumnWithUnderground(0.05F, 0.15F, biomeRegistry, TFBiomes.SNOWY_FOREST, undergroundBiome),
 				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, TFBiomes.GLACIER, undergroundBiome),
 
-				biomeColumnWithUnderground(3.0F, 0.25F, biomeRegistry, TFBiomes.HIGHLANDS, undergroundBiome),
-				biomeColumnToBedrock(7.0F, 0.1F, biomeRegistry, TFBiomes.THORNLANDS),
-				biomeColumnToBedrock(13.75F, 0.025F, biomeRegistry, TFBiomes.FINAL_PLATEAU)
+				biomeColumnWithUnderground(3, 0.25F, biomeRegistry, TFBiomes.HIGHLANDS, undergroundBiome),
+				biomeColumnToBedrock(5.5, 0.1F, biomeRegistry, TFBiomes.THORNLANDS),
+				biomeColumnToBedrock(12, 0.025F, biomeRegistry, TFBiomes.FINAL_PLATEAU)
 		);
 	}
 
