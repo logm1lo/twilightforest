@@ -27,6 +27,8 @@ public class TFDimensionSettings {
 
 	public static long seed; //Minecraft Overworld seed - used for seed ASM
 
+	public static final ResourceKey<DensityFunction> TWILIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("twilight_terrain"));
+
 	public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("twilight_noise_gen"));
 	public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("skylight_noise_gen"));
 
@@ -54,7 +56,7 @@ public class TFDimensionSettings {
 		);
 	}
 
-	public static NoiseGeneratorSettings tfDefault(BootstapContext<NoiseGeneratorSettings> context) {
+	public static void bootstrapDensityFunctions(BootstapContext<DensityFunction> context) {
 		Holder.Reference<BiomeDensitySource> biomeGrid = context.lookup(TFRegistries.Keys.BIOME_TERRAIN_DATA).getOrThrow(BiomeLayerStack.BIOME_GRID);
 		Holder.Reference<NormalNoise.NoiseParameters> surfaceParams = context.lookup(Registries.NOISE).getOrThrow(Noises.SURFACE);
 		Holder.Reference<NormalNoise.NoiseParameters> ridgeParams = context.lookup(Registries.NOISE).getOrThrow(Noises.RIDGE);
@@ -121,6 +123,13 @@ public class TFDimensionSettings {
 				noisedBiomeNoise,
 				DensityFunctions.yClampedGradient(-32, -1, 0.5, 0).square()
 		).clamp(-0.2, 1);
+
+		context.register(TWILIGHT_TERRAIN, finalDensity);
+	}
+
+	public static NoiseGeneratorSettings tfDefault(BootstapContext<NoiseGeneratorSettings> context) {
+		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
+		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(TWILIGHT_TERRAIN));
 
 		NoiseSettings tfNoise = NoiseSettings.create(
 				-32, //TODO Deliberate over this. For now it'll be -32
