@@ -3,39 +3,38 @@ package twilightforest.entity.passive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFRegistries;
+import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFDataSerializers;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.DwarfRabbitVariants;
 
-public class DwarfRabbit extends Animal {
+public class DwarfRabbit extends Animal implements VariantHolder<DwarfRabbitVariant> {
 
-	private static final EntityDataAccessor<String> TYPE = SynchedEntityData.defineId(DwarfRabbit.class, EntityDataSerializers.STRING);
+	private static final EntityDataAccessor<DwarfRabbitVariant> VARIANT = SynchedEntityData.defineId(DwarfRabbit.class, TFDataSerializers.DWARF_RABBIT_VARIANT.get());
 
 	public DwarfRabbit(EntityType<? extends DwarfRabbit> type, Level world) {
 		super(type, world);
-		this.setBunnyType(DwarfRabbitVariant.getVariantId(DwarfRabbitVariant.getRandomVariant(this.getRandom())));
 	}
 
 	@Override
@@ -71,42 +70,56 @@ public class DwarfRabbit extends Animal {
 	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
 		DwarfRabbit dwarf = TFEntities.DWARF_RABBIT.get().create(level);
 		DwarfRabbitVariant variant = DwarfRabbitVariant.getRandomVariant(this.getRandom());
-		if (this.getRandom().nextInt(20) != 0) {
-			if (mob instanceof DwarfRabbit rabbit && this.getRandom().nextBoolean()) {
-				variant = rabbit.getBunnyType();
-			} else {
-				variant = this.getBunnyType();
+		if (dwarf != null && mob instanceof DwarfRabbit parent) {
+			if (this.getRandom().nextInt(20) != 0) {
+				if (this.getRandom().nextBoolean()) {
+					variant = this.getVariant();
+				} else {
+					variant = parent.getVariant();
+				}
 			}
+			dwarf.setVariant(variant);
 		}
 
-		dwarf.setBunnyType(DwarfRabbitVariant.getVariantId(variant));
 		return dwarf;
 	}
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.getEntityData().define(TYPE, DwarfRabbitVariant.getVariantId(DwarfRabbitVariant.getRandomVariant(this.getRandom())));
+		this.getEntityData().define(VARIANT, DwarfRabbitVariants.BROWN.get());
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putString("BunnyType", DwarfRabbitVariant.getVariantId(this.getBunnyType()));
+		compound.putString("variant", TFRegistries.DWARF_RABBIT_VARIANT.getKey(this.getVariant()).toString());
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.setBunnyType(compound.getString("BunnyType"));
+		DwarfRabbitVariant variant = TFRegistries.DWARF_RABBIT_VARIANT.get(ResourceLocation.tryParse(compound.getString("variant")));
+		if (variant != null) {
+			this.setVariant(variant);
+		}
 	}
 
-	public DwarfRabbitVariant getBunnyType() {
-		return DwarfRabbitVariant.getVariant(this.getEntityData().get(TYPE)).orElse(DwarfRabbitVariants.BROWN.get());
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+		this.setVariant(DwarfRabbitVariant.getRandomVariant(this.getRandom()));
+		return data;
 	}
 
-	public void setBunnyType(String type) {
-		this.getEntityData().set(TYPE, type);
+	@Override
+	public DwarfRabbitVariant getVariant() {
+		return this.getEntityData().get(VARIANT);
+	}
+
+	@Override
+	public void setVariant(DwarfRabbitVariant variant) {
+		this.getEntityData().set(VARIANT, variant);
 	}
 
 	@Override
