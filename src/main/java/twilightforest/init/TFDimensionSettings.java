@@ -57,6 +57,7 @@ public class TFDimensionSettings {
 	public static NoiseGeneratorSettings tfDefault(BootstapContext<NoiseGeneratorSettings> context) {
 		Holder.Reference<BiomeDensitySource> biomeGrid = context.lookup(TFRegistries.Keys.BIOME_TERRAIN_DATA).getOrThrow(BiomeLayerStack.BIOME_GRID);
 		Holder.Reference<NormalNoise.NoiseParameters> surfaceParams = context.lookup(Registries.NOISE).getOrThrow(Noises.SURFACE);
+		Holder.Reference<NormalNoise.NoiseParameters> ridgeParams = context.lookup(Registries.NOISE).getOrThrow(Noises.RIDGE);
 
 		DensityFunction heightOffsetNoise = DensityFunctions.cache2d(DensityFunctions.mul(
 				DensityFunctions.noise(surfaceParams, 1, 0),
@@ -75,23 +76,50 @@ public class TFDimensionSettings {
 				))
 		);
 
-		DensityFunction noise3d = DensityFunctions.add(
-				routedBiomeWarpInterpolated,
-				DensityFunctions.max(
-						DensityFunctions.zero(),
-						DensityFunctions.add(
-								DensityFunctions.constant(0.1),
-								DensityFunctions.mul(
-										DensityFunctions.constant(0.2),
-										DensityFunctions.noise(surfaceParams, 4, 0.125)
-								)
-						)
+		// Debug: For a flat substitute of BiomeTerrainWarpRouter
+		// routedBiomeWarpInterpolated = DensityFunctions.yClampedGradient(-31, 32, 2, -2);
+
+		DensityFunction wideNoise = DensityFunctions.add(
+				DensityFunctions.constant(0.2),
+				DensityFunctions.mul(
+						DensityFunctions.constant(0.4),
+						DensityFunctions.noise(surfaceParams, 0.5, 0)
 				)
 		);
 
+		DensityFunction thinNoise = DensityFunctions.add(
+				DensityFunctions.constant(0.2),
+				DensityFunctions.mul(
+						DensityFunctions.constant(0.4),
+						DensityFunctions.noise(surfaceParams, 3, 0)
+				)
+		);
+
+		DensityFunction noiseInterpolator = DensityFunctions.add(
+				DensityFunctions.constant(0.5),
+				DensityFunctions.mul(
+						DensityFunctions.constant(0.5),
+						DensityFunctions.noise(ridgeParams, 1.5, 0)
+				)
+		);
+
+		DensityFunction jitteredNoise = DensityFunctions.lerp(
+				noiseInterpolator,
+				wideNoise,
+				thinNoise
+		);
+
+		DensityFunction noisedBiomeNoise = DensityFunctions.add(
+				routedBiomeWarpInterpolated,
+				DensityFunctions.cache2d(DensityFunctions.max(
+						DensityFunctions.zero(),
+						jitteredNoise
+				))
+		);
+
 		DensityFunction finalDensity = DensityFunctions.add(
-				noise3d,
-				DensityFunctions.yClampedGradient(-8, 1, 1.5, 0).square()
+				noisedBiomeNoise,
+				DensityFunctions.yClampedGradient(-32, -1, 0.5, 0).square()
 		).clamp(-0.2, 1);
 
 		NoiseSettings tfNoise = NoiseSettings.create(
