@@ -11,5 +11,6 @@
   "shroom": "META-INF/asm/shroom.js",
   "cloud": "META-INF/asm/cloud.js",
   "lead": "META-INF/asm/lead.js",
-  "chunkstatus": "META-INF/asm/chunkstatus.js"
+  "chunkstatus": "META-INF/asm/chunkstatus.js",
+  "structure_terraform": "META-INF/asm/structure_terraform.js"
 }

@@ -1,6 +1,8 @@
 package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -26,12 +28,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
@@ -60,6 +60,7 @@ import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.item.GiantItem;
 import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.network.UpdateTFMultipartPacket;
+import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -349,5 +350,38 @@ public class ASMHooks {
 	public static void assertChunkBlanketing() {
 		// Only need to touch this class to ensure it's classloaded before other classes cache our reconstructed ChunkStatus sequence
 		ChunkBlanketProcessors.init();
+	}
+
+	/**
+	 * structure_terraform.js: attach<br>
+	 * Injection point:<br>
+	 * {@link net.minecraft.world.level.levelgen.Beardifier#forStructuresInChunk(StructureManager, ChunkPos)}<br>
+	 * [BEFORE ARETURN]
+	 */
+	public static ObjectListIterator<DensityFunction> gatherCustomTerrain(StructureManager structureManager, ChunkPos chunkPos) {
+		ObjectArrayList<DensityFunction> customStructureTerraforms = new ObjectArrayList<>(10);
+
+		for (StructureStart structureStart : structureManager.startsForStructure(chunkPos, s -> s instanceof CustomDensitySource))
+			if (structureStart.getStructure() instanceof CustomDensitySource customDensitySource)
+				customStructureTerraforms.add(customDensitySource.getStructureTerraformer(chunkPos, structureStart));
+
+		return customStructureTerraforms.iterator();
+	}
+
+	/**
+	 * structure_terraform.js: recompute<br>
+	 * Injection point:<br>
+	 * {@link net.minecraft.world.level.levelgen.Beardifier#compute(DensityFunction.FunctionContext)}<br>
+	 * [BEFORE DRETURN]
+	 */
+	public static double getCustomDensity(DensityFunction.FunctionContext context, ObjectListIterator<DensityFunction> customDensities) {
+		double newDensity = 0;
+
+		while (customDensities.hasNext()) {
+			newDensity += customDensities.next().compute(context);
+		}
+		customDensities.back(Integer.MAX_VALUE);
+
+		return newDensity;
 	}
 }
