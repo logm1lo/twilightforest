@@ -17,7 +17,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
-import twilightforest.world.components.layer.vanillalegacy.BiomeTerrainWarpRouter;
+import twilightforest.world.components.chunkgenerators.BiomeTerrainWarpRouter;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.List;
@@ -122,7 +122,7 @@ public class TFDimensionSettings {
 		DensityFunction finalDensity = DensityFunctions.add(
 				noisedBiomeNoise,
 				DensityFunctions.yClampedGradient(-32, -1, 0.5, 0).square()
-		).clamp(-0.2, 1);
+		).clamp(-0.1, 1);
 
 		context.register(TWILIGHT_TERRAIN, finalDensity);
 	}

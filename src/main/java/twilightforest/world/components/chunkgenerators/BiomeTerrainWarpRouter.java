@@ -1,4 +1,4 @@
-package twilightforest.world.components.layer.vanillalegacy;
+package twilightforest.world.components.chunkgenerators;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -8,6 +8,7 @@ import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import twilightforest.TFRegistries;
+import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
 
 /**
  * A DensityFunction implementation that enables Biomes to influence terrain formulations, if in the noise chunk generator.

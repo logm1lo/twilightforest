@@ -5,14 +5,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.CommonLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
@@ -22,6 +26,7 @@ import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 public class HollowHillComponent extends TFStructureComponentOld {
@@ -85,28 +90,78 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox writeableBounds, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockPos center = this.getLocatorPosition();
 		float shortenedRadiusSq = this.radius * this.radius * 0.85f;
+		//float drainRadius = this.radius * this.radius * 0.95f;
+		float drainRadius = this.hillSize * 16.5f;
+
+		drainWater(generator, writeableBounds, this.boundingBox, world, this.hillSize * 3 + 2, Blocks.CAVE_AIR.defaultBlockState(), center.getX(), center.getZ(), drainRadius * drainRadius, Blocks.STONE.defaultBlockState());
 
         // Use two rectangle-grid lattices to simulate a triangular-grid lattice, simulating an optimal hexagonal-packing pattern for filling this structure
 		// with stalactites, stalagmites, chests, and spawners
 
 		// RectangleLatticeIterator enables for approximately-even spacing across chunks
 		for (BlockPos.MutableBlockPos latticePos : this.speleothemConfig.latticeIterator(writeableBounds, 0)) {
-			int distSq = getDistSqFromCenter(center, latticePos);
+			float distSq = getDistSqFromCenter(center, latticePos);
 
 			if (distSq > shortenedRadiusSq) continue;
 
 			this.setFeatures(world, rand, writeableBounds, latticePos, distSq);
 		}
+
+		// Cakes!
+		//drainWater(generator, writeableBounds, this.boundingBox, world, this.hillSize * 3 + 2, Blocks.MAGENTA_CANDLE.defaultBlockState(), center.getX(), center.getZ(), drainRadius * drainRadius, Blocks.CAKE.defaultBlockState());
 	}
 
-	private void setFeatures(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, int distSq) {
+	public static void drainWater(ChunkGenerator generator, BoundingBox chunkBox, BoundingBox structureBox, CommonLevelAccessor level, int maxDepth, BlockState airState, int xCenter, int zCenter, double radiusSq, BlockState undergroundBlock) {
+		BoundingBox bounds = BoundingBoxUtils.getIntersectionOfSBBs(chunkBox, structureBox);
+
+		if (bounds == null) return;
+
+		int seaLevel = generator.getSeaLevel();
+		int minY = seaLevel - maxDepth;
+
+		for (int z = bounds.minZ(); z <= bounds.maxZ(); z++) {
+			for (int x = bounds.minX(); x <= bounds.maxX(); x++) {
+				int dX = xCenter - x;
+				int dZ = zCenter - z;
+
+				float distSq = dX * dX + dZ * dZ;
+
+				if (distSq >= radiusSq) {
+					continue;
+				}
+
+				int maxY = Math.min(seaLevel, level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z) - 1);
+
+				boolean crossedFloor = false;
+
+				for (int y = maxY; y >= minY; y--) {
+					BlockPos posChecked = new BlockPos(x, y, z);
+
+					BlockState stateAt = level.getBlockState(posChecked);
+
+					if (stateAt.getFluidState().is(FluidTags.WATER)) {
+						level.setBlock(posChecked, airState, 3);
+					} else {
+						crossedFloor = true;
+					}
+
+					if (crossedFloor) {
+						if (stateAt.is(Blocks.DIRT) || stateAt.is(Blocks.SAND)) {
+							level.setBlock(posChecked, undergroundBlock, 3);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void setFeatures(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, float distSq) {
 		rand.setSeed(rand.nextLong() ^ pos.asLong());
 		this.placeCeilingFeature(world, rand, pos, distSq);
 		this.placeFloorFeature(world, rand, writeableBounds, pos, distSq);
 	}
 
-	private void placeFloorFeature(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, int distSq) {
-
+	private void placeFloorFeature(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, float distSq) {
 		int y = this.getWorldY(Mth.floor(this.getFloorHeight(Mth.sqrt(distSq)) + 0.25f));
 
 		float floatChance = rand.nextFloat();
@@ -132,7 +187,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		}
 	}
 
-	private void placeCeilingFeature(WorldGenLevel world, RandomSource rand, BlockPos.MutableBlockPos pos, int distSq) {
+	private void placeCeilingFeature(WorldGenLevel world, RandomSource rand, BlockPos.MutableBlockPos pos, float distSq) {
 		if (!this.speleothemConfig.shouldDoAStalactite(rand)) return;
 
 		BlockPos ceiling = pos.atY(this.getWorldY(Mth.ceil(this.getCeilingHeight(Mth.sqrt(distSq)))));
@@ -232,9 +287,9 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		};
 	}
 
-	public static int getDistSqFromCenter(BlockPos center, BlockPos to) {
-		int x = to.getX() - center.getX();
-		int z = to.getZ() - center.getZ();
+	public static float getDistSqFromCenter(BlockPos center, BlockPos to) {
+		float x = to.getX() - center.getX() - 0.5f;
+		float z = to.getZ() - center.getZ() - 0.5f;
 
 		return x * x + z * z;
 	}

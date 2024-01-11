@@ -374,7 +374,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.level.levelgen.Beardifier#compute(DensityFunction.FunctionContext)}<br>
 	 * [BEFORE DRETURN]
 	 */
-	public static double getCustomDensity(DensityFunction.FunctionContext context, ObjectListIterator<DensityFunction> customDensities) {
+	public static double getCustomDensity(double densityBefore, DensityFunction.FunctionContext context, ObjectListIterator<DensityFunction> customDensities) {
 		double newDensity = 0;
 
 		while (customDensities.hasNext()) {
@@ -382,6 +382,6 @@ public class ASMHooks {
 		}
 		customDensities.back(Integer.MAX_VALUE);
 
-		return newDensity;
+		return densityBefore + newDensity;
 	}
 }

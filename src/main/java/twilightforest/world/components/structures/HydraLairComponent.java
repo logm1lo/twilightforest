@@ -46,7 +46,7 @@ public class HydraLairComponent extends HollowHillComponent {
 
 			if (dX * dX + dZ * dZ < exclusionRadiusSq) continue;
 
-			int distSq = getDistSqFromCenter(locator, dest);
+			float distSq = getDistSqFromCenter(locator, dest);
 
 			if (distSq > rand.nextFloat() * 0.9f * radiusSq) continue;
 

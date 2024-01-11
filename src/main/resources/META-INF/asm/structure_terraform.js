@@ -151,11 +151,9 @@ function initializeCoreMod() {
                             Opcodes.INVOKESTATIC,
                             'twilightforest/ASMHooks',
                             'getCustomDensity',
-                            '(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;Lit/unimi/dsi/fastutil/objects/ObjectListIterator;)D',
+                            '(DLnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;Lit/unimi/dsi/fastutil/objects/ObjectListIterator;)D',
                             false
-                        ),
-                        // stack: [ double, double ]
-                        new InsnNode(Opcodes.DADD)
+                        )
                         // stack: [ double ]
                     )
                 );
