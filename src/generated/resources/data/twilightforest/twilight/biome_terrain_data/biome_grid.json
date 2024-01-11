@@ -64,12 +64,12 @@
     },
     {
       "biome_layers": {
-        "-1.2000000029802322": "twilightforest:fire_swamp",
-        "-3.2000000029802322": "twilightforest:underground"
+        "-1.0": "twilightforest:fire_swamp",
+        "-3.0": "twilightforest:underground"
       },
-      "depth": -0.20000000298023224,
+      "depth": 0.3,
       "key_biome": "twilightforest:fire_swamp",
-      "scale": 0.05000000074505806
+      "scale": 0.10000000149011612
     },
     {
       "biome_layers": {
@@ -163,10 +163,10 @@
     },
     {
       "biome_layers": {
-        "-1.899999976158142": "twilightforest:swamp",
-        "-3.899999976158142": "twilightforest:underground"
+        "-1.4": "twilightforest:swamp",
+        "-3.4": "twilightforest:underground"
       },
-      "depth": -0.8999999761581421,
+      "depth": -0.4,
       "key_biome": "twilightforest:swamp",
       "scale": 0.15000000596046448
     },

@@ -188,7 +188,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
         // Resulting terrain field will "carve" out the interior space, using negative field values past 0.
         DensityFunction interior = DensityFunctions.max(innerCeiling, innerFloor);
 
-        DensityFunction interiorMask = FocusedDensityFunction.fromPos(hillCenter.atY(yCeilingFocus), radiusInner * 0.52f, -radiusInner, 1).clamp(-1, 1);
+        DensityFunction interiorMask = FocusedDensityFunction.fromPos(hillCenter.atY(yCeilingFocus), radiusInner * 0.52f, -radiusInner, 1);
 
         DensityFunction interiorMasked = DensityFunctions.max(interiorMask, interior);
 
