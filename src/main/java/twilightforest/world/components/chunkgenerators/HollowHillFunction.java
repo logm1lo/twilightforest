@@ -42,7 +42,7 @@ public record HollowHillFunction(float centerX, float bottomY, float centerZ, fl
 
     @Override
     public double minValue() {
-        return 0;
+        return -1;
     }
 
     @Override
