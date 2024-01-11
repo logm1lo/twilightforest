@@ -177,8 +177,6 @@ public class TwilightForestMod {
 		if (evt.getRegistryKey().equals(Registries.BIOME_SOURCE)) {
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
-		} else if (evt.getRegistryKey().equals(Registries.CHUNK_GENERATOR)) {
-			Registry.register(BuiltInRegistries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), TwilightChunkGenerator.CODEC);
 		}
 	}
 

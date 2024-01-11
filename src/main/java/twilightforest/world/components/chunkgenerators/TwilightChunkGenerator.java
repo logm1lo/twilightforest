@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.StructureManager;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -36,7 +34,7 @@ import twilightforest.world.components.structures.util.ControlledSpawns;
 import java.util.ArrayList;
 import java.util.List;
 
-@Deprecated // TODO Split warper (thus all biome influences on terrain) and deformTerrainForFeature (all structure terrain influences) into distinct density functions
+@Deprecated
 public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 	public static final Codec<TwilightChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate)
@@ -61,7 +59,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 
 	@Override
 	public void buildSurface(WorldGenRegion world, StructureManager manager, RandomState random, ChunkAccess chunk) {
-		this.deformTerrainForFeature(world, chunk);
+		this.deformTerrainForFeature(world);
 
 		super.buildSurface(world, manager, random, chunk);
 	}
@@ -71,7 +69,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 		//do we do anything with this? we need to implement it for some reason
 	}
 
-	protected final void deformTerrainForFeature(WorldGenRegion primer, ChunkAccess chunk) {
+	protected final void deformTerrainForFeature(WorldGenRegion primer) {
 		Vec2i featureRelativePos = new Vec2i();
 		TFLandmark nearFeature = LegacyLandmarkPlacements.getNearestLandmark(primer.getCenter().x, primer.getCenter().z, primer, featureRelativePos);
 
@@ -84,20 +82,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 		final int relativeFeatureX = featureRelativePos.x;
 		final int relativeFeatureZ = featureRelativePos.z;
 
-		if (LegacyLandmarkPlacements.isTheseFeatures(nearFeature, TFLandmark.SMALL_HILL, TFLandmark.MEDIUM_HILL, TFLandmark.LARGE_HILL, TFLandmark.HYDRA_LAIR)) {
-			int hdiam = (nearFeature.size * 2 + 1) * 16;
-
-			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
-				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
-					int featureDX = xInChunk - relativeFeatureX;
-					int featureDZ = zInChunk - relativeFeatureZ;
-
-					float dist = (int) Mth.sqrt(featureDX * featureDX + featureDZ * featureDZ);
-					float hheight = (int) (Mth.cos(dist / hdiam * Mth.PI) * (hdiam / 3F));
-					this.raiseHills(primer, chunk, nearFeature.size, nearFeature == TFLandmark.HYDRA_LAIR, hdiam, xInChunk, zInChunk, featureDX, featureDZ, hheight);
-				}
-			}
-		} else if (nearFeature == TFLandmark.HEDGE_MAZE || nearFeature == TFLandmark.NAGA_COURTYARD || nearFeature == TFLandmark.QUEST_GROVE) {
+		if (nearFeature == TFLandmark.HEDGE_MAZE || nearFeature == TFLandmark.NAGA_COURTYARD || nearFeature == TFLandmark.QUEST_GROVE) {
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
 				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
 					int featureDX = xInChunk - relativeFeatureX;
@@ -174,43 +159,6 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 					primer.setBlock(old.atY(y), Blocks.AIR.defaultBlockState(), 3);
 				}
 			}
-		}
-	}
-
-	/**
-	 * Raises up and hollows out the hollow hills.
-	 */ // TODO Add some surface noise
-	// FIXME Make this method process whole chunks instead of columns only
-	private void raiseHills(WorldGenRegion world, ChunkAccess chunk, int size, boolean hydraHill, int hdiam, int xInChunk, int zInChunk, int featureDX, int featureDZ, float hillHeight) {
-		BlockPos.MutableBlockPos movingPos = world.getCenter().getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
-
-		// raise the hill
-		int groundHeight = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
-		float totalHeightRaw = groundHeight * 0.75f + this.getSeaLevel() * 0.25f + hillHeight;
-		int totalHeight = (int) (((int) totalHeightRaw >> 1) * 0.375f + totalHeightRaw * 0.625f);
-
-		for (int y = groundHeight; y <= totalHeight; y++) {
-			world.setBlock(movingPos.setY(y), this.defaultBlock, 3);
-		}
-
-		// add the hollow part. Also turn water into stone below that
-		int hollow = Math.min((int) hillHeight - 4 - size, totalHeight - 3);
-
-		// hydra lair has a piece missing
-		if (hydraHill) {
-			int mx = featureDX + 16;
-			int mz = featureDZ + 16;
-			int mdist = (int) Mth.sqrt(mx * mx + mz * mz);
-			int mheight = (int) (Mth.cos(mdist / (hdiam / 1.5f) * Mth.PI) * (hdiam / 1.5f));
-
-			hollow = Math.max(mheight - 4, hollow);
-		}
-
-		// hollow out the hollow parts
-		int hollowFloor = hydraHill ? this.getSeaLevel() : this.getSeaLevel() - 5 - (hollow >> 3);
-
-		for (int y = hollowFloor + 1; y < hollowFloor + hollow; y++) {
-			world.setBlock(movingPos.setY(y), Blocks.AIR.defaultBlockState(), 3);
 		}
 	}
 

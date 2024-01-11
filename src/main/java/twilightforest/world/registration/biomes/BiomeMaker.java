@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFLandmark;
-import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
+import twilightforest.world.components.chunkgenerators.TerrainColumn;
 
 import java.util.List;
 import java.util.Map;

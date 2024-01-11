@@ -10,7 +10,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import twilightforest.init.custom.BiomeLayerStack;
-import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
+import twilightforest.world.components.chunkgenerators.TerrainColumn;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
 

@@ -1,4 +1,4 @@
-package twilightforest.world.components.chunkgenerators.warp;
+package twilightforest.world.components.chunkgenerators;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
