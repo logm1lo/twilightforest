@@ -28,7 +28,7 @@ public class HedgeMazeStructure extends LandmarkStructure {
 
     @Override
     protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new HedgeMazeComponent(0, x + 1, context.chunkGenerator().getSeaLevel() + 8, z + 1);
+        return new HedgeMazeComponent(0, x + 1, y + 4, z + 1);
     }
 
     @Override

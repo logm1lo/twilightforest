@@ -28,7 +28,7 @@ public class QuestGroveStructure extends ConquerableStructure {
 
     @Override
     protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new QuestGrove(context.structureTemplateManager(), new BlockPos(x - 12, context.chunkGenerator().getSeaLevel() + 5, z - 12));
+        return new QuestGrove(context.structureTemplateManager(), new BlockPos(x - 12, y + 2, z - 12));
     }
 
     @Override
