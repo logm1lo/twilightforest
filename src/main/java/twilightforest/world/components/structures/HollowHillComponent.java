@@ -88,7 +88,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 */
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox writeableBounds, ChunkPos chunkPosIn, BlockPos blockPos) {
-		BlockPos center = this.getLocatorPosition();
+		BlockPos center = this.boundingBox.getCenter();
 		float shortenedRadiusSq = this.radius * this.radius * 0.85f;
 		//float drainRadius = this.radius * this.radius * 0.95f;
 		float drainRadius = this.hillSize * 16.5f;
@@ -120,9 +120,9 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		int minY = seaLevel - maxDepth;
 
 		for (int z = bounds.minZ(); z <= bounds.maxZ(); z++) {
+			int dZ = zCenter - z;
 			for (int x = bounds.minX(); x <= bounds.maxX(); x++) {
 				int dX = xCenter - x;
-				int dZ = zCenter - z;
 
 				float distSq = dX * dX + dZ * dZ;
 
