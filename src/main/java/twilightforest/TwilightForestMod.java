@@ -24,7 +24,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
@@ -50,13 +49,10 @@ import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.ControlledSpawnsCache;
-import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 import java.util.Locale;
-import java.util.function.Consumer;
 
 @Mod(TwilightForestMod.ID)
 public class TwilightForestMod {
@@ -95,7 +91,6 @@ public class TwilightForestMod {
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
 		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
-		NeoForge.EVENT_BUS.addListener((Consumer<AddReloadListenerEvent>) ControlledSpawnsCache::reload);
 
 		TFItems.ITEMS.register(bus);
 		TFStats.STATS.register(bus);
