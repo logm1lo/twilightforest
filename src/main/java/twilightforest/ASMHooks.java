@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.client.Camera;
@@ -12,8 +13,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
@@ -60,6 +64,7 @@ import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.item.GiantItem;
 import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.network.UpdateTFMultipartPacket;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -383,5 +388,17 @@ public class ASMHooks {
 		customDensities.back(Integer.MAX_VALUE);
 
 		return densityBefore + newDensity;
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.level.chunk.ChunkGenerator#findNearestMapStructure(ServerLevel, HolderSet, BlockPos, int, boolean)}<br>
+	 * [BEFORE LAST ARETURN]
+	 */
+	@Nullable
+	public static Pair<BlockPos, Holder<Structure>> findNearestMapLandmark(@Nullable Pair<BlockPos, Holder<Structure>> oldReturnable, ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
+		Pair<BlockPos, Holder<Structure>> nearestLandmark = WorldUtil.findNearestMapLandmark(level, targetStructures, pos, searchRadius, skipKnownStructures);
+
+		return nearestLandmark != null ? nearestLandmark : oldReturnable;
 	}
 }

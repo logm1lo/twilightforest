@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-11T15:16:01.818306	Registries
+// 1.20.4	2024-01-14T23:50:30.879399	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -319,7 +319,6 @@ e8ac402687cd26c7ed94cbd78ef73ae6814ed60a data/twilightforest/worldgen/structure_
 8fd1763906df409157633185a87fb20e383de48d data/twilightforest/worldgen/structure_set/large_hollow_hill.json
 7ba45b6949cfa704d38451a137e620d2bba8d6e6 data/twilightforest/worldgen/structure_set/lich_tower.json
 624bdb8cc1e199bfc3058f14180fe1b41f346065 data/twilightforest/worldgen/structure_set/medium_hollow_hill.json
-82b7362e46e442c65a164ed4bdbff2bcea1d66ab data/twilightforest/worldgen/structure_set/mushroom_tower.json
 ed904043ac32412805c9ebc97496e59bd1301b51 data/twilightforest/worldgen/structure_set/naga_courtyard.json
 98ecc6c7a230905f6364e5432d863f7b4bb173ee data/twilightforest/worldgen/structure_set/quest_grove.json
 0a48e3b3fa36533789800865042761639a319854 data/twilightforest/worldgen/structure_set/small_hollow_hill.json

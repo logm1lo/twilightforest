@@ -13,7 +13,6 @@ public class TFStructureSets {
 
 	public static final ResourceKey<StructureSet> HEDGE_MAZE = registerKey("hedge_maze");
 	public static final ResourceKey<StructureSet> QUEST_GROVE = registerKey("quest_grove");
-	public static final ResourceKey<StructureSet> MUSHROOM_TOWER = registerKey("mushroom_tower");
 	public static final ResourceKey<StructureSet> HOLLOW_HILL_SMALL = registerKey("small_hollow_hill");
 	public static final ResourceKey<StructureSet> HOLLOW_HILL_MEDIUM = registerKey("medium_hollow_hill");
 	public static final ResourceKey<StructureSet> HOLLOW_HILL_LARGE = registerKey("large_hollow_hill");
@@ -28,6 +27,11 @@ public class TFStructureSets {
 	public static final ResourceKey<StructureSet> TROLL_CAVE = registerKey("troll_cave");
 	public static final ResourceKey<StructureSet> FINAL_CASTLE = registerKey("final_castle");
 
+	public static final ResourceKey<StructureSet> MUSHROOM_TOWER = registerKey("mushroom_tower");
+	public static final ResourceKey<StructureSet> QUEST_ISLAND = registerKey("quest_island");
+	public static final ResourceKey<StructureSet> DRUID_GROVE = registerKey("druid_grove");
+	public static final ResourceKey<StructureSet> FLOATING_RUINS = registerKey("floating_ruins");
+	public static final ResourceKey<StructureSet> WORLD_TREE = registerKey("world_tree");
 
 	private static ResourceKey<StructureSet> registerKey(String name) {
 		return ResourceKey.create(Registries.STRUCTURE_SET, TwilightForestMod.prefix(name));
@@ -38,7 +42,6 @@ public class TFStructureSets {
 
 		context.register(HEDGE_MAZE, new StructureSet(structures.getOrThrow(TFStructures.HEDGE_MAZE), BiomeGridLandmarkPlacement.forTag(TFLandmark.HEDGE_MAZE, false)));
 		context.register(QUEST_GROVE, new StructureSet(structures.getOrThrow(TFStructures.QUEST_GROVE), BiomeGridLandmarkPlacement.forTag(TFLandmark.QUEST_GROVE, true)));
-		context.register(MUSHROOM_TOWER, new StructureSet(structures.getOrThrow(TFStructures.MUSHROOM_TOWER), BiomeGridLandmarkPlacement.forTag(TFLandmark.MUSHROOM_TOWER, true)));
 		context.register(HOLLOW_HILL_SMALL, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL), BiomeGridLandmarkPlacement.forTag(TFLandmark.SMALL_HILL, false)));
 		context.register(HOLLOW_HILL_MEDIUM, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_MEDIUM), BiomeGridLandmarkPlacement.forTag(TFLandmark.MEDIUM_HILL, false)));
 		context.register(HOLLOW_HILL_LARGE, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_LARGE), BiomeGridLandmarkPlacement.forTag(TFLandmark.LARGE_HILL, false)));
@@ -53,5 +56,12 @@ public class TFStructureSets {
 		context.register(AURORA_PALACE, new StructureSet(structures.getOrThrow(TFStructures.AURORA_PALACE), BiomeGridLandmarkPlacement.forTag(TFLandmark.ICE_TOWER, true)));
 		context.register(TROLL_CAVE, new StructureSet(structures.getOrThrow(TFStructures.TROLL_CAVE), BiomeGridLandmarkPlacement.forTag(TFLandmark.TROLL_CAVE, true)));
 		context.register(FINAL_CASTLE, new StructureSet(structures.getOrThrow(TFStructures.FINAL_CASTLE), BiomeGridLandmarkPlacement.forTag(TFLandmark.FINAL_CASTLE, true)));
+
+		// uncomment to include in mod-internal datapack, for worldgen
+		//context.register(MUSHROOM_TOWER, new StructureSet(structures.getOrThrow(TFStructures.MUSHROOM_TOWER), BiomeGridLandmarkPlacement.forTag(TFLandmark.MUSHROOM_TOWER, true)));
+		//context.register(QUEST_ISLAND, new StructureSet(structures.getOrThrow(TFStructures.QUEST_ISLAND), BiomeGridLandmarkPlacement.forTag(TFLandmark.QUEST_ISLAND, true)));
+		//context.register(DRUID_GROVE, new StructureSet(structures.getOrThrow(TFStructures.DRUID_GROVE), BiomeGridLandmarkPlacement.forTag(TFLandmark.DRUID_GROVE, true)));
+		//context.register(FLOATING_RUINS, new StructureSet(structures.getOrThrow(TFStructures.MUSHROOM_TOWER), BiomeGridLandmarkPlacement.forTag(TFLandmark.FLOATING_RUINS, true)));
+		//context.register(WORLD_TREE, new StructureSet(structures.getOrThrow(TFStructures.MUSHROOM_TOWER), BiomeGridLandmarkPlacement.forTag(TFLandmark.WORLD_TREE, true)));
 	}
 }

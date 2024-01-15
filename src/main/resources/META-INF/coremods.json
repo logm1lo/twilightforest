@@ -12,5 +12,6 @@
   "cloud": "META-INF/asm/cloud.js",
   "lead": "META-INF/asm/lead.js",
   "chunkstatus": "META-INF/asm/chunkstatus.js",
-  "structure_terraform": "META-INF/asm/structure_terraform.js"
+  "structure_terraform": "META-INF/asm/structure_terraform.js",
+  "structure_scan": "META-INF/asm/structure_scan.js"
 }
