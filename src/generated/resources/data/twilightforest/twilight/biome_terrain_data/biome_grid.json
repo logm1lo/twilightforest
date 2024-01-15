@@ -114,7 +114,7 @@
       },
       "depth": -1.9998,
       "key_biome": "twilightforest:lake",
-      "scale": 0.0010000000474974513
+      "scale": 0.125
     },
     {
       "biome_layers": {
@@ -154,12 +154,12 @@
     },
     {
       "biome_layers": {
-        "-1.899999976158142": "twilightforest:stream",
-        "-3.899999976158142": "twilightforest:underground"
+        "-1.699999988079071": "twilightforest:stream",
+        "-3.699999988079071": "twilightforest:underground"
       },
-      "depth": -0.8999999761581421,
+      "depth": -0.699999988079071,
       "key_biome": "twilightforest:stream",
-      "scale": 0.10000000149011612
+      "scale": 0.0010000000474974513
     },
     {
       "biome_layers": {

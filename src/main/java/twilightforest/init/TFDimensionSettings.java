@@ -61,10 +61,7 @@ public class TFDimensionSettings {
 		Holder.Reference<NormalNoise.NoiseParameters> surfaceParams = context.lookup(Registries.NOISE).getOrThrow(Noises.SURFACE);
 		Holder.Reference<NormalNoise.NoiseParameters> ridgeParams = context.lookup(Registries.NOISE).getOrThrow(Noises.RIDGE);
 
-		DensityFunction heightOffsetNoise = DensityFunctions.cache2d(DensityFunctions.mul(
-				DensityFunctions.noise(surfaceParams, 1, 0),
-				DensityFunctions.constant(2)
-		));
+		DensityFunction heightOffsetNoise = DensityFunctions.cache2d(DensityFunctions.noise(surfaceParams, 1, 0));
 
         DensityFunction routedBiomeWarpInterpolated = DensityFunctions.mul(
 				DensityFunctions.constant(1/32f),
