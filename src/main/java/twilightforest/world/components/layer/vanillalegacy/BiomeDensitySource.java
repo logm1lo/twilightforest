@@ -3,12 +3,14 @@ package twilightforest.world.components.layer.vanillalegacy;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
+import net.minecraft.core.QuartPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.DensityFunction;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.TerrainColumn;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
@@ -28,15 +30,6 @@ public class BiomeDensitySource {
             TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> m.values().stream().sorted(Comparator.comparing(TerrainColumn::getResourceKey)).toList()).forGetter(o -> o.biomeList),
             BiomeLayerStack.HOLDER_CODEC.fieldOf("biome_layer_config").forGetter(BiomeDensitySource::getBiomeConfig)
     ).apply(instance, instance.stable(BiomeDensitySource::new)));
-
-    public static final float[] BIOME_WEIGHTS = Util.make(new float[25], (afloat) -> {
-        for(int x = -2; x <= 2; ++x) {
-            for(int z = -2; z <= 2; ++z) {
-                float weight = 10.0F / Mth.sqrt((float)(x * x + z * z) + 0.2F);
-                afloat[x + 2 + (z + 2) * 5] = weight;
-            }
-        }
-    });
 
     private final Map<ResourceKey<Biome>, TerrainColumn> biomeList;
 
@@ -91,36 +84,6 @@ public class BiomeDensitySource {
         return this.genBiomes.get();
     }
 
-    public DensityData sampleTerrain(int biomeX, int biomeZ, DensityFunction.FunctionContext context) {
-        double totalScale = 0.0F;
-        double totalDepth = 0.0F;
-        double totalContribution = 0.0F;
-        double centerDepth = this.getBiomeDepth(biomeX, biomeZ, context);
-
-        for (int offX = -2; offX <= 2; ++offX) {
-            for (int offZ = -2; offZ <= 2; ++offZ) {
-                Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(biomeX + offX, biomeZ + offZ);
-
-                if (terrainColumn.isEmpty()) continue;
-
-                double neighborDepth = terrainColumn.get().depth(context);
-                double neighborScale = terrainColumn.get().scale(context);
-
-                // If the center column is lower than the given neighboring column, then diminish its height contribution
-                double topographicContribution = neighborDepth > centerDepth ? 0.5F : 1.0F;
-                double piecewiseInfluence = topographicContribution * BIOME_WEIGHTS[offX + 2 + (offZ + 2) * 5] / (neighborDepth + 2.0);
-                totalDepth += neighborDepth * piecewiseInfluence;
-                totalScale += neighborScale * piecewiseInfluence;
-                totalContribution += piecewiseInfluence;
-            }
-        }
-
-        double depthNormalized = totalDepth / totalContribution;
-        double scaleNormalized = totalScale / totalContribution;
-
-        return new DensityData(depthNormalized, scaleNormalized);
-    }
-
     public static final class DensityData {
         public final double depth;
         public final double scale;
@@ -129,5 +92,92 @@ public class BiomeDensitySource {
             this.depth = depth;
             this.scale = scale;
         }
+    }
+
+    // Thanks k.jpg!
+
+    private static final double BLEND_RADIUS = 8;
+    private static final int BLEND_RADIUS_INT = Mth.floor(BLEND_RADIUS + 1);
+    private static final int BIOME_QUART_Y = 64 >> QuartPos.BITS;
+
+    private static final int BLOCK_XYZ_OFFSET = QuartPos.SIZE / 2;
+    private static final int FIDDLE_HASH_BIT_START = 24;
+    private static final int FIDDLE_HASH_BIT_COUNT = 10;
+    private static final int FIDDLE_HASH_BIT_SHIFTED = 1 << FIDDLE_HASH_BIT_COUNT;
+    private static final int FIDDLE_HASH_BIT_MASK = FIDDLE_HASH_BIT_SHIFTED - 1;
+    private static final double FIDDLE_MAGNITUDE = 1.0; // 0.9 in net.minecraft.world.level.biome.BiomeManager
+
+    public DensityData sampleTerrain(int blockX, int blockZ, DensityFunction.FunctionContext context) {
+        double totalScale = 0.0;
+        double totalMappedDepth = 0.0;
+        double totalContribution = 0.0;
+
+        long biomeZoomSeed = TFDimensionSettings.seed;
+
+        int blockXWithOffset = blockX - BLOCK_XYZ_OFFSET;
+        int blockZWithOffset = blockZ - BLOCK_XYZ_OFFSET;
+
+        int xQuartStart = (blockXWithOffset - BLEND_RADIUS_INT) >> QuartPos.BITS;
+        int zQuartStart = (blockZWithOffset - BLEND_RADIUS_INT) >> QuartPos.BITS;
+        int xQuartEnd = (blockXWithOffset + BLEND_RADIUS_INT) >> QuartPos.BITS;
+        int zQuartEnd = (blockZWithOffset + BLEND_RADIUS_INT) >> QuartPos.BITS;
+        int xCount = xQuartEnd - xQuartStart + 1;
+        int zCount = zQuartEnd - zQuartStart + 1;
+
+        double xQuartDelta = (blockXWithOffset - (xQuartStart << QuartPos.BITS)) * (1.0 / QuartPos.SIZE);
+        double zQuartDelta = (blockZWithOffset - (zQuartStart << QuartPos.BITS)) * (1.0 / QuartPos.SIZE);
+
+        for (int cz = 0, cx = 0;;) {
+            double fiddledDistanceSquared = getFiddledDistance(biomeZoomSeed, cx + xQuartStart, BIOME_QUART_Y, cz + zQuartStart, xQuartDelta - cx, 0, zQuartDelta - cz);
+
+            considerColumn:
+            if (fiddledDistanceSquared < BLEND_RADIUS * BLEND_RADIUS) {
+                double falloff = BLEND_RADIUS * BLEND_RADIUS - fiddledDistanceSquared;
+                falloff *= falloff * falloff;
+
+                Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(cx + xQuartStart, cz + zQuartStart);
+                if (terrainColumn.isEmpty()) break considerColumn;
+
+                double neighborDepth = terrainColumn.get().depth(context);
+                double neighborScale = terrainColumn.get().scale(context);
+
+                falloff *= Math.exp(-neighborDepth);
+
+                totalMappedDepth += neighborDepth * falloff;
+                totalScale += neighborScale * falloff;
+                totalContribution += falloff;
+            }
+
+            cz++;
+            if (cz < zCount) continue;
+            cz = 0;
+            cx++;
+            if (cx >= xCount) break;
+        }
+
+        double depthNormalized = totalMappedDepth / totalContribution;
+        double scaleNormalized = totalScale / totalContribution;
+
+        return new DensityData(depthNormalized, scaleNormalized);
+    }
+
+    private static double getFiddledDistance(long seed, int quartX, int quartY, int quartZ, double dx, double dy, double dz) {
+        long hash = LinearCongruentialGenerator.next(seed, quartX);
+        hash = LinearCongruentialGenerator.next(hash, quartY);
+        hash = LinearCongruentialGenerator.next(hash, quartZ);
+        hash = LinearCongruentialGenerator.next(hash, quartX);
+        hash = LinearCongruentialGenerator.next(hash, quartY);
+        hash = LinearCongruentialGenerator.next(hash, quartZ);
+        double jz = getFiddle(hash);
+        hash = LinearCongruentialGenerator.next(hash, seed);
+        double jy = getFiddle(hash);
+        hash = LinearCongruentialGenerator.next(hash, seed);
+        double jx = getFiddle(hash);
+        return Mth.square(dz + jz) + Mth.square(dy + jy) + Mth.square(dx + jx);
+    }
+
+    private static double getFiddle(long hash) {
+        long hashBits = (hash >> FIDDLE_HASH_BIT_START) & FIDDLE_HASH_BIT_MASK;
+        return hashBits * (FIDDLE_MAGNITUDE / FIDDLE_HASH_BIT_SHIFTED) - 0.5 * FIDDLE_MAGNITUDE;
     }
 }
