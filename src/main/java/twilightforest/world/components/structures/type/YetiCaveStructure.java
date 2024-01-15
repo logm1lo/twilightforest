@@ -145,20 +145,22 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 
         // Entrance sloping
         DensityFunction entranceSlope = DensityFunctions.add(
-                DensityFunctions.yClampedGradient(-8, 16, -46, -50),
+                DensityFunctions.yClampedGradient(-8, 16, -44, -48),
                 AbsoluteDifferenceFunction.max(64, centerPos)
-        ).clamp(-64, 0);
-        //if (true) return entranceSlope;
+        );
 
         var interiorWithSmoothedEntrances = DensityFunctions.max(
                 interior,
                 DensityFunctions.mul(
-                        DensityFunctions.constant(1/128f),
-                        entranceSlope
+                        DensityFunctions.constant(1/64f),
+                        DensityFunctions.add(
+                                DensityFunctions.constant(15f),
+                                entranceSlope
+                        )
                 )
         );
 
-        DensityFunction yetiLair = DensityFunctions.lerp(
+        DensityFunction yetiCave = DensityFunctions.lerp(
                 DensityFunctions.mul(
                         DensityFunctions.constant(0.020833334f),
                         exteriorTrapezoidSq
@@ -167,6 +169,6 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
                 DensityFunctions.mul(DensityFunctions.constant(16), interiorWithSmoothedEntrances)
         );
 
-        return yetiLair;
+        return yetiCave;
     }
 }
