@@ -112,7 +112,7 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
         // This min() function combines these two surfaces formed by said zeros
         DensityFunction hollowHill = DensityFunctions.min(hillMound, interiorMasked);
 
-        DensityFunction maskingSphere = FocusedDensityFunction.fromPos(hillCenter.below(Mth.ceil(radius * 0.1)), width * 0.5f + 2.5f, width * 0.5f, 0).clamp(0, 1);
+        DensityFunction maskingSphere = FocusedDensityFunction.fromPos(hillCenter.below(Mth.ceil(radius * 0.1)), width * 0.5f + 5, width * 0.25f, 0).clamp(0, 1);
 
         DensityFunction cutout = FocusedDensityFunction.fromPos(hillCenter.offset(-16, 0 ,-16), 23, -23, 0).clamp(-4, 0);
 

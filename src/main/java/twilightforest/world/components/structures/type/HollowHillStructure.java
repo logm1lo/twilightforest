@@ -197,7 +197,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
         // This min() function combines these two surfaces formed by said zeros
         DensityFunction hollowHill = DensityFunctions.min(hillMound, interiorMasked);
 
-        DensityFunction maskingSphere = FocusedDensityFunction.fromPos(hillCenter.below(Mth.ceil(radius * 0.1)), width * 0.5f + 1, width * 0.5f + 4, 0).clamp(0, 1);
+        DensityFunction maskingSphere = FocusedDensityFunction.fromPos(hillCenter.below(Mth.ceil(radius * 0.1)), width * 0.5f + 5, width * 0.25f, 0).clamp(0, 1);
 
         return DensityFunctions.mul(maskingSphere, DensityFunctions.mul(DensityFunctions.constant(8), hollowHill));
     }
