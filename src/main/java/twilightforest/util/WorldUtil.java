@@ -12,12 +12,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.world.components.structures.placements.BiomeGridLandmarkPlacement;
+import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Map;
@@ -62,11 +61,11 @@ public final class WorldUtil {
 	public static Pair<BlockPos, Holder<Structure>> findNearestMapLandmark(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int chunkSearchRadius, @SuppressWarnings("unused") boolean skipKnownStructures) {
 		ChunkGeneratorStructureState state = level.getChunkSource().getGeneratorState();
 
-		Map<BiomeGridLandmarkPlacement, Set<Holder<Structure>>> seekStructures = new Object2ObjectArrayMap<>();
+		Map<LandmarkGridPlacement, Set<Holder<Structure>>> seekStructures = new Object2ObjectArrayMap<>();
 
 		for (Holder<Structure> holder : targetStructures) {
 			for (StructurePlacement structureplacement : state.getPlacementsForStructure(holder)) {
-				if (structureplacement instanceof BiomeGridLandmarkPlacement landmarkPlacement) {
+				if (structureplacement instanceof LandmarkGridPlacement landmarkPlacement) {
 					seekStructures.computeIfAbsent(landmarkPlacement, v -> new ObjectArraySet<>()).add(holder);
 				}
 			}
@@ -79,7 +78,7 @@ public final class WorldUtil {
 		@Nullable Pair<BlockPos, Holder<Structure>> nearest = null;
 
 		for (BlockPos landmarkCenterPosition : LegacyLandmarkPlacements.landmarkCenterScanner(pos, chunkSearchRadius)) {
-			for (Map.Entry<BiomeGridLandmarkPlacement, Set<Holder<Structure>>> landmarkPlacement : seekStructures.entrySet()) {
+			for (Map.Entry<LandmarkGridPlacement, Set<Holder<Structure>>> landmarkPlacement : seekStructures.entrySet()) {
 				if (!landmarkPlacement.getKey().isStructureChunk(state, landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
 
 				for (Holder<Structure> targetStructure : targetStructures) {

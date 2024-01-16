@@ -13,21 +13,25 @@ import twilightforest.util.LegacyLandmarkPlacements;
 
 import java.util.Optional;
 
-public class BiomeGridLandmarkPlacement extends StructurePlacement {
-    public static final Codec<BiomeGridLandmarkPlacement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+/**
+ * Filters possible placements to only chunks actually demarcated to generate a Twilight Forest landmark structure
+ * Does not filter for biome. That's for the structure's config to handle.
+ */
+public class LandmarkGridPlacement extends StructurePlacement {
+    public static final Codec<LandmarkGridPlacement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             TFLandmark.CODEC.fieldOf("landmark_set").forGetter(p -> p.landmark),
             Codec.BOOL.orElse(false).fieldOf("legacy_special_biome_bypass").withLifecycle(Lifecycle.deprecated(0)).forGetter(p -> p.legacySpecialBiomeBypass)
-    ).apply(inst, BiomeGridLandmarkPlacement::new));
+    ).apply(inst, LandmarkGridPlacement::new));
 
     private final TFLandmark landmark;
     @Deprecated
     private final boolean legacySpecialBiomeBypass;
 
-    public static BiomeGridLandmarkPlacement forTag(TFLandmark landmark, boolean legacySpecialBiomeBypass) {
-        return new BiomeGridLandmarkPlacement(landmark, legacySpecialBiomeBypass);
+    public static LandmarkGridPlacement forTag(TFLandmark landmark, boolean legacySpecialBiomeBypass) {
+        return new LandmarkGridPlacement(landmark, legacySpecialBiomeBypass);
     }
 
-    public BiomeGridLandmarkPlacement(TFLandmark landmark, boolean legacySpecialBiomeBypass) {
+    public LandmarkGridPlacement(TFLandmark landmark, boolean legacySpecialBiomeBypass) {
         super(Vec3i.ZERO, FrequencyReductionMethod.DEFAULT, 1f, 0, Optional.empty()); // None of these params matter except for possibly flat-world or whatever
 
         this.landmark = landmark;
