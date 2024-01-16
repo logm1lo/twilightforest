@@ -28,6 +28,7 @@ public class TFDimensionSettings {
 	public static long seed; //Minecraft Overworld seed - used for seed ASM
 
 	public static final ResourceKey<DensityFunction> TWILIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("twilight_terrain"));
+	public static final ResourceKey<DensityFunction> SKYLIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("skylight_terrain"));
 
 	public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("twilight_noise_gen"));
 	public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("skylight_noise_gen"));
@@ -122,6 +123,14 @@ public class TFDimensionSettings {
 		).clamp(-0.1, 1);
 
 		context.register(TWILIGHT_TERRAIN, finalDensity);
+
+		context.register(SKYLIGHT_TERRAIN, DensityFunctions.mul(
+				DensityFunctions.constant(0.1),
+				DensityFunctions.add(
+						DensityFunctions.constant(-1),
+						noiseInterpolator
+				).clamp(-1, 0)
+		));
 	}
 
 	public static NoiseGeneratorSettings tfDefault(BootstapContext<NoiseGeneratorSettings> context) {
@@ -166,7 +175,10 @@ public class TFDimensionSettings {
 		);
 	}
 
-	public static NoiseGeneratorSettings skylight() {
+	public static NoiseGeneratorSettings skylight(BootstapContext<NoiseGeneratorSettings> context) {
+		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
+		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(SKYLIGHT_TERRAIN));
+
 		NoiseSettings skylightNoise = NoiseSettings.create(
 				-32, //min height
 				256, // height
@@ -174,13 +186,10 @@ public class TFDimensionSettings {
 				4 // size_vertical
 		);
 
-		// Problem island at /tp 9389.60 90.00 11041.66
 		return new NoiseGeneratorSettings(
-				// https://misode.github.io/worldgen/noise-settings/
-				// So far this looks great! We just need to raise the island levels to sea level. Otherwise is generates flat-flakey islands that really show the roots on dirt bottoms from trees
 				skylightNoise,
 				Blocks.STONE.defaultBlockState(),
-				Blocks.WATER.defaultBlockState(),
+				Blocks.AIR.defaultBlockState(),
 				new NoiseRouter(
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
@@ -192,8 +201,8 @@ public class TFDimensionSettings {
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
+						finalDensity,
+						finalDensity,
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
 						DensityFunctions.zero()
@@ -210,7 +219,7 @@ public class TFDimensionSettings {
 
 	public static void bootstrapNoise(BootstapContext<NoiseGeneratorSettings> context) {
 		context.register(TWILIGHT_NOISE_GEN, tfDefault(context));
-		context.register(SKYLIGHT_NOISE_GEN, skylight());
+		context.register(SKYLIGHT_NOISE_GEN, skylight(context));
 	}
 
 	public static void bootstrapType(BootstapContext<DimensionType> context) {
