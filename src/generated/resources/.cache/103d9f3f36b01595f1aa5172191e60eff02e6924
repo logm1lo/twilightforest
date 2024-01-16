@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-15T16:19:20.324062	Registries
+// 1.20.4	2024-01-16T11:04:36.424098	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -102,7 +102,7 @@ fb094351a715b436b5836e1fc3f097ac4a423609 data/twilightforest/worldgen/biome/snow
 6b138e8dde44ba083786bdb96355a674c2400dc4 data/twilightforest/worldgen/biome/spooky_forest.json
 576da148aeb3dc599d25779d1ef21121d5007177 data/twilightforest/worldgen/biome/stream.json
 f8ed7f1195ae624cc2bb6257b1aff2e5a79d20cb data/twilightforest/worldgen/biome/swamp.json
-cc8be12327223577e90f7eaed9dc3395ed817a7a data/twilightforest/worldgen/biome/thornlands.json
+d301ff8b947d21c124d380886a3dde1e41304ec8 data/twilightforest/worldgen/biome/thornlands.json
 ce67da8a32439536d8998392e3fac4b72e631e8e data/twilightforest/worldgen/biome/underground.json
 5f90dbc8c186bbd0ccfbf20eb0829b50650dd78c data/twilightforest/worldgen/configured_carver/highland_caves.json
 a4a4f203951a7e61b1654e7e272426a4196d58e9 data/twilightforest/worldgen/configured_carver/tf_caves.json
@@ -266,7 +266,7 @@ d0914a5b0f3a2ee56393aee240d07ef50d8cd0c0 data/twilightforest/worldgen/placed_fea
 caa65ad3dc8395517950a12360b73cbb73b1769e data/twilightforest/worldgen/placed_feature/spruce_fallen_log.json
 dbdc5f432f14056363950b5e98e4528640e25f74 data/twilightforest/worldgen/placed_feature/stone_circle.json
 d3c0626eca8fd95e8c5b4bbbdc00eb58f0fa57d8 data/twilightforest/worldgen/placed_feature/tf_oak_fallen_log.json
-e57ae01bef92f27d38b0b7fd6f7caaf97e06bdc6 data/twilightforest/worldgen/placed_feature/thorns.json
+78f72f10d43c89561a37667e362ed2201574740c data/twilightforest/worldgen/placed_feature/thorns.json
 3c6a1404ebd36fa575a625f924ba52d85601b51b data/twilightforest/worldgen/placed_feature/torch_berries.json
 9ee69001302bc4031ea29738f56e8726c2bfbdf3 data/twilightforest/worldgen/placed_feature/tree/darkwood_tree.json
 f99e77ee1eb5d1915b343cfbf0edbf6383f09296 data/twilightforest/worldgen/placed_feature/tree/dead_canopy_tree.json
