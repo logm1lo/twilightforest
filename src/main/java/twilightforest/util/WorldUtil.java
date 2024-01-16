@@ -58,14 +58,6 @@ public final class WorldUtil {
 				: TFGenerationSettings.SEALEVEL; // TFGenerationSettings.SEALEVEL Should only ever hit if this method is called on client
 	}
 
-	public static int getBaseHeight(LevelAccessor level, int x, int z, Heightmap.Types type) {
-		if (level.getChunkSource() instanceof ServerChunkCache chunkSource) {
-			return chunkSource.chunkMap.generator().getBaseHeight(x, z, type, level, chunkSource.randomState());
-		} else {
-			return level.getHeight(type, x, z);
-		}
-	}
-
 	@Nullable
 	public static Pair<BlockPos, Holder<Structure>> findNearestMapLandmark(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int chunkSearchRadius, @SuppressWarnings("unused") boolean skipKnownStructures) {
 		ChunkGeneratorStructureState state = level.getChunkSource().getGeneratorState();
