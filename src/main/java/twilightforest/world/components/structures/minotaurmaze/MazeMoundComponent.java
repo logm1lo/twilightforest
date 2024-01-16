@@ -11,21 +11,18 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
-public class MazeMoundComponent extends TFStructureComponentOld implements PieceBeardifierModifier {
+public class MazeMoundComponent extends TFStructureComponentOld {
 
 	public MazeMoundComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFMMMound.get(), nbt);
 	}
 
 	public static final int DIAMETER = 35;
-	private final int averageGroundLevel = Integer.MIN_VALUE;
 
 	private MazeUpperEntranceComponent mazeAbove;
 
@@ -50,20 +47,5 @@ public class MazeMoundComponent extends TFStructureComponentOld implements Piece
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// Mound shape contributed by Structure itself
-	}
-
-	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 1;
 	}
 }

@@ -16,10 +16,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -37,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"deprecation", "unused"})
-public class TowerWingComponent extends TFStructureComponentOld implements PieceBeardifierModifier {
+public class TowerWingComponent extends TFStructureComponentOld {
 
 	public TowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(TFStructurePieceTypes.TFLTWin.get(), nbt);
@@ -1881,16 +1879,6 @@ public class TowerWingComponent extends TFStructureComponentOld implements Piece
 				this.setBlockStateRotated(world, colour, 0, y, rightOffset, rotation, sbb);
 			}
 		}
-	}
-
-	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
 	}
 
 	@Override

@@ -12,9 +12,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
@@ -25,7 +23,7 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
-public class CloudCastleComponent extends TFStructureComponentOld implements PieceBeardifierModifier {
+public class CloudCastleComponent extends TFStructureComponentOld {
 
 	private boolean minerPlaced = false;
 	private boolean warriorPlaced = false;
@@ -126,20 +124,5 @@ public class CloudCastleComponent extends TFStructureComponentOld implements Pie
 				world.addFreshEntity(warrior);
 			}
 		}
-	}
-
-	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 0;
 	}
 }

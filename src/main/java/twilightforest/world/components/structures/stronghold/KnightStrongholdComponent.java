@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 import java.nio.IntBuffer;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class KnightStrongholdComponent extends TFStructureComponentOld implements PieceBeardifierModifier {
+public abstract class KnightStrongholdComponent extends TFStructureComponentOld {
 
 	public final List<BlockPos> doors = new ArrayList<>();
 
@@ -505,17 +504,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 	}
 
 	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return this.isComponentProtected() ? TerrainAdjustment.BURY : TerrainAdjustment.NONE;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 0;
 	}
 }
