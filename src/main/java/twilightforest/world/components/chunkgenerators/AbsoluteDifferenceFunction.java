@@ -7,17 +7,17 @@ import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
 
 public abstract class AbsoluteDifferenceFunction implements DensityFunction.SimpleFunction {
-    public static Min min(int max, BlockPos pos) {
+    public static Min min(double max, BlockPos pos) {
         return new Min(max, pos.getX(), pos.getZ());
     }
 
-    public static Max max(int max, BlockPos pos) {
+    public static Max max(double max, BlockPos pos) {
         return new Max(max, pos.getX(), pos.getZ());
     }
 
-    protected final int max, centerX, centerZ;
+    protected final double max, centerX, centerZ;
 
-    public AbsoluteDifferenceFunction(int max, int centerX, int centerZ) {
+    public AbsoluteDifferenceFunction(double max, double centerX, double centerZ) {
         this.max = max;
         this.centerX = centerX;
         this.centerZ = centerZ;
@@ -35,12 +35,12 @@ public abstract class AbsoluteDifferenceFunction implements DensityFunction.Simp
 
     public static class Min extends AbsoluteDifferenceFunction {
         public static final KeyDispatchDataCodec<Min> CODEC = KeyDispatchDataCodec.of(RecordCodecBuilder.create(instance -> instance.group(
-                Codec.INT.fieldOf("max").forGetter(f -> f.max),
-                Codec.INT.fieldOf("x_center").forGetter(f -> f.centerX),
-                Codec.INT.fieldOf("z_center").forGetter(f -> f.centerZ)
+                Codec.DOUBLE.fieldOf("max").forGetter(f -> f.max),
+                Codec.DOUBLE.fieldOf("x_center").forGetter(f -> f.centerX),
+                Codec.DOUBLE.fieldOf("z_center").forGetter(f -> f.centerZ)
         ).apply(instance, Min::new)));
 
-        public Min(int max, int xCenter, int zCenter) {
+        public Min(double max, double xCenter, double zCenter) {
             super(max, xCenter, zCenter);
         }
 
@@ -57,12 +57,12 @@ public abstract class AbsoluteDifferenceFunction implements DensityFunction.Simp
 
     public static class Max extends AbsoluteDifferenceFunction {
         public static final KeyDispatchDataCodec<Max> CODEC = KeyDispatchDataCodec.of(RecordCodecBuilder.create(instance -> instance.group(
-                Codec.INT.fieldOf("max").forGetter(f -> f.max),
-                Codec.INT.fieldOf("x_center").forGetter(f -> f.centerX),
-                Codec.INT.fieldOf("z_center").forGetter(f -> f.centerZ)
+                Codec.DOUBLE.fieldOf("max").forGetter(f -> f.max),
+                Codec.DOUBLE.fieldOf("x_center").forGetter(f -> f.centerX),
+                Codec.DOUBLE.fieldOf("z_center").forGetter(f -> f.centerZ)
         ).apply(instance, Max::new)));
 
-        public Max(int max, int xCenter, int zCenter) {
+        public Max(double max, double xCenter, double zCenter) {
             super(max, xCenter, zCenter);
         }
 

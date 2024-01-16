@@ -91,7 +91,7 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 
         // Field that domes upwards instead of downwards like HollowHillFunction
         // Negative terrain field above (inner hill gap) and positive terrain field below (stone underground)
-        DensityFunction innerFloor = DensityFunctions.yClampedGradient(-1, 0, 0, -4);
+        DensityFunction innerFloor = DensityFunctions.yClampedGradient(-1, 0, 1, -4);
 
         // Similar field like above, but all per-position values multiplied by -1. Positive terrain field above (hill mound) and negative terrain field below (inner hill gap)
         DensityFunction innerCeiling = DensityFunctions.mul(

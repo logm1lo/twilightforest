@@ -162,7 +162,9 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 
     @Override
     public DensityFunction getStructureTerraformer(ChunkPos chunkSliceAt, StructureStart structurePieceSource) {
-        final float radius = (this.size * 4 + 0.8f) * 8;
+        int hillSize = this.size;
+
+        final float radius = (hillSize * 4 + 0.8f) * 8;
         final float radiusInner = radius - 8;
 
         final BoundingBox structureBox = structurePieceSource.getBoundingBox();
@@ -182,7 +184,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 
         // Field that domes upwards instead of downwards like above 2 DensityFunctions.
         // Negative terrain field above (inner hill gap) and positive terrain field below (stone underground)
-        DensityFunction innerFloor = HollowHillFunction.fromPos(hillCenter.atY(yCeilingFocus + this.size + this.size / 2), 2 - radiusInner, 1/10f);
+        DensityFunction innerFloor = HollowHillFunction.fromPos(hillCenter.atY(yCeilingFocus + hillSize + hillSize / 2), 2 - radiusInner, 1/10f);
 
         // Merge the inner ceiling & inner floor density functions, and obtain the maximum value.
         // Resulting terrain field will "carve" out the interior space, using negative field values past 0.
