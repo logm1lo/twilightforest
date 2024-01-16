@@ -126,7 +126,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 
         // Merge the inner ceiling & inner floor density functions, and obtain the maximum value.
         // Resulting terrain field will "carve" out the interior space, using negative field values past 0.
-        DensityFunction interior = DensityFunctions.max(DensityFunctions.min(innerCeiling, entrances), innerFloor);
+        DensityFunction interior = DensityFunctions.max(DensityFunctions.min(innerCeiling, entrances), innerFloor).clamp(0, 1);
         //if (true) return interior;
 
         DensityFunction interiorMask = FocusedDensityFunction.fromPos(hillCenter.atY(yCeilingFocus), radiusInner * 0.7f, radiusInner, 0);
