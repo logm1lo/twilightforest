@@ -3,7 +3,6 @@ package twilightforest.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -23,7 +22,6 @@ import twilightforest.events.EntityEvents;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.LandmarkStructure;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,13 +31,9 @@ public class InfoCommand {
 		return Commands.literal("info").requires(cs -> cs.hasPermission(2)).executes(InfoCommand::run);
 	}
 
-	private static int run(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+	private static int run(CommandContext<CommandSourceStack> ctx) {
 		CommandSourceStack source = ctx.getSource();
 		ServerLevel level = source.getLevel();
-
-		if (!TFGenerationSettings.usesTwilightChunkGenerator(level)) {
-			throw TFCommand.NOT_IN_TF.create();
-		}
 
 		BlockPos pos = BlockPos.containing(source.getPosition());
 

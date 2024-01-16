@@ -13,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -65,20 +64,18 @@ public class TFTickHandler {
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(world) && TFGenerationSettings.usesTwilightChunkGenerator(world) && !player.isCreative() && !player.isSpectator()) {
+		if (event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(world) && !player.isCreative() && !player.isSpectator()) {
 			Enforcement.enforceBiomeProgression(player, world);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(world)) {
-			if (TFGenerationSettings.usesTwilightChunkGenerator(world)) {
-				if (player.isCreative() || player.isSpectator()) {
-					sendAllClearPacket(player);
-				} else {
-					checkForLockedStructuresSendPacket(player, world);
-				}
-			}
-		}
+            if (player.isCreative() || player.isSpectator()) {
+                sendAllClearPacket(player);
+            } else {
+                checkForLockedStructuresSendPacket(player, world);
+            }
+        }
 	}
 
 	private static void sendStructureProtectionPacket(Player player, BoundingBox sbb) {
@@ -95,16 +92,12 @@ public class TFTickHandler {
 
 	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(Player player, ServerLevel world) {
-		ChunkGenerator chunkGenerator = WorldUtil.getChunkGenerator(world);
-		if (chunkGenerator == null)
-			return false;
-
 		ChunkPos chunkPlayer = player.chunkPosition();
 		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x, chunkPlayer.z).map(structureStart -> {
 			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
 				//FIXME this is a gross hack. For some reason the stronghold locked effect doesnt properly lock to the structure after 1.19.2 and I have no idea why.
 				// I really dont feel like looking into this right now, someone else can if they feel so inclined.
-				if (structureStart.getStructure().equals(world.registryAccess().registryOrThrow(Registries.STRUCTURE).get(TFStructures.KNIGHT_STRONGHOLD)) && player.blockPosition().getY() > TFGenerationSettings.SEALEVEL) {
+				if (structureStart.getStructure().equals(world.registryAccess().registryOrThrow(Registries.STRUCTURE).get(TFStructures.KNIGHT_STRONGHOLD)) && player.blockPosition().getY() > WorldUtil.getGeneratorSeaLevel(world)) {
 					return false;
 				}
 				sendStructureProtectionPacket(player, structureStart.getBoundingBox());

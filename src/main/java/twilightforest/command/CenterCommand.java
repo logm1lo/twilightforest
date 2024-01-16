@@ -3,7 +3,6 @@ package twilightforest.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -12,21 +11,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import twilightforest.init.TFLandmark;
 import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.world.registration.TFGenerationSettings;
 
 public class CenterCommand {
 	public static LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("center").requires(cs -> cs.hasPermission(2)).executes(CenterCommand::run);
 	}
 
-	private static int run(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+	private static int run(CommandContext<CommandSourceStack> ctx) {
 		CommandSourceStack source = ctx.getSource();
 
-		if (!TFGenerationSettings.usesTwilightChunkGenerator(source.getLevel())) {
-			throw TFCommand.NOT_IN_TF.create();
-		}
-
-		int dx = Mth.floor(source.getPosition().x());
+        int dx = Mth.floor(source.getPosition().x());
 		int dz = Mth.floor(source.getPosition().z());
 		BlockPos cc = LegacyLandmarkPlacements.getNearestCenterXZ(dx >> 4, dz >> 4);
 		TFLandmark closestFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(cc.getX(), cc.getZ(), source.getLevel());

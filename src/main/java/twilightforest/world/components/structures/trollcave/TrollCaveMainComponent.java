@@ -29,12 +29,9 @@ import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
-import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-
-import java.util.Objects;
 
 public class TrollCaveMainComponent extends TFStructureComponentOld {
 
@@ -240,7 +237,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		int dx = getWorldX(x, z);
 		int dz = getWorldZ(x, z);
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, WorldUtil.getSeaLevel(Objects.requireNonNull(WorldUtil.getChunkGenerator(world))) + 15, dz);
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, generator.getSeaLevel() + 15, dz);
 
 		for(int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);

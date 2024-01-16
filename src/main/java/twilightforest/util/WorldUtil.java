@@ -11,14 +11,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.placements.BiomeGridLandmarkPlacement;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -54,18 +52,10 @@ public final class WorldUtil {
 		return pos.offset(dx, dy, dz);
 	}
 
-	@Nullable
-	public static ChunkGenerator getChunkGenerator(LevelAccessor level) {
-		if (level.getChunkSource() instanceof ServerChunkCache chunkSource)
-			return chunkSource.chunkMap.generator();
-
-		return null;
-	}
-
-	public static int getSeaLevel(ChunkGenerator generator) {
-		if (generator instanceof ChunkGenerator) {
-			return generator.getSeaLevel();
-		} else return TFGenerationSettings.SEALEVEL;
+	public static int getGeneratorSeaLevel(LevelAccessor level) {
+		return level.getChunkSource() instanceof ServerChunkCache chunkSource
+				? chunkSource.chunkMap.generator().getSeaLevel()
+				: TFGenerationSettings.SEALEVEL; // TFGenerationSettings.SEALEVEL Should only ever hit if this method is called on client
 	}
 
 	public static int getBaseHeight(LevelAccessor level, int x, int z, Heightmap.Types type) {
@@ -78,7 +68,6 @@ public final class WorldUtil {
 
 	@Nullable
 	public static Pair<BlockPos, Holder<Structure>> findNearestMapLandmark(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int chunkSearchRadius, @SuppressWarnings("unused") boolean skipKnownStructures) {
-		TwilightForestMod.LOGGER.info("findNearestMapLandmark: " + targetStructures);
 		ChunkGeneratorStructureState state = level.getChunkSource().getGeneratorState();
 
 		Map<BiomeGridLandmarkPlacement, Set<Holder<Structure>>> seekStructures = new Object2ObjectArrayMap<>();

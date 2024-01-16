@@ -2,8 +2,6 @@ package twilightforest.events;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
@@ -17,7 +15,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -26,12 +23,10 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.Kobold;
 import twilightforest.init.TFLandmark;
 import twilightforest.network.AreaProtectionPacket;
-import twilightforest.network.EnforceProgressionStatusPacket;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.util.ProgressionStructure;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,43 +117,40 @@ public class ProgressionEvents {
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
 	private static boolean isAreaProtected(Level level, Player player, BlockPos pos) {
-
 		if (player.getAbilities().instabuild || player.isSpectator() ||
 				!LandmarkUtil.isProgressionEnforced(level) || player instanceof FakePlayer) {
 			return false;
 		}
 
-		if (level.isClientSide || WorldUtil.getChunkGenerator(level) != null) {
-			Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
-			if (struct.isPresent()) {
-				StructureStart structureStart = struct.get();
-				if (structureStart.getBoundingBox().isInside(pos) && structureStart.getStructure() instanceof ProgressionStructure structureHints) {
-					if (!structureHints.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
-						// what feature is nearby?  is it one the player has not unlocked?
-						TFLandmark nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), (ServerLevel) level);
+        Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+        if (struct.isPresent()) {
+            StructureStart structureStart = struct.get();
+            if (structureStart.getBoundingBox().isInside(pos) && structureStart.getStructure() instanceof ProgressionStructure structureHints) {
+                if (!structureHints.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
+                    // what feature is nearby?  is it one the player has not unlocked?
+                    TFLandmark nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), level);
 
-						// TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
-						if (nearbyFeature == TFLandmark.KNIGHT_STRONGHOLD && pos.getY() >= TFGenerationSettings.SEALEVEL)
-							return false;
+                    // TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
+                    if (nearbyFeature == TFLandmark.KNIGHT_STRONGHOLD && pos.getY() >= WorldUtil.getGeneratorSeaLevel(level))
+                        return false;
 
-						// send protection packet
-						List<BoundingBox> boxes = new ArrayList<>();
-						structureStart.getPieces().forEach(piece -> {
-							if (piece.getBoundingBox().isInside(pos))
-								boxes.add(piece.getBoundingBox());
-						});
+                    // send protection packet
+                    List<BoundingBox> boxes = new ArrayList<>();
+                    structureStart.getPieces().forEach(piece -> {
+                        if (piece.getBoundingBox().isInside(pos))
+                            boxes.add(piece.getBoundingBox());
+                    });
 
-						sendAreaProtectionPacket(level, pos, boxes);
+                    sendAreaProtectionPacket(level, pos, boxes);
 
-						// send a hint monster?
-						structureHints.trySpawnHintMonster(level, player, pos);
+                    // send a hint monster?
+                    structureHints.trySpawnHintMonster(level, player, pos);
 
-						return true;
-					}
-				}
-			}
-		}
-		return false;
+                    return true;
+                }
+            }
+        }
+        return false;
 	}
 
 	private static void sendAreaProtectionPacket(Level level, BlockPos pos, List<BoundingBox> sbb) {
