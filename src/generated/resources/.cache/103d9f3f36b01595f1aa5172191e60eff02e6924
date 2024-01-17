@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-16T12:08:25.449174	Registries
+// 1.20.4	2024-01-17T14:23:12.446397	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -214,8 +214,8 @@ cfcc07ca2cf2d775ebaa046157420f5ce69fb63d data/twilightforest/worldgen/configured
 d130667b32a39bed9ff04a638173a6d1781a8ed1 data/twilightforest/worldgen/configured_feature/well_placer.json
 74ec3bf6ff9e031a01d3ce5b7319276b48cd2086 data/twilightforest/worldgen/density_function/skylight_terrain.json
 75f771a6d10dbf221eeb46de3bc4570903474471 data/twilightforest/worldgen/density_function/twilight_terrain.json
-ae4285e8f57e92c03ad45021c9391c8d39bf83ed data/twilightforest/worldgen/noise_settings/skylight_noise_gen.json
-4adf7484ffb3f662a39bd22aa72e43b091e51d35 data/twilightforest/worldgen/noise_settings/twilight_noise_gen.json
+a4d39e95545f336807fd87337b2af2cc4b7b06b4 data/twilightforest/worldgen/noise_settings/skylight_noise_gen.json
+c122a1414ad4301039bf1a73806ad40bd4609198 data/twilightforest/worldgen/noise_settings/twilight_noise_gen.json
 7d478657414f4d60d70c48ab48ad63659d18ddf5 data/twilightforest/worldgen/placed_feature/big_mushgloom.json
 9917ea3a2dc3994e5c01b536c31f96658cdfd7d7 data/twilightforest/worldgen/placed_feature/canopy_fallen_log.json
 075f357345144a68bca33f351e139b2fec89767a data/twilightforest/worldgen/placed_feature/dark_dead_bushes.json
