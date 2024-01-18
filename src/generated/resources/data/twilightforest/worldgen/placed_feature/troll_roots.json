@@ -6,19 +6,7 @@
       "heightmap": "WORLD_SURFACE_WG"
     },
     {
-      "type": "minecraft:height_range",
-      "height": {
-        "type": "minecraft:uniform",
-        "max_inclusive": {
-          "absolute": 60
-        },
-        "min_inclusive": {
-          "above_bottom": 0
-        }
-      }
-    },
-    {
-      "type": "minecraft:count",
+      "type": "minecraft:count_on_every_layer",
       "count": 8
     },
     {
