@@ -2,14 +2,9 @@ package twilightforest.util;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBiomes;
@@ -60,26 +55,10 @@ public class LegacyLandmarkPlacements {
         return chunkHasLandmarkCenter(blockX >> 4, blockZ >> 4);
     }
 
-    public static boolean chunkHasLandmarkCenter(ChunkPos chunkPos) {
-        return LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkPos.x, chunkPos.z);
-    }
-
     public static boolean chunkHasLandmarkCenter(int chunkX, int chunkZ) {
         BlockPos nearestCenter = getNearestCenterXZ(chunkX, chunkZ);
 
         return chunkX == nearestCenter.getX() >> 4 && chunkZ == nearestCenter.getZ() >> 4;
-    }
-
-    // TODO For use with Hollow Hills
-    public static float distanceFromCenter(BlockPos posXZ, boolean euclidean) {
-        BlockPos nearestCenter = getNearestCenterXZ(posXZ.getX() >> 4, posXZ.getZ() >> 4);
-
-        float dX = posXZ.getX() - nearestCenter.getX();
-        float dZ = posXZ.getZ() - nearestCenter.getZ();
-
-        if (euclidean) return Mth.sqrt(dX * dX + dZ * dZ);
-
-        return Mth.abs(dX) + Mth.abs(dZ);
     }
 
     public static TFLandmark pickLandmarkAtBlock(int blockX, int blockZ, LevelReader world) {
@@ -89,22 +68,20 @@ public class LegacyLandmarkPlacements {
     /**
      * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
      * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
+     * @return The feature in the chunk "region"
      */
     public static TFLandmark pickLandmarkForChunk(int chunkX, int chunkZ, LevelReader world) {
         // set the chunkX and chunkZ to the center of the biome
         chunkX = Math.round(chunkX / 16F) * 16;
         chunkZ = Math.round(chunkZ / 16F) * 16;
 
+        BlockPos pos = new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8);
+
         // what biome is at the center of the chunk?
-        Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8)).value();
-        return pickBiomeLandmarkLegacy(world.registryAccess(), chunkX, chunkZ, biomeAt);
-    }
+        Optional<ResourceKey<Biome>> biomeResourceKey = world.getBiome(pos).unwrapKey();
 
-    public static TFLandmark pickBiomeLandmarkLegacy(RegistryAccess access, int chunkX, int chunkZ, Biome biome) {
-        Optional<? extends Registry<Biome>> registryOpt = access.registry(Registries.BIOME);
-
-        if (registryOpt.isPresent()) {
-            TFLandmark biomeFeature = BIOME_FEATURES.get(registryOpt.get().getKey(biome));
+        if (biomeResourceKey.isPresent()) {
+            TFLandmark biomeFeature = BIOME_FEATURES.get(biomeResourceKey.get().location());
 
             if(biomeFeature != null)
                 return biomeFeature;
@@ -146,7 +123,7 @@ public class LegacyLandmarkPlacements {
     /**
      * Returns the feature nearest to the specified chunk coordinates.
      */
-    public static TFLandmark getNearestLandmark(int cx, int cz, WorldGenLevel world) {
+    public static TFLandmark getNearestLandmark(int cx, int cz, LevelReader world) {
         return getNearestLandmark(cx, cz, world, null);
     }
 
@@ -184,24 +161,6 @@ public class LegacyLandmarkPlacements {
         }
 
         return TFLandmark.NOTHING;
-    }
-
-    /**
-     * @return The feature in the chunk "region"
-     */
-    public static TFLandmark getFeatureForRegion(int chunkX, int chunkZ, WorldGenLevel world) {
-        //just round to the nearest multiple of 16 chunks?
-        int featureX = Math.round(chunkX / 16F) * 16;
-        int featureZ = Math.round(chunkZ / 16F) * 16;
-
-        return pickLandmarkForChunk(featureX, featureZ, world);
-    }
-
-    /**
-     * @return The feature in the chunk "region"
-     */
-    public static TFLandmark getFeatureForRegionPos(int posX, int posZ, WorldGenLevel world) {
-        return getFeatureForRegion(posX >> 4, posZ >> 4, world);
     }
 
     public static XZQuadrantIterator<BlockPos> landmarkCenterScanner(BlockPos searchFocus, int gridSearchRadius) {
@@ -259,12 +218,5 @@ public class LegacyLandmarkPlacements {
         }
 
         return new BlockPos(ccx, height, ccz);
-    }
-
-    public static boolean isTheseFeatures(TFLandmark feature, TFLandmark... predicates) {
-        for (TFLandmark predicate : predicates)
-            if (feature == predicate)
-                return true;
-        return false;
     }
 }

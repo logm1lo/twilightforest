@@ -62,7 +62,7 @@ public class TFMazeMapData extends MapItemSavedData {
 
 		// when we are in a labyrinth, snap to the LABYRINTH
 		if (world instanceof ServerLevel level) {
-			if (LegacyLandmarkPlacements.getFeatureForRegion(x >> 4, z >> 4, level) == TFLandmark.LABYRINTH) {
+			if (LegacyLandmarkPlacements.pickLandmarkForChunk(x >> 4, z >> 4, level) == TFLandmark.LABYRINTH) {
 				BlockPos mc = LegacyLandmarkPlacements.getNearestCenterXZ(x >> 4, z >> 4);
 				this.centerX = mc.getX();
 				this.centerZ = mc.getZ();
