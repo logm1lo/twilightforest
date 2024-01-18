@@ -5,11 +5,10 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
-import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -38,12 +37,24 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	public static boolean startSpike(WorldGenLevel level, BlockPos startPos, Stalactite config, RandomSource random, boolean hanging) {
-		UniformInt lengthBounds = UniformInt.of((int) (config.maxLength() * config.sizeVariation()), config.maxLength());
-
-		return startSpike(level, startPos, config.ores(), lengthBounds.sample(random), lengthBounds.getMinValue(), ConstantInt.of(4).sample(random), hanging, random);
+		return startSpike(level, startPos, config, random, hanging, Integer.MAX_VALUE);
 	}
 
-	public static boolean startSpike(WorldGenLevel level, BlockPos startPos, Either<List<Pair<Block, Integer>>, Block> ore, int length, int lengthMinimum, int clearance, boolean hang, RandomSource random) {
+	public static boolean startSpike(WorldGenLevel level, BlockPos startPos, Stalactite config, RandomSource random, boolean hanging, int forcedMaxHeight) {
+		int maxInclusive = config.maxLength();
+		int minInclusive = (int) (maxInclusive * config.sizeVariation());
+
+		int length = Mth.randomBetweenInclusive(random, minInclusive, maxInclusive);
+
+		return startSpike(level, startPos, config.ores(), length, minInclusive, Math.min(maxInclusive, forcedMaxHeight), 4, hanging, random);
+	}
+
+	public static boolean startSpike(WorldGenLevel level, BlockPos startPos, Either<List<Pair<Block, Integer>>, Block> ore, int length, int lengthMinimum, int lengthMaximum, int clearance, boolean hang, RandomSource random) {
+		// Uncomment for easy spectator-xray debugging in position generation
+		//if (true) return level.setBlock(startPos, Blocks.BEACON.defaultBlockState(), 3);
+
+		if (lengthMaximum < Math.max(lengthMinimum, 1)) return false;
+
 		BlockPos.MutableBlockPos movingPos = startPos.mutable();
 		int clearedLength = 0;
 		int dY = hang ? -1 : 1;
@@ -73,7 +84,7 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 
 		finalLength = Math.min(length, finalLength);
 
-		if (finalLength < lengthMinimum) return false;
+		if (finalLength < lengthMinimum || finalLength > lengthMaximum) return false;
 
 		return makeSpike(level, startPos, ore, finalLength, dY, random, hang);
 	}
@@ -103,7 +114,7 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 				for (int i = -1; i < spikeLength; i++) {
 					BlockPos placement = startPos.offset(dx, i * dY, dz);
 
-					if (FeatureLogic.worldGenReplaceable(level.getBlockState(placement)) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 1)) {
+					if (FeatureLogic.worldGenReplaceable(level.getBlockState(placement)) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 2)) {
 						if (ore.right().isPresent()) {
 							level.setBlock(placement, ore.right().get().defaultBlockState(), 3);
 						} else {

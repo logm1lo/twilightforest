@@ -173,7 +173,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
         final BlockPos hillCenter = structureBox.getCenter();
 
         // Main mound density field. All values above mount surface are 0 while other values under the mound are 1.
-        DensityFunction hillMound = HollowHillFunction.fromPos(hillCenter.atY(yCeilingFocus + 8), radius, 0.7f)
+        DensityFunction hillMound = HollowHillFunction.fromPos(hillCenter.atY(yCeilingFocus + 10), radius, 0.7f)
                 .clamp(0, 1);
 
         // Similar field like above, but all per-position values multiplied by -1. Positive terrain field above (hill mound) and negative terrain field below (inner hill gap)

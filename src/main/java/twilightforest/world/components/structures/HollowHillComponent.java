@@ -162,7 +162,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	private void placeFloorFeature(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, float distSq) {
-		int y = this.getWorldY(Mth.floor(this.getFloorHeight(Mth.sqrt(distSq)) + 0.25f));
+		int floorY = this.getFloorY(distSq);
 
 		float floatChance = rand.nextFloat();
 
@@ -171,7 +171,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			float angle = rand.nextFloat() * Mth.TWO_PI;
 			int x = Math.round(Mth.cos(angle) * Mth.SQRT_OF_TWO) + pos.getX();
 			int z = Math.round(Mth.sin(angle) * Mth.SQRT_OF_TWO) + pos.getZ();
-			pos.set(x, y, z);
+			pos.set(x, floorY, z);
 
 			if (floatChance < SPAWNER_SPAWN_CHANCE) {
 				setSpawnerInWorld(world, writeableBounds, this.getMobID(rand), v -> {}, pos.above());
@@ -182,16 +182,31 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			world.setBlock(pos.below(), Blocks.COBBLESTONE.defaultBlockState(), 50);
 			world.setBlock(pos, Blocks.COBBLESTONE.defaultBlockState(), 50);
 		} else if (this.speleothemConfig.shouldDoAStalagmite(rand)) {
-			pos.setY(y);
-			BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getStalagmite(rand), rand, false);
+			pos.setY(floorY);
+
+			int ceilingY = this.getCeilingY(distSq);
+
+			int forcedMaxHeight = ceilingY - floorY + 4; // Limit height of Stalagmites, plus a little leeway
+
+			BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getStalagmite(rand), rand, false, forcedMaxHeight);
 		}
 	}
 
 	private void placeCeilingFeature(WorldGenLevel world, RandomSource rand, BlockPos.MutableBlockPos pos, float distSq) {
 		if (!this.speleothemConfig.shouldDoAStalactite(rand)) return;
 
-		BlockPos ceiling = pos.atY(this.getWorldY(Mth.ceil(this.getCeilingHeight(Mth.sqrt(distSq)))));
+        BlockPos ceiling = pos.atY(this.getCeilingY(distSq));
+		// There's no generational defect from over-generating Stalactites, such as poking through the ground with Stalagmites.
+		// Plus the ore girth would be diminished as well. Thus, no max height is set for stalactites unlike
 		BlockSpikeFeature.startSpike(world, ceiling, this.speleothemConfig.getStalactite(rand), rand, true);
+	}
+
+	private int getCeilingY(float distSq) {
+		return this.getWorldY(Mth.ceil(this.getCeilingHeight(Mth.sqrt(distSq))));
+	}
+
+	private int getFloorY(float distSq) {
+		return this.getWorldY(Mth.floor(this.getFloorHeight(Mth.sqrt(distSq)) + 0.25f));
 	}
 
 	@NotNull
@@ -225,7 +240,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 * Gets the id of a mob appropriate to the current hill size.
 	 */
 	protected EntityType<?> getMobID(RandomSource rand) {
-		return getMobID(rand, this.hillSize);
+		return this.getMobID(rand, this.hillSize);
 	}
 
 	/**
@@ -234,13 +249,13 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 */
 	protected EntityType<?> getMobID(RandomSource rand, int level) {
 		if (level == 1) {
-			return getLevel1Mob(rand);
+			return this.getLevel1Mob(rand);
 		}
 		if (level == 2) {
-			return getLevel2Mob(rand);
+			return this.getLevel2Mob(rand);
 		}
 		if (level == 3) {
-			return getLevel3Mob(rand);
+			return this.getLevel3Mob(rand);
 		}
 
 		return EntityType.SPIDER;
