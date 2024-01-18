@@ -37,8 +37,12 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	@Override
-	public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
-		return this.biomeTerrainDataHolder.value().getNoiseBiome(x, y, z);
+	public Holder<Biome> getNoiseBiome(int biomeX, int biomeY, int biomeZ, Climate.Sampler sampler) {
+		return this.biomeTerrainDataHolder.value().getNoiseBiome(biomeX, biomeY, biomeZ);
+	}
+
+	public Holder<Biome> getMainBiome(int biomeX, int biomeZ) {
+		return this.biomeTerrainDataHolder.value().getBiomeColumnKey(biomeX, biomeZ);
 	}
 
 	@Deprecated

@@ -54,10 +54,14 @@ public final class TerrainColumn {
         return this.keyBiome.is(biome);
     }
 
-    public Holder<Biome> getBiome(int biomeElevation) {
+    public Holder<Biome> getMainBiome() {
+        return this.keyBiome;
+    }
+
+    public Holder<Biome> getBiome(int biomeElevationQuartile) {
         return this.reduce((a, b) -> {
-            double aDelta = a.getDoubleKey() - biomeElevation;
-            double bDelta = b.getDoubleKey() - biomeElevation;
+            double aDelta = a.getDoubleKey() - biomeElevationQuartile;
+            double bDelta = b.getDoubleKey() - biomeElevationQuartile;
 
             return Math.abs(aDelta) <= Math.abs(bDelta) ? a : b;
         }, this.keyBiome);

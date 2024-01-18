@@ -10,6 +10,7 @@ import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.DensityFunction;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.TerrainColumn;
@@ -53,12 +54,17 @@ public class BiomeDensitySource {
         return this.genBiomeConfig;
     }
 
-    public Holder<Biome> getNoiseBiome(int x, int y, int z) {
-        return this.biomeList.get(this.genBiomes.get().getBiome(x, z)).getBiome(y);
+    @NotNull
+    public Holder<Biome> getBiomeColumnKey(int biomeX, int biomeZ) {
+        return this.biomeList.get(this.genBiomes.get().getBiome(biomeX, biomeZ)).getMainBiome();
     }
 
-    public double getBiomeDepth(int x, int z, DensityFunction.FunctionContext context) {
-        return this.getBiomeDepth(this.genBiomes.get().getBiome(x, z), context);
+    public Holder<Biome> getNoiseBiome(int biomeX, int biomeY, int biomeZ) {
+        return this.biomeList.get(this.genBiomes.get().getBiome(biomeX, biomeZ)).getBiome(biomeY);
+    }
+
+    public double getBiomeDepth(int biomeX, int biomeZ, DensityFunction.FunctionContext context) {
+        return this.getBiomeDepth(this.genBiomes.get().getBiome(biomeX, biomeZ), context);
     }
 
     @SuppressWarnings("OptionalIsPresent")
@@ -68,8 +74,8 @@ public class BiomeDensitySource {
         return terrainColumn.get().depth(context);
     }
 
-    public Optional<TerrainColumn> getTerrainColumn(int x, int z) {
-        return this.getTerrainColumn(this.genBiomes.get().getBiome(x, z));
+    public Optional<TerrainColumn> getTerrainColumn(int biomeX, int biomeZ) {
+        return this.getTerrainColumn(this.genBiomes.get().getBiome(biomeX, biomeZ));
     }
 
     public Optional<TerrainColumn> getTerrainColumn(ResourceKey<Biome> biome) {
