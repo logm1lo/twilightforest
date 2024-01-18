@@ -1,13 +1,14 @@
 package twilightforest.world.components.structures.placements;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Lifecycle;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePlacementTypes;
 import twilightforest.util.LegacyLandmarkPlacements;
 
@@ -19,23 +20,20 @@ import java.util.Optional;
  */
 public class LandmarkGridPlacement extends StructurePlacement {
     public static final Codec<LandmarkGridPlacement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            TFLandmark.CODEC.fieldOf("landmark_set").forGetter(p -> p.landmark),
-            Codec.BOOL.orElse(false).fieldOf("legacy_special_biome_bypass").withLifecycle(Lifecycle.deprecated(0)).forGetter(p -> p.legacySpecialBiomeBypass)
+            ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_grid_lock").forGetter(p -> p.landmark)
     ).apply(inst, LandmarkGridPlacement::new));
 
-    private final TFLandmark landmark;
-    @Deprecated
-    private final boolean legacySpecialBiomeBypass;
+    private final Optional<ResourceKey<Structure>> landmark;
 
-    public static LandmarkGridPlacement forTag(TFLandmark landmark, boolean legacySpecialBiomeBypass) {
-        return new LandmarkGridPlacement(landmark, legacySpecialBiomeBypass);
+    // Using this will mean this structure will spawn at every center, unless its generation stub is actually blocked by the structure
+    public static LandmarkGridPlacement forceStructureForCenters() {
+        return new LandmarkGridPlacement(Optional.empty());
     }
 
-    public LandmarkGridPlacement(TFLandmark landmark, boolean legacySpecialBiomeBypass) {
+    public LandmarkGridPlacement(Optional<ResourceKey<Structure>> landmark) {
         super(Vec3i.ZERO, FrequencyReductionMethod.DEFAULT, 1f, 0, Optional.empty()); // None of these params matter except for possibly flat-world or whatever
 
         this.landmark = landmark;
-        this.legacySpecialBiomeBypass = legacySpecialBiomeBypass;
     }
 
     @Override
@@ -43,16 +41,11 @@ public class LandmarkGridPlacement extends StructurePlacement {
         if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))
             return false;
 
-        // TODO Replace with using weighted list
-        return this.legacySpecialBiomeBypass || LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ) == this.landmark;
+        return this.landmark.isEmpty() || LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ) == this.landmark.get();
     }
 
     @Override
     public StructurePlacementType<?> type() {
         return TFStructurePlacementTypes.GRID_LANDMARK_PLACEMENT_TYPE.get();
-    }
-
-    public TFLandmark getLandmark() {
-        return this.landmark;
     }
 }

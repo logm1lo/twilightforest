@@ -1,8 +1,10 @@
 package twilightforest.util;
 
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BoundingBoxUtils {
@@ -61,4 +63,25 @@ public class BoundingBoxUtils {
 	public static BoundingBox cloneWithAdjustments(BoundingBox box, int x1, int y1, int z1, int x2, int y2, int z2) {
 		return new BoundingBox(box.minX() + x1, box.minY() + y1, box.minZ() + z1, box.maxX() + x2, box.maxY() + y2, box.maxZ() + z2);
 	}
+
+    @NotNull
+    public static BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir, boolean centerBounds) {
+        // CenterBounds is true for ONLY Hollow Hills, Hydra Lair, & Yeti Caves
+        if (centerBounds) {
+            x += (spanX + minX) / 4;
+            y += (spanY + minY) / 4;
+            z += (spanZ + minZ) / 4;
+        }
+
+        return switch (dir) {
+            case WEST -> // '\001'
+                    new BoundingBox(x - spanZ + minZ, y + minY, z + minX, x + minZ, y + spanY + minY, z + spanX + minX);
+            case NORTH -> // '\002'
+                    new BoundingBox(x - spanX - minX, y + minY, z - spanZ - minZ, x - minX, y + spanY + minY, z - minZ);
+            case EAST -> // '\003'
+                    new BoundingBox(x + minZ, y + minY, z - spanX, x + spanZ + minZ, y + spanY + minY, z + minX);
+            default -> // '\0'
+                    new BoundingBox(x + minX, y + minY, z + minZ, x + spanX + minX, y + spanY + minY, z + spanZ + minZ);
+        };
+    }
 }

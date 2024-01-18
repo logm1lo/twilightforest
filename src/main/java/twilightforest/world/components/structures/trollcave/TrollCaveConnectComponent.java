@@ -22,8 +22,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
@@ -46,7 +46,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
 	}
 
 	@Override

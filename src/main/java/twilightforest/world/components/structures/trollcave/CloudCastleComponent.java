@@ -18,8 +18,8 @@ import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
@@ -46,7 +46,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		// spawn list!
 		this.spawnListIndex = 1;
 
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH, false);
 	}
 
 	@Override

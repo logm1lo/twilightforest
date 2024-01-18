@@ -22,7 +22,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.loot.TFLootTables;
@@ -70,7 +69,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		this.hdiam = (this.hillSize * 2 + 1) * 16;
 
 		// can we determine the size here?
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -this.radius, -(3 + this.hillSize), -this.radius, this.radius * 2, this.radius / (this.hillSize == 1 ? 2 : this.hillSize), this.radius * 2, Direction.SOUTH, true);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -this.radius, -(3 + this.hillSize), -this.radius, this.radius * 2, this.radius / (this.hillSize == 1 ? 2 : this.hillSize), this.radius * 2, Direction.SOUTH, true);
 
 		this.speleothemConfigId = speleothemConfig.unwrapKey().get().location();
 		this.speleothemConfig = speleothemConfig.value();

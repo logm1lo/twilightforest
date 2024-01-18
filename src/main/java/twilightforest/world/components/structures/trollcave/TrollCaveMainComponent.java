@@ -23,7 +23,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.loot.TFLootTables;
@@ -66,7 +65,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.height = 20;
 
 		int radius = this.size / 2;
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH, false);
 
 		this.speleothemConfigHolder = speleothemConfig;
 		this.speleothemConfig = speleothemConfig.value();

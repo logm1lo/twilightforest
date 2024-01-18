@@ -21,7 +21,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
@@ -49,7 +48,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		this.size = 31;
 		this.height = 7;
 		this.level = level;
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, Direction.SOUTH, false);
 	}
 
 	@Override

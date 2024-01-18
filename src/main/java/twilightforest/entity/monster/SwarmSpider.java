@@ -22,8 +22,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
+import twilightforest.init.TFStructures;
 import twilightforest.util.LegacyLandmarkPlacements;
 
 public class SwarmSpider extends Spider {
@@ -134,7 +134,7 @@ public class SwarmSpider extends Spider {
 		int chunkX = Mth.floor(pos.getX()) >> 4;
 		int chunkZ = Mth.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return LegacyLandmarkPlacements.getNearestLandmark(chunkX, chunkZ, accessor) == TFLandmark.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(accessor, pos, random);
+		return LegacyLandmarkPlacements.pickLandmarkForChunk(chunkX, chunkZ, accessor) == TFStructures.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(accessor, pos, random);
 	}
 
 	public boolean shouldSpawnMore() {

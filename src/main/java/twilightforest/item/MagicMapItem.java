@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -17,12 +18,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFLandmark;
 import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
@@ -134,6 +136,8 @@ public class MagicMapItem extends MapItem {
                 return array;
             });
 
+			Registry<Structure> structureRegistry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
+
             for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
                 for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {
                     if (xPixel >= 0 && zPixel >= 0 && xPixel < 128 && zPixel < 128) {
@@ -169,12 +173,15 @@ public class MagicMapItem extends MapItem {
                                 byte mapX = (byte) ((worldX - centerX) / (float) blocksPerPixel * 2F);
                                 byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
 
-                                TFLandmark feature = LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, level);
-                                boolean isConquered = LandmarkUtil.isConquered(level, worldX, worldZ);
+								ResourceKey<Structure> structureKey = LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, level);
+								// Filters by structures we want to give icons for
+								if (structureRegistry.getHolder(structureKey).map(structureRef -> structureRef.is(StructureTagGenerator.LANDMARK)).orElse(false)) {
+									boolean isConquered = LandmarkUtil.isConquered(level, worldX, worldZ);
 
-                                TFMagicMapData tfData = (TFMagicMapData) data;
-                                tfData.putMapData(new TFMagicMapData.TFMapDecoration(feature, mapX, mapZ, (byte) 8, isConquered));
-                                //TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
+									TFMagicMapData tfData = (TFMagicMapData) data;
+									tfData.putMapData(new TFMagicMapData.TFMapDecoration(structureKey, mapX, mapZ, isConquered));
+									//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
+								}
                             }
                         }
                     }

@@ -1,8 +1,7 @@
 {
   "placement": {
     "type": "twilightforest:landmark_grid",
-    "landmark_set": "hedge_maze",
-    "legacy_special_biome_bypass": false
+    "structure_grid_lock": "twilightforest:hedge_maze"
   },
   "structures": [
     {

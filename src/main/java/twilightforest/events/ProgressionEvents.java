@@ -2,12 +2,14 @@ package twilightforest.events;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -21,7 +23,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.Kobold;
-import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructures;
 import twilightforest.network.AreaProtectionPacket;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
@@ -128,10 +130,10 @@ public class ProgressionEvents {
             if (structureStart.getBoundingBox().isInside(pos) && structureStart.getStructure() instanceof ProgressionStructure structureHints) {
                 if (!structureHints.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
                     // what feature is nearby?  is it one the player has not unlocked?
-                    TFLandmark nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), level);
+                    ResourceKey<Structure> nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), level);
 
                     // TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
-                    if (nearbyFeature == TFLandmark.KNIGHT_STRONGHOLD && pos.getY() >= WorldUtil.getGeneratorSeaLevel(level))
+                    if (nearbyFeature == TFStructures.KNIGHT_STRONGHOLD && pos.getY() >= WorldUtil.getGeneratorSeaLevel(level))
                         return false;
 
                     // send protection packet

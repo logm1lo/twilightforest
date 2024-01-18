@@ -1,8 +1,6 @@
 {
   "placement": {
-    "type": "twilightforest:landmark_grid",
-    "landmark_set": "knight_stronghold",
-    "legacy_special_biome_bypass": true
+    "type": "twilightforest:landmark_grid"
   },
   "structures": [
     {
