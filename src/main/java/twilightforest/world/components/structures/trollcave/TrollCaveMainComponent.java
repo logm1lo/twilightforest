@@ -58,9 +58,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		super(type, i, x, y, z);
 		this.setOrientation(Direction.SOUTH); // DEPTH_AVERAGE
 
-		// adjust y
-		//y += 10;
-
 		this.size = 30;
 		this.height = 20;
 

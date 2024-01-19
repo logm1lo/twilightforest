@@ -15,7 +15,7 @@
         "absolute": -8
       },
       "min_inclusive": {
-        "above_bottom": 5
+        "above_bottom": 16
       }
     },
     "yScale": 0.6

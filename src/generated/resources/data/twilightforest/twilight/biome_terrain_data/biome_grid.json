@@ -101,7 +101,7 @@
     {
       "biome_layers": {
         "-1.0": "twilightforest:highlands",
-        "-3.0": "twilightforest:troll_cave"
+        "-3.0": "twilightforest:highlands_underground"
       },
       "depth": 3.0,
       "key_biome": "twilightforest:highlands",

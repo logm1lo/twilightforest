@@ -6,7 +6,6 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantFloat;
-import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
@@ -45,7 +44,7 @@ public class TFCaveCarvers {
 
 	public static void bootstrap(BootstapContext<ConfiguredWorldCarver<?>> context) {
 		HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
-		context.register(TFCAVES_CONFIGURED, TFCAVES.configured(new CaveCarverConfiguration(0.1F, UniformHeight.of(VerticalAnchor.aboveBottom(5), VerticalAnchor.absolute(-8)), ConstantFloat.of(0.6F), VerticalAnchor.bottom(), blocks.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES), ConstantFloat.of(1.0F), ConstantFloat.of(1.0F), ConstantFloat.of(-0.7F))));
-		context.register(HIGHLANDCAVES_CONFIGURED, HIGHLANDCAVES.configured(new CaveCarverConfiguration(0.12F, BiasedToBottomHeight.of(VerticalAnchor.aboveBottom(5), VerticalAnchor.absolute(65), 16), UniformFloat.of(1, 4), VerticalAnchor.bottom(), blocks.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES), UniformFloat.of(1.25f, 1.5f), UniformFloat.of(1.2f, 1.4f), ConstantFloat.of(-1))));
+		context.register(TFCAVES_CONFIGURED, TFCAVES.configured(new CaveCarverConfiguration(0.1F, UniformHeight.of(VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(-8)), ConstantFloat.of(0.6F), VerticalAnchor.bottom(), blocks.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES), ConstantFloat.of(1.0F), ConstantFloat.of(1.0F), ConstantFloat.of(-0.7F))));
+		context.register(HIGHLANDCAVES_CONFIGURED, HIGHLANDCAVES.configured(new CaveCarverConfiguration(0.12F, BiasedToBottomHeight.of(VerticalAnchor.absolute(8), VerticalAnchor.absolute(32), 16), ConstantFloat.of(0.7f), VerticalAnchor.bottom(), blocks.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES), ConstantFloat.of(1.5f), ConstantFloat.of(1f), ConstantFloat.of(-0.9f))));
 	}
 }
