@@ -113,8 +113,7 @@ repositories {
 
 dependencies {
     //make sure to only pick one of these when testing (switch others to compileOnly)
-    //JEI and EMI can apparently be used together but I havent been able to test it yet as JEI isnt updated
-    //implementation fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
+    implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
     compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
     compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.minecraft_version}"
 
