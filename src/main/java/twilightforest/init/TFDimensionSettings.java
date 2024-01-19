@@ -66,32 +66,32 @@ public class TFDimensionSettings {
 
         DensityFunction routedBiomeWarpInterpolated = DensityFunctions.mul(
 				DensityFunctions.constant(1/32f),
-				DensityFunctions.interpolated(new BiomeTerrainWarpRouter(
+				new BiomeTerrainWarpRouter(
 						biomeGrid,
 						-64,
 						64,
 						8,
 						DensityFunctions.constant(2.5),
 						heightOffsetNoise
-				))
+				)
 		);
 
 		// Debug: For a flat substitute of BiomeTerrainWarpRouter
 		// routedBiomeWarpInterpolated = DensityFunctions.yClampedGradient(-31, 32, 2, -2);
 
 		DensityFunction wideNoise = DensityFunctions.add(
-				DensityFunctions.constant(0.2),
+				DensityFunctions.constant(0.25),
 				DensityFunctions.mul(
-						DensityFunctions.constant(0.4),
+						DensityFunctions.constant(0.5),
 						DensityFunctions.noise(surfaceParams, 0.5, 0)
 				)
 		);
 
 		DensityFunction thinNoise = DensityFunctions.add(
-				DensityFunctions.constant(0.2),
+				DensityFunctions.constant(0.25),
 				DensityFunctions.mul(
-						DensityFunctions.constant(0.4),
-						DensityFunctions.noise(surfaceParams, 3, 0)
+						DensityFunctions.constant(0.5),
+						DensityFunctions.noise(surfaceParams, 2, 0)
 				)
 		);
 
@@ -117,12 +117,12 @@ public class TFDimensionSettings {
 				))
 		);
 
-		DensityFunction finalDensity = DensityFunctions.add(
+		DensityFunction finalDensity = DensityFunctions.interpolated(DensityFunctions.add(
 				noisedBiomeNoise,
 				DensityFunctions.yClampedGradient(-32, -1, 0.5, 0).square()
-		).clamp(-0.1, 1);
+		));
 
-		context.register(TWILIGHT_TERRAIN, finalDensity);
+		context.register(TWILIGHT_TERRAIN, finalDensity.clamp(-0.1, 1));
 
 		context.register(SKYLIGHT_TERRAIN, DensityFunctions.mul(
 				DensityFunctions.constant(0.1),
@@ -130,7 +130,7 @@ public class TFDimensionSettings {
 						DensityFunctions.constant(-1),
 						noiseInterpolator
 				).clamp(-1, 0)
-		));
+		).clamp(-0.1, 1));
 	}
 
 	public static NoiseGeneratorSettings tfDefault(BootstapContext<NoiseGeneratorSettings> context) {
@@ -140,8 +140,8 @@ public class TFDimensionSettings {
 		NoiseSettings tfNoise = NoiseSettings.create(
 				-32, //TODO Deliberate over this. For now it'll be -32
 				256,
-				4,
-				4
+				2,
+				2
 		);
 
 		return new NoiseGeneratorSettings(
@@ -175,6 +175,7 @@ public class TFDimensionSettings {
 		);
 	}
 
+	// completely untested
 	public static NoiseGeneratorSettings skylight(BootstapContext<NoiseGeneratorSettings> context) {
 		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
 		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(SKYLIGHT_TERRAIN));
@@ -182,8 +183,8 @@ public class TFDimensionSettings {
 		NoiseSettings skylightNoise = NoiseSettings.create(
 				-32, //min height
 				256, // height
-				4, // size_horizontal
-				4 // size_vertical
+				2, // size_horizontal
+				2 // size_vertical
 		);
 
 		return new NoiseGeneratorSettings(

@@ -130,7 +130,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			for (Direction facing : Direction.values()) {
 				BlockPos directionalRelative = pos.relative(facing);
 				if (this.rand.nextBoolean() && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
-                    return access.setBlockState(directionalRelative, this.rand.nextInt(3) == 0 ? TFBlocks.TROLLSTEINN.get().defaultBlockState() : Blocks.STONE.defaultBlockState(), false) != null;
+                    return access.setBlockState(directionalRelative, this.rand.nextInt(8) == 0 ? TFBlocks.TROLLSTEINN.get().defaultBlockState() : Blocks.STONE.defaultBlockState(), false) != null;
 				}
 			}
 		} else { //here's the code for making dirt roofs. Enjoy :)

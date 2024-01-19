@@ -1,6 +1,5 @@
 package twilightforest.world.components.structures.trollcave;
 
-import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -20,7 +19,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
@@ -29,8 +27,6 @@ import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
-
-	protected static final Stalactite STONE_STALACTITE_SMALL = new Stalactite(Either.right(Blocks.STONE), 1.0F, 5, 1);
 	protected final boolean[] openingTowards = {false, false, true, false};
 
 	public TrollCaveConnectComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
