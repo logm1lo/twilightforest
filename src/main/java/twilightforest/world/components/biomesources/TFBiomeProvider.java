@@ -1,6 +1,7 @@
 package twilightforest.world.components.biomesources;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.world.level.biome.Biome;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.biome.Climate;
 import twilightforest.TFRegistries;
 import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 public class TFBiomeProvider extends BiomeSource {
@@ -48,5 +50,12 @@ public class TFBiomeProvider extends BiomeSource {
 	@Deprecated
 	public BiomeDensitySource getBiomeTerrain() {
 		return this.biomeTerrainDataHolder.value();
+	}
+
+	@Override
+	public void addDebugInfo(List<String> info, BlockPos cameraPos, Climate.Sampler sampler) {
+		super.addDebugInfo(info, cameraPos, sampler);
+
+		this.biomeTerrainDataHolder.value().addDebugInfo(info, cameraPos);
 	}
 }

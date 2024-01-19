@@ -9,12 +9,14 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import twilightforest.util.Codecs;
 
 import java.util.Map;
 import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public final class TerrainColumn {
@@ -44,6 +46,13 @@ public final class TerrainColumn {
 
     public Stream<Holder<Biome>> getBiomes() {
         return this.biomes.double2ObjectEntrySet().stream().map(Map.Entry::getValue);
+    }
+
+    public void getBiomesDebug(Consumer<String> accumulator) {
+        this.biomes.double2ObjectEntrySet()
+                .stream()
+                .map(e -> e.getDoubleKey() + ": " + e.getValue().unwrapKey().map(ResourceKey::location).map(ResourceLocation::toString).orElse("NOT REFERENCED"))
+                .forEach(accumulator);
     }
 
     public boolean is(Holder<Biome> biome) {
