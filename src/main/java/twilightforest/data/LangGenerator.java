@@ -1144,6 +1144,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addScreenMessage("crumble_horn_jei", "Crumble Horn");
 		this.addScreenMessage("transformation_jei", "Transformation Powder");
 		this.addScreenMessage("uncrafting_jei", "Uncrafting");
+		this.addScreenMessage("moonworm_queen_jei", "Moonworm Queen Repairing");
+		this.add("item.twilightforest.moonworm_queen.jei_info_message", "Torchberries restore 64 durability each");
 
 		this.addTrim("carminite", "Carminite");
 		this.addTrim("fiery", "Fiery");
@@ -1267,6 +1269,13 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(ItemTagGenerator.FIERY_VIAL, "Fiery Vials");
 		this.translateTag(ItemTagGenerator.KEPT_ON_DEATH, "Kept on Death");
 		this.translateTag(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS, "Kobold Pacification Items");
+		this.translateTag(ItemTagGenerator.BOAR_TEMPT_ITEMS, "Boar Temptables");
+		this.translateTag(ItemTagGenerator.DEER_TEMPT_ITEMS, "Deer Temptables");
+		this.translateTag(ItemTagGenerator.DWARF_RABBIT_TEMPT_ITEMS, "Dwarf Rabbit Temptables");
+		this.translateTag(ItemTagGenerator.PENGUIN_TEMPT_ITEMS, "Penguin Temptables");
+		this.translateTag(ItemTagGenerator.RAVEN_TEMPT_ITEMS, "Raven Temptables");
+		this.translateTag(ItemTagGenerator.SQUIRREL_TEMPT_ITEMS, "Squirrel Temptables");
+		this.translateTag(ItemTagGenerator.TINY_BIRD_TEMPT_ITEMS, "Tiny Bird Temptables");
 		this.translateTag(ItemTagGenerator.TWILIGHT_LOGS, "Twilight Forest Logs");
 		this.translateTag(ItemTagGenerator.MANGROVE_LOGS, "Mangrove Logs");
 		this.translateTag(ItemTagGenerator.MINING_LOGS, "Miningwood Logs");

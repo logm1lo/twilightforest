@@ -16,9 +16,9 @@ import twilightforest.item.recipe.CrumbleRecipe;
 import java.util.List;
 
 public class EmiCrumbleHornRecipe extends TFEmiRecipe<CrumbleRecipe> {
-	private static final int WIDTH = RecipeViewerConstants.CRUMBLE_HORN_WIDTH;
+	private static final int WIDTH = RecipeViewerConstants.GENERIC_RECIPE_WIDTH;
 	//height is adjusted slightly to allow 2 entries per page
-	private static final int HEIGHT = RecipeViewerConstants.CRUMBLE_HORN_HEIGHT - 8;
+	private static final int HEIGHT = RecipeViewerConstants.GENERIC_RECIPE_HEIGHT - 8;
 
 	public static final ResourceLocation TEXTURES = TwilightForestMod.getGuiTexture("crumble_horn_jei.png");
 	public static final EmiTexture BACKGROUND = new EmiTexture(TEXTURES, 0, 4, WIDTH, HEIGHT);

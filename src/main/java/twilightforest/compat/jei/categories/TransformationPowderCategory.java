@@ -35,7 +35,7 @@ public class TransformationPowderCategory implements IRecipeCategory<RecipeHolde
 
 	public TransformationPowderCategory(IGuiHelper helper) {
 		ResourceLocation location = TwilightForestMod.getGuiTexture("transformation_jei.png");
-		this.background = helper.createDrawable(location, 0, 0, RecipeViewerConstants.TRANSFORMATION_POWDER_WIDTH, RecipeViewerConstants.TRANSFORMATION_POWDER_HEIGHT);
+		this.background = helper.createDrawable(location, 0, 0, RecipeViewerConstants.GENERIC_RECIPE_WIDTH, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT);
 		this.arrow = helper.createDrawable(location, 116, 0, 23, 15);
 		this.doubleArrow = helper.createDrawable(location, 116, 16, 23, 15);
 		this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, TFItems.TRANSFORMATION_POWDER.get().getDefaultInstance());
