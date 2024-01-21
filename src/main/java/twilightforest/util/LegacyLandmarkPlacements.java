@@ -64,6 +64,15 @@ public class LegacyLandmarkPlacements {
         return chunkX == nearestCenter.getX() >> 4 && chunkZ == nearestCenter.getZ() >> 4;
     }
 
+    public static int manhattanDistanceFromLandmarkCenter(int chunkX, int chunkZ) {
+        BlockPos nearestCenter = getNearestCenterXZ(chunkX, chunkZ);
+
+        int deltaChunkX = Math.abs(chunkX - (nearestCenter.getX() >> 4));
+        int deltaChunkZ = Math.abs(chunkZ - (nearestCenter.getZ() >> 4));
+
+        return deltaChunkX + deltaChunkZ;
+    }
+
     public static ResourceKey<Structure> pickLandmarkAtBlock(int blockX, int blockZ, LevelReader world) {
         return pickLandmarkForChunk(blockX >> 4, blockZ >> 4, world);
     }
