@@ -104,6 +104,11 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 			BlockState blockState = this.getCarveState(ctx, config, pos, aquifer);
             if (blockState != null) {
+				RandomSource randomFromPos = ctx.randomState().oreRandom().at(pos);
+
+				if (!access.getFluidState(pos.above(2)).isEmpty()) // Sand doesn't quite generate until after the carvers, so we must look for liquid instead
+					blockState = randomFromPos.nextBoolean() ? Blocks.ROOTED_DIRT.defaultBlockState() : Blocks.COARSE_DIRT.defaultBlockState(); // normal dirt will get replaced with sand, special ones are required
+
                 boolean blockPlaced = access.setBlockState(pos, blockState, false) == Blocks.STONE.defaultBlockState();
 
                 if (aquifer.shouldScheduleFluidUpdate() && !blockState.getFluidState().isEmpty()) {
@@ -123,7 +128,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
                 }
 
                 if (blockPlaced)
-					return this.postCarveBlock(access, pos, config, ctx.randomState().oreRandom().at(pos));
+					return this.postCarveBlock(access, pos, config, randomFromPos);
 
                 return true;
             } else {
