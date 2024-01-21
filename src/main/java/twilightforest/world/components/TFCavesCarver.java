@@ -146,12 +146,12 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					return access.setBlockState(directionalRelative, rand.nextInt(8) == 0 ? TFBlocks.TROLLSTEINN.get().defaultBlockState() : Blocks.STONE.defaultBlockState(), false) != null;
 				}
 			} else { //here's the code for making dirt roofs. Enjoy :)
-				if (facing == Direction.DOWN || (facing != Direction.UP && rand.nextInt(8) != 0))
-					continue; // Dirt is never placed below, always placed above, and 1/8 sideways
+				if (facing == Direction.DOWN)
+					continue; // Dirt is never placed below, always on roof, and typically to the sides
 
-                BlockState aboveState = access.getBlockState(directionalRelative);
+                BlockState neighboringBlock = access.getBlockState(directionalRelative);
 
-				if (aboveState.is(BlockTags.BASE_STONE_OVERWORLD) || aboveState.getFluidState().is(FluidTags.WATER)) {
+				if (neighboringBlock.is(BlockTags.BASE_STONE_OVERWORLD) || neighboringBlock.getFluidState().is(FluidTags.WATER)) {
 					return switch (rand.nextInt(5)) {
 						default -> access.setBlockState(directionalRelative, Blocks.DIRT.defaultBlockState(), false) != null;
 						case 3 -> access.setBlockState(directionalRelative, Blocks.ROOTED_DIRT.defaultBlockState(), false) != null;
@@ -184,7 +184,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	protected void createRoom(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, Aquifer aquifer, double posX, double posY, double posZ, float radius, double horizToVertRatio, CarvingMask mask, CarveSkipChecker checker) {
 		double d0 = 1.5D + (double) (Mth.sin(((float) Math.PI / 2F)) * radius);
 		double d1 = d0 * horizToVertRatio;
-		this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX + 1.0D, posY, posZ, d0, d1, mask, checker);
+		this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX, posY, posZ, d0, d1, mask, checker);
 	}
 
 	protected void createTunnel(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, long seed, Aquifer aquifer, double posX, double posY, double posZ, double horizMult, double vertMult, float thickness, float yaw, float pitch, int branchIndex, int branchCount, double horizToVertRatio, CarvingMask mask, CarveSkipChecker checker) {
@@ -229,7 +229,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 						? random.nextFloat() * random.nextFloat() * 2f + 1
 						: 1;
 
-				this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX, posY, posZ, Math.min(horizontalRadius * horizMult * (sizeMultiplier), 10), Math.min(verticalRadius * vertMult * (sizeMultiplier), 6), mask, checker);
+				double sphereHRadius = Math.min(horizontalRadius * horizMult * sizeMultiplier, 10);
+				this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX, posY, posZ, sphereHRadius, Math.min(verticalRadius * vertMult * sizeMultiplier, sphereHRadius * 0.65f), mask, checker);
 			}
 		}
 
