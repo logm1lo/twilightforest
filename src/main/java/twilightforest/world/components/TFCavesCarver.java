@@ -160,7 +160,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				if (rand.nextInt(8) == 0 && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
 					placed |= access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false) != null;
 				}
-			} else if (facing != Direction.DOWN && (facing == Direction.UP || this.checkNoiseThreshold(directionalRelative, 0.25f, 0.5f))) { //here's the code for making dirt roofs. Enjoy :)
+			} else if (facing != Direction.DOWN && (facing == Direction.UP || access.getBlockState(directionalRelative.above()).isAir() || this.checkNoiseThreshold(directionalRelative, 0.25f, 0.5f))) { //here's the code for making dirt roofs. Enjoy :)
 				// Dirt is never placed below, always on roof, and typically to the sides
 
                 BlockState neighboringBlock = access.getBlockState(directionalRelative);
@@ -241,14 +241,18 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					return;
 				}
 
-				// Additional size-boosting to make wide spherical rooms
+				// Additional size-boosting to make wider & taller spherical rooms
 				boolean shouldEnlargeSphere = posY > access.getMinBuildHeight() + 12 && random.nextInt(32) == 0;
 				float sizeMultiplier = shouldEnlargeSphere
 						? random.nextFloat() * random.nextFloat() * 2f + 1
 						: 1;
 
 				double sphereHRadius = Math.min(horizontalRadius * horizMult * sizeMultiplier, 10);
-				this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX, posY, posZ, sphereHRadius, Math.min(verticalRadius * vertMult * sizeMultiplier, sphereHRadius * 0.65f), mask, checker);
+				double sphereVRadius = verticalRadius * vertMult * sizeMultiplier;
+				// If side-boosting is applied, then squish the sphere's edge-steeped floor into a dish
+				double sphereVRadiusLimited = shouldEnlargeSphere ? Math.min(sphereVRadius, sphereHRadius * 0.65f) : sphereVRadius;
+
+				this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX, posY, posZ, sphereHRadius, sphereVRadiusLimited, mask, checker);
 			}
 		}
 

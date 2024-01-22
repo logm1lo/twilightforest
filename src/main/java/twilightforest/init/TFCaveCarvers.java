@@ -67,8 +67,8 @@ public class TFCaveCarvers {
 				ConstantFloat.of(0.6F),
 				VerticalAnchor.bottom(),
 				blocks.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES),
-				ConstantFloat.of(1F),
-				ConstantFloat.of(1F),
+				ConstantFloat.of(1.05F),
+				ConstantFloat.of(1.05F),
 				ConstantFloat.of(-0.7F)
 		)));
 
@@ -79,7 +79,7 @@ public class TFCaveCarvers {
 				VerticalAnchor.bottom(),
 				blocks.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES),
 				UniformFloat.of(1.1f, 1.3f),
-				ConstantFloat.of(1f),
+				ConstantFloat.of(1.1f),
 				UniformFloat.of(-0.9F, -0.65F)
 		)));
 	}
