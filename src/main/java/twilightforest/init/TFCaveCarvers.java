@@ -8,33 +8,49 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.carver.WorldCarver;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
 import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.registries.RegisterEvent;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.TFCavesCarver;
 
-import java.util.Objects;
+import java.util.List;
 
 //this was all put into 1 class because it seems like a waste to have it in 2
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFCaveCarvers {
-	public static final TFCavesCarver TFCAVES = new TFCavesCarver(CaveCarverConfiguration.CODEC, false);
-	public static final TFCavesCarver HIGHLANDCAVES = new TFCavesCarver(CaveCarverConfiguration.CODEC, true);
+	public static final DeferredRegister<WorldCarver<?>> CARVER_TYPES = DeferredRegister.create(Registries.CARVER, TwilightForestMod.ID);
 
-	//this one has to stay, configured versions dont work otherwise
-	@SubscribeEvent
-	public static void register(RegisterEvent evt) {
-		if (Objects.equals(evt.getRegistryKey(), Registries.CARVER)) {
-			evt.register(Registries.CARVER, helper -> helper.register(TwilightForestMod.prefix("tf_caves"), TFCAVES));
-			evt.register(Registries.CARVER, helper -> helper.register(TwilightForestMod.prefix("highland_caves"), HIGHLANDCAVES));
-		}
-	}
+	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> TF_CAVES = CARVER_TYPES.register("tf_caves", () -> new TFCavesCarver(
+			CaveCarverConfiguration.CODEC,
+			false,
+			new NoiseProvider(
+					6972119253061020355L,
+					new NormalNoise.NoiseParameters(0, 1.0),
+					0.5f,
+					List.of(
+							Blocks.DIRT.defaultBlockState(),
+							Blocks.ROOTED_DIRT.defaultBlockState(),
+							Blocks.DIRT.defaultBlockState(),
+							Blocks.DIRT.defaultBlockState(),
+							Blocks.COARSE_DIRT.defaultBlockState(),
+							Blocks.DIRT.defaultBlockState()
+					)
+			)
+	));
+	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> HIGHLAND_CAVES = CARVER_TYPES.register("highland_caves", () -> new TFCavesCarver(
+			CaveCarverConfiguration.CODEC,
+			true,
+			BlockStateProvider.simple(TFBlocks.TROLLSTEINN.value())
+	));
 
 	public static final ResourceKey<ConfiguredWorldCarver<?>> TFCAVES_CONFIGURED = registerKey("tf_caves");
 	public static final ResourceKey<ConfiguredWorldCarver<?>> HIGHLANDCAVES_CONFIGURED = registerKey("highland_caves");
@@ -45,18 +61,18 @@ public class TFCaveCarvers {
 
 	public static void bootstrap(BootstapContext<ConfiguredWorldCarver<?>> context) {
 		HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
-		context.register(TFCAVES_CONFIGURED, TFCAVES.configured(new CaveCarverConfiguration(
+		context.register(TFCAVES_CONFIGURED, TF_CAVES.value().configured(new CaveCarverConfiguration(
 				0.1F,
 				UniformHeight.of(VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(-8)),
 				ConstantFloat.of(0.6F),
 				VerticalAnchor.bottom(),
 				blocks.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES),
 				ConstantFloat.of(1F),
-				ConstantFloat.of(0.9F),
+				ConstantFloat.of(1F),
 				ConstantFloat.of(-0.7F)
 		)));
 
-		context.register(HIGHLANDCAVES_CONFIGURED, HIGHLANDCAVES.configured(new CaveCarverConfiguration(
+		context.register(HIGHLANDCAVES_CONFIGURED, HIGHLAND_CAVES.value().configured(new CaveCarverConfiguration(
 				1f,
 				BiasedToBottomHeight.of(VerticalAnchor.absolute(8), VerticalAnchor.absolute(32), 16),
 				ConstantFloat.of(0.6f),

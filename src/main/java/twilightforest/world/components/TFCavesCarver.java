@@ -18,13 +18,15 @@ import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFBlocks;
 import twilightforest.util.LegacyLandmarkPlacements;
 
 import java.util.function.Function;
@@ -32,11 +34,19 @@ import java.util.function.Function;
 //Framework taken from CaveWorldCarver, everything worth knowing is documented for easier changes in the future
 public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	private final boolean isHighlands;
+	private final BlockStateProvider wallBlocks;
+	private final ImprovedNoise noise;
 
-	public TFCavesCarver(Codec<CaveCarverConfiguration> codec, boolean isHighlands) {
+	public TFCavesCarver(Codec<CaveCarverConfiguration> codec, boolean isHighlands, BlockStateProvider wallBlocks) {
 		super(codec);
+		this.wallBlocks = wallBlocks;
 		this.liquids = ImmutableSet.of(Fluids.WATER, Fluids.LAVA);
 		this.isHighlands = isHighlands;
+
+		// Since this object is constructed on game bootup instead of world creation, we can't use world seed
+		// Making a different random one each bootup will only screw up determinism, and across separate sessions chunkgen will produce discontinuous noise edges
+		// We only need the noise for one thing anyway, and that's placing dirt
+		this.noise = new ImprovedNoise(new LegacyRandomSource(6972119253061020355L));
 	}
 
 	@Override
@@ -48,7 +58,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	@Override
 	public boolean carve(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, RandomSource random, Aquifer aquifer, ChunkPos accessPos, CarvingMask mask) {
         if (this.isHighlands && (Mth.clamp(LegacyLandmarkPlacements.manhattanDistanceFromLandmarkCenter(accessPos.x, accessPos.z), 0, 0b11) & 0b1) == 1)
-			return false; // If highlands, enforces a binary grid of possible placements around the structure center, with center being one of the zero tiles
+			return false; // If highlands, enforces a binary grid (diagonal range of 4 chunks) of possible placements around the structure center, with center being one of the zero tiles
 
 		int i = SectionPos.sectionToBlockCoord(this.getRange() * 2 - 1);
 
@@ -87,50 +97,50 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	@Override
 	protected boolean carveBlock(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, CarvingMask mask, BlockPos.MutableBlockPos posMutable, BlockPos.MutableBlockPos posUp, Aquifer aquifer, MutableBoolean isSurface) {
 		BlockPos pos = posMutable.immutable();
-		BlockState blockstate = access.getBlockState(pos);
-		if (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.MYCELIUM) || blockstate.is(Blocks.PODZOL) || blockstate.is(Blocks.DIRT_PATH)) {
+		BlockState stateBeforeReplacement = access.getBlockState(pos);
+		if (stateBeforeReplacement.is(Blocks.GRASS_BLOCK) || stateBeforeReplacement.is(Blocks.MYCELIUM) || stateBeforeReplacement.is(Blocks.PODZOL) || stateBeforeReplacement.is(Blocks.DIRT_PATH)) {
 			isSurface.setTrue();
 		}
 
 		//We dont want caves to go so far down you can see bedrock, so lets stop them right before
 		if (pos.getY() < access.getMinBuildHeight() + 6) return false;
 
-		if (!this.canReplaceBlock(config, blockstate) && !isDebugEnabled(config)) {
+		if (!this.canReplaceBlock(config, stateBeforeReplacement) && !isDebugEnabled(config)) {
 			return false;
 		} else {
 			for (Direction facing : Direction.values())
                 if (access.getFluidState(pos.relative(facing)).is(FluidTags.WATER))
                     return false; // If replacing this block will expose any neighboring water, then skip the current position param
 
-			BlockState blockState = this.getCarveState(ctx, config, pos, aquifer);
-            if (blockState != null) {
+			BlockState blockStateToPlace = this.getCarveState(ctx, config, pos, aquifer);
+            if (blockStateToPlace != null) {
 				RandomSource randomFromPos = ctx.randomState().oreRandom().at(pos);
 
-				if (!access.getFluidState(pos.above(2)).isEmpty()) // Sand doesn't quite generate until after the carvers, so we must look for liquid instead
-					blockState = randomFromPos.nextBoolean() ? Blocks.ROOTED_DIRT.defaultBlockState() : Blocks.COARSE_DIRT.defaultBlockState(); // normal dirt will get replaced with sand, special ones are required
+				if (!access.getFluidState(pos.above(2)).isEmpty()) // Sand doesn't quite generate until after the carvers, so we must look for liquid above possible sand instead
+					blockStateToPlace = randomFromPos.nextBoolean() ? Blocks.ROOTED_DIRT.defaultBlockState() : Blocks.COARSE_DIRT.defaultBlockState(); // normal dirt will get replaced with sand, special ones are required
 
-                boolean blockPlaced = access.setBlockState(pos, blockState, false) == Blocks.STONE.defaultBlockState();
+                boolean blockPlaced = access.setBlockState(pos, blockStateToPlace, false) != null;
 
-                if (aquifer.shouldScheduleFluidUpdate() && !blockState.getFluidState().isEmpty()) {
+                if (aquifer.shouldScheduleFluidUpdate() && !blockStateToPlace.getFluidState().isEmpty()) {
                     access.markPosForPostprocessing(pos);
                 }
 
                 if (isSurface.isTrue()) {
                     BlockPos posDown = pos.relative(Direction.DOWN);
                     if (access.getBlockState(posDown).is(Blocks.DIRT)) {
-                        ctx.topMaterial(biomePos, access, posDown, !blockState.getFluidState().isEmpty()).ifPresent((state -> {
+                        ctx.topMaterial(biomePos, access, posDown, !blockStateToPlace.getFluidState().isEmpty()).ifPresent(state -> {
                             access.setBlockState(posDown, state, false);
                             if (!state.getFluidState().isEmpty()) {
                                 access.markPosForPostprocessing(posDown);
                             }
-                        }));
+                        });
                     }
                 }
 
-                if (blockPlaced)
-					return this.postCarveBlock(access, pos, config, randomFromPos);
 
-                return true;
+				if (blockPlaced) this.postCarveBlock(access, pos, config, randomFromPos);
+
+                return blockPlaced;
             } else {
                 return false;
             }
@@ -138,30 +148,38 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	}
 
 	private boolean postCarveBlock(ChunkAccess access, BlockPos pos, CaveCarverConfiguration config, RandomSource rand) {
+		boolean placed = false;
+
 		for (Direction facing : Direction.values()) {
 			BlockPos directionalRelative = pos.relative(facing);
 
+			// FIXME Half-way configurable, would prefer to eliminate the isHighlands check entirely
+			//  The rand.nextInt rolls should have some way of being set into a custom config as well
+
 			if (this.isHighlands) {
-				if (rand.nextBoolean() && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
-					return access.setBlockState(directionalRelative, rand.nextInt(8) == 0 ? TFBlocks.TROLLSTEINN.get().defaultBlockState() : Blocks.STONE.defaultBlockState(), false) != null;
+				if (rand.nextInt(8) == 0 && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
+					placed |= access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false) != null;
 				}
-			} else { //here's the code for making dirt roofs. Enjoy :)
-				if (facing == Direction.DOWN)
-					continue; // Dirt is never placed below, always on roof, and typically to the sides
+			} else if (facing != Direction.DOWN && (facing == Direction.UP || this.checkNoiseThreshold(directionalRelative, 0.25f, 0.5f))) { //here's the code for making dirt roofs. Enjoy :)
+				// Dirt is never placed below, always on roof, and typically to the sides
 
                 BlockState neighboringBlock = access.getBlockState(directionalRelative);
 
 				if (neighboringBlock.is(BlockTags.BASE_STONE_OVERWORLD) || neighboringBlock.getFluidState().is(FluidTags.WATER)) {
-					return switch (rand.nextInt(5)) {
-						default -> access.setBlockState(directionalRelative, Blocks.DIRT.defaultBlockState(), false) != null;
-						case 3 -> access.setBlockState(directionalRelative, Blocks.ROOTED_DIRT.defaultBlockState(), false) != null;
-						case 4 -> access.setBlockState(directionalRelative, Blocks.COARSE_DIRT.defaultBlockState(), false) != null;
-					};
+					placed |= access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false) != null;
 				}
 			}
 		}
 
-		return false;
+		return placed;
+	}
+
+	@SuppressWarnings("SameParameterValue")
+	private boolean checkNoiseThreshold(BlockPos pos, double posScalar, double threshold) {
+		double noise = this.noise.noise(pos.getX() * posScalar, pos.getY() * posScalar, pos.getZ() * posScalar);
+
+		// Noise outputs values between -1 to 1, we must normalize it using n * 0.5 + 0.5
+		return noise * 0.5 + 0.5 > threshold;
 	}
 
 	protected int getCaveBound() {
@@ -256,7 +274,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
         if (blockstate == null) {
             return null;
         } else {
-            return Blocks.CAVE_AIR.defaultBlockState();
+			return Blocks.CAVE_AIR.defaultBlockState();
         }
     }
 }

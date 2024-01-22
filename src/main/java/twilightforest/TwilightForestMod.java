@@ -109,6 +109,7 @@ public class TwilightForestMod {
 		TFAdvancements.TRIGGERS.register(bus);
 		TFMobEffects.MOB_EFFECTS.register(bus);
 		Enforcements.ENFORCEMENTS.register(bus);
+		TFCaveCarvers.CARVER_TYPES.register(bus);
 		TFEnchantments.ENCHANTMENTS.register(bus);
 		TFRecipes.RECIPE_SERIALIZERS.register(bus);
 		TFParticleType.PARTICLE_TYPES.register(bus);
