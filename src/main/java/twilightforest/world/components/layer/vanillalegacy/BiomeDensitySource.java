@@ -65,17 +65,6 @@ public class BiomeDensitySource {
         return this.biomeList.get(this.genBiomes.get().getBiome(biomeX, biomeZ)).getBiome(biomeY);
     }
 
-    public double getBiomeDepth(int biomeX, int biomeZ, DensityFunction.FunctionContext context) {
-        return this.getBiomeDepth(this.genBiomes.get().getBiome(biomeX, biomeZ), context);
-    }
-
-    @SuppressWarnings("OptionalIsPresent")
-    public double getBiomeDepth(ResourceKey<Biome> biome, DensityFunction.FunctionContext context) {
-        Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(biome);
-        if (terrainColumn.isEmpty()) return 0;
-        return terrainColumn.get().depth(context);
-    }
-
     public Optional<TerrainColumn> getTerrainColumn(int biomeX, int biomeZ) {
         return this.getTerrainColumn(this.genBiomes.get().getBiome(biomeX, biomeZ));
     }
@@ -115,8 +104,8 @@ public class BiomeDensitySource {
 
     // Thanks k.jpg!
 
-    private static final double BLEND_RADIUS = 8;
-    private static final int BLEND_RADIUS_INT = Mth.floor(BLEND_RADIUS + 1);
+    private static final double BLEND_RADIUS = 7.75;
+    private static final int BLEND_RADIUS_INT = Mth.floor(BLEND_RADIUS + 1.0);
     private static final int BIOME_QUART_Y = 64 >> QuartPos.BITS;
 
     private static final int BLOCK_XYZ_OFFSET = QuartPos.SIZE / 2;
@@ -147,24 +136,27 @@ public class BiomeDensitySource {
         double zQuartDelta = (blockZWithOffset - (zQuartStart << QuartPos.BITS)) * (1.0 / QuartPos.SIZE);
 
         for (int cz = 0, cx = 0;;) {
-            double fiddledDistanceSquared = getFiddledDistance(biomeZoomSeed, cx + xQuartStart, BIOME_QUART_Y, cz + zQuartStart, xQuartDelta - cx, 0, zQuartDelta - cz);
+            int biomeX = cx + xQuartStart;
+            int biomeZ = cz + zQuartStart;
+            double dX = xQuartDelta - cx;
+            double dZ = zQuartDelta - cz;
+            double fiddledDistanceSquared = getFiddledDistance(biomeZoomSeed, biomeX, BIOME_QUART_Y, biomeZ, dX, 0, dZ);
 
-            considerColumn:
             if (fiddledDistanceSquared < BLEND_RADIUS * BLEND_RADIUS) {
-                double falloff = BLEND_RADIUS * BLEND_RADIUS - fiddledDistanceSquared;
-                falloff *= falloff * falloff;
+                Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(biomeX, biomeZ);
+                if (terrainColumn.isPresent()) {
+                    double falloff = BLEND_RADIUS * BLEND_RADIUS - fiddledDistanceSquared;
+                    falloff *= falloff * falloff;
 
-                Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(cx + xQuartStart, cz + zQuartStart);
-                if (terrainColumn.isEmpty()) break considerColumn;
+                    double neighborDepth = terrainColumn.get().depth(context);
+                    double neighborScale = terrainColumn.get().scale(context);
 
-                double neighborDepth = terrainColumn.get().depth(context);
-                double neighborScale = terrainColumn.get().scale(context);
+                    falloff *= Math.exp((dX * dX + dZ * dZ + neighborDepth) * -0.5f);
 
-                falloff *= Math.exp(-neighborDepth);
-
-                totalMappedDepth += neighborDepth * falloff;
-                totalScale += neighborScale * falloff;
-                totalContribution += falloff;
+                    totalMappedDepth += neighborDepth * falloff;
+                    totalScale += neighborScale * falloff;
+                    totalContribution += falloff;
+                }
             }
 
             cz++;

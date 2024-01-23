@@ -16,9 +16,9 @@
             "argument1": 0.5,
             "argument2": {
               "type": "minecraft:noise",
-              "noise": "minecraft:ridge",
-              "xz_scale": 1.5,
-              "y_scale": 0.0
+              "noise": "minecraft:surface",
+              "xz_scale": 1.0,
+              "y_scale": 0.0625
             }
           }
         }

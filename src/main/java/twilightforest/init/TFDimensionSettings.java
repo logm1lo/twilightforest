@@ -12,12 +12,13 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
+import twilightforest.world.components.chunkgenerators.TerrainDensityRouter;
 import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
-import twilightforest.world.components.chunkgenerators.BiomeTerrainWarpRouter;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.List;
@@ -62,52 +63,33 @@ public class TFDimensionSettings {
 		Holder.Reference<NormalNoise.NoiseParameters> surfaceParams = context.lookup(Registries.NOISE).getOrThrow(Noises.SURFACE);
 		Holder.Reference<NormalNoise.NoiseParameters> ridgeParams = context.lookup(Registries.NOISE).getOrThrow(Noises.RIDGE);
 
-		DensityFunction heightOffsetNoise = DensityFunctions.cache2d(DensityFunctions.noise(surfaceParams, 1, 0));
-
         DensityFunction routedBiomeWarpInterpolated = DensityFunctions.mul(
 				DensityFunctions.constant(1/32f),
-				new BiomeTerrainWarpRouter(
+				new TerrainDensityRouter(
 						biomeGrid,
 						-64,
 						64,
 						8,
 						DensityFunctions.constant(2.5),
-						heightOffsetNoise
+						DensityFunctions.constant(-0.125)
 				)
 		);
 
 		// Debug: For a flat substitute of BiomeTerrainWarpRouter
 		// routedBiomeWarpInterpolated = DensityFunctions.yClampedGradient(-31, 32, 2, -2);
 
-		DensityFunction wideNoise = DensityFunctions.add(
-				DensityFunctions.constant(0.25),
-				DensityFunctions.mul(
-						DensityFunctions.constant(0.5),
-						DensityFunctions.noise(surfaceParams, 0.5, 0)
-				)
-		);
+		DensityFunction wideNoise = mulAddHalf(DensityFunctions.noise(ridgeParams, 1, 0));
 
-		DensityFunction thinNoise = DensityFunctions.add(
-				DensityFunctions.constant(0.25),
-				DensityFunctions.mul(
-						DensityFunctions.constant(0.5),
-						DensityFunctions.noise(surfaceParams, 2, 0)
-				)
-		);
+		DensityFunction thinNoise = mulAddHalf(DensityFunctions.noise(ridgeParams, 4, 0));
 
-		DensityFunction noiseInterpolator = DensityFunctions.add(
-				DensityFunctions.constant(0.5),
-				DensityFunctions.mul(
-						DensityFunctions.constant(0.5),
-						DensityFunctions.noise(ridgeParams, 1.5, 0)
-				)
-		);
+		DensityFunction noiseInterpolator = mulAddHalf(DensityFunctions.noise(surfaceParams, 1, 1.0/16.0));
 
 		DensityFunction jitteredNoise = DensityFunctions.lerp(
-				noiseInterpolator,
+				noiseInterpolator.clamp(0, 1),
 				wideNoise,
 				thinNoise
 		);
+
 
 		DensityFunction noisedBiomeNoise = DensityFunctions.add(
 				routedBiomeWarpInterpolated,
@@ -117,10 +99,10 @@ public class TFDimensionSettings {
 				))
 		);
 
-		DensityFunction finalDensity = DensityFunctions.interpolated(DensityFunctions.add(
+		DensityFunction finalDensity = DensityFunctions.add(
 				noisedBiomeNoise,
 				DensityFunctions.yClampedGradient(-32, -1, 0.5, 0).square()
-		));
+		);
 
 		context.register(TWILIGHT_TERRAIN, finalDensity.clamp(-0.1, 1));
 
@@ -131,6 +113,19 @@ public class TFDimensionSettings {
 						noiseInterpolator
 				).clamp(-1, 0)
 		).clamp(-0.1, 1));
+	}
+
+	@NotNull
+	private static DensityFunction mulAddHalf(DensityFunction input) {
+		// mulAddHalf(x) = x * 0.5 + 0.5
+		// Useful for squeezing function range [-1,1] into [0,1]
+		return DensityFunctions.add(
+				DensityFunctions.constant(0.5),
+				DensityFunctions.mul(
+						DensityFunctions.constant(0.5),
+						input
+				)
+		);
 	}
 
 	public static NoiseGeneratorSettings tfDefault(BootstapContext<NoiseGeneratorSettings> context) {

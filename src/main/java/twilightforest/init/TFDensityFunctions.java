@@ -8,14 +8,14 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
-import twilightforest.world.components.chunkgenerators.BiomeTerrainWarpRouter;
+import twilightforest.world.components.chunkgenerators.TerrainDensityRouter;
 import twilightforest.world.components.chunkgenerators.FocusedDensityFunction;
 import twilightforest.world.components.chunkgenerators.HollowHillFunction;
 
 public class TFDensityFunctions {
     public static final DeferredRegister<Codec<? extends DensityFunction>> DENSITY_FUNCTION_TYPES = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, TwilightForestMod.ID);
 
-    public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<BiomeTerrainWarpRouter>> BIOME_DRIVEN = register("biome_driven", BiomeTerrainWarpRouter.CODEC);
+    public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<TerrainDensityRouter>> BIOME_DRIVEN = register("biome_driven", TerrainDensityRouter.CODEC);
     public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<FocusedDensityFunction>> FOCUSED = register("focused", FocusedDensityFunction.CODEC);
     public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<HollowHillFunction>> HOLLOW_HILL = register("hollow_hill", HollowHillFunction.CODEC);
     public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<AbsoluteDifferenceFunction.Min>> COORD_MIN = register("coord_min", AbsoluteDifferenceFunction.Min.CODEC);
