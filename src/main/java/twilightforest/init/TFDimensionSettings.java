@@ -63,20 +63,24 @@ public class TFDimensionSettings {
 		Holder.Reference<NormalNoise.NoiseParameters> surfaceParams = context.lookup(Registries.NOISE).getOrThrow(Noises.SURFACE);
 		Holder.Reference<NormalNoise.NoiseParameters> ridgeParams = context.lookup(Registries.NOISE).getOrThrow(Noises.RIDGE);
 
-        DensityFunction routedBiomeWarpInterpolated = DensityFunctions.mul(
-				DensityFunctions.constant(1/32f),
-				new TerrainDensityRouter(
-						biomeGrid,
-						-64,
-						64,
-						8,
-						DensityFunctions.constant(2.5),
-						DensityFunctions.constant(-0.125)
+        DensityFunction routedBiomeWarp = DensityFunctions.mul(
+				DensityFunctions.constant(1/6f),
+				DensityFunctions.add(
+						new TerrainDensityRouter(
+								biomeGrid,
+								new DensityFunction.NoiseHolder(surfaceParams),
+								-31,
+								64,
+								1,
+								DensityFunctions.constant(8),
+								DensityFunctions.constant(-1.25)
+						),
+						DensityFunctions.yClampedGradient(-31, 256, 31, -256)
 				)
 		);
 
 		// Debug: For a flat substitute of BiomeTerrainWarpRouter
-		// routedBiomeWarpInterpolated = DensityFunctions.yClampedGradient(-31, 32, 2, -2);
+		// routedBiomeWarp = DensityFunctions.yClampedGradient(-31, 32, 2, -2);
 
 		DensityFunction wideNoise = mulAddHalf(DensityFunctions.noise(ridgeParams, 1, 0));
 
@@ -90,18 +94,12 @@ public class TFDimensionSettings {
 				thinNoise
 		);
 
-
-		DensityFunction noisedBiomeNoise = DensityFunctions.add(
-				routedBiomeWarpInterpolated,
-				DensityFunctions.cache2d(DensityFunctions.max(
+		DensityFunction finalDensity = DensityFunctions.add(
+				routedBiomeWarp,
+				DensityFunctions.cache2d(DensityFunctions.interpolated(DensityFunctions.max(
 						DensityFunctions.zero(),
 						jitteredNoise
-				))
-		);
-
-		DensityFunction finalDensity = DensityFunctions.add(
-				noisedBiomeNoise,
-				DensityFunctions.yClampedGradient(-32, -1, 0.5, 0).square()
+				)))
 		);
 
 		context.register(TWILIGHT_TERRAIN, finalDensity.clamp(-0.1, 1));
