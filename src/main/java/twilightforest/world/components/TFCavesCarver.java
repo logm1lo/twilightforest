@@ -2,10 +2,7 @@ package twilightforest.world.components;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.SectionPos;
+import net.minecraft.core.*;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -110,9 +107,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			BlockPos chunkOrigin = access.getPos().getWorldPosition();
 			for (Direction facing : Direction.values()) {
 				BlockPos relative = pos.relative(facing);
-				BlockPos delta = relative.subtract(chunkOrigin);
-				boolean isInsideChunk = delta.getX() >= 0 && delta.getZ() >= 0 && delta.getX() <= 15 && delta.getZ() <= 15;
-				if (isInsideChunk && access.getFluidState(relative).is(FluidTags.WATER)) {
+				if (isInsideChunk(relative, chunkOrigin) && access.getFluidState(relative).is(FluidTags.WATER)) {
 					return false; // If replacing this block will expose any neighboring water, then skip the current position param
 				}
 			}
@@ -143,7 +138,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
                 }
 
 
-				if (blockPlaced) this.postCarveBlock(access, pos, config, randomFromPos);
+				if (blockPlaced) this.postCarveBlock(access, pos, config, randomFromPos, chunkOrigin);
 
                 return blockPlaced;
             } else {
@@ -152,18 +147,23 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
         }
 	}
 
-	private boolean postCarveBlock(ChunkAccess access, BlockPos pos, CaveCarverConfiguration config, RandomSource rand) {
-		boolean placed = false;
+	private static boolean isInsideChunk(BlockPos relative, BlockPos chunkOrigin) {
+		int deltaX = relative.getX() - chunkOrigin.getX();
+		int deltaZ = relative.getZ() - chunkOrigin.getZ();
+		return deltaX >= 0 && deltaZ >= 0 && deltaX <= 15 && deltaZ <= 15;
+	}
 
+	private void postCarveBlock(ChunkAccess access, BlockPos pos, CaveCarverConfiguration config, RandomSource rand, BlockPos chunkOrigin) {
 		for (Direction facing : Direction.values()) {
 			BlockPos directionalRelative = pos.relative(facing);
+			if (!isInsideChunk(directionalRelative, chunkOrigin)) continue;
 
 			// FIXME Half-way configurable, would prefer to eliminate the isHighlands check entirely
 			//  The rand.nextInt rolls should have some way of being set into a custom config as well
 
 			if (this.isHighlands) {
 				if (rand.nextInt(8) == 0 && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
-					placed |= access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false) != null;
+					access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false);
 				}
 			} else if (facing != Direction.DOWN && (facing == Direction.UP || access.getBlockState(directionalRelative.above()).isAir() || this.checkNoiseThreshold(directionalRelative, 0.25f, 0.5f))) { //here's the code for making dirt roofs. Enjoy :)
 				// Dirt is never placed below, always on roof, and typically to the sides
@@ -171,12 +171,10 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
                 BlockState neighboringBlock = access.getBlockState(directionalRelative);
 
 				if (neighboringBlock.is(BlockTags.BASE_STONE_OVERWORLD) || neighboringBlock.getFluidState().is(FluidTags.WATER)) {
-					placed |= access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false) != null;
+					access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false);
 				}
 			}
 		}
-
-		return placed;
 	}
 
 	@SuppressWarnings("SameParameterValue")
