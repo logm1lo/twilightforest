@@ -36,12 +36,14 @@ public class YetiCaveComponent extends HollowHillComponent {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox writeableBounds, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int maxRadius = 24;
+		int bottomYRelative = this.getWorldY(4);
+
 		BlockPos center = this.getLocatorPosition();
 
-		drainWater(writeableBounds, world, 6, Blocks.CAVE_AIR.defaultBlockState(), center.getX(), center.getZ(), maxRadius + 14, Blocks.PACKED_ICE.defaultBlockState(), generator.getSeaLevel());
+		drainWater(writeableBounds, world, 6, Blocks.CAVE_AIR.defaultBlockState(), center.getX(), center.getZ(), maxRadius + 10, Blocks.PACKED_ICE.defaultBlockState(), bottomYRelative);
 
 		// fill in features
-		for (BlockPos.MutableBlockPos dest : this.speleothemConfig.latticeIterator(writeableBounds, 0)) {
+		for (BlockPos.MutableBlockPos dest : this.speleothemConfig.latticeIterator(writeableBounds, bottomYRelative)) {
 			int xDist = Math.abs(dest.getX() - center.getX());
 			int zDist = Math.abs(dest.getZ() - center.getZ());
 			int minDelta = Math.min(xDist, zDist);

@@ -49,7 +49,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 
     @Override
     protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new YetiCaveComponent(0, x, y, z, this.speleothemConfig);
+        return new YetiCaveComponent(0, x, y + 4, z, this.speleothemConfig);
     }
 
     @Override
@@ -81,7 +81,9 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
     @SuppressWarnings("UnnecessaryLocalVariable")
     @Override
     public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
-        BlockPos centerPos = structurePieceSource.getBoundingBox().getCenter();
+        int riser = 5;
+
+        BlockPos centerPos = structurePieceSource.getBoundingBox().getCenter().above(riser);
 
         // Makes exterior "cut pyramid", trapezoid prism
         DensityFunction exteriorTrapezoidSq = DensityFunctions.add(
@@ -90,23 +92,23 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
                         AbsoluteDifferenceFunction.max(40, centerPos)
                 ),
                 DensityFunctions.add(
-                        DensityFunctions.yClampedGradient(0, 24, 40, 32), // Outside sloping walls
-                        DensityFunctions.yClampedGradient(21, 22, 0, -100000) // Roof
+                        DensityFunctions.yClampedGradient(0, 24 + riser, 40, 32), // Outside sloping walls
+                        DensityFunctions.yClampedGradient(21 + riser, 22 + riser, 0, -100000) // Roof
                 )
         );
         // if (true) return exteriorTrapezoidSq;
 
         // Makes floor and ceiling
-        int toGround = 8;
-        int toAir = 4;
-        int yTop = 14;
-        int yBottom = -3;
+        int deltaToGround = 8;
+        int deltaToAir = 4;
+        int yPosTop = 14 + riser;
+        int yPosBottom = -3 + riser;
         DensityFunction floorCeiling = DensityFunctions.add(
                 DensityFunctions.mul(
                         DensityFunctions.constant(32),
                         DensityFunctions.max(
-                            DensityFunctions.yClampedGradient(yTop - toAir, yTop + toGround, -1, 1), // Ceiling
-                            DensityFunctions.yClampedGradient(yBottom - toGround, yBottom + toAir, 1, -1) // Floor
+                            DensityFunctions.yClampedGradient(yPosTop - deltaToAir, yPosTop + deltaToGround, -1, 1), // Ceiling
+                            DensityFunctions.yClampedGradient(yPosBottom - deltaToGround, yPosBottom + deltaToAir, 1, -1) // Floor
                         )
                 ),
                 DensityFunctions.add(
@@ -116,7 +118,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
         );
         //if (true) return floorCeiling;
 
-        DensityFunction walls = DensityFunctions.yClampedGradient(-3, 21, -9.5, -2.5);
+        DensityFunction walls = DensityFunctions.yClampedGradient(-3 + riser, 21 + riser, -9.5, -2.5);
 
         // Entrances & actual square interior, as a negative
         DensityFunction interiorCarver = DensityFunctions.min(
@@ -145,7 +147,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 
         // Entrance sloping
         DensityFunction entranceSlope = DensityFunctions.add(
-                DensityFunctions.yClampedGradient(-8, 16, -44, -48),
+                DensityFunctions.yClampedGradient(-8, 16 + riser, -46, -48),
                 AbsoluteDifferenceFunction.max(64, centerPos)
         );
 
