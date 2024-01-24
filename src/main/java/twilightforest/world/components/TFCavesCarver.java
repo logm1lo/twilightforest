@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
-import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
@@ -108,9 +107,15 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		if (!this.canReplaceBlock(config, stateBeforeReplacement) && !isDebugEnabled(config)) {
 			return false;
 		} else {
-			for (Direction facing : Direction.values())
-                if (access.getFluidState(pos.relative(facing)).is(FluidTags.WATER))
-                    return false; // If replacing this block will expose any neighboring water, then skip the current position param
+			BlockPos chunkOrigin = access.getPos().getWorldPosition();
+			for (Direction facing : Direction.values()) {
+				BlockPos relative = pos.relative(facing);
+				BlockPos delta = relative.subtract(chunkOrigin);
+				boolean isInsideChunk = delta.getX() >= 0 && delta.getZ() >= 0 && delta.getX() <= 15 && delta.getZ() <= 15;
+				if (isInsideChunk && access.getFluidState(relative).is(FluidTags.WATER)) {
+					return false; // If replacing this block will expose any neighboring water, then skip the current position param
+				}
+			}
 
 			BlockState blockStateToPlace = this.getCarveState(ctx, config, pos, aquifer);
             if (blockStateToPlace != null) {
@@ -273,12 +278,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	@Nullable
 	@Override
-	public BlockState getCarveState(CarvingContext pContext, CaveCarverConfiguration pConfig, BlockPos pPos, Aquifer pAquifer) {
-        BlockState blockstate = pAquifer.computeSubstance(new DensityFunction.SinglePointContext(pPos.getX(), pPos.getY(), pPos.getZ()), 0);
-        if (blockstate == null) {
-            return null;
-        } else {
-			return Blocks.CAVE_AIR.defaultBlockState();
-        }
+	public BlockState getCarveState(CarvingContext context, CaveCarverConfiguration config, BlockPos pos, Aquifer aquifer) {
+		return Blocks.CAVE_AIR.defaultBlockState();
     }
 }
