@@ -8,12 +8,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.TerrainColumn;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
@@ -104,23 +102,14 @@ public class BiomeDensitySource {
 
     // Thanks k.jpg!
 
-    private static final double BLEND_RADIUS = 7.75;
+    private static final double BLEND_RADIUS = 8.75;
     private static final int BLEND_RADIUS_INT = Mth.floor(BLEND_RADIUS + 1.0);
-    private static final int BIOME_QUART_Y = 64 >> QuartPos.BITS;
-
     private static final int BLOCK_XYZ_OFFSET = QuartPos.SIZE / 2;
-    private static final int FIDDLE_HASH_BIT_START = 24;
-    private static final int FIDDLE_HASH_BIT_COUNT = 10;
-    private static final int FIDDLE_HASH_BIT_SHIFTED = 1 << FIDDLE_HASH_BIT_COUNT;
-    private static final int FIDDLE_HASH_BIT_MASK = FIDDLE_HASH_BIT_SHIFTED - 1;
-    private static final double FIDDLE_MAGNITUDE = 1.0; // 0.9 in net.minecraft.world.level.biome.BiomeManager
 
     public DensityData sampleTerrain(int blockX, int blockZ, DensityFunction.FunctionContext context) {
         double totalScale = 0.0;
         double totalMappedDepth = 0.0;
         double totalContribution = 0.0;
-
-        long biomeZoomSeed = TFDimensionSettings.seed;
 
         int blockXWithOffset = blockX - BLOCK_XYZ_OFFSET;
         int blockZWithOffset = blockZ - BLOCK_XYZ_OFFSET;
@@ -136,22 +125,20 @@ public class BiomeDensitySource {
         double zQuartDelta = (blockZWithOffset - (zQuartStart << QuartPos.BITS)) * (1.0 / QuartPos.SIZE);
 
         for (int cz = 0, cx = 0;;) {
-            int biomeX = cx + xQuartStart;
-            int biomeZ = cz + zQuartStart;
-            double dX = xQuartDelta - cx;
+			double dX = xQuartDelta - cx;
             double dZ = zQuartDelta - cz;
-            double fiddledDistanceSquared = getFiddledDistance(biomeZoomSeed, biomeX, BIOME_QUART_Y, biomeZ, dX, 0, dZ);
 
-            if (fiddledDistanceSquared < BLEND_RADIUS * BLEND_RADIUS) {
-                Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(biomeX, biomeZ);
+            double distSq = dX * dX + dZ * dZ;
+
+            if (distSq < BLEND_RADIUS * BLEND_RADIUS) {
+                Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(cx + xQuartStart, cz + zQuartStart);
                 if (terrainColumn.isPresent()) {
-                    double falloff = BLEND_RADIUS * BLEND_RADIUS - fiddledDistanceSquared;
-                    falloff *= falloff * falloff;
+                    double falloff = BLEND_RADIUS * BLEND_RADIUS;
 
                     double neighborDepth = terrainColumn.get().depth(context);
                     double neighborScale = terrainColumn.get().scale(context);
 
-                    falloff *= Math.exp((dX * dX + dZ * dZ + neighborDepth) * -0.5f);
+                    falloff *= Math.exp((distSq * 2f + neighborDepth) * -0.4f);
 
                     totalMappedDepth += neighborDepth * falloff;
                     totalScale += neighborScale * falloff;
@@ -170,25 +157,5 @@ public class BiomeDensitySource {
         double scaleNormalized = totalScale / totalContribution;
 
         return new DensityData(depthNormalized, scaleNormalized);
-    }
-
-    private static double getFiddledDistance(long seed, int quartX, int quartY, int quartZ, double dx, double dy, double dz) {
-        long hash = LinearCongruentialGenerator.next(seed, quartX);
-        hash = LinearCongruentialGenerator.next(hash, quartY);
-        hash = LinearCongruentialGenerator.next(hash, quartZ);
-        hash = LinearCongruentialGenerator.next(hash, quartX);
-        hash = LinearCongruentialGenerator.next(hash, quartY);
-        hash = LinearCongruentialGenerator.next(hash, quartZ);
-        double jz = getFiddle(hash);
-        hash = LinearCongruentialGenerator.next(hash, seed);
-        double jy = getFiddle(hash);
-        hash = LinearCongruentialGenerator.next(hash, seed);
-        double jx = getFiddle(hash);
-        return Mth.square(dz + jz) + Mth.square(dy + jy) + Mth.square(dx + jx);
-    }
-
-    private static double getFiddle(long hash) {
-        long hashBits = (hash >> FIDDLE_HASH_BIT_START) & FIDDLE_HASH_BIT_MASK;
-        return hashBits * (FIDDLE_MAGNITUDE / FIDDLE_HASH_BIT_SHIFTED) - 0.5 * FIDDLE_MAGNITUDE;
     }
 }
