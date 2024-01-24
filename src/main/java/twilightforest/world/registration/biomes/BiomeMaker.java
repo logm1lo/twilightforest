@@ -32,7 +32,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, TFBiomes.ENCHANTED_FOREST, undergroundBiome),
 				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, TFBiomes.SPOOKY_FOREST, undergroundBiome),
 
-				biomeColumnWithUnderground(-0.4, 0.15F, biomeRegistry, TFBiomes.SWAMP, undergroundBiome),
+				biomeColumnWithUnderground(-0.3, 0.15F, biomeRegistry, TFBiomes.SWAMP, undergroundBiome),
 				biomeColumnWithUnderground(0.3, 0.1F, biomeRegistry, TFBiomes.FIRE_SWAMP, undergroundBiome),
 
 				biomeColumnWithUnderground(0.025F, 0.005F, biomeRegistry, TFBiomes.DARK_FOREST, undergroundBiome),

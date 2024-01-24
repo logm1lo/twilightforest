@@ -43,7 +43,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 
     @Override
     protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new MazeRuinsComponent(0, x, y, z);
+        return new MazeRuinsComponent(0, x + 5, y, z + 5); // Offset centers labyrinth mound on intersection of 4 chunk boundaries
     }
 
     @Override
@@ -83,7 +83,6 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
     @Override
     public DensityFunction getStructureTerraformer(ChunkPos chunkSliceAt, StructureStart structurePieceSource) {
         final float radius = 35;
-        final float radiusInner = radius - 4;
 
         final BoundingBox structureBox = structurePieceSource.getBoundingBox();
         final BlockPos hillCenter = structureBox.getCenter();
@@ -95,19 +94,14 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 
         //if (true) return hillMound;
 
-        // Similar field like above, but all per-position values multiplied by -1. Positive terrain field above (hill mound) and negative terrain field below (inner hill gap)
-        DensityFunction ceilingCapped = DensityFunctions.yClampedGradient(4, 5, -1, 1);
-        DensityFunction innerCeiling = DensityFunctions.mul(
-                DensityFunctions.constant(-1),
-                new HollowHillFunction(hillCenter.getX() + 1, hillCenter.getY() + 6, hillCenter.getZ() + 2f, radiusInner, 0.8f)
-        );
+        // Similar field like above, but all per-position values multiplied by -1. Positive terrain field above (hill mound)
+        DensityFunction ceilingCapped = DensityFunctions.yClampedGradient(5, 6, -1, 1);
         //if (true) return innerCeiling;
 
-        // Field that domes upwards instead of downwards like above 2 DensityFunctions.
-        // Negative terrain field above (inner hill gap) and positive terrain field below (stone underground)
+        // Floor leading up inwards, offering chance for terrain to slop upwards if otherwise submerged
         BlockPos pos = hillCenter.offset(1, 0, 1);
         DensityFunction innerFloor = DensityFunctions.add(
-                DensityFunctions.yClampedGradient(-4, 1, 26, -1),
+                DensityFunctions.yClampedGradient(-4, 3, 26, -1),
                 DensityFunctions.mul(
                         DensityFunctions.constant(-1),
                         new AbsoluteDifferenceFunction.Max(32, pos.getX() + 0.5f, pos.getZ() + 0.5f)
@@ -118,7 +112,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
         DensityFunction entrances = DensityFunctions.max(
                 ceilingCapped,
                 DensityFunctions.add(
-                        DensityFunctions.yClampedGradient(-2, 8, -4, 0),
+                        DensityFunctions.constant(-2),
                         new AbsoluteDifferenceFunction.Min(32, pos.getX() + 0.5f, pos.getZ() + 0.5f)
                 )
         );
@@ -126,10 +120,10 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 
         // Merge the inner ceiling & inner floor density functions, and obtain the maximum value.
         // Resulting terrain field will "carve" out the interior space, using negative field values past 0.
-        DensityFunction interior = DensityFunctions.max(DensityFunctions.min(innerCeiling, entrances), innerFloor).clamp(0, 1);
+        DensityFunction interior = DensityFunctions.max(entrances, innerFloor).clamp(0, 1);
         //if (true) return interior;
 
-        DensityFunction interiorMask = FocusedDensityFunction.fromPos(hillCenter.atY(yCeilingFocus), radiusInner * 0.7f, radiusInner, 0);
+        DensityFunction interiorMask = FocusedDensityFunction.fromPos(hillCenter.atY(yCeilingFocus), radius * 0.7f, radius, 0);
 
         DensityFunction interiorMasked = DensityFunctions.lerp(interiorMask.clamp(0, 1), DensityFunctions.zero(), interior);
 
