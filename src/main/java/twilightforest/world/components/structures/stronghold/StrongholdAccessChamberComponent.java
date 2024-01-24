@@ -86,14 +86,4 @@ public class StrongholdAccessChamberComponent extends KnightStrongholdComponent 
 	public boolean isComponentProtected() {
 		return false;
 	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.BEARD_BOX;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 6;
-	}
 }
