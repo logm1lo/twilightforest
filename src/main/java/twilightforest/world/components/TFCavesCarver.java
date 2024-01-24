@@ -242,7 +242,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				}
 
 				// Additional size-boosting to make wider & taller spherical rooms
-				boolean shouldEnlargeSphere = posY > access.getMinBuildHeight() + 12 && random.nextInt(32) == 0;
+				boolean shouldEnlargeSphere = posY > access.getMinBuildHeight() + 12 && random.nextInt(48) == 0;
 				float sizeMultiplier = shouldEnlargeSphere
 						? random.nextFloat() * random.nextFloat() * 2f + 1
 						: 1;
