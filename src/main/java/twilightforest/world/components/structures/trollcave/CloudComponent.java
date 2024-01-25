@@ -128,7 +128,7 @@ public class CloudComponent extends StructurePiece {
 					setIfAir(chunkAccess, columnPos.atY(y - depth), wispyCloud);
 				} else if (dist < 8 || cv < 1F) {
 					for (int d = 1; d < depth; d++) {
-						setIfAir(chunkAccess, columnPos.atY(y - d), fluffyCloud);
+						setIfAir(chunkAccess, columnPos.atY(y - d), wispyCloud);
 					}
 				}
 			}
