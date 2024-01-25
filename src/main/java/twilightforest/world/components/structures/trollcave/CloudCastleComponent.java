@@ -55,6 +55,11 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+		// The literal cloud
+		CloudComponent cloudComponent = new CloudComponent(this.getGenDepth() + 1, this.boundingBox.minX(), this.boundingBox.minY() + 3, this.boundingBox.minZ());
+		list.addPiece(cloudComponent);
+		cloudComponent.addChildren(this, list, rand);
+
 		// up to two trees
 		// tree in x direction
 		boolean plus = rand.nextBoolean();
@@ -69,7 +74,6 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		CloudTreeComponent treeZ = new CloudTreeComponent(this.getGenDepth() + 1, boundingBox.minX() + (offset * 4), 168, boundingBox.minZ() + 8 + (plus ? 32 : -16));
 		list.addPiece(treeZ);
 		treeZ.addChildren(this, list, rand);
-
 	}
 
 	@Override

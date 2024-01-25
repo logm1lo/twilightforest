@@ -31,11 +31,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
-import twilightforest.world.components.chunkblanketing.*;
+import twilightforest.world.components.chunkblanketing.CanopyBlanketProcessor;
+import twilightforest.world.components.chunkblanketing.ChunkBlanketProcessor;
+import twilightforest.world.components.chunkblanketing.ChunkBlanketType;
+import twilightforest.world.components.chunkblanketing.GlacierBlanketProcessor;
 
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -52,13 +54,9 @@ public final class ChunkBlanketProcessors {
 
     public static final DeferredHolder<ChunkBlanketType, ChunkBlanketType> CANOPY = registerType("canopy", CanopyBlanketProcessor.CODEC);
     public static final DeferredHolder<ChunkBlanketType, ChunkBlanketType> GLACIER = registerType("glacier", GlacierBlanketProcessor.CODEC);
-    @Deprecated // TODO: Move to Troll Clouds Structure
-    public static final DeferredHolder<ChunkBlanketType, ChunkBlanketType> CLOUDS = registerType("clouds", TrollCloudProcessor.CODEC);
 
     public static final ResourceKey<ChunkBlanketProcessor> DARK_FOREST_CANOPY = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TwilightForestMod.prefix("dark_forest_canopy"));
     public static final ResourceKey<ChunkBlanketProcessor> SNOWY_FOREST_GLACIER = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TwilightForestMod.prefix("snowy_forest_glacier"));
-    @Deprecated // TODO: Move to Troll Clouds Structure
-    public static final ResourceKey<ChunkBlanketProcessor> TROLL_CLOUDS = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TwilightForestMod.prefix("troll_clouds"));
 
     public static DeferredHolder<ChunkBlanketType, ChunkBlanketType> registerType(String name, Codec<? extends ChunkBlanketProcessor> codec) {
         Codec<? extends ChunkBlanketProcessor> boxedCodec = codec.fieldOf("config").codec();
@@ -72,7 +70,6 @@ public final class ChunkBlanketProcessors {
 
         context.register(DARK_FOREST_CANOPY, new CanopyBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.DARK_FOREST), biomes.getOrThrow(TFBiomes.DARK_FOREST_CENTER)), BlockStateProvider.simple(TFBlocks.HARDENED_DARK_LEAVES.value()), 14, HolderSet.direct(structures.getOrThrow(TFStructures.DARK_TOWER))));
         context.register(SNOWY_FOREST_GLACIER, new GlacierBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.GLACIER)), BlockStateProvider.simple(Blocks.PACKED_ICE), BlockStateProvider.simple(Blocks.ICE), 32));
-        context.register(TROLL_CLOUDS, new TrollCloudProcessor(biomes.getOrThrow(BiomeTagGenerator.IS_TWILIGHT), 167, structures.getOrThrow(TFStructures.TROLL_CAVE)));
     }
 
     public static void init() {

@@ -1,8 +1,0 @@
-{
-  "type": "twilightforest:clouds",
-  "config": {
-    "biome_mask": "#twilightforest:in_twilight_forest",
-    "height": 167,
-    "structure": "twilightforest:troll_cave"
-  }
-}
