@@ -72,7 +72,7 @@ public final class ChunkBlanketProcessors {
 
         context.register(DARK_FOREST_CANOPY, new CanopyBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.DARK_FOREST), biomes.getOrThrow(TFBiomes.DARK_FOREST_CENTER)), BlockStateProvider.simple(TFBlocks.HARDENED_DARK_LEAVES.value()), 14, HolderSet.direct(structures.getOrThrow(TFStructures.DARK_TOWER))));
         context.register(SNOWY_FOREST_GLACIER, new GlacierBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.GLACIER)), BlockStateProvider.simple(Blocks.PACKED_ICE), BlockStateProvider.simple(Blocks.ICE), 32));
-        context.register(TROLL_CLOUDS, new TrollCloudProcessor(biomes.getOrThrow(BiomeTagGenerator.IS_TWILIGHT), 165, structures.getOrThrow(TFStructures.TROLL_CAVE)));
+        context.register(TROLL_CLOUDS, new TrollCloudProcessor(biomes.getOrThrow(BiomeTagGenerator.IS_TWILIGHT), 167, structures.getOrThrow(TFStructures.TROLL_CAVE)));
     }
 
     public static void init() {

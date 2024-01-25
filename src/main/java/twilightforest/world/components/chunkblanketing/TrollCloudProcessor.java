@@ -35,85 +35,87 @@ public record TrollCloudProcessor(HolderSet<Biome> biomesForApplication, int hei
         Set<Structure> structuresThroughChunk = chunkAccess.getAllReferences().keySet();
 
         if (structuresThroughChunk.contains(this.structureFor.value())) {
-            deformTerrainForTrollCloud2(chunkAccess, nearestCenterXZ.getX(), nearestCenterXZ.getZ(), this.height, random);
+            deformTerrainForTrollCloud(chunkAccess, nearestCenterXZ.getX(), nearestCenterXZ.getZ(), this.height, random);
         }
     }
 
-    private static void deformTerrainForTrollCloud2(ChunkAccess chunkAccess, int hx, int hz, int cloudHeight, RandomSource random) {
-        for (int bx = 0; bx < 4; bx++) {
-            for (int bz = 0; bz < 4; bz++) {
-                int dx = bx * 4 - hx - 2;
-                int dz = bz * 4 - hz - 2;
+	private static void deformTerrainForTrollCloud(ChunkAccess chunkAccess, int hx, int hz, int cloudHeight, RandomSource random) {
+		ChunkPos center = chunkAccess.getPos();
+		int regionX = center.x + 8 >> 4;
+		int regionZ = center.z + 8 >> 4;
 
-                // generate several centers for other clouds
-                ChunkPos chunkPos = chunkAccess.getPos();
-                int regionX = chunkPos.x + 8 >> 4;
-                int regionZ = chunkPos.z + 8 >> 4;
+		long seed = regionX * 3129871L ^ regionZ * 116129781L;
+		seed = seed * seed * 42317861L + seed * 7L;
 
-                long seed = regionX * 3129871L ^ regionZ * 116129781L;
-                seed = seed * seed * 42317861L + seed * 7L;
+		int num0 = (int) (seed >> 12 & 3L);
+		int num1 = (int) (seed >> 15 & 3L);
+		int num2 = (int) (seed >> 18 & 3L);
+		int num3 = (int) (seed >> 21 & 3L);
+		int num4 = (int) (seed >> 9 & 3L);
+		int num5 = (int) (seed >> 6 & 3L);
+		int num6 = (int) (seed >> 3 & 3L);
+		int num7 = (int) (seed & 3L);
 
-                int num0 = (int) (seed >> 12 & 3L);
-                int num1 = (int) (seed >> 15 & 3L);
-                int num2 = (int) (seed >> 18 & 3L);
-                int num3 = (int) (seed >> 21 & 3L);
-                int num4 = (int) (seed >> 9 & 3L);
-                int num5 = (int) (seed >> 6 & 3L);
-                int num6 = (int) (seed >> 3 & 3L);
-                int num7 = (int) (seed & 3L);
+		for (int bx = 0; bx < 4; bx++) {
+			for (int bz = 0; bz < 4; bz++) {
+				int dx = bx * 4 - hx - 2;
+				int dz = bz * 4 - hz - 2;
 
-                int dx2 = dx + num0 * 5 - num1 * 4;
-                int dz2 = dz + num2 * 4 - num3 * 5;
-                int dx3 = dx + num4 * 5 - num5 * 4;
-                int dz3 = dz + num6 * 4 - num7 * 5;
+				// generate several centers for other clouds
 
-                // take the minimum distance to any center
-                float dist0 = Mth.sqrt(dx * dx + dz * dz) / 4.0f;
-                float dist2 = Mth.sqrt(dx2 * dx2 + dz2 * dz2) / 3.5f;
-                float dist3 = Mth.sqrt(dx3 * dx3 + dz3 * dz3) / 4.5f;
+				int dx2 = dx + num0 * 5 - num1 * 4;
+				int dz2 = dz + num2 * 4 - num3 * 5;
+				int dx3 = dx + num4 * 5 - num5 * 4;
+				int dz3 = dz + num6 * 4 - num7 * 5;
 
-                double dist = Math.min(dist0, Math.min(dist2, dist3));
+				// take the minimum distance to any center
+				float dist0 = Mth.sqrt(dx * dx + dz * dz) / 4.0f;
+				float dist2 = Mth.sqrt(dx2 * dx2 + dz2 * dz2) / 3.5f;
+				float dist3 = Mth.sqrt(dx3 * dx3 + dz3 * dz3) / 4.5f;
 
-                float pr = random.nextFloat();
-                double cv = dist - 7F - pr * 3.0F;
+				double dist = Math.min(dist0, Math.min(dist2, dist3));
 
-                // randomize depth and height
-                int depth = 4;
+				float pr = random.nextFloat();
+				double cv = dist - 7F - pr * 3.0F;
 
-                if (pr < 0.1F) {
-                    cloudHeight++;
-                }
-                if (pr > 0.6F) {
-                    depth++;
-                }
-                if (pr > 0.9F) {
-                    depth++;
-                }
+				// randomize depth and height
+				int y = cloudHeight;
+				int depth = 4;
 
-                // generate cloud
-                for (int sx = 0; sx < 4; sx++) {
-                    for (int sz = 0; sz < 4; sz++) {
-                        int lx = bx * 4 + sx;
-                        int lz = bz * 4 + sz;
+				if (pr < 0.1F) {
+					y++;
+				}
+				if (pr > 0.6F) {
+					depth++;
+				}
+				if (pr > 0.9F) {
+					depth++;
+				}
 
-                        BlockPos movingPos = chunkPos.getWorldPosition().offset(lx, 0, lz);
+				// generate cloud
+				for (int sx = 0; sx < 4; sx++) {
+					for (int sz = 0; sz < 4; sz++) {
+						int lx = bx * 4 + sx;
+						int lz = bz * 4 + sz;
 
-                        if (dist < 7 || cv < 0.05F) {
-                            chunkAccess.setBlockState(movingPos.atY(cloudHeight), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), false);
-                            for (int d = 1; d < depth; d++) {
-                                chunkAccess.setBlockState(movingPos.atY(cloudHeight - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);
-                            }
-                            chunkAccess.setBlockState(movingPos.atY(cloudHeight - depth), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), false);
-                        } else if (dist < 8 || cv < 1F) {
-                            for (int d = 1; d < depth; d++) {
-                                chunkAccess.setBlockState(movingPos.atY(cloudHeight - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+						BlockPos movingPos = center.getWorldPosition().offset(lx, 0, lz);
+
+						if (dist < 7 || cv < 0.05F) {
+							chunkAccess.setBlockState(movingPos.atY(y), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), false);
+							for (int d = 1; d < depth; d++) {
+								chunkAccess.setBlockState(movingPos.atY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);
+							}
+							chunkAccess.setBlockState(movingPos.atY(y - depth), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), false);
+						} else if (dist < 8 || cv < 1F) {
+							for (int d = 1; d < depth; d++) {
+								chunkAccess.setBlockState(movingPos.atY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
     @Override
     public ChunkBlanketType getType() {
