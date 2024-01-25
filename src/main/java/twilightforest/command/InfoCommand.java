@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.neoforged.fml.loading.FMLLoader;
@@ -25,6 +26,7 @@ import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 public class InfoCommand {
 	public static LiteralArgumentBuilder<CommandSourceStack> register() {
@@ -52,7 +54,18 @@ public class InfoCommand {
 		String structureName = Component.translatable("structure." + key.getNamespace() + "." + key.getPath()).getString();
 		source.sendSuccess(() -> Component.translatable("commands.tffeature.nearest", structureName), false);
 
-		if (structureStart.getBoundingBox().isInside(pos)) {
+		BoundingBox boundingBox = structureStart.getBoundingBox();
+
+		StringJoiner boxInfo = new StringJoiner(", ", "[", "]");
+		boxInfo.add("" + boundingBox.minX());
+		boxInfo.add("" + boundingBox.minY());
+		boxInfo.add("" + boundingBox.minZ());
+		boxInfo.add("" + boundingBox.maxX());
+		boxInfo.add("" + boundingBox.maxY());
+		boxInfo.add("" + boundingBox.maxZ());
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.boundaries", boxInfo), false);
+
+		if (boundingBox.isInside(pos)) {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.inside").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
 
 			if (structureStart instanceof TFStructureStart tfStructureStart) {
