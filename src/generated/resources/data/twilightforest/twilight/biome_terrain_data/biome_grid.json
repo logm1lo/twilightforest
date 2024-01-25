@@ -154,10 +154,10 @@
     },
     {
       "biome_layers": {
-        "-1.899999976158142": "twilightforest:stream",
-        "-3.899999976158142": "twilightforest:underground"
+        "-1.7699999809265137": "twilightforest:stream",
+        "-3.7699999809265137": "twilightforest:underground"
       },
-      "depth": -0.8999999761581421,
+      "depth": -0.7699999809265137,
       "key_biome": "twilightforest:stream",
       "scale": 0.10000000149011612
     },
