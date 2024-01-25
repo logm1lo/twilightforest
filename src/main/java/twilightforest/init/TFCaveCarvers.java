@@ -4,7 +4,6 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.UniformFloat;
@@ -23,6 +22,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.world.components.TFCavesCarver;
 
 import java.util.List;
@@ -40,10 +40,12 @@ public class TFCaveCarvers {
 					0.5f,
 					List.of(
 							Blocks.DIRT.defaultBlockState(),
+							Blocks.DIRT.defaultBlockState(),
 							Blocks.ROOTED_DIRT.defaultBlockState(),
 							Blocks.DIRT.defaultBlockState(),
 							Blocks.DIRT.defaultBlockState(),
 							Blocks.COARSE_DIRT.defaultBlockState(),
+							Blocks.DIRT.defaultBlockState(),
 							Blocks.DIRT.defaultBlockState()
 					)
 			)
@@ -72,7 +74,7 @@ public class TFCaveCarvers {
 				UniformHeight.of(VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(-8)),
 				ConstantFloat.of(0.6F),
 				VerticalAnchor.bottom(),
-				blocks.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES),
+				blocks.getOrThrow(BlockTagGenerator.CARVER_REPLACEABLES),
 				ConstantFloat.of(1.05F),
 				ConstantFloat.of(1.05F),
 				ConstantFloat.of(-0.7F)
@@ -83,7 +85,7 @@ public class TFCaveCarvers {
 				BiasedToBottomHeight.of(VerticalAnchor.absolute(8), VerticalAnchor.absolute(32), 16),
 				ConstantFloat.of(0.6f),
 				VerticalAnchor.bottom(),
-				blocks.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES),
+				blocks.getOrThrow(BlockTagGenerator.CARVER_REPLACEABLES),
 				UniformFloat.of(1.1f, 1.3f),
 				ConstantFloat.of(1.1f),
 				UniformFloat.of(-0.9F, -0.65F)

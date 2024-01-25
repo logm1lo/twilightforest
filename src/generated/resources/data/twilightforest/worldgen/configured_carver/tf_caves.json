@@ -7,7 +7,7 @@
       "above_bottom": 0
     },
     "probability": 0.1,
-    "replaceable": "#minecraft:overworld_carver_replaceables",
+    "replaceable": "#twilightforest:carver_replaceables",
     "vertical_radius_multiplier": 1.05,
     "y": {
       "type": "minecraft:uniform",

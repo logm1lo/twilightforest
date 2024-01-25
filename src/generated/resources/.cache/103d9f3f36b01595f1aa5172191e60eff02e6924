@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-23T21:17:51.192929	Registries
+// 1.20.4	2024-01-24T17:23:42.90381	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -105,8 +105,8 @@ fb094351a715b436b5836e1fc3f097ac4a423609 data/twilightforest/worldgen/biome/snow
 f8ed7f1195ae624cc2bb6257b1aff2e5a79d20cb data/twilightforest/worldgen/biome/swamp.json
 d301ff8b947d21c124d380886a3dde1e41304ec8 data/twilightforest/worldgen/biome/thornlands.json
 ce67da8a32439536d8998392e3fac4b72e631e8e data/twilightforest/worldgen/biome/underground.json
-6671d87e179a751d4bbb1bb01fc17acccb4cf7ff data/twilightforest/worldgen/configured_carver/highland_caves.json
-8501cedcfff89753775b5706f12170431a441107 data/twilightforest/worldgen/configured_carver/tf_caves.json
+77af3198feb226bf9b58f3490aeeb94638db98ba data/twilightforest/worldgen/configured_carver/highland_caves.json
+336615693b25154f37fc7a90597827740da29a86 data/twilightforest/worldgen/configured_carver/tf_caves.json
 aaabd69f1e630172252fd3e6bd0e5845ef2f8cd0 data/twilightforest/worldgen/configured_feature/birch_fallen_log.json
 e7bd46ddb238735e4f1927a3bcc5f7fd18e23ea7 data/twilightforest/worldgen/configured_feature/canopy_fallen_log.json
 c091b11d2772ab089848d1d3c7e7e5c6304ba968 data/twilightforest/worldgen/configured_feature/cicada_lamppost.json
