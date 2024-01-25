@@ -162,7 +162,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			//  The rand.nextInt rolls should have some way of being set into a custom config as well
 
 			if (this.isHighlands) {
-				if (rand.nextInt(8) == 0 && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
+				if (rand.nextInt(4) == 0 && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
 					access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false);
 				}
 			} else if (facing != Direction.DOWN && (facing == Direction.UP || access.getBlockState(directionalRelative.above()).isAir() || this.checkNoiseThreshold(directionalRelative, 0.25f, 0.5f))) { //here's the code for making dirt roofs. Enjoy :)

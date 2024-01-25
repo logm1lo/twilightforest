@@ -5,16 +5,18 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
@@ -49,7 +51,11 @@ public class TFCaveCarvers {
 	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> HIGHLAND_CAVES = CARVER_TYPES.register("highland_caves", () -> new TFCavesCarver(
 			CaveCarverConfiguration.CODEC,
 			true,
-			BlockStateProvider.simple(TFBlocks.TROLLSTEINN.value())
+			new WeightedStateProvider(
+					new SimpleWeightedRandomList.Builder<BlockState>()
+							.add(TFBlocks.TROLLSTEINN.value().defaultBlockState(), 1)
+							.add(Blocks.STONE.defaultBlockState(), 3)
+			)
 	));
 
 	public static final ResourceKey<ConfiguredWorldCarver<?>> TFCAVES_CONFIGURED = registerKey("tf_caves");
