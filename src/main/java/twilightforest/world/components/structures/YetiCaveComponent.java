@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 
+// FIXME Get rid of the HollowHillComponent inheritance
 public class YetiCaveComponent extends HollowHillComponent {
 
 	public YetiCaveComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
@@ -28,6 +29,21 @@ public class YetiCaveComponent extends HollowHillComponent {
 
 	public YetiCaveComponent(int i, int x, int y, int z, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(TFStructurePieceTypes.TFYeti.get(), i, 2, x, y, z, speleothemConfig);
+
+		// FIXME Get rid of HollowHillComponent so this ugly hack can be sanitized
+		this.boundingBox = new BoundingBox(
+				this.boundingBox.minX(),
+				this.boundingBox.minY() - 1,
+				this.boundingBox.minZ(),
+				this.boundingBox.maxX(),
+				this.boundingBox.maxY(),
+				this.boundingBox.maxZ()
+		);
+	}
+
+	@Override // FIXME Bandaid for adjusting structure box
+	protected int getWorldY(int pY) {
+		return super.getWorldY(pY + 1);
 	}
 
 	/**
