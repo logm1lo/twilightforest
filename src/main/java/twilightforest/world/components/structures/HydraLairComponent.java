@@ -2,12 +2,14 @@ package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -15,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.FeaturePlacers;
 
 
 public class HydraLairComponent extends HollowHillComponent {
@@ -33,6 +36,16 @@ public class HydraLairComponent extends HollowHillComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox writeableBounds, ChunkPos chunkPosIn, BlockPos blockPos) {
+		FeaturePlacers.replaceBlocksDome(world, this.boundingBox.getCenter().atY(this.getWorldY(-4)), 36.5f, 1/80f, writeableBounds, this.boundingBox.inflatedBy(4), HolderSet.direct(Blocks.GRASS_BLOCK.builtInRegistryHolder(), Blocks.DIRT.builtInRegistryHolder()), Blocks.STONE.defaultBlockState());
+		FeaturePlacers.replaceBlocksDome(world, this.boundingBox.getCenter().offset(-16, 0, -16).atY(this.getWorldY(-1)), 18.5f, 1/80f, writeableBounds, this.boundingBox.inflatedBy(1), HolderSet.direct(Blocks.STONE.builtInRegistryHolder()), Blocks.GRASS_BLOCK.defaultBlockState());
+
+		this.generateSpeleothems(world, rand, writeableBounds);
+
+		// boss spawner seems important
+		placeBlock(world, TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState(), 27, 3, 27, writeableBounds);
+	}
+
+	private void generateSpeleothems(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds) {
 		float radiusSq = 0.9f * this.radius * this.radius;
 		BlockPos locator = this.getLocatorPosition();
 
@@ -64,8 +77,5 @@ public class HydraLairComponent extends HollowHillComponent {
 				this.generateSpeleothem(world, dest, writeableBounds, false);
 			}
 		}
-
-		// boss spawner seems important
-		placeBlock(world, TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState(), 27, 3, 27, writeableBounds);
 	}
 }

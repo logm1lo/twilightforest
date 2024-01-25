@@ -7,9 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -17,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.BoundingBoxUtils;
+import twilightforest.util.FeaturePlacers;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 public class MazeUpperEntranceComponent extends TFStructureComponentOld {
@@ -43,7 +41,7 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		replaceStoneDome(world, this.boundingBox.getCenter().atY(this.getWorldY(-1)), 16, 0.8f, sbb, this.boundingBox.inflatedBy(8), Blocks.STONE, Blocks.DIRT.defaultBlockState());
+		FeaturePlacers.replaceBlocksDome(world, this.boundingBox.getCenter().atY(this.getWorldY(-1)), 16, 0.8f, sbb, this.boundingBox.inflatedBy(8), Blocks.STONE, Blocks.DIRT.defaultBlockState());
 
 		// ceiling
 		this.generateMaybeBox(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.MAZESTONE.get().defaultBlockState(), AIR, true, false);
@@ -74,42 +72,5 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 //		this.fillWithBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, AIR, false);
 
 		this.generateAirBox(world, sbb, 6, 0, 6, 9, 4, 9);
-	}
-
-	@SuppressWarnings("SameParameterValue")
-	private static void replaceStoneDome(WorldGenLevel level, BlockPos centerPos, float radius, float squish, BoundingBox chunkBox, BoundingBox structureBox, Block target, BlockState replacement) {
-		float radiusSquared = radius * radius;
-
-		BoundingBox commonRegion = BoundingBoxUtils.getIntersectionOfSBBs(chunkBox, structureBox);
-		if (commonRegion == null) return;
-
-		processColumn(level, centerPos, radiusSquared, commonRegion, target, replacement);
-
-		for (int z = 1; z <= radius; z++) {
-			for (int x = 0; x <= radius; x++) {
-				int distSq = x * x + z * z;
-
-				if (distSq <= radiusSquared) {
-					float height = (radiusSquared - distSq) * squish;
-
-					processColumn(level, centerPos.offset(  x, 0,  z), height, commonRegion, target, replacement);
-					processColumn(level, centerPos.offset( -x, 0, -z), height, commonRegion, target, replacement);
-					processColumn(level, centerPos.offset( -z, 0,  x), height, commonRegion, target, replacement);
-					processColumn(level, centerPos.offset(  z, 0, -x), height, commonRegion, target, replacement);
-				}
-			}
-		}
-	}
-
-	private static void processColumn(WorldGenLevel level, BlockPos pos, float height, BoundingBox mask, Block target, BlockState replacement) {
-		if (!mask.isInside(pos)) return;
-
-		for (int dY = 0; dY < height; dY++) {
-			BlockPos posElevated = pos.above(dY);
-
-			if (level.getBlockState(posElevated).is(target)) {
-				level.setBlock(posElevated, replacement, 3);
-			}
-		}
 	}
 }
