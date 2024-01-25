@@ -33,9 +33,6 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 		z = (z >> 2) << 2;
 
 		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, Direction.SOUTH, false);
-
-		// spawn list!
-		this.spawnListIndex = 1;
 	}
 
 	@Override

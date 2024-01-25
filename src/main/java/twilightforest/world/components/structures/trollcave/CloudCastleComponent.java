@@ -43,9 +43,6 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		y &= ~0b11;
 		z &= ~0b11;
 
-		// spawn list!
-		this.spawnListIndex = 1;
-
 		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH, false);
 	}
 

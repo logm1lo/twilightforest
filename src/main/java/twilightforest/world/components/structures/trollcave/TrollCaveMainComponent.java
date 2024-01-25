@@ -85,11 +85,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 			makeSmallerCave(list, rand, this.getGenDepth() + 1, dest.getX(), dest.getY(), dest.getZ(), 18, 15, caveRotation);
 		}
 
-		// add cloud castle
-		CloudCastleComponent castle = new CloudCastleComponent(this.getGenDepth() + 1, boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2), 168, boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2));
-		list.addPiece(castle);
-		castle.addChildren(this, list, rand);
-
 		// add vault
 		TrollVaultComponent vault = new TrollVaultComponent(this.getGenDepth() + 1, boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2), boundingBox.minY(), boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2));
 		list.addPiece(vault);
