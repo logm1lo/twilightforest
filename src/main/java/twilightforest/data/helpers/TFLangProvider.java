@@ -23,7 +23,9 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
 
+import java.text.ChoiceFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -32,10 +34,18 @@ public abstract class TFLangProvider extends LanguageProvider {
 	private final Map<String, String> TF_TIPS = new HashMap<>();
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private final PackOutput output;
+	public final Map<String, String> upsideDownEntries = new HashMap<>();
 
 	public TFLangProvider(PackOutput output) {
 		super(output, TwilightForestMod.ID, "en_us");
 		this.output = output;
+	}
+
+	@Override
+	public void add(String key, String value) {
+		super.add(key, value);
+		List<LangFormatSplitter.Component> splitEnglish = LangFormatSplitter.split(value);
+		this.upsideDownEntries.put(key, LangConversionHelper.convertComponents(splitEnglish));
 	}
 
 	public void addBiome(ResourceKey<Biome> biome, String name) {
@@ -186,10 +196,17 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	@Override
 	public CompletableFuture<?> run(CachedOutput cache) {
+		//generate normal lang file
 		CompletableFuture<?> languageGen = super.run(cache);
 		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
 		futuresBuilder.add(languageGen);
 
+		//generate en_ud file
+		JsonObject upsideDownFile = new JsonObject();
+		this.upsideDownEntries.forEach(upsideDownFile::addProperty);
+		futuresBuilder.add(DataProvider.saveStable(cache, upsideDownFile, this.output.getOutputFolder(PackOutput.Target.RESOURCE_PACK).resolve(TwilightForestMod.ID).resolve("lang").resolve("en_ud.json")));
+
+		//generate tips
 		for (Map.Entry<String, String> entry : TF_TIPS.entrySet()) {
 			JsonObject object = new JsonObject();
 			object.add("tip", Component.Serializer.toJsonTree(Component.translatable(entry.getKey()).withStyle(ChatFormatting.GREEN)));

@@ -33,10 +33,20 @@ public class DataGenerators {
 		CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
 		ExistingFileHelper helper = event.getExistingFileHelper();
 
-		generator.addProvider(event.includeServer(), new TFAdvancementProvider(output, provider, helper));
+		//client generators
 		generator.addProvider(event.includeClient(), new BlockstateGenerator(output, helper));
 		generator.addProvider(event.includeClient(), new ItemModelGenerator(output, helper));
+		generator.addProvider(event.includeClient(), new ParticleGenerator(output, helper));
 		generator.addProvider(event.includeClient(), new SoundGenerator(output, helper));
+
+		//server generators
+		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new StalactiteGenerator(output));
+		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new TFAdvancementProvider(output, provider, helper));
+		generator.addProvider(event.includeServer(), new TFStructureUpdater("structures", output, helper));
+
+		//normal tags
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.BannerPatternTagGenerator(output, provider, helper));
 		BlockTagGenerator blocktags = new BlockTagGenerator(output, provider, helper);
 		generator.addProvider(event.includeServer(), blocktags);
@@ -49,25 +59,25 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new CraftingGenerator(output, provider));
 		generator.addProvider(event.includeServer(), new LootModifierGenerator(output));
 
+		//registry-based tags
 		DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(output, provider);
 		CompletableFuture<HolderLookup.Provider> lookupProvider = datapackProvider.getRegistryProvider();
 		generator.addProvider(event.includeServer(), datapackProvider);
-		generator.addProvider(event.includeServer(), new CustomTagGenerator.WoodPaletteTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new BiomeTagGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.DimensionTypeTagGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.WoodPaletteTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new StructureTagGenerator(output, lookupProvider, helper));
 
-		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
-		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
-		generator.addProvider(event.includeServer(), new StalactiteGenerator(output));
-		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
-						Component.literal("Resources for Twilight Forest"),
-						DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
-						Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
+		//these have to go last due to magic paintings
+		//when magic paintings are registered their atlas and lang content is too
 		generator.addProvider(event.includeClient(), new AtlasGenerator(output, provider, helper));
 		generator.addProvider(event.includeClient(), new LangGenerator(output));
-		generator.addProvider(event.includeClient(), new ParticleGenerator(output, helper));
 
-		generator.addProvider(event.includeServer(), new CustomTagGenerator.DimensionTypeTagGenerator(output, lookupProvider, helper));
+		//pack.mcmeta
+		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
+				Component.literal("Resources for Twilight Forest"),
+				DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
+				Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
 	}
 }
