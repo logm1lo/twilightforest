@@ -57,3 +57,12 @@ function findLastMethodInstruction(/*org.objectweb.asm.tree.MethodNode*/ methodN
     }
     return null;
 }
+
+function findLastVarInstruction(/*org.objectweb.asm.tree.MethodNode*/ methodNode, /* org.objectweb.asm.Opcodes */ opcode, varIndex) {
+    for (var i = methodNode.instructions.size() - 1; i > 0; i--) {
+        var /*org.objectweb.asm.tree.VarInsnNode*/ node = methodNode.instructions.get(i); // It's not really a VarInsnNode at this point, but we do this for autocomplete
+        if (node instanceof VarInsnNode && node.getOpcode() === opcode && node.var === varIndex)
+            return node;
+    }
+    return null;
+}
