@@ -6,9 +6,18 @@ var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
 
 function findAllInstructions(/*org.objectweb.asm.tree.MethodNode*/ methodNode, /* org.objectweb.asm.Opcodes */ opcode) {
     var arr = [];
-    methodNode.instructions.forEach(/*org.objectweb.asm.tree.AbstractInsnNode*/ inst => {
-        if (inst.getOpcode() === opcode)
-            arr.push(inst);
+    methodNode.instructions.forEach(/*org.objectweb.asm.tree.AbstractInsnNode*/ node => {
+        if (node.getOpcode() === opcode)
+            arr.push(node);
+    })
+    return arr;
+}
+
+function findAllMethodInstructions(/*org.objectweb.asm.tree.MethodNode*/ methodNode, /* org.objectweb.asm.Opcodes */ opcode, owner, name, desc) {
+    var arr = [];
+    methodNode.instructions.forEach(/*org.objectweb.asm.tree.MethodInsnNode*/ node => { // It's not really a MethodInsnNode at this point, but we do this for autocomplete
+        if (node instanceof MethodInsnNode && node.getOpcode() === opcode && node.owner === owner && node.name === name && node.desc === desc)
+            arr.push(node);
     })
     return arr;
 }
