@@ -42,7 +42,7 @@ function findLastFieldInstruction(/*org.objectweb.asm.tree.MethodNode*/ methodNo
 
 function findLastMethodInstruction(/*org.objectweb.asm.tree.MethodNode*/ methodNode, /* org.objectweb.asm.Opcodes */ opcode, owner, name, desc) {
     for (var i = methodNode.instructions.size() - 1; i > 0; i--) {
-        var /*org.objectweb.asm.tree.MethodInsnNode*/ node = methodNode.instructions.get(i); // It's not really a FieldInsnNode at this point, but we do this for autocomplete
+        var /*org.objectweb.asm.tree.MethodInsnNode*/ node = methodNode.instructions.get(i); // It's not really a MethodInsnNode at this point, but we do this for autocomplete
         if (node instanceof MethodInsnNode && node.getOpcode() === opcode && node.owner === owner && node.name === name && node.desc === desc)
             return node;
     }
