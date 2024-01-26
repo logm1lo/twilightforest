@@ -5,7 +5,6 @@ var Opcodes = Java.type('org.objectweb.asm.Opcodes');
 
 var MethodInsnNode = Java.type('org.objectweb.asm.tree.MethodInsnNode');
 var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode')
-var InsnNode = Java.type('org.objectweb.asm.tree.InsnNode')
 
 // noinspection JSUnusedGlobalSymbols
 function initializeCoreMod() {
