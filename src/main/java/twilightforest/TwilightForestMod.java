@@ -47,7 +47,6 @@ import twilightforest.util.Restriction;
 import twilightforest.util.TFRemapper;
 import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
-import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
@@ -172,7 +171,6 @@ public class TwilightForestMod {
 	public void registerExtraStuff(RegisterEvent evt) {
 		if (evt.getRegistryKey().equals(Registries.BIOME_SOURCE)) {
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
-			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
 		}
 	}
 
