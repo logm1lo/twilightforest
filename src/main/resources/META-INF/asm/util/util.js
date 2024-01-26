@@ -1,6 +1,7 @@
 // noinspection ES6ConvertVarToLetConst
 
 var FieldInsnNode = Java.type('org.objectweb.asm.tree.FieldInsnNode');
+var MethodInsnNode = Java.type('org.objectweb.asm.tree.MethodInsnNode');
 var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
 
 function findAllInstructions(/*org.objectweb.asm.tree.MethodNode*/ methodNode, /* org.objectweb.asm.Opcodes */ opcode) {
