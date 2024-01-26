@@ -175,6 +175,7 @@ public class TFStructurePieceTypes {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFClCa = registerPieceType("TFClCa", CloudCastleComponent::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFClTr = registerPieceType("TFClTr", CloudTreeComponent::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFTCVa = registerPieceType("TFTCVa", TrollVaultComponent::new);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> TFCloud = registerPieceType("TFCloud", CloudComponent::new);
 
     // Final Castle
     //public static final DeferredHolder<StructurePieceType, StructurePieceType> TFFC = registerPieceType("TFFC", StructureStartFinalCastle::new);

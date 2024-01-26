@@ -24,7 +24,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
@@ -50,12 +49,10 @@ import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.ControlledSpawnsCache;
-import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
+import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 import java.util.Locale;
-import java.util.function.Consumer;
 
 @Mod(TwilightForestMod.ID)
 public class TwilightForestMod {
@@ -94,7 +91,6 @@ public class TwilightForestMod {
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
 		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
-		NeoForge.EVENT_BUS.addListener((Consumer<AddReloadListenerEvent>) ControlledSpawnsCache::reload);
 
 		TFItems.ITEMS.register(bus);
 		TFStats.STATS.register(bus);
@@ -113,6 +109,7 @@ public class TwilightForestMod {
 		TFAdvancements.TRIGGERS.register(bus);
 		TFMobEffects.MOB_EFFECTS.register(bus);
 		Enforcements.ENFORCEMENTS.register(bus);
+		TFCaveCarvers.CARVER_TYPES.register(bus);
 		TFEnchantments.ENCHANTMENTS.register(bus);
 		TFRecipes.RECIPE_SERIALIZERS.register(bus);
 		TFParticleType.PARTICLE_TYPES.register(bus);
@@ -128,6 +125,7 @@ public class TwilightForestMod {
 		TFFeatureModifiers.TREE_DECORATORS.register(bus);
 		TinyBirdVariants.TINY_BIRD_VARIANTS.register(bus);
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(bus);
+		TFDensityFunctions.DENSITY_FUNCTION_TYPES.register(bus);
 		DwarfRabbitVariants.DWARF_RABBIT_VARIANTS.register(bus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(bus);
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(bus);
@@ -164,6 +162,7 @@ public class TwilightForestMod {
 	public void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
 		event.dataPackRegistry(TFRegistries.Keys.WOOD_PALETTES, WoodPalette.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack.DISPATCH_CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC, Restriction.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
@@ -174,8 +173,6 @@ public class TwilightForestMod {
 		if (evt.getRegistryKey().equals(Registries.BIOME_SOURCE)) {
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
-		} else if (evt.getRegistryKey().equals(Registries.CHUNK_GENERATOR)) {
-			Registry.register(BuiltInRegistries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), TwilightChunkGenerator.CODEC);
 		}
 	}
 

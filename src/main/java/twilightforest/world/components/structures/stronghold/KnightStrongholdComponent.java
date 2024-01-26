@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
@@ -501,5 +502,10 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 
 	public interface Factory<T extends KnightStrongholdComponent> {
 		T newInstance(int i, Direction facing, int x, int y, int z);
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return this.isComponentProtected() ? TerrainAdjustment.BURY : TerrainAdjustment.NONE;
 	}
 }

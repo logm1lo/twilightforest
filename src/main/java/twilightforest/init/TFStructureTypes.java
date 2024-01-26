@@ -26,6 +26,7 @@ public class TFStructureTypes {
 	public static final DeferredHolder<StructureType<?>, StructureType<YetiCaveStructure>> YETI_CAVE = registerType("yeti_cave", () -> () -> YetiCaveStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<AuroraPalaceStructure>> AURORA_PALACE = registerType("aurora_palace", () -> () -> AuroraPalaceStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<TrollCaveStructure>> TROLL_CAVE = registerType("troll_cave", () -> () -> TrollCaveStructure.CODEC);
+	public static final DeferredHolder<StructureType<?>, StructureType<GiantHouseStructure>> GIANT_HOUSE = registerType("giant_house", () -> () -> GiantHouseStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<FinalCastleStructure>> FINAL_CASTLE = registerType("final_castle", () -> () -> FinalCastleStructure.CODEC);
 
 	private static <P extends Structure> DeferredHolder<StructureType<?>, StructureType<P>> registerType(String name, Supplier<StructureType<P>> factory) {

@@ -187,6 +187,14 @@ public abstract class BiomeHelper {
 		return biome;
 	}
 
+	public static BiomeGenerationSettings.Builder highlandsUndergroundGen(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {
+		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder(featureGetter, carverGetter);
+
+		addHighlandCaves(biome);
+
+		return biome;
+	}
+
 	public static BiomeGenerationSettings.Builder streamsAndLakes(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter, boolean isLake) {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder(featureGetter, carverGetter);
 

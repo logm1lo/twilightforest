@@ -11,12 +11,14 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBannerPatterns;
 import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.WoodPalette;
 
@@ -157,6 +159,25 @@ public class CustomTagGenerator {
 		@Override
 		public String getName() {
 			return "Twilight Forest Wood Palette Tags";
+		}
+	}
+
+	public static class DimensionTypeTagGenerator extends TagsProvider<DimensionType> {
+
+		public static final TagKey<DimensionType> ALLOWS_MAGIC_MAP_CHARTING = TagKey.create(Registries.DIMENSION_TYPE, TwilightForestMod.prefix("allows_magic_map_charting"));
+
+		public DimensionTypeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
+			super(output, Registries.DIMENSION_TYPE, provider, TwilightForestMod.ID, helper);
+		}
+
+		@Override
+		protected void addTags(HolderLookup.Provider provider) {
+			tag(ALLOWS_MAGIC_MAP_CHARTING).add(TFDimensionSettings.TWILIGHT_DIM_TYPE);
+		}
+
+		@Override
+		public String getName() {
+			return "Twilight Forest DimensionType Tags";
 		}
 	}
 }

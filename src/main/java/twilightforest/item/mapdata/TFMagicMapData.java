@@ -3,7 +3,6 @@ package twilightforest.item.mapdata;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -20,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.api.distmarker.Dist;
@@ -27,7 +27,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructures;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
@@ -89,10 +89,12 @@ public class TFMagicMapData extends MapItemSavedData {
 			int worldX = (coord.x << this.scale - 1) + this.centerX;
 			int worldZ = (coord.y << this.scale - 1) + this.centerZ;
 
-			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, (ServerLevel) world));
+			int trueId = TFMapDecoration.ICONS.getInt(LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, world));
 			if (coord.featureId != trueId) {
 				toRemove.add(entry.getIntKey());
-				toAdd.put(entry.getIntKey(), new TFMapDecoration(trueId, coord.x, coord.y, coord.rot, LandmarkUtil.isConquered(world, worldX, worldZ)));
+				if (trueId != 0) {
+                    toAdd.put(entry.getIntKey(), new TFMapDecoration(trueId, coord.x, coord.y, coord.rot, LandmarkUtil.isConquered(world, worldX, worldZ)));
+                }
 			}
 		}
 
@@ -109,7 +111,9 @@ public class TFMagicMapData extends MapItemSavedData {
 			byte mapX = arr[i * 3 + 1];
 			byte mapZ = arr[i * 3 + 2];
 			byte mapRotation = 8;
-			this.tfDecorations.put(packCoordBytes(mapX, mapZ), new TFMapDecoration(featureInfo & 0b111_1111, mapX, mapZ, mapRotation, (featureInfo & 0b1000_0000) != 0));
+
+			if ((featureInfo & 0b111_1111) != 0)
+				this.tfDecorations.put(packCoordBytes(mapX, mapZ), new TFMapDecoration(featureInfo & 0b111_1111, mapX, mapZ, mapRotation, (featureInfo & 0b1000_0000) != 0));
 		}
 	}
 
@@ -164,27 +168,23 @@ public class TFMagicMapData extends MapItemSavedData {
 
 	public static class TFMapDecoration {
 
-		private static final Int2ObjectArrayMap<TFLandmark> ICONS = new Int2ObjectArrayMap<>(){{
-			defaultReturnValue(TFLandmark.NOTHING);
-			put(0, TFLandmark.NOTHING);
-			put(1, TFLandmark.SMALL_HILL);
-			put(2, TFLandmark.MEDIUM_HILL);
-			put(3, TFLandmark.LARGE_HILL);
-			put(4, TFLandmark.HEDGE_MAZE);
-			put(5, TFLandmark.NAGA_COURTYARD);
-			put(6, TFLandmark.LICH_TOWER);
-			put(7, TFLandmark.ICE_TOWER);
-			put(9, TFLandmark.QUEST_GROVE);
-			put(12, TFLandmark.HYDRA_LAIR);
-			put(13, TFLandmark.LABYRINTH);
-			put(14, TFLandmark.DARK_TOWER);
-			put(15, TFLandmark.KNIGHT_STRONGHOLD);
-			put(17, TFLandmark.YETI_CAVE);
-			put(18, TFLandmark.TROLL_CAVE);
-			put(19, TFLandmark.FINAL_CASTLE);
-		}};
-		private static final Object2IntArrayMap<TFLandmark> ICONS_FLIPPED = new Object2IntArrayMap<>(){{
-			ICONS.forEach((k, v) -> put(v, k.intValue()));
+		private static final Object2IntArrayMap<ResourceKey<Structure>> ICONS = new Object2IntArrayMap<>(){{
+			defaultReturnValue(0); // Empty space on icons texture, renders nothing if added anyway
+			put(TFStructures.HOLLOW_HILL_SMALL, 1);
+			put(TFStructures.HOLLOW_HILL_MEDIUM, 2);
+			put(TFStructures.HOLLOW_HILL_LARGE, 3);
+			put(TFStructures.HEDGE_MAZE, 4);
+			put(TFStructures.NAGA_COURTYARD, 5);
+			put(TFStructures.LICH_TOWER, 6);
+			put(TFStructures.AURORA_PALACE, 7);
+			put(TFStructures.QUEST_GROVE, 9);
+			put(TFStructures.HYDRA_LAIR, 12);
+			put(TFStructures.LABYRINTH, 13);
+			put(TFStructures.DARK_TOWER, 14);
+			put(TFStructures.KNIGHT_STRONGHOLD, 15);
+			put(TFStructures.YETI_CAVE, 17);
+			put(TFStructures.TROLL_CAVE, 18);
+			put(TFStructures.FINAL_CASTLE, 19);
 		}};
 
 		final int featureId;
@@ -193,8 +193,8 @@ public class TFMagicMapData extends MapItemSavedData {
 		final byte rot;
 		final boolean conquered;
 
-		public TFMapDecoration(TFLandmark featureId, byte xIn, byte yIn, byte rotationIn, boolean conquered) {
-			this(ICONS_FLIPPED.getInt(featureId), xIn, yIn, rotationIn, conquered);
+		public TFMapDecoration(ResourceKey<Structure> featureId, byte xIn, byte yIn, boolean conquered) {
+			this(ICONS.getInt(featureId), xIn, yIn, (byte) 8, conquered);
 		}
 
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn, boolean conquered) {
@@ -207,7 +207,7 @@ public class TFMagicMapData extends MapItemSavedData {
 
 		@OnlyIn(Dist.CLIENT)
 		public boolean render(int idx, PoseStack stack, MultiBufferSource buffer, int light) {
-			if (ICONS.get(featureId).isStructureEnabled) {
+			if (featureId > 0) {
 				stack.pushPose();
 				stack.translate(0.0F + this.x / 2.0F + 64.0F, 0.0F + this.y / 2.0F + 64.0F, -0.02F);
 				stack.mulPose(Axis.ZP.rotationDegrees(this.rot * 360 / 16.0F));

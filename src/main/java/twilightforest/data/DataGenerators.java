@@ -20,11 +20,8 @@ import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
@@ -70,5 +67,7 @@ public class DataGenerators {
 		generator.addProvider(event.includeClient(), new AtlasGenerator(output, provider, helper));
 		generator.addProvider(event.includeClient(), new LangGenerator(output));
 		generator.addProvider(event.includeClient(), new ParticleGenerator(output, helper));
+
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.DimensionTypeTagGenerator(output, lookupProvider, helper));
 	}
 }

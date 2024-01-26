@@ -716,6 +716,7 @@
   "commands.tffeature.none_nearby": "Couldn't find a feature nearby!",
   "commands.tffeature.not_in_twilight_forest": "You are not in the Twilight Forest dimension",
   "commands.tffeature.not_player": "This command must be run by a valid player!",
+  "commands.tffeature.structure.boundaries": "Structure boundaries: %s",
   "commands.tffeature.structure.conquer.status": "Structure conquer flag: %s",
   "commands.tffeature.structure.conquer.update": "Structure conquer flag was %s, changing to %s",
   "commands.tffeature.structure.inside": "You are in a Landmark structure",

@@ -23,7 +23,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
@@ -70,7 +69,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 			entranceFloor = floors - 1;
 		}
 
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -6, -(entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -6, -(entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH, false);
 
 		// we should have a door where we started
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
@@ -82,7 +81,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		this.color = color;
 		this.size = 13;
 		this.height = floors * 8 + 1;
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -6, -(entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -6, -(entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH, false);
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 	}
 

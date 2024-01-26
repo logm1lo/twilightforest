@@ -18,8 +18,8 @@ import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
@@ -43,10 +43,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		y &= ~0b11;
 		z &= ~0b11;
 
-		// spawn list!
-		this.spawnListIndex = 1;
-
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH, false);
 	}
 
 	@Override
@@ -58,6 +55,11 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+		// The literal cloud
+		CloudComponent cloudComponent = new CloudComponent(this.getGenDepth() + 1, this.boundingBox.minX(), this.boundingBox.minY() + 3, this.boundingBox.minZ());
+		list.addPiece(cloudComponent);
+		cloudComponent.addChildren(this, list, rand);
+
 		// up to two trees
 		// tree in x direction
 		boolean plus = rand.nextBoolean();
@@ -72,7 +74,6 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		CloudTreeComponent treeZ = new CloudTreeComponent(this.getGenDepth() + 1, boundingBox.minX() + (offset * 4), 168, boundingBox.minZ() + 8 + (plus ? 32 : -16));
 		list.addPiece(treeZ);
 		treeZ.addChildren(this, list, rand);
-
 	}
 
 	@Override

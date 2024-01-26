@@ -25,7 +25,7 @@ public abstract class ConquerableStructure extends LandmarkStructure implements 
 
     @Override
     public StructureStart generate(RegistryAccess registryAccess, ChunkGenerator chunkGen, BiomeSource biomeSource, RandomState randomState, StructureTemplateManager templateManager, long seed, ChunkPos chunkPos, int references, LevelHeightAccessor heightAccessor, Predicate<Holder<Biome>> isValidBiome) {
-        return !(chunkGen.getBiomeSource() instanceof TFBiomeProvider) || LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkPos) ? this.generateCustom(registryAccess, chunkGen, biomeSource, randomState, templateManager, seed, chunkPos, references, heightAccessor, isValidBiome) : StructureStart.INVALID_START;
+        return !(chunkGen.getBiomeSource() instanceof TFBiomeProvider) || LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkPos.x, chunkPos.z) ? this.generateCustom(registryAccess, chunkGen, biomeSource, randomState, templateManager, seed, chunkPos, references, heightAccessor, isValidBiome) : StructureStart.INVALID_START;
     }
 
     // [VANILLA COPY] Structure.generate

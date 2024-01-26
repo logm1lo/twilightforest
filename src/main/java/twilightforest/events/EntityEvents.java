@@ -19,13 +19,17 @@ import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Interaction;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.LeadItem;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SkullBlock;
@@ -33,6 +37,8 @@ import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -47,8 +53,10 @@ import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
@@ -61,9 +69,14 @@ import twilightforest.item.FieryArmorItem;
 import twilightforest.item.OreMeterItem;
 import twilightforest.item.YetiArmorItem;
 import twilightforest.network.WipeOreMeterPacket;
+import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.components.structures.start.TFStructureStart;
+import twilightforest.world.components.structures.type.HollowHillStructure;
+import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -337,6 +350,63 @@ public class EntityEvents {
 			for (int i = 0; i < 12; i++) CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
 		}
 	}
+
+	private static int getSpawnListIndexAt(StructureStart start, BlockPos pos) {
+		int highestFoundIndex = -1;
+		for (StructurePiece component : start.getPieces()) {
+			if (component.getBoundingBox().isInside(pos)) {
+				if (component instanceof TFStructureComponent tfComponent) {
+					if (tfComponent.spawnListIndex > highestFoundIndex)
+						highestFoundIndex = tfComponent.spawnListIndex;
+				} else
+					return 0;
+			}
+		}
+		return highestFoundIndex;
+	}
+
+	@Nullable
+	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
+		List<StructureStart> structureStarts = structureManager.startsForStructure(new ChunkPos(pos), s -> s instanceof ControlledSpawns);
+
+		// This is wretched FIXME make this method return void instead, make one of parameters the SpawnerData consumer (eg LevelEvent.PotentialSpawns::addSpawnerData or List::add)
+		for (StructureStart start : structureStarts) {
+			if (start.getStructure() instanceof ControlledSpawns landmark) {
+
+				if (!start.isValid())
+					continue;
+
+				if (classification != MobCategory.MONSTER)
+					return landmark.getSpawnableList(classification);
+
+				if (start instanceof TFStructureStart s && s.isConquered())
+					return null;
+
+				// FIXME Make interface for this method?
+				if (landmark instanceof HollowHillStructure hollowHill && !hollowHill.canSpawnMob(pos, start.getBoundingBox()))
+					return null;
+
+				final int index = getSpawnListIndexAt(start, pos);
+				if (index < 0)
+					return null;
+				return landmark.getSpawnableMonsterList(index);
+			}
+		}
+
+		return null;
+	}
+
+	@SubscribeEvent
+	public static void structureSpecialSpawns(LevelEvent.PotentialSpawns event) {
+		if (!(event.getLevel() instanceof ServerLevel serverLevel))
+			return;
+
+        List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(serverLevel.structureManager(), event.getMobCategory(), event.getPos());
+		if (potentialStructureSpawns != null) {
+			List.copyOf(event.getSpawnerDataList()).forEach(event::removeSpawnerData);
+			potentialStructureSpawns.forEach(event::addSpawnerData);
+    }
+  }
 
 	@SubscribeEvent
 	public static void onAttackEvent(AttackEntityEvent event) {

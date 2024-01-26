@@ -13,10 +13,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructures;
 import twilightforest.network.MazeMapPacket;
 import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,8 +61,8 @@ public class TFMazeMapData extends MapItemSavedData {
 		this.yCenter = y;
 
 		// when we are in a labyrinth, snap to the LABYRINTH
-		if (world instanceof ServerLevel && TFGenerationSettings.usesTwilightChunkGenerator((ServerLevel) world)) {
-			if (LegacyLandmarkPlacements.getFeatureForRegion(x >> 4, z >> 4, (ServerLevel) world) == TFLandmark.LABYRINTH) {
+		if (world instanceof ServerLevel level) {
+			if (LegacyLandmarkPlacements.pickLandmarkForChunk(x >> 4, z >> 4, level) == TFStructures.LABYRINTH) {
 				BlockPos mc = LegacyLandmarkPlacements.getNearestCenterXZ(x >> 4, z >> 4);
 				this.centerX = mc.getX();
 				this.centerZ = mc.getZ();
