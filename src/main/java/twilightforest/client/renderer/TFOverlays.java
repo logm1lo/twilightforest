@@ -27,6 +27,7 @@ import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.QuestRam;
+import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFItems;
 import twilightforest.item.OreMeterItem;
 import twilightforest.util.ComponentAlignment;
@@ -50,6 +51,13 @@ public class TFOverlays {
 				RenderSystem.enableBlend();
 				renderIndicator(minecraft, graphics, gui, player, screenWidth, screenHeight);
 				RenderSystem.disableBlend();
+			}
+		});
+		event.registerAbove(VanillaGuiOverlay.MOUNT_HEALTH.id(), TwilightForestMod.prefix("hostile_mount_hunger_bar"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+			LocalPlayer player = Minecraft.getInstance().player;
+			if (!gui.getMinecraft().options.hideGui && gui.shouldDrawSurvivalElements() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
+				gui.setupOverlayRenderState(true, false);
+				gui.renderFood(screenWidth, screenHeight, graphics);
 			}
 		});
 		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
@@ -86,8 +94,6 @@ public class TFOverlays {
 		if (player.isHolding(TFItems.ORE_METER.get())) {
 			InteractionHand handToUse = player.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.ORE_METER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 			ItemStack selectedMeter = player.getItemInHand(handToUse);
-			RenderSystem.disableDepthTest();
-			RenderSystem.enableDepthTest();
 			if (OreMeterItem.isLoading(selectedMeter)) {
 				int dots = (OreMeterItem.getLoadProgress(selectedMeter) / 5) % 3;
 				Component component = Component.translatable("misc.twilightforest.ore_meter_loading");
