@@ -65,7 +65,6 @@ import twilightforest.util.LandmarkUtil;
 
 import java.util.*;
 
-//prevent the lich from using the stairs, he gets stuck
 public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer {
 
 	private static final EntityDataAccessor<Optional<UUID>> MASTER_LICH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -232,7 +231,8 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 				else
 					this.bossInfo.setColor(BossEvent.BossBarColor.RED);
 			}
-			if (getRestrictionPoint() != null && getRestrictionPoint().pos().distSqr(blockPosition()) > 64) { // 8 Blocks, TODO: will need to change for the lich tower rework
+			// 8 Block distance, TODO: will need to change for the lich tower rework
+			if (getRestrictionPoint() != null && getRestrictionPoint().pos().distSqr(blockPosition()) > 64 || (getPhase() == 3 && getRestrictionPoint() != null && getY() < getRestrictionPoint().pos().below(2).getY())) {
 				level().setBlockAndUpdate(getRestrictionPoint().pos().below(2), Blocks.GLASS.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
 				BlockPos pos = getRestrictionPoint().pos();
 				teleportToNoChecks(pos.getX(), pos.getY(), pos.getZ());
