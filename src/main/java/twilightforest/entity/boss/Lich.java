@@ -41,6 +41,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCandleBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -65,7 +66,6 @@ import twilightforest.util.LandmarkUtil;
 import java.util.*;
 
 //TODO improve teleporting logic
-//lich should teleport back to its spawn if it gets outside the tower and loses LOS
 //teleport sounds and particles shouldnt try to happen if teleporting fails
 //prevent the lich from using the stairs, he gets stuck
 public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer {
@@ -233,6 +233,11 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 					this.bossInfo.setColor(BossEvent.BossBarColor.PURPLE);
 				else
 					this.bossInfo.setColor(BossEvent.BossBarColor.RED);
+			}
+			if (getRestrictionPoint() != null && getRestrictionPoint().pos().distSqr(blockPosition()) > 64) { // 8 Blocks, TODO: will need to change for the lich tower rework
+				level().setBlockAndUpdate(getRestrictionPoint().pos().below(2), Blocks.GLASS.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
+				BlockPos pos = getRestrictionPoint().pos();
+				teleportToNoChecks(pos.getX(), pos.getY(), pos.getZ());
 			}
 		}
 
