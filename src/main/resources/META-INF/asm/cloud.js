@@ -26,7 +26,7 @@ function initializeCoreMod() {
                         returns.push(node);
                     }
                 }
-                returns.forEach(function (/*org.objectweb.asm.tree.MethodInsnNode*/ value, index, array) {
+                returns.forEach((/*org.objectweb.asm.tree.MethodInsnNode*/ value) => {
                     instructions.insertBefore(
                         value,
                         ASM.listOf(
