@@ -31,6 +31,7 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
 import twilightforest.compat.rei.categories.REICrumbleHornCategory;
+import twilightforest.compat.rei.categories.REIMoonwormQueenCategory;
 import twilightforest.compat.rei.categories.REITransformationPowderCategory;
 import twilightforest.compat.rei.categories.REIUncraftingCategory;
 import twilightforest.compat.rei.displays.REICrumbleHornDisplay;
@@ -71,6 +72,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 		}
 		registry.add(new REICrumbleHornCategory());
 		registry.add(new REITransformationPowderCategory());
+		registry.add(new REIMoonwormQueenCategory());
 	}
 
 	@Override
@@ -98,6 +100,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 		registry.registerRecipeFiller(CrumbleRecipe.class, TFRecipes.CRUMBLE_RECIPE.get(), REICrumbleHornDisplay::of);
 		registry.registerRecipeFiller(TransformPowderRecipe.class, TFRecipes.TRANSFORM_POWDER_RECIPE.get(), REITransformationPowderDisplay::of);
+		registry.add(REIMoonwormQueenCategory.createDisplay());
 	}
 
 	@Override

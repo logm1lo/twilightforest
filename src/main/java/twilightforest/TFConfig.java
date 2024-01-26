@@ -373,6 +373,11 @@ public class TFConfig {
 					translation(config + "aurora_biomes").
 					comment("Defines which biomes the aurora shader effect will appear in. Leave the list empty to disable the effect.")
 					.defineList("auroraBiomes", List.of("twilightforest:glacier"), s -> s instanceof String);
+
+			prettifyOreMeterGui = builder
+					.translation(config + "prettify_ore_meter_gui")
+					.comment("Lines up dashes & percentages in Ore Meter GUI")
+					.define("prettifyOreMeterGui", true);
 		}
 
 		public final ModConfigSpec.BooleanValue silentCicadas;
@@ -385,6 +390,7 @@ public class TFConfig {
 		public final ModConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
 		public final ModConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
 		public final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
+		public final ModConfigSpec.BooleanValue prettifyOreMeterGui;
 		private final List<ResourceLocation> validAuroraBiomes = new ArrayList<>();
 	}
 

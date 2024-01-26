@@ -31,11 +31,6 @@ public class Bighorn extends Sheep {
 		super(type, world);
 	}
 
-	public Bighorn(Level world, double x, double y, double z) {
-		this(TFEntities.BIGHORN_SHEEP.get(), world);
-		this.setPos(x, y, z);
-	}
-
 	@Override
 	public ResourceLocation getDefaultLootTable() {
 		if (this.isSheared()) {
@@ -84,7 +79,9 @@ public class Bighorn extends Sheep {
 		}
 
 		Bighorn babySheep = TFEntities.BIGHORN_SHEEP.get().create(world);
-		babySheep.setColor(getOffspringColor(this, otherParent));
+		if (babySheep != null) {
+			babySheep.setColor(this.getOffspringColor(this, otherParent));
+		}
 		return babySheep;
 	}
 

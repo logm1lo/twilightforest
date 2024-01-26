@@ -133,7 +133,7 @@ public class ProgressionEvents {
                     ResourceKey<Structure> nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), level);
 
                     // TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
-                    if (nearbyFeature == TFStructures.KNIGHT_STRONGHOLD && pos.getY() >= WorldUtil.getGeneratorSeaLevel(level))
+                    if (nearbyFeature == TFStructures.KNIGHT_STRONGHOLD && pos.getY() >= WorldUtil.getGeneratorSeaLevel(level) - 2)
                         return false;
 
                     // send protection packet

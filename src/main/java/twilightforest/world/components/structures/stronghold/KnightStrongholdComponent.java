@@ -37,6 +37,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 		super(type, i, x, y, z);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setOrientation(facing);
+		this.spawnListIndex = this.isComponentProtected() ? 0 : -1;
 	}
 
 	/**

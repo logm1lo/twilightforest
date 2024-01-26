@@ -19,7 +19,6 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 	@Override
 	protected void addDescriptions() {
 		this.sprite(TFParticleType.ANNIHILATE.get(), TwilightForestMod.prefix("annihilate_particle"));
-		//boss tear (if needed)
 		this.spriteSet(TFParticleType.CLOUD_PUFF.get(), new ResourceLocation("generic"), 8, true);
 		this.sprite(TFParticleType.DIM_FLAME.get(), TwilightForestMod.prefix("dim_flame"));
 		this.spriteSet(TFParticleType.EXTENDED_SNOW_WARNING.get(), TwilightForestMod.prefix("snow"), 4, false);
@@ -47,6 +46,7 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 		this.sprite(TFParticleType.LOG_CORE_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
 		this.sprite(TFParticleType.OMINOUS_FLAME.get(), TwilightForestMod.prefix("ominous_flame"));
 		this.sprite(TFParticleType.PARTICLE_SPAWNER_FIREFLY.get(), TwilightForestMod.prefix("firefly"));
+		this.sprite(TFParticleType.PROTECTION.get(), new ResourceLocation("glint"));
 		this.spriteSet(TFParticleType.SNOW.get(), TwilightForestMod.prefix("snow"), 4, false);
 		this.spriteSet(TFParticleType.SNOW_GUARDIAN.get(), TwilightForestMod.prefix("snow"), 4, false);
 		this.spriteSet(TFParticleType.SNOW_WARNING.get(), TwilightForestMod.prefix("snow"), 4, false);

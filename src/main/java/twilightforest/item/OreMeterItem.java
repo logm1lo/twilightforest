@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -40,9 +41,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class OreMeterItem extends Item {
-
 	public static final int MAX_CHUNK_SEARCH_RANGE = 2;
 	public static final int LOAD_TIME = 50;
+	public static final String NBT_SCAN_DATA = "ScanData";
 
 	public OreMeterItem(Properties properties) {
 		super(properties);
@@ -52,12 +53,13 @@ public class OreMeterItem extends Item {
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean held) {
 		//loading logic. The ore meter doesn't display any info until it's been "loading" for 50 ticks.
 		//While mostly a visual thing, this also prevents spamming the meter and constantly populating it with data.
-		if (stack.getTag() != null && stack.getTag().contains("Loading") && level.isClientSide()) {
-			int loadTime = stack.getTag().getInt("Loading");
+		CompoundTag scanNbt = getScanData(stack);
+		if (scanNbt != null && scanNbt.contains("Loading") && level.isClientSide()) {
+			int loadTime = scanNbt.getInt("Loading");
 			if (loadTime < LOAD_TIME) {
-				stack.getTag().putInt("Loading", loadTime + 1);
+				scanNbt.putInt("Loading", loadTime + 1);
 			} else {
-				stack.getTag().remove("Loading");
+				scanNbt.remove("Loading");
 				int useX = Mth.floor(entity.getX());
 				int useZ = Mth.floor(entity.getZ());
 				String blockId = getAssignedBlock(stack);
@@ -72,10 +74,12 @@ public class OreMeterItem extends Item {
 		//if we're in the "loading" state don't try to run any logic
 		if (isLoading(stack)) return InteractionResultHolder.pass(stack);
 
+		CompoundTag scanNbt = getOrCreateScanData(stack);
+
 		//if we're not crouching, put the ore meter into its "loading" state
 		if (!player.isSecondaryUseActive()) {
-			if (!stack.getOrCreateTag().contains("Loading")) {
-				stack.getOrCreateTag().putInt("Loading", 0);
+			if (!scanNbt.contains("Loading")) {
+				scanNbt.putInt("Loading", 0);
 			}
 			level.playSound(player, player.blockPosition(), TFSounds.ORE_METER_CRACKLE.get(), SoundSource.PLAYERS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 			return InteractionResultHolder.pass(stack);
@@ -104,7 +108,7 @@ public class OreMeterItem extends Item {
 		if (context.isSecondaryUseActive()) {
 			BlockState state = context.getLevel().getBlockState(context.getClickedPos());
 			if (state.is(BlockTagGenerator.ORE_METER_TARGETABLE)) {
-				stack.getOrCreateTag().putString("TargetedBlock", BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
+				getScanData(stack).putString("TargetedBlock", BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
 				context.getPlayer().displayClientMessage(Component.translatable("misc.twilightforest.ore_meter_set_block", Component.translatable(state.getBlock().getDescriptionId())), true);
 				context.getLevel().playSound(context.getPlayer(), context.getPlayer().blockPosition(), TFSounds.ORE_METER_TARGET_BLOCK.get(), SoundSource.PLAYERS, 0.5F, context.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
 				return InteractionResult.SUCCESS;
@@ -122,75 +126,107 @@ public class OreMeterItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		String block = getAssignedBlock(stack);
-		if (block != null) {
-			tooltip.add(Component.translatable("misc.twilightforest.ore_meter_targeted_block", block).withStyle(ChatFormatting.GRAY));
-		}
+
+		if (block != null)
+            tooltip.add(Component.translatable("misc.twilightforest.ore_meter_targeted_block", block).withStyle(ChatFormatting.GRAY));
+
 		super.appendHoverText(stack, level, tooltip, flag);
 	}
 
+	@Nullable
+	public static CompoundTag getScanData(ItemStack stack) {
+		CompoundTag baseStackTag = stack.getTag();
+		return baseStackTag != null ? baseStackTag.getCompound(NBT_SCAN_DATA) : null;
+	}
+
+	@NotNull
+	public static CompoundTag getOrCreateScanData(ItemStack stack) {
+		stack.getOrCreateTag(); // Ensures existence of base tag, because getOrCreateTagElement() doesn't check for that
+		return stack.getOrCreateTagElement(NBT_SCAN_DATA);
+	}
+
 	public static long getID(ItemStack stack) {
-		if (stack.getTag() != null && stack.getTag().contains("ID")) {
-			return stack.getTag().getLong("ID");
-		}
+		CompoundTag scanNbt = getScanData(stack);
+
+		if (scanNbt != null && scanNbt.contains("ID"))
+			return scanNbt.getLong("ID");
+
 		return 0L;
 	}
 
 	public static int getRange(ItemStack stack) {
-		if (stack.getTag() != null && stack.getTag().contains("Range")) {
-			return stack.getTag().getInt("Range");
-		}
+		CompoundTag scanNbt = getScanData(stack);
+
+		if (scanNbt != null && scanNbt.contains("Range"))
+			return scanNbt.getInt("Range");
+
 		return 1;
 	}
 
 	public static int getScannedBlocks(ItemStack stack) {
-		if (stack.getTag() != null && stack.getTag().contains("ScannedBlocks")) {
-			return stack.getTag().getInt("ScannedBlocks");
-		}
+		CompoundTag scanNbt = getScanData(stack);
+
+		if (scanNbt != null && scanNbt.contains("ScannedBlocks"))
+			return scanNbt.getInt("ScannedBlocks");
+
 		return 0;
 	}
 
 	public static ChunkPos getScannedChunk(ItemStack stack) {
-		if (stack.getTag() != null && stack.getTag().contains("ScannedChunk")) {
-			return new ChunkPos(stack.getTag().getLong("ScannedChunk"));
+		CompoundTag scanNbt = getScanData(stack);
+
+		if (scanNbt != null && scanNbt.contains("ScannedChunk")) {
+			return new ChunkPos(scanNbt.getLong("ScannedChunk"));
 		}
 		return new ChunkPos(0, 0);
 	}
 
 	@Nullable
 	public static String getAssignedBlock(ItemStack stack) {
-		if (stack.getTag() != null && stack.getTag().contains("TargetedBlock")) {
-			return stack.getTag().getString("TargetedBlock");
+		CompoundTag scanNbt = getScanData(stack);
+
+		if (scanNbt != null && scanNbt.contains("TargetedBlock")) {
+			return scanNbt.getString("TargetedBlock");
 		}
 		return null;
 	}
 
 	public static void clearAssignedBlock(ItemStack stack) {
-		if (stack.getTag() != null && stack.getTag().contains("TargetedBlock")) {
-			stack.getTag().remove("TargetedBlock");
+		CompoundTag scanNbt = getScanData(stack);
+
+		if (scanNbt != null && scanNbt.contains("TargetedBlock")) {
+			scanNbt.remove("TargetedBlock");
 		}
 	}
 
 	public static boolean isLoading(ItemStack stack) {
-		return stack.getTag() != null && stack.getTag().contains("Loading");
+		CompoundTag scanNbt = getScanData(stack);
+
+		return scanNbt != null && scanNbt.contains("Loading");
 	}
 
 	public static int getLoadProgress(ItemStack stack) {
-		if (stack.getTag() != null && stack.getTag().contains("Loading")) {
-			return stack.getTag().getInt("Loading");
+		CompoundTag scanNbt = getScanData(stack);
+
+		if (scanNbt != null && scanNbt.contains("Loading")) {
+			return scanNbt.getInt("Loading");
 		}
+
 		return 0;
 	}
 
 	public static Map<String, Integer> getScanInfo(ItemStack stack) {
 		Map<String, Integer> tooltips = new LinkedHashMap<>();
-		if (stack.getTag() != null && stack.getTag().contains("ScanInfo")) {
-			ListTag listTag = stack.getTag().getList("ScanInfo", 10);
+		CompoundTag scanNbt = getScanData(stack);
+
+		if (scanNbt != null && scanNbt.contains("ScanInfo")) {
+			ListTag listTag = scanNbt.getList("ScanInfo", 10);
 			for (Tag tag : listTag) {
 				try {
 					String name = ((CompoundTag) tag).getAllKeys().toArray()[0].toString();
 					tooltips.put(name, ((CompoundTag) tag).getInt(name));
 				} catch (Exception e) {
-					TwilightForestMod.LOGGER.error("Caught some sort of error!", e);
+					TwilightForestMod.LOGGER.error("Error with deserializing ScanInfo from NBT", e);
 				}
 			}
 		}
@@ -199,24 +235,27 @@ public class OreMeterItem extends Item {
 
 	public static void saveScanInfo(ItemStack stack, Map<String, Integer> blockInfos, long chunkPos, int totalScanned) {
 		ListTag tag = new ListTag();
+		CompoundTag scanNbt = getOrCreateScanData(stack);
+
 		for (Map.Entry<String, Integer> entry : blockInfos.entrySet()) {
 			CompoundTag compTag = new CompoundTag();
 			compTag.putInt(entry.getKey(), entry.getValue());
 			tag.add(compTag);
 		}
+
 		tag.sort(new TagSorter());
-		stack.getOrCreateTag().put("ScanInfo", tag);
+		scanNbt.put("ScanInfo", tag);
 		if (chunkPos != 0L) {
-			stack.getOrCreateTag().putLong("ScannedChunk", chunkPos);
+			scanNbt.putLong("ScannedChunk", chunkPos);
 		} else {
-			stack.getOrCreateTag().remove("ScannedChunk");
+			scanNbt.remove("ScannedChunk");
 		}
 		if (totalScanned != 0) {
-			stack.getOrCreateTag().putInt("ScannedBlocks", totalScanned);
+			scanNbt.putInt("ScannedBlocks", totalScanned);
 		} else {
-			stack.getOrCreateTag().remove("ScannedBlocks");
+			scanNbt.remove("ScannedBlocks");
 		}
-		stack.getOrCreateTag().putLong("ID", (tag.hashCode() ^ chunkPos) * (getRange(stack) ^ totalScanned));
+		scanNbt.putLong("ID", (tag.hashCode() ^ chunkPos) * (getRange(stack) ^ totalScanned));
 	}
 
 	//note: this is only done client-side to avoid anyone lagging the server.
@@ -264,8 +303,12 @@ public class OreMeterItem extends Item {
 				oreCounts.put(entry.getKey().getDescriptionId(), entry.getValue());
 			}
 		}
+
 		saveScanInfo(stack, oreCounts, new ChunkPos(chunkX, chunkZ).toLong(), totalScanned.get());
-		if (level.isClientSide()) PacketDistributor.SERVER.noArg().send(new SyncOreMeterPacket(stack, slot));
+
+		if (level.isClientSide()) {
+            PacketDistributor.SERVER.noArg().send(new SyncOreMeterPacket(getOrCreateScanData(stack), slot));
+        }
 	}
 
 	private Map<Block, ScanResult> countBlocksInChunk(Level level, int cx, int cz) {

@@ -27,7 +27,7 @@ public class REITransformationPowderCategory implements DisplayCategory<REITrans
 	private final Component localizedName;
 
 	public REITransformationPowderCategory() {
-		this.icon = EntryStacks.of(TFItems.TRANSFORMATION_POWDER.get());
+		this.icon = EntryStacks.of(TFItems.TRANSFORMATION_POWDER);
 		this.localizedName = Component.translatable("gui.twilightforest.transformation_jei");
 	}
 
@@ -48,12 +48,12 @@ public class REITransformationPowderCategory implements DisplayCategory<REITrans
 
 	@Override
 	public int getDisplayHeight() {
-		return RecipeViewerConstants.TRANSFORMATION_POWDER_HEIGHT + 8;
+		return RecipeViewerConstants.GENERIC_RECIPE_HEIGHT + 8;
 	}
 
 	@Override
 	public int getDisplayWidth(REITransformationPowderDisplay display) {
-		return RecipeViewerConstants.TRANSFORMATION_POWDER_WIDTH + 8;
+		return RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 8;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class REITransformationPowderCategory implements DisplayCategory<REITrans
 		bounds.translate(4, 4);
 
 		//background
-		widgets.add(Widgets.createTexturedWidget(TEXTURE.apply(REIRuntime.getInstance().isDarkThemeEnabled()), new Rectangle(bounds.getX(), bounds.getY(), RecipeViewerConstants.TRANSFORMATION_POWDER_WIDTH, RecipeViewerConstants.TRANSFORMATION_POWDER_HEIGHT)));
+		widgets.add(Widgets.createTexturedWidget(TEXTURE.apply(REIRuntime.getInstance().isDarkThemeEnabled()), new Rectangle(bounds.getX(), bounds.getY(), RecipeViewerConstants.GENERIC_RECIPE_WIDTH, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT)));
 
 		//arrow
 		if (display.isReversible) {

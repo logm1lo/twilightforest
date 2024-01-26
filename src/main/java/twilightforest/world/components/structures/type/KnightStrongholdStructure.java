@@ -35,7 +35,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 
     @Override
     protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new StrongholdEntranceComponent(0, x, y + 5, z);
+        return new StrongholdEntranceComponent(0, x, y + random.nextInt(3) == 0 ? 5 : 1, z);
     }
 
     @Override

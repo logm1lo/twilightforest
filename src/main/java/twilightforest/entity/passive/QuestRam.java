@@ -72,8 +72,6 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 	}
 
-
-
 	@Override
 	public boolean isFood(ItemStack stack) {
 		return false;

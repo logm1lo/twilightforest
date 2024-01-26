@@ -97,7 +97,7 @@ public class TFTickHandler {
 			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
 				//FIXME this is a gross hack. For some reason the stronghold locked effect doesnt properly lock to the structure after 1.19.2 and I have no idea why.
 				// I really dont feel like looking into this right now, someone else can if they feel so inclined.
-				if (structureStart.getStructure().equals(world.registryAccess().registryOrThrow(Registries.STRUCTURE).get(TFStructures.KNIGHT_STRONGHOLD)) && player.blockPosition().getY() > WorldUtil.getGeneratorSeaLevel(world)) {
+				if (structureStart.getStructure().equals(world.registryAccess().registryOrThrow(Registries.STRUCTURE).get(TFStructures.KNIGHT_STRONGHOLD)) && player.blockPosition().getY() > WorldUtil.getGeneratorSeaLevel(world) - 2) {
 					return false;
 				}
 				sendStructureProtectionPacket(player, structureStart.getBoundingBox());

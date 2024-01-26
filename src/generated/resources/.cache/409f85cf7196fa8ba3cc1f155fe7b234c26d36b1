@@ -1,4 +1,4 @@
-// 1.20.4	2023-12-19T15:25:18.9498428	TwilightForest blockstates and block models
+// 1.20.4	2024-01-23T16:07:27.8390835	TwilightForest blockstates and block models
 cab88029518a1647ec691d136328ed93c18108be assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -1038,7 +1038,7 @@ c9d11c3af39386b8ee8581e42b73a8516b823aef assets/twilightforest/models/block/twil
 53606a7d083459157ed76c3fd66da023efb451dd assets/twilightforest/models/block/twilight_wall_sign.json
 93b214d6062232585e39227465b288bb3f5d2e7b assets/twilightforest/models/block/twisted_stone.json
 c86ec17c8f44b499174f40eb86b4f0b1659f9b84 assets/twilightforest/models/block/twisted_stone_horizontal.json
-ba57f8d44fe69483a63b9caa74f7458fbac7458e assets/twilightforest/models/block/uberous_soil.json
+8f5ed153c75a31127fb78ad814805848547e6e4b assets/twilightforest/models/block/uberous_soil.json
 98621bdd00001d292962a164811485d1e4c0b082 assets/twilightforest/models/block/uncrafting_table.json
 837f932c95b0e0066afbed81071d86b478c08f33 assets/twilightforest/models/block/uncrafting_table_glowing.json
 eed2392ad51a5d0a35fdd23fada77f8030c11b11 assets/twilightforest/models/block/underbrick.json
