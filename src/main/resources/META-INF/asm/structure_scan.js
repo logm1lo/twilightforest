@@ -9,6 +9,7 @@ var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
 
 // noinspection JSUnusedGlobalSymbols
 function initializeCoreMod() {
+    ASM.loadFile('META-INF/asm/util/util.js');
     return {
         'structure_scan': {
             'target': {
@@ -19,17 +20,8 @@ function initializeCoreMod() {
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-
-                var lastInsn = null;
-                for (var index = instructions.size() - 1; index > 0; index--) {
-                    var /*org.objectweb.asm.tree.AbstractInsnNode*/ node = instructions.get(index);
-                    if (lastInsn == null && node instanceof InsnNode && node.getOpcode() === Opcodes.ARETURN) {
-                        lastInsn = node;
-                    }
-                }
-
                 instructions.insertBefore(
-                    lastInsn,
+                    findLastInstruction(methodNode, Opcodes.ARETURN),
                     ASM.listOf(
                         new VarInsnNode(Opcodes.ALOAD, 1), // ServerLevel from params
                         new VarInsnNode(Opcodes.ALOAD, 2), // HolderSet from params
