@@ -65,8 +65,6 @@ import twilightforest.util.LandmarkUtil;
 
 import java.util.*;
 
-//TODO improve teleporting logic
-//teleport sounds and particles shouldnt try to happen if teleporting fails
 //prevent the lich from using the stairs, he gets stuck
 public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer {
 
@@ -613,19 +611,14 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	//-----------------------------------------//
 
 	public void teleportToSightOfEntity(@Nullable Entity entity) {
+		if (entity == null || !this.getSensing().hasLineOfSight(entity))
+			return;
 		Vec3 dest = this.findVecInLOSOf(entity);
-		double srcX = getX();
-		double srcY = getY();
-		double srcZ = getZ();
 
-		if (dest != null && entity != null) {
+		if (dest != null) {
 			this.teleportToNoChecks(dest.x(), dest.y(), dest.z());
 			this.getLookControl().setLookAt(entity, 100.0F, 100.0F);
 			this.yBodyRot = this.getYRot();
-
-			if (!this.getSensing().hasLineOfSight(entity)) {
-				this.teleportToNoChecks(srcX, srcY, srcZ);
-			}
 		}
 	}
 
