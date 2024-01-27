@@ -1,16 +1,22 @@
 package twilightforest.util;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.GiantBlock;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -67,14 +73,6 @@ public final class FeatureLogic {
         );
     }
 
-    /**
-     * Gets either cobblestone or mossy cobblestone, randomly.  Used for ruins.
-     */
-    @Deprecated // Determine if we can actually remove this one and delegate to StructureProcessor
-    public static BlockState randStone(RandomSource rand, int howMuch) {
-        return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.MOSSY_COBBLESTONE.defaultBlockState();
-    }
-
     //private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.DIRT, Material.GRASS, Material.LEAVES, Material.WOOD, Material.PLANT, Material.STONE);
 
     //FIXME turn this into a tag list, see MATERIAL_WHITELIST
@@ -95,5 +93,42 @@ public final class FeatureLogic {
 
     public static boolean isBlockNotOk(BlockState state) {
         return state.liquid() || state.is(Blocks.BEDROCK) || state.getBlock() instanceof GiantBlock || state.is(BlockTagGenerator.CLOUDS) || state.is(TFBlocks.HARDENED_DARK_LEAVES);
+    }
+
+    // North is treated for default rotation and null means you're not on the wall
+    @Nullable
+    public static Rotation wallVolumeRotation(RandomSource rand, int deltaX, int deltaZ, int xBound, int zBound) {
+        boolean westWall = deltaX == 0;
+        boolean northWall = deltaZ == 0;
+        boolean eastWall = deltaX == xBound;
+        boolean southWall = deltaZ == zBound;
+
+        if (westWall || northWall || eastWall || southWall)
+			return getRotation(rand, northWall, eastWall, southWall, westWall);
+
+        return null;
+    }
+
+    // North is treated for default rotation, plan your code accordingly
+    @NotNull
+    public static Rotation getRotation(RandomSource rand, boolean north, boolean east, boolean south, boolean west) {
+        // North -> NONE
+        // East -> CLOCKWISE_90
+        // South -> CLOCKWISE_180
+        // West -> COUNTERCLOCKWISE_90
+        // Combined adjacents will be settled by random
+
+        List<Rotation> availableForRandom = new ArrayList<>();
+
+        if (north) availableForRandom.add(Rotation.NONE);
+        if (east) availableForRandom.add(Rotation.CLOCKWISE_90);
+        if (south) availableForRandom.add(Rotation.CLOCKWISE_180);
+        if (west) availableForRandom.add(Rotation.COUNTERCLOCKWISE_90);
+
+        if (availableForRandom.isEmpty()) return Rotation.NONE;
+
+        Util.shuffle(availableForRandom, rand);
+
+        return Util.getRandom(availableForRandom, rand);
     }
 }
