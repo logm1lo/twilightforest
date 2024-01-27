@@ -70,12 +70,12 @@ public class TFTickHandler {
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(world)) {
-            if (player.isCreative() || player.isSpectator()) {
-                sendAllClearPacket(player);
-            } else {
-                checkForLockedStructuresSendPacket(player, world);
-            }
-        }
+			if (player.isCreative() || player.isSpectator()) {
+				sendAllClearPacket(player);
+			} else {
+				checkForLockedStructuresSendPacket(player, world);
+			}
+		}
 	}
 
 	private static void sendStructureProtectionPacket(Player player, BoundingBox sbb) {

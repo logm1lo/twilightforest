@@ -188,7 +188,7 @@ public class EntityEvents {
 		if (living != null) {
 			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
 				if (event.getSource().is(DamageTypes.FREEZE)) {
-					event.setAmount(event.getAmount() + (float)(mobEffectInstance.getAmplifier() / 2));
+					event.setAmount(event.getAmount() + (float) (mobEffectInstance.getAmplifier() / 2));
 				} else if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
 					living.removeEffect(TFMobEffects.FROSTY.get());
 					mobEffectInstance.amplifier -= 1;
@@ -339,7 +339,8 @@ public class EntityEvents {
 	}
 
 	public static boolean canSpawnCloudParticles(LivingEntity living) {
-		if (living.getDeltaMovement().x == 0.0D && living.getDeltaMovement().z == 0.0D && living.getRandom().nextInt(20) != 0) return false;
+		if (living.getDeltaMovement().x == 0.0D && living.getDeltaMovement().z == 0.0D && living.getRandom().nextInt(20) != 0)
+			return false;
 		return living.tickCount % 2 == 0 && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock;
 	}
 
@@ -347,7 +348,8 @@ public class EntityEvents {
 	public static void onLivingJumpEvent(LivingEvent.LivingJumpEvent event) {
 		LivingEntity living = event.getEntity();
 		if (living != null && living.level().isClientSide() && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock) {
-			for (int i = 0; i < 12; i++) CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
+			for (int i = 0; i < 12; i++)
+				CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
 		}
 	}
 
@@ -401,18 +403,18 @@ public class EntityEvents {
 		if (!(event.getLevel() instanceof ServerLevel serverLevel))
 			return;
 
-        List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(serverLevel.structureManager(), event.getMobCategory(), event.getPos());
+		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(serverLevel.structureManager(), event.getMobCategory(), event.getPos());
 		if (potentialStructureSpawns != null) {
 			List.copyOf(event.getSpawnerDataList()).forEach(event::removeSpawnerData);
 			potentialStructureSpawns.forEach(event::addSpawnerData);
-    }
-  }
+		}
+	}
 
 	@SubscribeEvent
 	public static void onAttackEvent(AttackEntityEvent event) {
 		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise
 		// The tag distinguishes our Interaction entities from other Mods' utilization
-        if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
+		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
 				&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
 			AABB bounds = interaction.getBoundingBox();
 			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);

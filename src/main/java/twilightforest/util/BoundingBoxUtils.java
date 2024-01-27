@@ -26,12 +26,12 @@ public class BoundingBoxUtils {
 			return null;
 
 		return new BoundingBox(
-						Math.max(box1.minX(), box2.minX()),
-						Math.max(box1.minY(), box2.minY()),
-						Math.max(box1.minZ(), box2.minZ()),
-						Math.min(box1.maxX(), box2.maxX()),
-						Math.min(box1.maxY(), box2.maxY()),
-						Math.min(box1.maxZ(), box2.maxZ()));
+				Math.max(box1.minX(), box2.minX()),
+				Math.max(box1.minY(), box2.minY()),
+				Math.max(box1.minZ(), box2.minZ()),
+				Math.min(box1.maxX(), box2.maxX()),
+				Math.min(box1.maxY(), box2.maxY()),
+				Math.min(box1.maxZ(), box2.maxZ()));
 	}
 
 	public static CompoundTag boundingBoxToNBT(BoundingBox box) {
@@ -68,32 +68,32 @@ public class BoundingBoxUtils {
 		return new BoundingBox(box.minX() + x1, box.minY() + y1, box.minZ() + z1, box.maxX() + x2, box.maxY() + y2, box.maxZ() + z2);
 	}
 
-    @NotNull
-    public static BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir, boolean centerBounds) {
-        // CenterBounds is true for ONLY Hollow Hills, Hydra Lair, & Yeti Caves
-        if (centerBounds) {
-            x += (spanX + minX) / 4;
-            y += (spanY + minY) / 4;
-            z += (spanZ + minZ) / 4;
-        }
+	@NotNull
+	public static BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir, boolean centerBounds) {
+		// CenterBounds is true for ONLY Hollow Hills, Hydra Lair, & Yeti Caves
+		if (centerBounds) {
+			x += (spanX + minX) / 4;
+			y += (spanY + minY) / 4;
+			z += (spanZ + minZ) / 4;
+		}
 
-        return switch (dir) {
-            case WEST -> // '\001'
-                    new BoundingBox(x - spanZ + minZ, y + minY, z + minX, x + minZ, y + spanY + minY, z + spanX + minX);
-            case NORTH -> // '\002'
-                    new BoundingBox(x - spanX - minX, y + minY, z - spanZ - minZ, x - minX, y + spanY + minY, z - minZ);
-            case EAST -> // '\003'
-                    new BoundingBox(x + minZ, y + minY, z - spanX, x + spanZ + minZ, y + spanY + minY, z + minX);
-            default -> // '\0'
-                    new BoundingBox(x + minX, y + minY, z + minZ, x + spanX + minX, y + spanY + minY, z + spanZ + minZ);
-        };
-    }
+		return switch (dir) {
+			case WEST -> // '\001'
+					new BoundingBox(x - spanZ + minZ, y + minY, z + minX, x + minZ, y + spanY + minY, z + spanX + minX);
+			case NORTH -> // '\002'
+					new BoundingBox(x - spanX - minX, y + minY, z - spanZ - minZ, x - minX, y + spanY + minY, z - minZ);
+			case EAST -> // '\003'
+					new BoundingBox(x + minZ, y + minY, z - spanX, x + spanZ + minZ, y + spanY + minY, z + minX);
+			default -> // '\0'
+					new BoundingBox(x + minX, y + minY, z + minZ, x + spanX + minX, y + spanY + minY, z + spanZ + minZ);
+		};
+	}
 
 	@Nullable
 	public static AABB vectorsMinMax(List<Vec3> vec3List, double expand) {
 		if (vec3List.isEmpty()) return null;
 
-        Vec3 first = vec3List.get(0);
+		Vec3 first = vec3List.get(0);
 
 		return new AABB(
 				vec3List.stream().mapToDouble(Vec3::x).reduce(first.x, Math::min) - expand,

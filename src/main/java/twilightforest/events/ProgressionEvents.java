@@ -124,35 +124,35 @@ public class ProgressionEvents {
 			return false;
 		}
 
-        Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
-        if (struct.isPresent()) {
-            StructureStart structureStart = struct.get();
-            if (structureStart.getBoundingBox().isInside(pos) && structureStart.getStructure() instanceof ProgressionStructure structureHints) {
-                if (!structureHints.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
-                    // what feature is nearby?  is it one the player has not unlocked?
-                    ResourceKey<Structure> nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), level);
+		Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+		if (struct.isPresent()) {
+			StructureStart structureStart = struct.get();
+			if (structureStart.getBoundingBox().isInside(pos) && structureStart.getStructure() instanceof ProgressionStructure structureHints) {
+				if (!structureHints.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
+					// what feature is nearby?  is it one the player has not unlocked?
+					ResourceKey<Structure> nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), level);
 
-                    // TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
-                    if (nearbyFeature == TFStructures.KNIGHT_STRONGHOLD && pos.getY() >= WorldUtil.getGeneratorSeaLevel(level) - 2)
-                        return false;
+					// TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
+					if (nearbyFeature == TFStructures.KNIGHT_STRONGHOLD && pos.getY() >= WorldUtil.getGeneratorSeaLevel(level) - 2)
+						return false;
 
-                    // send protection packet
-                    List<BoundingBox> boxes = new ArrayList<>();
-                    structureStart.getPieces().forEach(piece -> {
-                        if (piece.getBoundingBox().isInside(pos))
-                            boxes.add(piece.getBoundingBox());
-                    });
+					// send protection packet
+					List<BoundingBox> boxes = new ArrayList<>();
+					structureStart.getPieces().forEach(piece -> {
+						if (piece.getBoundingBox().isInside(pos))
+							boxes.add(piece.getBoundingBox());
+					});
 
-                    sendAreaProtectionPacket(level, pos, boxes);
+					sendAreaProtectionPacket(level, pos, boxes);
 
-                    // send a hint monster?
-                    structureHints.trySpawnHintMonster(level, player, pos);
+					// send a hint monster?
+					structureHints.trySpawnHintMonster(level, player, pos);
 
-                    return true;
-                }
-            }
-        }
-        return false;
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private static void sendAreaProtectionPacket(Level level, BlockPos pos, List<BoundingBox> sbb) {
