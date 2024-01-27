@@ -8,6 +8,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SpriteSourceProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MagicPaintingTextureManager;
+import twilightforest.client.ProgressionTextureManager;
 import twilightforest.entity.MagicPaintingVariant;
 
 import javax.annotation.Nullable;
@@ -15,6 +16,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class AtlasGenerator extends SpriteSourceProvider {
+	public static final List<ResourceLocation> PROGRESSION_RESTRICTION_HELPER = new ArrayList<>();
 	public static final Map<ResourceLocation, MagicPaintingVariant> MAGIC_PAINTING_HELPER = new HashMap<>();
 	public static final List<ResourceLocation> LOADED_FRAMES = new ArrayList<>();
 
@@ -28,6 +30,11 @@ public class AtlasGenerator extends SpriteSourceProvider {
 
 		this.atlas(MagicPaintingTextureManager.ATLAS_INFO_LOCATION).addSource(new SingleFile(MagicPaintingTextureManager.BACK_SPRITE_LOCATION, Optional.empty()));
 		this.loadFrame(MagicPaintingTextureManager.FRAME_SPRITE_LOCATION);
+
+		PROGRESSION_RESTRICTION_HELPER.forEach((location) -> {
+			location = location.withPrefix(ProgressionTextureManager.PROGRESSION_RESTRICTION_PATH + "/");
+			this.atlas(ProgressionTextureManager.ATLAS_INFO_LOCATION).addSource(new SingleFile(location, Optional.empty()));
+		});
 
 		MAGIC_PAINTING_HELPER.forEach((location, parallaxVariant) -> {
 			location = location.withPrefix(MagicPaintingTextureManager.MAGIC_PAINTING_PATH + "/");

@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:progress_labyrinth",
+  "parent": "twilightforest:root",
   "criteria": {
     "pick": {
       "conditions": {

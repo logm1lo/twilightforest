@@ -1,0 +1,35 @@
+{
+  "advancement": "twilightforest:ghast_trap",
+  "coordinates": [
+    8,
+    2
+  ],
+  "description": {
+    "translate": "advancement.twilightforest.ghast_trap.desc",
+    "with": [
+      {
+        "translate": "entity.twilightforest.carminite_ghastling"
+      },
+      {
+        "translate": "block.twilightforest.ghast_trap"
+      },
+      {
+        "translate": "entity.twilightforest.ur_ghast"
+      }
+    ]
+  },
+  "icon": {
+    "item": "twilightforest:ghast_trap"
+  },
+  "locked_description": {
+    "translate": "advancement.twilightforest.ghast_trap.desc.locked"
+  },
+  "parents": [
+    "twilightforest:progress_phantoms"
+  ],
+  "points": [],
+  "restriction": "twilightforest:darkness",
+  "title": {
+    "translate": "advancement.twilightforest.ghast_trap"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:root",
+  "parent": "twilightforest:progress_root",
   "criteria": {
     "naga": {
       "conditions": {

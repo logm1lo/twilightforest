@@ -32,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.GhastguardHomedFlightGoal;
@@ -487,7 +487,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 			IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.DARK_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.get().trigger(player, this);
+				TFAdvancementTriggers.HURT_BOSS.get().trigger(player, this);
 			}
 
 			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel);

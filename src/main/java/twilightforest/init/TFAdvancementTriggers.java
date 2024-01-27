@@ -7,7 +7,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
 
-public class TFAdvancements {
+public class TFAdvancementTriggers {
     
     public static final DeferredRegister<CriterionTrigger<?>> TRIGGERS = DeferredRegister.create(Registries.TRIGGER_TYPE, TwilightForestMod.ID);
     

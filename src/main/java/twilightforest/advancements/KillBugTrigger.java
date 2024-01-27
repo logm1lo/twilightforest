@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 
 import java.util.Optional;
 
@@ -34,7 +34,7 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Trigge
 				.apply(instance, KillBugTrigger.TriggerInstance::new));
 
 		public static Criterion<TriggerInstance> killBug(Block bug) {
-			return TFAdvancements.KILL_BUG.get().createCriterion(new TriggerInstance(Optional.empty(), Optional.of(bug)));
+			return TFAdvancementTriggers.KILL_BUG.get().createCriterion(new TriggerInstance(Optional.empty(), Optional.of(bug)));
 		}
 
 		public boolean matches(BlockState bug) {

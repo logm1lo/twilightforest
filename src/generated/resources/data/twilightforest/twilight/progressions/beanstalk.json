@@ -1,0 +1,28 @@
+{
+  "advancement": "twilightforest:beanstalk",
+  "coordinates": [
+    12,
+    0
+  ],
+  "description": {
+    "translate": "advancement.twilightforest.beanstalk.desc",
+    "with": [
+      {
+        "translate": "item.twilightforest.magic_beans"
+      }
+    ]
+  },
+  "icon": {
+    "item": "twilightforest:huge_stalk"
+  },
+  "locked_description": {
+    "translate": "advancement.twilightforest.beanstalk.desc.locked"
+  },
+  "parents": [
+    "twilightforest:progress_merge"
+  ],
+  "points": [],
+  "title": {
+    "translate": "advancement.twilightforest.beanstalk"
+  }
+}

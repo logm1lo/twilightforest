@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 
 import java.util.Optional;
 
@@ -34,7 +34,7 @@ public class UncraftItemTrigger extends SimpleCriterionTrigger<UncraftItemTrigge
 				.apply(instance, UncraftItemTrigger.TriggerInstance::new));
 
 		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(ItemPredicate predicate) {
-			return TFAdvancements.UNCRAFT_ITEM.get().createCriterion(new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate)));
+			return TFAdvancementTriggers.UNCRAFT_ITEM.get().createCriterion(new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate)));
 		}
 
 		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(ItemLike item) {

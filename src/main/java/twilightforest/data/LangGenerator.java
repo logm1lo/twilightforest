@@ -90,6 +90,102 @@ public class LangGenerator extends TFLangProvider {
 		this.addEnchantment("fire_react", "Fire React", "Adds a chance for the attacker to be set on fire after hitting the wearer.");
 		this.addEnchantment("destruction", "Destruction", "Allows the Block and Chain to break blocks with a higher mining tier.");
 
+		this.addProgression(
+				"progress_root",
+				"Twilight Forest",
+				"Enter the mysterious, magical woodlands: the Twilight Forest"
+		);
+		this.addProgression(
+				"kill_naga",
+				"Time To Even The Scales",
+				"Slay the %s in its forest courtyard and obtain a %s to overcome the barrier magic surrounding the Lich's tower"
+		);
+		this.addProgression(
+				"kill_lich",
+				"Bring Out Your Dead",
+				"Slay the %s at top of his tower and retrieve a scepter to clear poisonous mosquitoes from the Swamp, see through blinding darkness of the Dark Forest's curse, and resist the Snowy Forest's chill",
+				"The tower is protected by a mysterious curse, you will need to find a way to break it."
+		);
+		this.addProgression(
+				"progress_labyrinth",
+				"Mighty Stroganoff",
+				"Eat the Meef Stroganoff to acclimatize your body to the dangerous heat of the Fire Swamp",
+				"The Swamp is shrouded in a cloud of poisonous mosquitoes. Perhaps there is a way to get rid of them?"
+		);
+		this.addProgression(
+				"kill_hydra",
+				"Hydra Slayer",
+				"Defeat the mighty %s and empower yourself",
+				"The Fire Swamp is engulfed in smoldering ashes that burn to the touch. You will need to find a way to withstand the heat."
+		);
+		this.addProgression(
+				"progress_trophy_pedestal",
+				"Trophied Champion",
+				"Claim your title by placing a trophy on the pedestal in the Dark Forest ruins",
+				"The Dark Forest is blocked by pillars of malevolent darkness. There must be a way to break this curse."
+		);
+		this.addProgression(
+				"progress_knights",
+				"Carminite Acclimation",
+				"Settle the restless phantoms in the knight's tomb and the carminite tower's devices will obey you",
+				"The Knight Stronghold is protected by a familiar curse, perhaps placing a trophy on that pedestal will dispel it?"
+		);
+		this.addProgression(
+				"ghast_trap",
+				"Something Strange in Towerwood",
+				"Slay the %ss around a %s and activate to wrench the %s from the sky!",
+				"The Dark Forest Center is blocked by pillars of malevolent darkness. There must be a way to break this curse."
+		);
+		this.addProgression(
+				"progress_ur_ghast",
+				"Tears of Fire",
+				"Touch the fiery red tears of the %s",
+				"A mighty foe rests at the tower's summit. The ghast traps may prove useful in striking it down."
+		);
+		this.addProgression(
+				"progress_yeti",
+				"Alpha Fur",
+				"Line your garments with the soft fur from the %s, keeping you safe from the Glacier's cold",
+				"The Snowy Forest is in a state of perpetual blizzard. This must be a curse, but how does one break it?"
+		);
+		this.addProgression(
+				"progress_glacier",
+				"Clear Skies",
+				"Defeat the %s atop the Aurora Palace",
+				"The Glacier is in a state of perpetual blizzard. This must be a curse, but how does one break it?"
+		);
+		this.addProgression(
+				"progress_merge",
+				"Ultimate Showdown",
+				"Slay the %s, %s, and %s to clear the acid rain and embolden yourself for the Highlands",
+				"The Highlands are rendered impossible to enter due to the presence of a caustic rain. This obstacle too, must be surmountable. Nothing could stop you thus far, why should this prove to be any different?"
+		);
+		this.addProgression(
+				"beanstalk",
+				"Jack and the Beanstalk",
+				"Obtain some %s in the troll caves and use them on the glowing soil beneath the clouds",
+				"ERROR"
+		);
+		this.addProgression(
+				"giants",
+				"I'm on Cloud Nine",
+				"Kill a %s in the clouds, retrieve a %s, and return back to the troll caves",
+				"The clouds, high in the skies beyond your reach, hold beings that have that which you must take. Perhaps there is an easy way to climb up there?"
+		);
+		this.addProgression(
+				"progress_troll",
+				"I Wish For More Burning",
+				"Find the %s in the troll caves, and you can burn away the thorn barriers",
+				"In the Troll Cave lays a giant obsidian vault. You will need a pickaxe just as giant to break through."
+		);
+		this.addProgression(
+				"progression_end",
+				"End of Progression",
+				"Anything past this point in the Highlands is a work in progress. It will be finished in the future",
+				"The Thornlands and beyond are protected by a ceaseless pour of acid rain. You will need to find a way to destroy the thorns."
+		);
+
+
 		this.addAdvancement("root", "Twilight Forest", "Enter the mysterious, magical woodlands: the Twilight Forest");
 		this.addAdvancement("kill_cicada", "Shut", "Kill a Cicada");
 		this.addAdvancement("uncraft_uncrafting_table", "A Step too Far", "Uncraft an Uncrafting Table");
@@ -103,33 +199,18 @@ public class LangGenerator extends TFLangProvider {
 		this.addAdvancement("maze_map", "And Now, to Find the Exit", "Craft the %s after obtaining the focus from the labyrinth");
 		this.addAdvancement("ore_map", "How Can That Be Worth It?", "Craft the %s");
 		this.addAdvancement("twilight_hunter", "The Silence of the Forest", "Hunt some of the local wildlife");
-		this.addAdvancement("kill_naga", "Time To Even The Scales", "Slay the %s in its forest courtyard and obtain a %s to overcome the barrier magic surrounding the Lich's tower");
 		this.addAdvancement("naga_armors", "Naga Armorer", "Craft both %s chest and leg armor");
-		this.addAdvancement("kill_lich", "Bring Out Your Dead", "Slay the %s at top of his tower and retrieve a scepter to clear poisonous mosquitoes from the Swamp, see through blinding darkness of the Dark Forest's curse, and resist the Snowy Forest's chill");
 		this.addAdvancement("lich_scepters", "By Our Powers Combined!", "Acquire all four scepters of power");
 		this.addAdvancement("full_mettle_alchemist", "Full Mettle Alchemist", "Drink four doses of Harming II from a potion flask in under 8 seconds and survive");
-		this.addAdvancement("progress_labyrinth", "Mighty Stroganoff", "Eat the Meef Stroganoff to acclimatize your body to the dangerous heat of the Fire Swamp");
 		this.addAdvancement("mazebreaker", "Breaking the Maze", "Find the %s pickaxe in the secret labyrinth vault");
-		this.addAdvancement("kill_hydra", "Hydra Slayer", "Defeat the mighty %s and empower yourself");
 		this.addAdvancement("hydra_chop", "Hydra Chop, Baby!", "Chow down on a %s when your hunger bar is depleted");
-		this.addAdvancement("progress_trophy_pedestal", "Trophied Champion", "Claim your title by placing a trophy on the pedestal in the Dark Forest ruins");
-		this.addAdvancement("progress_knights", "Carminite Acclimation", "Settle the restless phantoms in the knight's tomb and the carminite tower's devices will obey you");
-		this.addAdvancement("ghast_trap", "Something Strange in Towerwood", "Slay the %ss around a %s and activate to wrench the %s from the sky!");
-		this.addAdvancement("progress_ur_ghast", "Tears of Fire", "Touch the fiery red tears of the %s");
 		this.addAdvancement("experiment_115", "Mystery Meat?", "It looks like cake, though...");
 		this.addAdvancement("experiment_115_2", "Making a note: Huge Success!", "It's so delicious and moist!");
 		this.addAdvancement("experiment_115_3", "Eating 115 Everyday, 115 Years, Forever", "eating experiment one-hundred-fifteen all day, forever, one-hundred-fifteen times experiment one-hundred-fifteen, experiment one-hundred-fifteen dot com, double-u double-u double-u dot experiment one-hundred-fifteen dot com, one-hundred-fifteen years, every minute experiment one-hundred-fifteen dot com, double-u double-u double-u dot one-hundred-fifteen times experiment one-hundred-fifteen dot com");
-		this.addAdvancement("progress_yeti", "Alpha Fur", "Line your garments with the soft fur from the %s, keeping you safe from the Glacier's cold");
 		this.addAdvancement("arctic_dyed", "Getting in Fashion", "Dye four unique pieces of Arctic armor");
-		this.addAdvancement("progress_glacier", "Clear Skies", "Defeat the %s atop the Aurora Palace");
 		this.addAdvancement("glass_sword", "One Hit Wonder", "Hope you made good use of that.");
 		this.addAdvancement("fiery_set", "Gallons of Blood and Tears", "Wield a fiery tool or weapon while having at least one piece of fiery armor in your inventory");
-		this.addAdvancement("progress_merge", "Ultimate Showdown", "Slay the %s, %s, and %s to clear the acid rain and embolden yourself for the Highlands");
 		this.addAdvancement("troll", "We Do a Little Trolling", "Find and kill a %s");
-		this.addAdvancement("beanstalk", "Jack and the Beanstalk", "Obtain some %s in the troll caves and use them on the glowing soil beneath the clouds");
-		this.addAdvancement("giants", "I'm on Cloud Nine", "Kill a %s in the clouds, retrieve a %s, and return back to the troll caves");
-		this.addAdvancement("progress_troll", "I Wish For More Burning", "Find the %s in the troll caves, and you can burn away the thorn barriers");
-		this.addAdvancement("progression_end", "End of Progression", "Anything past this point in the Highlands is a work in progress. It will be finished in the future");
 		//this.addAdvancement("progress_thorns", "Past the Thorns [NYI]", "Make it past the Thornlands, and unlock the door of the castle");
 		//this.addAdvancement("progress_castle", "So Castle Very Wow [NYI]", "What could even be in that castle?!?");
 		this.addAdvancement("twilight_dining", "We Dine At Eternal Sundown", "Eat every edible item exclusive to Twilight Forest");

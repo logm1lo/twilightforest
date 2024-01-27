@@ -44,7 +44,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -175,7 +175,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 			}
 			if (entity instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
 				player.awardStat(TFStats.BUGS_SQUISHED.get());
-				TFAdvancements.KILL_BUG.get().trigger(player, state);
+				TFAdvancementTriggers.KILL_BUG.get().trigger(player, state);
 			}
 		}
 	}

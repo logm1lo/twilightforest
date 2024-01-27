@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -81,7 +81,7 @@ public final class LandmarkUtil {
             twilightStart.setConquered(conquered, level);
 
             for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos.pos()).inflate(32.0F))) {
-                TFAdvancements.STRUCTURE_CLEARED.get().trigger(player, structureKey);
+                TFAdvancementTriggers.STRUCTURE_CLEARED.get().trigger(player, structureKey);
             }
         }
     }

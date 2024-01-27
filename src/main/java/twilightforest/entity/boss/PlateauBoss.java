@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
@@ -90,7 +90,7 @@ public class PlateauBoss extends Monster implements EnforcedHomePoint {
 			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.FINAL_CASTLE, true);
 			for(ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.get().trigger(player, this);
+				TFAdvancementTriggers.HURT_BOSS.get().trigger(player, this);
 			}
 		}
 		TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.SORTING_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));

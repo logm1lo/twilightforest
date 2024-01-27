@@ -1,0 +1,44 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:progression_restrictions/structure_lock"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:progression_restrictions/darkness"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:progression_restrictions/structure_lock"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:progression_restrictions/darkness"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:progression_restrictions/hunger"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:progression_restrictions/fire"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:progression_restrictions/frost"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:progression_restrictions/frost"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:progression_restrictions/big_rain"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:progression_restrictions/big_rain"
+    }
+  ]
+}

@@ -8,8 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 
 import java.util.Optional;
 
@@ -46,7 +45,7 @@ public class PotionFlaskTrackingAttachment {
 		this.lastUsedPotion = Optional.ofNullable(potion);
 
 		if (player.isAlive()) {
-			TFAdvancements.DRINK_FROM_FLASK.get().trigger(player, this.doses, Mth.floor((float) (player.level().getGameTime() - this.lastTimeStarted) / 20L), this.lastUsedPotion.orElse(Potions.EMPTY));
+			TFAdvancementTriggers.DRINK_FROM_FLASK.get().trigger(player, this.doses, Mth.floor((float) (player.level().getGameTime() - this.lastTimeStarted) / 20L), this.lastUsedPotion.orElse(Potions.EMPTY));
 		}
 	}
 }

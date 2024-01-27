@@ -8,6 +8,7 @@ import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
 import twilightforest.util.Enforcement;
+import twilightforest.util.Progression;
 import twilightforest.util.Restriction;
 import twilightforest.util.WoodPalette;
 import twilightforest.world.components.chunkblanketing.ChunkBlanketProcessor;
@@ -41,6 +42,7 @@ public class TFRegistries {
 		public static final ResourceKey<Registry<MagicPaintingVariant>> MAGIC_PAINTINGS = ResourceKey.createRegistryKey(namedRegistry("magic_paintings"));
 		public static final ResourceKey<Registry<Restriction>> RESTRICTIONS = ResourceKey.createRegistryKey(namedRegistry("restrictions"));
 		public static final ResourceKey<Registry<StructureSpeleothemConfig>> STRUCTURE_SPELEOTHEM_SETTINGS = ResourceKey.createRegistryKey(namedRegistry("structure_speleothem_settings"));
+		public static final ResourceKey<Registry<Progression>> PROGRESSIONS = ResourceKey.createRegistryKey(namedRegistry("progressions"));
 		public static final ResourceKey<Registry<WoodPalette>> WOOD_PALETTES = ResourceKey.createRegistryKey(namedRegistry("wood_palettes"));
 		public static final ResourceKey<Registry<ChunkBlanketProcessor>> CHUNK_BLANKET_PROCESSORS = ResourceKey.createRegistryKey(namedRegistry("chunk_blanket_processors"));
 

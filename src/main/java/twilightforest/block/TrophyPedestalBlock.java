@@ -25,7 +25,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -136,7 +136,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 
 	private void rewardNearbyPlayers(Level level, BlockPos pos) {
 		for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(16.0D))) {
-			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.get().trigger(player);
+			TFAdvancementTriggers.PLACED_TROPHY_ON_PEDESTAL.get().trigger(player);
 			player.awardStat(TFStats.TROPHY_PEDESTALS_ACTIVATED.get());
 		}
 	}

@@ -41,7 +41,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.PhantomAttackStartGoal;
@@ -240,18 +240,18 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 				//trigger criteria for killing every phantom in a group
 				if (cause.getEntity() instanceof ServerPlayer player) {
-					TFAdvancements.KILL_ALL_PHANTOMS.get().trigger(player);
+					TFAdvancementTriggers.KILL_ALL_PHANTOMS.get().trigger(player);
 				}
 
 				// mark the stronghold as defeated
 				LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.KNIGHT_STRONGHOLD, true);
 
 				for (ServerPlayer player : this.hurtBy) {
-					TFAdvancements.HURT_BOSS.get().trigger(player, this);
+					TFAdvancementTriggers.HURT_BOSS.get().trigger(player, this);
 				}
 
 				for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, new AABB(treasurePos).inflate(32.0D))) {
-					TFAdvancements.HURT_BOSS.get().trigger(player, this);
+					TFAdvancementTriggers.HURT_BOSS.get().trigger(player, this);
 				}
 			}
 		}

@@ -1,0 +1,24 @@
+{
+  "advancement": "twilightforest:progress_labyrinth",
+  "coordinates": [
+    6,
+    -2
+  ],
+  "description": {
+    "translate": "advancement.twilightforest.progress_labyrinth.desc"
+  },
+  "icon": {
+    "item": "twilightforest:meef_stroganoff"
+  },
+  "locked_description": {
+    "translate": "advancement.twilightforest.progress_labyrinth.desc.locked"
+  },
+  "parents": [
+    "twilightforest:progress_lich"
+  ],
+  "points": [],
+  "restriction": "twilightforest:hunger",
+  "title": {
+    "translate": "advancement.twilightforest.progress_labyrinth"
+  }
+}

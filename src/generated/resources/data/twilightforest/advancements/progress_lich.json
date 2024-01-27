@@ -109,23 +109,6 @@
       "trigger": "minecraft:inventory_changed"
     }
   },
-  "display": {
-    "description": {
-      "translate": "advancement.twilightforest.kill_lich.desc",
-      "with": [
-        {
-          "translate": "entity.twilightforest.lich"
-        }
-      ]
-    },
-    "frame": "goal",
-    "icon": {
-      "item": "twilightforest:lich_tower_miniature_structure"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.kill_lich"
-    }
-  },
   "requirements": [
     [
       "kill_lich",

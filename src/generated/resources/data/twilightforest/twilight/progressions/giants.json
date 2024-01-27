@@ -1,0 +1,32 @@
+{
+  "advancement": "twilightforest:giants",
+  "coordinates": [
+    14,
+    0
+  ],
+  "description": {
+    "translate": "advancement.twilightforest.giants.desc",
+    "with": [
+      {
+        "translate": "entity.twilightforest.giant_miner"
+      },
+      {
+        "translate": "item.twilightforest.giant_pickaxe"
+      }
+    ]
+  },
+  "icon": {
+    "item": "twilightforest:giant_pickaxe",
+    "nbt": "{Damage:0}"
+  },
+  "locked_description": {
+    "translate": "advancement.twilightforest.giants.desc.locked"
+  },
+  "parents": [
+    "twilightforest:beanstalk"
+  ],
+  "points": [],
+  "title": {
+    "translate": "advancement.twilightforest.giants"
+  }
+}

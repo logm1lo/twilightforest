@@ -20,7 +20,7 @@ import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -163,7 +163,7 @@ public class TFTickHandler {
 			}
 
 			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(world, qualified.blockPosition(), qualified, player))
-				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);
+				TFAdvancementTriggers.MADE_TF_PORTAL.get().trigger(player);
 
 		}
 	}

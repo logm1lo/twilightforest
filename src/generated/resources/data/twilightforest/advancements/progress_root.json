@@ -1,0 +1,30 @@
+{
+  "criteria": {
+    "in_tf": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "make_portal": {
+      "trigger": "twilightforest:make_tf_portal"
+    }
+  },
+  "requirements": [
+    [
+      "in_tf",
+      "make_portal"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

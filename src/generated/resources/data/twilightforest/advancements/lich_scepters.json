@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:progress_lich",
+  "parent": "twilightforest:twilight_hunter",
   "criteria": {
     "scepters": {
       "conditions": {

@@ -1,0 +1,29 @@
+{
+  "advancement": "twilightforest:progress_naga",
+  "coordinates": [
+    2,
+    0
+  ],
+  "description": {
+    "translate": "advancement.twilightforest.kill_naga.desc",
+    "with": [
+      {
+        "translate": "entity.twilightforest.naga"
+      },
+      {
+        "translate": "item.twilightforest.naga_scale"
+      }
+    ]
+  },
+  "icon": {
+    "item": "twilightforest:naga_courtyard_miniature_structure"
+  },
+  "locked_description": "",
+  "parents": [
+    "twilightforest:progress_root"
+  ],
+  "points": [],
+  "title": {
+    "translate": "advancement.twilightforest.kill_naga"
+  }
+}

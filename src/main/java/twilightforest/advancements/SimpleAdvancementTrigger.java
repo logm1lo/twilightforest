@@ -8,7 +8,7 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ExtraCodecs;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 
 import java.util.Optional;
 
@@ -30,27 +30,27 @@ public class SimpleAdvancementTrigger extends SimpleCriterionTrigger<SimpleAdvan
 				.apply(instance, SimpleAdvancementTrigger.TriggerInstance::new));
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> makeTFPortal() {
-			return TFAdvancements.MADE_TF_PORTAL.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancementTriggers.MADE_TF_PORTAL.get().createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> eatHydraChop() {
-			return TFAdvancements.CONSUME_HYDRA_CHOP.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancementTriggers.CONSUME_HYDRA_CHOP.get().createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> completeQuestRam() {
-			return TFAdvancements.QUEST_RAM_COMPLETED.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancementTriggers.QUEST_RAM_COMPLETED.get().createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> activateGhastTrap() {
-			return TFAdvancements.ACTIVATED_GHAST_TRAP.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancementTriggers.ACTIVATED_GHAST_TRAP.get().createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> killAllPhantoms() {
-			return TFAdvancements.KILL_ALL_PHANTOMS.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancementTriggers.KILL_ALL_PHANTOMS.get().createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> activatedPedestal() {
-			return TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancementTriggers.PLACED_TROPHY_ON_PEDESTAL.get().createCriterion(new TriggerInstance(Optional.empty()));
 		}
 	}
 }

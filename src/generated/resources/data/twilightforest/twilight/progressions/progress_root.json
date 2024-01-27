@@ -1,0 +1,19 @@
+{
+  "advancement": "twilightforest:progress_root",
+  "coordinates": [
+    0,
+    0
+  ],
+  "description": {
+    "translate": "advancement.twilightforest.progress_root.desc"
+  },
+  "icon": {
+    "item": "twilightforest:twilight_portal_miniature_structure"
+  },
+  "locked_description": "",
+  "parents": [],
+  "points": [],
+  "title": {
+    "translate": "advancement.twilightforest.progress_root"
+  }
+}

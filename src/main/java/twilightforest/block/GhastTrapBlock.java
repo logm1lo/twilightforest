@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.block.entity.GhastTrapBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
@@ -59,7 +59,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 
 		if (!state.getValue(ACTIVE) && isInactiveTrapCharged(level, pos) && level.hasNeighborSignal(pos)) {
 			for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(6.0D))) {
-				TFAdvancements.ACTIVATED_GHAST_TRAP.get().trigger(player);
+				TFAdvancementTriggers.ACTIVATED_GHAST_TRAP.get().trigger(player);
 			}
 
 			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));

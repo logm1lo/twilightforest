@@ -1,0 +1,24 @@
+{
+  "advancement": "twilightforest:progress_trophy_pedestal",
+  "coordinates": [
+    4,
+    2
+  ],
+  "description": {
+    "translate": "advancement.twilightforest.progress_trophy_pedestal.desc"
+  },
+  "icon": {
+    "item": "twilightforest:trophy_pedestal"
+  },
+  "locked_description": {
+    "translate": "advancement.twilightforest.progress_trophy_pedestal.desc.locked"
+  },
+  "parents": [
+    "twilightforest:progress_lich"
+  ],
+  "points": [],
+  "restriction": "twilightforest:darkness",
+  "title": {
+    "translate": "advancement.twilightforest.progress_trophy_pedestal"
+  }
+}

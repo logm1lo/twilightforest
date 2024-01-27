@@ -125,6 +125,15 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("advancement.twilightforest." + key + ".desc", desc);
 	}
 
+	public void addProgression(String key, String title, String desc) {
+		this.addAdvancement(key, title, desc);
+	}
+
+	public void addProgression(String key, String title, String desc, String descLocked) {
+		this.addAdvancement(key, title, desc);
+		this.add("advancement.twilightforest." + key + ".desc.locked", descLocked);
+	}
+
 	public void addEnchantment(String key, String title, String desc) {
 		this.add("enchantment.twilightforest." + key, title);
 		this.add("enchantment.twilightforest." + key + ".desc", desc);

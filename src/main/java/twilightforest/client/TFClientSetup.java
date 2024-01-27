@@ -131,6 +131,8 @@ public class TFClientSetup {
 		event.registerReloadListener(JappaPackReloadListener.INSTANCE);
 		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
 		event.registerReloadListener(MagicPaintingTextureManager.instance);
+		ProgressionTextureManager.instance = new ProgressionTextureManager(Minecraft.getInstance().getTextureManager());
+		event.registerReloadListener(ProgressionTextureManager.instance);
 	}
 
 	@SubscribeEvent

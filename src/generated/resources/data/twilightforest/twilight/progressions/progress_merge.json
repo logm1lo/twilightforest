@@ -1,0 +1,37 @@
+{
+  "advancement": "twilightforest:progress_merge",
+  "coordinates": [
+    10,
+    0
+  ],
+  "description": {
+    "translate": "advancement.twilightforest.progress_merge.desc",
+    "with": [
+      {
+        "translate": "entity.twilightforest.hydra"
+      },
+      {
+        "translate": "entity.twilightforest.ur_ghast"
+      },
+      {
+        "translate": "entity.twilightforest.snow_queen"
+      }
+    ]
+  },
+  "icon": {
+    "item": "twilightforest:uberous_soil"
+  },
+  "locked_description": {
+    "translate": "advancement.twilightforest.progress_merge.desc.locked"
+  },
+  "parents": [
+    "twilightforest:progress_snow_queen",
+    "twilightforest:progress_hydra",
+    "twilightforest:progress_ur_ghast"
+  ],
+  "points": [],
+  "restriction": "twilightforest:big_rain",
+  "title": {
+    "translate": "advancement.twilightforest.progress_merge"
+  }
+}

@@ -50,7 +50,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.block.LightableBlock;
 import twilightforest.data.tags.DamageTypeTagGenerator;
 import twilightforest.entity.EnforcedHomePoint;
@@ -382,7 +382,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.LICH_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.get().trigger(player, this);
+				TFAdvancementTriggers.HURT_BOSS.get().trigger(player, this);
 			}
 
 			this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
