@@ -18,7 +18,7 @@ import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBannerPatterns;
 import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFDimensionSettings;
+import twilightforest.init.TFDimensionData;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.WoodPalette;
 
@@ -172,7 +172,7 @@ public class CustomTagGenerator {
 
 		@Override
 		protected void addTags(HolderLookup.Provider provider) {
-			tag(ALLOWS_MAGIC_MAP_CHARTING).add(TFDimensionSettings.TWILIGHT_DIM_TYPE);
+			tag(ALLOWS_MAGIC_MAP_CHARTING).add(TFDimensionData.TWILIGHT_DIM_TYPE);
 		}
 
 		@Override

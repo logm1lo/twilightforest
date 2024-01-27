@@ -63,7 +63,7 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFDimension;
 
 import java.util.HashSet;
 import java.util.List;
@@ -109,7 +109,7 @@ public class TFClientEvents {
 		public static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
 			new TFSkyRenderer();
 			new TFWeatherRenderer();
-			event.register(TwilightForestMod.prefix("renderer"), new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
+			event.register(TFDimension.DIMENSION_RENDERER, new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
 		}
 	}
 
@@ -166,7 +166,7 @@ public class TFClientEvents {
 			Minecraft minecraft = Minecraft.getInstance();
 
 			// only fire if we're in the twilight forest
-			if (minecraft.level != null && TFGenerationSettings.DIMENSION_KEY.equals(minecraft.level.dimension())) {
+			if (minecraft.level != null && TFDimension.DIMENSION_KEY.equals(minecraft.level.dimension())) {
 				// vignette
 				if (minecraft.gui != null) {
 					minecraft.gui.vignetteBrightness = 0.0F;
@@ -224,7 +224,7 @@ public class TFClientEvents {
 
 		if (!mc.isPaused()) {
 			BugModelAnimationHelper.animate();
-			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
+			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TFDimension.DIMENSION_RENDERER);
 
 			// add weather box if needed
 			if (mc.level != null && info instanceof TwilightForestRenderInfo) {

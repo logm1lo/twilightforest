@@ -34,7 +34,7 @@ import twilightforest.item.MagicMapItem;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.Restriction;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFDimension;
 
 import java.util.*;
 import java.util.function.Function;
@@ -55,9 +55,9 @@ public class TFTeleporter implements ITeleporter {
 		TeleporterCache cache = TeleporterCache.get(dest);
 
 		// Scale the coords based on the dimension type coordinate_scale
-		ServerLevel tfDim = dest.getServer().getLevel(TFGenerationSettings.DIMENSION_KEY);
+		ServerLevel tfDim = dest.getServer().getLevel(TFDimension.DIMENSION_KEY);
 		double scale = tfDim == null ? 0.125D : tfDim.dimensionType().coordinateScale();
-		scale = dest.dimension().equals(TFGenerationSettings.DIMENSION_KEY) ? 1F / scale : scale;
+		scale = dest.dimension().equals(TFDimension.DIMENSION_KEY) ? 1F / scale : scale;
 		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
 
 		if ((pos = placeInExistingPortal(cache, dest, entity, destPos)) == null) {
@@ -289,7 +289,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean isSafe(Level world, BlockPos pos, Entity entity, boolean checkProgression) {
-		return !world.dimension().equals(TFGenerationSettings.DIMENSION_KEY) || (checkPos(world, pos) && (!checkProgression || checkBiome(world, pos, entity)) && checkStructure(world, pos));
+		return !world.dimension().equals(TFDimension.DIMENSION_KEY) || (checkPos(world, pos) && (!checkProgression || checkBiome(world, pos, entity)) && checkStructure(world, pos));
 	}
 
 	private static boolean checkPos(Level world, BlockPos pos) {

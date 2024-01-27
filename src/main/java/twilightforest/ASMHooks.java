@@ -58,7 +58,7 @@ import twilightforest.client.TFClientSetup;
 import twilightforest.entity.TFPart;
 import twilightforest.events.ToolEvents;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDimensionSettings;
+import twilightforest.init.TFDimension;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.item.GiantItem;
@@ -67,7 +67,6 @@ import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,12 +77,17 @@ import java.util.UUID;
 public class ASMHooks {
 
 	/**
+	 * Minecraft Overworld seed, unique and from the save's WorldOptions. A deep bastion for supporting many features unique to the Twilight Forest dimension.
+	 */
+	public static long seed;
+
+	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.world.level.levelgen.WorldOptions#WorldOptions(long, boolean, boolean, Optional)} <br>
 	 * [BEFORE FIRST PUTFIELD]
 	 */
 	public static long seed(long seed) {
-		TFDimensionSettings.seed = seed;
+		ASMHooks.seed = seed;
 		return seed;
 	}
 
@@ -140,7 +144,7 @@ public class ASMHooks {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public static Music music(Music music) {
-		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFGenerationSettings.isTwilightWorldOnClient(Minecraft.getInstance().level))
+		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level))
 			return Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME);
 		return music;
 	}

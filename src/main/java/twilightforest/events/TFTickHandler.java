@@ -33,7 +33,7 @@ import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFDimension;
 
 import java.util.List;
 import java.util.Objects;
@@ -111,7 +111,7 @@ public class TFTickHandler {
 
 	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
 		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
-				|| TFGenerationSettings.isTwilightPortalDestination(world)
+				|| TFDimension.isTwilightPortalDestination(world)
 				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));

@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import twilightforest.init.TFDimensionSettings;
+import twilightforest.ASMHooks;
 import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.util.LegacyLandmarkPlacements;
 
@@ -74,7 +74,7 @@ public record CanopyBlanketProcessor(HolderSet<Biome> biomesForApplication, Bloc
         int hx = nearestCenter.getX();
         int hz = nearestCenter.getZ();
 
-        RandomSource random = new XoroshiroRandomSource(TFDimensionSettings.seed, Mth.getSeed(chunkOrigin));
+        RandomSource random = new XoroshiroRandomSource(ASMHooks.seed, Mth.getSeed(chunkOrigin));
 
         for (int dZ = 0; dZ < 16; dZ++) {
             for (int dX = 0; dX < 16; dX++) {

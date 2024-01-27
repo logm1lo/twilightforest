@@ -23,7 +23,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
 import twilightforest.block.Experiment115Block;
 import twilightforest.init.*;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFDimension;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -57,7 +57,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.requirements(AdvancementRequirements.Strategy.OR)
 				.addCriterion("in_tf",
 						PlayerTrigger.TriggerInstance.located(
-								LocationPredicate.Builder.inDimension(TFGenerationSettings.DIMENSION_KEY)))
+								LocationPredicate.Builder.inDimension(TFDimension.DIMENSION_KEY)))
 				.addCriterion("make_portal", SimpleAdvancementTrigger.TriggerInstance.makeTFPortal())
 				.save(consumer, "twilightforest:root");
 
@@ -545,7 +545,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 		for (EntityType<?> entity : TF_KILLABLE) {
 			builder.addCriterion(EntityType.getKey(entity).getPath(),
 					KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(entity)
-							.located(LocationPredicate.Builder.inDimension(TFGenerationSettings.DIMENSION_KEY))));
+							.located(LocationPredicate.Builder.inDimension(TFDimension.DIMENSION_KEY))));
 		}
 		return builder;
 	}

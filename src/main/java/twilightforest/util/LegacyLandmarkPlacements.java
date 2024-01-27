@@ -9,8 +9,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import twilightforest.ASMHooks;
 import twilightforest.init.TFBiomes;
-import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.TFStructures;
 
 import java.util.Map;
@@ -121,7 +121,7 @@ public class LegacyLandmarkPlacements {
 
         // okay, well that takes care of most special cases
         return VARIETY_LANDMARKS
-                .getRandomValue(new LegacyRandomSource(TFDimensionSettings.seed + chunkX * 25117L + chunkZ * 151121L))
+                .getRandomValue(new LegacyRandomSource(ASMHooks.seed + chunkX * 25117L + chunkZ * 151121L))
                 .orElse(TFStructures.HOLLOW_HILL_SMALL);
     }
 

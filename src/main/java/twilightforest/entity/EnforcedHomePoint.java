@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFDimension;
 
 public interface EnforcedHomePoint {
 
@@ -34,7 +34,7 @@ public interface EnforcedHomePoint {
 			double hx = nbttaglist.getDouble(0);
 			double hy = nbttaglist.getDouble(1);
 			double hz = nbttaglist.getDouble(2);
-			this.setRestrictionPoint(GlobalPos.of(TFGenerationSettings.DIMENSION_KEY, BlockPos.containing(hx, hy, hz)));
+			this.setRestrictionPoint(GlobalPos.of(TFDimension.DIMENSION_KEY, BlockPos.containing(hx, hy, hz)));
 		} else {
 			if (tag.contains("HomePos")) {
 				this.setRestrictionPoint(GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("HomePos")).resultOrPartial(TwilightForestMod.LOGGER::error).orElse(null));
@@ -49,7 +49,6 @@ public interface EnforcedHomePoint {
 
 	default boolean isRestrictionPointValid(ResourceKey<Level> currentMobLevel) {
 		return this.getRestrictionPoint() != null && this.getRestrictionPoint().dimension().equals(currentMobLevel);
-
 	}
 
 	@Nullable GlobalPos getRestrictionPoint();

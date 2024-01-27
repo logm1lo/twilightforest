@@ -16,8 +16,8 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFDimensionData;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Map;
 import java.util.Set;
@@ -54,7 +54,7 @@ public final class WorldUtil {
 	public static int getGeneratorSeaLevel(LevelAccessor level) {
 		return level.getChunkSource() instanceof ServerChunkCache chunkSource
 				? chunkSource.chunkMap.generator().getSeaLevel()
-				: TFGenerationSettings.SEALEVEL; // TFGenerationSettings.SEALEVEL Should only ever hit if this method is called on client
+				: TFDimensionData.SEALEVEL; // Should only ever hit if this method is called on client FIXME Fix causes
 	}
 
 	@Nullable

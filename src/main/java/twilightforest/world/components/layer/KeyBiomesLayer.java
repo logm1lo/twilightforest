@@ -7,7 +7,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.init.TFDimensionSettings;
+import twilightforest.ASMHooks;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.BiomeLayerTypes;
 import twilightforest.world.components.layer.vanillalegacy.Area;
@@ -43,10 +43,10 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 
 	@Override
 	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
-		RANDOM.setSeed(TFDimensionSettings.seed + (x & -4) * 25117L + (z & -4) * 151121L);
+		RANDOM.setSeed(ASMHooks.seed + (x & -4) * 25117L + (z & -4) * 151121L);
 		int ox = RANDOM.nextInt(2) + 1;
 		int oz = RANDOM.nextInt(2) + 1;
-		RANDOM.setSeed(TFDimensionSettings.seed + (x / 8) * 25117L + (z / 8) * 151121L);
+		RANDOM.setSeed(ASMHooks.seed + (x / 8) * 25117L + (z / 8) * 151121L);
 		int offset = RANDOM.nextInt(3);
 		if ((x & 3) == ox && (z & 3) == oz) {
 			// determine which of the 4
