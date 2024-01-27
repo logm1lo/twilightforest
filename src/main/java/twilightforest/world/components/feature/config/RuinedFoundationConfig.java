@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import twilightforest.data.TFBlockFamilies;
 
 public record RuinedFoundationConfig(
 		IntProvider wallWidth,
@@ -41,20 +42,29 @@ public record RuinedFoundationConfig(
 	).apply(inst, RuinedFoundationConfig::new));
 
 	public static RuinedFoundationConfig withDefaultBlocks(boolean floorWaterlogged) {
-		if (false) return testing(floorWaterlogged);
-		return withBlockFamilies(floorWaterlogged, BlockFamilies.OAK_PLANKS, true, BlockFamilies.COBBLESTONE, BlockFamilies.MOSSY_COBBLESTONE);
+		if (false) {
+			//return withBlockFamilies(floorWaterlogged, BlockFamilies.DEEPSLATE_TILES, BlockFamilies.COBBLED_DEEPSLATE, BlockFamilies.POLISHED_DEEPSLATE);
+			//return withBlockFamilies(floorWaterlogged, BlockFamilies.MUD_BRICKS, BlockFamilies.ANDESITE, BlockFamilies.POLISHED_ANDESITE);
+			//return withBlockFamilies(floorWaterlogged, BlockFamilies.DEEPSLATE_TILES, BlockFamilies.DIORITE, BlockFamilies.POLISHED_DIORITE);
+			//return withBlockFamilies(floorWaterlogged, BlockFamilies.TUFF, BlockFamilies.GRANITE, BlockFamilies.POLISHED_GRANITE);
+			//return withBlockFamilies(floorWaterlogged, BlockFamilies.ACACIA_PLANKS, BlockFamilies.PRISMARINE, BlockFamilies.PRISMARINE_BRICKS);
+			//return withBlockFamilies(floorWaterlogged, BlockFamilies.SPRUCE_PLANKS, BlockFamilies.COBBLESTONE, BlockFamilies.STONE_BRICK);
+			return withBlockFamilies(floorWaterlogged, BlockFamilies.ANDESITE, TFBlockFamilies.TWILIGHT_OAK, TFBlockFamilies.CANOPY);
+		}
+
+		return withBlockFamilies(floorWaterlogged, BlockFamilies.OAK_PLANKS, BlockFamilies.COBBLESTONE, BlockFamilies.MOSSY_COBBLESTONE);
 	}
 
-	public static RuinedFoundationConfig testing(boolean floorWaterlogged) {
-		//return withBlockFamilies(floorWaterlogged, BlockFamilies.DEEPSLATE_TILES, false, BlockFamilies.COBBLED_DEEPSLATE, BlockFamilies.POLISHED_DEEPSLATE);
-		//return withBlockFamilies(floorWaterlogged, BlockFamilies.MUD_BRICKS, false, BlockFamilies.ANDESITE, BlockFamilies.POLISHED_ANDESITE);
-		//return withBlockFamilies(floorWaterlogged, BlockFamilies.DEEPSLATE_TILES, false, BlockFamilies.DIORITE, BlockFamilies.POLISHED_DIORITE);
-		//return withBlockFamilies(floorWaterlogged, BlockFamilies.TUFF, false, BlockFamilies.GRANITE, BlockFamilies.POLISHED_GRANITE);
-		//return withBlockFamilies(floorWaterlogged, BlockFamilies.ACACIA_PLANKS, true, BlockFamilies.PRISMARINE, BlockFamilies.PRISMARINE_BRICKS);
-		return withBlockFamilies(floorWaterlogged, BlockFamilies.SPRUCE_PLANKS, true, BlockFamilies.COBBLESTONE, BlockFamilies.STONE_BRICK);
-	}
+	@SuppressWarnings("ConstantValue")
+	public static RuinedFoundationConfig withBlockFamilies(boolean floorWaterlogged, BlockFamily floorMaterial, BlockFamily wallMaterial, BlockFamily decayedMaterial) {
+		boolean doFence = floorMaterial.get(BlockFamily.Variant.FENCE) != null;
 
-	public static RuinedFoundationConfig withBlockFamilies(boolean floorWaterlogged, BlockFamily floorMaterial, boolean doFence, BlockFamily wallMaterial, BlockFamily decayedMaterial) {
+		BlockFamily.Variant basementSupports = doFence ? BlockFamily.Variant.FENCE : BlockFamily.Variant.WALL;
+		TFBlockFamilies.verifyFamilyShapes(floorMaterial, BlockFamily.Variant.SLAB, BlockFamily.Variant.STAIRS, basementSupports);
+
+		TFBlockFamilies.verifyFamilyShapes(wallMaterial, BlockFamily.Variant.SLAB, BlockFamily.Variant.STAIRS);
+		TFBlockFamilies.verifyFamilyShapes(decayedMaterial, BlockFamily.Variant.SLAB, BlockFamily.Variant.STAIRS);
+
 		BlockState floorStairs = floorMaterial.get(BlockFamily.Variant.STAIRS).defaultBlockState();
 
 		BlockState wallBlock = wallMaterial.getBaseBlock().defaultBlockState();
@@ -73,7 +83,7 @@ public record RuinedFoundationConfig(
 						.add(floorStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST).setValue(BlockStateProperties.WATERLOGGED, floorWaterlogged), 2)
 						.build()
 				),
-				BlockStateProvider.simple(floorMaterial.get(doFence ? BlockFamily.Variant.FENCE : BlockFamily.Variant.WALL).defaultBlockState()),
+				BlockStateProvider.simple(floorMaterial.get(basementSupports).defaultBlockState()),
 				BlockStateProvider.simple(wallBlock),
 				new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
 						.add(wallBlock, 5)
