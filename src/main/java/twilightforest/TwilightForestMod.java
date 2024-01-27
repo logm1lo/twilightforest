@@ -193,7 +193,6 @@ public class TwilightForestMod {
 		registrar.play(SpawnFallenLeafFromPacket.ID, SpawnFallenLeafFromPacket::new, payload -> payload.client(SpawnFallenLeafFromPacket::handle));
 		registrar.play(StructureProtectionClearPacket.ID, buf -> new StructureProtectionClearPacket(), payload -> payload.client(StructureProtectionClearPacket::handle));
 		registrar.play(StructureProtectionPacket.ID, StructureProtectionPacket::new, payload -> payload.client(StructureProtectionPacket::handle));
-		registrar.play(SyncOreMeterPacket.ID, SyncOreMeterPacket::new, payload -> payload.server(SyncOreMeterPacket::handle));
 		registrar.play(SyncUncraftingTableConfigPacket.ID, SyncUncraftingTableConfigPacket::new, payload -> payload.client(SyncUncraftingTableConfigPacket::handle));
 		registrar.play(UncraftingGuiPacket.ID, UncraftingGuiPacket::new, payload -> payload.server(UncraftingGuiPacket::handle));
 		registrar.play(UpdateFeatherFanFallPacket.ID, UpdateFeatherFanFallPacket::new, payload -> payload.client(UpdateFeatherFanFallPacket::handle));

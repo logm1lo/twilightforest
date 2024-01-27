@@ -336,7 +336,7 @@ public class ChestLootTables implements LootTableSubProvider {
 								.add(LootItem.lootTableItem(Items.IRON_PICKAXE).setWeight(75))
 								//ultrarare loot
 								.add(LootItem.lootTableItem(Items.DIAMOND).setWeight(25))
-								.add(LootItem.lootTableItem(TFItems.ORE_METER).setWeight(25))
+								//.add(LootItem.lootTableItem(TFItems.ORE_METER).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.MUSIC_DISC_FINDINGS).setWeight(25))));

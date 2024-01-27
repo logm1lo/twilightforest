@@ -29,13 +29,11 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFSounds;
-import twilightforest.network.SyncOreMeterPacket;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -63,7 +61,7 @@ public class OreMeterItem extends Item {
 				int useX = Mth.floor(entity.getX());
 				int useZ = Mth.floor(entity.getZ());
 				String blockId = getAssignedBlock(stack);
-				this.countOreInArea(stack, level, slot, useX, useZ, getRange(stack), blockId != null ? BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(blockId)) : null);
+				this.countOreInArea(stack, level, useX, useZ, getRange(stack), blockId != null ? BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(blockId)) : null);
 			}
 		}
 	}
@@ -128,7 +126,7 @@ public class OreMeterItem extends Item {
 		String block = getAssignedBlock(stack);
 
 		if (block != null)
-            tooltip.add(Component.translatable("misc.twilightforest.ore_meter_targeted_block", block).withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.translatable("misc.twilightforest.ore_meter_targeted_block", block).withStyle(ChatFormatting.GRAY));
 
 		super.appendHoverText(stack, level, tooltip, flag);
 	}
@@ -259,8 +257,9 @@ public class OreMeterItem extends Item {
 	}
 
 	//note: this is only done client-side to avoid anyone lagging the server.
-	//A packet is sent to the server to update the item NBT later down the line
-	private void countOreInArea(ItemStack stack, Level level, int slot, int useX, int useZ, int radius, @Nullable Block targetedBlock) {
+	//This information is not synced with the server to prevent sending NBT data, as it could potentially be used maliciously.
+	//the unfortunate side effect of this is that this information will not persist across world reloads
+	private void countOreInArea(ItemStack stack, Level level, int useX, int useZ, int radius, @Nullable Block targetedBlock) {
 		Map<String, Integer> oreCounts = new HashMap<>();
 		int chunkX = useX >> 4;
 		int chunkZ = useZ >> 4;
@@ -305,10 +304,6 @@ public class OreMeterItem extends Item {
 		}
 
 		saveScanInfo(stack, oreCounts, new ChunkPos(chunkX, chunkZ).toLong(), totalScanned.get());
-
-		if (level.isClientSide()) {
-            PacketDistributor.SERVER.noArg().send(new SyncOreMeterPacket(getOrCreateScanData(stack), slot));
-        }
 	}
 
 	private Map<Block, ScanResult> countBlocksInChunk(Level level, int cx, int cz) {
