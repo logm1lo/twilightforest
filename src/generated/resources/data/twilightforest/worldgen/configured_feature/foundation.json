@@ -4,7 +4,7 @@
     "basement_posts": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:spruce_fence",
+        "Name": "minecraft:oak_fence",
         "Properties": {
           "east": "false",
           "north": "false",
@@ -17,7 +17,7 @@
     "decayed_wall_block": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:stone_bricks"
+        "Name": "minecraft:mossy_cobblestone"
       }
     },
     "decayed_wall_top_block": {
@@ -25,13 +25,13 @@
       "entries": [
         {
           "data": {
-            "Name": "minecraft:stone_bricks"
+            "Name": "minecraft:mossy_cobblestone"
           },
           "weight": 5
         },
         {
           "data": {
-            "Name": "minecraft:stone_brick_slab",
+            "Name": "minecraft:mossy_cobblestone_slab",
             "Properties": {
               "type": "bottom",
               "waterlogged": "false"
@@ -41,7 +41,7 @@
         },
         {
           "data": {
-            "Name": "minecraft:stone_brick_stairs",
+            "Name": "minecraft:mossy_cobblestone_stairs",
             "Properties": {
               "facing": "east",
               "half": "bottom",
@@ -53,7 +53,7 @@
         },
         {
           "data": {
-            "Name": "minecraft:stone_brick_stairs",
+            "Name": "minecraft:mossy_cobblestone_stairs",
             "Properties": {
               "facing": "west",
               "half": "bottom",
@@ -70,13 +70,13 @@
       "entries": [
         {
           "data": {
-            "Name": "minecraft:spruce_planks"
+            "Name": "minecraft:oak_planks"
           },
           "weight": 39
         },
         {
           "data": {
-            "Name": "minecraft:spruce_slab",
+            "Name": "minecraft:oak_slab",
             "Properties": {
               "type": "bottom",
               "waterlogged": "false"
@@ -86,7 +86,7 @@
         },
         {
           "data": {
-            "Name": "minecraft:spruce_stairs",
+            "Name": "minecraft:oak_stairs",
             "Properties": {
               "facing": "north",
               "half": "bottom",
@@ -98,7 +98,7 @@
         },
         {
           "data": {
-            "Name": "minecraft:spruce_stairs",
+            "Name": "minecraft:oak_stairs",
             "Properties": {
               "facing": "east",
               "half": "bottom",
@@ -110,7 +110,7 @@
         },
         {
           "data": {
-            "Name": "minecraft:spruce_stairs",
+            "Name": "minecraft:oak_stairs",
             "Properties": {
               "facing": "south",
               "half": "bottom",
@@ -122,7 +122,7 @@
         },
         {
           "data": {
-            "Name": "minecraft:spruce_stairs",
+            "Name": "minecraft:oak_stairs",
             "Properties": {
               "facing": "west",
               "half": "bottom",
