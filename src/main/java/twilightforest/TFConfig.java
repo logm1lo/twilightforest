@@ -174,6 +174,14 @@ public class TFConfig {
 								If true, the uncrafting table will also be allowed to uncraft shapeless recipes.
 								The table was originally intended to only take shaped recipes, but this option remains for people who wish to keep the functionality.""").
 						define("enableShapelessCrafting", false);
+				UNCRAFTING_STUFFS.disableIngredientSwitching = builder.
+						worldRestart().
+						translation(config + "disable_ingredient_switching").
+						comment("""
+								If true, the uncrafting table will will no longer allow you to switch between ingredients if a recipe uses a tag for crafting.
+								This will remove the functionality for ALL RECIPES!
+								If you want to prevent certain ingredients from showing up in the first place, use the "twilightforest:banned_uncrafting_ingredients" tag.""").
+						define("disableIngredientSwitching", false);
 				UNCRAFTING_STUFFS.disableUncraftingOnly = builder.
 						worldRestart().
 						translation(config + "disable_uncrafting").
@@ -307,6 +315,7 @@ public class TFConfig {
 			public ModConfigSpec.DoubleValue uncraftingXpCostMultiplier;
 			public ModConfigSpec.DoubleValue repairingXpCostMultiplier;
 			public ModConfigSpec.BooleanValue allowShapelessUncrafting;
+			public ModConfigSpec.BooleanValue disableIngredientSwitching;
 			public ModConfigSpec.BooleanValue disableUncraftingOnly;
 			public ModConfigSpec.BooleanValue disableEntireTable;
 			public ModConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
@@ -444,6 +453,7 @@ public class TFConfig {
 							COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
+							COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
@@ -478,6 +488,7 @@ public class TFConfig {
 						COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),

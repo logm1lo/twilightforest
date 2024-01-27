@@ -11,7 +11,7 @@ import java.util.List;
 
 public record SyncUncraftingTableConfigPacket(
 		double uncraftingMultiplier, double repairingMultiplier,
-		boolean allowShapeless, boolean disabledUncrafting, boolean disabledTable,
+		boolean allowShapeless, boolean disableIngredientSwitching, boolean disabledUncrafting, boolean disabledTable,
 		List<? extends String> disabledRecipes, boolean flipRecipeList,
 		List<? extends String> disabledModids, boolean flipModidList) implements CustomPacketPayload {
 
@@ -19,7 +19,7 @@ public record SyncUncraftingTableConfigPacket(
 
 	public SyncUncraftingTableConfigPacket(FriendlyByteBuf buf) {
 		this(buf.readDouble(), buf.readDouble(),
-				buf.readBoolean(), buf.readBoolean(), buf.readBoolean(),
+				buf.readBoolean(), buf.readBoolean(), buf.readBoolean(), buf.readBoolean(),
 				buf.readList(FriendlyByteBuf::readUtf), buf.readBoolean(),
 				buf.readList(FriendlyByteBuf::readUtf), buf.readBoolean());
 	}
@@ -29,6 +29,7 @@ public record SyncUncraftingTableConfigPacket(
 		buf.writeDouble(this.uncraftingMultiplier());
 		buf.writeDouble(this.repairingMultiplier());
 		buf.writeBoolean(this.allowShapeless());
+		buf.writeBoolean(this.disableIngredientSwitching());
 		buf.writeBoolean(this.disabledUncrafting());
 		buf.writeBoolean(this.disabledTable());
 		buf.writeCollection(this.disabledRecipes(), FriendlyByteBuf::writeUtf);
@@ -47,6 +48,7 @@ public record SyncUncraftingTableConfigPacket(
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.set(message.uncraftingMultiplier());
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.set(message.repairingMultiplier());
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.set(message.allowShapeless());
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.set(message.disableIngredientSwitching());
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.set(message.disabledUncrafting());
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.set(message.disabledTable());
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.set(message.disabledRecipes());

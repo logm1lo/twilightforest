@@ -5,6 +5,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.inventory.UncraftingMenu;
 
@@ -35,8 +36,16 @@ public record UncraftingGuiPacket(int operationType) implements CustomPacketPayl
 					switch (message.operationType()) {
 						case 0 -> uncrafting.unrecipeInCycle++;
 						case 1 -> uncrafting.unrecipeInCycle--;
-						case 2 -> uncrafting.ingredientsInCycle++;
-						case 3 -> uncrafting.ingredientsInCycle--;
+						case 2 -> {
+							if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get()) {
+								uncrafting.ingredientsInCycle++;
+							}
+						}
+						case 3 -> {
+							if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get()) {
+								uncrafting.ingredientsInCycle--;
+							}
+						}
 						case 4 -> uncrafting.recipeInCycle++;
 						case 5 -> uncrafting.recipeInCycle--;
 					}
