@@ -296,22 +296,22 @@ public final class FeaturePlacers {
             if (worldReader.isStateAtPosition(exposedPos, FeatureLogic.ROOT_SHOULD_SKIP))
                 continue;
 
-            // Is the position considered underground?
-            if (!FeatureLogic.hasEmptyHorizontalNeighbor(worldReader, exposedPos)) {
-                // Retry placement at position as underground root. If successful, continue the tracing as regular root
-                if (FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, exposedPos, dirtRoot))
-                    traceRoot(worldReader, worldPlacer, random, dirtRoot, posTracer);
-                // Now the outer loop can end. Goodbye!
-                return;
-            } else { // Not underground
-                // Check if the position is not replaceable
-                if (!worldReader.isStateAtPosition(exposedPos, FeatureLogic::worldGenReplaceable))
-                    return; // Root must stop
+            // Is the position considered not underground?
+			if (FeatureLogic.hasEmptyNeighborExceptBelow(worldReader, exposedPos)) {
+				// Check if the position is not replaceable
+				if (!worldReader.isStateAtPosition(exposedPos, FeatureLogic::worldGenReplaceable))
+					return; // Root must stop
 
-                // Good to go!
-                worldPlacer.accept(exposedPos, exposedRoot.getState(random, exposedPos));
-            }
-        }
+				// Good to go!
+				worldPlacer.accept(exposedPos, exposedRoot.getState(random, exposedPos));
+			} else { // We are in-fact underground, finish tracing root's path by placing underground roots
+				// Retry placement at position as underground root. If successful, continue the tracing as regular root
+				if (FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, exposedPos, dirtRoot))
+					traceRoot(worldReader, worldPlacer, random, dirtRoot, posTracer);
+
+				return; // Now the outer loop can end as we terminate here. Goodbye!
+			}
+		}
     }
 
     @Deprecated

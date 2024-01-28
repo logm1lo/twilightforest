@@ -6,6 +6,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
@@ -31,14 +33,14 @@ public class HollowStumpFeature extends HollowTreeFeature {
 			return false;
 		}
 
+		buildTrunk(world, trunkPlacer, decorationPlacer, random, pos, radius, 6, config);
+
 		// Start with roots first, so they don't fail placement because they intersect the trunk shell first
 		// 3-5 roots at the bottom
 		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 3, 2, 6, 0.75D, 3, 5, 3, false, config);
 
 		// several more taproots
 		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 1, 2, 8, 0.9D, 3, 5, 3, false, config);
-
-		buildTrunk(world, trunkPlacer, decorationPlacer, random, pos, radius, 6, config);
 
 		return true;
 	}
@@ -58,8 +60,9 @@ public class HollowStumpFeature extends HollowTreeFeature {
 
 					if (dist <= diameter) {
 						BlockPos dPos = pos.offset(dx, dy, dz);
-						if (FeatureUtil.hasAirAround(world, dPos)) {
-							FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, dPos, config.trunkProvider);
+						if (FeatureLogic.hasEmptyNeighborExceptBelow(world, dPos)) {
+							BlockStateProvider trunkProvider = dist > hollow ? config.trunkProvider : config.branchProvider;
+							trunkPlacer.accept(dPos, trunkProvider.getState(random, dPos));
 						} else {
 							FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, dPos, config.rootsProvider);
 						}

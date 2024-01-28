@@ -25,8 +25,9 @@ import java.util.function.Predicate;
 public final class FeatureLogic {
     public static final Predicate<BlockState> IS_REPLACEABLE_AIR = state -> state.canBeReplaced() || state.isAir();
     public static final Predicate<BlockState> ROOT_SHOULD_SKIP = state -> state.is(BlockTagGenerator.ROOT_TRACE_SKIP);
-    public static boolean hasEmptyHorizontalNeighbor(LevelSimulatedReader worldReader, BlockPos pos) {
-        return worldReader.isStateAtPosition(pos.north(), IS_REPLACEABLE_AIR)
+    public static boolean hasEmptyNeighborExceptBelow(LevelSimulatedReader worldReader, BlockPos pos) {
+        return worldReader.isStateAtPosition(pos.above(), IS_REPLACEABLE_AIR)
+                || worldReader.isStateAtPosition(pos.north(), IS_REPLACEABLE_AIR)
                 || worldReader.isStateAtPosition(pos.south(), IS_REPLACEABLE_AIR)
                 || worldReader.isStateAtPosition(pos.west(), IS_REPLACEABLE_AIR)
                 || worldReader.isStateAtPosition(pos.east(), IS_REPLACEABLE_AIR);
