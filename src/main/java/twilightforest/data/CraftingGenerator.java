@@ -29,8 +29,8 @@ import twilightforest.item.recipe.UncraftingTableCondition;
 import java.util.concurrent.CompletableFuture;
 
 public class CraftingGenerator extends CraftingDataHelper {
-	public CraftingGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, provider);
+	public CraftingGenerator(PackOutput output) {
+		super(output);
 	}
 
 	@Override

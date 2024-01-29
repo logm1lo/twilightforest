@@ -41,6 +41,7 @@ public class DataGenerators {
 
 		//server generators
 		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new DataMapGenerator(output, provider));
 		generator.addProvider(event.includeServer(), new StalactiteGenerator(output));
 		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new TFAdvancementProvider(output, provider, helper));
@@ -56,7 +57,7 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.EnchantmentTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new LootGenerator(output));
-		generator.addProvider(event.includeServer(), new CraftingGenerator(output, provider));
+		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
 		generator.addProvider(event.includeServer(), new LootModifierGenerator(output));
 
 		//registry-based tags

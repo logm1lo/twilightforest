@@ -31,8 +31,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public abstract class CraftingDataHelper extends RecipeProvider {
-	public CraftingDataHelper(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, provider);
+	public CraftingDataHelper(PackOutput output) {
+		super(output);
 	}
 
 	public final NBTIngredient nbtItem(Item scepter, Consumer<CompoundTag> tag) {
