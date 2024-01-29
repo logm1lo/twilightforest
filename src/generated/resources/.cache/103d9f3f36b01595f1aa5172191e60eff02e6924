@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-28T13:56:27.334671	Registries
+// 1.20.4	2024-01-28T16:13:18.548316	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -235,7 +235,7 @@ b32cb2045480bdfd6d302e0b2160daa4f77fd5cd data/twilightforest/worldgen/placed_fea
 797334651c2b54749fa09658ff5249f1093171b9 data/twilightforest/worldgen/placed_feature/graveyard.json
 e4f6e206e30cf800274af6d57d22c0aeb40e9c8c data/twilightforest/worldgen/placed_feature/grove_ruins.json
 51e8db13514f64e5eeea9a4e4522705b650c0d77 data/twilightforest/worldgen/placed_feature/hollow_log.json
-79c19be8dd0e0cf32c9c9a2de9e1118b73dd53f3 data/twilightforest/worldgen/placed_feature/hollow_stump.json
+cdc593fcf5f1b2c437851d23aff053429063d358 data/twilightforest/worldgen/placed_feature/hollow_stump.json
 3d1411df18edca4c688b5b06a5a6ff1b208ee5c7 data/twilightforest/worldgen/placed_feature/huge_lily_pad.json
 f0888058c0f67a20c9649129e5f13df1533d9866 data/twilightforest/worldgen/placed_feature/huge_water_lily.json
 922de538899bda56debe108fba72400bda44340b data/twilightforest/worldgen/placed_feature/lamppost_placer.json
