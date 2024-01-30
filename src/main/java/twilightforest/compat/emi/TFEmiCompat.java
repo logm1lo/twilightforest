@@ -36,6 +36,11 @@ public class TFEmiCompat implements EmiPlugin {
 	public static final TFEmiRecipeCategory TRANSFORMATION = new TFEmiRecipeCategory("transformation", TFItems.TRANSFORMATION_POWDER);
 	public static final TFEmiRecipeCategory MOONWORM_QUEEN = new TFEmiRecipeCategory("moonworm_queen", TFItems.MOONWORM_QUEEN);
 
+	private static final Function<List<EmiIngredient>, Boolean> CANT_USE_ENCHANTS = stack ->
+			stack.contains(EmiStack.of(TFItems.MOONWORM_QUEEN)) || stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.ORE_MAGNET)) ||
+					stack.contains(EmiStack.of(TFItems.TWILIGHT_SCEPTER)) || stack.contains(EmiStack.of(TFItems.LIFEDRAIN_SCEPTER)) ||
+					stack.contains(EmiStack.of(TFItems.ZOMBIE_SCEPTER)) || stack.contains(EmiStack.of(TFItems.FORTIFICATION_SCEPTER));
+
 	@Override
 	public void register(EmiRegistry registry) {
 		registry.addCategory(UNCRAFTING);
@@ -62,5 +67,18 @@ public class TFEmiCompat implements EmiPlugin {
 			registry.addRecipe(new EmiCrumbleHornRecipe(info.getFirst(), info.getSecond()));
 		}
 		registry.addRecipe(new EmiMoonwormQueenRecipe());
+
+		//remove other recipes as they arent actually possible recipes to use
+		//emi makes a few assumptions about damageable items that it honestly shouldnt
+		registry.removeRecipes(recipe -> {
+			if (recipe instanceof EmiPatternCraftingRecipe || recipe instanceof EmiGrindstoneRecipe) {
+				return recipe.getInputs().contains(EmiStack.of(TFItems.MOONWORM_QUEEN));
+			} else if (recipe instanceof EmiGrindstoneDisenchantingRecipe) {
+				return CANT_USE_ENCHANTS.apply(recipe.getInputs());
+			} else if (recipe instanceof EmiAnvilEnchantRecipe) {
+				return CANT_USE_ENCHANTS.apply(recipe.getInputs());
+			}
+			return false;
+		});
 	}
 }
