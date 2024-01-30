@@ -1,18 +1,27 @@
 package twilightforest.compat;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.block.Block;
+import oshi.util.tuples.Triplet;
 import twilightforest.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RecipeViewerConstants {
@@ -47,4 +56,44 @@ public class RecipeViewerConstants {
 			return new ArrayList<>(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
 		}
 	}
+
+	//all recipe viewers run this once when initializing recipes
+	public static List<TransformationPowderInfo> getTransformationPowderRecipes() {
+		List<EntityType<?>> inputs = new ArrayList<>();
+		List<TransformationPowderInfo> info = new ArrayList<>();
+		for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
+			if (type.builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER) != null) {
+				inputs.add(type);
+			}
+		}
+
+		for (EntityType<?> input : new ArrayList<>(inputs)) {
+			EntityType<?> output = input.builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
+			if (output != null) {
+				TransformationPowderInfo dummy = new TransformationPowderInfo(output, input, true);
+				if (!info.contains(dummy)) {
+					if (inputs.contains(output)) {
+						info.add(new TransformationPowderInfo(input, output, true));
+					} else {
+						info.add(new TransformationPowderInfo(input, output, false));
+					}
+				}
+			}
+		}
+		return info;
+	}
+
+	//all recipe viewers run this once when initializing recipes
+	public static List<Pair<Block, Block>> getCrumbleHornRecipes() {
+		List<Pair<Block, Block>> info = new ArrayList<>();
+		for (Block input : BuiltInRegistries.BLOCK) {
+			Block output = input.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+			if (output != null) {
+				info.add(Pair.of(input, output));
+			}
+		}
+		return info;
+	}
+
+	public record TransformationPowderInfo(EntityType<?> input, EntityType<?> output, boolean reversible) {}
 }

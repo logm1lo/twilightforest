@@ -8,12 +8,16 @@ import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.display.DisplaySerializerRegistry;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.EntryTypeRegistry;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.forge.REIPluginClient;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
+import me.shedaniel.rei.plugin.common.displays.DefaultCompostingDisplay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
@@ -25,11 +29,13 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
+import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.rei.categories.REICrumbleHornCategory;
 import twilightforest.compat.rei.categories.REIMoonwormQueenCategory;
 import twilightforest.compat.rei.categories.REITransformationPowderCategory;
@@ -42,11 +48,10 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
-import twilightforest.item.recipe.CrumbleRecipe;
-import twilightforest.item.recipe.TransformPowderRecipe;
 import twilightforest.item.recipe.UncraftingRecipe;
 import twilightforest.util.EntityRenderingUtil;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.WeakHashMap;
@@ -97,9 +102,16 @@ public class TFREIClientPlugin implements REIClientPlugin {
 				return REIUncraftingDisplay.of(recipe);
 			});
 		}
+		RecipeViewerConstants.getCrumbleHornRecipes().forEach(info ->
+				registry.add(new REICrumbleHornDisplay(
+						Collections.singletonList(EntryIngredients.of(info.getFirst().asItem())),
+						Collections.singletonList(EntryIngredients.of(info.getSecond().asItem())),
+						info.getSecond() == Blocks.AIR))
+		);
 
-		registry.registerRecipeFiller(CrumbleRecipe.class, TFRecipes.CRUMBLE_RECIPE.get(), REICrumbleHornDisplay::of);
-		registry.registerRecipeFiller(TransformPowderRecipe.class, TFRecipes.TRANSFORM_POWDER_RECIPE.get(), REITransformationPowderDisplay::of);
+		RecipeViewerConstants.getTransformationPowderRecipes().forEach(info -> registry.add(REITransformationPowderDisplay.of(info)));
+
+
 		registry.add(REIMoonwormQueenCategory.createDisplay());
 	}
 
@@ -175,11 +187,6 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 			return stream.map(CompoundEventResult::interruptTrue).orElseGet(CompoundEventResult::pass);
 		});
-	}
-
-	@Nullable
-	public static ItemEntity createItemEntity(ItemLike item) {
-		return createItemEntity(item.asItem().getDefaultInstance());
 	}
 
 	@Nullable

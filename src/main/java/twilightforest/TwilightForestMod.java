@@ -30,6 +30,7 @@ import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -135,6 +136,7 @@ public class TwilightForestMod {
 		bus.addListener(this::init);
 		bus.addListener(this::sendIMCs);
 		bus.addListener(this::setupPackets);
+		bus.addListener(this::createDataMaps);
 		bus.addListener(this::registerExtraStuff);
 		bus.addListener(this::createNewRegistries);
 		bus.addListener(this::setRegistriesForDatapack);
@@ -171,6 +173,11 @@ public class TwilightForestMod {
 		if (evt.getRegistryKey().equals(Registries.BIOME_SOURCE)) {
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 		}
+	}
+
+	public void createDataMaps(RegisterDataMapTypesEvent event) {
+		event.register(TFDataMaps.CRUMBLE_HORN);
+		event.register(TFDataMaps.TRANSFORMATION_POWDER);
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {

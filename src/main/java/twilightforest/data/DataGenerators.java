@@ -15,8 +15,6 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.custom.CrumbleHornGenerator;
-import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 
@@ -40,10 +38,8 @@ public class DataGenerators {
 		generator.addProvider(event.includeClient(), new SoundGenerator(output, helper));
 
 		//server generators
-		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new DataMapGenerator(output, provider));
 		generator.addProvider(event.includeServer(), new StalactiteGenerator(output));
-		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new TFAdvancementProvider(output, provider, helper));
 		generator.addProvider(event.includeServer(), new TFStructureUpdater("structures", output, helper));
 

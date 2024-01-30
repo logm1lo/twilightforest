@@ -13,19 +13,18 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.jei.FakeItemEntity;
-import twilightforest.compat.jei.renderers.FakeItemEntityRenderer;
 import twilightforest.compat.jei.JEICompat;
+import twilightforest.compat.jei.renderers.FakeItemEntityRenderer;
+import twilightforest.compat.jei.util.CrumbleRecipe;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFRecipes;
-import twilightforest.item.recipe.CrumbleRecipe;
 
-public class CrumbleHornCategory implements IRecipeCategory<RecipeHolder<CrumbleRecipe>> {
+public class CrumbleHornCategory implements IRecipeCategory<CrumbleRecipe> {
 
-	public static final RecipeType<RecipeHolder<CrumbleRecipe>> CRUMBLE_HORN = RecipeType.createFromVanilla(TFRecipes.CRUMBLE_RECIPE.get());
+	public static final RecipeType<CrumbleRecipe> CRUMBLE_HORN = RecipeType.create(TwilightForestMod.ID, "crumble_horn", CrumbleRecipe.class);
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final IDrawable crumbleSlot;
@@ -42,7 +41,7 @@ public class CrumbleHornCategory implements IRecipeCategory<RecipeHolder<Crumble
 	}
 
 	@Override
-	public RecipeType<RecipeHolder<CrumbleRecipe>> getRecipeType() {
+	public RecipeType<CrumbleRecipe> getRecipeType() {
 		return CRUMBLE_HORN;
 	}
 
@@ -62,20 +61,20 @@ public class CrumbleHornCategory implements IRecipeCategory<RecipeHolder<Crumble
 	}
 
 	@Override
-	public void draw(RecipeHolder<CrumbleRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
-		if (!recipe.value().result().defaultBlockState().isAir()) this.crumbleSlot.draw(graphics, 76, 14);
+	public void draw(CrumbleRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+		if (recipe.output() != Blocks.AIR) this.crumbleSlot.draw(graphics, 76, 14);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CrumbleRecipe> recipe, IFocusGroup focuses) {
-		builder.addSlot(RecipeIngredientRole.INPUT, 19, 19).addItemStack(new ItemStack(recipe.value().input().asItem()));
+	public void setRecipe(IRecipeLayoutBuilder builder, CrumbleRecipe recipe, IFocusGroup focuses) {
+		builder.addSlot(RecipeIngredientRole.INPUT, 19, 19).addItemStack(new ItemStack(recipe.input().asItem()));
 
-		if (!recipe.value().result().defaultBlockState().isAir()) {
-			builder.addSlot(RecipeIngredientRole.OUTPUT, 81, 19).addItemStack(new ItemStack(recipe.value().result().asItem()));
+		if (recipe.output() != Blocks.AIR) {
+			builder.addSlot(RecipeIngredientRole.OUTPUT, 81, 19).addItemStack(new ItemStack(recipe.output().asItem()));
 		} else {
 			builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 12)
 					.setCustomRenderer(JEICompat.FAKE_ITEM_ENTITY, this.itemRenderer)
-					.addIngredient(JEICompat.FAKE_ITEM_ENTITY, new FakeItemEntity(new ItemStack(recipe.value().input().asItem())));
+					.addIngredient(JEICompat.FAKE_ITEM_ENTITY, new FakeItemEntity(new ItemStack(recipe.input().asItem())));
 		}
 	}
 }

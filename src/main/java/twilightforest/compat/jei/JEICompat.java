@@ -25,10 +25,11 @@ import twilightforest.compat.jei.renderers.EntityHelper;
 import twilightforest.compat.jei.renderers.EntityRenderer;
 import twilightforest.compat.jei.renderers.FakeItemEntityHelper;
 import twilightforest.compat.jei.renderers.FakeItemEntityRenderer;
+import twilightforest.compat.jei.util.CrumbleRecipe;
+import twilightforest.compat.jei.util.TransformationRecipe;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFMenuTypes;
-import twilightforest.init.TFRecipes;
 import twilightforest.inventory.UncraftingMenu;
 import twilightforest.item.recipe.MoonwormQueenRepairRecipe;
 
@@ -86,8 +87,8 @@ public class JEICompat implements IModPlugin {
 			List<RecipeHolder<? extends CraftingRecipe>> recipes = RecipeViewerConstants.getAllUncraftingRecipes(manager);
 			registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, (List<CraftingRecipe>) recipes.stream().map(RecipeHolder::value).toList());
 		}
-		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, manager.getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()));
-		registration.addRecipes(CrumbleHornCategory.CRUMBLE_HORN, manager.getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()));
+		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, RecipeViewerConstants.getTransformationPowderRecipes().stream().map(info -> new TransformationRecipe(info.input(), info.output(), info.reversible())).toList());
+		registration.addRecipes(CrumbleHornCategory.CRUMBLE_HORN, RecipeViewerConstants.getCrumbleHornRecipes().stream().map(info -> new CrumbleRecipe(info.getFirst(), info.getSecond())).toList());
 		registration.addRecipes(MoonwormQueenCategory.MOONWORM_QUEEN, List.of(new MoonwormQueenRepairRecipe(CraftingBookCategory.MISC)));
 	}
 

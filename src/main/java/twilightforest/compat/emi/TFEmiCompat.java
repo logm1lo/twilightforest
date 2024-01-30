@@ -1,32 +1,33 @@
 package twilightforest.compat.emi;
 
+import com.mojang.datafixers.util.Pair;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
+import dev.emi.emi.api.recipe.EmiPatternCraftingRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
+import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.recipe.EmiGrindstoneRecipe;
+import dev.emi.emi.recipe.special.EmiAnvilEnchantRecipe;
+import dev.emi.emi.recipe.special.EmiGrindstoneDisenchantingRecipe;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.block.Block;
 import twilightforest.TFConfig;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.emi.recipes.EmiCrumbleHornRecipe;
 import twilightforest.compat.emi.recipes.EmiMoonwormQueenRecipe;
 import twilightforest.compat.emi.recipes.EmiTransformationPowderRecipe;
 import twilightforest.compat.emi.recipes.EmiUncraftingRecipe;
-import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFRecipes;
-import twilightforest.item.recipe.CrumbleRecipe;
-import twilightforest.item.recipe.TransformPowderRecipe;
-import twilightforest.item.recipe.UncraftingRecipe;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 @EmiEntrypoint
 public class TFEmiCompat implements EmiPlugin {
@@ -53,11 +54,12 @@ public class TFEmiCompat implements EmiPlugin {
 			List<RecipeHolder<? extends CraftingRecipe>> recipes = RecipeViewerConstants.getAllUncraftingRecipes(manager);
 			recipes.forEach(recipe -> registry.addRecipe(new EmiUncraftingRecipe<>(recipe)));
 		}
-		for (RecipeHolder<CrumbleRecipe> recipe : manager.getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get())) {
-			registry.addRecipe(new EmiCrumbleHornRecipe(recipe));
+		for (RecipeViewerConstants.TransformationPowderInfo info : RecipeViewerConstants.getTransformationPowderRecipes()) {
+			registry.addRecipe(new EmiTransformationPowderRecipe(info.input(), info.output(), info.reversible()));
 		}
-		for (RecipeHolder<TransformPowderRecipe> recipe : manager.getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get())) {
-			registry.addRecipe(new EmiTransformationPowderRecipe(recipe));
+
+		for (Pair<Block, Block> info : RecipeViewerConstants.getCrumbleHornRecipes()) {
+			registry.addRecipe(new EmiCrumbleHornRecipe(info.getFirst(), info.getSecond()));
 		}
 		registry.addRecipe(new EmiMoonwormQueenRecipe());
 	}

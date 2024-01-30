@@ -15,12 +15,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFRecipes;
+import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFSounds;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TransformPowderItem extends Item {
 
@@ -34,7 +33,7 @@ public class TransformPowderItem extends Item {
 			return InteractionResult.PASS;
 		}
 
-		return transformEntityIfPossible(player.level(), target, player.getItemInHand(hand)) ? InteractionResult.SUCCESS : InteractionResult.PASS;
+		return transformEntityIfPossible(player.level(), target, player.getItemInHand(hand), !player.isCreative()) ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
 
 	@Nonnull
@@ -56,51 +55,45 @@ public class TransformPowderItem extends Item {
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 	}
 
-	public static boolean transformEntityIfPossible(Level level, LivingEntity target, ItemStack powder) {
-		AtomicBoolean flag = new AtomicBoolean(false);
-
+	public static boolean transformEntityIfPossible(Level level, LivingEntity target, ItemStack powder, boolean shrinkStack) {
 		//dont transform tamed animals that have owners
 		if (target instanceof OwnableEntity ownable && ownable.getOwner() != null) return false;
 
-		level.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach(recipeHolder -> {
-			if (flag.get()) return;
-			if (recipeHolder.value().input() == target.getType() || (recipeHolder.value().isReversible() && recipeHolder.value().result() == target.getType())) {
-				EntityType<?> type = recipeHolder.value().isReversible() && recipeHolder.value().result() == target.getType() ? recipeHolder.value().input() : recipeHolder.value().result();
-				if (type == null) {
-					return;
-				}
-
-				Entity newEntity = type.create(level);
-				if (newEntity == null) {
-					return;
-				}
-
-				newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
-				if (newEntity instanceof Mob mob && target.level() instanceof ServerLevelAccessor world) {
-					EventHooks.onFinalizeSpawn(mob, world, target.level().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
-				}
-
-				try { // try copying what can be copied
-					UUID uuid = newEntity.getUUID();
-					newEntity.load(target.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
-					newEntity.setUUID(uuid);
-				} catch (Exception e) {
-					TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
-				}
-
-				target.level().addFreshEntity(newEntity);
-				target.discard();
-				powder.shrink(1);
-
-				if (target instanceof Mob mob) {
-					mob.spawnAnim();
-					mob.spawnAnim();
-				}
-				target.playSound(TFSounds.POWDER_USE.get(), 1.0F + target.level().getRandom().nextFloat(), target.level().getRandom().nextFloat() * 0.7F + 0.3F);
-				flag.set(true);
+		EntityType<?> type = target.getType().builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
+		if (type != null) {
+			Entity newEntity = type.create(level);
+			if (newEntity == null) {
+				return false;
 			}
-		});
-		return flag.get();
+
+			newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
+			if (newEntity instanceof Mob mob && target.level() instanceof ServerLevelAccessor world) {
+				EventHooks.onFinalizeSpawn(mob, world, target.level().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
+			}
+
+			try { // try copying what can be copied
+				UUID uuid = newEntity.getUUID();
+				newEntity.load(target.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
+				newEntity.setUUID(uuid);
+			} catch (Exception e) {
+				TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
+			}
+
+			target.level().addFreshEntity(newEntity);
+			target.discard();
+
+			if (shrinkStack) {
+				powder.shrink(1);
+			}
+
+			if (target instanceof Mob mob) {
+				mob.spawnAnim();
+				mob.spawnAnim();
+			}
+			target.playSound(TFSounds.POWDER_USE.get(), 1.0F + target.level().getRandom().nextFloat(), target.level().getRandom().nextFloat() * 0.7F + 0.3F);
+			return true;
+		}
+		return false;
 	}
 
 	private AABB getEffectAABB(Player player) {
