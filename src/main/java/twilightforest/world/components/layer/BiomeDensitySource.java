@@ -1,4 +1,4 @@
-package twilightforest.world.components.layer.vanillalegacy;
+package twilightforest.world.components.layer;
 
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.TerrainColumn;
+import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
 
@@ -71,12 +72,9 @@ public class BiomeDensitySource {
         return this.biomeList.values().stream().filter(p -> p.is(biome)).findFirst();
     }
 
+    // Only used for building a cache
     public Stream<Holder<Biome>> collectPossibleBiomes() {
         return this.biomeList.values().stream().flatMap(TerrainColumn::getBiomes);
-    }
-
-    public LazyArea build() {
-        return this.genBiomes.get();
     }
 
     public void addDebugInfo(List<String> info, BlockPos cameraPos) {

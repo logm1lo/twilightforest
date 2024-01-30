@@ -4,7 +4,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import twilightforest.world.components.chunkgenerators.TerrainDensityRouter;
-import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
 
 public class ChunkCachedDensityRouter extends TerrainDensityRouter {
 	private final BiomeDensitySource biomeDensitySource;

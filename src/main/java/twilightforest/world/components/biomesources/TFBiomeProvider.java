@@ -8,7 +8,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 import twilightforest.TFRegistries;
-import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
+import twilightforest.world.components.layer.BiomeDensitySource;
 
 import java.util.List;
 import java.util.stream.Stream;

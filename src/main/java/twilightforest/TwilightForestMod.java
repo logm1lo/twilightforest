@@ -47,7 +47,7 @@ import twilightforest.util.TFRemapper;
 import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
+import twilightforest.world.components.layer.BiomeDensitySource;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 import java.util.Locale;

@@ -9,29 +9,12 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.world.components.layer.ChunkCachedDensityRouter;
-import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
+import twilightforest.world.components.layer.BiomeDensitySource;
 
 /**
  * A DensityFunction implementation that enables Biomes to influence terrain formulations, if in the noise chunk generator.
  */
 public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
-	/**
-	 * TerrainDensityRouter is at best, a configuration class with DensityFunction capabilities.
-	 * CachedTerrainDensityRouter is the actual DensityFunction used in worldgen.
-	 * This cache is made once per Chunk in noisegen, and caches first density value obtained from each unique X-Z coordinate, ambiguating the Y value in coordinate.
-	 * Plan your biome density functions accordingly! Don't use anything that's vertically sensitive
-	 */
-	public ChunkCachedDensityRouter cached(Visitor visitor) {
-		return new ChunkCachedDensityRouter(
-				this.biomeDensitySourceHolder,
-				visitor.visitNoise(this.noise),
-				this.lowerDensityBound,
-				this.upperDensityBound,
-				this.depthScalar,
-				this.baseFactor,
-				this.baseOffset
-		);
-	}
 
 	public static final KeyDispatchDataCodec<TerrainDensityRouter> CODEC = KeyDispatchDataCodec.of(RecordCodecBuilder.create(inst -> inst.group(
 			RegistryFileCodec.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC, false).fieldOf("terrain_source").forGetter(TerrainDensityRouter::biomeDensitySourceHolder),
@@ -72,11 +55,11 @@ public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
 	public double compute(FunctionContext context) {
 		BiomeDensitySource.DensityData densityData = this.computeTerrain(context);
 
-		double yOffset = (this.baseOffset.compute(context) + densityData.depth * this.baseFactor.compute(context)) * this.depthScalar;
+		double depth = this.baseOffset.compute(context) + densityData.depth * this.baseFactor.compute(context);
 
 		double noise = this.noise.getValue(context.blockX() * densityData.scale, context.blockY() * densityData.scale, context.blockZ() * densityData.scale) * 0.5 + 0.5;
 
-		return yOffset + noise * densityData.depth;
+		return depth + noise + densityData.depth;
 	}
 
 	// Our default method for obtaining column samples of the biome source.
@@ -129,8 +112,22 @@ public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
 		return this.baseOffset;
 	}
 
+	/**
+	 * TerrainDensityRouter is at best, a configuration class with DensityFunction capabilities.
+	 * CachedTerrainDensityRouter is the actual DensityFunction used in worldgen.
+	 * This cache is made once per Chunk in noisegen, and caches first density value obtained from each unique X-Z coordinate, ambiguating the Y value in coordinate.
+	 * Plan your biome density functions accordingly! Don't use anything that's vertically sensitive
+	 */
 	@Override // NoiseChunk is the only class to ever call this, and it's typically a new chunk each time
 	public DensityFunction mapAll(Visitor visitor) {
-		return visitor.apply(this.cached(visitor));
+		return visitor.apply(new ChunkCachedDensityRouter(
+				this.biomeDensitySourceHolder,
+				visitor.visitNoise(this.noise),
+				this.lowerDensityBound,
+				this.upperDensityBound,
+				this.depthScalar,
+				this.baseFactor,
+				this.baseOffset
+		));
 	}
 }

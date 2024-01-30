@@ -14,7 +14,7 @@ import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
+import twilightforest.world.components.layer.BiomeDensitySource;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.List;
@@ -58,9 +58,9 @@ public class TFDimensionData {
 		context.register(TWILIGHT_DIM_TYPE, twilightDimType());
 	}
 
-	public static NoiseGeneratorSettings tfDefault(BootstapContext<NoiseGeneratorSettings> context) {
+	public static NoiseGeneratorSettings makeNoiseSettings(BootstapContext<NoiseGeneratorSettings> context, boolean skylight) {
 		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
-		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(TFDensityFunctions.TWILIGHT_TERRAIN));
+		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctions.SKYLIGHT_TERRAIN : TFDensityFunctions.FORESTED_TERRAIN));
 
 		NoiseSettings tfNoise = NoiseSettings.create(
 				-32, //TODO Deliberate over this. For now it'll be -32
@@ -72,50 +72,7 @@ public class TFDimensionData {
 		return new NoiseGeneratorSettings(
 				tfNoise,
 				Blocks.STONE.defaultBlockState(),
-				Blocks.WATER.defaultBlockState(),
-				new NoiseRouter(
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						finalDensity,
-						finalDensity,
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero()
-				),
-				TFSurfaceRules.tfSurface(),
-				List.of(),
-				TFDimensionData.SEALEVEL,
-				false,
-				false,
-				false,
-				false
-		);
-	}
-
-	// completely untested
-	public static NoiseGeneratorSettings skylight(BootstapContext<NoiseGeneratorSettings> context) {
-		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
-		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(TFDensityFunctions.SKYLIGHT_TERRAIN));
-
-		NoiseSettings skylightNoise = NoiseSettings.create(
-				-32, //min height
-				256, // height
-				2, // size_horizontal
-				2 // size_vertical
-		);
-
-		return new NoiseGeneratorSettings(
-				skylightNoise,
-				Blocks.STONE.defaultBlockState(),
-				Blocks.AIR.defaultBlockState(),
+				skylight ? Blocks.AIR.defaultBlockState() : Blocks.WATER.defaultBlockState(),
 				new NoiseRouter(
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
@@ -144,8 +101,8 @@ public class TFDimensionData {
 	}
 
 	public static void bootstrapNoise(BootstapContext<NoiseGeneratorSettings> context) {
-		context.register(TWILIGHT_NOISE_GEN, tfDefault(context));
-		context.register(SKYLIGHT_NOISE_GEN, skylight(context));
+		context.register(TWILIGHT_NOISE_GEN, makeNoiseSettings(context, false));
+		context.register(SKYLIGHT_NOISE_GEN, makeNoiseSettings(context, true));
 	}
 
 	public static void bootstrapStem(BootstapContext<LevelStem> context) {
