@@ -18,6 +18,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.forge.REIPluginClient;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import me.shedaniel.rei.plugin.common.displays.DefaultCompostingDisplay;
+import me.shedaniel.rei.plugin.common.displays.DefaultSmithingDisplay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
@@ -25,9 +26,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -48,13 +47,11 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
+import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 import twilightforest.item.recipe.UncraftingRecipe;
 import twilightforest.util.EntityRenderingUtil;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.stream.Stream;
 
 @REIPluginClient
@@ -111,8 +108,8 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 		RecipeViewerConstants.getTransformationPowderRecipes().forEach(info -> registry.add(REITransformationPowderDisplay.of(info)));
 
-
 		registry.add(REIMoonwormQueenCategory.createDisplay());
+		registry.registerRecipeFiller(NoTemplateSmithingRecipe.class, RecipeType.SMITHING, holder -> new DefaultSmithingDisplay(holder.value(), holder.id(), List.of(EntryIngredients.of(ItemStack.EMPTY), EntryIngredients.ofIngredient(holder.value().getBase()), EntryIngredients.ofIngredient(holder.value().getAddition()))));
 	}
 
 	@Override

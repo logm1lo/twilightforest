@@ -64,6 +64,7 @@ import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
 import twilightforest.init.TFDimension;
+import twilightforest.item.recipe.EmperorsClothRecipe;
 
 import java.util.HashSet;
 import java.util.List;
@@ -274,10 +275,15 @@ public class TFClientEvents {
 	private static final MutableComponent WIP_TEXT_0 = Component.translatable("misc.twilightforest.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 	private static final MutableComponent WIP_TEXT_1 = Component.translatable("misc.twilightforest.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 	private static final MutableComponent NYI_TEXT = Component.translatable("misc.twilightforest.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC);
 
 	@SubscribeEvent
 	public static void tooltipEvent(ItemTooltipEvent event) {
 		ItemStack item = event.getItemStack();
+
+		if (item.getTag() != null && item.getTag().contains(EmperorsClothRecipe.INVISIBLE_TAG)) {
+			event.getToolTip().add(1, EMPERORS_CLOTH_TOOLTIP);
+		}
 
 		if (!item.is(ItemTagGenerator.WIP) && !item.is(ItemTagGenerator.NYI)) return;
 

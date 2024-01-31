@@ -9,8 +9,6 @@ import twilightforest.world.components.structures.util.StructureHints;
 
 public record Enforcement(TriConsumer<Player, ServerLevel, Restriction> consumer) {
 
-
-
     public static void enforceBiomeProgression(Player player, ServerLevel level) {
         Restriction.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player).ifPresent(restriction -> {
             Enforcement enforcement = TFRegistries.ENFORCEMENT.get(restriction.enforcement().location());

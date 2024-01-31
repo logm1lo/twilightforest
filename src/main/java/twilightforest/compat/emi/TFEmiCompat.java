@@ -12,18 +12,14 @@ import dev.emi.emi.recipe.EmiGrindstoneRecipe;
 import dev.emi.emi.recipe.special.EmiAnvilEnchantRecipe;
 import dev.emi.emi.recipe.special.EmiGrindstoneDisenchantingRecipe;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Block;
 import twilightforest.TFConfig;
 import twilightforest.compat.RecipeViewerConstants;
-import twilightforest.compat.emi.recipes.EmiCrumbleHornRecipe;
-import twilightforest.compat.emi.recipes.EmiMoonwormQueenRecipe;
-import twilightforest.compat.emi.recipes.EmiTransformationPowderRecipe;
-import twilightforest.compat.emi.recipes.EmiUncraftingRecipe;
+import twilightforest.compat.emi.recipes.*;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
+import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 
 import java.util.List;
 import java.util.Objects;
@@ -67,6 +63,12 @@ public class TFEmiCompat implements EmiPlugin {
 			registry.addRecipe(new EmiCrumbleHornRecipe(info.getFirst(), info.getSecond()));
 		}
 		registry.addRecipe(new EmiMoonwormQueenRecipe());
+		registry.addRecipe(new EmiEmperorsClothRecipe());
+
+		for (RecipeHolder<SmithingRecipe> holder : manager.getAllRecipesFor(RecipeType.SMITHING).stream().filter(holder -> holder.value() instanceof NoTemplateSmithingRecipe).toList()) {
+			NoTemplateSmithingRecipe recipe = (NoTemplateSmithingRecipe) holder.value();
+			registry.addRecipe(new EmiNoSmithingTemplateRecipe(EmiIngredient.of(recipe.getBase()), EmiIngredient.of(recipe.getAddition()), EmiStack.of(recipe.getResultItem(Minecraft.getInstance().level.registryAccess())), recipe));
+		}
 
 		//remove other recipes as they arent actually possible recipes to use
 		//emi makes a few assumptions about damageable items that it honestly shouldnt

@@ -63,6 +63,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.item.GiantItem;
 import twilightforest.item.mapdata.TFMagicMapData;
+import twilightforest.item.recipe.EmperorsClothRecipe;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
@@ -404,5 +405,16 @@ public class ASMHooks {
 		Pair<BlockPos, Holder<Structure>> nearestLandmark = WorldUtil.findNearestMapLandmark(level, targetStructures, pos, searchRadius, skipKnownStructures);
 
 		return nearestLandmark != null ? nearestLandmark : oldReturnable;
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br>
+	 */
+	public static boolean cancelArmorRendering(boolean o, ItemStack stack) {
+		if (o && stack.getTag() != null && stack.getTag().contains(EmperorsClothRecipe.INVISIBLE_TAG)) {
+			return false;
+		}
+		return o;
 	}
 }

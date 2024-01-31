@@ -580,6 +580,8 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addItem(TFItems.POCKET_WATCH, "Pocket Watch");
 		this.add("item.twilightforest.pocket_watch.desc", "It seems to always be running late");
+		this.addItem(TFItems.EMPERORS_CLOTH, "Emperor's Cloth");
+		this.add("item.twilightforest.emperors_cloth.desc", "Shrouded");
 		this.addItem(TFItems.ORE_MAGNET, "Ore Magnet");
 		this.addItem(TFItems.CRUMBLE_HORN, "Crumble Horn");
 		this.addItem(TFItems.MOONWORM_QUEEN, "Moonworm Queen");
