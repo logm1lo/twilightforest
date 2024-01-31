@@ -444,7 +444,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBannerPattern("knight_phantom", "Knight Helmet");
 		this.addBannerPattern("ur_ghast", "Carminite Border");
 		this.addBannerPattern("alpha_yeti", "Alpha Yeti Face");
-		this.addBannerPattern("snow_queen", "Snow Queen Crown");
+		this.addBannerPattern("snow_queen", "Snowflake");
 		this.addBannerPattern("quest_ram", "Questing Ram Swirls");
 
 		this.addBlock(TFBlocks.ZOMBIE_SKULL_CANDLE, "Zombie Skull Candle");
