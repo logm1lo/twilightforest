@@ -207,7 +207,6 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 				TFBlocks.AURORALIZED_GLASS.get().asItem(),
 				TFBlocks.SLIDER.get().asItem(),
 				TFItems.MAGIC_PAINTING.get(),
-				TFItems.POCKET_WATCH.get(),
 				TFItems.QUEST_RAM_BANNER_PATTERN.get()
 		);
 

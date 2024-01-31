@@ -364,7 +364,7 @@ public class ChestLootTables implements LootTableSubProvider {
 								.add(LootItem.lootTableItem(Items.IRON_PICKAXE).setWeight(75))
 								//ultrarare loot
 								.add(LootItem.lootTableItem(Items.DIAMOND).setWeight(25))
-								//.add(LootItem.lootTableItem(TFItems.ORE_METER).setWeight(25))
+								.add(LootItem.lootTableItem(TFItems.ORE_METER).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.MUSIC_DISC_FINDINGS).setWeight(25))));
@@ -398,6 +398,7 @@ public class ChestLootTables implements LootTableSubProvider {
 								.add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.PEACOCK_FEATHER_FAN).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.CHARM_OF_LIFE_1).setWeight(25))
+								.add(LootItem.lootTableItem(TFItems.POCKET_WATCH).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.MUSIC_DISC_WAYFARER).setWeight(25))));
 
 		register.accept(TFLootTables.LARGE_HOLLOW_HILL.lootTable,

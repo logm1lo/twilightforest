@@ -26,11 +26,11 @@ public class PocketWatchItem extends Item {
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean held) {
         if (entity instanceof LivingEntity living) {
             if (slot >= 0 && slot <= 8) {
-                living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 0, 0, false, false, false));
+                living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 5, 0, false, false, false));
             }
 
-            if (living.getOffhandItem().is(this) || living.getMainHandItem().is(this)) {
-                living.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 0, 0, false, false, false));
+            if (living.isHolding(this)) {
+                living.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 5, 0, false, false, false));
 
                 if (living.hasEffect(MobEffects.DIG_SLOWDOWN)) {
                     living.removeEffect(MobEffects.DIG_SLOWDOWN);
