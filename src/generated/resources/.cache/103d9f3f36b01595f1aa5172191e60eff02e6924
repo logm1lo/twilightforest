@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-30T02:50:52.836779	Registries
+// 1.20.4	2024-01-30T22:24:13.309156	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -124,7 +124,7 @@ c091b11d2772ab089848d1d3c7e7e5c6304ba968 data/twilightforest/worldgen/configured
 21a8619af190cd1643fdb6b337aa3f06af671181 data/twilightforest/worldgen/configured_feature/firefly_lamppost.json
 aacdb0d5124df3d216f9513b1c614786c90cb66e data/twilightforest/worldgen/configured_feature/flower_placer.json
 015c3851c7dc146f279d9da4d6b9eeef98957cf9 data/twilightforest/worldgen/configured_feature/flower_placer_alt.json
-529b5663507d117f2be651094cb5b6eb3f838ae1 data/twilightforest/worldgen/configured_feature/foundation.json
+cf242012df9c132af1ac571f10ac35cbace52e8d data/twilightforest/worldgen/configured_feature/foundation.json
 c8510921261b96cdb716725bd4f35e77cf6767cf data/twilightforest/worldgen/configured_feature/graveyard.json
 fbc7a5c08dfbf7593b8b6594c36fdd5eb308c973 data/twilightforest/worldgen/configured_feature/grove_ruins.json
 f847fecb789ed5fa5902184b16a67380edc78ef1 data/twilightforest/worldgen/configured_feature/hollow_log.json

@@ -1,6 +1,19 @@
 {
   "type": "twilightforest:foundation",
   "config": {
+    "basement_height": {
+      "type": "minecraft:weighted_list",
+      "distribution": [
+        {
+          "data": 3,
+          "weight": 1
+        },
+        {
+          "data": 0,
+          "weight": 1
+        }
+      ]
+    },
     "basement_posts": {
       "type": "minecraft:simple_state_provider",
       "state": {
@@ -134,6 +147,18 @@
         }
       ]
     },
+    "loot_container": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:chest",
+        "Properties": {
+          "type": "single",
+          "facing": "north",
+          "waterlogged": "false"
+        }
+      }
+    },
+    "loot_table": "twilightforest:chests/foundation_basement",
     "random_floor_chance": {
       "type": "minecraft:uniform",
       "value": {
