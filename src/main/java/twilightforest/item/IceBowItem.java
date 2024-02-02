@@ -38,7 +38,7 @@ public class IceBowItem extends BowItem {
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack stack) {
-		return new IceArrow(arrow.level(), arrow.getOwner(), stack);
+		return new IceArrow(arrow.level(), arrow.getOwner(), stack.copyWithCount(1));
 	}
 
 	@Override
