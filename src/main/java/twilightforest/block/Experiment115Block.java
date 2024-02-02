@@ -65,7 +65,7 @@ public class Experiment115Block extends Block {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!player.isSecondaryUseActive()) {
-			if (bitesTaken > 0 && stack.is(TFItems.EXPERIMENT_115)) {
+			if (bitesTaken > 0 && stack.is(TFItems.EXPERIMENT_115.get())) {
 				level.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken - 1));
 				level.playSound(null, pos, state.getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (!player.isCreative()) stack.shrink(1);

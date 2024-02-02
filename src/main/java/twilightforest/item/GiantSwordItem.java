@@ -28,6 +28,6 @@ public class GiantSwordItem extends SwordItem implements GiantItem {
 
 	@Override
 	public boolean isValidRepairItem(ItemStack stack, ItemStack material) {
-		return material.is(TFItems.IRONWOOD_INGOT) || super.isValidRepairItem(stack, material);
+		return material.is(TFItems.IRONWOOD_INGOT.get()) || super.isValidRepairItem(stack, material);
 	}
 }

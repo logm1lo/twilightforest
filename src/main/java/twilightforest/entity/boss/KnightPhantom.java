@@ -431,15 +431,15 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	}
 
 	public boolean isSwordKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_SWORD);
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_SWORD.get());
 	}
 
 	public boolean isAxeKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_AXE);
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_AXE.get());
 	}
 
 	public boolean isPickKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_PICKAXE);
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_PICKAXE.get());
 	}
 
 	public int getNumber() {
