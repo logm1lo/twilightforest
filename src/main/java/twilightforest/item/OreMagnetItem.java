@@ -292,6 +292,12 @@ public class OreMagnetItem extends Item {
 				}
 			}
 		}
+		
+		//Gonna need to special case this one as it isn't covered by tags.
+		//Ancient debris isn't exactly an ore, so it makes sense that the tag doesn't include it
+		if (!ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
+			ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
+		}
 
 		cacheNeedsBuild = false;
 	}
