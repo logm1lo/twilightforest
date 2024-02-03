@@ -10,6 +10,8 @@ import net.minecraft.world.item.*;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.KeepsakeCasketBlock;
+import twilightforest.events.CharmEvents;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,45 +20,20 @@ import java.util.function.Predicate;
 
 public class TFItemStackUtils {
 
-	public static int damage = 0;
-
-	@Deprecated
-	public static boolean consumeInventoryItem(LivingEntity living, final Predicate<ItemStack> matcher, final int count) {
-		TwilightForestMod.LOGGER.warn("consumeInventoryItem accessed! Forge requires the player to be alive before we can access this cap. This cap is most likely being accessed for an Afterdeath Charm!");
-
-		IItemHandler handler = living.getCapability(Capabilities.ItemHandler.ENTITY);
-		if (handler != null) {
-			int innerCount = count;
-			boolean consumedSome = false;
-
-			for (int i = 0; i < handler.getSlots() && innerCount > 0; i++) {
-				ItemStack stack = handler.getStackInSlot(i);
-				if (matcher.test(stack)) {
-					ItemStack consumed = handler.extractItem(i, innerCount, false);
-					innerCount -= consumed.getCount();
-					consumedSome = true;
-				}
-			}
-
-			return consumedSome;
-		}
-
-		return false;
+	public static boolean consumeInventoryItem(final Player player, final Item item, CompoundTag persistentTag, boolean saveItemToTag) {
+		return consumeInventoryItem(player.getInventory().armor, item, persistentTag, saveItemToTag) || consumeInventoryItem(player.getInventory().items, item, persistentTag, saveItemToTag) || consumeInventoryItem(player.getInventory().offhand, item, persistentTag, saveItemToTag);
 	}
 
-	public static boolean consumeInventoryItem(final Player player, final Item item) {
-		return consumeInventoryItem(player.getInventory().armor, item) || consumeInventoryItem(player.getInventory().items, item) || consumeInventoryItem(player.getInventory().offhand, item);
-	}
-
-	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item) {
+	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item, CompoundTag persistentTag, boolean saveItemToTag) {
 		for (ItemStack stack : stacks) {
-			if (stack.getItem() == item) {
+			if (stack.is(item)) {
+				if (saveItemToTag) persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, stack.save(new CompoundTag()));
 				stack.shrink(1);
-				CompoundTag nbt = stack.getOrCreateTag();
-				if (nbt.contains("BlockStateTag")) {
-					CompoundTag damageNbt = nbt.getCompound("BlockStateTag");
-					if (damageNbt.contains("damage")) {
-						damage = damageNbt.getInt("damage");
+				CompoundTag nbt = stack.getTag();
+				if (nbt != null && nbt.contains(BlockItem.BLOCK_STATE_TAG)) {
+					CompoundTag damageNbt = nbt.getCompound(BlockItem.BLOCK_STATE_TAG);
+					if (damageNbt.contains(KeepsakeCasketBlock.BREAKAGE.getName())) {
+						persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, damageNbt.getInt(KeepsakeCasketBlock.BREAKAGE.getName()));
 					}
 				}
 				return true;
