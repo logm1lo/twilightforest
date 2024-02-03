@@ -24,6 +24,7 @@ import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.decoration.ItemFrame;
@@ -416,5 +417,25 @@ public class ASMHooks {
 			return false;
 		}
 		return o;
+	}
+
+	public static float modifyClothVisibility(float o, LivingEntity entity) {
+		return o - getShroudedArmorPercentage(entity);
+	}
+
+	private static float getShroudedArmorPercentage(LivingEntity entity) {
+		Iterable<ItemStack> iterable = entity.getArmorSlots();
+		int shroudedArmor = 0;
+		int nonShroudedArmor = 0;
+
+		for (ItemStack stack : iterable) {
+			if (!stack.isEmpty() && stack.getTag() != null && stack.getTag().contains(EmperorsClothRecipe.INVISIBLE_TAG)) {
+				shroudedArmor++;
+			}
+
+			nonShroudedArmor++;
+		}
+
+		return nonShroudedArmor > 0 && shroudedArmor > 0 ? (float) shroudedArmor / (float) nonShroudedArmor : 0.0F;
 	}
 }
