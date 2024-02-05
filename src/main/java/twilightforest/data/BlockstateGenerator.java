@@ -16,6 +16,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.client.model.block.aurorablock.NoiseVaryingModelBuilder;
 import twilightforest.client.model.block.doors.CastleDoorBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
@@ -1260,17 +1261,14 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private void auroraBlocks() {
 		int variants = 16;
-		ModelFile[] models = new ModelFile[variants];
+		BlockModelBuilder[] models = new BlockModelBuilder[variants];
 		for (int i = 0; i < variants; i++) {
 			models[i] = this.makeTintedBlockAll(TFBlocks.AURORA_BLOCK.getId().getPath() + "_" + i, SOLID)
 					.texture("all", prefix("block/" + TFBlocks.AURORA_BLOCK.getId().getPath() + "_" + i));
 		}
-		for (int i = 0; i < variants; i++) {
-			getVariantBuilder(TFBlocks.AURORA_BLOCK.get()).partialState().with(AuroraBrickBlock.VARIANT, i)
-					.setModels(ConfiguredModel.builder()
-							.weight(3).modelFile(models[i]).nextModel()
-							.weight(1).modelFile(models[(i + 1) % variants]).build());
-		}
+
+		simpleBlock(TFBlocks.AURORA_BLOCK.get(), models().withExistingParent(TFBlocks.AURORA_BLOCK.getId().getPath(), new ResourceLocation("block/block"))
+				.customLoader(NoiseVaryingModelBuilder::new).addAll(models).end());
 
 		ModelFile pillarModel = this.makeTintedBlockColumn(TFBlocks.AURORA_PILLAR.getId().getPath())
 				.texture("end", prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))

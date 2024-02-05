@@ -14,7 +14,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.AuroraBrickBlock;
 import twilightforest.block.CastleDoorBlock;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.enums.HollowLogVariants;
@@ -22,6 +21,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.item.ArcticArmorItem;
 import twilightforest.util.ColorUtil;
+import twilightforest.util.SimplexNoiseHelper;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ColorHandler {
@@ -31,7 +31,7 @@ public final class ColorHandler {
 
 		BlockColors blockColors = event.getBlockColors();
 
-		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : ColorUtil.hsvToRGB(getter == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.get());
+		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : ColorUtil.hsvToRGB(getter == null ? 0.45F : SimplexNoiseHelper.rippleFractalNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.get());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -171,7 +171,7 @@ public final class ColorHandler {
 			if (getter == null || pos == null) {
 				return -1;
 			} else {
-				float f = AuroraBrickBlock.rippleFractialNoise(2, 32.0f, pos, 0.4f, 1.0f, 2f);
+				float f = SimplexNoiseHelper.rippleFractalNoise(2, 32.0f, pos, 0.4f, 1.0f, 2f);
 				return ColorUtil.hsvToRGB(0.1f, 1f - f, (f + 2f) / 3f);
 			}
 		}, TFBlocks.TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.INFESTED_TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get());
