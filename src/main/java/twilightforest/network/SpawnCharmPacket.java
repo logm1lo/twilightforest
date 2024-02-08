@@ -11,7 +11,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
@@ -48,16 +48,20 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 				public void run() {
 					Player player = ctx.player().orElseThrow();
 					ClientLevel level = (ClientLevel) ctx.level().orElseThrow();
+					Entity camera = Minecraft.getInstance().getCameraEntity();
 					if (TFConfig.CLIENT_CONFIG.spawnCharmAnimationAsTotem.get()) {
 						Minecraft.getInstance().gameRenderer.displayItemActivation(packet.charm());
-						Minecraft.getInstance().particleEngine.createTrackingEmitter(player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm()), 20);
+						//prefer the camera pos over the player as the player position isnt quite synced to the client yet
+						Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm()), 20);
 					} else {
 						CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, packet.charm());
 						effect.offset = (float) Math.PI;
 						level.addEntity(effect);
 					}
 					SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(packet.event());
-					level.playLocalSound(player.getX(), player.getY(), player.getZ(), event != null ? event : SoundEvents.TOTEM_USE, player.getSoundSource(), 1.5F, 1.0F, false);
+					if (camera != null && event != null) {
+						level.playLocalSound(camera.getX(), camera.getY(), camera.getZ(), event, player.getSoundSource(), 1.5F, 1.0F, false);
+					}
 				}
 			});
 		}
