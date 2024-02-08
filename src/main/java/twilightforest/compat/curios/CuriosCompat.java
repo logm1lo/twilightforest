@@ -49,10 +49,10 @@ public class CuriosCompat {
 
 					@Override
 					public void onEquip(SlotContext context, ItemStack prevStack) {
-						//check that we dont have a cicada already on our head before trying to start the sound
+						//check that we don't have a cicada already on our head before trying to start the sound
 						if (!context.entity().getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.get().asItem())) {
 							if (stack.is(TFBlocks.CICADA.get().asItem()) && !context.entity().level().isClientSide()) {
-								TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(context::entity), new CreateMovingCicadaSoundPacket(context.entity().getId()));
+								PacketDistributor.TRACKING_ENTITY_AND_SELF.with(context.entity()).send(new CreateMovingCicadaSoundPacket(context.entity().getId()));
 							}
 						}
 					}
@@ -74,7 +74,7 @@ public class CuriosCompat {
 	public static void keepCurios(DropRulesEvent event) {
 		if (event.getEntity() instanceof Player player) {
 			CompoundTag playerData = CharmEvents.getPlayerData(player);
-			if (!player.level().isClientSide() && CharmEvents.charmUsed != null && playerData.contains(CharmEvents.CHARM_INV_TAG) && !playerData.getList(CharmEvents.CHARM_INV_TAG, 10).isEmpty()) {
+			if (!player.level().isClientSide() && playerData.contains(CharmEvents.CONSUMED_CHARM_TAG) && playerData.contains(CharmEvents.CHARM_INV_TAG) && !playerData.getList(CharmEvents.CHARM_INV_TAG, 10).isEmpty()) {
 				//Keep all Curios items
 				CuriosApi.getCuriosInventory(player).ifPresent(modifiable -> {
 					for (int i = 0; i < modifiable.getSlots(); ++i) {
@@ -133,6 +133,7 @@ public class CuriosCompat {
 	public static boolean findAndConsumeCurio(Item item, Player player) {
 		Optional<SlotResult> slot = CuriosApi.getCuriosInventory(player).flatMap(handler -> handler.findFirstCurio(item));
 		if (slot.isPresent()) {
+			CharmEvents.getPlayerData(player).put(CharmEvents.CONSUMED_CHARM_TAG, slot.get().stack().save(new CompoundTag()));
 			slot.get().stack().shrink(1);
 			return true;
 		}

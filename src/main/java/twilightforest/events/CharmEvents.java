@@ -32,6 +32,7 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.CharmEffect;
 import twilightforest.enums.BlockLoggingEnum;
@@ -305,8 +306,8 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if (ModList.get().isLoaded("curios")) { //FIXME: When curios gets updated, uncomment this
-			//return CuriosCompat.findAndConsumeCurio(item, player);
+		if (ModList.get().isLoaded("curios")) {
+			return CuriosCompat.findAndConsumeCurio(item, player);
 		}
 
 		return false;
