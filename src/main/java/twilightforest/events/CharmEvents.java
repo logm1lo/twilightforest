@@ -27,6 +27,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -37,6 +38,7 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.CharmEffect;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.init.*;
+import twilightforest.network.SpawnCharmPacket;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
@@ -100,14 +102,10 @@ public class CharmEvents {
 				player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 600, 0));
 			}
 
-			// spawn effect thingers
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
-			effect.offset = (float) Math.PI;
-			player.level().addFreshEntity(effect);
-
-			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_LIFE.get(), player.getSoundSource(), 1, 1);
-
-			if (player instanceof ServerPlayer) player.awardStat(TFStats.LIFE_CHARMS_ACTIVATED.get());
+			if (player instanceof ServerPlayer serverPlayer) {
+				PacketDistributor.PLAYER.with(serverPlayer).send(new SpawnCharmPacket(new ItemStack(charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get()), TFSounds.CHARM_LIFE.getKey()));
+				serverPlayer.awardStat(TFStats.LIFE_CHARMS_ACTIVATED.get());
+			}
 
 			return true;
 		}
@@ -280,12 +278,10 @@ public class CharmEvents {
 		if (getPlayerData(player).contains(CONSUMED_CHARM_TAG)) {
 			ItemStack stack = ItemStack.of((CompoundTag) getPlayerData(player).get(CONSUMED_CHARM_TAG));
 
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, stack.getItem());
-			effect.offset = (float) Math.PI;
-			player.level().addFreshEntity(effect);
-
-			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP.get(), player.getSoundSource(), 1.5F, 1.0F);
-			if (player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED.get());
+			if (player instanceof ServerPlayer serverPlayer) {
+				PacketDistributor.PLAYER.with(serverPlayer).send(new SpawnCharmPacket(stack, TFSounds.CHARM_KEEP.getKey()));
+				serverPlayer.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED.get());
+			}
 			getPlayerData(player).remove(CONSUMED_CHARM_TAG);
 		}
 	}

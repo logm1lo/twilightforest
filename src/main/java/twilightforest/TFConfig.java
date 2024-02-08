@@ -387,6 +387,10 @@ public class TFConfig {
 					.translation(config + "prettify_ore_meter_gui")
 					.comment("Lines up dashes & percentages in Ore Meter GUI")
 					.define("prettifyOreMeterGui", true);
+
+			spawnCharmAnimationAsTotem = builder.translation(config + "totem_charm_animation")
+					.comment("If true, Twilight Forest charm items will display similar to the totem of undying when used.")
+					.define("totemCharmAnimation", false);
 		}
 
 		public final ModConfigSpec.BooleanValue silentCicadas;
@@ -401,6 +405,7 @@ public class TFConfig {
 		public final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
 		public final ModConfigSpec.BooleanValue prettifyOreMeterGui;
 		private final List<ResourceLocation> validAuroraBiomes = new ArrayList<>();
+		public final ModConfigSpec.BooleanValue spawnCharmAnimationAsTotem;
 	}
 
 	private static final String config = "config." + TwilightForestMod.ID;

@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
@@ -37,6 +38,7 @@ import org.apache.logging.log4j.Logger;
 import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.compat.top.TopCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.MagicPaintingVariant;
@@ -183,7 +185,7 @@ public class TwilightForestMod {
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
 		if (ModList.get().isLoaded("theoneprobe")) {
-			//InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
+			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 		}
 	}
 
@@ -197,6 +199,7 @@ public class TwilightForestMod {
 		registrar.play(MissingAdvancementToastPacket.ID, MissingAdvancementToastPacket::new, payload -> payload.client(MissingAdvancementToastPacket::handle));
 		registrar.play(MovePlayerPacket.ID, MovePlayerPacket::new, payload -> payload.client(MovePlayerPacket::handle));
 		registrar.play(ParticlePacket.ID, ParticlePacket::new, payload -> payload.client(ParticlePacket::handle));
+		registrar.play(SpawnCharmPacket.ID, SpawnCharmPacket::new, payload -> payload.client(SpawnCharmPacket::handle));
 		registrar.play(SpawnFallenLeafFromPacket.ID, SpawnFallenLeafFromPacket::new, payload -> payload.client(SpawnFallenLeafFromPacket::handle));
 		registrar.play(StructureProtectionClearPacket.ID, buf -> new StructureProtectionClearPacket(), payload -> payload.client(StructureProtectionClearPacket::handle));
 		registrar.play(StructureProtectionPacket.ID, StructureProtectionPacket::new, payload -> payload.client(StructureProtectionPacket::handle));
