@@ -11,47 +11,37 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nullable List<PartDataHolder> data) implements CustomPacketPayload {
+public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nullable Map<Integer, PartDataHolder> data) implements CustomPacketPayload {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("update_multipart_entity");
 
 	public UpdateTFMultipartPacket(FriendlyByteBuf buf) {
-		this(buf.readInt(), null, new ArrayList<>());
-		int len = buf.readInt();
-		for (int i = 0; i < len; i++) {
-			if (buf.readBoolean()) {
-				this.data.add(PartDataHolder.decode(buf));
-			}
+		this(buf.readInt(), null, new HashMap<>());
+		int id;
+		while ((id = buf.readInt()) > 0) {
+			this.data.put(id, PartDataHolder.decode(buf));
 		}
 	}
 
 	public UpdateTFMultipartPacket(Entity entity) {
-		this(-1, entity, null);
+		this(-1, entity, Arrays.stream(entity.getParts()).filter(part -> part instanceof TFPart<?>).map(part -> (TFPart<?>) part).collect(Collectors.toMap(TFPart::getId, TFPart::writeData)));
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buf) {
 		if (this.entity == null)
 			throw new IllegalStateException("Null Entity while encoding UpdateTFMultipartPacket");
+		if (this.data == null)
+			throw new IllegalStateException("Null Data while encoding UpdateTFMultipartPacket");
 		buf.writeInt(this.entity.getId());
-		PartEntity<?>[] parts = this.entity.getParts();
-		// We assume the client and server part arrays are identical, else everything will crash and burn. Don't even bother handling it.
-		if (parts != null) {
-			buf.writeInt(parts.length);
-			for (PartEntity<?> part : parts) {
-				if (part instanceof TFPart<?> tfPart) {
-					buf.writeBoolean(true);
-					tfPart.writeData().encode(buf);
-				} else {
-					buf.writeBoolean(false);
-				}
-			}
-		} else {
-			buf.writeInt(0);
-		}
+		this.data.forEach((id, data) -> {
+			buf.writeInt(id);
+			data.encode(buf);
+		});
+		buf.writeInt(-1);
 	}
 
 	@Override
@@ -67,14 +57,12 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 				PartEntity<?>[] parts = ent.getParts();
 				if (parts == null)
 					return;
-				int index = 0;
 				for (PartEntity<?> part : parts) {
 					if (part instanceof TFPart<?> tfPart) {
-						if (message.data == null && message.entity != null && message.entity.getParts()[index] instanceof TFPart<?> otherPart)
+						if (message.data == null && message.entity != null && Arrays.stream(message.entity.getParts()).filter(Objects::nonNull).filter(p -> p.getId() == part.getId()).findFirst().orElseThrow() instanceof TFPart<?> otherPart)
 							tfPart.readData(otherPart.writeData());  // Account for Singleplayer
 						else if (message.data != null)
-							tfPart.readData(message.data.get(index));
-						index++;
+							tfPart.readData(message.data.get(tfPart.getId()));
 					}
 				}
 			}
@@ -84,7 +72,7 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 	public record PartDataHolder(double x, double y, double z,
 								 float yRot, float xRot,
 								 float width, float height,
-								 boolean fixed, boolean dirty,
+								 boolean fixed,
 								 @Nullable List<SynchedEntityData.DataValue<?>> data) {
 
 
@@ -97,23 +85,20 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 			buffer.writeFloat(this.width());
 			buffer.writeFloat(this.height());
 			buffer.writeBoolean(this.fixed());
-			buffer.writeBoolean(this.dirty());
-			if (this.dirty() && this.data() != null) {
+			if (this.data() != null) {
 				for (SynchedEntityData.DataValue<?> datavalue : this.data()) {
 					datavalue.write(buffer);
 				}
-
-				buffer.writeByte(255);
 			}
+			buffer.writeByte(255);
 		}
 
 		static PartDataHolder decode(FriendlyByteBuf buffer) {
-			boolean dirty;
 			return new PartDataHolder(buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
 					buffer.readFloat(), buffer.readFloat(),
 					buffer.readFloat(), buffer.readFloat(),
-					buffer.readBoolean(), dirty = buffer.readBoolean(),
-					dirty ? unpack(buffer) : null
+					buffer.readBoolean(),
+					unpack(buffer)
 			);
 		}
 
