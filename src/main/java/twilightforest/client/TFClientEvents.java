@@ -253,8 +253,8 @@ public class TFClientEvents {
 							intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
 							if (intensity > 0) {
 								player.moveTo(player.getX(), player.getY(), player.getZ(),
-										player.getYRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity,
-										player.getXRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity);
+										player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * intensity,
+										player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * intensity);
 								intensity = 0.0F;
 								break;
 							}
