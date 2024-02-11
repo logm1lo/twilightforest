@@ -214,7 +214,6 @@ public class TwilightForestMod {
 
 	public void init(FMLCommonSetupEvent evt) {
 		evt.enqueueWork(() -> {
-			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
 			TFStats.init();
 
