@@ -8,11 +8,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
+import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDataMaps;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFItems;
+import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.*;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -73,6 +72,9 @@ public class DataMapGenerator extends DataMapProvider {
 		compostables.add(TFItems.EXPERIMENT_115, new Compostable(0.85F), false);
 		compostables.add(TFItems.MAGIC_BEANS, new Compostable(0.85F), false);
 
+		var fuels = this.builder(NeoForgeDataMaps.FURNACE_FUELS);
+		fuels.add(ItemTagGenerator.BANISTERS, new FurnaceFuel(300), false);
+		
 		var transformation = this.builder(TFDataMaps.TRANSFORMATION_POWDER);
 		this.add2WayTransform(transformation, TFEntities.MINOTAUR, EntityType.ZOMBIFIED_PIGLIN);
 		this.add2WayTransform(transformation, TFEntities.DEER, EntityType.COW);

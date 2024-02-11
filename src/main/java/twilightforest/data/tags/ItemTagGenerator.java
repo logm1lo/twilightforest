@@ -30,6 +30,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 
 	public static final TagKey<Item> TWILIGHT_LOGS = create("logs");
 
+	public static final TagKey<Item> BANISTERS = create("banisters");
+
 	public static final TagKey<Item> PAPER = makeForgeTag("paper");
 
 	public static final TagKey<Item> TOWERWOOD = create("towerwood");
@@ -134,6 +136,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 				.addTag(STORAGE_BLOCKS_KNIGHTMETAL).addTag(STORAGE_BLOCKS_STEELEAF);
 
 		this.copy(BlockTagGenerator.TOWERWOOD, TOWERWOOD);
+		this.copy(BlockTagGenerator.BANISTERS, BANISTERS);
 
 		tag(PAPER).add(Items.PAPER);
 		tag(Tags.Items.FEATHERS).add(Items.FEATHER).add(TFItems.RAVEN_FEATHER.get());
