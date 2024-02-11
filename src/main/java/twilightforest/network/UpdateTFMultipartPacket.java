@@ -61,8 +61,11 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 					if (part instanceof TFPart<?> tfPart) {
 						if (message.data == null && message.entity != null && Arrays.stream(message.entity.getParts()).filter(Objects::nonNull).filter(p -> p.getId() == part.getId()).findFirst().orElseThrow() instanceof TFPart<?> otherPart)
 							tfPart.readData(otherPart.writeData());  // Account for Singleplayer
-						else if (message.data != null)
-							tfPart.readData(message.data.get(tfPart.getId()));
+						else if (message.data != null) {
+							PartDataHolder data = message.data.get(tfPart.getId());
+							if (data != null)
+								tfPart.readData(data);
+						}
 					}
 				}
 			}
