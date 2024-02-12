@@ -1,47 +1,45 @@
 package twilightforest.data.custom.stalactites;
 
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructures;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
-import java.util.List;
-
 public class StalactiteGenerator extends StalactiteProvider {
+
 	public StalactiteGenerator(PackOutput output) {
 		super(output, TwilightForestMod.ID);
 	}
 
 	@Override
 	protected void createStalactites() {
-		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_SMALL.location().getPath(), 1, 1, 0.6F)
+		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_SMALL.location().getPath(), 1, 1, 0.2F)
 				.addBaseStalactite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
 				.addStalagmite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
-				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.IRON_ORE, 30), Pair.of(Blocks.RAW_IRON_BLOCK, 1)), 0.7F, 8, 40))
+				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(Blocks.IRON_ORE, 0.7F, 8, 40))
 				.addOreStalactite(this.makeStalactiteName("coal_stalactite"), this.buildStalactite(Blocks.COAL_ORE, 0.8F, 12, 30))
-				.addOreStalactite(this.makeStalactiteName("copper_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.COPPER_ORE, 30), Pair.of(Blocks.RAW_COPPER_BLOCK, 1)), 0.6F, 12, 25))
+				.addOreStalactite(this.makeStalactiteName("copper_stalactite"), this.buildStalactite(Blocks.COPPER_ORE, 0.6F, 7, 25))
 				.addOreStalactite(this.makeStalactiteName("glowstone_stalactite"), this.buildStalactite(Blocks.GLOWSTONE, 0.5F, 8, 20)));
 
-		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_MEDIUM.location().getPath(), 1, 1, 0.75F)
+		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_MEDIUM.location().getPath(), 1, 1, 0.2F)
 				.addBaseStalactite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
 				.addStalagmite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
-				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.IRON_ORE, 30), Pair.of(Blocks.RAW_IRON_BLOCK, 1)), 0.7F, 8, 40))
+				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(Blocks.IRON_ORE, 0.7F, 8, 40))
 				.addOreStalactite(this.makeStalactiteName("coal_stalactite"), this.buildStalactite(Blocks.COAL_ORE, 0.8F, 12, 30))
-				.addOreStalactite(this.makeStalactiteName("copper_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.COPPER_ORE, 30), Pair.of(Blocks.RAW_COPPER_BLOCK, 1)), 0.6F, 12, 25))
+				.addOreStalactite(this.makeStalactiteName("copper_stalactite"), this.buildStalactite(Blocks.COPPER_ORE, 0.6F, 7, 25))
 				.addOreStalactite(this.makeStalactiteName("glowstone_stalactite"), this.buildStalactite(Blocks.GLOWSTONE, 0.5F, 8, 20))
-				.addOreStalactite(this.makeStalactiteName("gold_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.GOLD_ORE, 30), Pair.of(Blocks.RAW_GOLD_BLOCK, 1)), 0.6F, 6, 10))
+				.addOreStalactite(this.makeStalactiteName("gold_stalactite"), this.buildStalactite(Blocks.GOLD_ORE, 0.6F, 6, 10))
 				.addOreStalactite(this.makeStalactiteName("redstone_stalactite"), this.buildStalactite(Blocks.REDSTONE_ORE, 0.8F, 8, 20)));
 
-		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_LARGE.location().getPath(), 1, 1, 0.85F)
+		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_LARGE.location().getPath(), 1, 1, 0.2F)
 				.addBaseStalactite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
 				.addStalagmite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
-				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.IRON_ORE, 30), Pair.of(Blocks.RAW_IRON_BLOCK, 1)), 0.7F, 8, 40))
+				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(Blocks.IRON_ORE, 0.7F, 8, 40))
 				.addOreStalactite(this.makeStalactiteName("coal_stalactite"), this.buildStalactite(Blocks.COAL_ORE, 0.8F, 12, 30))
-				.addOreStalactite(this.makeStalactiteName("copper_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.COPPER_ORE, 30), Pair.of(Blocks.RAW_COPPER_BLOCK, 1)), 0.6F, 12, 25))
+				.addOreStalactite(this.makeStalactiteName("copper_stalactite"), this.buildStalactite(Blocks.COPPER_ORE, 0.6F, 7, 25))
 				.addOreStalactite(this.makeStalactiteName("glowstone_stalactite"), this.buildStalactite(Blocks.GLOWSTONE, 0.5F, 8, 20))
-				.addOreStalactite(this.makeStalactiteName("gold_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.GOLD_ORE, 30), Pair.of(Blocks.RAW_GOLD_BLOCK, 1)), 0.6F, 6, 10))
+				.addOreStalactite(this.makeStalactiteName("gold_stalactite"), this.buildStalactite(Blocks.GOLD_ORE, 0.6F, 6, 10))
 				.addOreStalactite(this.makeStalactiteName("redstone_stalactite"), this.buildStalactite(Blocks.REDSTONE_ORE, 0.8F, 8, 20))
 				.addOreStalactite(this.makeStalactiteName("diamond_stalactite"), this.buildStalactite(Blocks.DIAMOND_ORE, 0.5F, 4, 8))
 				.addOreStalactite(this.makeStalactiteName("lapis_stalactite"), this.buildStalactite(Blocks.LAPIS_ORE, 0.8F, 8, 12))
@@ -49,11 +47,11 @@ public class StalactiteGenerator extends StalactiteProvider {
 
 		this.buildConfig(new HillBuilder(TFStructures.HYDRA_LAIR.location().getPath(), 1, 1f/16f, 1.0F)
 				.addStalagmite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
-				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.IRON_ORE, 30), Pair.of(Blocks.RAW_IRON_BLOCK, 1)), 0.7F, 8, 40))
+				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(Blocks.IRON_ORE, 0.7F, 8, 40))
 				.addOreStalactite(this.makeStalactiteName("coal_stalactite"), this.buildStalactite(Blocks.COAL_ORE, 0.8F, 12, 30))
-				.addOreStalactite(this.makeStalactiteName("copper_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.COPPER_ORE, 30), Pair.of(Blocks.RAW_COPPER_BLOCK, 1)), 0.6F, 12, 25))
+				.addOreStalactite(this.makeStalactiteName("copper_stalactite"), this.buildStalactite(Blocks.COPPER_ORE, 0.6F, 7, 25))
 				.addOreStalactite(this.makeStalactiteName("glowstone_stalactite"), this.buildStalactite(Blocks.GLOWSTONE, 0.5F, 8, 20))
-				.addOreStalactite(this.makeStalactiteName("gold_stalactite"), this.buildStalactite(List.of(Pair.of(Blocks.GOLD_ORE, 30), Pair.of(Blocks.RAW_GOLD_BLOCK, 1)), 0.6F, 6, 10))
+				.addOreStalactite(this.makeStalactiteName("gold_stalactite"), this.buildStalactite(Blocks.GOLD_ORE, 0.6F, 6, 10))
 				.addOreStalactite(this.makeStalactiteName("redstone_stalactite"), this.buildStalactite(Blocks.REDSTONE_ORE, 0.8F, 8, 20)));
 
 		this.buildConfig(new HillBuilder(TFStructures.YETI_CAVE.location().getPath(), 1, 0, 0.0F)

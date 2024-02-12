@@ -43,9 +43,9 @@ public abstract class StalactiteProvider implements DataProvider {
 		this.createStalactites();
 		this.builder.forEach(info -> {
 			configs.add(info.config());
-			map.putAll(info.baseStalactites());
-			map.putAll(info.oreStalactites());
-			map.putAll(info.stalagmites());
+			this.checkForIncorrectEntries(map, info.baseStalactites());
+			this.checkForIncorrectEntries(map, info.oreStalactites());
+			this.checkForIncorrectEntries(map, info.stalagmites());
 		});
 
 		map.forEach((resourceLocation, stalactite) -> {
@@ -57,6 +57,16 @@ public abstract class StalactiteProvider implements DataProvider {
 			futuresBuilder.add(DataProvider.saveStable(output, SpeleothemVarietyConfig.CODEC.encodeStart(JsonOps.INSTANCE, hillConfig).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow(), hillPath));
 		});
 		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
+	}
+
+	//checks for improper duplicate entries in the map. This will prevent you from registering multiple stalactites under the same name that have different properties.
+	private void checkForIncorrectEntries(Map<ResourceLocation, Stalactite> insertMap, Map<ResourceLocation, Stalactite> entries) {
+		for (Map.Entry<ResourceLocation, Stalactite> entry : entries.entrySet()) {
+			if (insertMap.containsKey(entry.getKey()) && !insertMap.get(entry.getKey()).toString().equals(entry.getValue().toString())) {
+				throw new IllegalArgumentException("A stalactite with the name " + entry.getKey() + " already exists!");
+			}
+			insertMap.put(entry.getKey(), entry.getValue());
+		}
 	}
 
 	protected abstract void createStalactites();
