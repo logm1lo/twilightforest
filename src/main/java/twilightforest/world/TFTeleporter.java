@@ -62,16 +62,22 @@ public class TFTeleporter implements ITeleporter {
 
 		if ((pos = placeInExistingPortal(cache, dest, entity, destPos)) == null) {
 			TwilightForestMod.LOGGER.debug("Did not find existing portal, making a new one.");
-			pos = moveToSafeCoords(dest, entity, destPos);
-			this.makePortal(cache, entity, dest, pos.pos);
-			pos = placeInExistingPortal(cache, dest, entity, BlockPos.containing(pos.pos));
+			pos = createPosition(dest, entity, destPos, cache);
 		}
 
 		return pos == null ? ITeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
 	}
 
 	@Nullable
-	private static PortalInfo placeInExistingPortal(TeleporterCache cache, ServerLevel destDim, Entity entity, BlockPos pos) {
+	protected PortalInfo createPosition(ServerLevel dest, Entity entity, BlockPos destPos, TeleporterCache cache) {
+		PortalInfo info = moveToSafeCoords(dest, entity, destPos);
+		this.makePortal(cache, entity, dest, info.pos);
+		info = placeInExistingPortal(cache, dest, entity, BlockPos.containing(info.pos));
+		return info;
+	}
+
+	@Nullable
+	protected static PortalInfo placeInExistingPortal(TeleporterCache cache, ServerLevel destDim, Entity entity, BlockPos pos) {
 		boolean flag = true;
 		BlockPos blockpos;
 		ColumnPos columnPos = new ColumnPos(entity.blockPosition().getX(), entity.blockPosition().getZ()); // Must be the position from the src dim
@@ -214,11 +220,11 @@ public class TFTeleporter implements ITeleporter {
 		}
 	}
 
-	private static boolean isPortalAt(ServerLevel world, BlockPos pos) {
+	protected static boolean isPortalAt(ServerLevel world, BlockPos pos) {
 		return isPortal(world.getBlockState(pos));
 	}
 
-	private static PortalInfo moveToSafeCoords(ServerLevel world, Entity entity, BlockPos pos) {
+	protected static PortalInfo moveToSafeCoords(ServerLevel world, Entity entity, BlockPos pos) {
 		// if we're in enforced progression mode, check the biomes for safety
 		boolean checkProgression = LandmarkUtil.isProgressionEnforced(world);
 
@@ -323,7 +329,7 @@ public class TFTeleporter implements ITeleporter {
 		return null;
 	}
 
-	private void makePortal(TeleporterCache cache, Entity entity, ServerLevel world, Vec3 pos) {
+	protected void makePortal(TeleporterCache cache, Entity entity, ServerLevel world, Vec3 pos) {
 		ServerLevel src = entity.level() instanceof ServerLevel serverLevel ? serverLevel : null;
 
 		// ensure area is populated first
@@ -364,7 +370,7 @@ public class TFTeleporter implements ITeleporter {
 		cacheNewPortalCoords(cache, src, this.makePortalAt(world, BlockPos.containing(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
 	}
 
-	private static void loadSurroundingArea(ServerLevel world, Vec3 pos) {
+	protected static void loadSurroundingArea(ServerLevel world, Vec3 pos) {
 
 		int x = Mth.floor(pos.x()) >> 4;
 		int z = Mth.floor(pos.y()) >> 4;
@@ -377,7 +383,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	@Nullable
-	private static BlockPos findPortalCoords(ServerLevel world, Vec3 loc, Predicate<BlockPos> predicate) {
+	protected static BlockPos findPortalCoords(ServerLevel world, Vec3 loc, Predicate<BlockPos> predicate) {
 		// adjust the height based on what world we're traveling to
 		double yFactor = getYFactor(world);
 		// modified copy of base Teleporter method:
@@ -422,7 +428,7 @@ public class TFTeleporter implements ITeleporter {
 		return spot;
 	}
 
-	private static double getYFactor(ServerLevel world) {
+	protected static double getYFactor(ServerLevel world) {
 		return world.dimension().location().equals(Level.OVERWORLD.location()) ? 2.0 : 0.5;
 	}
 
@@ -440,7 +446,7 @@ public class TFTeleporter implements ITeleporter {
 		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.south().east().getX(), pos.south().east().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
 	}
 
-	private static boolean isIdealForPortal(ServerLevel world, BlockPos pos) {
+	protected static boolean isIdealForPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = 0; potentialY < 4; potentialY++) {
@@ -528,7 +534,7 @@ public class TFTeleporter implements ITeleporter {
 		return optional.map(Block::defaultBlockState).orElseGet(Blocks.SHORT_GRASS::defaultBlockState);
 	}
 
-	private static boolean isOkayForPortal(ServerLevel world, BlockPos pos) {
+	protected static boolean isOkayForPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = 0; potentialY < 4; potentialY++) {
@@ -543,11 +549,11 @@ public class TFTeleporter implements ITeleporter {
 		return true;
 	}
 
-	private static PortalInfo makePortalInfo(Entity entity, double x, double y, double z) {
+	protected static PortalInfo makePortalInfo(Entity entity, double x, double y, double z) {
 		return makePortalInfo(entity, new Vec3(x, y, z));
 	}
 
-	private static PortalInfo makePortalInfo(Entity entity, Vec3 pos) {
+	protected static PortalInfo makePortalInfo(Entity entity, Vec3 pos) {
 		return new PortalInfo(pos, Vec3.ZERO, entity.getYRot(), entity.getXRot());
 	}
 
