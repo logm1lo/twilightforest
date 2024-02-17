@@ -181,3 +181,11 @@ tasks.register('sourceJar', Jar) {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+
+idea {
+    // Tell IDEA to always download sources/javadoc artifacts from maven.
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
