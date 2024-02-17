@@ -42,8 +42,8 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 
 	@Override
 	public boolean generate(WorldGenLevel world, RandomSource  random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
-		int diameter = random.nextInt(3) + 2;
-		int height = random.nextInt(64) + (diameter * 4);
+		int diameter = random.nextInt(4) + 1;
+		int height = random.nextInt(64) + 32;
 
 		// do we have enough height?
 		if (world.isOutsideBuildHeight(pos.getY()) || world.isOutsideBuildHeight(pos.getY() + height + diameter)) {
@@ -131,7 +131,7 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	 *
 	 */
 	protected void buildFullCrown(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource  random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
-		int crownRadius = diameter * 4 + 2;
+		int crownRadius = diameter * 4 + 4;
 		int bvar = diameter + 2;
 
 		// okay, let's do 3-5 main branches starting at the bottom of the crown
@@ -169,9 +169,9 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 			}
 
 			if (size == 2) {
-				makeLargeBranch(world, trunkPlacer, leavesPlacer, random, pos, diameter, dHeight, length - 3, i * branchRotation + branchOffset, tilt, leafy, config);
+				makeLargeBranch(world, trunkPlacer, leavesPlacer, random, pos, diameter, dHeight, length, i * branchRotation + branchOffset, tilt, leafy, config);
 			} else if (size == 1) {
-				makeMedBranch(world, trunkPlacer, leavesPlacer, random, pos, diameter, dHeight, length - 1, i * branchRotation + branchOffset, tilt, leafy, config);
+				makeMedBranch(world, trunkPlacer, leavesPlacer, random, pos, diameter, dHeight, length, i * branchRotation + branchOffset, tilt, leafy, config);
 			} else if (size == 3) {
 				makeRoot(world, random, pos, diameter, dHeight, length, i * branchRotation + branchOffset, tilt, config);
 			} else {
@@ -360,7 +360,7 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		// go about halfway out and make a few medium branches.
 		// the number of medium branches we can support depends on the length of the big branch
 		// every other branch switches sides
-		int numMedBranches = random.nextInt((int) (length / 6)) + random.nextInt(2) + 1;
+		int numMedBranches = random.nextInt(Math.max((int) (length / 6), 1)) + random.nextInt(2) + 1;
 
 		for (int i = 0; i <= numMedBranches; i++) {
 
