@@ -34,10 +34,10 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
         this.xOffset = xOffset;
         this.zOffset = zOffset;
 
-        this.latticeStartX = getNearestStartLatticeIndex(this.xSpacing, minX - this.xOffset);
-        this.latticeStartZ = getNearestStartLatticeIndex(this.zSpacing, minZ - this.zOffset);
-        this.latticeCountX = getNearestEndLatticeIndex(this.xSpacing, (maxX + 0.999f) - this.xOffset) - this.latticeStartX + 1;
-        this.latticeCountZ = getNearestEndLatticeIndex(this.zSpacing, (maxZ + 0.999f) - this.zOffset) - this.latticeStartZ + 1;
+        this.latticeStartX = getNearestLatticeIndex(this.xSpacing, (int) (minX - this.xOffset));
+        this.latticeStartZ = getNearestLatticeIndex(this.zSpacing, (int) (minZ - this.zOffset));
+        this.latticeCountX = getNearestLatticeIndex(this.xSpacing, (int) (maxX + 1 - this.xOffset)) - this.latticeStartX;
+        this.latticeCountZ = getNearestLatticeIndex(this.zSpacing, (int) (maxZ + 1 - this.zOffset)) - this.latticeStartZ;
 
         this.converter = converter;
     }
@@ -76,11 +76,7 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
         return this;
     }
 
-    private static int getNearestStartLatticeIndex(float latticeSpacing, float i) {
-        return Mth.floor((i + Mth.positiveModulo(-i, latticeSpacing)) / latticeSpacing);
-    }
-
-    private static int getNearestEndLatticeIndex(float latticeSpacing, float i) {
+    private static int getNearestLatticeIndex(float latticeSpacing, int i) {
         return Mth.floor((i - Mth.positiveModulo(i, latticeSpacing)) / latticeSpacing);
     }
 
