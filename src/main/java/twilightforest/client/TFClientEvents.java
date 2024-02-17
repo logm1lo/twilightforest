@@ -111,8 +111,7 @@ public class TFClientEvents {
 
 		@SubscribeEvent
 		public static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
-			new TFSkyRenderer();
-			new TFWeatherRenderer();
+			TFSkyRenderer.createStars();
 			event.register(TFDimension.DIMENSION_RENDERER, new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
 		}
 	}

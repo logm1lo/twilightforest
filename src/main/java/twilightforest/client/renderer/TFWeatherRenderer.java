@@ -36,8 +36,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.Enforcements;
-import twilightforest.util.Enforcement;
-import twilightforest.init.custom.Restrictions;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.Restriction;
 
@@ -66,7 +64,7 @@ public class TFWeatherRenderer {
 	private static float urGhastRain = 0.0F;
 	public static boolean urGhastAlive = false;
 
-	public TFWeatherRenderer() {
+	static {
 		for (int i = 0; i < 32; ++i) {
 			for (int j = 0; j < 32; ++j) {
 				float f  = j - 16;
