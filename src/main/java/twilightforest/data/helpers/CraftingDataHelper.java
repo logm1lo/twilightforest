@@ -304,10 +304,13 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.unlockedBy("has_item", has(material.get()))
 				.save(output, locWood(name + "_chest"));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, trapped.get())
-				.requires(chest.get())
-				.requires(Items.TRIPWIRE_HOOK)
-				.unlockedBy("has_tripwire_hook", has(Items.TRIPWIRE_HOOK))
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, trapped.get(), 2)
+				.pattern("###")
+				.pattern("#C#")
+				.pattern("###")
+				.define('#', material.get())
+				.define('C', Tags.Items.CHESTS_TRAPPED)
+				.unlockedBy("has_item", has(material.get()))
 				.save(output, locWood(name + "_trapped_chest"));
 	}
 

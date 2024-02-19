@@ -1,15 +1,21 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "redstone",
-  "ingredients": [
-    {
-      "item": "twilightforest:sorting_chest"
+  "key": {
+    "#": {
+      "item": "twilightforest:sorting_planks"
     },
-    {
-      "item": "minecraft:tripwire_hook"
+    "C": {
+      "tag": "forge:chests/trapped"
     }
+  },
+  "pattern": [
+    "###",
+    "#C#",
+    "###"
   ],
   "result": {
+    "count": 2,
     "item": "twilightforest:sorting_trapped_chest"
   }
 }
