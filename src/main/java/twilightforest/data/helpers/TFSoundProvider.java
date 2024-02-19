@@ -45,7 +45,11 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 	}
 
 	public void generateExistingSoundWithSubtitle(DeferredHolder<SoundEvent, SoundEvent> event, SoundEvent referencedSound) {
-		this.generateExistingSound(event, referencedSound, true);
+		this.generateExistingSoundWithSubtitle(event, referencedSound, 1.0F, 1.0F);
+	}
+
+	public void generateExistingSoundWithSubtitle(DeferredHolder<SoundEvent, SoundEvent> event, SoundEvent referencedSound, float volume, float pitch) {
+		this.generateExistingSound(event, referencedSound, true, volume, pitch);
 	}
 
 	public void generateSoundWithCustomSubtitle(DeferredHolder<SoundEvent, SoundEvent> event, SoundEvent referencedSound, String subtitle) {
@@ -54,14 +58,14 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 				.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT)));
 	}
 
-	public void generateExistingSound(DeferredHolder<SoundEvent, SoundEvent> event, SoundEvent referencedSound, boolean subtitle) {
+	public void generateExistingSound(DeferredHolder<SoundEvent, SoundEvent> event, SoundEvent referencedSound, boolean subtitle, float volume, float pitch) {
 		SoundDefinition definition = SoundDefinition.definition();
 		if (subtitle) {
 			String[] splitSoundName = event.getId().getPath().split("\\.", 3);
 			definition.subtitle("subtitles.twilightforest." + splitSoundName[0] + "." + splitSoundName[2]);
 		}
 		this.add(event, definition
-				.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT)));
+				.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT).volume(volume).pitch(pitch)));
 	}
 
 	public void makeStepSound(DeferredHolder<SoundEvent, SoundEvent> event, SoundEvent referencedSound) {

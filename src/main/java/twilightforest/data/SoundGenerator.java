@@ -200,9 +200,9 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.REDCAP_DEATH, "mob/redcap/die", 3);
 		this.generateNewSoundWithSubtitle(TFSounds.REDCAP_HURT, "mob/redcap/hurt", 4);
 
-		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_ADD, SoundEvents.CHICKEN_EGG);
-		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_BREAK, SoundEvents.ITEM_BREAK);
-		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_BLOCK, SoundEvents.TRIDENT_HIT);
+		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_ADD, SoundEvents.CHICKEN_EGG, 0.75F, 1.0F);
+		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_BREAK, SoundEvents.DECORATED_POT_SHATTER);
+		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_BLOCK, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.5F, 1.0F);
 		this.generateNewSoundWithSubtitle(TFSounds.SHIELD_EXPIRE, "random/shield_poof", 1);
 
 		this.generateExistingSoundWithSubtitle(TFSounds.SKELETON_DRUID_AMBIENT, SoundEvents.STRAY_AMBIENT);
@@ -317,7 +317,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.SMOKER_START, SoundEvents.COMPARATOR_CLICK);
 		this.generateExistingSoundWithSubtitle(TFSounds.TIME_CORE, SoundEvents.COMPARATOR_CLICK);
 		this.generateExistingSoundWithSubtitle(TFSounds.TRANSFORMATION_CORE, SoundEvents.NOTE_BLOCK_HARP.value());
-		this.generateExistingSound(TFSounds.UNCRAFTING_TABLE_ACTIVATE, SoundEvents.END_PORTAL_SPAWN, false);
+		this.generateExistingSound(TFSounds.UNCRAFTING_TABLE_ACTIVATE, SoundEvents.END_PORTAL_SPAWN, false, 1.0F, 1.0F);
 		this.generateExistingSoundWithSubtitle(TFSounds.UNLOCK_VANISHING_BLOCK, SoundEvents.COMPARATOR_CLICK);
 		this.generateExistingSoundWithSubtitle(TFSounds.VANISHING_BLOCK, SoundEvents.ITEM_PICKUP);
 		this.generateNewSoundWithSubtitle(TFSounds.WROUGHT_IRON_FENCE_EXTENDED, "random/casket/repair", 1);

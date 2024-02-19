@@ -70,11 +70,6 @@ public class FortificationShieldAttachment {
 		}
 	}
 
-	public void replenishShields(LivingEntity entity) {
-		this.setShields(entity, 5, true);
-		entity.playSound(TFSounds.SHIELD_ADD.get(), 1.0F, (entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.2F + 1.0F);
-	}
-
 	public void setShields(LivingEntity entity, int amount, boolean temp) {
 		if (temp) {
 			this.temporaryShields = Math.max(amount, 0);
