@@ -1724,6 +1724,12 @@
     ],
     "subtitle": "subtitles.twilightforest.entity.shield.break"
   },
+  "entity.twilightforest.shield.expire": {
+    "sounds": [
+      "twilightforest:random/shield_poof"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.shield.expire"
+  },
   "entity.twilightforest.skeleton_druid.ambient": {
     "sounds": [
       {

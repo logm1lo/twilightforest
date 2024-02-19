@@ -1403,6 +1403,7 @@
   "subtitles.twilightforest.entity.shield.add": "Fortification Shield spawns",
   "subtitles.twilightforest.entity.shield.block": "Fortification Shield deflects",
   "subtitles.twilightforest.entity.shield.break": "Fortification Shield breaks",
+  "subtitles.twilightforest.entity.shield.expire": "Fortification Shield expires",
   "subtitles.twilightforest.entity.skeleton_druid.ambient": "Skeleton Druid rattles",
   "subtitles.twilightforest.entity.skeleton_druid.death": "Skeleton Druid dies",
   "subtitles.twilightforest.entity.skeleton_druid.hurt": "Skeleton Druid hurts",

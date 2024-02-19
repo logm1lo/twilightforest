@@ -50,7 +50,7 @@ public class CapabilityEvents {
 		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
 			var attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
 			if (attachment.shieldsLeft() > 0) {
-				attachment.breakShield(living);
+				attachment.breakShield(living, false);
 				event.setCanceled(true);
 			}
 		}
