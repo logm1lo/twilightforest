@@ -366,6 +366,10 @@ public class TFConfig {
 					translation(config + "ram_indicator").
 					comment("Renders a little check mark or x above your crosshair depending on if fed the Questing Ram that color of wool. Turn this off if you find it intrusive.").
 					define("questRamWoolIndicator", true);
+			showFortificationShieldIndicator = builder.
+					translation(config + "shield_indicator").
+					comment("Renders how many fortification shields are currently active on your player above your armor bar. Turn this off if you find it intrusive or other mods render over/under it.").
+					define("fortificationShieldIndicator", true);
 			cloudBlockPrecipitationDistanceClient = builder.
 					translation(config + "cloud_block_precipitation_distance").
 					comment("""
@@ -400,6 +404,7 @@ public class TFConfig {
 		public final ModConfigSpec.BooleanValue disableOptifineNagScreen;
 		public final ModConfigSpec.BooleanValue disableLockedBiomeToasts;
 		public final ModConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
+		public final ModConfigSpec.BooleanValue showFortificationShieldIndicator;
 		public final ModConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
 		public final ModConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
 		public final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
