@@ -39,9 +39,8 @@ import java.util.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFOverlays {
-	//for some reason we need a 256x256 texture to actually render anything so i'll just make this a generic icons sheet
-	//if we want to add any more overlay things in the future, we can simply add more icons!
-	private static final ResourceLocation TF_ICONS_SHEET = TwilightForestMod.prefix("textures/gui/tf_icons.png");
+	private static final ResourceLocation QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
+	private static final ResourceLocation QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
 	private static final ResourceLocation FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
 	public static Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
@@ -91,9 +90,9 @@ public class TFOverlays {
 					ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
 					if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
 						if (ram.guessColor(stack) != null && !ram.isColorPresent(Objects.requireNonNull(ram.guessColor(stack)))) {
-							graphics.blit(TF_ICONS_SHEET, k, j, 0, 0, 7, 7);
+							graphics.blitSprite(QUESTING_RAM_X_SPRITE, k, j, 7, 7);
 						} else {
-							graphics.blit(TF_ICONS_SHEET, k, j, 7, 0, 7, 7);
+							graphics.blitSprite(QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
 						}
 					}
 				}
