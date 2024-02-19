@@ -12,6 +12,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,17 +30,19 @@ public class FieryToolSmeltingModifier extends LootModifier {
 	protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		List<Pair<ItemStack, Float>> list = generatedLoot.stream().map(stack ->
 			context.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
-					.map(holder -> Pair.of(holder.value().getResultItem(context.getLevel().registryAccess()), holder.value().getExperience()))
+					.map(holder -> {
+						ItemStack result = holder.value().getResultItem(context.getLevel().registryAccess());
+						return Pair.of(ItemHandlerHelper.copyStackWithSize(result, stack.getCount() * result.getCount()), holder.value().getExperience());
+					})
+					.filter(pair -> !pair.getLeft().isEmpty())
 					.orElse(Pair.of(stack, 0.0F))).toList();
 
-		ObjectArrayList<ItemStack> newLoot = list.stream().map(Pair::getLeft).collect(Collectors.toCollection(ObjectArrayList::new));
 		float xp = (float) list.stream().mapToDouble(Pair::getRight).sum();
-
 		if (xp > 0.0F && context.hasParam(LootContextParams.THIS_ENTITY)) {
 			ExperienceOrb.award(context.getLevel(), context.getParam(LootContextParams.THIS_ENTITY).position(), Math.round(xp));
 		}
 
-		return newLoot;
+		return list.stream().map(Pair::getLeft).collect(Collectors.toCollection(ObjectArrayList::new));
 	}
 
 	@Override
