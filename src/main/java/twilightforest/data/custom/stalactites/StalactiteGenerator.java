@@ -14,7 +14,7 @@ public class StalactiteGenerator extends StalactiteProvider {
 
 	@Override
 	protected void createStalactites() {
-		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_SMALL.location().getPath(), 1, 1, 0.2F)
+		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_SMALL.location().getPath(), 1, 0.8F, 0.2F)
 				.addBaseStalactite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
 				.addStalagmite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
 				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(Blocks.IRON_ORE, 0.7F, 8, 40))
@@ -22,7 +22,7 @@ public class StalactiteGenerator extends StalactiteProvider {
 				.addOreStalactite(this.makeStalactiteName("copper_stalactite"), this.buildStalactite(Blocks.COPPER_ORE, 0.6F, 7, 25))
 				.addOreStalactite(this.makeStalactiteName("glowstone_stalactite"), this.buildStalactite(Blocks.GLOWSTONE, 0.5F, 8, 20)));
 
-		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_MEDIUM.location().getPath(), 1, 1, 0.2F)
+		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_MEDIUM.location().getPath(), 1, 0.8F, 0.2F)
 				.addBaseStalactite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
 				.addStalagmite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
 				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(Blocks.IRON_ORE, 0.7F, 8, 40))
@@ -32,7 +32,7 @@ public class StalactiteGenerator extends StalactiteProvider {
 				.addOreStalactite(this.makeStalactiteName("gold_stalactite"), this.buildStalactite(Blocks.GOLD_ORE, 0.6F, 6, 10))
 				.addOreStalactite(this.makeStalactiteName("redstone_stalactite"), this.buildStalactite(Blocks.REDSTONE_ORE, 0.8F, 8, 20)));
 
-		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_LARGE.location().getPath(), 1, 1, 0.2F)
+		this.buildConfig(new HillBuilder(TFStructures.HOLLOW_HILL_LARGE.location().getPath(), 1, 0.8F, 0.2F)
 				.addBaseStalactite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
 				.addStalagmite(this.makeStalactiteName("hill_stone_stalactite"), BlockSpikeFeature.STONE_STALACTITE)
 				.addOreStalactite(this.makeStalactiteName("iron_stalactite"), this.buildStalactite(Blocks.IRON_ORE, 0.7F, 8, 40))

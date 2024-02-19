@@ -17,7 +17,7 @@
   ],
   "replace": false,
   "stalactite_chance": 1.0,
-  "stalagmite_chance": 1.0,
+  "stalagmite_chance": 0.8,
   "stalagmites": [
     "twilightforest:entries/hill_stone_stalactite"
   ]
