@@ -32,9 +32,9 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty Y = BooleanProperty.create("y");
     public static final BooleanProperty Z = BooleanProperty.create("z");
 
-    protected static final VoxelShape X_SHAPE = Block.box(0.0D, 7.0D, 7.0D, 16.0D, 9.0D, 9.0D);
-    protected static final VoxelShape Y_SHAPE = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
-    protected static final VoxelShape Z_SHAPE = Block.box(7.0D, 7.0D, 0.0D, 9.0D, 9.0D, 16.0D);
+    protected static final VoxelShape X_SHAPE = Block.box(0.0, 6.5, 6.5, 16.0, 9.5, 9.5);
+    protected static final VoxelShape Y_SHAPE = Block.box(6.5, 0.0, 6.5, 9.5, 16.0, 9.5);
+    protected static final VoxelShape Z_SHAPE = Block.box(6.5, 6.5, 0.0, 9.5, 9.5, 16.0);
 
     public RopeBlock(BlockBehaviour.Properties properties) {
         super(properties);
