@@ -5,8 +5,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -139,8 +137,8 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 					// spawn mini ghasts near the secondary & tertiary points
 					for (int i = 0; i < 3; i++) {
-						te.spawnGhastNear(pos.getX() + te.secX, pos.getY() + te.secY, pos.getZ() + te.secZ);
-						te.spawnGhastNear(pos.getX() + te.terX, pos.getY() + te.terY, pos.getZ() + te.terZ);
+						te.spawnGhastNear(level, pos.getX() + te.secX, pos.getY() + te.secY, pos.getZ() + te.secZ);
+						te.spawnGhastNear(level, pos.getX() + te.terX, pos.getY() + te.terY, pos.getZ() + te.terZ);
 					}
 				}
 
@@ -152,12 +150,12 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 		}
 	}
 
-
-	private void spawnGhastNear(int x, int y, int z) {
-		CarminiteGhastling ghast = TFEntities.CARMINITE_GHASTLING.get().create(this.getLevel());
-		ghast.moveTo(x - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, y - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, z - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, this.getLevel().getRandom().nextFloat() * 360F, 0.0F);
-		ghast.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 200));
-		this.getLevel().addFreshEntity(ghast);
+	private void spawnGhastNear(Level level, int x, int y, int z) {
+		CarminiteGhastling ghast = TFEntities.CARMINITE_GHASTLING.get().create(level);
+		if (ghast != null) {
+			ghast.moveTo(x - 1.5 + level.getRandom().nextFloat() * 3.0, y - 1.5 + level.getRandom().nextFloat() * 3.0, z - 1.5 + level.getRandom().nextFloat() * 3.0, level.getRandom().nextFloat() * 360F, 0.0F);
+			level.addFreshEntity(ghast);
+		}
 	}
 
 	private void drawBlob(BlockPos pos, int rad, BlockState state, int fuzz, boolean netherTransform) {
