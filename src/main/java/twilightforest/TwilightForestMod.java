@@ -194,7 +194,9 @@ public class TwilightForestMod {
 		registrar.play(AreaProtectionPacket.ID, AreaProtectionPacket::new, payload -> payload.client(AreaProtectionPacket::handle));
 		registrar.play(CreateMovingCicadaSoundPacket.ID, CreateMovingCicadaSoundPacket::new, payload -> payload.client(CreateMovingCicadaSoundPacket::handle));
 		registrar.play(EnforceProgressionStatusPacket.ID, EnforceProgressionStatusPacket::new, payload -> payload.client(EnforceProgressionStatusPacket::handle));
-		registrar.play(MagicMapPacket.ID, MagicMapPacket::new, payload -> payload.client(MagicMapPacket::handle));
+		// Converting the method call into a reference will break servers
+		//noinspection Convert2MethodRef
+		registrar.play(MagicMapPacket.ID, MagicMapPacket::new, payload -> payload.client((message, ctx) -> MagicMapPacket.handle(message, ctx)));
 		registrar.play(MazeMapPacket.ID, MazeMapPacket::new, payload -> payload.client(MazeMapPacket::handle));
 		registrar.play(MissingAdvancementToastPacket.ID, MissingAdvancementToastPacket::new, payload -> payload.client(MissingAdvancementToastPacket::handle));
 		registrar.play(MovePlayerPacket.ID, MovePlayerPacket::new, payload -> payload.client(MovePlayerPacket::handle));

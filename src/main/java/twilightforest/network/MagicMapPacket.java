@@ -7,6 +7,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.MagicMapItem;
@@ -41,11 +43,12 @@ public class MagicMapPacket implements CustomPacketPayload {
 		return ID;
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	public static void handle(MagicMapPacket message, PlayPayloadContext ctx) {
 		//ensure this is only done on clients as this uses client only code
 		if (ctx.flow().isClientbound()) {
 			ctx.workHandler().execute(() -> {
-				Level level = ctx.level().orElseThrow();
+				Level level = ctx.level().orElseGet(() -> Minecraft.getInstance().level);
 				// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
 				MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
 				String s = MagicMapItem.getMapName(message.inner.getMapId());
