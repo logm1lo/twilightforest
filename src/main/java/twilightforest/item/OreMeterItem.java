@@ -76,7 +76,7 @@ public class OreMeterItem extends Item {
 
 		//if we're not crouching, put the ore meter into its "loading" state
 		if (!player.isSecondaryUseActive()) {
-			if (!scanNbt.contains("Loading")) {
+			if (level.isClientSide() && !scanNbt.contains("Loading")) {
 				scanNbt.putInt("Loading", 0);
 			}
 			level.playSound(player, player.blockPosition(), TFSounds.ORE_METER_CRACKLE.get(), SoundSource.PLAYERS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
