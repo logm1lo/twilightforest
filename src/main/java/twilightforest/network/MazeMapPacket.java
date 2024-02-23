@@ -34,24 +34,29 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore,
 		return ID;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MazeMapPacket message, PlayPayloadContext ctx) {
 		//ensure this is only done on clients as this uses client only code
+		//the level is not yet set in the payload context when a player logs in, so we need to fall back to the clientlevel instead
 		if (ctx.flow().isClientbound()) {
-			ctx.workHandler().execute(() -> {
-				Level level = ctx.level().orElseThrow();
-				// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
-				MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
-				String s = MazeMapItem.getMapName(message.inner().getMapId());
-				TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(level, s);
-				if (mapdata == null) {
-					mapdata = new TFMazeMapData(0, 0, message.inner().getScale(), false, false, message.inner().isLocked(), level.dimension());
-					TFMazeMapData.registerMazeMapData(level, mapdata, s);
-				}
+			ctx.workHandler().execute(new Runnable() {
+				@Override
+				public void run() {
+					Level level = ctx.level().orElse(Minecraft.getInstance().level);
+					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
+					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
+					String s = MazeMapItem.getMapName(message.inner().getMapId());
+					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(level, s);
+					if (mapdata == null) {
+						mapdata = new TFMazeMapData(0, 0, message.inner().getScale(), false, false, message.inner().isLocked(), level.dimension());
+						TFMazeMapData.registerMazeMapData(level, mapdata, s);
+					}
 
-				mapdata.ore = message.ore();
-				mapdata.yCenter = message.yCenter();
-				message.inner().applyToMap(mapdata);
-				mapitemrenderer.update(message.inner().getMapId(), mapdata);
+					mapdata.ore = message.ore();
+					mapdata.yCenter = message.yCenter();
+					message.inner().applyToMap(mapdata);
+					mapitemrenderer.update(message.inner().getMapId(), mapdata);
+				}
 			});
 		}
 	}

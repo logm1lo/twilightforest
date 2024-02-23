@@ -1,5 +1,6 @@
 package twilightforest.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -62,7 +63,7 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 			ctx.workHandler().execute(new Runnable() {
 				@Override
 				public void run() {
-					ClientLevel level = (ClientLevel) ctx.level().orElseThrow();
+					ClientLevel level = (ClientLevel) ctx.level().orElse(Minecraft.getInstance().level);
 					message.sbb.forEach(box -> {
 						for (Entity entity : level.entitiesForRendering()) {
 							if (entity instanceof ProtectionBox prot) {

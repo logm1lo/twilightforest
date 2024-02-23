@@ -47,7 +47,7 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 				@Override
 				public void run() {
 					Player player = ctx.player().orElseThrow();
-					ClientLevel level = (ClientLevel) ctx.level().orElseThrow();
+					ClientLevel level = (ClientLevel) ctx.level().orElse(Minecraft.getInstance().level);
 					Entity camera = Minecraft.getInstance().getCameraEntity();
 					if (TFConfig.CLIENT_CONFIG.spawnCharmAnimationAsTotem.get()) {
 						Minecraft.getInstance().gameRenderer.displayItemActivation(packet.charm());
