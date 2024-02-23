@@ -20,7 +20,7 @@ An enchanted forest dimension.
 [[dependencies.twilightforest]]
     modId="neoforge"
     type="required"
-    versionRange="[20.4.158-beta,)"
+    versionRange="[20.4.167,)"
     ordering="NONE"
     side="BOTH"
 
