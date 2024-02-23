@@ -156,7 +156,7 @@ public class OreMeterItem extends Item {
 		CompoundTag scanNbt = getScanData(stack);
 
 		if (scanNbt != null && scanNbt.contains("Range"))
-			return scanNbt.getInt("Range");
+			return Mth.clamp(scanNbt.getInt("Range"), 0, MAX_CHUNK_SEARCH_RANGE);
 
 		return 1;
 	}
