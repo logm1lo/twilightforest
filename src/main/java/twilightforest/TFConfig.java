@@ -35,6 +35,7 @@ public class TFConfig {
 	public static Client CLIENT_CONFIG;
 
 	public static class Common {
+		public static int cachedCloudBlockPrecipitationDistanceCommon = 32;
 
 		public Common(ModConfigSpec.Builder builder) {
 			builder.
@@ -336,6 +337,7 @@ public class TFConfig {
 	}
 
 	public static class Client {
+		public static int cachedCloudBlockPrecipitationDistanceClient = 32;
 
 		public Client(ModConfigSpec.Builder builder) {
 			silentCicadas = builder.
@@ -416,7 +418,7 @@ public class TFConfig {
 	private static final String config = "config." + TwilightForestMod.ID;
 
 	public static int getClientCloudBlockPrecipitationDistance() {
-		return (CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient.get() == -1 ? COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon : CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient).get();
+		return Client.cachedCloudBlockPrecipitationDistanceClient == -1 ? Common.cachedCloudBlockPrecipitationDistanceCommon : Client.cachedCloudBlockPrecipitationDistanceClient;
 	}
 
 	@Nullable
@@ -481,9 +483,14 @@ public class TFConfig {
 
 	@SubscribeEvent
 	public static void onConfigReload(final ModConfigEvent.Reloading event) {
-		if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID) && event.getConfig().getType() == ModConfig.Type.CLIENT) {
-			TFConfig.reloadGiantSkins();
-		}
+        if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID)) {
+            if (event.getConfig().getType() == ModConfig.Type.CLIENT) {
+                TFConfig.reloadGiantSkins();
+				TFConfig.Client.cachedCloudBlockPrecipitationDistanceClient = TFConfig.CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient.get();
+            } else {
+				TFConfig.Common.cachedCloudBlockPrecipitationDistanceCommon = TFConfig.COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon.get();
+			}
+        }
 	}
 
 	//damn forge events
