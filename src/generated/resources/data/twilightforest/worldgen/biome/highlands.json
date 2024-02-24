@@ -50,6 +50,8 @@
     ],
     [],
     [
+      "minecraft:patch_grass_taiga",
+      "minecraft:patch_large_fern",
       "twilightforest:grove_ruins",
       "twilightforest:stone_circle",
       "twilightforest:outside_stalagmite",
@@ -58,9 +60,9 @@
       "twilightforest:hollow_log",
       "twilightforest:tree/selector/highlands_trees",
       "minecraft:forest_rock",
-      "minecraft:patch_grass_taiga",
       "twilightforest:sparse_mushglooms",
-      "twilightforest:spruce_fallen_log"
+      "twilightforest:spruce_fallen_log",
+      "twilightforest:dark_ferns"
     ]
   ],
   "has_precipitation": true,
