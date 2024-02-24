@@ -33,7 +33,7 @@ public class HollowStumpFeature extends HollowTreeFeature {
 			return false;
 		}
 
-		buildTrunk(world, trunkPlacer, decorationPlacer, random, pos, radius, 6, config);
+		this.buildSmallTrunk(world, trunkPlacer, decorationPlacer, random, pos, radius, 6, config);
 
 		// Start with roots first, so they don't fail placement because they intersect the trunk shell first
 		// 3-5 roots at the bottom
@@ -45,8 +45,7 @@ public class HollowStumpFeature extends HollowTreeFeature {
 		return true;
 	}
 
-	@Override
-	protected void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, RandomSource  random, BlockPos pos, int diameter, int maxheight, TFTreeFeatureConfig config) {
+	protected void buildSmallTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, RandomSource  random, BlockPos pos, int diameter, int maxheight, TFTreeFeatureConfig config) {
 		int hollow = diameter >> 1;
 
 		// go down 4 squares and fill in extra trunk as needed, in case we're on uneven terrain

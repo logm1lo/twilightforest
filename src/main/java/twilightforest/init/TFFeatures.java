@@ -30,7 +30,6 @@ public class TFFeatures {
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> GRAVEYARD = FEATURES.register("graveyard", () -> new GraveyardFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> GROVE_RUINS = FEATURES.register("grove_ruins", () -> new GroveRuinsFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> HOLLOW_STUMP = FEATURES.register("hollow_stump", () -> new HollowStumpFeature(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> HOLLOW_TREE = FEATURES.register("hollow_tree", () -> new HollowTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> HUGE_LILY_PAD = FEATURES.register("huge_lily_pad", () -> new HugeLilypadFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> HUGE_WATER_LILY = FEATURES.register("huge_water_lily", () -> new HugeWaterLilyFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> LAMPPOSTS = FEATURES.register("lampposts", () -> new LampostFeature(BlockStateConfiguration.CODEC));

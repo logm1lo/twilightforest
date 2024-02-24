@@ -1,18 +1,23 @@
 package twilightforest.init;
 
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.components.structures.placements.AvoidLandmarkGridPlacement;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
 import java.util.Optional;
 
 public class TFStructureSets {
 
+	public static final ResourceKey<StructureSet> HOLLOW_TREE = registerKey("hollow_tree");
 	public static final ResourceKey<StructureSet> HEDGE_MAZE = registerKey("hedge_maze");
 	public static final ResourceKey<StructureSet> QUEST_GROVE = registerKey("quest_grove");
 	public static final ResourceKey<StructureSet> HOLLOW_HILL_SMALL = registerKey("small_hollow_hill");
@@ -43,6 +48,7 @@ public class TFStructureSets {
 	public static void bootstrap(BootstapContext<StructureSet> context) {
 		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 
+		context.register(HOLLOW_TREE, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_TREE), new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.5F, 34481210, Optional.empty(), 2, 1, RandomSpreadType.TRIANGULAR)));
 		context.register(HEDGE_MAZE, new StructureSet(structures.getOrThrow(TFStructures.HEDGE_MAZE), new LandmarkGridPlacement(Optional.of(TFStructures.HEDGE_MAZE))));
 		context.register(HOLLOW_HILL_SMALL, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL), new LandmarkGridPlacement(Optional.of(TFStructures.HOLLOW_HILL_SMALL))));
 		context.register(HOLLOW_HILL_MEDIUM, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_MEDIUM), new LandmarkGridPlacement(Optional.of(TFStructures.HOLLOW_HILL_MEDIUM))));

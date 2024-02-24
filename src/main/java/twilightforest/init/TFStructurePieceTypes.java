@@ -24,6 +24,7 @@ public class TFStructurePieceTypes {
 
     // Single-Piece Structures
     //IStructurePieceTypes that can be referred to
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> TFTree = registerPieceType("TFTree", HollowTreeComponent::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHill = registerPieceType("TFHill", HollowHillComponent::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHedge = registerPieceType("TFHedge", HedgeMazeComponent::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFQuestGrove = registerPieceType("TFQuest1", QuestGrove::new);

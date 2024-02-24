@@ -18,7 +18,6 @@ import net.minecraft.world.level.levelgen.placement.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.placements.AvoidLandmarkModifier;
 import twilightforest.world.components.placements.ChunkBlanketingModifier;
-import twilightforest.world.components.placements.ChunkCenterModifier;
 
 import java.util.List;
 
@@ -95,7 +94,6 @@ public class TFPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> PLACED_SAVANNAH_CANOPY_OAK_TREE = registerKey("tree/savannah_canopy_oak_tree");
 	public static final ResourceKey<PlacedFeature> PLACED_SWAMPY_OAK_TREE = registerKey("tree/swampy_oak_tree");
 	public static final ResourceKey<PlacedFeature> PLACED_DARKWOOD_TREE = registerKey("tree/darkwood_tree");
-	public static final ResourceKey<PlacedFeature> PLACED_HOLLOW_OAK_TREE = registerKey("tree/hollow_oak");
 
 	public static final ResourceKey<PlacedFeature> PLACED_CANOPY_TREES = registerKey("tree/selector/canopy_trees");
 	public static final ResourceKey<PlacedFeature> PLACED_DENSE_CANOPY_TREES = registerKey("tree/selector/dense_canopy_trees");
@@ -214,7 +212,6 @@ public class TFPlacedFeatures {
 		context.register(PLACED_SAVANNAH_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.TWILIGHT_OAK_TREE), tfTreeCheckArea(PlacementUtils.countExtra(1, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState())));
 		context.register(PLACED_SWAMPY_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.SWAMPY_OAK_TREE), tfTreeCheckArea(PlacementUtils.countExtra(4, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState())));
 		context.register(PLACED_DARKWOOD_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARKWOOD_TREE), List.of(PlacementUtils.countExtra(5, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, new AvoidLandmarkModifier(true, false, 16), PlacementUtils.filteredByBlockSurvival(TFBlocks.DARKWOOD_SAPLING.get()), BiomeFilter.biome())));
-		context.register(PLACED_HOLLOW_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.HOLLOW_TREE), List.of(SurfaceWaterDepthFilter.forMaxDepth(0), RarityFilter.onAverageOnceEvery(35), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, ChunkCenterModifier.center(), new AvoidLandmarkModifier(true, false, 32), PlacementUtils.filteredByBlockSurvival(TFBlocks.HOLLOW_OAK_SAPLING.get()), BiomeFilter.biome())));
 
 		context.register(PLACED_CANOPY_TREES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.CANOPY_TREES), tfTreeCheckArea(TFBlocks.CANOPY_SAPLING.get().defaultBlockState())));
 		context.register(PLACED_DENSE_CANOPY_TREES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DENSE_CANOPY_TREES), tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), TFBlocks.CANOPY_SAPLING.get().defaultBlockState())));
