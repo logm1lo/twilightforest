@@ -113,7 +113,8 @@ public class RopeItem extends BlockItem {
 
         for (int i = 0; i < 3; i++) {
             Direction dir = directions.get(i);
-            if ((dir.getAxis() == Direction.Axis.X && state.getValue(RopeBlock.X)) || (dir.getAxis() == Direction.Axis.Z && state.getValue(RopeBlock.Z))) {
+            if (state.getValue(RopeBlock.Y)) return Direction.DOWN;
+            else if ((dir.getAxis() == Direction.Axis.X && state.getValue(RopeBlock.X)) || (dir.getAxis() == Direction.Axis.Z && state.getValue(RopeBlock.Z))) {
                 for (int j = 0; j < 2; j++) {
                     if (j == 1) dir = dir.getOpposite();
                     BlockPos.MutableBlockPos mutableBlockPos = pos.mutable();
