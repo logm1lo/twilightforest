@@ -382,7 +382,7 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 	/**
 	 * Add a critter at the specified height and angle.
 	 */
-	protected static void addBug(LevelAccessor level, Block bug, BlockPos pos, int diameter, int fHeight, double fAngle) {
+	public static void addBug(LevelAccessor level, Block bug, BlockPos pos, int diameter, int fHeight, double fAngle) {
 		BlockPos src = FeatureLogic.translate(pos.above(fHeight), diameter + 1, fAngle, 0.5);
 
 		fAngle = fAngle % 1.0;

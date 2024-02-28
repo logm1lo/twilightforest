@@ -10,10 +10,9 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.world.components.structures.HollowTreeComponent;
+import twilightforest.world.components.structures.hollowtree.HollowTreeTrunk;
 import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
@@ -29,8 +28,8 @@ public class HollowTreeStructure extends LandmarkStructure {
 	}
 
 	@Override
-	protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-		return new HollowTreeComponent(0, x, y, z);
+	protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
+		return HollowTreeTrunk.atCoords(random, x, y, z);
 	}
 
 	@Override
@@ -40,7 +39,7 @@ public class HollowTreeStructure extends LandmarkStructure {
 
 	public static HollowTreeStructure buildStructureConfig(BootstapContext<Structure> context) {
 		return new HollowTreeStructure(
-				new DecorationClearance.DecorationConfig(2, false, true, false),
+				new DecorationClearance.DecorationConfig(2, false, true, true),
 				new Structure.StructureSettings(
 						context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_TREE_BIOMES),
 						Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
