@@ -22,7 +22,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.FeatureLogic;
 import twilightforest.world.components.structures.type.HollowTreeStructure;
@@ -117,7 +116,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	}
 
 	public void makeMedBranch(StructurePieceAccessor list, RandomSource rand, int index, BlockPos src, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		HollowTreeMedBranch branch = new HollowTreeMedBranch(index, src, branchLength, branchRotation, branchAngle, leafy, BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState()), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState()));
+		HollowTreeMedBranch branch = new HollowTreeMedBranch(index, src, branchLength, branchRotation, branchAngle, leafy, this.wood, this.leaves);
 		list.addPiece(branch);
 		branch.addChildren(this, list, rand);
 	}
