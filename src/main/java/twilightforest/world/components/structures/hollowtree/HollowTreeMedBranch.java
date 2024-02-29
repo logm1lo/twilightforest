@@ -3,6 +3,9 @@ package twilightforest.world.components.structures.hollowtree;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -13,10 +16,11 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.init.TFBlocks;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.VoxelBresenhamIterator;
+import twilightforest.world.components.structures.type.HollowTreeStructure;
 
 public class HollowTreeMedBranch extends StructurePiece {
 	protected final BlockPos src, dest;  // source and destination of branch, array of 3 ints representing x, y, z
@@ -64,10 +68,10 @@ public class HollowTreeMedBranch extends StructurePiece {
 	}
 
 	public HollowTreeMedBranch(StructurePieceSerializationContext context, CompoundTag tag) {
-		this(TFStructurePieceTypes.TFHTMB.value(), tag);
+		this(TFStructurePieceTypes.TFHTMB.value(), context, tag);
 	}
 
-	protected HollowTreeMedBranch(StructurePieceType type, CompoundTag tag) {
+	protected HollowTreeMedBranch(StructurePieceType type, StructurePieceSerializationContext context, CompoundTag tag) {
 		super(type, tag);
 
 		this.src = new BlockPos(tag.getInt("srcPosX"), tag.getInt("srcPosY"), tag.getInt("srcPosZ"));
@@ -78,9 +82,9 @@ public class HollowTreeMedBranch extends StructurePiece {
 		this.tilt = tag.getDouble("branchTilt");
 		this.leafy = tag.getBoolean("branchLeafy");
 
-		// FIXME codec
-		this.wood = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
-		this.leaves = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState());
+		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
+		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreeStructure.DEFAULT_WOOD);
+		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreeStructure.DEFAULT_LEAVES);
 	}
 
 	@Override
@@ -97,6 +101,9 @@ public class HollowTreeMedBranch extends StructurePiece {
 		tag.putDouble("branchAngle", this.angle);
 		tag.putDouble("branchTilt", this.tilt);
 		tag.putBoolean("branchLeafy", this.leafy);
+
+		tag.put("wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("leaves", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 	}
 
 	@Override

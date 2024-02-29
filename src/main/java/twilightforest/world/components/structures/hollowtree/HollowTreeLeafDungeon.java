@@ -3,7 +3,13 @@ package twilightforest.world.components.structures.hollowtree;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -12,7 +18,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,11 +26,10 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.loot.TFLootTables;
 import twilightforest.util.FeatureLogic;
+import twilightforest.world.components.structures.type.HollowTreeStructure;
 
 public class HollowTreeLeafDungeon extends StructurePiece {
 	private final int radius;
@@ -63,13 +67,19 @@ public class HollowTreeLeafDungeon extends StructurePiece {
 
 		this.radius = tag.getInt("leafRadius");
 
-		// FIXME codec
-		this.wood = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
-		this.leaves = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState());
-		this.inside = BlockStateProvider.simple(Blocks.AIR.defaultBlockState());
-		this.lootContainer = BlockStateProvider.simple(Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.NORTH));
-		this.lootTable = TFLootTables.TREE_CACHE.lootTable;
-		this.monster = TFEntities.SWARM_SPIDER;
+		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
+
+		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreeStructure.DEFAULT_WOOD);
+		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreeStructure.DEFAULT_LEAVES);
+		this.inside = BlockStateProvider.CODEC.parse(ops, tag.getCompound("air")).result().orElse(HollowTreeStructure.DEFAULT_DUNGEON_AIR);
+		this.lootContainer = BlockStateProvider.CODEC.parse(ops, tag.getCompound("loot_block")).result().orElse(HollowTreeStructure.DEFAULT_DUNGEON_LOOT_BLOCK);
+
+		this.lootTable = new ResourceLocation(tag.getString("loot_table"));
+
+		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("monster")));
+		this.monster = context.registryAccess().registry(Registries.ENTITY_TYPE)
+				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+				.orElse(HollowTreeStructure.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	/**
@@ -78,6 +88,15 @@ public class HollowTreeLeafDungeon extends StructurePiece {
 	@Override
 	protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
 		tag.putInt("leafRadius", this.radius);
+
+		tag.put("wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("leaves", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.inside).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.lootContainer).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+
+		tag.putString("loot_table", this.lootTable.toString());
+
+		tag.putString("monster", BuiltInRegistries.ENTITY_TYPE.getKey(this.monster.value()).toString());
 	}
 
 	/**

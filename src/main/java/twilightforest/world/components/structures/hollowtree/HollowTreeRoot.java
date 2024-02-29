@@ -27,7 +27,7 @@ public class HollowTreeRoot extends HollowTreeMedBranch {
 	}
 
 	public HollowTreeRoot(StructurePieceSerializationContext context, CompoundTag tag) {
-		super(TFStructurePieceTypes.TFHTRo.value(), tag);
+		super(TFStructurePieceTypes.TFHTRo.value(), context, tag);
 	}
 
 	@Override

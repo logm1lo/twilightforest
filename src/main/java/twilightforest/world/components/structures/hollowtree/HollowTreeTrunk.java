@@ -3,32 +3,31 @@ package twilightforest.world.components.structures.hollowtree;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.CritterBlock;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.loot.TFLootTables;
 import twilightforest.util.FeatureLogic;
+import twilightforest.world.components.structures.type.HollowTreeStructure;
 
 public class HollowTreeTrunk extends StructurePiece {
 	private final int height;
@@ -77,19 +76,25 @@ public class HollowTreeTrunk extends StructurePiece {
 
 		this.height = tag.getInt("trunkHeight");
 		this.radius = tag.getInt("trunkRadius");
-		
-		// FIXME codec
-		this.log = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.value());
-		this.wood = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
-		this.root = BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.value().defaultBlockState());
-		this.leaves = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState());
-		this.vine = BlockStateProvider.simple(Blocks.VINE.defaultBlockState().setValue(VineBlock.EAST, true));
-		this.bug = new WeightedStateProvider(new SimpleWeightedRandomList.Builder<BlockState>().add(TFBlocks.FIREFLY.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH)).add(TFBlocks.CICADA.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH)));
-		this.dungeonWood = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
-		this.dungeonAir = BlockStateProvider.simple(Blocks.AIR.defaultBlockState());
-		this.dungeonLootBlock = BlockStateProvider.simple(Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.NORTH));
-		this.dungeonLootTable = TFLootTables.TREE_CACHE.lootTable;
-		this.dungeonMonster = TFEntities.SWARM_SPIDER;
+
+		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
+
+		this.log = BlockStateProvider.CODEC.parse(ops, tag.getCompound("log")).result().orElse(HollowTreeStructure.DEFAULT_LOG);
+		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreeStructure.DEFAULT_WOOD);
+		this.root = BlockStateProvider.CODEC.parse(ops, tag.getCompound("root")).result().orElse(HollowTreeStructure.DEFAULT_ROOT);
+		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreeStructure.DEFAULT_LEAVES);
+		this.vine = BlockStateProvider.CODEC.parse(ops, tag.getCompound("vine")).result().orElse(HollowTreeStructure.DEFAULT_VINE);
+		this.bug = BlockStateProvider.CODEC.parse(ops, tag.getCompound("bug")).result().orElse(HollowTreeStructure.DEFAULT_BUG);
+		this.dungeonWood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_wood")).result().orElse(HollowTreeStructure.DEFAULT_WOOD);
+		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_air")).result().orElse(HollowTreeStructure.DEFAULT_DUNGEON_AIR);
+		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_loot_block")).result().orElse(HollowTreeStructure.DEFAULT_DUNGEON_LOOT_BLOCK);
+
+		this.dungeonLootTable = new ResourceLocation(tag.getString("dungeon_loot_table"));
+
+		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("dungeon_monster")));
+		this.dungeonMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
+				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+				.orElse(HollowTreeStructure.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	/**
@@ -99,6 +104,20 @@ public class HollowTreeTrunk extends StructurePiece {
 	protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
 		tag.putInt("trunkHeight", this.height);
 		tag.putInt("trunkRadius", this.radius);
+
+		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("root", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.root).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("leaves", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("vine", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.vine).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("bug", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.bug).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonWood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+
+		tag.putString("dungeon_loot_table", this.dungeonLootTable.toString());
+
+		tag.putString("dungeon_monster", BuiltInRegistries.ENTITY_TYPE.getKey(this.dungeonMonster.value()).toString());
 	}
 
 	/**

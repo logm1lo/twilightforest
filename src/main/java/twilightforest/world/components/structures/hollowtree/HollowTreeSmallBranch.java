@@ -21,7 +21,7 @@ public class HollowTreeSmallBranch extends HollowTreeMedBranch {
 	}
 
 	public HollowTreeSmallBranch(StructurePieceSerializationContext context, CompoundTag tag) {
-		super(TFStructurePieceTypes.TFHTSB.value(), tag);
+		super(TFStructurePieceTypes.TFHTSB.value(), context, tag);
 	}
 
 	@Override
