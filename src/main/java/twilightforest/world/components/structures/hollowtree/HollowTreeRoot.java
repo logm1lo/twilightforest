@@ -7,7 +7,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -45,7 +44,10 @@ public class HollowTreeRoot extends HollowTreeMedBranch {
 	protected void drawRootLine(WorldGenLevel world, BoundingBox sbb, BlockPos rSrc, BlockPos rDest, RandomSource random, BlockStateProvider wood, BlockStateProvider root) {
 		for (BlockPos coords : new VoxelBresenhamIterator(rSrc, rDest)) {
 			BlockPos.MutableBlockPos worldPos = this.getWorldPos(coords.getX(), coords.getY(), coords.getZ());
-			BlockState block = !sbb.isInside(worldPos) ? Blocks.AIR.defaultBlockState() : world.getBlockState(worldPos);
+
+			if (!sbb.isInside(worldPos)) continue;
+
+			BlockState block = world.getBlockState(worldPos);
 
 			// three choices here
 			if (block.canBeReplaced() || !block.isCollisionShapeFullBlock(world, worldPos)) {
