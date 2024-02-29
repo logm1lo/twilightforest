@@ -18,11 +18,13 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.structure.*;
@@ -43,19 +45,19 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 	public static final Codec<HollowTreeStructure> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Structure.settingsCodec(instance),
 			DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
-			IntProvider.codec(16, 128).fieldOf("height").forGetter(s -> s.height),
-			IntProvider.codec(1, 8).fieldOf("radius").forGetter(s -> s.radius),
-			BlockStateProvider.CODEC.fieldOf("log").forGetter(s -> s.log),
-			BlockStateProvider.CODEC.fieldOf("wood").forGetter(s -> s.wood),
-			BlockStateProvider.CODEC.fieldOf("root").forGetter(s -> s.root),
-			BlockStateProvider.CODEC.fieldOf("leaves").forGetter(s -> s.leaves),
-			BlockStateProvider.CODEC.fieldOf("vine").forGetter(s -> s.vine),
-			BlockStateProvider.CODEC.fieldOf("bug").forGetter(s -> s.bug),
-			BlockStateProvider.CODEC.fieldOf("dungeon_wood").forGetter(s -> s.dungeonWood),
-			BlockStateProvider.CODEC.fieldOf("dungeon_air").forGetter(s -> s.dungeonAir),
-			BlockStateProvider.CODEC.fieldOf("dungeon_loot_block").forGetter(s -> s.dungeonLootBlock),
-			ResourceLocation.CODEC.fieldOf("dungeon_loot_table").forGetter(s -> s.dungeonLootTable),
-			RegistryFixedCodec.create(Registries.ENTITY_TYPE).fieldOf("dungeon_monster").forGetter(s -> s.dungeonMonster)
+			IntProvider.codec(16, 128).fieldOf("height").orElse(HollowTreeStructure.DEFAULT_HEIGHT).forGetter(s -> s.height),
+			IntProvider.codec(1, 8).fieldOf("radius").orElse(HollowTreeStructure.DEFAULT_RADIUS).forGetter(s -> s.radius),
+			BlockStateProvider.CODEC.fieldOf("log").orElse(HollowTreeStructure.DEFAULT_LOG).forGetter(s -> s.log),
+			BlockStateProvider.CODEC.fieldOf("wood").orElse(HollowTreeStructure.DEFAULT_WOOD).forGetter(s -> s.wood),
+			BlockStateProvider.CODEC.fieldOf("root").orElse(HollowTreeStructure.DEFAULT_ROOT).forGetter(s -> s.root),
+			BlockStateProvider.CODEC.fieldOf("leaves").orElse(HollowTreeStructure.DEFAULT_LEAVES).forGetter(s -> s.leaves),
+			BlockStateProvider.CODEC.fieldOf("vine").orElse(HollowTreeStructure.DEFAULT_VINE).forGetter(s -> s.vine),
+			BlockStateProvider.CODEC.fieldOf("bug").orElse(HollowTreeStructure.DEFAULT_BUG).forGetter(s -> s.bug),
+			BlockStateProvider.CODEC.fieldOf("dungeon_wood").orElse(HollowTreeStructure.DEFAULT_WOOD).forGetter(s -> s.dungeonWood),
+			BlockStateProvider.CODEC.fieldOf("dungeon_air").orElse(HollowTreeStructure.DEFAULT_DUNGEON_AIR).forGetter(s -> s.dungeonAir),
+			BlockStateProvider.CODEC.fieldOf("dungeon_loot_block").orElse(HollowTreeStructure.DEFAULT_DUNGEON_LOOT_BLOCK).forGetter(s -> s.dungeonLootBlock),
+			ResourceLocation.CODEC.fieldOf("dungeon_loot_table").orElse(HollowTreeStructure.DEFAULT_DUNGEON_LOOT_TABLE).forGetter(s -> s.dungeonLootTable),
+			RegistryFixedCodec.create(Registries.ENTITY_TYPE).fieldOf("dungeon_monster").orElse(HollowTreeStructure.DEFAULT_DUNGEON_MONSTER).forGetter(s -> s.dungeonMonster)
 	).apply(instance, HollowTreeStructure::new));
 
 	private final DecorationConfig decorationConfig;
@@ -122,11 +124,14 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 
 		int x = SectionPos.sectionToBlockCoord(chunkPos.x, random.nextInt(16));
 		int z = SectionPos.sectionToBlockCoord(chunkPos.z, random.nextInt(16));
-		int y = this.adjustForTerrain(context, x, z);
+		int y = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
 
-		int height = Math.min(this.height.sample(random) + y, context.heightAccessor().getMaxBuildHeight()) - y;
+		LevelHeightAccessor levelHeights = context.heightAccessor();
 
-		if (height < 16) return Optional.empty();
+		int height = Math.min(this.height.sample(random) + y, levelHeights.getMaxBuildHeight()) - y;
+
+		if (height < 16 || y <= context.chunkGenerator().getSeaLevel() || y <= levelHeights.getMinBuildHeight() + 8)
+			return Optional.empty();
 
 		int radius = this.radius.sample(random);
 
@@ -165,8 +170,8 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 		return this.decorationConfig.chunkClearanceRadius();
 	}
 
-	public static final IntProvider DEFAULT_HEIGHT_RANDOM = UniformInt.of(32, 95);
-	public static final IntProvider DEFAULT_RADIUS_RANDOM = UniformInt.of(1, 4);
+	public static final IntProvider DEFAULT_HEIGHT = UniformInt.of(32, 95);
+	public static final IntProvider DEFAULT_RADIUS = UniformInt.of(1, 4);
 	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.value());
 	public static final BlockStateProvider DEFAULT_WOOD = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
 	public static final BlockStateProvider DEFAULT_ROOT = BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.value().defaultBlockState());
@@ -187,8 +192,8 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 						TerrainAdjustment.NONE
 				),
 				new DecorationClearance.DecorationConfig(2, false, true, true),
-				DEFAULT_HEIGHT_RANDOM,
-				DEFAULT_RADIUS_RANDOM,
+				DEFAULT_HEIGHT,
+				DEFAULT_RADIUS,
 				DEFAULT_LOG,
 				DEFAULT_WOOD,
 				DEFAULT_ROOT,
