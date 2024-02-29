@@ -7,8 +7,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -25,23 +25,26 @@ public class HollowTreeMedBranch extends StructurePiece {
 	protected final double tilt;
 	protected final boolean leafy;
 
-	protected HollowTreeMedBranch(int i, BlockPos src, double length, double angle, double tilt, boolean leafy) {
-		this(i, src, FeatureLogic.translate(src, length, angle, tilt), length, angle, tilt, leafy);
+	protected final BlockStateProvider wood;
+	protected final BlockStateProvider leaves;
+
+	protected HollowTreeMedBranch(int i, BlockPos src, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
+		this(i, src, FeatureLogic.translate(src, length, angle, tilt), length, angle, tilt, leafy, wood, leaves);
 	}
 
-	protected HollowTreeMedBranch(int i, BlockPos src, BlockPos dest, double length, double angle, double tilt, boolean leafy) {
-		this(i, src, dest, branchBoundingBox(src, dest), length, angle, tilt, leafy);
+	protected HollowTreeMedBranch(int i, BlockPos src, BlockPos dest, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
+		this(i, src, dest, branchBoundingBox(src, dest), length, angle, tilt, leafy, wood, leaves);
 	}
 
-	protected HollowTreeMedBranch(StructurePieceType type, int i, BlockPos src, BlockPos dest, double length, double angle, double tilt, boolean leafy) {
-		this(type, i, src, dest, branchBoundingBox(src, dest), length, angle, tilt, leafy);
+	protected HollowTreeMedBranch(StructurePieceType type, int i, BlockPos src, BlockPos dest, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
+		this(type, i, src, dest, branchBoundingBox(src, dest), length, angle, tilt, leafy, wood, leaves);
 	}
 
-	protected HollowTreeMedBranch(int i, BlockPos src, BlockPos dest, BoundingBox boundingBox, double length, double angle, double tilt, boolean leafy) {
-		this(TFStructurePieceTypes.TFHTMB.value(), i, src, dest, boundingBox, length, angle, tilt, leafy);
+	protected HollowTreeMedBranch(int i, BlockPos src, BlockPos dest, BoundingBox boundingBox, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
+		this(TFStructurePieceTypes.TFHTMB.value(), i, src, dest, boundingBox, length, angle, tilt, leafy, wood, leaves);
 	}
 
-	protected HollowTreeMedBranch(StructurePieceType type, int i, BlockPos src, BlockPos dest, BoundingBox boundingBox, double length, double angle, double tilt, boolean leafy) {
+	protected HollowTreeMedBranch(StructurePieceType type, int i, BlockPos src, BlockPos dest, BoundingBox boundingBox, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
 		super(type, i, boundingBox);
 
 		this.setOrientation(Direction.SOUTH);
@@ -55,6 +58,9 @@ public class HollowTreeMedBranch extends StructurePiece {
 		this.angle = angle;
 		this.tilt = tilt;
 		this.leafy = leafy;
+
+		this.wood = wood;
+		this.leaves = leaves;
 	}
 
 	public HollowTreeMedBranch(StructurePieceSerializationContext context, CompoundTag tag) {
@@ -71,6 +77,10 @@ public class HollowTreeMedBranch extends StructurePiece {
 		this.angle = tag.getDouble("branchAngle");
 		this.tilt = tag.getDouble("branchTilt");
 		this.leafy = tag.getBoolean("branchLeafy");
+
+		// FIXME codec
+		this.wood = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
+		this.leaves = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState());
 	}
 
 	@Override
@@ -91,18 +101,8 @@ public class HollowTreeMedBranch extends StructurePiece {
 
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource decoRNG, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
-		BlockPos rSrc = new BlockPos(this.src.getX() - this.boundingBox.minX(), this.src.getY() - this.boundingBox.minY(), this.src.getZ() - this.boundingBox.minZ());
-		BlockPos rDest = new BlockPos(this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ());
-
-//		placeVoid(world, sbb, boundingBox.minX, boundingBox.minY, boundingBox.minZ, boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ, TFBlocks.wood, 0, false);
-//		System.out.println("Drawing a medium branch from " + rsrc.posX + ", " + rsrc.posY + ", " + rsrc.posZ + " to " + rdest.posX + ", " + rdest.posY + ", " + rdest.posZ);
-//		System.out.println("My bounding box is  " + boundingBox.minX + ", " + boundingBox.minY + ", " + boundingBox.minZ + " to "  + boundingBox.maxX + ", " + boundingBox.maxY + ", " + boundingBox.maxZ);
-//		System.out.println("Draw bounding box is  " + sbb.minX + ", " + sbb.minY + ", " + sbb.minZ + " to "  + sbb.maxX + ", " + sbb.maxY + ", " + sbb.maxZ);
-
-		this.drawBresehnam(level, writeableBounds, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
-		this.drawBresehnam(level, writeableBounds, rSrc.getX(), rSrc.getY() + 1, rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
-
-		//Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		this.drawBresehnam(level, writeableBounds, this.src, this.dest, this.wood, decoRNG);
+		this.drawBresehnam(level, writeableBounds, this.src.above(), this.dest, this.wood, decoRNG);
 
 		// and several small branches
 		int numShoots = Math.min(decoRNG.nextInt(3) + 1, (int)(this.length / 5));
@@ -114,41 +114,40 @@ public class HollowTreeMedBranch extends StructurePiece {
 			angleVar = (angleInc * i) - 0.4;
 			outVar = (decoRNG.nextDouble() * 0.8) + 0.2;
 
-			BlockPos bSrc = FeatureLogic.translate(rSrc, this.length * outVar, this.angle, this.tilt);
+			BlockPos bSrc = FeatureLogic.translate(this.src, this.length * outVar, this.angle, this.tilt);
 
-			this.drawSmallBranch(level, writeableBounds, bSrc.getX(), bSrc.getY(), bSrc.getZ(), Math.max(this.length * 0.3F, 2F), this.angle + angleVar, this.tilt, this.leafy);
+			this.drawSmallBranch(level, writeableBounds, bSrc, Math.max(this.length * 0.3F, 2F), this.angle + angleVar, this.tilt, decoRNG, this.wood, this.leaves);
 		}
 
 		// with leaves!
 		if (this.leafy) {
 			int numLeafBalls = Math.min(decoRNG.nextInt(3) + 1, (int)(this.length / 5));
+
 			for(int i = 0; i < numLeafBalls; i++) {
 
 				double slength = (decoRNG.nextFloat() * 0.6F + 0.2F) * this.length;
-				BlockPos bdst = FeatureLogic.translate(rSrc, slength, this.angle, this.tilt);
+				BlockPos bdst = FeatureLogic.translate(new BlockPos(this.src.getX() - this.boundingBox.minX(), this.src.getY() - this.boundingBox.minY(), this.src.getZ() - this.boundingBox.minZ()), slength, this.angle, this.tilt);
 
-				this.makeLeafBlob(level, writeableBounds, bdst.getX(), bdst.getY(), bdst.getZ(), decoRNG.nextBoolean() ? 2 : 3);
+				this.makeLeafBlob(level, writeableBounds, bdst.getX(), bdst.getY(), bdst.getZ(), decoRNG.nextBoolean() ? 2 : 3, decoRNG, this.leaves);
 			}
 
-			this.makeLeafBlob(level, writeableBounds, rDest.getX(), rDest.getY(), rDest.getZ(), 3);
+			this.makeLeafBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves);
 		}
 	}
 
 	/**
 	 * Draws a line
 	 */
-	protected void drawBresehnam(WorldGenLevel world, BoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockValue) {
-		for (BlockPos coords : new VoxelBresenhamIterator(this.getWorldPos(x1, y1, z1).immutable(), this.getWorldPos(x2, y2, z2).immutable()))
-			if (sbb.isInside(coords))
-				world.setBlock(coords, blockValue, 2);
+	protected void drawBresehnam(WorldGenLevel level, BoundingBox writeableBounds, BlockPos startPos, BlockPos endPos, BlockStateProvider stateProvider, RandomSource random) {
+		for (BlockPos coords : new VoxelBresenhamIterator(startPos, endPos))
+			if (writeableBounds.isInside(coords))
+				level.setBlock(coords, stateProvider.getState(random, coords), 2);
 	}
 
 	/**
 	 * Make a leaf blob
 	 */
-	protected void makeLeafBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int radius) {
-		BlockState blockState = TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState();
-
+	protected void makeLeafBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int radius, RandomSource random, BlockStateProvider stateProvider) {
 		// then trace out a quadrant
 		for (int dx = 0; dx <= radius; dx++) {
 			for (int dy = 0; dy <= radius; dy++) {
@@ -167,14 +166,14 @@ public class HollowTreeMedBranch extends StructurePiece {
 					// if we're inside the blob, fill it
 					if (dist <= radius) {
 						// do eight at a time for easiness!
-						this.placeLeafBlock(world, blockState, sx + dx, sy + dy, sz + dz, sbb);
-						this.placeLeafBlock(world, blockState, sx + dx, sy + dy, sz - dz, sbb);
-						this.placeLeafBlock(world, blockState, sx - dx, sy + dy, sz + dz, sbb);
-						this.placeLeafBlock(world, blockState, sx - dx, sy + dy, sz - dz, sbb);
-						this.placeLeafBlock(world, blockState, sx + dx, sy - dy, sz + dz, sbb);
-						this.placeLeafBlock(world, blockState, sx + dx, sy - dy, sz - dz, sbb);
-						this.placeLeafBlock(world, blockState, sx - dx, sy - dy, sz + dz, sbb);
-						this.placeLeafBlock(world, blockState, sx - dx, sy - dy, sz - dz, sbb);
+						this.placeLeafBlock(world, stateProvider, sx + dx, sy + dy, sz + dz, sbb, random);
+						this.placeLeafBlock(world, stateProvider, sx + dx, sy + dy, sz - dz, sbb, random);
+						this.placeLeafBlock(world, stateProvider, sx - dx, sy + dy, sz + dz, sbb, random);
+						this.placeLeafBlock(world, stateProvider, sx - dx, sy + dy, sz - dz, sbb, random);
+						this.placeLeafBlock(world, stateProvider, sx + dx, sy - dy, sz + dz, sbb, random);
+						this.placeLeafBlock(world, stateProvider, sx + dx, sy - dy, sz - dz, sbb, random);
+						this.placeLeafBlock(world, stateProvider, sx - dx, sy - dy, sz + dz, sbb, random);
+						this.placeLeafBlock(world, stateProvider, sx - dx, sy - dy, sz - dz, sbb, random);
 					}
 				}
 			}
@@ -184,25 +183,25 @@ public class HollowTreeMedBranch extends StructurePiece {
 	/**
 	 * Puts a block only if leaves can go there.
 	 */
-	protected void placeLeafBlock(WorldGenLevel world, BlockState blockID, int x, int y, int z, BoundingBox sbb) {
+	protected void placeLeafBlock(WorldGenLevel world, BlockStateProvider blockID, int x, int y, int z, BoundingBox sbb, RandomSource random) {
 		BlockPos pos = this.getWorldPos(x, y, z);
 
 		if (sbb.isInside(pos))
 			if (FeatureLogic.worldGenReplaceable(world.getBlockState(pos)))
-				world.setBlock(pos, blockID, 2);
+				world.setBlock(pos, blockID.getState(random, pos), 2);
 	}
 
 	/**
 	 * This is like the small branch component, but we're just drawing it directly into the world
 	 */
-	protected void drawSmallBranch(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, double branchLength, double branchAngle, double branchTilt, boolean leafy) {
+	protected void drawSmallBranch(WorldGenLevel world, BoundingBox sbb, BlockPos sourcePos, double branchLength, double branchAngle, double branchTilt, RandomSource random, BlockStateProvider woodProvider, BlockStateProvider leafProvider) {
 		// draw a line
-		BlockPos branchDest = FeatureLogic.translate(new BlockPos(sx, sy, sz), branchLength, branchAngle, branchTilt);
+		BlockPos branchDest = FeatureLogic.translate(sourcePos, branchLength, branchAngle, branchTilt);
 
-		this.drawBresehnam(world, sbb, sx, sy, sz, branchDest.getX(), branchDest.getY(), branchDest.getZ(), TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
+		this.drawBresehnam(world, sbb, sourcePos, branchDest, woodProvider, random);
 
 		// leaf blob at the end
-		this.makeLeafBlob(world, sbb,  branchDest.getX(), branchDest.getY(), branchDest.getZ(), 2);
+		this.makeLeafBlob(world, sbb, branchDest.getX() - this.boundingBox.minX(), branchDest.getY() - this.boundingBox.minY(), branchDest.getZ() - this.boundingBox.minZ(), 2, random, leafProvider);
 	}
 
 	protected static BoundingBox branchBoundingBox(BlockPos src, BlockPos dest) {

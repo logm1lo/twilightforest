@@ -2,43 +2,71 @@ package twilightforest.world.components.structures.hollowtree;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.VineBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.block.CritterBlock;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.FeatureLogic;
 
 public class HollowTreeTrunk extends StructurePiece {
 	private final int height;
 	private final int radius;
 
-	public static HollowTreeTrunk atCoords(RandomSource rand, int x, int y, int z) {
-		int height = rand.nextInt(64) + 32;
-		int radius =  rand.nextInt(4) + 1;
+	private final BlockStateProvider log;
+	private final BlockStateProvider wood;
+	private final BlockStateProvider root;
+	private final BlockStateProvider leaves;
+	private final BlockStateProvider vine;
+	private final BlockStateProvider bug;
 
-		BoundingBox boundingBox = new BoundingBox(x, y, z, (x + radius * 2) + 2, y + height, (z + radius * 2) + 2);
+	private final BlockStateProvider dungeonWood;
+	private final BlockStateProvider dungeonAir;
+	private final BlockStateProvider dungeonLootBlock;
+	private final ResourceLocation dungeonLootTable;
+	private final Holder<EntityType<?>> dungeonMonster;
 
-		return new HollowTreeTrunk(height, radius, boundingBox);
-	}
-
-	protected HollowTreeTrunk(int height, int radius, BoundingBox pBoundingBox) {
+	public HollowTreeTrunk(int height, int radius, BoundingBox pBoundingBox, BlockStateProvider log1, BlockStateProvider wood, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider vine, BlockStateProvider bug, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceLocation dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
 		super(TFStructurePieceTypes.TFHTTr.value(), 0, pBoundingBox);
 
 		this.setOrientation(Direction.SOUTH);
 
 		this.height = height;
 		this.radius = radius;
+
+		this.log = log1;
+		this.wood = wood;
+		this.root = root;
+		this.leaves = leaves;
+		this.vine = vine;
+		this.bug = bug;
+
+		this.dungeonWood = dungeonWood;
+		this.dungeonAir = dungeonAir;
+		this.dungeonLootBlock = dungeonLootBlock;
+		this.dungeonLootTable = dungeonLootTable;
+		this.dungeonMonster = dungeonMonster;
 	}
 
 	/**
@@ -49,6 +77,19 @@ public class HollowTreeTrunk extends StructurePiece {
 
 		this.height = tag.getInt("trunkHeight");
 		this.radius = tag.getInt("trunkRadius");
+		
+		// FIXME codec
+		this.log = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.value());
+		this.wood = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
+		this.root = BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.value().defaultBlockState());
+		this.leaves = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState());
+		this.vine = BlockStateProvider.simple(Blocks.VINE.defaultBlockState().setValue(VineBlock.EAST, true));
+		this.bug = new WeightedStateProvider(new SimpleWeightedRandomList.Builder<BlockState>().add(TFBlocks.FIREFLY.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH)).add(TFBlocks.CICADA.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH)));
+		this.dungeonWood = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
+		this.dungeonAir = BlockStateProvider.simple(Blocks.AIR.defaultBlockState());
+		this.dungeonLootBlock = BlockStateProvider.simple(Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.NORTH));
+		this.dungeonLootTable = TFLootTables.TREE_CACHE.lootTable;
+		this.dungeonMonster = TFEntities.SWARM_SPIDER;
 	}
 
 	/**
@@ -65,7 +106,7 @@ public class HollowTreeTrunk extends StructurePiece {
 	 */
 	@Override
 	public void addChildren(StructurePiece piece, StructurePieceAccessor list, RandomSource rand) {
-		int index = getGenDepth();
+		int index = this.getGenDepth();
 
 		// 3-5 couple branches on the way up...
 		int numBranches = rand.nextInt(3) + 3;
@@ -73,19 +114,18 @@ public class HollowTreeTrunk extends StructurePiece {
 			int branchHeight = (int)(this.height * rand.nextDouble() * 0.9) + (this.height / 10);
 			double branchRotation = rand.nextDouble();
 
-			makeSmallBranch(list, rand, index + i + 1, branchHeight, 4, branchRotation, 0.35D, true);
+			this.makeSmallBranch(list, rand, index + i + 1, branchHeight, 4, branchRotation, 0.35D, true);
 		}
 
 		// build the crown
-		buildFullCrown(list, rand, index + numBranches + 1);
+		this.buildFullCrown(list, rand, index + numBranches + 1);
 
 		// roots
 		// 3-5 roots at the bottom
-		buildBranchRing(list, rand, index, 3, 2, 6, 0, 0.75D, 0, 3, 5, 3, false);
-
+		this.buildBranchRing(list, rand, index, 3, 2, 6, 0.75D, 3, 5, 3, false);
 
 		// several more taproots
-		buildBranchRing(list, rand, index, 1, 2, 8, 0, 0.9D, 0, 3, 5, 3, false);
+		this.buildBranchRing(list, rand, index, 1, 2, 8, 0.9D, 3, 5, 3, false);
 	}
 
 	/**
@@ -96,23 +136,23 @@ public class HollowTreeTrunk extends StructurePiece {
 		int bvar = this.radius + 2;
 
 		// okay, let's do 3-5 main branches starting at the bottom of the crown
-		index += buildBranchRing(list, rand, index, this.height - crownRadius, 0, crownRadius, 0, 0.35D, 0, bvar, bvar + 2, 2, true);
+		index += this.buildBranchRing(list, rand, index, this.height - crownRadius, 0, crownRadius, 0.35D, bvar, bvar + 2, 2, true);
 
 		// then, let's do 3-5 medium branches at the crown middle
-		index += buildBranchRing(list, rand, index, this.height - (crownRadius / 2), 0, crownRadius, 0, 0.28D, 0, bvar, bvar + 2, 1, true);
+		index += this.buildBranchRing(list, rand, index, this.height - (crownRadius / 2), 0, crownRadius, 0.28D, bvar, bvar + 2, 1, true);
 
 		// finally, let's do 2-4 main branches at the crown top
-		index += buildBranchRing(list, rand, index, this.height, 0, crownRadius, 0, 0.15D, 0, 2, 4, 2, true);
+		index += this.buildBranchRing(list, rand, index, this.height, 0, crownRadius, 0.15D, 2, 4, 2, true);
 
 		// and extra finally, let's do 3-6 medium branches going straight up
-		index += buildBranchRing(list, rand, index, this.height, 0, (crownRadius / 2), 0, 0.05D, 0, bvar, bvar + 2, 1, true);
+		index += this.buildBranchRing(list, rand, index, this.height, 0, (crownRadius / 2), 0.05D, bvar, bvar + 2, 1, true);
 	}
 
 	/**
 	 * Build a ring of branches around the tree
 	 * size 0 = small, 1 = med, 2 = large, 3 = root
 	 */
-	protected int buildBranchRing(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int heightVar, int length, int lengthVar, double tilt, double tiltVar, int minBranches, int maxBranches, int size, boolean leafy) {
+	protected int buildBranchRing(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int heightVar, int length, double tilt, int minBranches, int maxBranches, int size, boolean leafy) {
 		//let's do this!
 		int numBranches = rand.nextInt(maxBranches - minBranches + 1) + minBranches;
 		double branchRotation = 1.0 / numBranches;
@@ -127,13 +167,13 @@ public class HollowTreeTrunk extends StructurePiece {
 			}
 
 			if (size == 2) {
-				makeLargeBranch(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt, leafy);
+				this.makeLargeBranch(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt, leafy);
 			} else if (size == 1) {
-				makeMedBranch(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt, leafy);
+				this.makeMedBranch(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt, leafy);
 			} else if (size == 3) {
-				makeRoot(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt);
+				this.makeRoot(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt);
 			} else {
-				makeSmallBranch(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt, leafy);
+				this.makeSmallBranch(list, rand, index, dHeight, length, i * branchRotation + branchOffset, tilt, leafy);
 			}
 		}
 
@@ -142,30 +182,30 @@ public class HollowTreeTrunk extends StructurePiece {
 
 
 	public void makeSmallBranch(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-		HollowTreeSmallBranch branch = new HollowTreeSmallBranch(index, bSrc, branchLength, branchRotation, branchAngle, leafy);
+		BlockPos bSrc = this.getBranchSrc(branchHeight, branchRotation);
+		HollowTreeSmallBranch branch = new HollowTreeSmallBranch(index, bSrc, branchLength, branchRotation, branchAngle, leafy, this.wood, this.leaves);
 		list.addPiece(branch);
 		branch.addChildren(this, list, rand);
 	}
 
 	public void makeMedBranch(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-		HollowTreeMedBranch branch = new HollowTreeMedBranch(index, bSrc, branchLength, branchRotation, branchAngle, leafy);
+		BlockPos bSrc = this.getBranchSrc(branchHeight, branchRotation);
+		HollowTreeMedBranch branch = new HollowTreeMedBranch(index, bSrc, branchLength, branchRotation, branchAngle, leafy, this.wood, this.leaves);
 		list.addPiece(branch);
 		branch.addChildren(this, list, rand);
 	}
 
 	public void makeLargeBranch(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-		HollowTreeLargeBranch branch = new HollowTreeLargeBranch(index, bSrc, branchLength, branchRotation, branchAngle, leafy, rand);
+		BlockPos bSrc = this.getBranchSrc(branchHeight, branchRotation);
+		HollowTreeLargeBranch branch = new HollowTreeLargeBranch(index, bSrc, branchLength, branchRotation, branchAngle, leafy, rand, this.wood, this.leaves, this.dungeonWood, this.dungeonAir, this.dungeonLootBlock, this.dungeonLootTable, this.dungeonMonster);
 		list.addPiece(branch);
 		branch.addChildren(this, list, rand);
 	}
 
 
 	public void makeRoot(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle) {
-		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-		HollowTreeRoot branch = new HollowTreeRoot(index, bSrc, branchLength, branchRotation, branchAngle, false);
+		BlockPos bSrc = this.getBranchSrc(branchHeight, branchRotation);
+		HollowTreeRoot branch = new HollowTreeRoot(index, bSrc, branchLength, branchRotation, branchAngle, false, this.root, this.wood);
 		list.addPiece(branch);
 		branch.addChildren(this, list, rand);
 	}
@@ -194,18 +234,18 @@ public class HollowTreeTrunk extends StructurePiece {
 				for (int dy = 0; dy <= this.height; dy++) {
 					// fill the body of the trunk
 					if (dist <= this.radius && dist > hollow) {
-						this.placeBlock(level, TFBlocks.TWILIGHT_OAK_LOG.value().defaultBlockState(), dx + 1, dy, dz + 1, writeableBounds); // offset, since our BB is slightly larger than the trunk
+						this.placeProvidedBlock(level, this.log, random, dx + 1, dy, dz + 1, writeableBounds); // offset, since our BB is slightly larger than the trunk
 					}
 				}
 
 				// fill to ground
 				if (dist <= this.radius) {
-					this.fillColumnDown(level, TFBlocks.TWILIGHT_OAK_LOG.value().defaultBlockState(), dx + 1, -1, dz + 1, writeableBounds);
+					this.fillColumnDown(level, this.log, random, dx + 1, -1, dz + 1, writeableBounds);
 				}
 
 				// add vines
 				if (dist == hollow && dx == hollow + this.radius) {
-					this.fillColumnDown(level, Blocks.VINE.defaultBlockState(), dx + 1, this.height, dz + 1, writeableBounds);
+					this.fillColumnDown(level, this.vine, random, dx + 1, this.height, dz + 1, writeableBounds);
 				}
 			}
 		}
@@ -215,14 +255,14 @@ public class HollowTreeTrunk extends StructurePiece {
 		for (int i = 0; i <= numInsects; i++) {
 			int fHeight = (int)(this.height * random.nextDouble() * 0.9) + (this.height / 10);
 			double fAngle = random.nextDouble();
-			addInsect(level, random.nextBoolean() ? TFBlocks.FIREFLY.value() : TFBlocks.CICADA.value(), fHeight, fAngle, writeableBounds);
+			this.addInsect(level, random, fHeight, fAngle, writeableBounds);
 		}
 	}
 
 	/**
 	 * Add a random insect
 	 */
-	protected void addInsect(WorldGenLevel world, Block bug, int fHeight, double fAngle, BoundingBox sbb) {
+	protected void addInsect(WorldGenLevel world, RandomSource random, int fHeight, double fAngle, BoundingBox sbb) {
 		BlockPos bugSpot = FeatureLogic.translate(new BlockPos(this.radius + 1, fHeight, this.radius + 1), this.radius + 1, fAngle, 0.5);
 
 		int ox = this.getWorldX(bugSpot.getX(), bugSpot.getZ());
@@ -234,18 +274,34 @@ public class HollowTreeTrunk extends StructurePiece {
 		BlockPos src = new BlockPos(ox, oy, oz);
 
 		double fAngleWrapped = fAngle % 1.0;
-		Direction facing = Direction.EAST;
+		Rotation facing = Rotation.CLOCKWISE_90;
 
 		if (fAngleWrapped > 0.875 || fAngleWrapped <= 0.125) {
-			facing = Direction.SOUTH;
+			facing = Rotation.CLOCKWISE_180;
 		} else if (fAngleWrapped > 0.375 && fAngleWrapped <= 0.625) {
-			facing = Direction.NORTH;
+			facing = Rotation.NONE;
 		} else if (fAngleWrapped > 0.625) {
-			facing = Direction.WEST;
+			facing = Rotation.COUNTERCLOCKWISE_90;
 		}
 
-		if (bug.defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
-			world.setBlock(src, bug.defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
+		BlockState decor = this.bug.getState(random, src).rotate(facing);
+		if (decor.canSurvive(world, src)) {
+			world.setBlock(src, decor, 3);
+		}
+	}
+
+	private void placeProvidedBlock(WorldGenLevel world, BlockStateProvider filler, RandomSource random, int sx, int sy, int sz, BoundingBox sbb) {
+		this.placeBlock(world, filler.getState(random, this.getWorldPos(sx, sy, sz)), sx, sy, sz, sbb);
+	}
+
+	// VanillaCopy of StructurePiece.fillColumnDown except with BlockStateProvider & RandomSource instead of an embedded blockstate
+	private void fillColumnDown(WorldGenLevel pLevel, BlockStateProvider filler, RandomSource random, int pX, int pY, int pZ, BoundingBox pBox) {
+		BlockPos.MutableBlockPos pos = this.getWorldPos(pX, pY, pZ);
+		if (pBox.isInside(pos)) {
+			while(this.isReplaceableByStructures(pLevel.getBlockState(pos)) && pos.getY() > pLevel.getMinBuildHeight() + 1) {
+				pLevel.setBlock(pos, filler.getState(random, pos), 2);
+				pos.move(Direction.DOWN);
+			}
 		}
 	}
 }
