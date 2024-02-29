@@ -36,7 +36,10 @@ public class HollowTreeSmallBranch extends HollowTreeMedBranch {
 		// with leaves!
 		if (this.leafy) {
 			int leafRad = random.nextInt(2) + 1;
-			this.makeLeafBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), leafRad, random, this.leaves);
+			int sx = this.dest.getX() - this.boundingBox.minX();
+			int sy = this.dest.getY() - this.boundingBox.minY();
+			int sz = this.dest.getZ() - this.boundingBox.minZ();
+			this.drawBlockBlob(level, writeableBounds, sx, sy, sz, leafRad, random, this.leaves);
 		}
 	}
 }

@@ -24,7 +24,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.FeatureLogic;
-import twilightforest.world.components.structures.type.HollowTreeStructure;
 
 public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	private static final int LEAF_DUNGEON_CHANCE = 8;
@@ -56,16 +55,16 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
 
-		this.dungeonWood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_wood")).result().orElse(HollowTreeStructure.DEFAULT_WOOD);
-		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_air")).result().orElse(HollowTreeStructure.DEFAULT_DUNGEON_AIR);
-		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_loot_block")).result().orElse(HollowTreeStructure.DEFAULT_DUNGEON_LOOT_BLOCK);
+		this.dungeonWood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
+		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
 		this.dungeonLootTable = new ResourceLocation(tag.getString("dungeon_loot_table"));
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("dungeon_monster")));
 		this.dungeonMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
 				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
-				.orElse(HollowTreeStructure.DEFAULT_DUNGEON_MONSTER);
+				.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	@Override
@@ -152,7 +151,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 
 		if (this.leafy && !this.hasLeafDungeon) {
 			// leaf blob at the end
-			this.makeLeafBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, random, this.leaves);
+			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, random, this.leaves);
 		}
 	}
 }

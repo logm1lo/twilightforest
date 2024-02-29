@@ -24,14 +24,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.FeatureLogic;
-import twilightforest.world.components.structures.type.HollowTreeStructure;
 
-public class HollowTreeLeafDungeon extends StructurePiece {
+public class HollowTreeLeafDungeon extends HollowTreePiece {
 	private final int radius;
 
 	private final BlockStateProvider wood;
@@ -69,17 +66,17 @@ public class HollowTreeLeafDungeon extends StructurePiece {
 
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
 
-		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreeStructure.DEFAULT_WOOD);
-		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreeStructure.DEFAULT_LEAVES);
-		this.inside = BlockStateProvider.CODEC.parse(ops, tag.getCompound("air")).result().orElse(HollowTreeStructure.DEFAULT_DUNGEON_AIR);
-		this.lootContainer = BlockStateProvider.CODEC.parse(ops, tag.getCompound("loot_block")).result().orElse(HollowTreeStructure.DEFAULT_DUNGEON_LOOT_BLOCK);
+		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
+		this.inside = BlockStateProvider.CODEC.parse(ops, tag.getCompound("air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
+		this.lootContainer = BlockStateProvider.CODEC.parse(ops, tag.getCompound("loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
 		this.lootTable = new ResourceLocation(tag.getString("loot_table"));
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("monster")));
 		this.monster = context.registryAccess().registry(Registries.ENTITY_TYPE)
 				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
-				.orElse(HollowTreeStructure.DEFAULT_DUNGEON_MONSTER);
+				.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	/**
@@ -105,11 +102,11 @@ public class HollowTreeLeafDungeon extends StructurePiece {
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
 		// leaves on the outside
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 4, true, random, this.leaves);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 4, random, this.leaves);
 		// then wood
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 3, false, random, this.wood);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 3, random, this.wood);
 		// then air
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 2, false, random, this.inside);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 2, random, this.inside);
 
 		// then treasure chest
 		// which direction is this chest in?
@@ -145,70 +142,6 @@ public class HollowTreeLeafDungeon extends StructurePiece {
 
 			if (world.getBlockEntity(pos) instanceof SpawnerBlockEntity spawner)
 				spawner.setEntityId(monsterID, rand);
-		}
-	}
-
-	private void drawBlockBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int blobRadius, boolean isLeaves, RandomSource random, BlockStateProvider stateProvider) {
-		// then trace out a quadrant
-		for (byte dx = 0; dx <= blobRadius; dx++) {
-			for (byte dy = 0; dy <= blobRadius; dy++) {
-				for (byte dz = 0; dz <= blobRadius; dz++) {
-					// determine how far we are from the center.
-					byte dist;
-
-					if (dx >= dy && dx >= dz) {
-						dist = (byte) (dx + (byte)((Math.max(dy, dz) * 0.5) + (Math.min(dy, dz) * 0.25)));
-					} else if (dy >= dx && dy >= dz) {
-						dist = (byte) (dy + (byte)((Math.max(dx, dz) * 0.5) + (Math.min(dx, dz) * 0.25)));
-					} else {
-						dist = (byte) (dz + (byte)((Math.max(dx, dy) * 0.5) + (Math.min(dx, dy) * 0.25)));
-					}
-
-					// if we're inside the blob, fill it
-					if (dist <= blobRadius) {
-						// do eight at a time for easiness!
-						if (isLeaves) {
-							this.placeLeafBlock(world, stateProvider, sx + dx, sy + dy, sz + dz, sbb, random);
-							this.placeLeafBlock(world, stateProvider, sx + dx, sy + dy, sz - dz, sbb, random);
-							this.placeLeafBlock(world, stateProvider, sx - dx, sy + dy, sz + dz, sbb, random);
-							this.placeLeafBlock(world, stateProvider, sx - dx, sy + dy, sz - dz, sbb, random);
-							this.placeLeafBlock(world, stateProvider, sx + dx, sy - dy, sz + dz, sbb, random);
-							this.placeLeafBlock(world, stateProvider, sx + dx, sy - dy, sz - dz, sbb, random);
-							this.placeLeafBlock(world, stateProvider, sx - dx, sy - dy, sz + dz, sbb, random);
-							this.placeLeafBlock(world, stateProvider, sx - dx, sy - dy, sz - dz, sbb, random);
-						} else {
-							this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz + dz, sbb);
-							this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz - dz, sbb);
-							this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz + dz, sbb);
-							this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz - dz, sbb);
-							this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz + dz, sbb);
-							this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz - dz, sbb);
-							this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz + dz, sbb);
-							this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz - dz, sbb);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private void placeProvidedBlock(WorldGenLevel world, BlockStateProvider filler, RandomSource random, int sx, int sy, int sz, BoundingBox sbb) {
-		this.placeBlock(world, filler.getState(random, this.getWorldPos(sx, sy, sz)), sx, sy, sz, sbb);
-	}
-
-	/**
-	 * Puts a block only if leaves can go there.
-	 */
-	protected void placeLeafBlock(WorldGenLevel world, BlockStateProvider stateProvider, int x, int y, int z, BoundingBox sbb, RandomSource random) {
-		int offX = this.getWorldX(x, z);
-		int offY = this.getWorldY(y);
-		int offZ = this.getWorldZ(x, z);
-
-		if (sbb.isInside(offX, offY, offZ)) {
-			BlockPos pos = new BlockPos(offX, offY, offZ);
-			if (FeatureLogic.worldGenReplaceable(world.getBlockState(pos))) {
-				world.setBlock(pos, stateProvider.getState(random, pos), 2);
-			}
 		}
 	}
 }

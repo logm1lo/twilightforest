@@ -13,16 +13,13 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.FeatureLogic;
-import twilightforest.util.VoxelBresenhamIterator;
-import twilightforest.world.components.structures.type.HollowTreeStructure;
 
-public class HollowTreeMedBranch extends StructurePiece {
+public class HollowTreeMedBranch extends HollowTreePiece {
 	protected final BlockPos src, dest;  // source and destination of branch, array of 3 ints representing x, y, z
 	protected final double length;
 	protected final double angle;
@@ -83,8 +80,8 @@ public class HollowTreeMedBranch extends StructurePiece {
 		this.leafy = tag.getBoolean("branchLeafy");
 
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
-		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreeStructure.DEFAULT_WOOD);
-		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreeStructure.DEFAULT_LEAVES);
+		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
 	}
 
 	@Override
@@ -135,67 +132,12 @@ public class HollowTreeMedBranch extends StructurePiece {
 				double slength = (decoRNG.nextFloat() * 0.6F + 0.2F) * this.length;
 				BlockPos bdst = FeatureLogic.translate(new BlockPos(this.src.getX() - this.boundingBox.minX(), this.src.getY() - this.boundingBox.minY(), this.src.getZ() - this.boundingBox.minZ()), slength, this.angle, this.tilt);
 
-				this.makeLeafBlob(level, writeableBounds, bdst.getX(), bdst.getY(), bdst.getZ(), decoRNG.nextBoolean() ? 2 : 3, decoRNG, this.leaves);
+				int radius = decoRNG.nextBoolean() ? 2 : 3;
+				this.drawBlockBlob(level, writeableBounds, bdst.getX(), bdst.getY(), bdst.getZ(), radius, decoRNG, this.leaves);
 			}
 
-			this.makeLeafBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves);
+			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves);
 		}
-	}
-
-	/**
-	 * Draws a line
-	 */
-	protected void drawBresehnam(WorldGenLevel level, BoundingBox writeableBounds, BlockPos startPos, BlockPos endPos, BlockStateProvider stateProvider, RandomSource random) {
-		for (BlockPos coords : new VoxelBresenhamIterator(startPos, endPos))
-			if (writeableBounds.isInside(coords))
-				level.setBlock(coords, stateProvider.getState(random, coords), 2);
-	}
-
-	/**
-	 * Make a leaf blob
-	 */
-	protected void makeLeafBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int radius, RandomSource random, BlockStateProvider stateProvider) {
-		// then trace out a quadrant
-		for (int dx = 0; dx <= radius; dx++) {
-			for (int dy = 0; dy <= radius; dy++) {
-				for (int dz = 0; dz <= radius; dz++) {
-					// determine how far we are from the center.
-					int dist;
-
-					if (dx >= dy && dx >= dz) {
-						dist = (int) (dx + ((Math.max(dy, dz) * 0.5F) + (Math.min(dy, dz) * 0.25F)));
-					} else if (dy >= dx && dy >= dz) {
-						dist = (int) (dy + ((Math.max(dx, dz) * 0.5F) + (Math.min(dx, dz) * 0.25F)));
-					} else {
-						dist = (int) (dz + ((Math.max(dx, dy) * 0.5F) + (Math.min(dx, dy) * 0.25F)));
-					}
-
-					// if we're inside the blob, fill it
-					if (dist <= radius) {
-						// do eight at a time for easiness!
-						this.placeLeafBlock(world, stateProvider, sx + dx, sy + dy, sz + dz, sbb, random);
-						this.placeLeafBlock(world, stateProvider, sx + dx, sy + dy, sz - dz, sbb, random);
-						this.placeLeafBlock(world, stateProvider, sx - dx, sy + dy, sz + dz, sbb, random);
-						this.placeLeafBlock(world, stateProvider, sx - dx, sy + dy, sz - dz, sbb, random);
-						this.placeLeafBlock(world, stateProvider, sx + dx, sy - dy, sz + dz, sbb, random);
-						this.placeLeafBlock(world, stateProvider, sx + dx, sy - dy, sz - dz, sbb, random);
-						this.placeLeafBlock(world, stateProvider, sx - dx, sy - dy, sz + dz, sbb, random);
-						this.placeLeafBlock(world, stateProvider, sx - dx, sy - dy, sz - dz, sbb, random);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Puts a block only if leaves can go there.
-	 */
-	protected void placeLeafBlock(WorldGenLevel world, BlockStateProvider blockID, int x, int y, int z, BoundingBox sbb, RandomSource random) {
-		BlockPos pos = this.getWorldPos(x, y, z);
-
-		if (sbb.isInside(pos))
-			if (FeatureLogic.worldGenReplaceable(world.getBlockState(pos)))
-				world.setBlock(pos, blockID.getState(random, pos), 2);
 	}
 
 	/**
@@ -208,7 +150,7 @@ public class HollowTreeMedBranch extends StructurePiece {
 		this.drawBresehnam(world, sbb, sourcePos, branchDest, woodProvider, random);
 
 		// leaf blob at the end
-		this.makeLeafBlob(world, sbb, branchDest.getX() - this.boundingBox.minX(), branchDest.getY() - this.boundingBox.minY(), branchDest.getZ() - this.boundingBox.minZ(), 2, random, leafProvider);
+		this.drawBlockBlob(world, sbb, branchDest.getX() - this.boundingBox.minX(), branchDest.getY() - this.boundingBox.minY(), branchDest.getZ() - this.boundingBox.minZ(), 2, random, leafProvider);
 	}
 
 	protected static BoundingBox branchBoundingBox(BlockPos src, BlockPos dest) {

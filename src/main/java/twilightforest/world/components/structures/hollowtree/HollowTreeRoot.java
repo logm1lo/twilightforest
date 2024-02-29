@@ -52,12 +52,12 @@ public class HollowTreeRoot extends HollowTreeMedBranch {
 			// three choices here
 			if (block.canBeReplaced() || !block.isCollisionShapeFullBlock(world, worldPos)) {
 				// air, other non-solid, or grass, make wood block
-				this.placeBlock(world, wood.getState(random, worldPos), coords.getX(), coords.getY(), coords.getZ(), sbb);
+				this.placeProvidedBlock(world, wood, random, coords.getX(), coords.getY(), coords.getZ(), sbb, BlockPos.ZERO);
 			} else if (block.is(BlockTags.LOGS)) {
 				// wood, do nothing
 			} else {
 				// solid, make root block
-				this.placeBlock(world, root.getState(random, worldPos), coords.getX(), coords.getY(), coords.getZ(), sbb);
+				this.placeProvidedBlock(world, root, random, coords.getX(), coords.getY(), coords.getZ(), sbb, BlockPos.ZERO);
 			}
 		}
 	}

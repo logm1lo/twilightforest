@@ -27,9 +27,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.FeatureLogic;
-import twilightforest.world.components.structures.type.HollowTreeStructure;
 
-public class HollowTreeTrunk extends StructurePiece {
+public class HollowTreeTrunk extends HollowTreePiece {
 	private final int height;
 	private final int radius;
 
@@ -79,22 +78,22 @@ public class HollowTreeTrunk extends StructurePiece {
 
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
 
-		this.log = BlockStateProvider.CODEC.parse(ops, tag.getCompound("log")).result().orElse(HollowTreeStructure.DEFAULT_LOG);
-		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreeStructure.DEFAULT_WOOD);
-		this.root = BlockStateProvider.CODEC.parse(ops, tag.getCompound("root")).result().orElse(HollowTreeStructure.DEFAULT_ROOT);
-		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreeStructure.DEFAULT_LEAVES);
-		this.vine = BlockStateProvider.CODEC.parse(ops, tag.getCompound("vine")).result().orElse(HollowTreeStructure.DEFAULT_VINE);
-		this.bug = BlockStateProvider.CODEC.parse(ops, tag.getCompound("bug")).result().orElse(HollowTreeStructure.DEFAULT_BUG);
-		this.dungeonWood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_wood")).result().orElse(HollowTreeStructure.DEFAULT_WOOD);
-		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_air")).result().orElse(HollowTreeStructure.DEFAULT_DUNGEON_AIR);
-		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_loot_block")).result().orElse(HollowTreeStructure.DEFAULT_DUNGEON_LOOT_BLOCK);
+		this.log = BlockStateProvider.CODEC.parse(ops, tag.getCompound("log")).result().orElse(HollowTreePiece.DEFAULT_LOG);
+		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.root = BlockStateProvider.CODEC.parse(ops, tag.getCompound("root")).result().orElse(HollowTreePiece.DEFAULT_ROOT);
+		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
+		this.vine = BlockStateProvider.CODEC.parse(ops, tag.getCompound("vine")).result().orElse(HollowTreePiece.DEFAULT_VINE);
+		this.bug = BlockStateProvider.CODEC.parse(ops, tag.getCompound("bug")).result().orElse(HollowTreePiece.DEFAULT_BUG);
+		this.dungeonWood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
+		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
 		this.dungeonLootTable = new ResourceLocation(tag.getString("dungeon_loot_table"));
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("dungeon_monster")));
 		this.dungeonMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
 				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
-				.orElse(HollowTreeStructure.DEFAULT_DUNGEON_MONSTER);
+				.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	/**
@@ -253,7 +252,7 @@ public class HollowTreeTrunk extends StructurePiece {
 				for (int dy = 0; dy <= this.height; dy++) {
 					// fill the body of the trunk
 					if (dist <= this.radius && dist > hollow) {
-						this.placeProvidedBlock(level, this.log, random, dx + 1, dy, dz + 1, writeableBounds); // offset, since our BB is slightly larger than the trunk
+						this.placeProvidedBlock(level, this.log, random, dx + 1, dy, dz + 1, writeableBounds, BlockPos.ZERO); // offset, since our BB is slightly larger than the trunk
 					}
 				}
 
@@ -306,21 +305,6 @@ public class HollowTreeTrunk extends StructurePiece {
 		BlockState decor = this.bug.getState(random, src).rotate(facing);
 		if (decor.canSurvive(world, src)) {
 			world.setBlock(src, decor, 3);
-		}
-	}
-
-	private void placeProvidedBlock(WorldGenLevel world, BlockStateProvider filler, RandomSource random, int sx, int sy, int sz, BoundingBox sbb) {
-		this.placeBlock(world, filler.getState(random, this.getWorldPos(sx, sy, sz)), sx, sy, sz, sbb);
-	}
-
-	// VanillaCopy of StructurePiece.fillColumnDown except with BlockStateProvider & RandomSource instead of an embedded blockstate
-	private void fillColumnDown(WorldGenLevel pLevel, BlockStateProvider filler, RandomSource random, int pX, int pY, int pZ, BoundingBox pBox) {
-		BlockPos.MutableBlockPos pos = this.getWorldPos(pX, pY, pZ);
-		if (pBox.isInside(pos)) {
-			while(this.isReplaceableByStructures(pLevel.getBlockState(pos)) && pos.getY() > pLevel.getMinBuildHeight() + 1) {
-				pLevel.setBlock(pos, filler.getState(random, pos), 2);
-				pos.move(Direction.DOWN);
-			}
 		}
 	}
 }

@@ -3,7 +3,6 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
@@ -11,29 +10,19 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.VineBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.structure.*;
-import twilightforest.block.CritterBlock;
 import twilightforest.data.tags.BiomeTagGenerator;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.loot.TFLootTables;
+import twilightforest.world.components.structures.hollowtree.HollowTreePiece;
 import twilightforest.world.components.structures.hollowtree.HollowTreeTrunk;
 import twilightforest.world.components.structures.util.DecorationClearance;
 
@@ -45,19 +34,19 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 	public static final Codec<HollowTreeStructure> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Structure.settingsCodec(instance),
 			DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
-			IntProvider.codec(16, 128).fieldOf("height").orElse(HollowTreeStructure.DEFAULT_HEIGHT).forGetter(s -> s.height),
-			IntProvider.codec(1, 8).fieldOf("radius").orElse(HollowTreeStructure.DEFAULT_RADIUS).forGetter(s -> s.radius),
-			BlockStateProvider.CODEC.fieldOf("log").orElse(HollowTreeStructure.DEFAULT_LOG).forGetter(s -> s.log),
-			BlockStateProvider.CODEC.fieldOf("wood").orElse(HollowTreeStructure.DEFAULT_WOOD).forGetter(s -> s.wood),
-			BlockStateProvider.CODEC.fieldOf("root").orElse(HollowTreeStructure.DEFAULT_ROOT).forGetter(s -> s.root),
-			BlockStateProvider.CODEC.fieldOf("leaves").orElse(HollowTreeStructure.DEFAULT_LEAVES).forGetter(s -> s.leaves),
-			BlockStateProvider.CODEC.fieldOf("vine").orElse(HollowTreeStructure.DEFAULT_VINE).forGetter(s -> s.vine),
-			BlockStateProvider.CODEC.fieldOf("bug").orElse(HollowTreeStructure.DEFAULT_BUG).forGetter(s -> s.bug),
-			BlockStateProvider.CODEC.fieldOf("dungeon_wood").orElse(HollowTreeStructure.DEFAULT_WOOD).forGetter(s -> s.dungeonWood),
-			BlockStateProvider.CODEC.fieldOf("dungeon_air").orElse(HollowTreeStructure.DEFAULT_DUNGEON_AIR).forGetter(s -> s.dungeonAir),
-			BlockStateProvider.CODEC.fieldOf("dungeon_loot_block").orElse(HollowTreeStructure.DEFAULT_DUNGEON_LOOT_BLOCK).forGetter(s -> s.dungeonLootBlock),
-			ResourceLocation.CODEC.fieldOf("dungeon_loot_table").orElse(HollowTreeStructure.DEFAULT_DUNGEON_LOOT_TABLE).forGetter(s -> s.dungeonLootTable),
-			RegistryFixedCodec.create(Registries.ENTITY_TYPE).fieldOf("dungeon_monster").orElse(HollowTreeStructure.DEFAULT_DUNGEON_MONSTER).forGetter(s -> s.dungeonMonster)
+			IntProvider.codec(16, 128).fieldOf("height").orElse(HollowTreePiece.DEFAULT_HEIGHT).forGetter(s -> s.height),
+			IntProvider.codec(1, 8).fieldOf("radius").orElse(HollowTreePiece.DEFAULT_RADIUS).forGetter(s -> s.radius),
+			BlockStateProvider.CODEC.fieldOf("log").orElse(HollowTreePiece.DEFAULT_LOG).forGetter(s -> s.log),
+			BlockStateProvider.CODEC.fieldOf("wood").orElse(HollowTreePiece.DEFAULT_WOOD).forGetter(s -> s.wood),
+			BlockStateProvider.CODEC.fieldOf("root").orElse(HollowTreePiece.DEFAULT_ROOT).forGetter(s -> s.root),
+			BlockStateProvider.CODEC.fieldOf("leaves").orElse(HollowTreePiece.DEFAULT_LEAVES).forGetter(s -> s.leaves),
+			BlockStateProvider.CODEC.fieldOf("vine").orElse(HollowTreePiece.DEFAULT_VINE).forGetter(s -> s.vine),
+			BlockStateProvider.CODEC.fieldOf("bug").orElse(HollowTreePiece.DEFAULT_BUG).forGetter(s -> s.bug),
+			BlockStateProvider.CODEC.fieldOf("dungeon_wood").orElse(HollowTreePiece.DEFAULT_WOOD).forGetter(s -> s.dungeonWood),
+			BlockStateProvider.CODEC.fieldOf("dungeon_air").orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR).forGetter(s -> s.dungeonAir),
+			BlockStateProvider.CODEC.fieldOf("dungeon_loot_block").orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK).forGetter(s -> s.dungeonLootBlock),
+			ResourceLocation.CODEC.fieldOf("dungeon_loot_table").orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_TABLE).forGetter(s -> s.dungeonLootTable),
+			RegistryFixedCodec.create(Registries.ENTITY_TYPE).fieldOf("dungeon_monster").orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER).forGetter(s -> s.dungeonMonster)
 	).apply(instance, HollowTreeStructure::new));
 
 	private final DecorationConfig decorationConfig;
@@ -170,19 +159,6 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 		return this.decorationConfig.chunkClearanceRadius();
 	}
 
-	public static final IntProvider DEFAULT_HEIGHT = UniformInt.of(32, 95);
-	public static final IntProvider DEFAULT_RADIUS = UniformInt.of(1, 4);
-	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.value());
-	public static final BlockStateProvider DEFAULT_WOOD = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
-	public static final BlockStateProvider DEFAULT_ROOT = BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.value().defaultBlockState());
-	public static final BlockStateProvider DEFAULT_LEAVES = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState());
-	public static final BlockStateProvider DEFAULT_VINE = BlockStateProvider.simple(Blocks.VINE.defaultBlockState().setValue(VineBlock.EAST, true));
-	public static final BlockStateProvider DEFAULT_BUG = new WeightedStateProvider(new SimpleWeightedRandomList.Builder<BlockState>().add(TFBlocks.FIREFLY.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH)).add(TFBlocks.CICADA.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH)));
-	public static final BlockStateProvider DEFAULT_DUNGEON_AIR = BlockStateProvider.simple(Blocks.AIR.defaultBlockState());
-	public static final BlockStateProvider DEFAULT_DUNGEON_LOOT_BLOCK = BlockStateProvider.simple(Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.NORTH));
-	public static final ResourceLocation DEFAULT_DUNGEON_LOOT_TABLE = TFLootTables.TREE_CACHE.lootTable;
-	public static final Holder<EntityType<?>> DEFAULT_DUNGEON_MONSTER = TFEntities.SWARM_SPIDER;
-
 	public static HollowTreeStructure buildStructureConfig(BootstapContext<Structure> context) {
 		return new HollowTreeStructure(
 				new Structure.StructureSettings(
@@ -192,19 +168,19 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 						TerrainAdjustment.NONE
 				),
 				new DecorationClearance.DecorationConfig(2, false, true, true),
-				DEFAULT_HEIGHT,
-				DEFAULT_RADIUS,
-				DEFAULT_LOG,
-				DEFAULT_WOOD,
-				DEFAULT_ROOT,
-				DEFAULT_LEAVES,
-				DEFAULT_VINE,
-				DEFAULT_BUG,
-				DEFAULT_WOOD,
-				DEFAULT_DUNGEON_AIR,
-				DEFAULT_DUNGEON_LOOT_BLOCK,
-				DEFAULT_DUNGEON_LOOT_TABLE,
-				DEFAULT_DUNGEON_MONSTER
+				HollowTreePiece.DEFAULT_HEIGHT,
+				HollowTreePiece.DEFAULT_RADIUS,
+				HollowTreePiece.DEFAULT_LOG,
+				HollowTreePiece.DEFAULT_WOOD,
+				HollowTreePiece.DEFAULT_ROOT,
+				HollowTreePiece.DEFAULT_LEAVES,
+				HollowTreePiece.DEFAULT_VINE,
+				HollowTreePiece.DEFAULT_BUG,
+				HollowTreePiece.DEFAULT_WOOD,
+				HollowTreePiece.DEFAULT_DUNGEON_AIR,
+				HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK,
+				HollowTreePiece.DEFAULT_DUNGEON_LOOT_TABLE,
+				HollowTreePiece.DEFAULT_DUNGEON_MONSTER
 		);
 	}
 }
