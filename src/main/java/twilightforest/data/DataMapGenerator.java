@@ -14,6 +14,8 @@ import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import net.neoforged.neoforge.registries.datamaps.builtin.ParrotImitation;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
+import twilightforest.util.datamaps.CrumbledBlock;
+import twilightforest.util.datamaps.EntityTransformation;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -135,52 +137,52 @@ public class DataMapGenerator extends DataMapProvider {
 		this.add2WayTransform(transformation, TFEntities.MAZE_SLIME, EntityType.SLIME);
 
 		var crumble = this.builder(TFDataMaps.CRUMBLE_HORN);
-		crumble.add(Blocks.STONE_BRICKS.builtInRegistryHolder(), Blocks.CRACKED_STONE_BRICKS, false);
-		crumble.add(Blocks.INFESTED_STONE_BRICKS.builtInRegistryHolder(), Blocks.INFESTED_CRACKED_STONE_BRICKS, false);
-		crumble.add(Blocks.POLISHED_BLACKSTONE_BRICKS.builtInRegistryHolder(), Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, false);
-		crumble.add(Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS.builtInRegistryHolder(), Blocks.BLACKSTONE, false);
-		crumble.add(Blocks.NETHER_BRICKS.builtInRegistryHolder(), Blocks.CRACKED_NETHER_BRICKS, false);
-		crumble.add(Blocks.DEEPSLATE_BRICKS.builtInRegistryHolder(), Blocks.CRACKED_DEEPSLATE_BRICKS, false);
-		crumble.add(Blocks.DEEPSLATE_TILES.builtInRegistryHolder(), Blocks.CRACKED_DEEPSLATE_TILES, false);
-		crumble.add(TFBlocks.MAZESTONE_BRICK, TFBlocks.CRACKED_MAZESTONE.get(), false);
-		crumble.add(TFBlocks.UNDERBRICK, TFBlocks.CRACKED_UNDERBRICK.get(), false);
-		crumble.add(TFBlocks.DEADROCK, TFBlocks.CRACKED_DEADROCK.get(), false);
-		crumble.add(TFBlocks.CRACKED_DEADROCK, TFBlocks.WEATHERED_DEADROCK.get(), false);
-		crumble.add(TFBlocks.TOWERWOOD, TFBlocks.CRACKED_TOWERWOOD.get(), false);
-		crumble.add(TFBlocks.CASTLE_BRICK, TFBlocks.CRACKED_CASTLE_BRICK.get(), false);
-		crumble.add(TFBlocks.CRACKED_CASTLE_BRICK, TFBlocks.WORN_CASTLE_BRICK.get(), false);
-		crumble.add(TFBlocks.NAGASTONE_PILLAR, TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), false);
-		crumble.add(TFBlocks.ETCHED_NAGASTONE, TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), false);
-		crumble.add(TFBlocks.CASTLE_BRICK_STAIRS, TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(), false);
-		crumble.add(TFBlocks.NAGASTONE_STAIRS_LEFT, TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(), false);
-		crumble.add(TFBlocks.NAGASTONE_STAIRS_RIGHT, TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(), false);
-		crumble.add(Blocks.STONE.builtInRegistryHolder(), Blocks.COBBLESTONE, false);
-		crumble.add(Blocks.COBBLESTONE.builtInRegistryHolder(), Blocks.GRAVEL, false);
-		crumble.add(Blocks.SANDSTONE.builtInRegistryHolder(), Blocks.SAND, false);
-		crumble.add(Blocks.RED_SANDSTONE.builtInRegistryHolder(), Blocks.RED_SAND, false);
-		crumble.add(Blocks.GRASS_BLOCK.builtInRegistryHolder(), Blocks.DIRT, false);
-		crumble.add(Blocks.PODZOL.builtInRegistryHolder(), Blocks.DIRT, false);
-		crumble.add(Blocks.MYCELIUM.builtInRegistryHolder(), Blocks.DIRT, false);
-		crumble.add(Blocks.COARSE_DIRT.builtInRegistryHolder(), Blocks.DIRT, false);
-		crumble.add(Blocks.ROOTED_DIRT.builtInRegistryHolder(), Blocks.DIRT, false);
-		crumble.add(Blocks.OXIDIZED_COPPER.builtInRegistryHolder(), Blocks.WEATHERED_COPPER, false);
-		crumble.add(Blocks.WEATHERED_COPPER.builtInRegistryHolder(), Blocks.EXPOSED_COPPER, false);
-		crumble.add(Blocks.EXPOSED_COPPER.builtInRegistryHolder(), Blocks.COPPER_BLOCK, false);
-		crumble.add(Blocks.OXIDIZED_CUT_COPPER.builtInRegistryHolder(), Blocks.WEATHERED_CUT_COPPER, false);
-		crumble.add(Blocks.WEATHERED_CUT_COPPER.builtInRegistryHolder(), Blocks.EXPOSED_CUT_COPPER, false);
-		crumble.add(Blocks.EXPOSED_CUT_COPPER.builtInRegistryHolder(), Blocks.CUT_COPPER, false);
-		crumble.add(Blocks.GRAVEL.builtInRegistryHolder(), Blocks.AIR, false);
-		crumble.add(Blocks.DIRT.builtInRegistryHolder(), Blocks.AIR, false);
-		crumble.add(Blocks.SAND.builtInRegistryHolder(), Blocks.AIR, false);
-		crumble.add(Blocks.RED_SAND.builtInRegistryHolder(), Blocks.AIR, false);
-		crumble.add(Blocks.CLAY.builtInRegistryHolder(), Blocks.AIR, false);
-		crumble.add(Blocks.ANDESITE.builtInRegistryHolder(), Blocks.AIR, false);
-		crumble.add(Blocks.DIORITE.builtInRegistryHolder(), Blocks.AIR, false);
-		crumble.add(Blocks.GRANITE.builtInRegistryHolder(), Blocks.AIR, false);
+		crumble.add(Blocks.STONE_BRICKS.builtInRegistryHolder(), new CrumbledBlock(Blocks.CRACKED_STONE_BRICKS, 0.2F), false);
+		crumble.add(Blocks.INFESTED_STONE_BRICKS.builtInRegistryHolder(), new CrumbledBlock(Blocks.INFESTED_CRACKED_STONE_BRICKS, 0.2F), false);
+		crumble.add(Blocks.POLISHED_BLACKSTONE_BRICKS.builtInRegistryHolder(), new CrumbledBlock(Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, 0.2F), false);
+		crumble.add(Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS.builtInRegistryHolder(), new CrumbledBlock(Blocks.BLACKSTONE, 0.2F), false);
+		crumble.add(Blocks.NETHER_BRICKS.builtInRegistryHolder(), new CrumbledBlock(Blocks.CRACKED_NETHER_BRICKS, 0.2F), false);
+		crumble.add(Blocks.DEEPSLATE_BRICKS.builtInRegistryHolder(), new CrumbledBlock(Blocks.CRACKED_DEEPSLATE_BRICKS, 0.2F), false);
+		crumble.add(Blocks.DEEPSLATE_TILES.builtInRegistryHolder(), new CrumbledBlock(Blocks.CRACKED_DEEPSLATE_TILES, 0.2F), false);
+		crumble.add(TFBlocks.MAZESTONE_BRICK, new CrumbledBlock(TFBlocks.CRACKED_MAZESTONE.get(), 0.2F), false);
+		crumble.add(TFBlocks.UNDERBRICK, new CrumbledBlock(TFBlocks.CRACKED_UNDERBRICK.get(), 0.2F), false);
+		crumble.add(TFBlocks.DEADROCK, new CrumbledBlock(TFBlocks.CRACKED_DEADROCK.get(), 0.2F), false);
+		crumble.add(TFBlocks.CRACKED_DEADROCK, new CrumbledBlock(TFBlocks.WEATHERED_DEADROCK.get(), 0.2F), false);
+		crumble.add(TFBlocks.TOWERWOOD, new CrumbledBlock(TFBlocks.CRACKED_TOWERWOOD.get(), 0.2F), false);
+		crumble.add(TFBlocks.CASTLE_BRICK, new CrumbledBlock(TFBlocks.CRACKED_CASTLE_BRICK.get(), 0.2F), false);
+		crumble.add(TFBlocks.CRACKED_CASTLE_BRICK, new CrumbledBlock(TFBlocks.WORN_CASTLE_BRICK.get(), 0.2F), false);
+		crumble.add(TFBlocks.NAGASTONE_PILLAR, new CrumbledBlock(TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), 0.2F), false);
+		crumble.add(TFBlocks.ETCHED_NAGASTONE, new CrumbledBlock(TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), 0.2F), false);
+		crumble.add(TFBlocks.CASTLE_BRICK_STAIRS, new CrumbledBlock(TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(), 0.2F), false);
+		crumble.add(TFBlocks.NAGASTONE_STAIRS_LEFT, new CrumbledBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(), 0.2F), false);
+		crumble.add(TFBlocks.NAGASTONE_STAIRS_RIGHT, new CrumbledBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(), 0.2F), false);
+		crumble.add(Blocks.STONE.builtInRegistryHolder(), new CrumbledBlock(Blocks.COBBLESTONE, 0.2F), false);
+		crumble.add(Blocks.COBBLESTONE.builtInRegistryHolder(), new CrumbledBlock(Blocks.GRAVEL, 0.2F), false);
+		crumble.add(Blocks.SANDSTONE.builtInRegistryHolder(), new CrumbledBlock(Blocks.SAND, 0.2F), false);
+		crumble.add(Blocks.RED_SANDSTONE.builtInRegistryHolder(), new CrumbledBlock(Blocks.RED_SAND, 0.2F), false);
+		crumble.add(Blocks.GRASS_BLOCK.builtInRegistryHolder(), new CrumbledBlock(Blocks.DIRT, 0.2F), false);
+		crumble.add(Blocks.PODZOL.builtInRegistryHolder(), new CrumbledBlock(Blocks.DIRT, 0.2F), false);
+		crumble.add(Blocks.MYCELIUM.builtInRegistryHolder(), new CrumbledBlock(Blocks.DIRT, 0.2F), false);
+		crumble.add(Blocks.COARSE_DIRT.builtInRegistryHolder(), new CrumbledBlock(Blocks.DIRT, 0.2F), false);
+		crumble.add(Blocks.ROOTED_DIRT.builtInRegistryHolder(), new CrumbledBlock(Blocks.DIRT, 0.2F), false);
+		crumble.add(Blocks.OXIDIZED_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.WEATHERED_COPPER, 0.2F), false);
+		crumble.add(Blocks.WEATHERED_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.EXPOSED_COPPER, 0.2F), false);
+		crumble.add(Blocks.EXPOSED_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.COPPER_BLOCK, 0.2F), false);
+		crumble.add(Blocks.OXIDIZED_CUT_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.WEATHERED_CUT_COPPER, 0.2F), false);
+		crumble.add(Blocks.WEATHERED_CUT_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.EXPOSED_CUT_COPPER, 0.2F), false);
+		crumble.add(Blocks.EXPOSED_CUT_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.CUT_COPPER, 0.2F), false);
+		crumble.add(Blocks.GRAVEL.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
+		crumble.add(Blocks.DIRT.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
+		crumble.add(Blocks.SAND.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
+		crumble.add(Blocks.RED_SAND.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
+		crumble.add(Blocks.CLAY.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
+		crumble.add(Blocks.ANDESITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
+		crumble.add(Blocks.DIORITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
+		crumble.add(Blocks.GRANITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
 	}
 
-	private void add2WayTransform(DataMapProvider.Builder<EntityType<?>, EntityType<?>> builder, Holder<EntityType<?>> tfMob, EntityType<?> vanillaMob) {
-		builder.add(tfMob, vanillaMob, false);
-		builder.add(BuiltInRegistries.ENTITY_TYPE.getKey(vanillaMob), tfMob.value(), false);
+	private void add2WayTransform(DataMapProvider.Builder<EntityTransformation, EntityType<?>> builder, Holder<EntityType<?>> tfMob, EntityType<?> vanillaMob) {
+		builder.add(tfMob, new EntityTransformation(vanillaMob), false);
+		builder.add(BuiltInRegistries.ENTITY_TYPE.getKey(vanillaMob), new EntityTransformation(tfMob.value()), false);
 	}
 }

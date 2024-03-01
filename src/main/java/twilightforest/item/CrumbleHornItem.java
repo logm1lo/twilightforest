@@ -30,9 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CrumbleHornItem extends Item {
 
-	private static final int CHANCE_HARVEST = 20;
-	private static final int CHANCE_CRUMBLE = 5;
-
 	public CrumbleHornItem(Properties properties) {
 		super(properties);
 	}
@@ -107,17 +104,17 @@ public class CrumbleHornItem extends Item {
 	private boolean crumbleBlock(ServerLevel serverLevel, LivingEntity living, BlockPos pos) {
 		BlockState state = serverLevel.getBlockState(pos);
 		Block block = state.getBlock();
-		Block resultBlock = block.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+		var crumbleMap = block.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
 
-		if (state.isAir() || resultBlock == null) return false;
+		if (state.isAir() || crumbleMap == null) return false;
 
 		if (living instanceof Player) {
 			if (NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(serverLevel, pos, state, (Player) living)).isCanceled())
 				return false;
 		}
 
-		if (resultBlock == Blocks.AIR) {
-			if (serverLevel.getRandom().nextInt(CHANCE_HARVEST) == 0) {
+		if (crumbleMap.result() == Blocks.AIR) {
+			if (serverLevel.getRandom().nextFloat() < crumbleMap.chanceToCrumble()) {
 				if (living instanceof Player player) {
 					if (block.canHarvestBlock(state, serverLevel, pos, (Player) living)) {
 						serverLevel.removeBlock(pos, false);
@@ -134,8 +131,8 @@ public class CrumbleHornItem extends Item {
 				}
 			}
 		} else {
-			if (serverLevel.getRandom().nextInt(CHANCE_CRUMBLE) == 0) {
-				serverLevel.setBlock(pos, resultBlock.withPropertiesOf(state), 3);
+			if (serverLevel.getRandom().nextFloat() < crumbleMap.chanceToCrumble()) {
+				serverLevel.setBlock(pos, crumbleMap.result().withPropertiesOf(state), 3);
 				serverLevel.levelEvent(2001, pos, Block.getId(state));
 				if (living instanceof ServerPlayer player) {
 					player.awardStat(Stats.ITEM_USED.get(this));

@@ -68,14 +68,14 @@ public class RecipeViewerConstants {
 		}
 
 		for (EntityType<?> input : new ArrayList<>(inputs)) {
-			EntityType<?> output = input.builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
+			var output = input.builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
 			if (output != null) {
-				TransformationPowderInfo dummy = new TransformationPowderInfo(output, input, true);
+				TransformationPowderInfo dummy = new TransformationPowderInfo(output.result(), input, true);
 				if (!info.contains(dummy)) {
 					if (inputs.contains(output)) {
-						info.add(new TransformationPowderInfo(input, output, true));
+						info.add(new TransformationPowderInfo(input, output.result(), true));
 					} else {
-						info.add(new TransformationPowderInfo(input, output, false));
+						info.add(new TransformationPowderInfo(input, output.result(), false));
 					}
 				}
 			}
@@ -87,9 +87,9 @@ public class RecipeViewerConstants {
 	public static List<Pair<Block, Block>> getCrumbleHornRecipes() {
 		List<Pair<Block, Block>> info = new ArrayList<>();
 		for (Block input : BuiltInRegistries.BLOCK) {
-			Block output = input.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+			var output = input.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
 			if (output != null) {
-				info.add(Pair.of(input, output));
+				info.add(Pair.of(input, output.result()));
 			}
 		}
 		return info;

@@ -23,12 +23,12 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 		BlockState state = level.getBlockState(pos);
 		if (!level.isClientSide()) {
 			if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
-				Block resultBlock = state.getBlock().builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+				var resultBlock = state.getBlock().builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
 				if (resultBlock != null) {
-					if (resultBlock == Blocks.AIR) {
+					if (resultBlock.result() == Blocks.AIR) {
 						level.destroyBlock(pos, true);
 					} else {
-						level.setBlock(pos, resultBlock.withPropertiesOf(state), 3);
+						level.setBlock(pos, resultBlock.result().withPropertiesOf(state), 3);
 						level.levelEvent(2001, pos, Block.getId(state));
 					}
 
