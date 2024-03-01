@@ -32,7 +32,7 @@ import twilightforest.util.FeatureLogic;
 import twilightforest.util.VoxelBresenhamIterator;
 
 public abstract class HollowTreePiece extends StructurePiece {
-	static final int PLACE_FLAG = 0b10000;
+	static final int PLACE_FLAG = 0b10011;
 
 	public static final IntProvider DEFAULT_HEIGHT = UniformInt.of(32, 95);
 	public static final IntProvider DEFAULT_RADIUS = UniformInt.of(1, 4);

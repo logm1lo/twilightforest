@@ -2,42 +2,35 @@ package twilightforest.world.components.structures.type;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.VineBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.block.CritterBlock;
 import twilightforest.data.tags.BiomeTagGenerator;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.loot.TFLootTables;
 import twilightforest.util.FeatureLogic;
 import twilightforest.world.components.structures.TreeGrowerStartable;
+import twilightforest.world.components.structures.hollowtree.HollowTreePiece;
 import twilightforest.world.components.structures.hollowtree.HollowTreeTrunk;
 import twilightforest.world.components.structures.util.DecorationClearance;
 
@@ -213,19 +206,6 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 		return this.decorationConfig.chunkClearanceRadius();
 	}
 
-	public static final IntProvider DEFAULT_HEIGHT_RANDOM = UniformInt.of(32, 95);
-	public static final IntProvider DEFAULT_RADIUS_RANDOM = UniformInt.of(1, 4);
-	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.value());
-	public static final BlockStateProvider DEFAULT_WOOD = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value().defaultBlockState());
-	public static final BlockStateProvider DEFAULT_ROOT = BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.value().defaultBlockState());
-	public static final BlockStateProvider DEFAULT_LEAVES = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.value().defaultBlockState());
-	public static final BlockStateProvider DEFAULT_VINE = BlockStateProvider.simple(Blocks.VINE.defaultBlockState().setValue(VineBlock.EAST, true));
-	public static final BlockStateProvider DEFAULT_BUG = new WeightedStateProvider(new SimpleWeightedRandomList.Builder<BlockState>().add(TFBlocks.FIREFLY.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH)).add(TFBlocks.CICADA.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH)));
-	public static final BlockStateProvider DEFAULT_DUNGEON_AIR = BlockStateProvider.simple(Blocks.AIR.defaultBlockState());
-	public static final BlockStateProvider DEFAULT_DUNGEON_LOOT_BLOCK = BlockStateProvider.simple(Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.NORTH));
-	public static final ResourceLocation DEFAULT_DUNGEON_LOOT_TABLE = TFLootTables.TREE_CACHE.lootTable;
-	public static final Holder<EntityType<?>> DEFAULT_DUNGEON_MONSTER = TFEntities.SWARM_SPIDER;
-
 	public static HollowTreeStructure buildStructureConfig(BootstapContext<Structure> context) {
 		return new HollowTreeStructure(
 				new Structure.StructureSettings(
@@ -235,19 +215,19 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 						TerrainAdjustment.NONE
 				),
 				new DecorationClearance.DecorationConfig(2, false, true, true),
-				DEFAULT_HEIGHT_RANDOM,
-				DEFAULT_RADIUS_RANDOM,
-				DEFAULT_LOG,
-				DEFAULT_WOOD,
-				DEFAULT_ROOT,
-				DEFAULT_LEAVES,
-				DEFAULT_VINE,
-				DEFAULT_BUG,
-				DEFAULT_WOOD,
-				DEFAULT_DUNGEON_AIR,
-				DEFAULT_DUNGEON_LOOT_BLOCK,
-				DEFAULT_DUNGEON_LOOT_TABLE,
-				DEFAULT_DUNGEON_MONSTER
+				HollowTreePiece.DEFAULT_HEIGHT,
+				HollowTreePiece.DEFAULT_RADIUS,
+				HollowTreePiece.DEFAULT_LOG,
+				HollowTreePiece.DEFAULT_WOOD,
+				HollowTreePiece.DEFAULT_ROOT,
+				HollowTreePiece.DEFAULT_LEAVES,
+				HollowTreePiece.DEFAULT_VINE,
+				HollowTreePiece.DEFAULT_BUG,
+				HollowTreePiece.DEFAULT_WOOD,
+				HollowTreePiece.DEFAULT_DUNGEON_AIR,
+				HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK,
+				HollowTreePiece.DEFAULT_DUNGEON_LOOT_TABLE,
+				HollowTreePiece.DEFAULT_DUNGEON_MONSTER
 		);
 	}
 }
