@@ -109,7 +109,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	}
 
 	public void makeLeafDungeon(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z) {
-		HollowTreeLeafDungeon dungeon = new HollowTreeLeafDungeon(index, x, y, z, 4, this.dungeonWood, this.leaves, this.dungeonAir, this.dungeonLootBlock, this.dungeonLootTable, this.dungeonMonster);
+		HollowTreeLeafDungeon dungeon = new HollowTreeLeafDungeon(index, x, y, z, 4, this.dungeonWood, this.leaves, this.dungeonAir, this.dungeonLootBlock, this.dungeonLootTable, this.dungeonMonster, rand);
 		list.addPiece(dungeon);
 		dungeon.addChildren(this, list, rand);
 	}

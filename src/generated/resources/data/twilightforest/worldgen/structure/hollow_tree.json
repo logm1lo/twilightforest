@@ -42,7 +42,7 @@
       "Name": "minecraft:chest",
       "Properties": {
         "type": "single",
-        "facing": "north",
+        "facing": "west",
         "waterlogged": "false"
       }
     }

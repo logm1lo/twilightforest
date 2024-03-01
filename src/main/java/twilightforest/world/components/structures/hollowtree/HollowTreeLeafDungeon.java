@@ -1,7 +1,6 @@
 package twilightforest.world.components.structures.hollowtree;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
@@ -41,10 +41,10 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	/**
 	 * Make a blob of leaves
 	 */
-	protected HollowTreeLeafDungeon(int index, int x, int y, int z, int radius, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider inside, BlockStateProvider lootContainer, ResourceLocation lootTable, Holder<EntityType<?>> monster) {
+	protected HollowTreeLeafDungeon(int index, int x, int y, int z, int radius, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider inside, BlockStateProvider lootContainer, ResourceLocation lootTable, Holder<EntityType<?>> monster, RandomSource random) {
 		super(TFStructurePieceTypes.TFHTLD.value(), index, new BoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius));
 
-		this.setOrientation(Direction.SOUTH);
+		this.setOrientation(StructurePiece.getRandomHorizontalDirection(random));
 
 		this.radius = radius;
 
@@ -123,7 +123,7 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	 */
 	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, RandomSource random, BlockStateProvider stateProvider, ResourceLocation lootTable) {
 		BlockPos pos = this.getWorldPos(x, y, z);
-		BlockState state = stateProvider.getState(random, pos);
+		BlockState state = stateProvider.getState(random, pos).mirror(this.mirror).rotate(this.rotation);
 
 		if (sbb.isInside(pos) && !world.getBlockState(pos).is(state.getBlock())) {
 			world.setBlock(pos, state, 2);
