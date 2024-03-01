@@ -36,6 +36,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -319,20 +320,24 @@ public class ASMHooks {
 		return o;
 	}
 
+	private static final List<Float> defibrator = new ArrayList<>();
+	private static float average;
+
 	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.world.level.Level#isRainingAt(BlockPos)}<br>
 	 * [BEFORE ALOAD]
 	 */
 	public static boolean cloud(boolean isRaining, Level level, BlockPos pos) {
-		if (!isRaining && TFConfig.COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon.get() > 0) {
-			for (int y = pos.getY(); y < pos.getY() + TFConfig.COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon.get(); y++) {
+		if (!isRaining && TFConfig.Common.cachedCloudBlockPrecipitationDistanceCommon > 0) {
+			LevelChunk chunk = level.getChunkAt(pos);
+			for (int y = pos.getY(); y < pos.getY() + TFConfig.Common.cachedCloudBlockPrecipitationDistanceCommon; y++) {
 				BlockPos newPos = pos.atY(y);
-				BlockState state = level.getBlockState(newPos);
+				BlockState state = chunk.getBlockState(newPos);
 				if (state.getBlock() instanceof CloudBlock cloudBlock && cloudBlock.getCurrentPrecipitation(newPos, level, level.getRainLevel(1.0F)).getLeft() == Biome.Precipitation.RAIN) {
 					return true;
 				}
-				if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(level.getBlockState(newPos))) {
+				if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(state)) {
 					return false;
 				}
 			}

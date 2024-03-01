@@ -96,7 +96,8 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		if (!hang) {
 			BlockPos below = startPos.below(2);
 			BlockState belowState = level.getBlockState(below);
-			if (!belowState.is(BlockTagGenerator.SUPPORTS_STALAGMITES) && (!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP))) return false;
+			if (!belowState.is(BlockTagGenerator.SUPPORTS_STALAGMITES) &&
+					(!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP) || FeatureLogic.isBlockNotOk(belowState))) return false;
 		}
 
 		// let's see...
