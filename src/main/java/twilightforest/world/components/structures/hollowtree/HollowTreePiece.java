@@ -88,9 +88,9 @@ public abstract class HollowTreePiece extends StructurePiece {
 	 * Draws a line
 	 */
 	protected void drawBresehnam(WorldGenLevel level, BoundingBox writeableBounds, BlockPos startPos, BlockPos endPos, BlockStateProvider stateProvider, RandomSource random) {
-		for (BlockPos coords : new VoxelBresenhamIterator(startPos, endPos))
-			if (writeableBounds.isInside(coords))
-				level.setBlock(coords, stateProvider.getState(random, coords), PLACE_FLAG);
+		for (BlockPos worldPos : new VoxelBresenhamIterator(startPos, endPos))
+			if (writeableBounds.isInside(worldPos) && FeatureLogic.worldGenReplaceable(level.getBlockState(worldPos)))
+				level.setBlock(worldPos, stateProvider.getState(random, worldPos), PLACE_FLAG);
 	}
 
 	/**
