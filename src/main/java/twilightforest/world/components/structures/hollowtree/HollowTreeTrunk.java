@@ -239,7 +239,9 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource doNotUse, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
+
 		int hollow = this.radius / 2;
 
 		for (int dx = 0; dx <= 2 * this.radius; dx++) {
@@ -252,28 +254,28 @@ public class HollowTreeTrunk extends HollowTreePiece {
 				for (int dy = 0; dy <= this.height; dy++) {
 					// fill the body of the trunk
 					if (dist <= this.radius && dist > hollow) {
-						this.placeProvidedBlock(level, this.log, random, dx + 1, dy, dz + 1, writeableBounds, BlockPos.ZERO); // offset, since our BB is slightly larger than the trunk
+						this.placeProvidedBlock(level, this.log, decoRNG, dx + 1, dy, dz + 1, writeableBounds, BlockPos.ZERO, false); // offset, since our BB is slightly larger than the trunk
 					}
 				}
 
 				// fill to ground
 				if (dist <= this.radius) {
-					this.fillColumnDown(level, this.log, random, dx + 1, -1, dz + 1, writeableBounds);
+					this.fillColumnDown(level, this.log, decoRNG, dx + 1, -1, dz + 1, writeableBounds);
 				}
 
 				// add vines
 				if (dist == hollow && dx == hollow + this.radius) {
-					this.fillColumnDown(level, this.vine, random, dx + 1, this.height, dz + 1, writeableBounds);
+					this.fillColumnDown(level, this.vine, decoRNG, dx + 1, this.height, dz + 1, writeableBounds);
 				}
 			}
 		}
 
 		// fireflies & cicadas
-		int numInsects = random.nextInt(3 * this.radius) + random.nextInt(3 * this.radius) + 10;
+		int numInsects = decoRNG.nextInt(3 * this.radius) + decoRNG.nextInt(3 * this.radius) + 10;
 		for (int i = 0; i <= numInsects; i++) {
-			int fHeight = (int)(this.height * random.nextDouble() * 0.9) + (this.height / 10);
-			double fAngle = random.nextDouble();
-			this.addInsect(level, random, fHeight, fAngle, writeableBounds);
+			int fHeight = (int)(this.height * decoRNG.nextDouble() * 0.9) + (this.height / 10);
+			double fAngle = decoRNG.nextDouble();
+			this.addInsect(level, decoRNG, fHeight, fAngle, writeableBounds);
 		}
 	}
 

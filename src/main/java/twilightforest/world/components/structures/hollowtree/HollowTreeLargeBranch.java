@@ -124,9 +124,11 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	 * Draw this branch
 	 */
 	@Override
-	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource doNotUse, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
+
 		// main branch
-		this.drawBresehnam(level, writeableBounds, this.src, this.dest, this.wood, random);
+		this.drawBresehnam(level, writeableBounds, this.src, this.dest, this.wood, decoRNG);
 
 		// reinforce it
 		int reinforcements = 4;
@@ -134,24 +136,24 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 			int vx = (i & 2) == 0 ? 1 : 0;
 			int vy = (i & 1) == 0 ? 1 : -1;
 			int vz = (i & 2) == 0 ? 0 : 1;
-			this.drawBresehnam(level, writeableBounds, this.src.offset(vx, vy, vz), this.dest, this.wood, random);
+			this.drawBresehnam(level, writeableBounds, this.src.offset(vx, vy, vz), this.dest, this.wood, decoRNG);
 		}
 
 		// make 1-2 small branches near the base
 		//Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781) ^ (this.boundingBox.minZ() * 756839));
-		int numSmallBranches = random.nextInt(2) + 1;
+		int numSmallBranches = decoRNG.nextInt(2) + 1;
 		for(int i = 0; i <= numSmallBranches; i++) {
-			double outVar = (random.nextFloat() * 0.25F) + 0.25F;
-			double angleVar = random.nextFloat() * 0.25F * ((i & 1) == 0 ? 1.0F : -1.0F);
+			double outVar = (decoRNG.nextFloat() * 0.25F) + 0.25F;
+			double angleVar = decoRNG.nextFloat() * 0.25F * ((i & 1) == 0 ? 1.0F : -1.0F);
 
 			BlockPos bsrc = FeatureLogic.translate(this.src, this.length * outVar, this.angle, this.tilt);
 
-			this.drawSmallBranch(level, writeableBounds, bsrc, Math.max(this.length * 0.3F, 2F), this.angle + angleVar, this.tilt, random, this.wood, this.leaves);
+			this.drawSmallBranch(level, writeableBounds, bsrc, Math.max(this.length * 0.3F, 2F), this.angle + angleVar, this.tilt, decoRNG, this.wood, this.leaves);
 		}
 
 		if (this.leafy && !this.hasLeafDungeon) {
 			// leaf blob at the end
-			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, random, this.leaves);
+			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves, false);
 		}
 	}
 }

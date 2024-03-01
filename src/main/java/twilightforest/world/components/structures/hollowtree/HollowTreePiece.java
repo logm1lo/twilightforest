@@ -17,11 +17,13 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.block.CritterBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
@@ -55,14 +57,14 @@ public abstract class HollowTreePiece extends StructurePiece {
 		super(type, tag);
 	}
 
-	protected void placeProvidedBlock(WorldGenLevel world, BlockStateProvider possibleBlocks, RandomSource random, int sx, int sy, int sz, BoundingBox sbb, BlockPos origin) {
+	protected void placeProvidedBlock(WorldGenLevel world, BlockStateProvider possibleBlocks, RandomSource random, int sx, int sy, int sz, BoundingBox sbb, BlockPos origin, boolean forcedPlace) {
 		BlockPos worldPos = this.getWorldPos(sx, sy, sz).immutable();
 
-		if (!sbb.isInside(worldPos) || !FeatureLogic.worldGenReplaceable(world.getBlockState(worldPos))) return;
+		if (!sbb.isInside(worldPos) || (!forcedPlace && !FeatureLogic.worldGenReplaceable(world.getBlockState(worldPos)))) return;
 
 		BlockState state = possibleBlocks.getState(random, worldPos);
 
-		if (state.hasProperty(LeavesBlock.DISTANCE)) {
+		if (state.hasProperty(LeavesBlock.DISTANCE) && !forcedPlace) {
 			int distance = Mth.clamp(origin.distManhattan(worldPos), 1, 7);
 			world.setBlock(worldPos, state.setValue(LeavesBlock.DISTANCE, distance), PLACE_FLAG);
 		} else {
@@ -94,7 +96,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 	/**
 	 * Make a leaf blob
 	 */
-	protected void drawBlockBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int blobRadius, RandomSource random, BlockStateProvider stateProvider) {
+	protected void drawBlockBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int blobRadius, RandomSource random, BlockStateProvider stateProvider, boolean forcedPlace) {
 		BlockPos origin = this.getWorldPos(sx, sy, sz).immutable();
 
 		// then trace out a quadrant
@@ -115,17 +117,22 @@ public abstract class HollowTreePiece extends StructurePiece {
 					// if we're inside the blob, fill it
 					if (dist <= blobRadius) {
 						// do eight at a time for easiness!
-						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz + dz, sbb, origin);
-						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz - dz, sbb, origin);
-						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz + dz, sbb, origin);
-						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz - dz, sbb, origin);
-						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz + dz, sbb, origin);
-						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz - dz, sbb, origin);
-						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz + dz, sbb, origin);
-						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz - dz, sbb, origin);
+						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz + dz, sbb, origin, forcedPlace);
+						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz - dz, sbb, origin, forcedPlace);
+						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz + dz, sbb, origin, forcedPlace);
+						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz - dz, sbb, origin, forcedPlace);
+						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz + dz, sbb, origin, forcedPlace);
+						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz - dz, sbb, origin, forcedPlace);
+						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz + dz, sbb, origin, forcedPlace);
+						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz - dz, sbb, origin, forcedPlace);
 					}
 				}
 			}
 		}
+	}
+
+	@NotNull
+	protected XoroshiroRandomSource getInterChunkDecoRNG(WorldGenLevel level) {
+		return new XoroshiroRandomSource(level.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 	}
 }

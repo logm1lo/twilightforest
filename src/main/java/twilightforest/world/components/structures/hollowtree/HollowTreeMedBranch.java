@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -34,11 +35,11 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 	}
 
 	protected HollowTreeMedBranch(int i, BlockPos src, BlockPos dest, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
-		this(i, src, dest, branchBoundingBox(src, dest), length, angle, tilt, leafy, wood, leaves);
+		this(i, src, dest, branchBoundingBox(src, dest, 3 + Mth.ceil(length)), length, angle, tilt, leafy, wood, leaves);
 	}
 
 	protected HollowTreeMedBranch(StructurePieceType type, int i, BlockPos src, BlockPos dest, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
-		this(type, i, src, dest, branchBoundingBox(src, dest), length, angle, tilt, leafy, wood, leaves);
+		this(type, i, src, dest, branchBoundingBox(src, dest, 3 + Mth.ceil(length)), length, angle, tilt, leafy, wood, leaves);
 	}
 
 	protected HollowTreeMedBranch(int i, BlockPos src, BlockPos dest, BoundingBox boundingBox, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
@@ -50,8 +51,8 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 
 		this.setOrientation(Direction.SOUTH);
 
-		this.src = src;
-		this.dest = dest;
+		this.src = src.immutable();
+		this.dest = dest.immutable();
 
 		this.boundingBox = boundingBox;
 
@@ -104,7 +105,9 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource decoRNG, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource doNotUse, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
+
 		this.drawBresehnam(level, writeableBounds, this.src, this.dest, this.wood, decoRNG);
 		this.drawBresehnam(level, writeableBounds, this.src.above(), this.dest, this.wood, decoRNG);
 
@@ -133,10 +136,10 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 				BlockPos bdst = FeatureLogic.translate(new BlockPos(this.src.getX() - this.boundingBox.minX(), this.src.getY() - this.boundingBox.minY(), this.src.getZ() - this.boundingBox.minZ()), slength, this.angle, this.tilt);
 
 				int radius = decoRNG.nextBoolean() ? 2 : 3;
-				this.drawBlockBlob(level, writeableBounds, bdst.getX(), bdst.getY(), bdst.getZ(), radius, decoRNG, this.leaves);
+				this.drawBlockBlob(level, writeableBounds, bdst.getX(), bdst.getY(), bdst.getZ(), radius, decoRNG, this.leaves, false);
 			}
 
-			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves);
+			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves, false);
 		}
 	}
 
@@ -150,10 +153,10 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 		this.drawBresehnam(world, sbb, sourcePos, branchDest, woodProvider, random);
 
 		// leaf blob at the end
-		this.drawBlockBlob(world, sbb, branchDest.getX() - this.boundingBox.minX(), branchDest.getY() - this.boundingBox.minY(), branchDest.getZ() - this.boundingBox.minZ(), 2, random, leafProvider);
+		this.drawBlockBlob(world, sbb, branchDest.getX() - this.boundingBox.minX(), branchDest.getY() - this.boundingBox.minY(), branchDest.getZ() - this.boundingBox.minZ(), 2, random, leafProvider, false);
 	}
 
-	protected static BoundingBox branchBoundingBox(BlockPos src, BlockPos dest) {
-		return new BoundingBox(Math.min(src.getX(), dest.getX()), Math.min(src.getY(), dest.getY()), Math.min(src.getZ(), dest.getZ()), Math.max(src.getX(), dest.getX()), Math.max(src.getY(), dest.getY()), Math.max(src.getZ(), dest.getZ())).inflatedBy(3);
+	protected static BoundingBox branchBoundingBox(BlockPos src, BlockPos dest, int extraPadding) {
+		return BoundingBox.fromCorners(src, dest).inflatedBy(extraPadding);
 	}
 }

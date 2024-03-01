@@ -100,20 +100,22 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	 * Draw a giant blob of whatevs (okay, it's going to be leaves).
 	 */
 	@Override
-	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource doNotUse, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
+
 		// leaves on the outside
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 4, random, this.leaves);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 4, decoRNG, this.leaves, false);
 		// then wood
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 3, random, this.wood);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 3, decoRNG, this.wood, false);
 		// then air
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 2, random, this.inside);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 2, decoRNG, this.inside, true);
 
 		// then treasure chest
 		// which direction is this chest in?
-		this.placeTreasureAtCurrentPosition(level, this.radius + 2, this.radius - 1, this.radius, writeableBounds, random, this.lootContainer, this.lootTable);
+		this.placeTreasureAtCurrentPosition(level, this.radius + 2, this.radius - 1, this.radius, writeableBounds, decoRNG, this.lootContainer, this.lootTable);
 
 		// then spawner
-		this.placeSpawnerAtCurrentPosition(level, random, this.radius, this.radius, this.radius, this.monster.value(), writeableBounds);
+		this.placeSpawnerAtCurrentPosition(level, decoRNG, this.radius, this.radius, this.radius, this.monster.value(), writeableBounds);
 	}
 
 	/**

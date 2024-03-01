@@ -22,7 +22,7 @@ public class HollowTreeRoot extends HollowTreeMedBranch {
 	}
 
 	protected HollowTreeRoot(int i, BlockPos src, BlockPos dest, double length, double angle, double tilt, boolean leafy, BlockStateProvider root, BlockStateProvider wood) {
-		super(TFStructurePieceTypes.TFHTRo.value(), i, src, dest, branchBoundingBox(src, dest), length, angle, tilt, leafy, wood, root); // Might as well re-use the otherwise unused leaves field for configuring its root block
+		super(TFStructurePieceTypes.TFHTRo.value(), i, src, dest, branchBoundingBox(src, dest, 0), length, angle, tilt, leafy, wood, root); // Might as well re-use the otherwise unused leaves field for configuring its root block
 	}
 
 	public HollowTreeRoot(StructurePieceSerializationContext context, CompoundTag tag) {
@@ -30,12 +30,14 @@ public class HollowTreeRoot extends HollowTreeMedBranch {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource doNotUse, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
+
 		BlockPos rSrc = new BlockPos(this.src.getX() - this.boundingBox.minX(), this.src.getY() - this.boundingBox.minY(), this.src.getZ() - this.boundingBox.minZ());
 		BlockPos rDest = new BlockPos(this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ());
 
-		this.drawRootLine(level, writeableBounds, rSrc, rDest, random, this.wood, this.leaves);
-		this.drawRootLine(level, writeableBounds, rSrc.below(), rDest.below(), random, this.wood, this.leaves);
+		this.drawRootLine(level, writeableBounds, rSrc, rDest, decoRNG, this.wood, this.leaves);
+		this.drawRootLine(level, writeableBounds, rSrc.below(), rDest.below(), decoRNG, this.wood, this.leaves);
 	}
 
 	/**
@@ -52,12 +54,12 @@ public class HollowTreeRoot extends HollowTreeMedBranch {
 			// three choices here
 			if (block.canBeReplaced() || !block.isCollisionShapeFullBlock(world, worldPos)) {
 				// air, other non-solid, or grass, make wood block
-				this.placeProvidedBlock(world, wood, random, coords.getX(), coords.getY(), coords.getZ(), sbb, BlockPos.ZERO);
+				this.placeProvidedBlock(world, wood, random, coords.getX(), coords.getY(), coords.getZ(), sbb, BlockPos.ZERO, false);
 			} else if (block.is(BlockTags.LOGS)) {
 				// wood, do nothing
 			} else {
 				// solid, make root block
-				this.placeProvidedBlock(world, root, random, coords.getX(), coords.getY(), coords.getZ(), sbb, BlockPos.ZERO);
+				this.placeProvidedBlock(world, root, random, coords.getX(), coords.getY(), coords.getZ(), sbb, BlockPos.ZERO, false);
 			}
 		}
 	}

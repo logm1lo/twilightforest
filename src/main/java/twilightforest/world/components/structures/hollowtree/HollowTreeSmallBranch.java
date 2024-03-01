@@ -30,16 +30,18 @@ public class HollowTreeSmallBranch extends HollowTreeMedBranch {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
-		this.drawBresehnam(level, writeableBounds, this.src, this.dest, this.wood, random);
+	public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource doNotUse, BoundingBox writeableBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
+
+		this.drawBresehnam(level, writeableBounds, this.src, this.dest, this.wood, decoRNG);
 
 		// with leaves!
 		if (this.leafy) {
-			int leafRad = random.nextInt(2) + 1;
+			int leafRad = decoRNG.nextInt(2) + 1;
 			int sx = this.dest.getX() - this.boundingBox.minX();
 			int sy = this.dest.getY() - this.boundingBox.minY();
 			int sz = this.dest.getZ() - this.boundingBox.minZ();
-			this.drawBlockBlob(level, writeableBounds, sx, sy, sz, leafRad, random, this.leaves);
+			this.drawBlockBlob(level, writeableBounds, sx, sy, sz, leafRad, decoRNG, this.leaves, false);
 		}
 	}
 }
