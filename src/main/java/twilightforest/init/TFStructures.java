@@ -26,6 +26,7 @@ public class TFStructures {
 	public static final ResourceKey<Structure> GIANT_HOUSE = registerKey("giant_house");
 	public static final ResourceKey<Structure> FINAL_CASTLE = registerKey("final_castle");
 
+	public static final ResourceKey<Structure> HOLLOW_TREE = registerKey("hollow_tree");
 	public static final ResourceKey<Structure> MUSHROOM_TOWER = registerKey("mushroom_tower");
 	public static final ResourceKey<Structure> QUEST_ISLAND = registerKey("quest_island");
 	public static final ResourceKey<Structure> DRUID_GROVE = registerKey("druid_grove");
@@ -36,8 +37,8 @@ public class TFStructures {
 		return ResourceKey.create(Registries.STRUCTURE, TwilightForestMod.prefix(name));
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void bootstrap(BootstapContext<Structure> context) {
+		context.register(HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(context));
 		context.register(HEDGE_MAZE, HedgeMazeStructure.buildStructureConfig(context));
 		context.register(QUEST_GROVE, QuestGroveStructure.buildStructureConfig(context));
 		context.register(HOLLOW_HILL_SMALL, HollowHillStructure.buildSmallHillConfig(context));
