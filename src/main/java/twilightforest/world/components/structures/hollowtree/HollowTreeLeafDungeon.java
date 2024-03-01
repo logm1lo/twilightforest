@@ -104,11 +104,11 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
 
 		// leaves on the outside
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 4, decoRNG, this.leaves, false);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 4, decoRNG, this.leaves, false, true);
 		// then wood
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 3, decoRNG, this.wood, false);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 3, decoRNG, this.wood, false, false);
 		// then air
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 2, decoRNG, this.inside, true);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 2, decoRNG, this.inside, true, false);
 
 		// then treasure chest
 		// which direction is this chest in?

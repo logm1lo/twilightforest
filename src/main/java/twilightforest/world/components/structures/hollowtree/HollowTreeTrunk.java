@@ -254,7 +254,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 				for (int dy = 0; dy <= this.height; dy++) {
 					// fill the body of the trunk
 					if (dist <= this.radius && dist > hollow) {
-						this.placeProvidedBlock(level, this.log, decoRNG, dx + 1, dy, dz + 1, writeableBounds, BlockPos.ZERO, false); // offset, since our BB is slightly larger than the trunk
+						this.placeProvidedBlock(level, this.log, decoRNG, dx + 1, dy, dz + 1, writeableBounds, BlockPos.ZERO, false, false); // offset, since our BB is slightly larger than the trunk
 					}
 				}
 

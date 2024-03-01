@@ -57,15 +57,15 @@ public abstract class HollowTreePiece extends StructurePiece {
 		super(type, tag);
 	}
 
-	protected void placeProvidedBlock(WorldGenLevel world, BlockStateProvider possibleBlocks, RandomSource random, int sx, int sy, int sz, BoundingBox sbb, BlockPos origin, boolean forcedPlace) {
+	protected void placeProvidedBlock(WorldGenLevel world, BlockStateProvider possibleBlocks, RandomSource random, int sx, int sy, int sz, BoundingBox sbb, BlockPos origin, boolean forcedPlace, boolean leafHack) {
 		BlockPos worldPos = this.getWorldPos(sx, sy, sz).immutable();
 
 		if (!sbb.isInside(worldPos) || (!forcedPlace && !FeatureLogic.worldGenReplaceable(world.getBlockState(worldPos)))) return;
 
 		BlockState state = possibleBlocks.getState(random, worldPos);
 
-		if (state.hasProperty(LeavesBlock.DISTANCE) && !forcedPlace) {
-			int distance = Mth.clamp(origin.distManhattan(worldPos), 1, 7);
+		if (state.hasProperty(LeavesBlock.DISTANCE)) {
+			int distance = leafHack ? 1 : Mth.clamp(origin.distManhattan(worldPos), 1, 7);
 			world.setBlock(worldPos, state.setValue(LeavesBlock.DISTANCE, distance), PLACE_FLAG);
 		} else {
 			world.setBlock(worldPos, state, PLACE_FLAG);
@@ -96,7 +96,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 	/**
 	 * Make a leaf blob
 	 */
-	protected void drawBlockBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int blobRadius, RandomSource random, BlockStateProvider stateProvider, boolean forcedPlace) {
+	protected void drawBlockBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int blobRadius, RandomSource random, BlockStateProvider stateProvider, boolean forcedPlace, boolean leafHack) {
 		BlockPos origin = this.getWorldPos(sx, sy, sz).immutable();
 
 		// then trace out a quadrant
@@ -117,14 +117,14 @@ public abstract class HollowTreePiece extends StructurePiece {
 					// if we're inside the blob, fill it
 					if (dist <= blobRadius) {
 						// do eight at a time for easiness!
-						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz + dz, sbb, origin, forcedPlace);
-						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz - dz, sbb, origin, forcedPlace);
-						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz + dz, sbb, origin, forcedPlace);
-						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz - dz, sbb, origin, forcedPlace);
-						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz + dz, sbb, origin, forcedPlace);
-						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz - dz, sbb, origin, forcedPlace);
-						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz + dz, sbb, origin, forcedPlace);
-						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz - dz, sbb, origin, forcedPlace);
+						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+						this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz - dz, sbb, origin, forcedPlace, leafHack);
 					}
 				}
 			}
