@@ -258,7 +258,7 @@ public class OreMagnetItem extends Item {
 	}
 
 	// Switch over to ConcurrentHashMap if we run into any concurrency problems
-	private static final HashMap<Block, Block> ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
+	public static final HashMap<Block, Block> ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
 
 	@SubscribeEvent
 	public static void onTagsUpdatedEvent(TagsUpdatedEvent event) {
