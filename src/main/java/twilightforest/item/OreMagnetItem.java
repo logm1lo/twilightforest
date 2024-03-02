@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -145,9 +145,6 @@ public class OreMagnetItem extends Item {
 	}
 
 	public static int doMagnet(Level level, BlockPos usePos, BlockPos destPos, boolean sourceIsMineCore) {
-		// FIXME Find a better place to invoke this!
-		initOre2BlockMap();
-
 		int blocksMoved = 0;
 
 		// find some ore?
@@ -260,18 +257,12 @@ public class OreMagnetItem extends Item {
 		return ORE_TO_BLOCK_REPLACEMENTS.containsKey(ore);
 	}
 
-	// So it looks like we can't really access BlockTag contents until Datapack loading is complete (see `buildOreMagnetCache` method below)
-	// Instead let's opt for only clearing that particular cache on reload, and lazy-init the map when the magnet is used
-
 	// Switch over to ConcurrentHashMap if we run into any concurrency problems
-	private static boolean cacheNeedsBuild = true;
 	private static final HashMap<Block, Block> ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
 
-	private static void initOre2BlockMap() {
-		if (!cacheNeedsBuild)
-			return;
-
-		TwilightForestMod.LOGGER.info("GENERATING ORE TO BLOCK MAPPING");
+	@SubscribeEvent
+	public static void onTagsUpdatedEvent(TagsUpdatedEvent event) {
+		ORE_TO_BLOCK_REPLACEMENTS.clear();
 
 		//collect all tags
 		for (TagKey<Block> tag : BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("forge")).toList()) {
@@ -292,26 +283,11 @@ public class OreMagnetItem extends Item {
 				}
 			}
 		}
-		
+
 		//Gonna need to special case this one as it isn't covered by tags.
 		//Ancient debris isn't exactly an ore, so it makes sense that the tag doesn't include it
 		if (!ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
 			ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
 		}
-
-		cacheNeedsBuild = false;
-	}
-
-	@SubscribeEvent
-	public static void buildOreMagnetCache(AddReloadListenerEvent event) {
-		event.addListener((stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor) -> {
-			if (!cacheNeedsBuild) {
-				ORE_TO_BLOCK_REPLACEMENTS.clear();
-				cacheNeedsBuild = true;
-			}
-
-			return stage.wait(null).thenRun(() -> {
-			}); // Nothing to do here
-		});
 	}
 }
