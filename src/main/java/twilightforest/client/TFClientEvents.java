@@ -229,11 +229,6 @@ public class TFClientEvents {
 			BugModelAnimationHelper.animate();
 			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TFDimension.DIMENSION_RENDERER);
 
-			// add weather box if needed
-			if (mc.level != null && info instanceof TwilightForestRenderInfo) {
-				TFWeatherRenderer.tick(mc.level);
-			}
-
 			if (TFConfig.CLIENT_CONFIG.firstPersonEffects.get() && mc.level != null && mc.player != null) {
 				HashSet<ChunkPos> chunksInRange = new HashSet<>();
 				for (int x = -16; x <= 16; x += 16) {
