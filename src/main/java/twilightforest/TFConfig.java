@@ -462,6 +462,18 @@ public class TFConfig {
 	public static void onConfigReload(final ModConfigEvent event) {
 		if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID)) {
 			if (event.getConfig().getType() == ModConfig.Type.COMMON) {
+				Common.cachedCloudBlockPrecipitationDistance = COMMON_CONFIG.cloudBlockPrecipitationDistance.get();
+
+				// Tree Core stuff
+				Common.MagicTrees.disableTimeCore = COMMON_CONFIG.MAGIC_TREES.timeRange.get() <= 0;
+				Common.MagicTrees.timeCoreRange = COMMON_CONFIG.MAGIC_TREES.timeRange.get();
+				Common.MagicTrees.disableTransformationCore = COMMON_CONFIG.MAGIC_TREES.transformationRange.get() <= 0;
+				Common.MagicTrees.transformationCoreRange = COMMON_CONFIG.MAGIC_TREES.transformationRange.get();
+				Common.MagicTrees.disableMiningCore = COMMON_CONFIG.MAGIC_TREES.miningRange.get() <= 0;
+				Common.MagicTrees.miningCoreRange = COMMON_CONFIG.MAGIC_TREES.miningRange.get();
+				Common.MagicTrees.disableSortingCore = COMMON_CONFIG.MAGIC_TREES.sortingRange.get() <= 0;
+				Common.MagicTrees.sortingCoreRange = COMMON_CONFIG.MAGIC_TREES.sortingRange.get();
+
 				//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things dont desync.
 				MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 				if (server != null && server.isDedicatedServer()) {
@@ -480,30 +492,11 @@ public class TFConfig {
 				//sets cached portal locking advancement to null just in case it changed
 				COMMON_CONFIG.portalLockingAdvancement = null;
 			} else if (event.getConfig().getType() == ModConfig.Type.CLIENT) {
+				TFConfig.reloadGiantSkins();
 				CLIENT_CONFIG.validAuroraBiomes.clear();
+				Client.cachedCloudBlockPrecipitationDistance = CLIENT_CONFIG.cloudBlockPrecipitationDistance.get();
 			}
 		}
-	}
-
-	@SubscribeEvent
-	public static void onConfigReload(final ModConfigEvent.Reloading event) {
-        if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID)) {
-            if (event.getConfig().getType() == ModConfig.Type.CLIENT) {
-                TFConfig.reloadGiantSkins();
-				Client.cachedCloudBlockPrecipitationDistance = CLIENT_CONFIG.cloudBlockPrecipitationDistance.get();
-            } else {
-				Common.cachedCloudBlockPrecipitationDistance = COMMON_CONFIG.cloudBlockPrecipitationDistance.get();
-				// Tree Core stuff
-				Common.MagicTrees.disableTimeCore = COMMON_CONFIG.MAGIC_TREES.timeRange.get() <= 0;
-				Common.MagicTrees.timeCoreRange = COMMON_CONFIG.MAGIC_TREES.timeRange.get();
-				Common.MagicTrees.disableTransformationCore = COMMON_CONFIG.MAGIC_TREES.transformationRange.get() <= 0;
-				Common.MagicTrees.transformationCoreRange = COMMON_CONFIG.MAGIC_TREES.transformationRange.get();
-				Common.MagicTrees.disableMiningCore = COMMON_CONFIG.MAGIC_TREES.miningRange.get() <= 0;
-				Common.MagicTrees.miningCoreRange = COMMON_CONFIG.MAGIC_TREES.miningRange.get();
-				Common.MagicTrees.disableSortingCore = COMMON_CONFIG.MAGIC_TREES.sortingRange.get() <= 0;
-				Common.MagicTrees.sortingCoreRange = COMMON_CONFIG.MAGIC_TREES.sortingRange.get();
-			}
-        }
 	}
 
 	//damn forge events
