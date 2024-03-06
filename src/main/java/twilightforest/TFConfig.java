@@ -35,7 +35,7 @@ public class TFConfig {
 	public static Client CLIENT_CONFIG;
 
 	public static class Common {
-		public static int cachedCloudBlockPrecipitationDistanceCommon = 32;
+		public static int cachedCloudBlockPrecipitationDistance = 32;
 
 		public Common(ModConfigSpec.Builder builder) {
 			builder.
@@ -114,7 +114,7 @@ public class TFConfig {
 							Note that the Knight Phantoms are not affected by this as their drops work differently.""").
 					define("boss_drop_chests", true);
 
-			cloudBlockPrecipitationDistanceCommon = builder.
+			cloudBlockPrecipitationDistance = builder.
 					translation(config + "cloud_block_precipitation_distance_server").
 					comment("""
 							Dictates how many blocks down from a cloud block should the game logic check for handling weather related code.
@@ -219,53 +219,37 @@ public class TFConfig {
 					comment("Settings for all things related to the magic trees.").
 					push("Magic Trees");
 			{
-				MAGIC_TREES.disableTime = builder.
-						worldRestart().
-						translation(config + "disable_time").
-						comment("If true, prevents the Timewood Core from functioning.").
-						define("disableTimeCore", false);
-
 				MAGIC_TREES.timeRange = builder.
 						worldRestart().
 						translation(config + "time_range").
-						comment("Defines the radius at which the Timewood Core works. Can be a number anywhere between 1 and 128.")
-						.defineInRange("timeCoreRange", 16, 1, 128);
-
-				MAGIC_TREES.disableTransformation = builder.
-						worldRestart().
-						translation(config + "disable_transformation").
-						comment("If true, prevents the Transformation Core from functioning.").
-						define("disableTransformationCore", false);
+						comment("""
+								Defines the radius at which the Timewood Core works. Can be a number anywhere between 1 and 128.
+								Set to 0 to prevent the Timewood Core from functioning.""")
+						.defineInRange("timeCoreRange", 16, 0, 128);
 
 				MAGIC_TREES.transformationRange = builder.
 						worldRestart().
 						translation(config + "transformation_range").
-						comment("Defines the radius at which the Transformation Core works. Can be a number anywhere between 1 and 128.")
-						.defineInRange("transformationCoreRange", 16, 1, 128);
-
-				MAGIC_TREES.disableMining = builder.
-						worldRestart().
-						translation(config + "disable_mining").
-						comment("If true, prevents the Minewood Core from functioning.").
-						define("disableMiningCore", false);
+						comment("""
+								Defines the radius at which the Transformation Core works. Can be a number anywhere between 1 and 128.
+								Set to 0 to prevent the Transformation Core from functioning.""")
+						.defineInRange("transformationCoreRange", 16, 0, 128);
 
 				MAGIC_TREES.miningRange = builder.
 						worldRestart().
 						translation(config + "mining_range").
-						comment("Defines the radius at which the Minewood Core works. Can be a number anywhere between 1 and 128.")
-						.defineInRange("miningCoreRange", 16, 1, 128);
-
-				MAGIC_TREES.disableSorting = builder.
-						worldRestart().
-						translation(config + "disable_sorting").
-						comment("If true, prevents the Sortingwood Core from functioning.").
-						define("disableSortingCore", false);
+						comment("""
+								Defines the radius at which the Minewood Core works. Can be a number anywhere between 1 and 128.
+								Set to 0 to prevent the Minewood Core from functioning.""")
+						.defineInRange("miningCoreRange", 16, 0, 128);
 
 				MAGIC_TREES.sortingRange = builder.
 						worldRestart().
 						translation(config + "sorting_range").
-						comment("Defines the radius at which the Sortingwood Core works. Can be a number anywhere between 1 and 128.")
-						.defineInRange("sortingCoreRange", 16, 1, 128);
+						comment("""
+								Defines the radius at which the Sortingwood Core works. Can be a number anywhere between 1 and 128.
+								Set to 0 to prevent the Sortingwood Core from functioning.""")
+						.defineInRange("sortingCoreRange", 16, 0, 128);
 			}
 			builder.pop();
 
@@ -307,20 +291,27 @@ public class TFConfig {
 		public final ModConfigSpec.BooleanValue disableSkullCandles;
 		public final ModConfigSpec.BooleanValue defaultItemEnchants;
 		public final ModConfigSpec.BooleanValue bossDropChests;
-		public final ModConfigSpec.IntValue cloudBlockPrecipitationDistanceCommon;
+		private final ModConfigSpec.IntValue cloudBlockPrecipitationDistance;
 		public final ModConfigSpec.EnumValue<MultiplayerFightAdjuster> multiplayerFightAdjuster;
 
 		public final MagicTrees MAGIC_TREES = new MagicTrees();
 
 		public static class MagicTrees {
-			public ModConfigSpec.BooleanValue disableTime;
-			public ModConfigSpec.IntValue timeRange;
-			public ModConfigSpec.BooleanValue disableTransformation;
-			public ModConfigSpec.IntValue transformationRange;
-			public ModConfigSpec.BooleanValue disableMining;
-			public ModConfigSpec.IntValue miningRange;
-			public ModConfigSpec.BooleanValue disableSorting;
-			public ModConfigSpec.IntValue sortingRange;
+			private ModConfigSpec.IntValue timeRange;
+			public static boolean disableTimeCore = false;
+			public static int timeCoreRange = 16;
+
+			private ModConfigSpec.IntValue transformationRange;
+			public static boolean disableTransformationCore = false;
+			public static int transformationCoreRange = 16;
+
+			private ModConfigSpec.IntValue miningRange;
+			public static boolean disableMiningCore = false;
+			public static int miningCoreRange = 16;
+
+			private ModConfigSpec.IntValue sortingRange;
+			public static boolean disableSortingCore = false;
+			public static int sortingCoreRange = 16;
 		}
 
 		public final UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
@@ -350,7 +341,7 @@ public class TFConfig {
 	}
 
 	public static class Client {
-		public static int cachedCloudBlockPrecipitationDistanceClient = 32;
+		public static int cachedCloudBlockPrecipitationDistance = 32;
 
 		public Client(ModConfigSpec.Builder builder) {
 			silentCicadas = builder.
@@ -385,7 +376,7 @@ public class TFConfig {
 					translation(config + "shield_indicator").
 					comment("Renders how many fortification shields are currently active on your player above your armor bar. Turn this off if you find it intrusive or other mods render over/under it.").
 					define("fortificationShieldIndicator", true);
-			cloudBlockPrecipitationDistanceClient = builder.
+			cloudBlockPrecipitationDistance = builder.
 					translation(config + "cloud_block_precipitation_distance").
 					comment("""
 							Renders precipitation underneath cloud blocks. -1 sets it to be synced with the common config.
@@ -420,7 +411,7 @@ public class TFConfig {
 		public final ModConfigSpec.BooleanValue disableLockedBiomeToasts;
 		public final ModConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
 		public final ModConfigSpec.BooleanValue showFortificationShieldIndicator;
-		public final ModConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
+		private final ModConfigSpec.IntValue cloudBlockPrecipitationDistance;
 		public final ModConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
 		public final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
 		public final ModConfigSpec.BooleanValue prettifyOreMeterGui;
@@ -431,7 +422,7 @@ public class TFConfig {
 	private static final String config = "config." + TwilightForestMod.ID;
 
 	public static int getClientCloudBlockPrecipitationDistance() {
-		return Client.cachedCloudBlockPrecipitationDistanceClient == -1 ? Common.cachedCloudBlockPrecipitationDistanceCommon : Client.cachedCloudBlockPrecipitationDistanceClient;
+		return Client.cachedCloudBlockPrecipitationDistance == -1 ? Common.cachedCloudBlockPrecipitationDistance : Client.cachedCloudBlockPrecipitationDistance;
 	}
 
 	@Nullable
@@ -499,9 +490,18 @@ public class TFConfig {
         if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID)) {
             if (event.getConfig().getType() == ModConfig.Type.CLIENT) {
                 TFConfig.reloadGiantSkins();
-				TFConfig.Client.cachedCloudBlockPrecipitationDistanceClient = TFConfig.CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient.get();
+				Client.cachedCloudBlockPrecipitationDistance = CLIENT_CONFIG.cloudBlockPrecipitationDistance.get();
             } else {
-				TFConfig.Common.cachedCloudBlockPrecipitationDistanceCommon = TFConfig.COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon.get();
+				Common.cachedCloudBlockPrecipitationDistance = COMMON_CONFIG.cloudBlockPrecipitationDistance.get();
+				// Tree Core stuff
+				Common.MagicTrees.disableTimeCore = COMMON_CONFIG.MAGIC_TREES.timeRange.get() <= 0;
+				Common.MagicTrees.timeCoreRange = COMMON_CONFIG.MAGIC_TREES.timeRange.get();
+				Common.MagicTrees.disableTransformationCore = COMMON_CONFIG.MAGIC_TREES.transformationRange.get() <= 0;
+				Common.MagicTrees.transformationCoreRange = COMMON_CONFIG.MAGIC_TREES.transformationRange.get();
+				Common.MagicTrees.disableMiningCore = COMMON_CONFIG.MAGIC_TREES.miningRange.get() <= 0;
+				Common.MagicTrees.miningCoreRange = COMMON_CONFIG.MAGIC_TREES.miningRange.get();
+				Common.MagicTrees.disableSortingCore = COMMON_CONFIG.MAGIC_TREES.sortingRange.get() <= 0;
+				Common.MagicTrees.sortingCoreRange = COMMON_CONFIG.MAGIC_TREES.sortingRange.get();
 			}
         }
 	}

@@ -17,7 +17,7 @@ public class MineLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFConfig.COMMON_CONFIG.MAGIC_TREES.disableMining.get();
+		return !TFConfig.Common.MagicTrees.disableMiningCore;
 	}
 
 	/**
@@ -25,7 +25,7 @@ public class MineLogCoreBlock extends SpecialMagicLogBlock {
 	 */
 	@Override
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
-		BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFConfig.COMMON_CONFIG.MAGIC_TREES.miningRange.get());
+		BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFConfig.Common.MagicTrees.miningCoreRange);
 		int moved = OreMagnetItem.doMagnet(level, pos, dPos, true);
 
 		if (moved > 0) {

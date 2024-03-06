@@ -34,7 +34,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFConfig.COMMON_CONFIG.MAGIC_TREES.disableTransformation.get();
+		return !TFConfig.Common.MagicTrees.disableTransformationCore;
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		ResourceKey<Biome> target = TFBiomes.ENCHANTED_FOREST;
 		Holder<Biome> biome = level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(target);
-		int range = TFConfig.COMMON_CONFIG.MAGIC_TREES.transformationRange.get();
+		int range = TFConfig.Common.MagicTrees.transformationCoreRange;
 		for (int i = 0; i < 16; i++) {
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, range, 0, range);
 			if (dPos.distSqr(pos) > 256.0)

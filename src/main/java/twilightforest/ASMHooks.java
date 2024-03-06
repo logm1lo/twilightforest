@@ -329,9 +329,9 @@ public class ASMHooks {
 	 * [BEFORE ALOAD]
 	 */
 	public static boolean cloud(boolean isRaining, Level level, BlockPos pos) {
-		if (!isRaining && TFConfig.Common.cachedCloudBlockPrecipitationDistanceCommon > 0) {
+		if (!isRaining && TFConfig.Common.cachedCloudBlockPrecipitationDistance > 0) {
 			LevelChunk chunk = level.getChunkAt(pos);
-			for (int y = pos.getY(); y < pos.getY() + TFConfig.Common.cachedCloudBlockPrecipitationDistanceCommon; y++) {
+			for (int y = pos.getY(); y < pos.getY() + TFConfig.Common.cachedCloudBlockPrecipitationDistance; y++) {
 				BlockPos newPos = pos.atY(y);
 				BlockState state = chunk.getBlockState(newPos);
 				if (state.getBlock() instanceof CloudBlock cloudBlock && cloudBlock.getCurrentPrecipitation(newPos, level, level.getRainLevel(1.0F)).getLeft() == Biome.Precipitation.RAIN) {
