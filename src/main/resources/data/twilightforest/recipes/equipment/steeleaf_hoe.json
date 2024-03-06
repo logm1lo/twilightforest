@@ -1,6 +1,6 @@
 {
   "result": {
-    "nbt": "{Enchantments:[{lvl:1s,id:\"minecraft:efficiency\"}]}",
+    "nbt": "{Enchantments:[{lvl:2s,id:\"minecraft:fortune\"}]}",
     "item": "twilightforest:steeleaf_hoe",
     "type": "minecraft:item_nbt"
   },

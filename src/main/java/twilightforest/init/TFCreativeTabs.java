@@ -503,7 +503,7 @@ public class TFCreativeTabs {
 				generateGearWithEnchants(output, TFItems.IRONWOOD_CHESTPLATE, new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 1));
 				generateGearWithEnchants(output, TFItems.IRONWOOD_LEGGINGS, new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 1));
 				generateGearWithEnchants(output, TFItems.IRONWOOD_BOOTS, new EnchantmentInstance(Enchantments.FALL_PROTECTION, 1));
-				generateGearWithEnchants(output, TFItems.IRONWOOD_SWORD, new EnchantmentInstance(Enchantments.UNBREAKING, 1));
+				generateGearWithEnchants(output, TFItems.IRONWOOD_SWORD, new EnchantmentInstance(Enchantments.KNOCKBACK, 1));
 				generateGearWithEnchants(output, TFItems.IRONWOOD_SHOVEL, new EnchantmentInstance(Enchantments.UNBREAKING, 1));
 				generateGearWithEnchants(output, TFItems.IRONWOOD_PICKAXE, new EnchantmentInstance(Enchantments.BLOCK_EFFICIENCY, 1));
 				generateGearWithEnchants(output, TFItems.IRONWOOD_AXE, new EnchantmentInstance(Enchantments.BLOCK_FORTUNE, 1));
