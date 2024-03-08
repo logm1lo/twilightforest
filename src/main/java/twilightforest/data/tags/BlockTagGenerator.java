@@ -685,6 +685,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.KNIGHTMETAL_BLOCK.get(),
 				TFBlocks.IRONWOOD_BLOCK.get(),
 				TFBlocks.FIERY_BLOCK.get(),
+				TFBlocks.CARMINITE_BLOCK.get(),
 				TFBlocks.SPIRAL_BRICKS.get(),
 				TFBlocks.ETCHED_NAGASTONE.get(),
 				TFBlocks.NAGASTONE_PILLAR.get(),

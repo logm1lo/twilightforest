@@ -235,7 +235,7 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> FIERY_BLOCK = registerFireResistantItem("fiery_block", () -> new FieryBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BLACK).noOcclusion().requiresCorrectToolForDrops().sound(SoundType.METAL).strength(5.0F, 6.0F).emissiveRendering((state, world, pos) -> true)));
 	public static final DeferredBlock<Block> STEELEAF_BLOCK = register("steeleaf_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).sound(SoundType.MOSS).strength(5.0F, 6.0F)));
 	public static final DeferredBlock<Block> ARCTIC_FUR_BLOCK = register("arctic_fur_block", () -> new ArcticFurBlock(BlockBehaviour.Properties.of().ignitedByLava().mapColor(MapColor.WOOL).sound(SoundType.WOOL).strength(0.8F)));
-	public static final DeferredBlock<Block> CARMINITE_BLOCK = register("carminite_block", () -> new CarminiteBlock(BlockBehaviour.Properties.of().instabreak().mapColor(MapColor.COLOR_RED).sound(SoundType.SLIME_BLOCK)));
+	public static final DeferredBlock<Block> CARMINITE_BLOCK = register("carminite_block", () -> new CarminiteBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(1.5F, 10.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)));
 
 	//boss trophies and spawners
 	public static final DeferredBlock<Block> NAGA_BOSS_SPAWNER = register("naga_boss_spawner", () -> new BossSpawnerBlock(BossVariant.NAGA, BlockBehaviour.Properties.of().mapColor(MapColor.STONE).noLootTable().noOcclusion().strength(-1.0F, 3600000.8F)));
