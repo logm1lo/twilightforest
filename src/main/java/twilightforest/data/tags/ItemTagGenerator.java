@@ -210,7 +210,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 				TFBlocks.AURORALIZED_GLASS.get().asItem(),
 				TFBlocks.SLIDER.get().asItem(),
 				TFItems.MAGIC_PAINTING.get(),
-				TFItems.QUEST_RAM_BANNER_PATTERN.get()
+				TFItems.QUEST_RAM_BANNER_PATTERN.get(),
+				TFBlocks.FINAL_BOSS_BOSS_SPAWNER.asItem()
 		);
 
 		tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
