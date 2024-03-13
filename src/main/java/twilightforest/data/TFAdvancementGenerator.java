@@ -24,7 +24,6 @@ import twilightforest.advancements.*;
 import twilightforest.block.Experiment115Block;
 import twilightforest.init.*;
 import twilightforest.util.TFAdvancements;
-import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.init.TFDimension;
 
 import java.util.Optional;
@@ -266,7 +265,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.requirements(AdvancementRequirements.Strategy.OR)
 				.addCriterion("in_tf",
 						PlayerTrigger.TriggerInstance.located(
-								LocationPredicate.Builder.inDimension(TFGenerationSettings.DIMENSION_KEY)))
+								LocationPredicate.Builder.inDimension(TFDimension.DIMENSION_KEY)))
 				.addCriterion("make_portal", SimpleAdvancementTrigger.TriggerInstance.makeTFPortal())
 				.save(consumer, TFAdvancements.ROOT.toString());
 

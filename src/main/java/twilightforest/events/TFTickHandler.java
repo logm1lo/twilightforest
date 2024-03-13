@@ -23,7 +23,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
 import twilightforest.network.MissingAdvancementToastPacket;

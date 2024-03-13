@@ -3,7 +3,7 @@ package twilightforest.capabilities;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFAdvancementTriggers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +25,7 @@ public class MultiplayerInclusivityAttachment {
 
 	public void grantGroupAdvancement(LivingEntity boss) {
 		for (ServerPlayer player : this.getQualifiedPlayers()) {
-			TFAdvancements.HURT_BOSS.get().trigger(player, boss);
+			TFAdvancementTriggers.HURT_BOSS.get().trigger(player, boss);
 		}
 	}
 }
