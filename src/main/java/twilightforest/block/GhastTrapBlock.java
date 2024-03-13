@@ -41,6 +41,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
@@ -52,6 +53,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		if (level.isClientSide()) {
 			return;
@@ -69,6 +71,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int event, int payload) {
 		BlockEntity te = level.getBlockEntity(pos);
 		return te != null && te.triggerEvent(event, payload);
@@ -78,8 +81,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	 * Check if the inactive trap block is fully charged
 	 */
 	private boolean isInactiveTrapCharged(Level level, BlockPos pos) {
-		BlockEntity tileEntity = level.getBlockEntity(pos);
-		return tileEntity instanceof GhastTrapBlockEntity && ((GhastTrapBlockEntity) tileEntity).isCharged();
+		return level.getBlockEntity(pos) instanceof GhastTrapBlockEntity ghastTrap && ghastTrap.isCharged();
 	}
 
 	// [VanillaCopy] BlockRedstoneOre.spawnParticles. Unchanged.
