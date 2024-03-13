@@ -253,6 +253,34 @@ public class ChestLootTables implements LootTableSubProvider {
 								.add(LootItem.lootTableItem(Items.DIAMOND_HOE).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.MUSIC_DISC_MOTION).setWeight(15))));
 
+		register.accept(TFLootTables.HEDGE_CLOTH.lootTable,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(UniformGenerator.between(4, 6))
+								.add(LootItem.lootTableItem(Items.WHITE_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.LIGHT_GRAY_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.GRAY_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.BLACK_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.RED_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.ORANGE_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.YELLOW_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.GREEN_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.LIME_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.BLUE_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.CYAN_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.LIGHT_BLUE_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.PURPLE_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.MAGENTA_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.PINK_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+								.add(LootItem.lootTableItem(Items.BROWN_CARPET).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(UniformGenerator.between(2, 3))
+								.add(LootItem.lootTableItem(Items.STRING).apply(SetItemCountFunction.setCount(UniformGenerator.between(8, 17))))
+								.add(LootItem.lootTableItem(Items.GOLD_NUGGET).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.EMPERORS_CLOTH))));
+
 		register.accept(TFLootTables.TREE_CACHE.lootTable,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
@@ -370,6 +398,7 @@ public class ChestLootTables implements LootTableSubProvider {
 								.add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.PEACOCK_FEATHER_FAN).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.CHARM_OF_LIFE_1).setWeight(25))
+								.add(LootItem.lootTableItem(TFItems.POCKET_WATCH).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.MUSIC_DISC_WAYFARER).setWeight(25))));
 
 		register.accept(TFLootTables.LARGE_HOLLOW_HILL.lootTable,

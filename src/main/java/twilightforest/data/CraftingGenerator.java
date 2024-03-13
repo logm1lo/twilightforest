@@ -15,22 +15,21 @@ import net.neoforged.neoforge.common.conditions.TrueCondition;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.NBTIngredient;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.custom.NoSmithingTemplateRecipeBuilder;
 import twilightforest.data.custom.UncraftingGenerator;
 import twilightforest.data.helpers.CraftingDataHelper;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
-import twilightforest.item.recipe.MagicMapCloningRecipe;
-import twilightforest.item.recipe.MazeMapCloningRecipe;
-import twilightforest.item.recipe.MoonwormQueenRepairRecipe;
-import twilightforest.item.recipe.UncraftingTableCondition;
+import twilightforest.item.recipe.*;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class CraftingGenerator extends CraftingDataHelper {
-	public CraftingGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, provider);
+	public CraftingGenerator(PackOutput output) {
+		super(output);
 	}
 
 	@Override
@@ -153,12 +152,12 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(output, TwilightForestMod.prefix("berry_torch"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.UNCRAFTING_TABLE.get())
-								.pattern("###")
-								.pattern("#X#")
-								.pattern("###")
-								.define('#', Blocks.CRAFTING_TABLE)
-								.define('X', TFItems.MAZE_MAP_FOCUS.get())
-								.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
+				.pattern("###")
+				.pattern("#X#")
+				.pattern("###")
+				.define('#', Blocks.CRAFTING_TABLE)
+				.define('X', TFItems.MAZE_MAP_FOCUS.get())
+				.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
 				.save(output.withConditions(UncraftingTableCondition.INSTANCE), TwilightForestMod.prefix("uncrafting_table"));
 
 		cookingRecipes(output, "smelted", RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, 200);
@@ -368,6 +367,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SpecialRecipeBuilder.special(MoonwormQueenRepairRecipe::new).save(output, TwilightForestMod.prefix("moonworm_queen_repair_recipe").toString());
 		SpecialRecipeBuilder.special(MagicMapCloningRecipe::new).save(output, TwilightForestMod.prefix("magic_map_cloning_recipe").toString());
 		SpecialRecipeBuilder.special(MazeMapCloningRecipe::new).save(output, TwilightForestMod.prefix("maze_map_cloning_recipe").toString());
+		SpecialRecipeBuilder.special(EmperorsClothRecipe::new).save(output, TwilightForestMod.prefix("emperors_cloth_recipe").toString());
+
+		NoSmithingTemplateRecipeBuilder
+				.noTemplate(Ingredient.of(Tags.Items.ARMORS), Ingredient.of(TFItems.EMPERORS_CLOTH.get()), RecipeCategory.MISC)
+				.attachData(tag -> tag.putBoolean(EmperorsClothRecipe.INVISIBLE_TAG, true))
+				.unlocks("has_cloth", has(TFItems.EMPERORS_CLOTH))
+				.save(output, TwilightForestMod.prefix("emperors_cloth_smithing"));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.COBBLESTONE, 64)
 				.requires(TFBlocks.GIANT_COBBLESTONE.get())

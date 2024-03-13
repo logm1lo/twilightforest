@@ -35,7 +35,7 @@ public class FortificationShieldAttachment {
 
 	public void tick(LivingEntity entity) {
 		if (!entity.level().isClientSide() && this.temporaryShieldsLeft() > 0 && this.timer-- <= 0 && this.breakTimer <= 0 && (!(entity instanceof Player player) || !player.getAbilities().invulnerable))
-			this.breakShield(entity);
+			this.breakShield(entity, true);
 		if (this.breakTimer > 0)
 			this.breakTimer--;
 	}
@@ -52,7 +52,7 @@ public class FortificationShieldAttachment {
 		return this.permanentShields;
 	}
 
-	public void breakShield(LivingEntity entity) {
+	public void breakShield(LivingEntity entity, boolean expired) {
 		if (this.breakTimer <= 0) {
 			// Temp shields should break first before permanent ones. Reset time each time a temp shield is busted.
 			if (this.temporaryShields > 0) {
@@ -62,17 +62,12 @@ public class FortificationShieldAttachment {
 				this.permanentShields--;
 			}
 
-			if (entity instanceof ServerPlayer player)
+			if (entity instanceof ServerPlayer player && !expired)
 				player.awardStat(TFStats.TF_SHIELDS_BROKEN.get());
 			this.sendUpdatePacket(entity);
-			entity.level().playSound(null, entity.blockPosition(), TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, ((entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			entity.level().playSound(null, entity.blockPosition(), expired ? TFSounds.SHIELD_EXPIRE.get() : TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, (entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.3F + 1.0F);
 			this.breakTimer = 20;
 		}
-	}
-
-	public void replenishShields(LivingEntity entity) {
-		this.setShields(entity, 5, true);
-		entity.playSound(TFSounds.SHIELD_ADD.get(), 1.0F, (entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.2F + 1.0F);
 	}
 
 	public void setShields(LivingEntity entity, int amount, boolean temp) {

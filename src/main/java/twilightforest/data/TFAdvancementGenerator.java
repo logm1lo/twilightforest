@@ -25,6 +25,7 @@ import twilightforest.block.Experiment115Block;
 import twilightforest.init.*;
 import twilightforest.util.TFAdvancements;
 import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFDimension;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -57,7 +58,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.requirements(AdvancementRequirements.Strategy.OR)
 				.addCriterion("in_tf",
 						PlayerTrigger.TriggerInstance.located(
-								LocationPredicate.Builder.inDimension(TFGenerationSettings.DIMENSION_KEY)))
+								LocationPredicate.Builder.inDimension(TFDimension.DIMENSION_KEY)))
 				.addCriterion("make_portal", SimpleAdvancementTrigger.TriggerInstance.makeTFPortal())
 				.save(consumer, TFAdvancements.PROGRESS_ROOT.toString());
 
@@ -127,9 +128,8 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 						null, AdvancementType.GOAL, true, true, false)
 				.addCriterion("all_knights", SimpleAdvancementTrigger.TriggerInstance.killAllPhantoms())
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.KNIGHT_PHANTOM_TROPHY.get()))
-				.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.KNIGHT_PHANTOM.get())))
 				.addCriterion("previous_progression", this.advancementTrigger(trophy_pedestal))
-				.requirements(new CountRequirementsStrategy(3, 1))
+				.requirements(new CountRequirementsStrategy(2, 1))
 				.save(consumer, TFAdvancements.PROGRESS_KNIGHTS.toString());
 
 		AdvancementHolder trap = Advancement.Builder.advancement().parent(knights).display(
@@ -557,7 +557,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 		for (EntityType<?> entity : TF_KILLABLE) {
 			builder.addCriterion(EntityType.getKey(entity).getPath(),
 					KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(entity)
-							.located(LocationPredicate.Builder.inDimension(TFGenerationSettings.DIMENSION_KEY))));
+							.located(LocationPredicate.Builder.inDimension(TFDimension.DIMENSION_KEY))));
 		}
 		return builder;
 	}

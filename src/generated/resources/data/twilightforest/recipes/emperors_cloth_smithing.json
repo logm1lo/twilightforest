@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:no_template_smithing",
+  "addition": {
+    "item": "twilightforest:emperors_cloth"
+  },
+  "additional_data": {
+    "twilightforest_emperors_cloth_applied": 1
+  },
+  "base": {
+    "tag": "forge:armors"
+  }
+}

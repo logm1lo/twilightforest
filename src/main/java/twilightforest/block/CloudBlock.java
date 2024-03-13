@@ -82,14 +82,14 @@ public class CloudBlock extends Block {
     @Override
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!level.isAreaLoaded(pos, 1) || TFConfig.COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon.get() == 0) return;
+        if (!level.isAreaLoaded(pos, 1) || TFConfig.Common.cachedCloudBlockPrecipitationDistanceCommon == 0) return;
 
         Pair<Biome.Precipitation, Float> pair = this.getCurrentPrecipitation(pos, level, level.getRainLevel(1.0F));
         if (pair.getRight() > 0.0F) {
             Biome.Precipitation precipitation = pair.getLeft();
             if (precipitation == Biome.Precipitation.RAIN || precipitation == Biome.Precipitation.SNOW) {
                 int highestRainyBlock = pos.getY() - 1;
-                for (int y = pos.getY() - 1; y > pos.getY() - TFConfig.COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon.get(); y--) {
+                for (int y = pos.getY() - 1; y > pos.getY() - TFConfig.Common.cachedCloudBlockPrecipitationDistanceCommon; y--) {
                     if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(level.getBlockState(pos.atY(y)))) highestRainyBlock = y - 1;
                     else break;
                 }
@@ -155,22 +155,35 @@ public class CloudBlock extends Block {
     }
 
     @Override
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        if (this.canSpawnCloudParticles(entity, level.getRandom())) {
+            addEntityMovementParticles(level, pos, entity, false);
+        }
+    }
+
+    public boolean canSpawnCloudParticles(Entity entity, RandomSource random) {
+        if (entity.getDeltaMovement().x() == 0.0D && entity.getDeltaMovement().z() == 0.0D && random.nextInt(20) != 0)
+            return false;
+        return entity.tickCount % 2 == 0 && !entity.isSpectator();
+    }
+
+    @Override
     public boolean addRunningEffects(BlockState state, Level level, BlockPos pos, Entity entity) { // Client & Server Side
         if (level.isClientSide() && state.getRenderShape() != RenderShape.INVISIBLE) {
-            CloudBlock.addEntityMovementParticles(level, pos, entity, false);
+            addEntityMovementParticles(level, pos, entity, false);
         }
         return true;
     }
 
     public static void addEntityMovementParticles(Level level, BlockPos pos, Entity entity, boolean jumping) {
-        if (level.random.nextBoolean()) return;
+        if (level.getRandom().nextBoolean()) return;
         Vec3 deltaMovement = entity.getDeltaMovement();
         BlockPos blockpos1 = entity.blockPosition();
         double jumpMultiplier = jumping ? 2.0D : 1.0D;
 
-        double x = entity.getX() + (level.random.nextDouble() - 0.5D) * (double) entity.dimensions.width * jumpMultiplier;
+        double x = entity.getX() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width * jumpMultiplier;
         double y = entity.getY() + 0.1D;
-        double z = entity.getZ() + (level.random.nextDouble() - 0.5D) * (double) entity.dimensions.width * jumpMultiplier;
+        double z = entity.getZ() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width * jumpMultiplier;
 
         if (blockpos1.getX() != pos.getX()) x = Mth.clamp(x, pos.getX(), (double) pos.getX() + 1.0D);
         if (blockpos1.getZ() != pos.getZ()) z = Mth.clamp(z, pos.getZ(), (double) pos.getZ() + 1.0D);

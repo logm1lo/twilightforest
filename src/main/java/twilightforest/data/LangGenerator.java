@@ -80,6 +80,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addCommand("structure.conquer.update", "Structure conquer flag was %s, changing to %s");
 		this.addCommand("structure.spawn_list", "Spawn list for this area is:");
 		this.addCommand("structure.spawn_info", "%s, Weight %s");
+		this.addCommand("structure.boundaries", "Structure boundaries: %s");
 
 		this.add("gamerule.tfEnforcedProgression", "Twilight Forest: Enforced Progression");
 		this.add("gamerule.tfEnforcedProgression.description", "Some Twilight Forest biomes will be locked until you defeat certain bosses in the dimension. (You can check the progression order in your advancements)");
@@ -524,7 +525,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBannerPattern("knight_phantom", "Knight Helmet");
 		this.addBannerPattern("ur_ghast", "Carminite Border");
 		this.addBannerPattern("alpha_yeti", "Alpha Yeti Face");
-		this.addBannerPattern("snow_queen", "Snow Queen Crown");
+		this.addBannerPattern("snow_queen", "Snowflake");
 		this.addBannerPattern("quest_ram", "Questing Ram Swirls");
 
 		this.addBlock(TFBlocks.ZOMBIE_SKULL_CANDLE, "Zombie Skull Candle");
@@ -658,8 +659,10 @@ public class LangGenerator extends TFLangProvider {
 		this.add("item.twilightforest.moon_dial.phase_unknown", "Moon phase indeterminate");
 		this.add("item.twilightforest.moon_dial.phase_unknown_fools", "404 moon not found");
 
-		this.addItem(TFItems.POCKET_WATCH, "Pocket Watch");
+		this.addItem(TFItems.POCKET_WATCH, "Rabbit's Pocket Watch");
 		this.add("item.twilightforest.pocket_watch.desc", "It seems to always be running late");
+		this.addItem(TFItems.EMPERORS_CLOTH, "Emperor's Cloth");
+		this.add("item.twilightforest.emperors_cloth.desc", "Shrouded");
 		this.addItem(TFItems.ORE_MAGNET, "Ore Magnet");
 		this.addItem(TFItems.CRUMBLE_HORN, "Crumble Horn");
 		this.addItem(TFItems.MOONWORM_QUEEN, "Moonworm Queen");
@@ -956,6 +959,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.SHIELD_ADD, "Fortification Shield spawns");
 		this.addSubtitle(TFSounds.SHIELD_BREAK, "Fortification Shield breaks");
 		this.addSubtitle(TFSounds.SHIELD_BLOCK, "Fortification Shield deflects");
+		this.addSubtitle(TFSounds.SHIELD_EXPIRE, "Fortification Shield expires");
 
 		this.addSubtitle(TFSounds.SLIME_BEETLE_DEATH, "Slime Beetle dies");
 		this.addSubtitle(TFSounds.SLIME_BEETLE_HURT, "Slime Beetle hurts");
@@ -1225,6 +1229,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addScreenMessage("crumble_horn_jei", "Crumble Horn");
 		this.addScreenMessage("transformation_jei", "Transformation Powder");
 		this.addScreenMessage("uncrafting_jei", "Uncrafting");
+		this.addScreenMessage("moonworm_queen_jei", "Moonworm Queen Repairing");
+		this.add("item.twilightforest.moonworm_queen.jei_info_message", "Torchberries restore 64 durability each");
 
 		this.addTrim("carminite", "Carminite");
 		this.addTrim("fiery", "Fiery");
@@ -1348,6 +1354,13 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(ItemTagGenerator.FIERY_VIAL, "Fiery Vials");
 		this.translateTag(ItemTagGenerator.KEPT_ON_DEATH, "Kept on Death");
 		this.translateTag(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS, "Kobold Pacification Items");
+		this.translateTag(ItemTagGenerator.BOAR_TEMPT_ITEMS, "Boar Temptables");
+		this.translateTag(ItemTagGenerator.DEER_TEMPT_ITEMS, "Deer Temptables");
+		this.translateTag(ItemTagGenerator.DWARF_RABBIT_TEMPT_ITEMS, "Dwarf Rabbit Temptables");
+		this.translateTag(ItemTagGenerator.PENGUIN_TEMPT_ITEMS, "Penguin Temptables");
+		this.translateTag(ItemTagGenerator.RAVEN_TEMPT_ITEMS, "Raven Temptables");
+		this.translateTag(ItemTagGenerator.SQUIRREL_TEMPT_ITEMS, "Squirrel Temptables");
+		this.translateTag(ItemTagGenerator.TINY_BIRD_TEMPT_ITEMS, "Tiny Bird Temptables");
 		this.translateTag(ItemTagGenerator.TWILIGHT_LOGS, "Twilight Forest Logs");
 		this.translateTag(ItemTagGenerator.MANGROVE_LOGS, "Mangrove Logs");
 		this.translateTag(ItemTagGenerator.MINING_LOGS, "Miningwood Logs");

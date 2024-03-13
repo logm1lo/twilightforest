@@ -15,8 +15,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -54,7 +54,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFMMaze.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.level = level;
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2 + 2, 5, getRadius() * 2 + 2, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2 + 2, 5, getRadius() * 2 + 2, Direction.SOUTH, false);
 
 		// make maze object
 		maze = new TFMaze(getMazeSize(), getMazeSize(), random);

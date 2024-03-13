@@ -94,6 +94,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 	public static final TagKey<Block> SUPPORTS_STALAGMITES = BlockTags.create(TwilightForestMod.prefix("supports_stalagmites"));
 
+	public static final TagKey<Block> CARVER_REPLACEABLES = BlockTags.create(TwilightForestMod.prefix("carver_replaceables"));
+
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, ExistingFileHelper helper) {
 		super(output, future, helper);
 	}
@@ -567,7 +569,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 		// For anything that permits replacement during Worldgen
 		tag(WORLDGEN_REPLACEABLES).addTags(BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.REPLACEABLE_BY_TREES);
 
-		tag(ROOT_TRACE_SKIP).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get()).addTags(BlockTags.FEATURES_CANNOT_REPLACE);
+		tag(ROOT_TRACE_SKIP).addTag(BlockTags.LOGS).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get()).addTags(BlockTags.FEATURES_CANNOT_REPLACE);
 
 		tag(DRUID_PROJECTILE_REPLACEABLE).addTags(BlockTags.LEAVES, BlockTags.LOGS, BlockTags.PLANKS, BlockTags.OVERWORLD_CARVER_REPLACEABLES, BlockTags.NETHER_CARVER_REPLACEABLES, BlockTags.REPLACEABLE_BY_TREES, BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.SCULK_REPLACEABLE, Tags.Blocks.ORES);
 
@@ -801,6 +803,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
 
 		tag(SUPPORTS_STALAGMITES).addTag(DEADROCK).add(Blocks.PACKED_ICE);
+
+		tag(CARVER_REPLACEABLES).addTag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(Blocks.SNOW_BLOCK);
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {

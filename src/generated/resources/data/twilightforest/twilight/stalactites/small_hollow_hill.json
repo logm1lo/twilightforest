@@ -3,7 +3,7 @@
   "base_stalactites": [
     "twilightforest:entries/hill_stone_stalactite"
   ],
-  "ore_chance": 0.6,
+  "ore_chance": 0.2,
   "ore_stalactites": [
     "twilightforest:entries/iron_stalactite",
     "twilightforest:entries/coal_stalactite",
@@ -12,7 +12,7 @@
   ],
   "replace": false,
   "stalactite_chance": 1.0,
-  "stalagmite_chance": 1.0,
+  "stalagmite_chance": 0.8,
   "stalagmites": [
     "twilightforest:entries/hill_stone_stalactite"
   ]

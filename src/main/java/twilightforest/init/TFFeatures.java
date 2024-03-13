@@ -26,11 +26,10 @@ public class TFFeatures {
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> FALLEN_LEAVES = FEATURES.register("fallen_leaves", () -> new FallenLeavesFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<HollowLogConfig>> FALLEN_SMALL_LOG = FEATURES.register("fallen_small_log", () -> new SmallFallenLogFeature(HollowLogConfig.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> FIRE_JET = FEATURES.register("fire_jet", () -> new FireJetFeature(BlockStateConfiguration.CODEC));
-	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> FOUNDATION = FEATURES.register("foundation", () -> new FoundationFeature(NoneFeatureConfiguration.CODEC));
+	public static final DeferredHolder<Feature<?>, Feature<RuinedFoundationConfig>> FOUNDATION = FEATURES.register("foundation", () -> new FoundationFeature(RuinedFoundationConfig.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> GRAVEYARD = FEATURES.register("graveyard", () -> new GraveyardFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> GROVE_RUINS = FEATURES.register("grove_ruins", () -> new GroveRuinsFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> HOLLOW_STUMP = FEATURES.register("hollow_stump", () -> new HollowStumpFeature(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> HOLLOW_TREE = FEATURES.register("hollow_tree", () -> new HollowTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> HUGE_LILY_PAD = FEATURES.register("huge_lily_pad", () -> new HugeLilypadFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> HUGE_WATER_LILY = FEATURES.register("huge_water_lily", () -> new HugeWaterLilyFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> LAMPPOSTS = FEATURES.register("lampposts", () -> new LampostFeature(BlockStateConfiguration.CODEC));

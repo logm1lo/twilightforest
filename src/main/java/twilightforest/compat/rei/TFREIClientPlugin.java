@@ -8,12 +8,17 @@ import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.display.DisplaySerializerRegistry;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.EntryTypeRegistry;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.forge.REIPluginClient;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
+import me.shedaniel.rei.plugin.common.displays.DefaultCompostingDisplay;
+import me.shedaniel.rei.plugin.common.displays.DefaultSmithingDisplay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
@@ -21,16 +26,17 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
+import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.rei.categories.REICrumbleHornCategory;
+import twilightforest.compat.rei.categories.REIMoonwormQueenCategory;
 import twilightforest.compat.rei.categories.REITransformationPowderCategory;
 import twilightforest.compat.rei.categories.REIUncraftingCategory;
 import twilightforest.compat.rei.displays.REICrumbleHornDisplay;
@@ -41,14 +47,11 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
-import twilightforest.item.recipe.CrumbleRecipe;
-import twilightforest.item.recipe.TransformPowderRecipe;
+import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 import twilightforest.item.recipe.UncraftingRecipe;
 import twilightforest.util.EntityRenderingUtil;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.stream.Stream;
 
 @REIPluginClient
@@ -71,6 +74,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 		}
 		registry.add(new REICrumbleHornCategory());
 		registry.add(new REITransformationPowderCategory());
+		registry.add(new REIMoonwormQueenCategory());
 	}
 
 	@Override
@@ -95,9 +99,17 @@ public class TFREIClientPlugin implements REIClientPlugin {
 				return REIUncraftingDisplay.of(recipe);
 			});
 		}
+		RecipeViewerConstants.getCrumbleHornRecipes().forEach(info ->
+				registry.add(new REICrumbleHornDisplay(
+						Collections.singletonList(EntryIngredients.of(info.getFirst().asItem())),
+						Collections.singletonList(EntryIngredients.of(info.getSecond().asItem())),
+						info.getSecond() == Blocks.AIR))
+		);
 
-		registry.registerRecipeFiller(CrumbleRecipe.class, TFRecipes.CRUMBLE_RECIPE.get(), REICrumbleHornDisplay::of);
-		registry.registerRecipeFiller(TransformPowderRecipe.class, TFRecipes.TRANSFORM_POWDER_RECIPE.get(), REITransformationPowderDisplay::of);
+		RecipeViewerConstants.getTransformationPowderRecipes().forEach(info -> registry.add(REITransformationPowderDisplay.of(info)));
+
+		registry.add(REIMoonwormQueenCategory.createDisplay());
+		registry.registerRecipeFiller(NoTemplateSmithingRecipe.class, RecipeType.SMITHING, holder -> new DefaultSmithingDisplay(holder.value(), holder.id(), List.of(EntryIngredients.of(ItemStack.EMPTY), EntryIngredients.ofIngredient(holder.value().getBase()), EntryIngredients.ofIngredient(holder.value().getAddition()))));
 	}
 
 	@Override
@@ -172,11 +184,6 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 			return stream.map(CompoundEventResult::interruptTrue).orElseGet(CompoundEventResult::pass);
 		});
-	}
-
-	@Nullable
-	public static ItemEntity createItemEntity(ItemLike item) {
-		return createItemEntity(item.asItem().getDefaultInstance());
 	}
 
 	@Nullable

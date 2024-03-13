@@ -9,7 +9,7 @@ var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
 // noinspection JSUnusedGlobalSymbols
 function initializeCoreMod() {
     return {
-        'dragons': {
+        'foliage': {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.renderer.BiomeColors',

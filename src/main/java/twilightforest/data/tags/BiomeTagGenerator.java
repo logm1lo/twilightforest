@@ -19,6 +19,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 
 	public static final TagKey<Biome> VALID_QUEST_GROVE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_quest_grove_biomes"));
 
+	public static final TagKey<Biome> VALID_HOLLOW_TREE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_hollow_tree_biomes"));
 	public static final TagKey<Biome> VALID_HEDGE_MAZE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_hedge_maze_biomes"));
 	public static final TagKey<Biome> VALID_HOLLOW_HILL_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_hollow_hill_biomes"));
 	public static final TagKey<Biome> VALID_MUSHROOM_TOWER_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_mushroom_tower_biomes"));
@@ -32,6 +33,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 	public static final TagKey<Biome> VALID_YETI_CAVE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_yeti_cave_biomes"));
 	public static final TagKey<Biome> VALID_AURORA_PALACE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_aurora_palace_biomes"));
 	public static final TagKey<Biome> VALID_TROLL_CAVE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_troll_cave_biomes"));
+	public static final TagKey<Biome> VALID_GIANT_HOUSE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_giant_house_biomes"));
 	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_final_castle_biomes"));
 
 	public BiomeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper) {
@@ -57,6 +59,12 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 		tag(VALID_QUEST_GROVE_BIOMES).add(TFBiomes.ENCHANTED_FOREST);
 		tag(VALID_MUSHROOM_TOWER_BIOMES).add(TFBiomes.DENSE_MUSHROOM_FOREST);
 
+		tag(VALID_HOLLOW_TREE_BIOMES).add(
+				TFBiomes.DENSE_FOREST, TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP,
+				TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
+				TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
+				TFBiomes.OAK_SAVANNAH, TFBiomes.ENCHANTED_FOREST
+		);
 		tag(VALID_HEDGE_MAZE_BIOMES).add(
 				TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
 				TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
@@ -88,6 +96,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 		tag(VALID_YETI_CAVE_BIOMES).add(TFBiomes.SNOWY_FOREST);
 		tag(VALID_AURORA_PALACE_BIOMES).add(TFBiomes.GLACIER);
 		tag(VALID_TROLL_CAVE_BIOMES).add(TFBiomes.HIGHLANDS);
+		tag(VALID_GIANT_HOUSE_BIOMES).add(TFBiomes.HIGHLANDS);
 		tag(VALID_FINAL_CASTLE_BIOMES).add(TFBiomes.FINAL_PLATEAU);
 
 		//apparently using forge and vanilla tags allows other mods to spawn stuff in our biomes. Will keep these commented out here just in case we need to reference them later.

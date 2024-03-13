@@ -35,6 +35,7 @@ public class TFConfig {
 	public static Client CLIENT_CONFIG;
 
 	public static class Common {
+		public static int cachedCloudBlockPrecipitationDistanceCommon = 32;
 
 		public Common(ModConfigSpec.Builder builder) {
 			builder.
@@ -120,6 +121,18 @@ public class TFConfig {
 							Lower if experiencing low tick rate. Set to 0 to turn all cloud precipitation logic off.""").
 					defineInRange("cloudBlockPrecipitationDistance", 32, 0, Integer.MAX_VALUE);
 
+			multiplayerFightAdjuster = builder.
+					translation(config + "multiplayer_fight_adjuster").
+					worldRestart().
+					comment("""
+							Determines how bosses should adjust to multiplayer fights. There are 4 possible values that can be put here:
+							NONE: doesnt do anything when multiple people participate in a bossfight. Bosses will act the same as they do in singleplayer or solo fights.
+							MORE_LOOT: adds additional drops to a boss' loot table based on how many players participated in the fight. These are fully controlled through the entity's loot table, using the `twilightforest:multiplayer_multiplier` loot function. Note that this function will only do things to entities that are included in the `twilightforest:multiplayer_inclusive_entities` tag.
+							MORE_HEALTH: increases the health of each boss by 20 hearts for each player nearby when the fight starts.
+							MORE_LOOT_AND_HEALTH: does both of the above functions for each boss.
+							""").
+					defineEnum("multiplayerFightAdjuster", MultiplayerFightAdjuster.NONE);
+
 			builder.
 					comment("Settings for all things related to the uncrafting table.").
 					push("Uncrafting Table");
@@ -174,6 +187,14 @@ public class TFConfig {
 								If true, the uncrafting table will also be allowed to uncraft shapeless recipes.
 								The table was originally intended to only take shaped recipes, but this option remains for people who wish to keep the functionality.""").
 						define("enableShapelessCrafting", false);
+				UNCRAFTING_STUFFS.disableIngredientSwitching = builder.
+						worldRestart().
+						translation(config + "disable_ingredient_switching").
+						comment("""
+								If true, the uncrafting table will will no longer allow you to switch between ingredients if a recipe uses a tag for crafting.
+								This will remove the functionality for ALL RECIPES!
+								If you want to prevent certain ingredients from showing up in the first place, use the "twilightforest:banned_uncrafting_ingredients" tag.""").
+						define("disableIngredientSwitching", false);
 				UNCRAFTING_STUFFS.disableUncraftingOnly = builder.
 						worldRestart().
 						translation(config + "disable_uncrafting").
@@ -287,6 +308,7 @@ public class TFConfig {
 		public final ModConfigSpec.BooleanValue defaultItemEnchants;
 		public final ModConfigSpec.BooleanValue bossDropChests;
 		public final ModConfigSpec.IntValue cloudBlockPrecipitationDistanceCommon;
+		public final ModConfigSpec.EnumValue<MultiplayerFightAdjuster> multiplayerFightAdjuster;
 
 		public final MagicTrees MAGIC_TREES = new MagicTrees();
 
@@ -307,6 +329,7 @@ public class TFConfig {
 			public ModConfigSpec.DoubleValue uncraftingXpCostMultiplier;
 			public ModConfigSpec.DoubleValue repairingXpCostMultiplier;
 			public ModConfigSpec.BooleanValue allowShapelessUncrafting;
+			public ModConfigSpec.BooleanValue disableIngredientSwitching;
 			public ModConfigSpec.BooleanValue disableUncraftingOnly;
 			public ModConfigSpec.BooleanValue disableEntireTable;
 			public ModConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
@@ -327,6 +350,7 @@ public class TFConfig {
 	}
 
 	public static class Client {
+		public static int cachedCloudBlockPrecipitationDistanceClient = 32;
 
 		public Client(ModConfigSpec.Builder builder) {
 			silentCicadas = builder.
@@ -357,6 +381,10 @@ public class TFConfig {
 					translation(config + "ram_indicator").
 					comment("Renders a little check mark or x above your crosshair depending on if fed the Questing Ram that color of wool. Turn this off if you find it intrusive.").
 					define("questRamWoolIndicator", true);
+			showFortificationShieldIndicator = builder.
+					translation(config + "shield_indicator").
+					comment("Renders how many fortification shields are currently active on your player above your armor bar. Turn this off if you find it intrusive or other mods render over/under it.").
+					define("fortificationShieldIndicator", true);
 			cloudBlockPrecipitationDistanceClient = builder.
 					translation(config + "cloud_block_precipitation_distance").
 					comment("""
@@ -378,6 +406,10 @@ public class TFConfig {
 					.translation(config + "prettify_ore_meter_gui")
 					.comment("Lines up dashes & percentages in Ore Meter GUI")
 					.define("prettifyOreMeterGui", true);
+
+			spawnCharmAnimationAsTotem = builder.translation(config + "totem_charm_animation")
+					.comment("If true, Twilight Forest charm items will display similar to the totem of undying when used.")
+					.define("totemCharmAnimation", false);
 		}
 
 		public final ModConfigSpec.BooleanValue silentCicadas;
@@ -387,17 +419,19 @@ public class TFConfig {
 		public final ModConfigSpec.BooleanValue disableOptifineNagScreen;
 		public final ModConfigSpec.BooleanValue disableLockedBiomeToasts;
 		public final ModConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
+		public final ModConfigSpec.BooleanValue showFortificationShieldIndicator;
 		public final ModConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
 		public final ModConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
 		public final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
 		public final ModConfigSpec.BooleanValue prettifyOreMeterGui;
 		private final List<ResourceLocation> validAuroraBiomes = new ArrayList<>();
+		public final ModConfigSpec.BooleanValue spawnCharmAnimationAsTotem;
 	}
 
 	private static final String config = "config." + TwilightForestMod.ID;
 
 	public static int getClientCloudBlockPrecipitationDistance() {
-		return (CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient.get() == -1 ? COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon : CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient).get();
+		return Client.cachedCloudBlockPrecipitationDistanceClient == -1 ? Common.cachedCloudBlockPrecipitationDistanceCommon : Client.cachedCloudBlockPrecipitationDistanceClient;
 	}
 
 	@Nullable
@@ -444,6 +478,7 @@ public class TFConfig {
 							COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
+							COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
@@ -461,9 +496,14 @@ public class TFConfig {
 
 	@SubscribeEvent
 	public static void onConfigReload(final ModConfigEvent.Reloading event) {
-		if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID) && event.getConfig().getType() == ModConfig.Type.CLIENT) {
-			TFConfig.reloadGiantSkins();
-		}
+        if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID)) {
+            if (event.getConfig().getType() == ModConfig.Type.CLIENT) {
+                TFConfig.reloadGiantSkins();
+				TFConfig.Client.cachedCloudBlockPrecipitationDistanceClient = TFConfig.CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient.get();
+            } else {
+				TFConfig.Common.cachedCloudBlockPrecipitationDistanceCommon = TFConfig.COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon.get();
+			}
+        }
 	}
 
 	//damn forge events
@@ -478,6 +518,7 @@ public class TFConfig {
 						COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
@@ -511,6 +552,29 @@ public class TFConfig {
 					super.run();
 				}
 			}.start();
+		}
+	}
+
+	public enum MultiplayerFightAdjuster {
+		NONE(false, false),
+		MORE_LOOT(true, false),
+		MORE_HEALTH(false, true),
+		MORE_LOOT_AND_HEALTH(true, true);
+
+		private final boolean moreLoot;
+		private final boolean moreHealth;
+
+		MultiplayerFightAdjuster(boolean loot, boolean health) {
+			this.moreLoot = loot;
+			this.moreHealth = health;
+		}
+
+		public boolean adjustsLootRolls() {
+			return this.moreLoot;
+		}
+
+		public boolean adjustsHealth() {
+			return this.moreHealth;
 		}
 	}
 }

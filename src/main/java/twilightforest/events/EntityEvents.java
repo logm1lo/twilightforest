@@ -12,20 +12,23 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Display;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Interaction;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.LeadItem;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SkullBlock;
@@ -33,6 +36,8 @@ import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -40,20 +45,25 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.enchantment.ChillAuraEnchantment;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.*;
@@ -61,9 +71,14 @@ import twilightforest.item.FieryArmorItem;
 import twilightforest.item.OreMeterItem;
 import twilightforest.item.YetiArmorItem;
 import twilightforest.network.WipeOreMeterPacket;
+import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.components.structures.start.TFStructureStart;
+import twilightforest.world.components.structures.type.HollowHillStructure;
+import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -129,7 +144,7 @@ public class EntityEvents {
 		// triple bow strips invulnerableTime
 		if (source.getMsgId().equals("arrow") && trueSource instanceof Player player) {
 
-			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW)) {
+			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW.get())) {
 				living.invulnerableTime = 0;
 			}
 		}
@@ -175,7 +190,7 @@ public class EntityEvents {
 		if (living != null) {
 			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
 				if (event.getSource().is(DamageTypes.FREEZE)) {
-					event.setAmount(event.getAmount() + (float)(mobEffectInstance.getAmplifier() / 2));
+					event.setAmount(event.getAmount() + (float) (mobEffectInstance.getAmplifier() / 2));
 				} else if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
 					living.removeEffect(TFMobEffects.FROSTY.get());
 					mobEffectInstance.amplifier -= 1;
@@ -318,23 +333,68 @@ public class EntityEvents {
 	}
 
 	@SubscribeEvent
-	public static void onLivingTickEvent(LivingEvent.LivingTickEvent event) {
-		LivingEntity living = event.getEntity();
-		if (living != null && canSpawnCloudParticles(living)) {
-			CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, false);
-		}
-	}
-
-	public static boolean canSpawnCloudParticles(LivingEntity living) {
-		if (living.getDeltaMovement().x == 0.0D && living.getDeltaMovement().z == 0.0D && living.getRandom().nextInt(20) != 0) return false;
-		return living.tickCount % 2 == 0 && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock;
-	}
-
-	@SubscribeEvent
 	public static void onLivingJumpEvent(LivingEvent.LivingJumpEvent event) {
 		LivingEntity living = event.getEntity();
 		if (living != null && living.level().isClientSide() && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock) {
-			for (int i = 0; i < 12; i++) CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
+			for (int i = 0; i < 12; i++)
+				CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
+		}
+	}
+
+	private static int getSpawnListIndexAt(StructureStart start, BlockPos pos) {
+		int highestFoundIndex = -1;
+		for (StructurePiece component : start.getPieces()) {
+			if (component.getBoundingBox().isInside(pos)) {
+				if (component instanceof TFStructureComponent tfComponent) {
+					if (tfComponent.spawnListIndex > highestFoundIndex)
+						highestFoundIndex = tfComponent.spawnListIndex;
+				} else
+					return 0;
+			}
+		}
+		return highestFoundIndex;
+	}
+
+	@Nullable
+	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
+		List<StructureStart> structureStarts = structureManager.startsForStructure(new ChunkPos(pos), s -> s instanceof ControlledSpawns);
+
+		// This is wretched FIXME make this method return void instead, make one of parameters the SpawnerData consumer (eg LevelEvent.PotentialSpawns::addSpawnerData or List::add)
+		for (StructureStart start : structureStarts) {
+			if (start.getStructure() instanceof ControlledSpawns landmark) {
+
+				if (!start.isValid())
+					continue;
+
+				if (classification != MobCategory.MONSTER)
+					return landmark.getSpawnableList(classification);
+
+				if (start instanceof TFStructureStart s && s.isConquered())
+					return null;
+
+				// FIXME Make interface for this method?
+				if (landmark instanceof HollowHillStructure hollowHill && !hollowHill.canSpawnMob(pos, start.getBoundingBox()))
+					return null;
+
+				final int index = getSpawnListIndexAt(start, pos);
+				if (index < 0)
+					return null;
+				return landmark.getSpawnableMonsterList(index);
+			}
+		}
+
+		return null;
+	}
+
+	@SubscribeEvent
+	public static void structureSpecialSpawns(LevelEvent.PotentialSpawns event) {
+		if (!(event.getLevel() instanceof ServerLevel serverLevel))
+			return;
+
+		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(serverLevel.structureManager(), event.getMobCategory(), event.getPos());
+		if (potentialStructureSpawns != null) {
+			List.copyOf(event.getSpawnerDataList()).forEach(event::removeSpawnerData);
+			potentialStructureSpawns.forEach(event::addSpawnerData);
 		}
 	}
 
@@ -342,11 +402,51 @@ public class EntityEvents {
 	public static void onAttackEvent(AttackEntityEvent event) {
 		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise
 		// The tag distinguishes our Interaction entities from other Mods' utilization
-        if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
+		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
 				&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
 			AABB bounds = interaction.getBoundingBox();
 			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
 			interaction.discard();
+		}
+	}
+
+	private static final UUID GROUP_HEALTH_UUID = UUID.fromString("7fe91103-8bbf-4010-9c0a-67cd866b5185");
+
+	@SubscribeEvent
+	public static void adjustEntityHealthInMultiplayerFights(MobSpawnEvent.FinalizeSpawn event) {
+		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+			if (TFConfig.COMMON_CONFIG.multiplayerFightAdjuster.get().adjustsHealth()) {
+				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
+				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
+					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(GROUP_HEALTH_UUID, "Multiplayer Bonus Health", getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADDITION));
+				}
+			}
+		}
+	}
+
+	private static double getHealthBasedOnDifficulty(Difficulty difficulty) {
+		return switch (difficulty) {
+			default -> 0.0D;
+			case EASY -> 20.0D;
+			case NORMAL -> 40.0D;
+			case HARD -> 60.0D;
+		};
+	}
+
+	@SubscribeEvent
+	public static void addQualifiedPlayerIfNeeded(LivingHurtEvent event) {
+		if (!event.isCanceled() && event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+			var data = event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT);
+			if (event.getSource().getEntity() != null) {
+				data.maybeAddQualifiedPlayer(event.getSource().getEntity());
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void grantAdvancementIfNeeded(LivingDeathEvent event) {
+		if (!event.isCanceled() && event.getEntity().hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
+			event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT).grantGroupAdvancement(event.getEntity());
 		}
 	}
 }

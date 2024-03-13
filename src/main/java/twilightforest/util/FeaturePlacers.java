@@ -1,8 +1,6 @@
 package twilightforest.util;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.GlobalPos;
+import net.minecraft.core.*;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -10,6 +8,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFBlocks;
@@ -296,21 +296,96 @@ public final class FeaturePlacers {
             if (worldReader.isStateAtPosition(exposedPos, FeatureLogic.ROOT_SHOULD_SKIP))
                 continue;
 
-            // Is the position considered underground?
-            if (!FeatureLogic.hasEmptyHorizontalNeighbor(worldReader, exposedPos)) {
-                // Retry placement at position as underground root. If successful, continue the tracing as regular root
-                if (FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, exposedPos, dirtRoot))
-                    traceRoot(worldReader, worldPlacer, random, dirtRoot, posTracer);
-                // Now the outer loop can end. Goodbye!
-                return;
-            } else { // Not underground
-                // Check if the position is not replaceable
-                if (!worldReader.isStateAtPosition(exposedPos, FeatureLogic::worldGenReplaceable))
-                    return; // Root must stop
+            // Is the position considered not underground?
+			if (FeatureLogic.hasEmptyNeighborExceptBelow(worldReader, exposedPos)) {
+				// Check if the position is not replaceable
+				if (!worldReader.isStateAtPosition(exposedPos, FeatureLogic::worldGenReplaceable))
+					return; // Root must stop
 
-                // Good to go!
-                worldPlacer.accept(exposedPos, exposedRoot.getState(random, exposedPos));
+				// Good to go!
+				worldPlacer.accept(exposedPos, exposedRoot.getState(random, exposedPos));
+			} else { // We are in-fact underground, finish tracing root's path by placing underground roots
+				// Retry placement at position as underground root. If successful, continue the tracing as regular root
+				if (FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, exposedPos, dirtRoot))
+					traceRoot(worldReader, worldPlacer, random, dirtRoot, posTracer);
+
+				return; // Now the outer loop can end as we terminate here. Goodbye!
+			}
+		}
+    }
+
+    @Deprecated
+    @SuppressWarnings("SameParameterValue")
+    public static void replaceBlocksDome(WorldGenLevel level, BlockPos centerPos, float radius, float squish, BoundingBox chunkBox, BoundingBox structureBox, Block target, BlockState replacement) {
+        float radiusSquared = radius * radius;
+
+        BoundingBox commonRegion = BoundingBoxUtils.getIntersectionOfSBBs(chunkBox, structureBox);
+        if (commonRegion == null) return;
+
+        processDomeColumn(level, centerPos, radiusSquared, commonRegion, target, replacement);
+
+        for (int z = 1; z <= radius; z++) {
+            for (int x = 0; x <= radius; x++) {
+                int distSq = x * x + z * z;
+
+                if (distSq <= radiusSquared) {
+                    float height = (radiusSquared - distSq) * squish;
+
+                    processDomeColumn(level, centerPos.offset(  x, 0,  z), height, commonRegion, target, replacement);
+                    processDomeColumn(level, centerPos.offset( -x, 0, -z), height, commonRegion, target, replacement);
+                    processDomeColumn(level, centerPos.offset( -z, 0,  x), height, commonRegion, target, replacement);
+                    processDomeColumn(level, centerPos.offset(  z, 0, -x), height, commonRegion, target, replacement);
+                }
             }
         }
     }
+
+    @SuppressWarnings("SameParameterValue")
+    public static void replaceBlocksDome(WorldGenLevel level, BlockPos centerPos, float radius, float squish, BoundingBox chunkBox, BoundingBox structureBox, HolderSet<Block> target, BlockState replacement) {
+        float radiusSquared = radius * radius;
+
+        BoundingBox commonRegion = BoundingBoxUtils.getIntersectionOfSBBs(chunkBox, structureBox);
+        if (commonRegion == null) return;
+
+        processDomeColumn(level, centerPos, radiusSquared, commonRegion, target, replacement);
+
+        for (int z = 1; z <= radius; z++) {
+            for (int x = 0; x <= radius; x++) {
+                int distSq = x * x + z * z;
+
+                if (distSq <= radiusSquared) {
+                    float height = (radiusSquared - distSq) * squish;
+
+                    processDomeColumn(level, centerPos.offset(  x, 0,  z), height, commonRegion, target, replacement);
+                    processDomeColumn(level, centerPos.offset( -x, 0, -z), height, commonRegion, target, replacement);
+                    processDomeColumn(level, centerPos.offset( -z, 0,  x), height, commonRegion, target, replacement);
+                    processDomeColumn(level, centerPos.offset(  z, 0, -x), height, commonRegion, target, replacement);
+                }
+            }
+        }
+    }
+
+    public static void processDomeColumn(WorldGenLevel level, BlockPos pos, float height, BoundingBox mask, HolderSet<Block> target, BlockState replacement) {
+        if (!mask.isInside(pos)) return;
+
+        for (int dY = 0; dY < height; dY++) {
+            BlockPos posElevated = pos.above(dY);
+
+            if (level.getBlockState(posElevated).is(target)) {
+                level.setBlock(posElevated, replacement, 3);
+            }
+        }
+    }
+
+	public static void processDomeColumn(WorldGenLevel level, BlockPos pos, float height, BoundingBox mask, Block target, BlockState replacement) {
+		if (!mask.isInside(pos)) return;
+
+		for (int dY = 0; dY < height; dY++) {
+			BlockPos posElevated = pos.above(dY);
+
+			if (level.getBlockState(posElevated).is(target)) {
+				level.setBlock(posElevated, replacement, 3);
+			}
+		}
+	}
 }

@@ -13,10 +13,10 @@ import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
@@ -41,7 +41,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		this.setOrientation(Direction.SOUTH);
 
 		// the maze is 50 x 50 for now
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH, false);
 	}
 
 	@Override
@@ -161,9 +161,9 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		roomSpawner(world, roomRNG, x, z, 8, sbb);
 
 		// and 1-2 chests
-		roomTreasure(world, roomRNG, x, z, 8, sbb);
+		roomTreasure(world, roomRNG, x, z, 8, sbb, TFLootTables.HEDGE_MAZE);
 		if (roomRNG.nextInt(4) == 0) {
-			roomTreasure(world, roomRNG, x, z, 8, sbb);
+			roomTreasure(world, roomRNG, x, z, 8, sbb, TFLootTables.HEDGE_CLOTH);
 		}
 	}
 
@@ -186,11 +186,11 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	/**
 	 * Place a treasure chest within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomTreasure(WorldGenLevel world, RandomSource rand, int x, int z, int diameter, BoundingBox sbb) {
+	private void roomTreasure(WorldGenLevel world, RandomSource rand, int x, int z, int diameter, BoundingBox sbb, TFLootTables table) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, TFLootTables.HEDGE_MAZE, sbb);
+		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, table, sbb);
 	}
 
 	/**
@@ -209,5 +209,10 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		super.addAdditionalSaveData(ctx, tagCompound);
 
 		BoundingBoxUtils.boundingBoxToExistingNBT(this.boundingBox, tagCompound);
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.BEARD_BOX;
 	}
 }

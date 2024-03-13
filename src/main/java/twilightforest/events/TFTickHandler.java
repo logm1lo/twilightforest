@@ -23,18 +23,18 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFAdvancementTriggers;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
-import twilightforest.util.Enforcement;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.StructureProtectionPacket;
+import twilightforest.util.Enforcement;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFDimension;
 
 import java.util.List;
 import java.util.Objects;
@@ -65,18 +65,16 @@ public class TFTickHandler {
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(world) && TFGenerationSettings.usesTwilightChunkGenerator(world) && !player.isCreative() && !player.isSpectator()) {
+		if (event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(world) && !player.isCreative() && !player.isSpectator()) {
 			Enforcement.enforceBiomeProgression(player, world);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(world)) {
-			if (TFGenerationSettings.usesTwilightChunkGenerator(world)) {
-				if (player.isCreative() || player.isSpectator()) {
-					sendAllClearPacket(player);
-				} else {
-					checkForLockedStructuresSendPacket(player, world);
-				}
+			if (player.isCreative() || player.isSpectator()) {
+				sendAllClearPacket(player);
+			} else {
+				checkForLockedStructuresSendPacket(player, world);
 			}
 		}
 	}
@@ -95,16 +93,12 @@ public class TFTickHandler {
 
 	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(Player player, ServerLevel world) {
-		TwilightChunkGenerator chunkGenerator = WorldUtil.getChunkGenerator(world);
-		if (chunkGenerator == null)
-			return false;
-
 		ChunkPos chunkPlayer = player.chunkPosition();
 		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x, chunkPlayer.z).map(structureStart -> {
 			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
 				//FIXME this is a gross hack. For some reason the stronghold locked effect doesnt properly lock to the structure after 1.19.2 and I have no idea why.
 				// I really dont feel like looking into this right now, someone else can if they feel so inclined.
-				if (structureStart.getStructure().equals(world.registryAccess().registryOrThrow(Registries.STRUCTURE).get(TFStructures.KNIGHT_STRONGHOLD)) && player.blockPosition().getY() > TFGenerationSettings.SEALEVEL) {
+				if (structureStart.getStructure().equals(world.registryAccess().registryOrThrow(Registries.STRUCTURE).get(TFStructures.KNIGHT_STRONGHOLD)) && player.blockPosition().getY() > WorldUtil.getGeneratorSeaLevel(world) - 2) {
 					return false;
 				}
 				sendStructureProtectionPacket(player, structureStart.getBoundingBox());
@@ -118,7 +112,7 @@ public class TFTickHandler {
 
 	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
 		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
-				|| TFGenerationSettings.isTwilightPortalDestination(world)
+				|| TFDimension.isTwilightPortalDestination(world)
 				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));

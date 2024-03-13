@@ -1,7 +1,6 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -17,8 +16,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
+import twilightforest.init.TFStructures;
 import twilightforest.util.LegacyLandmarkPlacements;
 
 /**
@@ -52,8 +51,7 @@ public class HedgeSpider extends Spider {
 		int chunkX = Mth.floor(pos.getX()) >> 4;
 		int chunkZ = Mth.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return LegacyLandmarkPlacements.getNearestLandmark(chunkX, chunkZ, (ServerLevel) accessor) == TFLandmark.HEDGE_MAZE
-				|| Monster.isDarkEnoughToSpawn(accessor, pos, random);
+		return LegacyLandmarkPlacements.pickLandmarkForChunk(chunkX, chunkZ, accessor) == TFStructures.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(accessor, pos, random);
 	}
 
 	@Override

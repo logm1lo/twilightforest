@@ -51,6 +51,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
+import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
 import twilightforest.client.model.block.doors.CastleDoorModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
@@ -59,11 +60,13 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFDimension;
+import twilightforest.item.recipe.EmperorsClothRecipe;
 
 import java.util.HashSet;
 import java.util.List;
@@ -81,6 +84,7 @@ public class TFClientEvents {
 			event.register(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
 			event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 			event.register(TwilightForestMod.prefix("castle_door"), CastleDoorModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("noise_varying"), NoiseVaryingModelLoader.INSTANCE);
 		}
 
 		@SubscribeEvent
@@ -107,9 +111,8 @@ public class TFClientEvents {
 
 		@SubscribeEvent
 		public static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
-			new TFSkyRenderer();
-			new TFWeatherRenderer();
-			event.register(TwilightForestMod.prefix("renderer"), new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
+			TFSkyRenderer.createStars();
+			event.register(TFDimension.DIMENSION_RENDERER, new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
 		}
 	}
 
@@ -166,7 +169,7 @@ public class TFClientEvents {
 			Minecraft minecraft = Minecraft.getInstance();
 
 			// only fire if we're in the twilight forest
-			if (minecraft.level != null && TFGenerationSettings.DIMENSION_KEY.equals(minecraft.level.dimension())) {
+			if (minecraft.level != null && TFDimension.DIMENSION_KEY.equals(minecraft.level.dimension())) {
 				// vignette
 				if (minecraft.gui != null) {
 					minecraft.gui.vignetteBrightness = 0.0F;
@@ -224,12 +227,7 @@ public class TFClientEvents {
 
 		if (!mc.isPaused()) {
 			BugModelAnimationHelper.animate();
-			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
-
-			// add weather box if needed
-			if (mc.level != null && info instanceof TwilightForestRenderInfo) {
-				TFWeatherRenderer.tick(mc.level);
-			}
+			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TFDimension.DIMENSION_RENDERER);
 
 			if (TFConfig.CLIENT_CONFIG.firstPersonEffects.get() && mc.level != null && mc.player != null) {
 				HashSet<ChunkPos> chunksInRange = new HashSet<>();
@@ -249,8 +247,8 @@ public class TFClientEvents {
 							intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
 							if (intensity > 0) {
 								player.moveTo(player.getX(), player.getY(), player.getZ(),
-										player.getYRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity,
-										player.getXRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity);
+										player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * intensity,
+										player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * intensity);
 								intensity = 0.0F;
 								break;
 							}
@@ -274,10 +272,15 @@ public class TFClientEvents {
 	private static final MutableComponent WIP_TEXT_0 = Component.translatable("misc.twilightforest.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 	private static final MutableComponent WIP_TEXT_1 = Component.translatable("misc.twilightforest.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 	private static final MutableComponent NYI_TEXT = Component.translatable("misc.twilightforest.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY);
 
 	@SubscribeEvent
 	public static void tooltipEvent(ItemTooltipEvent event) {
 		ItemStack item = event.getItemStack();
+
+		if (item.getTag() != null && item.getTag().contains(EmperorsClothRecipe.INVISIBLE_TAG)) {
+			event.getToolTip().add(1, EMPERORS_CLOTH_TOOLTIP);
+		}
 
 		if (!item.is(ItemTagGenerator.WIP) && !item.is(ItemTagGenerator.NYI)) return;
 
@@ -319,8 +322,8 @@ public class TFClientEvents {
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) { //FIXME: When curios gets updated, uncomment this
-			//return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
+		if (ModList.get().isLoaded("curios")) {
+			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
 		}
 		return false;
 	}

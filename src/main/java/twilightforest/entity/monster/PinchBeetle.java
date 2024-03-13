@@ -83,6 +83,14 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	}
 
 	@Override
+	public void die(DamageSource source) {
+		if (!this.getPassengers().isEmpty()) {
+			this.getPassengers().forEach(Entity::stopRiding);
+		}
+		super.die(source);
+	}
+
+	@Override
 	public void knockback(double x, double y, double z) {
 		//only take knockback if not holding something
 		if(this.getPassengers().isEmpty()) {
@@ -125,7 +133,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	public EntityDimensions getDimensions(Pose pose) {
 
 		if (!this.getPassengers().isEmpty()) {
-			return EntityDimensions.scalable(2.2F, 1.45F);
+			return EntityDimensions.scalable(2.2F, 1.6F);
 		} else {
 			return super.getDimensions(pose);
 		}

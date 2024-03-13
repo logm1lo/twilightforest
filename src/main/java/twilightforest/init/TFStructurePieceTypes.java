@@ -9,6 +9,7 @@ import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.*;
 import twilightforest.world.components.structures.darktower.*;
 import twilightforest.world.components.structures.finalcastle.*;
+import twilightforest.world.components.structures.hollowtree.*;
 import twilightforest.world.components.structures.icetower.*;
 import twilightforest.world.components.structures.lichtower.*;
 import twilightforest.world.components.structures.lichtowerrevamp.*;
@@ -29,6 +30,14 @@ public class TFStructurePieceTypes {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFQuestGrove = registerPieceType("TFQuest1", QuestGrove::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHydra = registerPieceType("TFHydra", HydraLairComponent::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFYeti = registerPieceType("TFYeti", YetiCaveComponent::new);
+
+    // Hollow Tree
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHTLB = registerPieceType("TFHTLB", HollowTreeLargeBranch::new);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHTMB = registerPieceType("TFHTMB", HollowTreeMedBranch::new);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHTSB = registerPieceType("TFHTSB", HollowTreeSmallBranch::new);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHTTr = registerPieceType("TFHTTr", HollowTreeTrunk::new);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHTRo = registerPieceType("TFHTRo", HollowTreeRoot::new);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHTLD = registerPieceType("TFHTLD", HollowTreeLeafDungeon::new);
 
     // Mushroom Castle
     //public static final DeferredHolder<StructurePieceType, StructurePieceType> TFMT = registerPieceType("TFMT", StructureStartMushroomTower::new);
@@ -175,6 +184,7 @@ public class TFStructurePieceTypes {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFClCa = registerPieceType("TFClCa", CloudCastleComponent::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFClTr = registerPieceType("TFClTr", CloudTreeComponent::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TFTCVa = registerPieceType("TFTCVa", TrollVaultComponent::new);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> TFCloud = registerPieceType("TFCloud", CloudComponent::new);
 
     // Final Castle
     //public static final DeferredHolder<StructurePieceType, StructurePieceType> TFFC = registerPieceType("TFFC", StructureStartFinalCastle::new);

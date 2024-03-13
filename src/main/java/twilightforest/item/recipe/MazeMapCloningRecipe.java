@@ -24,14 +24,14 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 		for(int j = 0; j < container.getContainerSize(); j++) {
 			ItemStack itemstack1 = container.getItem(j);
 			if (!itemstack1.isEmpty()) {
-				if (itemstack1.is(TFItems.FILLED_MAZE_MAP)) {
+				if (itemstack1.is(TFItems.FILLED_MAZE_MAP.get())) {
 					if (!itemstack.isEmpty()) {
 						return false;
 					}
 
 					itemstack = itemstack1;
 				} else {
-					if (!itemstack1.is(TFItems.MAZE_MAP)) {
+					if (!itemstack1.is(TFItems.MAZE_MAP.get())) {
 						return false;
 					}
 

@@ -9,6 +9,7 @@ var FieldInsnNode = Java.type('org.objectweb.asm.tree.FieldInsnNode');
 
 // noinspection JSUnusedGlobalSymbols
 function initializeCoreMod() {
+    ASM.loadFile('META-INF/asm/util/util.js');
     return {
         'decorations': {
             'target': {
@@ -19,23 +20,8 @@ function initializeCoreMod() {
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                var insn = null;
-                for (var index = 0; index < instructions.size() - 1; index++) {
-                    var /*org.objectweb.asm.tree.VarInsnNode*/ node = instructions.get(index);
-                    if (insn == null &&
-
-                        node instanceof VarInsnNode &&
-
-                        node.getOpcode() === Opcodes.ISTORE &&
-
-                        node.var === 5
-
-                    )
-                        insn = node;
-
-                }
                 instructions.insertBefore(
-                    insn,
+                    findFirstVarInstruction(methodNode, Opcodes.ISTORE, 5),
                     ASM.listOf(
                         new VarInsnNode(Opcodes.ALOAD, 0),
                         new FieldInsnNode(Opcodes.GETFIELD, 'net/minecraft/client/gui/MapRenderer$MapInstance', 'data', 'Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;'),
@@ -63,31 +49,13 @@ function initializeCoreMod() {
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                var i = -1;
-                for (var index = instructions.size() - 1; index > 0; index--) {
-                    var /*org.objectweb.asm.tree.FieldInsnNode*/ node = instructions.get(index);
-                    if (i === -1 &&
-
-                        node instanceof FieldInsnNode &&
-
-                        node.getOpcode() === Opcodes.GETSTATIC &&
-
-                        equate(node.owner, 'net/minecraft/world/item/Items') &&
-
-                        equate(node.name, 'FILLED_MAP')
-
-                    )
-                        i = index + 1;
-
-                }
-
-                if (i === -1) {
+                var insn = findLastFieldInstruction(methodNode, Opcodes.GETSTATIC, 'net/minecraft/world/item/Items', 'FILLED_MAP');
+                if (!insn) {
                     // Must be optifine... Optifine checks for instanceof MapItem, so this patch won't be needed anyway.
                     return methodNode;
                 }
-
                 instructions.insert(
-                    instructions.get(i),
+                    insn.getNext(),
                     ASM.listOf(
                         new VarInsnNode(Opcodes.ALOAD, 6),
                         new MethodInsnNode(
@@ -136,23 +104,8 @@ function initializeCoreMod() {
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                var insn = null;
-                for (var index = 0; index < instructions.size() - 1; index++) {
-                    var /*org.objectweb.asm.tree.VarInsnNode*/ node = instructions.get(index);
-                    if (insn == null &&
-
-                        node instanceof VarInsnNode &&
-
-                        node.getOpcode() === Opcodes.ASTORE &&
-
-                        node.var === 6
-
-                    )
-                        insn = node;
-
-                }
                 instructions.insertBefore(
-                    insn,
+                    findFirstVarInstruction(methodNode, Opcodes.ASTORE, 6),
                     ASM.listOf(
                         new VarInsnNode(Opcodes.ALOAD, 4),
                         new VarInsnNode(Opcodes.ALOAD, 0),
@@ -179,23 +132,8 @@ function initializeCoreMod() {
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                var insn = null;
-                for (var index = 0; index < instructions.size() - 1; index++) {
-                    var /*org.objectweb.asm.tree.VarInsnNode*/ node = instructions.get(index);
-                    if (insn == null &&
-
-                        node instanceof VarInsnNode &&
-
-                        node.getOpcode() === Opcodes.ASTORE &&
-
-                        node.var === 6
-
-                    )
-                        insn = node;
-
-                }
                 instructions.insertBefore(
-                    insn,
+                    findFirstVarInstruction(methodNode, Opcodes.ASTORE, 6),
                     ASM.listOf(
                         new VarInsnNode(Opcodes.ALOAD, 1),
                         new VarInsnNode(Opcodes.ALOAD, 2),
@@ -212,8 +150,4 @@ function initializeCoreMod() {
             }
         }
     }
-}
-
-function equate(/*java.lang.Object*/ a, b) {
-    return a.equals(b);
 }

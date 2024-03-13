@@ -5,10 +5,10 @@ var Opcodes = Java.type('org.objectweb.asm.Opcodes');
 
 var MethodInsnNode = Java.type('org.objectweb.asm.tree.MethodInsnNode');
 var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
-var InsnNode = Java.type('org.objectweb.asm.tree.InsnNode');
 
 // noinspection JSUnusedGlobalSymbols
 function initializeCoreMod() {
+    ASM.loadFile('META-INF/asm/util/util.js');
     return {
         'cloud': {
             'target': {
@@ -19,14 +19,7 @@ function initializeCoreMod() {
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                var returns = [];
-                for (var index = 0; index < instructions.size(); index++) {
-                    var /*org.objectweb.asm.tree.MethodInsnNode*/ node = instructions.get(index);
-                    if (node.getOpcode() === Opcodes.IRETURN) {
-                        returns.push(node);
-                    }
-                }
-                returns.forEach(function (/*org.objectweb.asm.tree.MethodInsnNode*/ value, index, array) {
+                findAllInstructions(methodNode, Opcodes.IRETURN).forEach((/*org.objectweb.asm.tree.AbstractInsnNode*/ value) => {
                     instructions.insertBefore(
                         value,
                         ASM.listOf(

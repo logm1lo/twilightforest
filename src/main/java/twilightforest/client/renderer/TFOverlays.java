@@ -23,10 +23,13 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
+import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.QuestRam;
+import twilightforest.events.HostileMountEvents;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
 import twilightforest.item.OreMeterItem;
 import twilightforest.util.ComponentAlignment;
@@ -36,9 +39,9 @@ import java.util.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFOverlays {
-	//for some reason we need a 256x256 texture to actually render anything so i'll just make this a generic icons sheet
-	//if we want to add any more overlay things in the future, we can simply add more icons!
-	private static final ResourceLocation TF_ICONS_SHEET = TwilightForestMod.prefix("textures/gui/tf_icons.png");
+	private static final ResourceLocation QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
+	private static final ResourceLocation QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
+	private static final ResourceLocation FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
 	public static Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
 	@SubscribeEvent
@@ -52,11 +55,26 @@ public class TFOverlays {
 				RenderSystem.disableBlend();
 			}
 		});
+		event.registerAbove(VanillaGuiOverlay.MOUNT_HEALTH.id(), TwilightForestMod.prefix("hostile_mount_hunger_bar"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+			LocalPlayer player = Minecraft.getInstance().player;
+			if (!gui.getMinecraft().options.hideGui && gui.shouldDrawSurvivalElements() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
+				gui.setupOverlayRenderState(true, false);
+				gui.renderFood(screenWidth, screenHeight, graphics);
+			}
+		});
 		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			if (player != null && !minecraft.options.hideGui && !gui.getDebugOverlay().showDebugScreen() && minecraft.screen == null) {
 				renderOreMeterStats(graphics, player);
+			}
+		});
+
+		event.registerAbove(VanillaGuiOverlay.ARMOR_LEVEL.id(), TwilightForestMod.prefix("fortification_shield_count"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+			Minecraft minecraft = Minecraft.getInstance();
+			LocalPlayer player = minecraft.player;
+			if (player != null && !minecraft.options.hideGui && gui.shouldDrawSurvivalElements() && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.CLIENT_CONFIG.showFortificationShieldIndicator.get()) {
+				renderShieldCount(graphics, gui, player, screenWidth, screenHeight, player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
 			}
 		});
 	}
@@ -72,9 +90,9 @@ public class TFOverlays {
 					ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
 					if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
 						if (ram.guessColor(stack) != null && !ram.isColorPresent(Objects.requireNonNull(ram.guessColor(stack)))) {
-							graphics.blit(TF_ICONS_SHEET, k, j, 0, 0, 7, 7);
+							graphics.blitSprite(QUESTING_RAM_X_SPRITE, k, j, 7, 7);
 						} else {
-							graphics.blit(TF_ICONS_SHEET, k, j, 7, 0, 7, 7);
+							graphics.blitSprite(QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
 						}
 					}
 				}
@@ -82,12 +100,17 @@ public class TFOverlays {
 		}
 	}
 
+	public static void renderShieldCount(GuiGraphics graphics, ExtendedGui gui, Player player, int screenWidth, int screenHeight, int shieldCount) {
+		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
+			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight + (player.getArmorValue() > 0 ? 0 : 10), 9, 9);
+		}
+		gui.leftHeight += 10;
+	}
+
 	public static void renderOreMeterStats(GuiGraphics graphics, Player player) {
 		if (player.isHolding(TFItems.ORE_METER.get())) {
 			InteractionHand handToUse = player.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.ORE_METER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 			ItemStack selectedMeter = player.getItemInHand(handToUse);
-			RenderSystem.disableDepthTest();
-			RenderSystem.enableDepthTest();
 			if (OreMeterItem.isLoading(selectedMeter)) {
 				int dots = (OreMeterItem.getLoadProgress(selectedMeter) / 5) % 3;
 				Component component = Component.translatable("misc.twilightforest.ore_meter_loading");
@@ -125,9 +148,13 @@ public class TFOverlays {
 		);
 
 		ArrayList<ComponentColumn> columns = new ArrayList<>();
-		List<Pair<String, Integer>> scanData = OreMeterItem.getScanInfo(meter).entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).toList();
 
-        if (TFConfig.CLIENT_CONFIG.prettifyOreMeterGui.get()) {
+		List<Pair<String, Integer>> scanData = OreMeterItem.getScanInfo(meter).entrySet().stream()
+				.map(e -> Pair.of(e.getKey(), e.getValue())) // Convert Entries into Pairs
+				.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
+				.toList(); // Make sorted immutable list
+
+		if (TFConfig.CLIENT_CONFIG.prettifyOreMeterGui.get()) {
 			ComponentColumn padding = ComponentColumn.padding(1);
 			List<Integer> counts = scanData.stream().map(Pair::getSecond).toList();
 
@@ -148,7 +175,7 @@ public class TFOverlays {
 	private static ComponentColumn withoutPrettyPrinting(int totalScanned, List<Pair<String, Integer>> entries) {
 		List<Component> tooltips = new ArrayList<>();
 
-        for (Pair<String, Integer> entry : entries) {
+		for (Pair<String, Integer> entry : entries) {
 			String percentage = FORMAT.format(entry.getSecond() * 100.0F / totalScanned);
 			Component formattedEntry = Component.translatable(entry.getFirst())
 					.append(Component.literal(" "))
@@ -167,12 +194,12 @@ public class TFOverlays {
 
 		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_block").withColor(ChatFormatting.GRAY.getColor()));
 
-        for (String oreNameKey : oreNameKeys) {
-            MutableComponent translatable = Component.translatable(oreNameKey);
+		for (String oreNameKey : oreNameKeys) {
+			MutableComponent translatable = Component.translatable(oreNameKey);
 			toList.add(translatable);
-        }
+		}
 
-        return ComponentColumn.build(toList.build(), ComponentAlignment.LEFT);
+		return ComponentColumn.build(toList.build(), ComponentAlignment.LEFT);
 	}
 
 	private static ComponentColumn dashColumn(int size) {
@@ -192,7 +219,7 @@ public class TFOverlays {
 
 		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_count").withColor(ChatFormatting.GRAY.getColor()));
 
-        oreCounts.stream().mapToInt(count -> count).mapToObj(count -> Component.literal(String.valueOf(count))).forEach(toList::add);
+		oreCounts.stream().mapToInt(count -> count).mapToObj(count -> Component.literal(String.valueOf(count))).forEach(toList::add);
 
 		return ComponentColumn.build(toList.build(), ComponentAlignment.RIGHT);
 	}
@@ -210,14 +237,15 @@ public class TFOverlays {
 		return ComponentColumn.build(toList.build(), ComponentAlignment.RIGHT);
 	}
 
-	public record ComponentColumn(List<? extends Component> textRows, int maxPixelWidth, ComponentAlignment textAlignment) {
+	public record ComponentColumn(List<? extends Component> textRows, int maxPixelWidth,
+								  ComponentAlignment textAlignment) {
 		public static ComponentColumn build(List<? extends Component> rowTexts, ComponentAlignment textAlignment) {
 			int maxColumnPixelWidth = rowTexts.stream().mapToInt(c -> Minecraft.getInstance().font.width(c)).max().orElse(0);
 			return new ComponentColumn(rowTexts, maxColumnPixelWidth, textAlignment);
 		}
 
 		public static ComponentColumn padding(int forcedExtraMaxWidthBySpaces) {
-            return new ComponentColumn(List.of(), forcedExtraMaxWidthBySpaces * Minecraft.getInstance().font.width(" "), ComponentAlignment.LEFT);
+			return new ComponentColumn(List.of(), forcedExtraMaxWidthBySpaces * Minecraft.getInstance().font.width(" "), ComponentAlignment.LEFT);
 		}
 
 		private int renderColumn(GuiGraphics graphics, ComponentColumn column, int xOff, int yOff, int verticalTextPixelsAdvance) {

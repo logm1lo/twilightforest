@@ -5,10 +5,10 @@ var Opcodes = Java.type('org.objectweb.asm.Opcodes');
 
 var MethodInsnNode = Java.type('org.objectweb.asm.tree.MethodInsnNode');
 var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode')
-var InsnNode = Java.type('org.objectweb.asm.tree.InsnNode')
 
 // noinspection JSUnusedGlobalSymbols
 function initializeCoreMod() {
+    ASM.loadFile('META-INF/asm/util/util.js');
     return {
         'sync': {
             'target': {
@@ -67,21 +67,8 @@ function initializeCoreMod() {
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                var lastInstruction = null;
-                for (var index = instructions.size() - 1; index > 0; index--) {
-                    var /*org.objectweb.asm.tree.AbstractInsnNode*/ node = instructions.get(index);
-                    if (lastInstruction == null &&
-
-                        node instanceof InsnNode &&
-
-                        node.getOpcode() === Opcodes.ARETURN
-
-                    )
-                        lastInstruction = node;
-
-                }
                 instructions.insertBefore(
-                    lastInstruction,
+                    findLastInstruction(methodNode, Opcodes.ARETURN),
                     ASM.listOf(
                         new VarInsnNode(Opcodes.ALOAD, 1),
                         new MethodInsnNode(
@@ -105,27 +92,8 @@ function initializeCoreMod() {
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                var lastInstruction = null;
-                for (var index = instructions.size() - 1; index > 0; index--) {
-                    var /*org.objectweb.asm.tree.MethodInsnNode*/ node = instructions.get(index);
-                    if (lastInstruction == null &&
-
-                        node instanceof MethodInsnNode &&
-
-                        node.getOpcode() === Opcodes.INVOKEVIRTUAL &&
-
-                        equate(node.owner, 'net/minecraft/client/multiplayer/ClientLevel') &&
-
-                        equate(node.name, 'entitiesForRendering') &&
-
-                        equate(node.desc, '()Ljava/lang/Iterable;')
-
-                    )
-                        lastInstruction = node;
-
-                }
                 instructions.insert(
-                    lastInstruction,
+                    findLastMethodInstruction(methodNode, Opcodes.INVOKEVIRTUAL, 'net/minecraft/client/multiplayer/ClientLevel', 'entitiesForRendering', '()Ljava/lang/Iterable;'),
                     ASM.listOf(
                         new MethodInsnNode(
                             Opcodes.INVOKESTATIC,
@@ -140,8 +108,4 @@ function initializeCoreMod() {
             }
         }
     }
-}
-
-function equate(/*java.lang.Object*/ a, b) {
-    return a.equals(b);
 }

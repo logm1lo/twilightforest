@@ -5,7 +5,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -20,7 +19,6 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import twilightforest.init.TFBiomes;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.ColorUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -75,13 +73,9 @@ public class MapBiomesCommand {
 
 	}
 
-	private static int createMap(CommandSourceStack source, int width, int height, boolean showBiomePercents) throws CommandSyntaxException {
+	private static int createMap(CommandSourceStack source, int width, int height, boolean showBiomePercents) {
 		if (FMLEnvironment.dist.isDedicatedServer())
 			return -1;
-
-		if (!TFGenerationSettings.usesTwilightChunkGenerator(source.getLevel())) {
-			throw TFCommand.NOT_IN_TF.create();
-		}
 
 		if (BIOME2COLOR.isEmpty()) {
 			init();

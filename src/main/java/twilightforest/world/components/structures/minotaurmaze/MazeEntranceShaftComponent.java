@@ -13,9 +13,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDimensionData;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFGenerationSettings;
 
 
 public class MazeEntranceShaftComponent extends TFStructureComponentOld {
@@ -25,7 +25,7 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 	}
 
 	public MazeEntranceShaftComponent(int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMES.get(), i, new BoundingBox(x, y, z, x + 6 - 1, y, z + 6 - 1).encapsulate(new BlockPos(x, TFGenerationSettings.SEALEVEL, z)));
+		super(TFStructurePieceTypes.TFMMES.get(), i, new BoundingBox(x, y, z, x + 6 - 1, y, z + 6 - 1).encapsulate(new BlockPos(x, TFDimensionData.SEALEVEL, z)));
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 	}
 
@@ -44,6 +44,6 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 		this.boundingBox.encapsulate(pos.setY(generator.getSeaLevel() - 9));
 
 		this.generateBox(world, sbb, 0, 0, 0, 5, this.boundingBox.getYSpan(), 5, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, true);
-		this.generateAirBox(world, sbb, 1, 0, 1, 4, this.boundingBox.getYSpan(), 4);
+		this.generateAirBox(world, sbb, 1, 0, 1, 4, (generator.getSeaLevel() + 11) - this.boundingBox.minY(), 4);
 	}
 }

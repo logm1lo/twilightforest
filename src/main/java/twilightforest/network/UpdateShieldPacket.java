@@ -1,5 +1,6 @@
 package twilightforest.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -29,14 +30,22 @@ public record UpdateShieldPacket(int entityID, int temporaryShields, int permane
 		return ID;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(UpdateShieldPacket message, PlayPayloadContext ctx) {
-		ctx.workHandler().execute(() -> {
-			Entity entity = ctx.level().orElseThrow().getEntity(message.entityID);
-			if (entity instanceof LivingEntity living) {
-				var attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
-				attachment.setShields(living, message.temporaryShields, true);
-				attachment.setShields(living, message.permanentShields, false);
-			}
-		});
+		//ensure this is only done on clients as this uses client only code
+		//the level is not yet set in the payload context when a player logs in, so we need to fall back to the clientlevel instead
+		if (ctx.flow().isClientbound()) {
+			ctx.workHandler().execute(new Runnable() {
+				@Override
+				public void run() {
+					Entity entity = ctx.level().orElse(Minecraft.getInstance().level).getEntity(message.entityID);
+					if (entity instanceof LivingEntity living) {
+						var attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
+						attachment.setShields(living, message.temporaryShields, true);
+						attachment.setShields(living, message.permanentShields, false);
+					}
+				}
+			});
+		}
 	}
 }

@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFRecipes;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
@@ -28,9 +29,6 @@ import twilightforest.util.WorldUtil;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CrumbleHornItem extends Item {
-
-	private static final int CHANCE_HARVEST = 20;
-	private static final int CHANCE_CRUMBLE = 5;
 
 	public CrumbleHornItem(Properties properties) {
 		super(properties);
@@ -106,46 +104,42 @@ public class CrumbleHornItem extends Item {
 	private boolean crumbleBlock(ServerLevel serverLevel, LivingEntity living, BlockPos pos) {
 		BlockState state = serverLevel.getBlockState(pos);
 		Block block = state.getBlock();
-		AtomicBoolean flag = new AtomicBoolean(false);
+		var crumbleMap = block.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
 
-		if (state.isAir()) return false;
+		if (state.isAir() || crumbleMap == null) return false;
 
 		if (living instanceof Player) {
 			if (NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(serverLevel, pos, state, (Player) living)).isCanceled())
 				return false;
 		}
 
-		serverLevel.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipeHolder -> {
-			if (flag.get()) return;
-			if (recipeHolder.value().result() == Blocks.AIR) {
-				if (recipeHolder.value().input() == block && serverLevel.getRandom().nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
-					if (living instanceof Player player) {
-						if (block.canHarvestBlock(state, serverLevel, pos, (Player) living)) {
-							serverLevel.removeBlock(pos, false);
-							block.playerDestroy(serverLevel, (Player) living, pos, state, serverLevel.getBlockEntity(pos), ItemStack.EMPTY);
-							serverLevel.levelEvent(2001, pos, Block.getId(state));
-							if (player instanceof ServerPlayer) {
-								player.awardStat(Stats.ITEM_USED.get(this));
-							}
-							flag.set(true);
+		if (crumbleMap.result() == Blocks.AIR) {
+			if (serverLevel.getRandom().nextFloat() < crumbleMap.chanceToCrumble()) {
+				if (living instanceof Player player) {
+					if (block.canHarvestBlock(state, serverLevel, pos, (Player) living)) {
+						serverLevel.removeBlock(pos, false);
+						block.playerDestroy(serverLevel, (Player) living, pos, state, serverLevel.getBlockEntity(pos), ItemStack.EMPTY);
+						serverLevel.levelEvent(2001, pos, Block.getId(state));
+						if (player instanceof ServerPlayer) {
+							player.awardStat(Stats.ITEM_USED.get(this));
 						}
-					} else if (EventHooks.getMobGriefingEvent(serverLevel, living)) {
-						serverLevel.destroyBlock(pos, true);
-						flag.set(true);
+						return true;
 					}
-				}
-			} else {
-				if (recipeHolder.value().input() == block && serverLevel.getRandom().nextInt(CHANCE_CRUMBLE) == 0 && !flag.get()) {
-					serverLevel.setBlock(pos, recipeHolder.value().result().withPropertiesOf(state), 3);
-					serverLevel.levelEvent(2001, pos, Block.getId(state));
-					if (living instanceof ServerPlayer player) {
-						player.awardStat(Stats.ITEM_USED.get(this));
-					}
-					flag.set(true);
+				} else if (EventHooks.getMobGriefingEvent(serverLevel, living)) {
+					serverLevel.destroyBlock(pos, true);
+					return true;
 				}
 			}
-		});
-
-		return flag.get();
+		} else {
+			if (serverLevel.getRandom().nextFloat() < crumbleMap.chanceToCrumble()) {
+				serverLevel.setBlock(pos, crumbleMap.result().withPropertiesOf(state), 3);
+				serverLevel.levelEvent(2001, pos, Block.getId(state));
+				if (living instanceof ServerPlayer player) {
+					player.awardStat(Stats.ITEM_USED.get(this));
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 }

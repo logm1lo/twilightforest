@@ -18,23 +18,20 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
-import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-
-import java.util.Objects;
 
 public class TrollCaveMainComponent extends TFStructureComponentOld {
 
@@ -62,14 +59,11 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		super(type, i, x, y, z);
 		this.setOrientation(Direction.SOUTH); // DEPTH_AVERAGE
 
-		// adjust y
-		//y += 10;
-
 		this.size = 30;
 		this.height = 20;
 
 		int radius = this.size / 2;
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH, false);
 
 		this.speleothemConfigHolder = speleothemConfig;
 		this.speleothemConfig = speleothemConfig.value();
@@ -90,11 +84,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 			BlockPos dest = getValidOpening(rand, caveRotation);
 			makeSmallerCave(list, rand, this.getGenDepth() + 1, dest.getX(), dest.getY(), dest.getZ(), 18, 15, caveRotation);
 		}
-
-		// add cloud castle
-		CloudCastleComponent castle = new CloudCastleComponent(this.getGenDepth() + 1, boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2), 168, boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2));
-		list.addPiece(castle);
-		castle.addChildren(this, list, rand);
 
 		// add vault
 		TrollVaultComponent vault = new TrollVaultComponent(this.getGenDepth() + 1, boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2), boundingBox.minY(), boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2));
@@ -142,12 +131,14 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 		for (BlockPos pos : this.speleothemConfig.latticeIterator(BoundingBoxUtils.getIntersectionOfSBBs(sbb, this.boundingBox), ceilingY)) {
 			// stone stalactites!
-			if (this.speleothemConfig.shouldDoAStalactite(rand))
+			if (!world.getBlockState(pos.above()).isAir() && this.speleothemConfig.shouldDoAStalactite(rand)) {
                 BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getStalactite(decoRNG), decoRNG, true);
+            }
 
 			// stone stalagmites!
-			if (this.speleothemConfig.shouldDoAStalagmite(rand))
+			if (this.speleothemConfig.shouldDoAStalagmite(rand)) {
                 BlockSpikeFeature.startSpike(world, pos.atY(floorY), this.speleothemConfig.getStalagmite(decoRNG), decoRNG, false);
+            }
 		}
 	}
 
@@ -240,7 +231,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		int dx = getWorldX(x, z);
 		int dz = getWorldZ(x, z);
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, WorldUtil.getSeaLevel(Objects.requireNonNull(WorldUtil.getChunkGenerator(world))) + 15, dz);
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, generator.getSeaLevel() + 15, dz);
 
 		for(int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);
@@ -257,5 +248,10 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN.defaultBlockState(), Blocks.OBSIDIAN.defaultBlockState(), false);
 		this.generateAirBox(world, sbb, mid - 1, 1, mid - 1, mid, 2, mid);
 		this.placeTreasureAtCurrentPosition(world, mid, 1, mid, TFLootTables.TROLL_GARDEN, false, sbb);
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.BURY;
 	}
 }

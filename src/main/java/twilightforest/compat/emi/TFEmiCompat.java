@@ -1,69 +1,86 @@
 package twilightforest.compat.emi;
 
+import com.mojang.datafixers.util.Pair;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
+import dev.emi.emi.api.recipe.EmiPatternCraftingRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
+import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.recipe.EmiGrindstoneRecipe;
+import dev.emi.emi.recipe.special.EmiAnvilEnchantRecipe;
+import dev.emi.emi.recipe.special.EmiGrindstoneDisenchantingRecipe;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.block.Block;
 import twilightforest.TFConfig;
-import twilightforest.compat.emi.recipes.EmiCrumbleHornRecipe;
-import twilightforest.compat.emi.recipes.EmiTransformationPowderRecipe;
-import twilightforest.compat.emi.recipes.EmiUncraftingRecipe;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.compat.RecipeViewerConstants;
+import twilightforest.compat.emi.recipes.*;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFRecipes;
-import twilightforest.item.recipe.CrumbleRecipe;
-import twilightforest.item.recipe.TransformPowderRecipe;
-import twilightforest.item.recipe.UncraftingRecipe;
+import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 @EmiEntrypoint
 public class TFEmiCompat implements EmiPlugin {
 	public static final TFEmiRecipeCategory UNCRAFTING = new TFEmiRecipeCategory("uncrafting", TFBlocks.UNCRAFTING_TABLE);
 	public static final TFEmiRecipeCategory CRUMBLE_HORN = new TFEmiRecipeCategory("crumble_horn", TFItems.CRUMBLE_HORN);
 	public static final TFEmiRecipeCategory TRANSFORMATION = new TFEmiRecipeCategory("transformation", TFItems.TRANSFORMATION_POWDER);
+	public static final TFEmiRecipeCategory MOONWORM_QUEEN = new TFEmiRecipeCategory("moonworm_queen", TFItems.MOONWORM_QUEEN);
+
+	private static final Function<List<EmiIngredient>, Boolean> CANT_USE_ENCHANTS = stack ->
+			stack.contains(EmiStack.of(TFItems.MOONWORM_QUEEN)) || stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.ORE_MAGNET)) ||
+					stack.contains(EmiStack.of(TFItems.TWILIGHT_SCEPTER)) || stack.contains(EmiStack.of(TFItems.LIFEDRAIN_SCEPTER)) ||
+					stack.contains(EmiStack.of(TFItems.ZOMBIE_SCEPTER)) || stack.contains(EmiStack.of(TFItems.FORTIFICATION_SCEPTER));
 
 	@Override
 	public void register(EmiRegistry registry) {
 		registry.addCategory(UNCRAFTING);
 		registry.addCategory(CRUMBLE_HORN);
 		registry.addCategory(TRANSFORMATION);
+		registry.addCategory(MOONWORM_QUEEN);
 
 		registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(TFBlocks.UNCRAFTING_TABLE));
 		registry.addWorkstation(UNCRAFTING, EmiStack.of(TFBlocks.UNCRAFTING_TABLE));
 		registry.addWorkstation(CRUMBLE_HORN, EmiStack.of(TFItems.CRUMBLE_HORN));
 		registry.addWorkstation(TRANSFORMATION, EmiStack.of(TFItems.TRANSFORMATION_POWDER));
+		registry.addWorkstation(MOONWORM_QUEEN, EmiStack.of(TFItems.MOONWORM_QUEEN));
 
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
-		RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess();
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get()) { //we only do this if uncrafting is not disabled
-			List<RecipeHolder<? extends CraftingRecipe>> recipes = new ArrayList<>(manager.getAllRecipesFor(RecipeType.CRAFTING));
-			recipes = recipes.stream().filter(recipe ->
-							!recipe.value().getResultItem(registryAccess).isEmpty() && //get rid of empty items
-									!recipe.value().getResultItem(registryAccess).is(ItemTagGenerator.BANNED_UNCRAFTABLES) && //Prevents things that are tagged as banned from showing up
-									TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.id().toString()) && //remove disabled recipes
-									TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.id().getNamespace())) //remove blacklisted mod ids
-					.collect(Collectors.toList());
-			recipes.removeIf(recipe -> (recipe.value() instanceof ShapelessRecipe && !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get()));
-			recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
-			recipes.forEach(craftingRecipe -> registry.addRecipe(new EmiUncraftingRecipe<>(craftingRecipe)));
-		} else if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
-			List<RecipeHolder<UncraftingRecipe>> recipes = new ArrayList<>(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
+		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+			List<RecipeHolder<? extends CraftingRecipe>> recipes = RecipeViewerConstants.getAllUncraftingRecipes(manager);
 			recipes.forEach(recipe -> registry.addRecipe(new EmiUncraftingRecipe<>(recipe)));
 		}
-		for (RecipeHolder<CrumbleRecipe> recipe : manager.getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get())) {
-			registry.addRecipe(new EmiCrumbleHornRecipe(recipe));
+		for (RecipeViewerConstants.TransformationPowderInfo info : RecipeViewerConstants.getTransformationPowderRecipes()) {
+			registry.addRecipe(new EmiTransformationPowderRecipe(info.input(), info.output(), info.reversible()));
 		}
-		for (RecipeHolder<TransformPowderRecipe> recipe : manager.getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get())) {
-			registry.addRecipe(new EmiTransformationPowderRecipe(recipe));
+
+		for (Pair<Block, Block> info : RecipeViewerConstants.getCrumbleHornRecipes()) {
+			registry.addRecipe(new EmiCrumbleHornRecipe(info.getFirst(), info.getSecond()));
 		}
+		registry.addRecipe(new EmiMoonwormQueenRecipe());
+		registry.addRecipe(new EmiEmperorsClothRecipe());
+
+		for (RecipeHolder<SmithingRecipe> holder : manager.getAllRecipesFor(RecipeType.SMITHING).stream().filter(holder -> holder.value() instanceof NoTemplateSmithingRecipe).toList()) {
+			NoTemplateSmithingRecipe recipe = (NoTemplateSmithingRecipe) holder.value();
+			registry.addRecipe(new EmiNoSmithingTemplateRecipe(EmiIngredient.of(recipe.getBase()), EmiIngredient.of(recipe.getAddition()), EmiStack.of(recipe.getResultItem(Minecraft.getInstance().level.registryAccess())), recipe));
+		}
+
+		//remove other recipes as they arent actually possible recipes to use
+		//emi makes a few assumptions about damageable items that it honestly shouldnt
+		registry.removeRecipes(recipe -> {
+			if (recipe instanceof EmiPatternCraftingRecipe || recipe instanceof EmiGrindstoneRecipe) {
+				return recipe.getInputs().contains(EmiStack.of(TFItems.MOONWORM_QUEEN));
+			} else if (recipe instanceof EmiGrindstoneDisenchantingRecipe) {
+				return CANT_USE_ENCHANTS.apply(recipe.getInputs());
+			} else if (recipe instanceof EmiAnvilEnchantRecipe) {
+				return CANT_USE_ENCHANTS.apply(recipe.getInputs());
+			}
+			return false;
+		});
 	}
 }

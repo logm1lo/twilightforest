@@ -21,8 +21,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFConfiguredFeatures;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 import java.util.function.Predicate;
@@ -39,7 +39,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
 	}
 
 	@Override

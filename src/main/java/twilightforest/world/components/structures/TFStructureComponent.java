@@ -71,6 +71,7 @@ public abstract class TFStructureComponent extends StructurePiece {
 			.add(TFBlocks.ORANGE_FORCE_FIELD.get())
 			.add(TFBlocks.BROWN_THORNS.get())
 			.add(TFBlocks.GREEN_THORNS.get())
+			.add(Blocks.GRAVEL)
 			.build();
 
 

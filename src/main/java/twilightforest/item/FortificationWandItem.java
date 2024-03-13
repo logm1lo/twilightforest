@@ -14,6 +14,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -34,9 +35,10 @@ public class FortificationWandItem extends Item {
 		}
 
 		if (!level.isClientSide()) {
-			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).replenishShields(player);
+			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
 			stack.hurt(1, level.getRandom(), null);
 		}
+		player.playSound(TFSounds.SHIELD_ADD.get(), 1.0F, (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.2F + 1.0F);
 
 		if (!player.isCreative())
 			player.getCooldowns().addCooldown(this, 1200);

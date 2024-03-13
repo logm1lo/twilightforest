@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFRecipes;
 
 public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
@@ -22,18 +23,18 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 		BlockState state = level.getBlockState(pos);
 		if (!level.isClientSide()) {
 			if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
-				level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipeHolder -> {
-					if (recipeHolder.value().input() == state.getBlock()) {
-						if (recipeHolder.value().result() == Blocks.AIR) {
-							level.removeBlock(pos, true);
-							level.levelEvent(2001, pos, Block.getId(state));
-						} else {
-							level.setBlock(pos, recipeHolder.value().result().withPropertiesOf(state), 3);
-						}
-						stack.hurt(1, level.getRandom(), null);
-						this.fired = true;
+				var resultBlock = state.getBlock().builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+				if (resultBlock != null) {
+					if (resultBlock.result() == Blocks.AIR) {
+						level.destroyBlock(pos, true);
+					} else {
+						level.setBlock(pos, resultBlock.result().withPropertiesOf(state), 3);
+						level.levelEvent(2001, pos, Block.getId(state));
 					}
-				});
+
+					stack.hurt(1, level.getRandom(), null);
+					this.fired = true;
+				}
 			}
 		}
 		return stack;

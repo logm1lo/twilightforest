@@ -9,6 +9,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
+import twilightforest.init.TFDimension;
 
 public class StructureProtectionClearPacket implements CustomPacketPayload {
 
@@ -25,7 +26,7 @@ public class StructureProtectionClearPacket implements CustomPacketPayload {
 
 	public static void handle(StructureProtectionClearPacket message, PlayPayloadContext ctx) {
 		ctx.workHandler().execute(() -> {
-			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
+			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TFDimension.DIMENSION_RENDERER);
 
 			// remove weather box if needed
 			if (info instanceof TwilightForestRenderInfo) {

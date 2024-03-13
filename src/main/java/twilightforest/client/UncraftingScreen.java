@@ -56,20 +56,18 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 			this.menu.slotsChanged(this.menu.tinkerInput);
 		}));
 
-		//this.buttonList.add(new ModeButton(uiLeft + 7, guiTop + 57));
-
-		this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 56, true, button -> {
-			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(2));
-			this.menu.ingredientsInCycle++;
-			this.menu.slotsChanged(this.menu.tinkerInput);
-		}));
-		this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 63, false, button -> {
-			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(3));
-			this.menu.ingredientsInCycle--;
-			this.menu.slotsChanged(this.menu.tinkerInput);
-		}));
-
-		//this.buttonList.add(new RefreshButton(uiLeft + 26, guiTop + 57));
+		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get()) {
+			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 56, true, button -> {
+				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(2));
+				this.menu.ingredientsInCycle++;
+				this.menu.slotsChanged(this.menu.tinkerInput);
+			}));
+			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 63, false, button -> {
+				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(3));
+				this.menu.ingredientsInCycle--;
+				this.menu.slotsChanged(this.menu.tinkerInput);
+			}));
+		}
 
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 22, true, button -> {
 			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(4));
@@ -94,15 +92,17 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		boolean scrolled = super.mouseScrolled(x, y, vertScroll, horizScroll);
 
 		//ingredient buttons
-		if (x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
-			if (vertScroll > 0) {
-				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(2));
-				this.menu.ingredientsInCycle++;
-			} else {
-				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(3));
-				this.menu.ingredientsInCycle--;
+		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get()) {
+			if (x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
+				if (vertScroll > 0) {
+					PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(2));
+					this.menu.ingredientsInCycle++;
+				} else {
+					PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(3));
+					this.menu.ingredientsInCycle--;
+				}
+				this.menu.slotsChanged(this.menu.tinkerInput);
 			}
-			this.menu.slotsChanged(this.menu.tinkerInput);
 		}
 
 		//uncrafting recipe buttons
@@ -145,10 +145,6 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 
 		this.renderTooltip(graphics, mouseX, mouseY);
 		this.recipeBookComponent.renderTooltip(graphics, this.leftPos, this.topPos, mouseX, mouseY);
-
-		//this.renderBackground(graphics, mouseX, mouseY, partialTicks);
-		//super.render(graphics, mouseX, mouseY, partialTicks);
-		//this.renderTooltip(graphics, mouseX, mouseY); //renderHoveredToolTip
 	}
 
 	@Override
@@ -219,7 +215,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 			this.setFocused(this.recipeBookComponent);
 			return true;
 		} else {
-			return this.widthTooNarrow && this.recipeBookComponent.isVisible() ? true : super.mouseClicked(mouseX, mouseY, button);
+			return this.widthTooNarrow && this.recipeBookComponent.isVisible() || super.mouseClicked(mouseX, mouseY, button);
 		}
 	}
 
@@ -258,7 +254,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		}
 
 		//check if we're hovering over a banned uncraftable item
-		if (container.slots.get(0).hasItem() && container.slots.get(0).getItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) && container.slots.get(0).equals(hoveredSlot)) {
+		if (container.slots.get(0).hasItem() && container.slots.get(0).getItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) && container.slots.get(0).equals(this.hoveredSlot)) {
 			graphics.renderTooltip(this.font, Component.translatable("container.twilightforest.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED), pX, pY);
 		} else {
 			super.renderTooltip(graphics, pX, pY);

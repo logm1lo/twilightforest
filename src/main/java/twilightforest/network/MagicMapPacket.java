@@ -7,6 +7,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.MagicMapItem;
@@ -41,26 +43,31 @@ public class MagicMapPacket implements CustomPacketPayload {
 		return ID;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MagicMapPacket message, PlayPayloadContext ctx) {
 		//ensure this is only done on clients as this uses client only code
+		//the level is not yet set in the payload context when a player logs in, so we need to fall back to the clientlevel instead
 		if (ctx.flow().isClientbound()) {
-			ctx.workHandler().execute(() -> {
-				Level level = ctx.level().orElseThrow();
-				// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
-				MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
-				String s = MagicMapItem.getMapName(message.inner.getMapId());
-				TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(level, s);
-				if (mapdata == null) {
-					mapdata = new TFMagicMapData(0, 0, message.inner.getScale(), false, false, message.inner.isLocked(), level.dimension());
-					TFMagicMapData.registerMagicMapData(level, mapdata, s);
+			ctx.workHandler().execute(new Runnable() {
+				@Override
+				public void run() {
+					Level level = ctx.level().orElse(Minecraft.getInstance().level);
+					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
+					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
+					String s = MagicMapItem.getMapName(message.inner.getMapId());
+					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(level, s);
+					if (mapdata == null) {
+						mapdata = new TFMagicMapData(0, 0, message.inner.getScale(), false, false, message.inner.isLocked(), level.dimension());
+						TFMagicMapData.registerMagicMapData(level, mapdata, s);
+					}
+
+					message.inner.applyToMap(mapdata);
+
+					// TF - handle custom decorations
+					mapdata.deserializeFeatures(message.featureData);
+
+					mapitemrenderer.update(message.inner.getMapId(), mapdata);
 				}
-
-				message.inner.applyToMap(mapdata);
-
-				// TF - handle custom decorations
-				mapdata.deserializeFeatures(message.featureData);
-
-				mapitemrenderer.update(message.inner.getMapId(), mapdata);
 			});
 		}
 	}

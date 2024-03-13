@@ -49,12 +49,12 @@ public class REIUncraftingCategory implements DisplayCategory<REIUncraftingDispl
 
 	@Override
 	public int getDisplayHeight() {
-		return RecipeViewerConstants.UNCRAFTING_HEIGHT + 10;
+		return RecipeViewerConstants.GENERIC_RECIPE_HEIGHT + 10;
 	}
 
 	@Override
 	public int getDisplayWidth(REIUncraftingDisplay display) {
-		return RecipeViewerConstants.UNCRAFTING_WIDTH + 10;
+		return RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 10;
 	}
 
 	@Override

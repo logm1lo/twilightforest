@@ -170,9 +170,9 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
         float u01 = backSprite.getU0();
         float u11 = backSprite.getU1();
         float v01 = backSprite.getV0();
-        float v = backSprite.getV(1.0F);
+        float v = backSprite.getV(0.0625F);
         float u02 = backSprite.getU0();
-        float u = backSprite.getU(1.0F);
+        float u = backSprite.getU(0.0625F);
         float v02 = backSprite.getV0();
         float v11 = backSprite.getV1();
 
@@ -190,28 +190,32 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 
                 int light = LevelRenderer.getLightColor(painting.level(), new BlockPos(posX, Mth.floor(painting.getY() + (double)((yMax + yMin) / 2.0F / 16.0F)), posZ));
 
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, z, u1, v0, 0, 0, 1, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, z, u0, v0, 0, 0, 1, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, z, u0, v1, 0, 0, 1, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, z, u1, v1, 0, 0, 1, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, u01, v01, 0, 1, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, u11, v01, 0, 1, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, z, u11, v, 0, 1, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, z, u01, v, 0, 1, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, z, u01, v01, 0, -1, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, z, u11, v01, 0, -1, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, u11, v, 0, -1, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, u01, v, 0, -1, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, z, u, v02, -1, 0, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, z, u, v11, -1, 0, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, u02, v11, -1, 0, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, u02, v02, -1, 0, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, u, v02, 1, 0, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, u, v11, 1, 0, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, z, u02, v11, 1, 0, 0, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, z, u02, v02, 1, 0, 0, light, 1.0F);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, z, u1, v0, 0, 0, 1, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, z, u0, v0, 0, 0, 1, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, z, u0, v1, 0, 0, 1, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, z, u1, v1, 0, 0, 1, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, u01, v01, 0, 1, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, u11, v01, 0, 1, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, z, u11, v, 0, 1, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, z, u01, v, 0, 1, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, z, u01, v01, 0, -1, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, z, u11, v01, 0, -1, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, u11, v, 0, -1, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, u01, v, 0, -1, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, z, u, v02, -1, 0, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, z, u, v11, -1, 0, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, u02, v11, -1, 0, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, u02, v02, -1, 0, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, u, v02, 1, 0, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, u, v11, 1, 0, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, z, u02, v11, 1, 0, 0, light);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, z, u02, v02, 1, 0, 0, light);
             }
         }
+    }
+
+    protected void vertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer vertex, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light) {
+        this.vertex(matrix4f, matrix3f, vertex, x, y, z, u, v, normX, normY, normZ, light, 1.0F);
     }
 
     protected void vertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer vertex, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light, float a) {

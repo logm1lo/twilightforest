@@ -37,10 +37,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TorchberryPlantBlock;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.util.WoodPalette;
-import twilightforest.world.components.feature.config.HollowLogConfig;
-import twilightforest.world.components.feature.config.RootConfig;
-import twilightforest.world.components.feature.config.SwizzleConfig;
-import twilightforest.world.components.feature.config.ThornsConfig;
+import twilightforest.world.components.feature.config.*;
 import twilightforest.world.registration.TreeConfigurations;
 import twilightforest.world.registration.TreeDecorators;
 
@@ -141,7 +138,6 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> SORTING_TREE = registerKey("tree/sorting_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_CANOPY_OAK_TREE = registerKey("tree/forest_canopy_oak_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> SAVANNAH_CANOPY_OAK_TREE = registerKey("tree/savannah_canopy_oak_tree");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> HOLLOW_TREE = registerKey("tree/hollow_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> RAINBOW_OAK_TREE = registerKey("tree/rainbow_oak");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_RAINBOW_OAK_TREE = registerKey("tree/large_rainbow_oak");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BROWN_CANOPY_MUSHROOM_TREE = registerKey("mushroom/brown_canopy_mushroom");
@@ -233,7 +229,7 @@ public final class TFConfiguredFeatures {
 		context.register(MAYAPPLE, new ConfiguredFeature<>(Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.MAYAPPLE.get())))));
 		context.register(FIDDLEHEAD, new ConfiguredFeature<>(Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.FIDDLEHEAD.get())))));
 		context.register(FIRE_JET, new ConfiguredFeature<>(TFFeatures.FIRE_JET.get(), new BlockStateConfiguration(TFBlocks.FIRE_JET.get().defaultBlockState())));
-		context.register(FOUNDATION, new ConfiguredFeature<>(TFFeatures.FOUNDATION.get(), NoneFeatureConfiguration.NONE));
+		context.register(FOUNDATION, new ConfiguredFeature<>(TFFeatures.FOUNDATION.get(), RuinedFoundationConfig.withDefaultBlocks(false)));
 		context.register(GROVE_RUINS, new ConfiguredFeature<>(TFFeatures.GROVE_RUINS.get(), NoneFeatureConfiguration.NONE));
 		context.register(HOLLOW_LOG, new ConfiguredFeature<>(TFFeatures.FALLEN_HOLLOW_LOG.get(), NoneFeatureConfiguration.NONE));
 		context.register(HOLLOW_STUMP, new ConfiguredFeature<>(TFFeatures.HOLLOW_STUMP.get(), TreeConfigurations.HOLLOW_TREE));
@@ -304,7 +300,6 @@ public final class TFConfiguredFeatures {
 		context.register(SORTING_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.SORT_TREE));
 		context.register(FOREST_CANOPY_OAK_TREE, new ConfiguredFeature<>(TFFeatures.CANOPY_OAK.get(), TreeConfigurations.FOREST_CANOPY_OAK));
 		context.register(SAVANNAH_CANOPY_OAK_TREE, new ConfiguredFeature<>(TFFeatures.CANOPY_OAK.get(), TreeConfigurations.SAVANNAH_CANOPY_OAK));
-		context.register(HOLLOW_TREE, new ConfiguredFeature<>(TFFeatures.HOLLOW_TREE.get(), TreeConfigurations.HOLLOW_TREE));
 		context.register(RAINBOW_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.RAINBOAK_TREE));
 		context.register(LARGE_RAINBOW_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.LARGE_RAINBOAK_TREE));
 		context.register(BROWN_CANOPY_MUSHROOM_TREE, new ConfiguredFeature<>(TFFeatures.CANOPY_BROWN_MUSHROOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3)));

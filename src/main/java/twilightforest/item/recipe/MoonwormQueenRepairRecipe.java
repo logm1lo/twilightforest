@@ -28,10 +28,10 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 		for(int i = 0; i < inv.getContainerSize(); ++i) {
 			ItemStack stackInQuestion = inv.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
-				if (stackInQuestion.is(TFItems.MOONWORM_QUEEN) && stackInQuestion.isDamaged()) {
+				if (stackInQuestion.is(TFItems.MOONWORM_QUEEN.get()) && stackInQuestion.isDamaged()) {
 					queen = stackInQuestion;
 				}
-				if (stackInQuestion.is(TFItems.TORCHBERRIES)) {
+				if (stackInQuestion.is(TFItems.TORCHBERRIES.get())) {
 					berries.add(stackInQuestion);
 				}
 			}
@@ -46,7 +46,7 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 		for(int i = 0; i < inv.getContainerSize(); ++i) {
 			ItemStack itemstack = inv.getItem(i);
 			if (!itemstack.isEmpty()) {
-				if(itemstack.is(TFItems.MOONWORM_QUEEN)) {
+				if(itemstack.is(TFItems.MOONWORM_QUEEN.get())) {
 					if(queen == null) {
 						queen = itemstack;
 					} else {
@@ -55,7 +55,7 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 					}
 				}
 
-				if(itemstack.is(TFItems.TORCHBERRIES)) {
+				if(itemstack.is(TFItems.TORCHBERRIES.get())) {
 					//add all berries in the grid to a list to determine the amount to repair
 					berries.add(itemstack.getItem());
 				}

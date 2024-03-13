@@ -1,18 +1,12 @@
 package twilightforest.init;
 
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.*;
 import twilightforest.block.entity.spawner.*;
-import twilightforest.client.renderer.tileentity.*;
 
 public class TFBlockEntities {
 
@@ -121,21 +115,4 @@ public class TFBlockEntities {
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CandelabraBlockEntity>> CANDELABRA = BLOCK_ENTITIES.register("candelabra", () ->
 			BlockEntityType.Builder.of(CandelabraBlockEntity::new, TFBlocks.CANDELABRA.get()).build(null));
-
-	@OnlyIn(Dist.CLIENT)
-	public static void registerTileEntityRenders() {
-		// tile entities
-		BlockEntityRenderers.register(FIREFLY.get(), FireflyTileEntityRenderer::new);
-		BlockEntityRenderers.register(CICADA.get(), CicadaTileEntityRenderer::new);
-		BlockEntityRenderers.register(MOONWORM.get(), MoonwormTileEntityRenderer::new);
-		BlockEntityRenderers.register(TROPHY.get(), TrophyTileEntityRenderer::new);
-		BlockEntityRenderers.register(TF_SIGN.get(), SignRenderer::new);
-		BlockEntityRenderers.register(TF_HANGING_SIGN.get(), HangingSignRenderer::new);
-		BlockEntityRenderers.register(TF_CHEST.get(), TFChestTileEntityRenderer::new);
-		BlockEntityRenderers.register(TF_TRAPPED_CHEST.get(), TFChestTileEntityRenderer::new);
-		BlockEntityRenderers.register(KEEPSAKE_CASKET.get(), CasketTileEntityRenderer::new);
-		BlockEntityRenderers.register(SKULL_CANDLE.get(), SkullCandleTileEntityRenderer::new);
-		BlockEntityRenderers.register(RED_THREAD.get(), RedThreadRenderer::new);
-		BlockEntityRenderers.register(CANDELABRA.get(), CandelabraTileEntityRenderer::new);
-	}
 }

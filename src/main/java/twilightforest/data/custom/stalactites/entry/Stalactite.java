@@ -11,6 +11,7 @@ import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 public record Stalactite(Either<List<Pair<Block, Integer>>, Block> ores, float sizeVariation, int maxLength, int weight) {
 
@@ -33,5 +34,15 @@ public record Stalactite(Either<List<Pair<Block, Integer>>, Block> ores, float s
 		if (STALACTITE_CONFIG == null)
 			throw new IllegalStateException("Can't retrieve Stalactites yet!");
 		return STALACTITE_CONFIG;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Stalactite: Ore:%s, Length:%s, Variation:%s, Weight:%s", this.ores(), this.maxLength(), this.sizeVariation(), this.weight());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.ores(), this.maxLength(), this.sizeVariation(), this.weight());
 	}
 }

@@ -52,7 +52,7 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 			stack.mulPose(Axis.ZP.rotationDegrees(180 + rotateAngleZ * (180F / (float) Math.PI)));
 			stack.mulPose(Axis.YP.rotationDegrees(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count))));
 			stack.mulPose(Axis.XP.rotationDegrees(rotateAngleX * (180F / (float) Math.PI)));
-			stack.translate(-0.5, -0.5, -0.5);
+			stack.translate(-0.5, -0.65, -0.5);
 
 			// push the shields outwards from the center of rotation
 			stack.translate(0F, 0F, -0.7F);

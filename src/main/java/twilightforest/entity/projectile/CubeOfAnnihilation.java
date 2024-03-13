@@ -194,7 +194,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().is(TFItems.CUBE_OF_ANNIHILATION)) {
+		if (thrower != null && thrower.getUseItem().is(TFItems.CUBE_OF_ANNIHILATION.get())) {
 			thrower.stopUsingItem();
 		}
 	}

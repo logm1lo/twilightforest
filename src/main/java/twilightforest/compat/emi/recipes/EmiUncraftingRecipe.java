@@ -28,7 +28,7 @@ public class EmiUncraftingRecipe<T extends CraftingRecipe> extends TFEmiRecipe<T
 	private List<EmiIngredient> displayedOutputs;
 
 	public EmiUncraftingRecipe(RecipeHolder<T> recipe) {
-		super(TFEmiCompat.UNCRAFTING, recipe, RecipeViewerConstants.UNCRAFTING_WIDTH + 2, RecipeViewerConstants.UNCRAFTING_HEIGHT);
+		super(TFEmiCompat.UNCRAFTING, recipe, RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 2, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT);
 	}
 
 	@Override

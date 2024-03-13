@@ -102,7 +102,7 @@ public class HedgeBlock extends Block {
 	}
 
 	private boolean shouldDamage(Entity entity) {
-		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers());
+		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers() || entity.getVehicle() != null && !this.shouldDamage(entity.getVehicle()));
 	}
 
 	@Override

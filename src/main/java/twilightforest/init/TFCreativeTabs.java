@@ -420,9 +420,8 @@ public class TFCreativeTabs {
 				output.accept(TFItems.MAGIC_MAP);
 				output.accept(TFItems.MAZE_MAP);
 				output.accept(TFItems.ORE_MAP);
-				output.accept(TFItems.ORE_METER);
-				output.accept(TFItems.MOON_DIAL);
-				output.accept(TFItems.POCKET_WATCH);
+				output.accept(TFItems.TRANSFORMATION_POWDER);
+				output.accept(TFBlocks.RED_THREAD);
 				output.accept(TFItems.LIVEROOT);
 				output.accept(TFItems.RAW_IRONWOOD);
 				output.accept(TFItems.IRONWOOD_INGOT);
@@ -453,12 +452,11 @@ public class TFCreativeTabs {
 				output.accept(TFItems.BORER_ESSENCE);
 				output.accept(TFItems.CARMINITE);
 				output.accept(TFItems.TOWER_KEY);
-				output.accept(TFItems.TRANSFORMATION_POWDER);
 				output.accept(TFItems.BRITTLE_FLASK);
 				output.accept(TFItems.GREATER_FLASK);
-				output.accept(TFBlocks.RED_THREAD);
 				output.accept(TFItems.MAGIC_BEANS);
 				output.accept(TFItems.CUBE_TALISMAN);
+				parameters.holders().lookup(TFRegistries.Keys.MAGIC_PAINTINGS).ifPresent((lookup) -> createPaintings(output, lookup));
 				output.accept(TFItems.MUSIC_DISC_THREAD);
 				output.accept(TFItems.MUSIC_DISC_FINDINGS);
 				output.accept(TFItems.MUSIC_DISC_RADIANCE);
@@ -468,7 +466,6 @@ public class TFCreativeTabs {
 				output.accept(TFItems.MUSIC_DISC_HOME);
 				output.accept(TFItems.MUSIC_DISC_MAKER);
 				output.accept(TFItems.MUSIC_DISC_SUPERSTITIOUS);
-				parameters.holders().lookup(TFRegistries.Keys.MAGIC_PAINTINGS).ifPresent((lookup) -> createPaintings(output, lookup));
 				output.accept(TFItems.NAGA_BANNER_PATTERN);
 				output.accept(TFItems.LICH_BANNER_PATTERN);
 				output.accept(TFItems.MINOSHROOM_BANNER_PATTERN);
@@ -564,7 +561,11 @@ public class TFCreativeTabs {
 				output.accept(TFItems.ZOMBIE_SCEPTER);
 				output.accept(TFItems.FORTIFICATION_SCEPTER);
 				output.accept(TFItems.LAMP_OF_CINDERS);
+				output.accept(TFItems.EMPERORS_CLOTH);
 				output.accept(TFItems.ORE_MAGNET);
+				output.accept(TFItems.ORE_METER);
+				output.accept(TFItems.POCKET_WATCH);
+				output.accept(TFItems.MOON_DIAL);
 				output.accept(TFItems.CRUMBLE_HORN);
 				output.accept(TFItems.PEACOCK_FEATHER_FAN);
 				output.accept(TFItems.MOONWORM_QUEEN);

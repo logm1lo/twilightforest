@@ -30,7 +30,7 @@ public class REICrumbleHornCategory implements DisplayCategory<REICrumbleHornDis
 	private final Component localizedName;
 
 	public REICrumbleHornCategory() {
-		this.icon = EntryStacks.of(TFItems.CRUMBLE_HORN.get());
+		this.icon = EntryStacks.of(TFItems.CRUMBLE_HORN);
 		this.localizedName = Component.translatable("gui.twilightforest.crumble_horn_jei");
 	}
 
@@ -51,12 +51,12 @@ public class REICrumbleHornCategory implements DisplayCategory<REICrumbleHornDis
 
 	@Override
 	public int getDisplayWidth(REICrumbleHornDisplay display) {
-		return RecipeViewerConstants.CRUMBLE_HORN_WIDTH + 8;
+		return RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 8;
 	}
 
 	@Override
 	public int getDisplayHeight() {
-		return RecipeViewerConstants.CRUMBLE_HORN_HEIGHT + 8;
+		return RecipeViewerConstants.GENERIC_RECIPE_HEIGHT + 8;
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class REICrumbleHornCategory implements DisplayCategory<REICrumbleHornDis
 		bounds.translate(4, 4);
 
 		//background
-		widgets.add(Widgets.createTexturedWidget(TEXTURE.apply(REIRuntime.getInstance().isDarkThemeEnabled()), new Rectangle(bounds.getX(), bounds.getY(), RecipeViewerConstants.CRUMBLE_HORN_WIDTH, RecipeViewerConstants.CRUMBLE_HORN_HEIGHT)));
+		widgets.add(Widgets.createTexturedWidget(TEXTURE.apply(REIRuntime.getInstance().isDarkThemeEnabled()), new Rectangle(bounds.getX(), bounds.getY(), RecipeViewerConstants.GENERIC_RECIPE_WIDTH, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT)));
 
 		//output slot (only renders if the block changes)
 		if (!display.isResultAir) {

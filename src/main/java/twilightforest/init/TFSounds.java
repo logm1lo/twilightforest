@@ -2,8 +2,6 @@ package twilightforest.init;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.animal.Parrot;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
@@ -216,6 +214,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> SHIELD_ADD = createEvent("entity.twilightforest.shield.add");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SHIELD_BLOCK = createEvent("entity.twilightforest.shield.block");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SHIELD_BREAK = createEvent("entity.twilightforest.shield.break");
+	public static final DeferredHolder<SoundEvent, SoundEvent> SHIELD_EXPIRE = createEvent("entity.twilightforest.shield.expire");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_AMBIENT = createEvent("entity.twilightforest.skeleton_druid.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_DEATH = createEvent("entity.twilightforest.skeleton_druid.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_HURT = createEvent("entity.twilightforest.skeleton_druid.hurt");
@@ -304,45 +303,5 @@ public final class TFSounds {
 
 	private static DeferredHolder<SoundEvent, SoundEvent> createEvent(String sound) {
 		return SOUNDS.register(sound, () -> SoundEvent.createVariableRangeEvent(TwilightForestMod.prefix(sound)));
-	}
-
-	public static void registerParrotSounds() {
-		Parrot.MOB_SOUND_MAP.put(TFEntities.ALPHA_YETI.get(), ALPHA_YETI_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.BLOCKCHAIN_GOBLIN.get(), REDCAP_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.CARMINITE_BROODLING.get(), SoundEvents.PARROT_IMITATE_SPIDER);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.CARMINITE_GOLEM.get(), CARMINITE_GOLEM_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.FIRE_BEETLE.get(), SoundEvents.PARROT_IMITATE_SPIDER);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.CARMINITE_GHASTLING.get(), SoundEvents.PARROT_IMITATE_GHAST);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.CARMINITE_GHASTGUARD.get(), SoundEvents.PARROT_IMITATE_GHAST);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.HEDGE_SPIDER.get(), SoundEvents.PARROT_IMITATE_SPIDER);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.HELMET_CRAB.get(), SoundEvents.PARROT_IMITATE_SPIDER);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.HOSTILE_WOLF.get(), HOSTILE_WOLF_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.HYDRA.get(), HYDRA_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.STABLE_ICE_CORE.get(), ICE_CORE_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.KING_SPIDER.get(), SoundEvents.PARROT_IMITATE_SPIDER);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.KOBOLD.get(), KOBOLD_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.LICH.get(), SoundEvents.PARROT_IMITATE_BLAZE);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.MAZE_SLIME.get(), SoundEvents.PARROT_IMITATE_SLIME);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.LICH_MINION.get(), SoundEvents.PARROT_IMITATE_ZOMBIE);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.MINOSHROOM.get(), MINOTAUR_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.MINOTAUR.get(), MINOTAUR_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.MIST_WOLF.get(), HOSTILE_WOLF_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.MOSQUITO_SWARM.get(), MOSQUITO_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.NAGA.get(), NAGA_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.KNIGHT_PHANTOM.get(), WRAITH_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.PINCH_BEETLE.get(), SoundEvents.PARROT_IMITATE_SPIDER);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.REDCAP.get(), REDCAP_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.REDCAP_SAPPER.get(), REDCAP_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.SKELETON_DRUID.get(), SoundEvents.PARROT_IMITATE_SKELETON);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.SLIME_BEETLE.get(), SoundEvents.PARROT_IMITATE_SLIME);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.SNOW_GUARDIAN.get(), ICE_CORE_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.SNOW_QUEEN.get(), ICE_CORE_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.SWARM_SPIDER.get(), SoundEvents.PARROT_IMITATE_SPIDER);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.TOWERWOOD_BORER.get(), SoundEvents.PARROT_IMITATE_SILVERFISH);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.DEATH_TOME.get(), DEATH_TOME_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.UR_GHAST.get(), SoundEvents.PARROT_IMITATE_GHAST);
-		Parrot.MOB_SOUND_MAP.put(TFEntities.WINTER_WOLF.get(), HOSTILE_WOLF_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.WRAITH.get(), WRAITH_PARROT.get());
-		Parrot.MOB_SOUND_MAP.put(TFEntities.YETI.get(), ALPHA_YETI_PARROT.get());
 	}
 }

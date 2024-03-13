@@ -38,6 +38,7 @@ public class TFLootTables {
 	public static final TFLootTables MEDIUM_HOLLOW_HILL = new TFLootTables("hill_2");
 	public static final TFLootTables LARGE_HOLLOW_HILL = new TFLootTables("hill_3");
 	public static final TFLootTables HEDGE_MAZE = new TFLootTables("hedge_maze");
+	public static final TFLootTables HEDGE_CLOTH = new TFLootTables("hedge_cloth");
 	public static final TFLootTables FANCY_WELL = new TFLootTables("fancy_well");
 	public static final TFLootTables WELL = new TFLootTables("well");
 	public static final TFLootTables LABYRINTH_ROOM = new TFLootTables("labyrinth_room");
@@ -133,27 +134,6 @@ public class TFLootTables {
 			return id;
 		} else {
 			throw new IllegalArgumentException(id + " is already a registered built-in loot table");
-		}
-	}
-
-	@Deprecated //move to using IBossLootBuffer.saveDropsIntoBoss instead
-	public static void entityDropsIntoContainer(LivingEntity entity, DamageSource source, BlockState blockContaining, BlockPos placement) {
-		if (entity.level() instanceof ServerLevel serverLevel && TFConfig.COMMON_CONFIG.bossDropChests.get()
-				&& serverLevel.setBlock(placement, blockContaining, DEFAULT_PLACE_FLAG)
-				&& serverLevel.getBlockEntity(placement) instanceof Container container) {
-			LootTable table = serverLevel.getServer().getLootData().getLootTable(entity.getLootTable());
-			LootParams params = createLootParams(entity, true, source).create(LootContextParamSets.ENTITY);
-			ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
-			table.fill(container, params, entity.getLootTableSeed());
-			//if our loot stack size is bigger than the chest, drop everything else outside of it. Dont want to lose any loot now do we?
-			if (stacks.size() > 27) {
-				for (ItemStack stack : stacks.subList(28, stacks.size())) {
-					ItemEntity item = new ItemEntity(serverLevel, placement.above().getX(), placement.above().getY(), placement.above().getZ(), stack);
-					item.setExtendedLifetime();
-					item.setNoPickUpDelay();
-					serverLevel.addFreshEntity(item);
-				}
-			}
 		}
 	}
 

@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 public class TFStructureTypes {
 	public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, TwilightForestMod.ID);
 
+	public static final DeferredHolder<StructureType<?>, StructureType<HollowTreeStructure>> HOLLOW_TREE = registerType("hollow_tree", () -> () -> HollowTreeStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<HedgeMazeStructure>> HEDGE_MAZE = registerType("hedge_maze", () -> () -> HedgeMazeStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<HollowHillStructure>> HOLLOW_HILL = registerType("hollow_hill", () -> () -> HollowHillStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<QuestGroveStructure>> QUEST_GROVE = registerType("quest_grove", () -> () -> QuestGroveStructure.CODEC);
@@ -26,6 +27,7 @@ public class TFStructureTypes {
 	public static final DeferredHolder<StructureType<?>, StructureType<YetiCaveStructure>> YETI_CAVE = registerType("yeti_cave", () -> () -> YetiCaveStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<AuroraPalaceStructure>> AURORA_PALACE = registerType("aurora_palace", () -> () -> AuroraPalaceStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<TrollCaveStructure>> TROLL_CAVE = registerType("troll_cave", () -> () -> TrollCaveStructure.CODEC);
+	public static final DeferredHolder<StructureType<?>, StructureType<GiantHouseStructure>> GIANT_HOUSE = registerType("giant_house", () -> () -> GiantHouseStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<FinalCastleStructure>> FINAL_CASTLE = registerType("final_castle", () -> () -> FinalCastleStructure.CODEC);
 
 	private static <P extends Structure> DeferredHolder<StructureType<?>, StructureType<P>> registerType(String name, Supplier<StructureType<P>> factory) {

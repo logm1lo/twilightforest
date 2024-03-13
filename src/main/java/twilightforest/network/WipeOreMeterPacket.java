@@ -35,12 +35,12 @@ public record WipeOreMeterPacket(int slot, InteractionHand hand) implements Cust
 			if (message.hand == InteractionHand.MAIN_HAND) {
 				SlotAccess slot = ctx.player().orElseThrow().getSlot(message.slot());
 				ItemStack itemInSlot = slot.get();
-				if (itemInSlot.is(TFItems.ORE_METER)) { // Ensure we're not modifying data on some random item because of a desync/manmade packet
+				if (itemInSlot.is(TFItems.ORE_METER.get())) { // Ensure we're not modifying data on some random item because of a desync/manmade packet
 					itemInSlot.getOrCreateTag().remove(OreMeterItem.NBT_SCAN_DATA);
                 }
 			} else {
 				ItemStack itemInSlot = ctx.player().orElseThrow().getOffhandItem();
-				if (itemInSlot.is(TFItems.ORE_METER)) {
+				if (itemInSlot.is(TFItems.ORE_METER.get())) {
                     itemInSlot.getOrCreateTag().remove(OreMeterItem.NBT_SCAN_DATA);
                 }
 			}

@@ -10,7 +10,7 @@ var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
 // noinspection JSUnusedGlobalSymbols
 function initializeCoreMod() {
     return {
-        'seed': {
+        'mount': {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.player.LocalPlayer',

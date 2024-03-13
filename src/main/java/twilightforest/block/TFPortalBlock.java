@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,7 +44,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.client.MissingAdvancementToast;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -54,7 +52,7 @@ import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFDimension;
 
 import java.util.*;
 
@@ -249,8 +247,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 	private static ResourceKey<Level> getDestination(Entity entity) {
 		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
-		return !entity.getCommandSenderWorld().dimension().location().equals(TFGenerationSettings.DIMENSION)
-				? TFGenerationSettings.DIMENSION_KEY : cachedOriginDimension;
+		return !entity.getCommandSenderWorld().dimension().location().equals(TFDimension.DIMENSION)
+				? TFDimension.DIMENSION_KEY : cachedOriginDimension;
 	}
 
 	public static void attemptSendEntity(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {
@@ -270,7 +268,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 		entity.changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
 
-		if (destination == TFGenerationSettings.DIMENSION_KEY && entity instanceof ServerPlayer playerMP && forcedEntry) {
+		if (destination == TFDimension.DIMENSION_KEY && entity instanceof ServerPlayer playerMP && forcedEntry) {
 			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation
 			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.getYRot(), true, false);
 		}
