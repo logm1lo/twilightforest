@@ -521,9 +521,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.MAGIC_MAP);
 		singleTex(TFItems.MAZE_MAP);
 		singleTex(TFItems.ORE_MAP);
-		ModelFile magnetPull1 = generated("ore_magnet_pulling_1", prefix("item/ore_magnet_pulling_1"));
-		ModelFile magnetPull2 = generated("ore_magnet_pulling_2", prefix("item/ore_magnet_pulling_2"));
-		singleTex(TFItems.ORE_MAGNET)
+		ModelFile magnetPull1 = specialTool("ore_magnet_pulling_1", prefix("item/ore_magnet_pulling_1"));
+		ModelFile magnetPull2 = specialTool("ore_magnet_pulling_2", prefix("item/ore_magnet_pulling_2"));
+		specialTool(TFItems.ORE_MAGNET)
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.5).model(magnetPull1).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 1).model(magnetPull2).end();
 		crumbleHorn(TFItems.CRUMBLE_HORN);
@@ -551,7 +551,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.KNIGHTMETAL_RING);
 		trimmedArmor(TFItems.PHANTOM_HELMET);
 		trimmedArmor(TFItems.PHANTOM_CHESTPLATE);
-		singleTex(TFItems.LAMP_OF_CINDERS);
+		lamp(TFItems.LAMP_OF_CINDERS);
 		singleTex(TFItems.POCKET_WATCH);
 		singleTex(TFItems.EMPERORS_CLOTH);
 		singleTex(TFItems.ALPHA_YETI_FUR);
@@ -737,6 +737,18 @@ public class ItemModelGenerator extends ItemModelProvider {
 		return generated(item.getId().getPath(), prefix("item/" + item.getId().getPath()));
 	}
 
+	private ItemModelBuilder specialTool(DeferredHolder<Item, ? extends Item> item) {
+		return specialTool(item.getId().getPath(), prefix("item/" + item.getId().getPath()));
+	}
+
+	private ItemModelBuilder specialTool(String name, ResourceLocation... layers) {
+		ItemModelBuilder builder = withExistingParent(name, TwilightForestMod.prefix("item/special_handheld"));
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
+		return builder;
+	}
+
 	private ItemModelBuilder bowItem(String name, ResourceLocation... layers) {
 		ItemModelBuilder builder = withExistingParent(name, "item/bow");
 		for (int i = 0; i < layers.length; i++) {
@@ -863,7 +875,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 		}
 	}
 
-
 	private void crumbleHorn(DeferredHolder<Item, Item> item) {
 		String name = item.getId().getPath();
 		ItemModelBuilder tooting = withExistingParent("tooting_" + name, this.mcLoc("item/tooting_goat_horn"))
@@ -872,6 +883,24 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(name, this.mcLoc("item/goat_horn"))
 				.texture("layer0", prefix("item/" + name))
 				.override().predicate(TwilightForestMod.prefix("tooting"), 1).model(tooting);
+	}
+
+	private void lamp(DeferredHolder<Item, Item> item) {
+		String name = item.getId().getPath();
+		tool(name)
+				.texture("layer0", prefix("item/" + name))
+				.transforms()
+				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+				.rotation(0, -90, 0)
+				.translation(0, -0.5F, -3.0F)
+				.scale(0.65F)
+				.end()
+				.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+				.rotation(0, 90, 0)
+				.translation(0, -0.5F, -3.0F)
+				.scale(0.65F)
+				.end()
+				.end();
 	}
 
 	@Override

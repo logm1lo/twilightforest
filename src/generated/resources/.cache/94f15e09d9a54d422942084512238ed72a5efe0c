@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-30T21:17:24.6085796	TwilightForest Item and BlockItem models
+// 1.20.4	2024-03-14T00:17:40.4970125	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -438,7 +438,7 @@ a7ec10a496b1b6935e8dc144efe701e3f5ec7f00 assets/twilightforest/models/item/knigh
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/knight_phantom_spawn_egg.json
 621a3a44e9aa5fc8a52bf833e473ca652f4c15b9 assets/twilightforest/models/item/knight_phantom_trophy.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/kobold_spawn_egg.json
-864cb9e9ca701ec4b78dfb3e89b2e6c7ac4bf70c assets/twilightforest/models/item/lamp_of_cinders.json
+315ba5b6cb31f2543efff7794e5a78ad0db0f490 assets/twilightforest/models/item/lamp_of_cinders.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/lich_banner_pattern.json
 061906a0c9a9a334fbb82acb809c3748e2b1f9cb assets/twilightforest/models/item/lich_boss_spawner.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/lich_spawn_egg.json
@@ -559,9 +559,9 @@ e80919ce5e6ce3931333871ce7d80d8e4b5ab5cb assets/twilightforest/models/item/naga_
 621a3a44e9aa5fc8a52bf833e473ca652f4c15b9 assets/twilightforest/models/item/naga_trophy.json
 c825e1c3550c80ba6c507e2c09827c83201c8508 assets/twilightforest/models/item/oak_banister.json
 bafbdd124434e7c4e216b9a36dc79bb302e97ecb assets/twilightforest/models/item/orange_force_field.json
-35bb2ccaee394bdf18283605473487d3c8ce18ff assets/twilightforest/models/item/ore_magnet.json
-22e324b55d19e2071beef8f01398500b3eab3af4 assets/twilightforest/models/item/ore_magnet_pulling_1.json
-89c4694f967c2688ac73dfb92ab7da4bcac4e847 assets/twilightforest/models/item/ore_magnet_pulling_2.json
+15d1b83142509312e20ad12c0d1713688d1269fd assets/twilightforest/models/item/ore_magnet.json
+4a9c66551e026c1c307438b3b43de1ebb71bd3e7 assets/twilightforest/models/item/ore_magnet_pulling_1.json
+f17b50be9b7bc4a364eee40e71158b54b88f6253 assets/twilightforest/models/item/ore_magnet_pulling_2.json
 87c22b18b60c3e3d7ac5c538c6e39460bd6d4766 assets/twilightforest/models/item/ore_map.json
 4c22da76370fe7dc203a0221f05075a7b98e0450 assets/twilightforest/models/item/ore_meter.json
 c60eaa6b8f6bd0edde6aa7f5ee63b2f51bbeb570 assets/twilightforest/models/item/ore_meter_active.json
