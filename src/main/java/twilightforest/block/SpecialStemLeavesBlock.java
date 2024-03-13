@@ -8,9 +8,14 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class TFAlternativeStemLeavesBlock extends TFLeavesBlock {
-    public TFAlternativeStemLeavesBlock(Properties properties) {
+import java.util.function.Predicate;
+
+public class SpecialStemLeavesBlock extends TFLeavesBlock {
+    protected final Predicate<BlockState> stemPredicate;
+
+    public SpecialStemLeavesBlock(Properties properties, Predicate<BlockState> stemPredicate) {
         super(properties);
+        this.stemPredicate = stemPredicate;
     }
 
     @Override
@@ -33,8 +38,6 @@ public abstract class TFAlternativeStemLeavesBlock extends TFLeavesBlock {
     }
 
     protected int getDistanceAt(BlockState state) {
-        return this.isStem(state) ? 0 : state.getBlock() instanceof LeavesBlock ? state.getValue(DISTANCE) : 7;
+        return this.stemPredicate.test(state) ? 0 : state.getBlock() instanceof LeavesBlock ? state.getValue(DISTANCE) : 7;
     }
-
-    protected abstract boolean isStem(BlockState state);
 }
