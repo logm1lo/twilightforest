@@ -1,4 +1,4 @@
-// 1.20.4	2024-03-14T00:17:40.4970125	TwilightForest Item and BlockItem models
+// 1.20.4	2024-03-14T03:08:47.264454	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -512,8 +512,8 @@ cf3737de5ae670012ca4fd9135bae81ed57138c6 assets/twilightforest/models/item/minin
 621a3a44e9aa5fc8a52bf833e473ca652f4c15b9 assets/twilightforest/models/item/minoshroom_trophy.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/minotaur_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/mist_wolf_spawn_egg.json
-94abadca044efde2e7600d13f3bc7c7c274b5a9d assets/twilightforest/models/item/moonworm_queen.json
-ae93db80d0f67e7cf99cc18348262e82e5b4174f assets/twilightforest/models/item/moonworm_queen_alt.json
+066b40fec4700610b470a9eacfefc03b5599ff93 assets/twilightforest/models/item/moonworm_queen.json
+824774180de2cddedf1c798073f84d69a045515d assets/twilightforest/models/item/moonworm_queen_alt.json
 d0823e2b9a56fb573cc41002a22ae0315679aef7 assets/twilightforest/models/item/moon_dial.json
 7dd8d92247fafafbeb54a9c9b0d3a9f830f99817 assets/twilightforest/models/item/moon_dial_full.json
 3ccb89fa084c401e478efc4d6c548b3f0bedcf92 assets/twilightforest/models/item/moon_dial_new.json

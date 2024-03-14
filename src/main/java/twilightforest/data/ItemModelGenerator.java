@@ -26,6 +26,7 @@ import twilightforest.item.HollowLogItem;
 
 import static twilightforest.TwilightForestMod.prefix;
 
+@SuppressWarnings("SameParameterValue")
 public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
 		super(output, TwilightForestMod.ID, existingFileHelper);
@@ -232,7 +233,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.DEATH_TOME_SPAWNER.get(), prefix("block/death_tome_spawner_10"));
 		toBlock(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get());
 		toBlock(TFBlocks.CANOPY_BOOKSHELF.get());
-		generated(TFBlocks.ROPE.getId().getPath(), prefix("block/" + TFBlocks.ROPE.getId().getPath()));;
+		generated(TFBlocks.ROPE.getId().getPath(), prefix("block/" + TFBlocks.ROPE.getId().getPath()));
 
 		toBlockModel(TFBlocks.TERRORCOTTA_LINES.get(), prefix("block/terrorcotta_lines_0"));
 		toBlockModel(TFBlocks.TERRORCOTTA_CURVES.get(), prefix("block/terrorcotta_curves_90"));
@@ -528,8 +529,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 1).model(magnetPull2).end();
 		crumbleHorn(TFItems.CRUMBLE_HORN);
 		singleTexTool(TFItems.PEACOCK_FEATHER_FAN);
-		ModelFile queenAlt = fullbrightTool("moonworm_queen_alt", prefix("item/moonworm_queen_alt"));
-		singleTexFullbrightTool(TFItems.MOONWORM_QUEEN).override().predicate(prefix("alt"), 1).model(queenAlt).end();
+		moonwormQueen(TFItems.MOONWORM_QUEEN);
 		singleTex(TFItems.CHARM_OF_KEEPING_1);
 		singleTex(TFItems.CHARM_OF_KEEPING_2);
 		singleTex(TFItems.CHARM_OF_KEEPING_3);
@@ -712,6 +712,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		return builder;
 	}
 
+	@SuppressWarnings("UnusedReturnValue")
 	private ItemModelBuilder forcefield(String name, ResourceLocation... layers) {
 		ItemModelBuilder builder = withExistingParent(name, "item/generated");
 		for (int i = 0; i < layers.length; i++) {
@@ -863,7 +864,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void trimmedLayeredArmor(DeferredHolder<Item, ArmorItem> armor) {
-		ItemModelBuilder base = this.generated(armor.getId().getPath(), prefix("item/" + armor.getId().getPath()), prefix("item/" + armor.getId().getPath() + "_0"));;
+		ItemModelBuilder base = this.generated(armor.getId().getPath(), prefix("item/" + armor.getId().getPath()), prefix("item/" + armor.getId().getPath() + "_0"));
 		for (ItemModelGenerators.TrimModelData trim : ItemModelGenerators.GENERATED_TRIM_MODELS) {
 			String material = trim.name();
 			String name = armor.getId().getPath() + "_" + material + "_trim";
@@ -901,6 +902,39 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.scale(0.65F)
 				.end()
 				.end();
+	}
+
+	private void moonwormQueen(DeferredHolder<Item, Item> item) {
+		String name = item.getId().getPath();
+
+		ModelFile alt = fullbrightTool(name + "_alt", prefix("item/" + name + "_alt"))
+				.transforms()
+				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+				.rotation(0, -90, 55)
+				.translation(0, 2.0F, -1.0F)
+				.scale(0.85F)
+				.end()
+				.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+				.rotation(0, 90, -55)
+				.translation(0, 2.0F, -1.0F)
+				.scale(0.85F)
+				.end()
+				.end();
+
+		singleTexFullbrightTool(item)
+				.transforms()
+				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+				.rotation(0, -90, 55)
+				.translation(0, 2.0F, -1.0F)
+				.scale(0.85F)
+				.end()
+				.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+				.rotation(0, 90, -55)
+				.translation(0, 2.0F, -1.0F)
+				.scale(0.85F)
+				.end()
+				.end()
+				.override().predicate(prefix("alt"), 1).model(alt).end();
 	}
 
 	@Override
