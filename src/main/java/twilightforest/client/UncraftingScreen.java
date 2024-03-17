@@ -24,7 +24,7 @@ import twilightforest.network.UncraftingGuiPacket;
 
 public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> implements RecipeUpdateListener {
 	private static final ResourceLocation TEXTURE = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
-	private final RecipeBookComponent recipeBookComponent = new RecipeBookComponent();
+	private final RecipeBookComponent recipeBookComponent = new UncraftingRecipeBookComponent();
 	private boolean widthTooNarrow;
 
 	public UncraftingScreen(UncraftingMenu container, Inventory player, Component name) {
