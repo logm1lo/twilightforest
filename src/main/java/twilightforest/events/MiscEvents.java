@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
@@ -11,6 +12,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -32,6 +35,7 @@ import twilightforest.entity.passive.Squirrel;
 import twilightforest.entity.passive.TinyBird;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
+import twilightforest.item.recipe.EmperorsClothRecipe;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -115,4 +119,17 @@ public class MiscEvents {
 			event.setCanceled(true);
 		}
     }
+
+	@SubscribeEvent
+	public static void washOffCloth(PlayerInteractEvent.RightClickBlock event) {
+		if (event.isCanceled() || event.getLevel().isClientSide()) return;
+		BlockState state = event.getLevel().getBlockState(event.getPos());
+		if (!state.is(Blocks.WATER_CAULDRON) || state.getValue(LayeredCauldronBlock.LEVEL) <= 0) return;
+		if (event.getItemStack().getTag() != null && event.getItemStack().getTag().contains(EmperorsClothRecipe.INVISIBLE_TAG)) {
+			LayeredCauldronBlock.lowerFillLevel(state, event.getLevel(), event.getPos());
+			event.getItemStack().getTag().remove(EmperorsClothRecipe.INVISIBLE_TAG);
+			event.getEntity().awardStat(Stats.CLEAN_ARMOR);
+			event.getEntity().swing(event.getHand());
+		}
+	}
 }
