@@ -35,7 +35,16 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 	 */
 	@Override
 	public boolean matches(Container container, Level level) {
-		return container.getItem(0).isEmpty() && this.base.test(container.getItem(1)) && this.addition.test(container.getItem(2));
+		if (!container.getItem(0).isEmpty() || !this.base.test(container.getItem(1)) || !this.addition.test(container.getItem(2))) return false;
+		ItemStack armor = container.getItem(1);
+		if (armor.getTag() != null) {
+			for (String key : this.additionalData.getAllKeys()) {
+				if (!key.equals(ItemStack.TAG_DAMAGE) && armor.getTag().contains(key)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
