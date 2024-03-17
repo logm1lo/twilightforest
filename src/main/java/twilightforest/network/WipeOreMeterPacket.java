@@ -8,19 +8,19 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
 import twilightforest.item.OreMeterItem;
 
-public record WipeOreMeterPacket(int slot, InteractionHand hand) implements CustomPacketPayload {
+public record WipeOreMeterPacket(InteractionHand hand) implements CustomPacketPayload {
 	public static final ResourceLocation ID = TwilightForestMod.prefix("wipe_ore_meter");
 
 	public WipeOreMeterPacket(FriendlyByteBuf buf) {
-		this(buf.readInt(), buf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
+		this(buf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buf) {
-		buf.writeInt(this.slot());
 		buf.writeBoolean(this.hand() == InteractionHand.MAIN_HAND);
 	}
 
@@ -31,18 +31,10 @@ public record WipeOreMeterPacket(int slot, InteractionHand hand) implements Cust
 
 	public static void handle(WipeOreMeterPacket message, PlayPayloadContext ctx) {
 		ctx.workHandler().execute(() -> {
-			// Hacky inferencing but no other choice is given by inventoryTick()'s lack context about where in player's inventory an item may be
-			if (message.hand == InteractionHand.MAIN_HAND) {
-				SlotAccess slot = ctx.player().orElseThrow().getSlot(message.slot());
-				ItemStack itemInSlot = slot.get();
-				if (itemInSlot.is(TFItems.ORE_METER.get())) { // Ensure we're not modifying data on some random item because of a desync/manmade packet
-					itemInSlot.getOrCreateTag().remove(OreMeterItem.NBT_SCAN_DATA);
-                }
-			} else {
-				ItemStack itemInSlot = ctx.player().orElseThrow().getOffhandItem();
-				if (itemInSlot.is(TFItems.ORE_METER.get())) {
-                    itemInSlot.getOrCreateTag().remove(OreMeterItem.NBT_SCAN_DATA);
-                }
+			ItemStack heldStack = ctx.player().orElseThrow().getItemInHand(message.hand());
+			if (heldStack.is(TFItems.ORE_METER)) {
+				heldStack.getOrCreateTag().remove(OreMeterItem.NBT_SCAN_DATA);
+				heldStack.removeData(TFDataAttachments.ORE_SCANNER);
 			}
 		});
 	}

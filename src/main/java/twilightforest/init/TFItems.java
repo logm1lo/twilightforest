@@ -301,8 +301,9 @@ public class TFItems {
 
 		ItemProperties.register(ORE_METER.get(), TwilightForestMod.prefix("active"), (stack, level, entity, idk) -> {
 			if (OreMeterItem.isLoading(stack)) {
+				int totalLoadTime = OreMeterItem.LOAD_TIME + OreMeterItem.getRange(stack) * 25;
 				int progress = OreMeterItem.getLoadProgress(stack);
-				return progress % 5 >= 2 + (int)(Math.random() * 2) && progress <= OreMeterItem.LOAD_TIME - 10 ? 1 : 0;
+				return progress % 5 >= 2 + (int)(Math.random() * 2) && progress <= totalLoadTime - 15 ? 1 : 0;
 			}
 			return OreMeterItem.getScanInfo(stack).isEmpty() ? 0 : 1;
 		});

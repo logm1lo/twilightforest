@@ -114,10 +114,10 @@ public class EntityEvents {
 	@SubscribeEvent
 	public static void wipeOreMeterOnLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 		if (event.getItemStack().is(TFItems.ORE_METER.get()) && (!OreMeterItem.getScanInfo(event.getItemStack()).isEmpty() || OreMeterItem.getAssignedBlock(event.getItemStack()) != null)) {
-			OreMeterItem.saveScanInfo(event.getItemStack(), new HashMap<>(), 0L, 0);
-			OreMeterItem.clearAssignedBlock(event.getItemStack());
+			PacketDistributor.SERVER.noArg().send(new WipeOreMeterPacket(event.getHand()));
+			event.getItemStack().removeData(TFDataAttachments.ORE_SCANNER);
+			event.getItemStack().getOrCreateTag().remove(OreMeterItem.NBT_SCAN_DATA);
 			event.getLevel().playSound(event.getEntity(), event.getEntity().blockPosition(), TFSounds.ORE_METER_CLEAR.get(), SoundSource.PLAYERS, 1.25F, event.getLevel().getRandom().nextFloat() * 0.2F + 0.6F);
-			PacketDistributor.SERVER.noArg().send(new WipeOreMeterPacket(event.getEntity().getInventory().selected + 36, event.getHand()));
 		}
 	}
 
