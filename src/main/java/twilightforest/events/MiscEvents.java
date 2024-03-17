@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
@@ -122,14 +123,15 @@ public class MiscEvents {
 
 	@SubscribeEvent
 	public static void washOffCloth(PlayerInteractEvent.RightClickBlock event) {
-		if (event.isCanceled() || event.getLevel().isClientSide()) return;
+		if (event.isCanceled()) return;
 		BlockState state = event.getLevel().getBlockState(event.getPos());
 		if (!state.is(Blocks.WATER_CAULDRON) || state.getValue(LayeredCauldronBlock.LEVEL) <= 0) return;
 		if (event.getItemStack().getTag() != null && event.getItemStack().getTag().contains(EmperorsClothRecipe.INVISIBLE_TAG)) {
 			LayeredCauldronBlock.lowerFillLevel(state, event.getLevel(), event.getPos());
 			event.getItemStack().getTag().remove(EmperorsClothRecipe.INVISIBLE_TAG);
 			event.getEntity().awardStat(Stats.CLEAN_ARMOR);
-			event.getEntity().swing(event.getHand());
+			event.setCancellationResult(InteractionResult.SUCCESS);
+			event.setCanceled(true);
 		}
 	}
 }
