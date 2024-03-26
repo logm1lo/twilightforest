@@ -18,6 +18,7 @@ public class TFCommand {
         LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("twilightforest")
                 .executes(TFCommand::run)
                 .then(CenterCommand.register())
+                .then(MapLocatorCommand.register())
                 .then(ConquerCommand.register())
                 .then(GenerateBookCommand.register())
                 .then(InfoCommand.register())
