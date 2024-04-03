@@ -107,8 +107,8 @@ public class TFClientSetup {
 		}
 	}
 
-    @SubscribeEvent
-    public static void clientSetup(FMLClientSetupEvent evt) {
+	@SubscribeEvent
+	public static void clientSetup(FMLClientSetupEvent evt) {
 		try {
 			Class.forName("net.optifine.Config");
 			optifinePresent = true;
@@ -116,17 +116,17 @@ public class TFClientSetup {
 			optifinePresent = false;
 		}
 
-        evt.enqueueWork(() -> {
-            Sheets.addWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.DARK_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.TIME_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.MINING_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
-        });
-    }
+		evt.enqueueWork(() -> {
+			Sheets.addWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.DARK_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.TIME_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.MINING_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
+		});
+	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
@@ -134,7 +134,7 @@ public class TFClientSetup {
 		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
 		event.registerReloadListener(MagicPaintingTextureManager.instance);
 	}
-	
+
 	@SubscribeEvent
 	public static void registerScreens(RegisterMenuScreensEvent event) {
 		event.register(TFMenuTypes.UNCRAFTING.get(), UncraftingScreen::new);
@@ -268,28 +268,18 @@ public class TFClientSetup {
 	private static Field field_EntityRenderersEvent$AddLayers_renderers;
 
 	@SubscribeEvent
-	@SuppressWarnings("unchecked")
 	public static void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
-		if (field_EntityRenderersEvent$AddLayers_renderers == null) {
-			try {
-				field_EntityRenderersEvent$AddLayers_renderers = EntityRenderersEvent.AddLayers.class.getDeclaredField("renderers");
-				field_EntityRenderersEvent$AddLayers_renderers.setAccessible(true);
-			} catch (NoSuchFieldException e) {
-				e.printStackTrace();
+		for (EntityType<?> type : event.getEntityTypes()) {
+			var renderer = event.getRenderer(type);
+			if (renderer instanceof LivingEntityRenderer<?, ?> living) {
+				attachRenderLayers(living);
 			}
 		}
-		if (field_EntityRenderersEvent$AddLayers_renderers != null) {
-			event.getSkins().forEach(renderer -> {
-				LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
-				attachRenderLayers(Objects.requireNonNull(skin));
-			});
-			try {
-				((Map<EntityType<?>, EntityRenderer<?>>) field_EntityRenderersEvent$AddLayers_renderers.get(event)).values().stream().
-						filter(LivingEntityRenderer.class::isInstance).map(LivingEntityRenderer.class::cast).forEach(TFClientSetup::attachRenderLayers);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
+
+		event.getSkins().forEach(renderer -> {
+			LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
+			attachRenderLayers(Objects.requireNonNull(skin));
+		});
 	}
 
 	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
