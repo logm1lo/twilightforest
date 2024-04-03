@@ -38,10 +38,10 @@ import java.util.List;
 import java.util.Objects;
 
 @JeiPlugin
-@SuppressWarnings({"unused", "rawtypes"})
+@SuppressWarnings("unused")
 public class JEICompat implements IModPlugin {
 
-	public static final IIngredientType<EntityType> ENTITY_TYPE = () -> EntityType.class;
+	public static final IIngredientType<FakeEntityType> ENTITY_TYPE = () -> FakeEntityType.class;
 	public static final IIngredientType<FakeItemEntity> FAKE_ITEM_ENTITY = () -> FakeItemEntity.class;
 
 	@Override
@@ -87,7 +87,7 @@ public class JEICompat implements IModPlugin {
 			List<RecipeHolder<? extends CraftingRecipe>> recipes = RecipeViewerConstants.getAllUncraftingRecipes(manager);
 			registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, (List<CraftingRecipe>) recipes.stream().map(RecipeHolder::value).toList());
 		}
-		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, RecipeViewerConstants.getTransformationPowderRecipes().stream().map(info -> new TransformationRecipe(info.input(), info.output(), info.reversible())).toList());
+		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, RecipeViewerConstants.getTransformationPowderRecipes().stream().map(info -> new TransformationRecipe(new FakeEntityType(info.input()), new FakeEntityType(info.output()), info.reversible())).toList());
 		registration.addRecipes(CrumbleHornCategory.CRUMBLE_HORN, RecipeViewerConstants.getCrumbleHornRecipes().stream().map(info -> new CrumbleRecipe(info.getFirst(), info.getSecond())).toList());
 		registration.addRecipes(MoonwormQueenCategory.MOONWORM_QUEEN, List.of(new MoonwormQueenRepairRecipe(CraftingBookCategory.MISC)));
 	}
