@@ -4,7 +4,7 @@ Twilight Forest [![Discord](https://img.shields.io/discord/313006291012288521.sv
 This is the home of the Twilight Forest mod for Minecraft 1.12 and beyond.
 
 ## Licensing
-Code and otherwise stated default to our [LICENSE file here](LICENSE)
+Code unless otherwise stated default to our [LICENSE file here](LICENSE)
 
 Non-Code and [Non-Sound](src/main/resources/assets/twilightforest/sounds) assets [(Located here)](src/main/resources/assets) go by our [ASSET_LICENSE file here](ASSET_LICENSE)
 
