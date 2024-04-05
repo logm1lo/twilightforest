@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.google.common.collect.Maps;
+import com.google.common.reflect.Reflection;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -39,6 +40,8 @@ import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.compat.top.TopCompat;
+import twilightforest.config.ConfigSetup;
+import twilightforest.config.TFConfig;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.MagicPaintingVariant;
@@ -77,17 +80,7 @@ public class TwilightForestMod {
 	private static final Rarity rarity = Rarity.create("TWILIGHT", ChatFormatting.DARK_GREEN);
 
 	public TwilightForestMod(IEventBus bus, Dist dist) {
-		{
-			final Pair<TFConfig.Common, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFConfig.Common::new);
-			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, specPair.getRight());
-			TFConfig.COMMON_CONFIG = specPair.getLeft();
-		}
-		{
-			final Pair<TFConfig.Client, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFConfig.Client::new);
-			ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, specPair.getRight());
-			TFConfig.CLIENT_CONFIG = specPair.getLeft();
-		}
-
+		Reflection.initialize(ConfigSetup.class);
 		if (dist.isClient()) {
 			TFClientSetup.init(bus);
 		}
@@ -144,6 +137,10 @@ public class TwilightForestMod {
 		bus.addListener(this::registerExtraStuff);
 		bus.addListener(this::createNewRegistries);
 		bus.addListener(this::setRegistriesForDatapack);
+
+		bus.addListener(ConfigSetup::loadConfigs);
+		bus.addListener(ConfigSetup::reloadConfigs);
+		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
 
 		if (ModList.get().isLoaded("curios")) {
 			NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);

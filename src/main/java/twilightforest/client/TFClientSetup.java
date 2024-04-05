@@ -8,7 +8,6 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.SilverfishModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -33,7 +32,7 @@ import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.*;
@@ -85,7 +84,7 @@ public class TFClientSetup {
 				TwilightForestMod.LOGGER.debug("Registered ISTER listener");
 			}
 
-			if (optifinePresent && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get()) {
+			if (optifinePresent && !TFConfig.disableOptifineNagScreen) {
 				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getScreen()));
 			}
 
