@@ -14,12 +14,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public record MagicPaintingVariant(int width, int height, List<Layer> layers,  String framePath) {
+public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
     public static final Codec<MagicPaintingVariant> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
             ExtraCodecs.POSITIVE_INT.fieldOf("width").forGetter(MagicPaintingVariant::width),
             ExtraCodecs.POSITIVE_INT.fieldOf("height").forGetter(MagicPaintingVariant::height),
-            ExtraCodecs.nonEmptyList(Layer.CODEC.listOf()).fieldOf("layers").forGetter(MagicPaintingVariant::layers),
-            ExtraCodecs.NON_EMPTY_STRING.fieldOf("frame").forGetter(MagicPaintingVariant::framePath)
+            ExtraCodecs.nonEmptyList(Layer.CODEC.listOf()).fieldOf("layers").forGetter(MagicPaintingVariant::layers)
     ).apply(recordCodecBuilder, MagicPaintingVariant::new));
 
     public static Optional<MagicPaintingVariant> getVariant(RegistryAccess regAccess, String id) {

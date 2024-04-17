@@ -129,39 +129,6 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
             }
         }
 
-        TextureAtlasSprite layerTexture = MagicPaintingTextureManager.instance.getFrameSprite(variant);
-
-        for (int k = 0; k < widthAsBlock; ++k) {
-            for (int l = 0; l < heightAsBlock; ++l) {
-                int u = this.getFrameUV(k, widthAsBlock);
-                int v = this.getFrameUV(l, heightAsBlock);
-
-                float xMax = x + (float) ((k + 1) * 16);
-                float xMin = x + (float) (k * 16);
-                float yMax = y + (float) ((l + 1) * 16);
-                float yMin = y + (float) (l * 16);
-
-                float uO = layerTexture.getUOffset(u);
-                float vO = layerTexture.getVOffset(v);
-
-                if (direction == Direction.NORTH) posX = Mth.floor(painting.getX() + (double) ((xMax + xMin) / 2.0F / 16.0F));
-                if (direction == Direction.WEST) posZ = Mth.floor(painting.getZ() - (double) ((xMax + xMin) / 2.0F / 16.0F));
-                if (direction == Direction.SOUTH) posX = Mth.floor(painting.getX() - (double) ((xMax + xMin) / 2.0F / 16.0F));
-                if (direction == Direction.EAST) posZ = Mth.floor(painting.getZ() + (double) ((xMax + xMin) / 2.0F / 16.0F));
-
-                int light = LevelRenderer.getLightColor(painting.level(), new BlockPos(posX, Mth.floor(painting.getY() + (double) ((yMax + yMin) / 2.0F / 16.0F)), posZ));
-                float xEnd = layerTexture.getU((float) (4 - u) + uO);
-                float xStart = layerTexture.getU((float) (4 - (u + 1)) + uO);
-                float yEnd = layerTexture.getV((float) (4 - v) + vO);
-                float yStart = layerTexture.getV((float) (4 - (v + 1)) + vO);
-
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, xStart, yEnd, 0, 0, -1, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, xEnd, yEnd, 0, 0, -1, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, xEnd, yStart, 0, 0, -1, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, xStart, yStart, 0, 0, -1, light, 1.0F);
-            }
-        }
-
         TextureAtlasSprite backSprite = MagicPaintingTextureManager.instance.getBackSprite();
         float u0 = backSprite.getU0();
         float u1 = backSprite.getU1();
