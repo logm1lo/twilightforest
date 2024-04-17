@@ -31,15 +31,15 @@ public class MagicPaintingVariants {
     }
 
     public static void bootstrap(BootstapContext<MagicPaintingVariant> context) {
-        register(context, DARKNESS, "Darkness", "???", 64, 32, List.of(
+        register(context, DARKNESS, "Darkness", "???", 4, 2, List.of(
                 new Layer("background", null, null, true),
-                new Layer("sky", new Parallax(Parallax.Type.VIEW_ANGLE, 0.01F, 128, 32), new OpacityModifier(OpacityModifier.Type.SINE_TIME, 0.03F, false, null), true),
+                new Layer("sky", new Parallax(Parallax.Type.VIEW_ANGLE, 0.01F, 128, 32), new OpacityModifier(OpacityModifier.Type.SINE_TIME, 0.03F, false, 0.0F, 1.0F), true),
                 new Layer("terrain", null, null, false),
                 new Layer("gems", null, null, true),
-                new Layer("gems", null, new OpacityModifier(OpacityModifier.Type.DAY_TIME, 2.0F, true, null), true),
-                new Layer("lightning", null, new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F, false, null), true)
+                new Layer("gems", null, new OpacityModifier(OpacityModifier.Type.DAY_TIME, 2.0F, true, 0.0F, 1.0F, 1, 23999), true),
+                new Layer("lightning", null, new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F, false, 0.0F, 1.0F), true)
         ), MagicPaintingTextureManager.FRAME_SPRITE_LOCATION.toString());
-        register(context, LUCID_LANDS, "Lucid Lands", "Androsa", 32, 32, List.of(
+        register(context, LUCID_LANDS, "Lucid Lands", "Androsa", 2, 2, List.of(
                 new Layer("background", null, null, true),
                 new Layer("clouds", new Parallax(Parallax.Type.SINE_TIME, 0.01F, 48, 32), null, true),
                 new Layer("volcanic_lands", null, null, true),
@@ -50,7 +50,7 @@ public class MagicPaintingVariants {
 
     @SuppressWarnings("SameParameterValue")
     private static void register(BootstapContext<MagicPaintingVariant> context, ResourceKey<MagicPaintingVariant> key, String title, String author, int width, int height, List<Layer> layers, String frame) {
-        MagicPaintingVariant variant = new MagicPaintingVariant(width, height, layers, frame);
+        MagicPaintingVariant variant = new MagicPaintingVariant(width * 16, height * 16, layers, frame);
         AtlasGenerator.MAGIC_PAINTING_HELPER.put(key.location(), variant);
         LangGenerator.MAGIC_PAINTING_HELPER.put(key.location(), Pair.of(title, author));
         context.register(key, variant);
