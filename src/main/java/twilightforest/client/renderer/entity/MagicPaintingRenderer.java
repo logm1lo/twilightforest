@@ -192,9 +192,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
     protected double getWidthOffset(@Nullable Parallax parallax, MagicPainting painting, double widthDiff) {
         if (parallax != null) switch (parallax.type()) {
             case VIEW_ANGLE -> {
-                float partialTick = Minecraft.getInstance().getPartialTick();
                 Vec3 camPos = Minecraft.getInstance().cameraEntity != null ?
-                        Minecraft.getInstance().cameraEntity.getEyePosition(partialTick) :
+                        Minecraft.getInstance().cameraEntity.getEyePosition(Minecraft.getInstance().getPartialTick()) :
                         Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
 
                 Vec3 paintPos = painting.position().relative(painting.getDirection().getOpposite(), 1.0D);
@@ -219,9 +218,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
     protected double getHeightOffset(@Nullable Parallax parallax, MagicPainting painting, double heightDiff) {
         if (parallax != null) switch (parallax.type()) {
             case VIEW_ANGLE -> {
-                float partialTick = Minecraft.getInstance().getPartialTick();
                 Vec3 camPos = Minecraft.getInstance().cameraEntity != null ?
-                        Minecraft.getInstance().cameraEntity.getEyePosition(partialTick) :
+                        Minecraft.getInstance().cameraEntity.getEyePosition(Minecraft.getInstance().getPartialTick()) :
                         Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
 
                 Vec3 paintPos = painting.position().relative(painting.getDirection().getOpposite(), 1.0D);
