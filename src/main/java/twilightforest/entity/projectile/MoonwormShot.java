@@ -3,6 +3,7 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
@@ -11,12 +12,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -26,6 +29,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
+import twilightforest.loot.TFLootTables;
 
 public class MoonwormShot extends TFThrowable {
 
@@ -80,8 +84,13 @@ public class MoonwormShot extends TFThrowable {
 			this.gameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
 			this.level().playSound(null, result.getBlockPos(), TFSounds.MOONWORM_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 		} else {
-			ItemEntity squish = new ItemEntity(this.level(), pos.getX(), pos.getY(), pos.getZ(), Items.LIME_DYE.getDefaultInstance());
-			squish.spawnAtLocation(squish.getItem());
+			if (this.level() instanceof ServerLevel serverLevel) {
+				LootParams ctx = new LootParams.Builder(serverLevel).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.DAMAGE_SOURCE, this.damageSources().fall()).create(LootContextParamSets.ENTITY);
+				serverLevel.getServer().getLootData().getLootTable(TFLootTables.MOONWORM_SQUISH_DROPS).getRandomItems(ctx).forEach((stack) -> {
+					ItemEntity squish = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), stack);
+					squish.spawnAtLocation(squish.getItem());
+                });
+			}
 			this.gameEvent(GameEvent.ENTITY_DIE);
 		}
 	}
