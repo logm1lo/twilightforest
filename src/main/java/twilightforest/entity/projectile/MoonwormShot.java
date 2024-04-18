@@ -16,7 +16,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -80,7 +82,10 @@ public class MoonwormShot extends TFThrowable {
 		BlockState currentState = this.level().getBlockState(pos);
 
 		if (currentState.canBeReplaced() && !currentState.is(BlockTags.FIRE) && !currentState.is(Blocks.LAVA)) {
-			this.level().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState().setValue(DirectionalBlock.FACING, result.getDirection()));
+			this.level().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState()
+					.setValue(DirectionalBlock.FACING, result.getDirection())
+					.setValue(BlockStateProperties.WATERLOGGED, currentState.getFluidState().is(Fluids.WATER)));
+
 			this.gameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
 			this.level().playSound(null, result.getBlockPos(), TFSounds.MOONWORM_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 		} else {
