@@ -395,7 +395,7 @@ public class LangGenerator extends TFLangProvider {
 		this.createHollowLogs("warped", "Warped", true);
 		this.createHollowLogs("vangrove", "Mangrove", false);
 		this.createHollowLogs("cherry", "Cherry", false);
-		this.add("block.twilightforest.banister.cycle", "Right click with an axe to cycle");
+		this.add("block.twilightforest.banister.cycle", "Right-click with axe to cycle");
 
 		this.addBlock(TFBlocks.MOSS_PATCH, "Moss Patch");
 		this.addBlock(TFBlocks.CLOVER_PATCH, "Clover Patch");
