@@ -80,7 +80,7 @@ public class TreeConfigurations {
 
 	public static final TreeConfiguration CANOPY_TREE_FIREFLY = new TreeConfiguration.TreeConfigurationBuilder(
 			BlockStateProvider.simple(TFBlocks.CANOPY_LOG.get()),
-			new BranchingTrunkPlacer(20, 5, 5, 7, new BranchesConfig(3, 1, 10, 1, 0.3, 0.2), false),
+			new BranchingTrunkPlacer(20, 5, 5, 12, new BranchesConfig(3, 1, 10, 1, 0.3, 0.2), false),
 			BlockStateProvider.simple(TFBlocks.CANOPY_LEAVES.get()),
 			new LeafSpheroidFoliagePlacer(4.5f, 1.5f, ConstantInt.of(0), 1, 0, -0.25f, LEAF_SHAG_FACTOR),
 			new TwoLayersFeatureSize(20, 1, canopyDistancing)
