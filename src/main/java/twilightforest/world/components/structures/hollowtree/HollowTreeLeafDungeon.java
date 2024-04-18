@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.hollowtree;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -104,11 +106,11 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
 
 		// leaves on the outside
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 4, decoRNG, this.leaves, false, true);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 5, decoRNG, this.leaves, false, true, true);
 		// then wood
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 3, decoRNG, this.wood, false, false);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 3, decoRNG, this.wood, false, false, false);
 		// then air
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 2, decoRNG, this.inside, true, false);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 2, decoRNG, this.inside, true, false, true);
 
 		// then treasure chest
 		// which direction is this chest in?
