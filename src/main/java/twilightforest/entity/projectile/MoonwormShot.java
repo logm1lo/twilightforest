@@ -27,6 +27,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import twilightforest.block.MoonwormBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
@@ -80,8 +81,7 @@ public class MoonwormShot extends TFThrowable {
 		super.onHitBlock(result);
 		BlockPos pos = result.getBlockPos().relative(result.getDirection());
 		BlockState currentState = this.level().getBlockState(pos);
-
-		if (currentState.canBeReplaced() && !currentState.is(BlockTags.FIRE) && !currentState.is(Blocks.LAVA)) {
+		if (currentState.canBeReplaced() && !currentState.is(BlockTags.FIRE) && MoonwormBlock.canSurvive(this.level(), pos, result.getDirection()) && !currentState.is(Blocks.LAVA)) {
 			this.level().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState()
 					.setValue(DirectionalBlock.FACING, result.getDirection())
 					.setValue(BlockStateProperties.WATERLOGGED, currentState.getFluidState().is(Fluids.WATER)));
