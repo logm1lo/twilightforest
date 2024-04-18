@@ -96,6 +96,7 @@ public class MoonwormShot extends TFThrowable {
 					squish.spawnAtLocation(squish.getItem());
                 });
 			}
+			this.level().playSound(null, pos, TFSounds.BUG_SQUISH.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
 			this.gameEvent(GameEvent.ENTITY_DIE);
 		}
 	}
