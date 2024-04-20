@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
-import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.List;
@@ -97,22 +96,6 @@ public class MegaCanopyTreeFeature extends CanopyTreeFeature {
             FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, leafPos.relative(direction, 4).relative(direction.getClockWise(), 3), config.branchProvider);
         }
         FeaturePlacers.placeSpheroid(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos, 8.5F, 2.5F, config.leavesProvider);
-    }
-
-    private static void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, RandomSource random, BlockPos pos, TFTreeFeatureConfig config) {
-        // root bulb
-        if (FeatureUtil.hasAirAround(world, pos.below())) {
-            FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider);
-        } else {
-            FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, pos.below(), config.rootsProvider);
-        }
-
-        // roots!
-        int numRoots = 1 + random.nextInt(2);
-        float offset = random.nextFloat();
-        for (int b = 0; b < numRoots; b++) {
-            FeaturePlacers.buildRoot(world, decoPlacer, random, pos, offset, b, config.rootsProvider);
-        }
     }
 
     private void buildTrunk(LevelAccessor world, List<BlockPos> leaves, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
