@@ -699,7 +699,7 @@ public class Lich extends BaseTFBoss {
 	}
 
 	public int getShieldStrength() {
-		return this.getEntityData().get(SHIELD_STRENGTH);
+		return this.isShadowClone() ? 0 : this.getEntityData().get(SHIELD_STRENGTH);
 	}
 
 	public void setShieldStrength(int shieldStrength) {
