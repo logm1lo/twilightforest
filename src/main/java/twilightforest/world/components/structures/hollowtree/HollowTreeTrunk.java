@@ -304,8 +304,8 @@ public class HollowTreeTrunk extends HollowTreePiece {
 			facing = Rotation.COUNTERCLOCKWISE_90;
 		}
 
-		BlockState decor = this.bug.getState(random, src).rotate(facing);
-		if (decor.canSurvive(world, src)) {
+		BlockState decor = this.bug.getState(random, src).rotate(world, src, facing);
+		if (world.getBlockState(src).canBeReplaced() && decor.canSurvive(world, src)) {
 			world.setBlock(src, decor, 3);
 		}
 	}
