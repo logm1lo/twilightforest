@@ -331,6 +331,10 @@ public class Lich extends BaseTFBoss {
 		super.die(cause);
 		if (!this.isShadowClone()) {
 			this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+			if (this.getShieldStrength() > 0) {
+				this.setShieldStrength(0);
+				this.playSound(TFSounds.SHIELD_BREAK.get(), 1.2F, this.getVoicePitch() * 2.0F);
+			}
 		}
 	}
 
