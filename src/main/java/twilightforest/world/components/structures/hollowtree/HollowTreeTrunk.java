@@ -243,6 +243,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
 
 		int hollow = this.radius / 2;
+		Direction vineDirection = Direction.from2DDataValue(decoRNG.nextInt(4));
 
 		for (int dx = 0; dx <= 2 * this.radius; dx++) {
 			for (int dz = 0; dz <= 2 * this.radius; dz++) {
@@ -264,8 +265,8 @@ public class HollowTreeTrunk extends HollowTreePiece {
 				}
 
 				// add vines
-				if (dist == hollow && dx == hollow + this.radius) {
-					this.fillColumnDown(level, this.vine, decoRNG, dx + 1, this.height, dz + 1, writeableBounds);
+				if (dist == hollow && (vineDirection.getAxis() == Direction.Axis.X ? (dx == this.radius + (hollow * vineDirection.getStepX())) : (dz == this.radius + (hollow * vineDirection.getStepZ())))) {
+					this.fillVineColumnDown(level, this.vine, decoRNG, dx + 1, this.height, dz + 1, writeableBounds, vineDirection);
 				}
 			}
 		}
