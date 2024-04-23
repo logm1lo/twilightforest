@@ -52,9 +52,9 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Nullable
 	private BlockState rock;
 
-	public Troll(EntityType<? extends Troll> type, Level world) {
-		super(type, world);
-		this.rockCooldown = 300;
+	public Troll(EntityType<? extends Troll> type, Level level) {
+		super(type, level);
+		this.rockCooldown = 300 + this.getRandom().nextInt(100);
 	}
 
 	@Override
@@ -130,7 +130,8 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Override
 	public void positionRider(Entity entity, Entity.MoveFunction callback) {
 		super.positionRider(entity, callback);
-		entity.setXRot(this.getXRot());
+		entity.setYRot(this.yBodyRot);
+		entity.yRotO = this.yBodyRotO;
 	}
 
 	@Override
@@ -249,7 +250,7 @@ public class Troll extends Monster implements RangedAttackMob {
 			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK.get()) {
 				this.getFirstPassenger().discard();
 			}
-			this.rockCooldown = 300;
+			this.rockCooldown = 300 + this.getRandom().nextInt(100);
 			this.rock = null;
 		}
 	}
