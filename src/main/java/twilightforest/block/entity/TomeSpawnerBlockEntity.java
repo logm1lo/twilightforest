@@ -2,6 +2,7 @@ package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
@@ -70,12 +71,12 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 					double z = pos.relative(dir).getZ() + (level.getRandom().nextDouble() - level.getRandom().nextDouble()) * 2.0D;
 
 					EntityType<?> type = nbtType.orElse(TFEntities.DEATH_TOME.get());
-					if (level.noCollision(type.getAABB(x, y, z))) {
+					if (level.noCollision(type.getSpawnAABB(x, y, z))) {
                         Entity entity = type.create(level);
 						entity.moveTo(BlockPos.containing(x, y, z), entity.getYRot(), entity.getXRot());
 
 						if (fire)
-							entity.setSecondsOnFire(10);
+							entity.setRemainingFireTicks(200);
 
 						if (assailant != null && entity instanceof Mob mob)
 							mob.setTarget(assailant);
@@ -95,16 +96,16 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+		super.saveAdditional(tag, provider);
 		tag.putString("EntityType", this.entityType);
 		tag.putInt("SpawnDelay", this.spawnTime);
 		tag.putInt("MaxPlayerDistance", this.playerDistance);
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+		super.loadAdditional(tag, provider);
 		this.entityType = tag.getString("EntityType");
 		this.spawnTime = tag.getInt("SpawnDelay");
 		this.playerDistance = tag.getInt("MaxPlayerDistance");

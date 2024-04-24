@@ -1,6 +1,7 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
@@ -33,21 +34,21 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+		super.saveAdditional(tag, provider);
 		tag.putInt("CandleColor", this.candleColor);
 		if (this.candleAmount != 0) tag.putInt("CandleAmount", this.candleAmount);
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+		super.loadAdditional(tag, provider);
 		this.candleColor = tag.getInt("CandleColor");
 		this.candleAmount = tag.getInt("CandleAmount");
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
+	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
 		CompoundTag tag = new CompoundTag();
 		tag.putInt("CandleColor", this.candleColor);
 		if (this.candleAmount != 0) tag.putInt("CandleAmount", this.candleAmount);

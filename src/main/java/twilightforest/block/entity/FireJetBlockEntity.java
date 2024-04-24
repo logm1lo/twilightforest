@@ -99,7 +99,7 @@ public class FireJetBlockEntity extends BlockEntity {
 				for (Entity entity : entitiesInRange) {
 					if (!entity.fireImmune()) {
 						entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.FIRE_JET), 2);
-						entity.setSecondsOnFire(15);
+						entity.setRemainingFireTicks(300);
 					}
 				}
 			}

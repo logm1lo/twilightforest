@@ -2,6 +2,7 @@ package twilightforest.block.entity;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,8 +21,6 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.EmptyHandler;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
@@ -98,21 +97,21 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
-		super.saveAdditional(compound);
+	protected void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.saveAdditional(compound, provider);
 		if (!this.trySaveLootTable(compound)) {
-			ContainerHelper.saveAllItems(compound, this.contents);
+			ContainerHelper.saveAllItems(compound, this.contents, provider);
 		}
 		if (this.playeruuid != null) compound.putUUID("deadPlayer", this.playeruuid);
 		if (this.casketname != null) compound.putString("playerName", this.casketname);
 	}
 
 	@Override
-	public void load(CompoundTag nbt) {
-		super.load(nbt);
+	protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+		super.loadAdditional(nbt, provider);
 		this.contents = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		if (!this.tryLoadLootTable(nbt)) {
-			ContainerHelper.loadAllItems(nbt, this.contents);
+			ContainerHelper.loadAllItems(nbt, this.contents, provider);
 		}
 		if (nbt.hasUUID("deadPlayer")) this.playeruuid = nbt.getUUID("deadPlayer");
 		if (nbt.hasUUID("playerName")) this.casketname = nbt.getString("playerName");
