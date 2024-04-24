@@ -1,12 +1,14 @@
 package twilightforest.network;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
@@ -16,9 +18,10 @@ import java.util.stream.Collectors;
 
 public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nullable Map<Integer, PartDataHolder> data) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = TwilightForestMod.prefix("update_multipart_entity");
+	public static final Type<UpdateTFMultipartPacket> TYPE = new Type<>(TwilightForestMod.prefix("update_multipart_entity"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateTFMultipartPacket> STREAM_CODEC = CustomPacketPayload.codec(UpdateTFMultipartPacket::write, UpdateTFMultipartPacket::new);
 
-	public UpdateTFMultipartPacket(FriendlyByteBuf buf) {
+	public UpdateTFMultipartPacket(RegistryFriendlyByteBuf buf) {
 		this(buf.readInt(), null, new HashMap<>());
 		int id;
 		while ((id = buf.readInt()) > 0) {
@@ -30,8 +33,7 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 		this(-1, entity, Arrays.stream(entity.getParts()).filter(part -> part instanceof TFPart<?>).map(part -> (TFPart<?>) part).collect(Collectors.toMap(TFPart::getId, TFPart::writeData)));
 	}
 
-	@Override
-	public void write(FriendlyByteBuf buf) {
+	public void write(RegistryFriendlyByteBuf buf) {
 		if (this.entity == null)
 			throw new IllegalStateException("Null Entity while encoding UpdateTFMultipartPacket");
 		if (this.data == null)
@@ -45,14 +47,14 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 	}
 
 	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
-	public static void handle(UpdateTFMultipartPacket message, PlayPayloadContext ctx) {
-		ctx.workHandler().execute(() -> {
+	public static void handle(UpdateTFMultipartPacket message, IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
 			int eId = message.entity != null && message.entityId <= 0 ? message.entity.getId() : message.entityId; // Account for Singleplayer
-			Entity ent = ctx.level().orElseThrow().getEntity(eId);
+			Entity ent = ctx.player().level().getEntity(eId);
 			if (ent != null && ent.isMultipartEntity()) {
 				PartEntity<?>[] parts = ent.getParts();
 				if (parts == null)
@@ -82,7 +84,7 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 								 @Nullable List<SynchedEntityData.DataValue<?>> data) {
 
 
-		public void encode(FriendlyByteBuf buffer) {
+		public void encode(RegistryFriendlyByteBuf buffer) {
 			buffer.writeDouble(this.x());
 			buffer.writeDouble(this.y());
 			buffer.writeDouble(this.z());
@@ -99,7 +101,7 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 			buffer.writeByte(255);
 		}
 
-		static PartDataHolder decode(FriendlyByteBuf buffer) {
+		static PartDataHolder decode(RegistryFriendlyByteBuf buffer) {
 			return new PartDataHolder(buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
 					buffer.readFloat(), buffer.readFloat(),
 					buffer.readFloat(), buffer.readFloat(),
@@ -108,7 +110,7 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 			);
 		}
 
-		private static List<SynchedEntityData.DataValue<?>> unpack(FriendlyByteBuf buf) {
+		private static List<SynchedEntityData.DataValue<?>> unpack(RegistryFriendlyByteBuf buf) {
 			List<SynchedEntityData.DataValue<?>> list = new ArrayList<>();
 
 			int i;

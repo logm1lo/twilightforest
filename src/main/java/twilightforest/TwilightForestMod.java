@@ -31,7 +31,10 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadHandler;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -76,11 +79,11 @@ public class TwilightForestMod {
 	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression",
 			GameRules.Category.UPDATES,  //Putting it in UPDATES since other world stuff is here
 			GameRules.BooleanValue.create(true, (server, enforced) ->
-			PacketDistributor.ALL.noArg().send(new EnforceProgressionStatusPacket(enforced.get())))); //sends a packet to every player online when this changes so weather effects update accordingly
+			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(enforced.get())))); //sends a packet to every player online when this changes so weather effects update accordingly
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	private static final Rarity rarity = Rarity.create("TWILIGHT", ChatFormatting.DARK_GREEN);
+	private static final Rarity rarity = Rarity.create("TWILIGHT", prefix("twilight"), ChatFormatting.DARK_GREEN);
 
 	public TwilightForestMod(IEventBus bus, Dist dist) {
 		Reflection.initialize(ConfigSetup.class);
@@ -215,27 +218,27 @@ public class TwilightForestMod {
 		}
 	}
 
-	public void setupPackets(RegisterPayloadHandlerEvent event) {
-		IPayloadRegistrar registrar = event.registrar(ID).versioned("1.0.0").optional();
-		registrar.play(AreaProtectionPacket.ID, AreaProtectionPacket::new, payload -> payload.client(AreaProtectionPacket::handle));
-		registrar.play(CreateMovingCicadaSoundPacket.ID, CreateMovingCicadaSoundPacket::new, payload -> payload.client(CreateMovingCicadaSoundPacket::handle));
-		registrar.play(EnforceProgressionStatusPacket.ID, EnforceProgressionStatusPacket::new, payload -> payload.client(EnforceProgressionStatusPacket::handle));
-		registrar.play(MagicMapPacket.ID, MagicMapPacket::new, payload -> payload.client(MagicMapPacket::handle));
-		registrar.play(MazeMapPacket.ID, MazeMapPacket::new, payload -> payload.client(MazeMapPacket::handle));
-		registrar.play(MissingAdvancementToastPacket.ID, MissingAdvancementToastPacket::new, payload -> payload.client(MissingAdvancementToastPacket::handle));
-		registrar.play(MovePlayerPacket.ID, MovePlayerPacket::new, payload -> payload.client(MovePlayerPacket::handle));
-		registrar.play(ParticlePacket.ID, ParticlePacket::new, payload -> payload.client(ParticlePacket::handle));
-		registrar.play(SpawnCharmPacket.ID, SpawnCharmPacket::new, payload -> payload.client(SpawnCharmPacket::handle));
-		registrar.play(SpawnFallenLeafFromPacket.ID, SpawnFallenLeafFromPacket::new, payload -> payload.client(SpawnFallenLeafFromPacket::handle));
-		registrar.play(StructureProtectionClearPacket.ID, buf -> new StructureProtectionClearPacket(), payload -> payload.client(StructureProtectionClearPacket::handle));
-		registrar.play(StructureProtectionPacket.ID, StructureProtectionPacket::new, payload -> payload.client(StructureProtectionPacket::handle));
-		registrar.play(SyncUncraftingTableConfigPacket.ID, SyncUncraftingTableConfigPacket::new, payload -> payload.client(SyncUncraftingTableConfigPacket::handle));
-		registrar.play(UncraftingGuiPacket.ID, UncraftingGuiPacket::new, payload -> payload.server(UncraftingGuiPacket::handle));
-		registrar.play(UpdateFeatherFanFallPacket.ID, UpdateFeatherFanFallPacket::new, payload -> payload.client(UpdateFeatherFanFallPacket::handle));
-		registrar.play(UpdateShieldPacket.ID, UpdateShieldPacket::new, payload -> payload.client(UpdateShieldPacket::handle));
-		registrar.play(UpdateTFMultipartPacket.ID, UpdateTFMultipartPacket::new, payload -> payload.client(UpdateTFMultipartPacket::handle));
-		registrar.play(UpdateThrownPacket.ID, UpdateThrownPacket::new, payload -> payload.client(UpdateThrownPacket::handle));
-		registrar.play(WipeOreMeterPacket.ID, WipeOreMeterPacket::new, payload -> payload.server(WipeOreMeterPacket::handle));
+	public void setupPackets(RegisterPayloadHandlersEvent event) {
+		PayloadRegistrar registrar = event.registrar(ID).versioned("1.0.0").optional();
+		registrar.playToClient(AreaProtectionPacket.TYPE, AreaProtectionPacket.STREAM_CODEC, AreaProtectionPacket::handle);
+		registrar.playToClient(CreateMovingCicadaSoundPacket.TYPE, CreateMovingCicadaSoundPacket.STREAM_CODEC, CreateMovingCicadaSoundPacket::handle);
+		registrar.playToClient(EnforceProgressionStatusPacket.TYPE, EnforceProgressionStatusPacket.STREAM_CODEC, EnforceProgressionStatusPacket::handle);
+		registrar.playToClient(MagicMapPacket.TYPE, MagicMapPacket.STREAM_CODEC, MagicMapPacket::handle);
+		registrar.playToClient(MazeMapPacket.TYPE, MazeMapPacket.STREAM_CODEC, MazeMapPacket::handle);
+		registrar.playToClient(MissingAdvancementToastPacket.TYPE, MissingAdvancementToastPacket.STREAM_CODEC, MissingAdvancementToastPacket::handle);
+		registrar.playToClient(MovePlayerPacket.TYPE, MovePlayerPacket.STREAM_CODEC, MovePlayerPacket::handle);
+		registrar.playToClient(ParticlePacket.TYPE, ParticlePacket.STREAM_CODEC, ParticlePacket::handle);
+		registrar.playToClient(SpawnCharmPacket.TYPE, SpawnCharmPacket.STREAM_CODEC, SpawnCharmPacket::handle);
+		registrar.playToClient(SpawnFallenLeafFromPacket.TYPE, SpawnFallenLeafFromPacket.STREAM_CODEC, SpawnFallenLeafFromPacket::handle);
+		registrar.playToClient(StructureProtectionClearPacket.TYPE, StructureProtectionClearPacket.STREAM_CODEC, StructureProtectionClearPacket::handle);
+		registrar.playToClient(StructureProtectionPacket.TYPE, StructureProtectionPacket.STREAM_CODEC, StructureProtectionPacket::handle);
+		registrar.playToClient(SyncUncraftingTableConfigPacket.TYPE, SyncUncraftingTableConfigPacket.STREAM_CODEC, SyncUncraftingTableConfigPacket::handle);
+		registrar.playToServer(UncraftingGuiPacket.TYPE, UncraftingGuiPacket.STREAM_CODEC, UncraftingGuiPacket::handle);
+		registrar.playToClient(UpdateFeatherFanFallPacket.TYPE, UpdateFeatherFanFallPacket.STREAM_CODEC, UpdateFeatherFanFallPacket::handle);
+		registrar.playToClient(UpdateShieldPacket.TYPE, UpdateShieldPacket.STREAM_CODEC, UpdateShieldPacket::handle);
+		registrar.playToClient(UpdateTFMultipartPacket.TYPE, UpdateTFMultipartPacket.STREAM_CODEC, UpdateTFMultipartPacket::handle);
+		registrar.playToClient(UpdateThrownPacket.TYPE, UpdateThrownPacket.STREAM_CODEC, UpdateThrownPacket::handle);
+		registrar.playToServer(WipeOreMeterPacket.TYPE, WipeOreMeterPacket.STREAM_CODEC, WipeOreMeterPacket::handle);
 	}
 
 	public void init(FMLCommonSetupEvent evt) {
