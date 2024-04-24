@@ -11,6 +11,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -60,9 +61,8 @@ public class Experiment115Block extends Block {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		int bitesTaken = state.getValue(BITES_TAKEN);
-		ItemStack stack = player.getItemInHand(hand);
 
 		if (!player.isSecondaryUseActive()) {
 			if (bitesTaken > 0 && stack.is(TFItems.EXPERIMENT_115.get())) {
@@ -71,7 +71,7 @@ public class Experiment115Block extends Block {
 				if (!player.isCreative()) stack.shrink(1);
 				if (player instanceof ServerPlayer)
 					CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			} else if (!state.getValue(REGENERATE) && bitesTaken == 0 && stack.is(Items.REDSTONE)) {
 				level.setBlockAndUpdate(pos, state.setValue(REGENERATE, true));
 				level.playSound(null, pos, state.getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -79,7 +79,7 @@ public class Experiment115Block extends Block {
 				if (player instanceof ServerPlayer) {
 					player.awardStat(Stats.ITEM_USED.get(Items.REDSTONE));
 				}
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		} else {
 			if (!state.getValue(REGENERATE)) {
@@ -91,13 +91,14 @@ public class Experiment115Block extends Block {
 				player.playSound(SoundEvents.ITEM_PICKUP, 0.5F, 1.0F);
 				if (!player.isCreative())
 					ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.get()));
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
-		return this.eatCake(level, pos, state, player);
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
-	private InteractionResult eatCake(Level level, BlockPos pos, BlockState state, Player player) {
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!player.canEat(false)) return InteractionResult.PASS;
 		else {
 			player.awardStat(TFStats.E115_SLICES_EATEN.get());

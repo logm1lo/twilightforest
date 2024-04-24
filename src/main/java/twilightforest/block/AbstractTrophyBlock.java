@@ -1,21 +1,16 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -69,7 +64,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult hit) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player playerIn, BlockHitResult hit) {
 		this.playSound(level, pos);
 		this.createParticle(level, pos);
 		return InteractionResult.sidedSuccess(level.isClientSide());
@@ -92,7 +87,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 
@@ -226,11 +221,11 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 						break;
 					case QUEST_RAM:
 						for (int p = 0; p < 10; p++) {
-							server.sendParticles(ParticleTypes.ENTITY_EFFECT,
+							server.sendParticles(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, rand.nextFloat(), rand.nextFloat(), rand.nextFloat()),
 									(double) pos.getX() + 0.5 + (rand.nextDouble() - 0.5),
 									(double) pos.getY() + (rand.nextDouble() - 0.5),
 									(double) pos.getZ() + 0.5 + (rand.nextDouble() - 0.5), 1,
-									rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1);
+									0.0F, 0.0F, 0.0F, 1);
 						}
 						break;
 					default:

@@ -8,8 +8,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -82,13 +83,12 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("block.twilightforest.wrought_iron_fence.cap").withStyle(ChatFormatting.GRAY));
     }
 
     @Override
-    @Deprecated
-    public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
+    protected boolean isPathfindable(BlockState state, PathComputationType computationType) {
         return false;
     }
 
@@ -118,13 +118,13 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-        if ((player.getItemInHand(hand).is(Tags.Items.INGOTS_IRON) || player.getItemInHand(hand).is(Tags.Items.NUGGETS_IRON)) && state.getValue(POST) != PostState.CAPPED && level.getBlockState(pos.above()).isAir()) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+        if ((stack.is(Tags.Items.INGOTS_IRON) || stack.is(Tags.Items.NUGGETS_IRON)) && state.getValue(POST) != PostState.CAPPED && level.getBlockState(pos.above()).isAir()) {
             level.setBlock(pos, state.setValue(POST, PostState.CAPPED), 3);
             level.playSound(null, pos, TFSounds.WROUGHT_IRON_FENCE_EXTENDED.get(), SoundSource.BLOCKS, 0.35F, level.getRandom().nextFloat() * 0.1F + 0.75F);
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return super.use(state, level, pos, player, hand, result);
+        return super.useItemOn(stack, state, level, pos, player, hand, result);
     }
 
     @Override

@@ -12,6 +12,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
@@ -138,14 +139,13 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		ItemStack stack = player.getItemInHand(hand);
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (stack.is(ItemTags.CANDLES) || player.isSecondaryUseActive()) {
 			if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
 				Direction direction = state.getValue(HorizontalDirectionalBlock.FACING);
 				Optional<Double> optional = getRelativeHitCoordinatesForBlockFace(result, direction);
 				if (optional.isEmpty()) {
-					return InteractionResult.PASS;
+					return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 				} else {
 					int i = getHitSlot(optional.get(), direction == Direction.NORTH || direction == Direction.EAST);
 					if (state.getValue(CANDLES.get(i)) && player.isSecondaryUseActive()) {
@@ -159,7 +159,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 							}
 							level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 						}
-						return InteractionResult.sidedSuccess(level.isClientSide());
+						return ItemInteractionResult.sidedSuccess(level.isClientSide());
 					} else if (!state.getValue(CANDLES.get(i))) {
 						if (stack.is(ItemTags.CANDLES) && stack.getItem() instanceof BlockItem block) {
 							if (!level.isClientSide()) {
@@ -170,7 +170,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 									stack.shrink(1);
 								}
 							}
-							return InteractionResult.sidedSuccess(level.isClientSide());
+							return ItemInteractionResult.sidedSuccess(level.isClientSide());
 						}
 					}
 				}
@@ -181,7 +181,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 			if (!player.getAbilities().instabuild) {
 				stack.shrink(1);
 			}
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return this.lightCandles(state, level, pos, player, hand);
 	}

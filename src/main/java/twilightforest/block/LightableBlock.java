@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Items;
@@ -30,11 +31,10 @@ public interface LightableBlock {
 
 	EnumProperty<Lighting> LIGHTING = EnumProperty.create("lighting", Lighting.class);
 
-
-	default InteractionResult lightCandles(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand) {
+	default ItemInteractionResult lightCandles(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand) {
 		if (player.getAbilities().mayBuild && player.getItemInHand(hand).isEmpty() && state.getValue(LIGHTING) != Lighting.NONE) {
 			this.extinguish(player, state, level, pos);
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 
 		} else if (this.canBeLit(state)) {
 			if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)) {
@@ -42,15 +42,15 @@ public interface LightableBlock {
 				level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (!player.getAbilities().instabuild) player.getItemInHand(hand).hurtAndBreak(1, player, res ->
 						res.broadcastBreakEvent(hand));
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			} else if (player.getItemInHand(hand).is(Items.FIRE_CHARGE)) {
 				this.setLit(level, state, pos, true);
 				level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
-		return InteractionResult.PASS;
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	default void lightCandlesWithProjectile(Level level, BlockState state, BlockHitResult result, Projectile projectile) {

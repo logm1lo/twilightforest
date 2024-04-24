@@ -56,13 +56,11 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState p_262166_, BlockGetter p_262143_, BlockPos p_261968_, PathComputationType p_261513_) {
+    protected boolean isPathfindable(BlockState state, PathComputationType computationType) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
         VoxelShape shape = Shapes.empty();
 
@@ -74,7 +72,6 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
         VoxelShape shape = Shapes.empty();
         if (state.getValue(X) && context.isAbove(X_SHAPE, pos, false) && !context.isDescending()) shape = Shapes.or(shape, X_SHAPE);
@@ -88,7 +85,6 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
         return context.getItemInHand().is(this.asItem());
     }
@@ -106,13 +102,11 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState otherState, boolean isMoving) {
         if (!level.isClientSide) level.scheduleTick(pos, this, 1);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction direction, BlockState otherState, LevelAccessor level, BlockPos pos, BlockPos otherPos) {
         if (state.getValue(WATERLOGGED)) level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         if (!level.isClientSide()) level.scheduleTick(pos, this, 1);
@@ -120,7 +114,6 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         boolean flag = true;
         int drops = 0;
@@ -153,7 +146,6 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         if (state.getValue(X)) {
             if (canConnectTo(level.getBlockState(pos.relative(Direction.WEST)), Direction.WEST, level, pos)) return true;
@@ -192,7 +184,6 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }

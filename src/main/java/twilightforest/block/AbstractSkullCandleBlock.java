@@ -1,8 +1,6 @@
 package twilightforest.block;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +12,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -130,8 +128,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 		List<ItemStack> drops = super.getDrops(state, builder);
 		Optional<ItemStack> skullStack = drops.stream().filter(item -> item.is(Tags.Items.HEADS) && !item.is(this.asItem())).findFirst();
 		if (skullStack.isPresent()) {
@@ -170,17 +167,17 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			if (player.getItemInHand(hand).is(ItemTags.CANDLES)
-					&& player.getItemInHand(hand).is(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor())).asItem())
+			if (stack.is(ItemTags.CANDLES)
+					&& stack.is(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor())).asItem())
 					&& !player.isShiftKeyDown()) {
 				if (sc.getCandleAmount() < 4) {
 					sc.incrementCandleAmount();
 					level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-					if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
+					if (!player.getAbilities().instabuild) stack.shrink(1);
 					level.getLightEngine().checkBlock(pos);
-					return InteractionResult.sidedSuccess(level.isClientSide());
+					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				}
 
 			}

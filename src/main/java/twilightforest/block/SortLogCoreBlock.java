@@ -114,7 +114,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 									if (firstProperStack == -1 && outputStack.isEmpty()) {
 										firstProperStack = j; //We reference the index of the first empty slot, in case there is no stacks that aren't at max size
-									} else if (ItemStack.isSameItemSameTags(inputStack, outputStack)
+									} else if (ItemStack.isSameItemSameComponents(inputStack, outputStack)
 											&& outputStack.getCount() < outputStack.getMaxStackSize()
 											&& outputStack.getCount() < outputIItemHandler.getSlotLimit(j)) {
 										firstProperStack = j;
