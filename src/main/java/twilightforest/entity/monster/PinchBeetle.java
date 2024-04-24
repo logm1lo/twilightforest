@@ -13,6 +13,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
@@ -115,13 +116,8 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return 0.25F;
-	}
-
-	@Override
-	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return new Vector3f(0.0F, this.getEyeHeight(), 0.75F);
+	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vec3(0.0F, this.getEyeHeight(), 0.75F);
 	}
 
 	@Override
@@ -130,17 +126,12 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	}
 
 	@Override
-	public EntityDimensions getDimensions(Pose pose) {
+	public EntityDimensions getDefaultDimensions(Pose pose) {
 
 		if (!this.getPassengers().isEmpty()) {
 			return EntityDimensions.scalable(2.2F, 1.6F);
 		} else {
 			return super.getDimensions(pose);
 		}
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
 	}
 }

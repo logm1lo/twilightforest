@@ -93,8 +93,8 @@ public class FallingIce extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(DATA_START_POS, BlockPos.ZERO);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_START_POS, BlockPos.ZERO);
 	}
 
 	@Override
@@ -150,14 +150,14 @@ public class FallingIce extends Entity {
 								if (this.blockData != null && this.blockState.hasBlockEntity()) {
 									BlockEntity blockentity = this.level().getBlockEntity(blockpos);
 									if (blockentity != null) {
-										CompoundTag compoundtag = blockentity.saveWithoutMetadata();
+										CompoundTag compoundtag = blockentity.saveWithoutMetadata(this.level().registryAccess());
 
 										for (String s : this.blockData.getAllKeys()) {
 											compoundtag.put(s, Objects.requireNonNull(this.blockData.get(s)).copy());
 										}
 
 										try {
-											blockentity.load(compoundtag);
+											blockentity.loadWithComponents(compoundtag, this.level().registryAccess());
 										} catch (Exception exception) {
 											TwilightForestMod.LOGGER.error("Failed to load block entity from falling block", exception);
 										}

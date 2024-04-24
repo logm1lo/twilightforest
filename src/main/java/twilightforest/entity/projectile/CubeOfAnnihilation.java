@@ -3,6 +3,7 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -48,11 +49,11 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0F;
 	}
 
@@ -118,7 +119,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
 		return (state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0)
-				&& (!restrictedPlaceMode || this.stack.hasAdventureModeBreakTagForBlock(this.level().registryAccess().registryOrThrow(Registries.BLOCK), new BlockInWorld(this.level(), pos, false)));
+				&& (!restrictedPlaceMode || this.stack.canBreakBlockInAdventureMode(new BlockInWorld(this.level(), pos, false)));
 	}
 
 	private void annihilateParticles(Level level, BlockPos pos) {
@@ -211,13 +212,13 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	protected void readAdditionalSaveData(CompoundTag pCompound) {
 		super.readAdditionalSaveData(pCompound);
 		if (pCompound.contains("CubeOfAnnihilationStack", 10)) {
-			this.stack = ItemStack.of(pCompound.getCompound("CubeOfAnnihilationStack"));
+			this.stack = ItemStack.parseOptional(this.registryAccess(), pCompound.getCompound("CubeOfAnnihilationStack"));
 		}
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag pCompound) {
 		super.addAdditionalSaveData(pCompound);
-		pCompound.put("CubeOfAnnihilationStack", this.stack.save(new CompoundTag()));
+		pCompound.put("CubeOfAnnihilationStack", this.stack.save(this.registryAccess()));
 	}
 }

@@ -4,6 +4,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -15,8 +16,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
+import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -43,8 +47,8 @@ public class MagicPainting extends HangingEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(DATA_PAINTING_VARIANT_ID, EMPTY);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(DATA_PAINTING_VARIANT_ID, EMPTY);
     }
 
     @Override
@@ -55,11 +59,11 @@ public class MagicPainting extends HangingEntity {
     }
 
     public void setVariant(String variant) {
-        this.entityData.set(DATA_PAINTING_VARIANT_ID, variant);
+        this.getEntityData().set(DATA_PAINTING_VARIANT_ID, variant);
     }
 
     public Optional<MagicPaintingVariant> getVariant() {
-        String id = this.entityData.get(DATA_PAINTING_VARIANT_ID);
+        String id = this.getEntityData().get(DATA_PAINTING_VARIANT_ID);
         if (id.equals(EMPTY)) return Optional.empty();
         return MagicPaintingVariant.getVariant(this.level().registryAccess(), id);
     }

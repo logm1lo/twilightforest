@@ -80,7 +80,7 @@ public class ToolEvents {
 	@SubscribeEvent
 	public static void fieryToolSetFire(LivingAttackEvent event) {
 		if (event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE.get())) && !event.getEntity().fireImmune()) {
-			event.getEntity().setSecondsOnFire(1);
+			event.getEntity().igniteForSeconds(1);
 		}
 	}
 

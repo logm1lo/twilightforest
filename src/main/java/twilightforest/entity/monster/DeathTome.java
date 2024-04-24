@@ -75,17 +75,17 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(DATA_LECTERN, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_LECTERN, false);
 	}
 
 	public void setOnLectern(boolean hidden) {
-		this.entityData.set(DATA_LECTERN, hidden);
+		this.getEntityData().set(DATA_LECTERN, hidden);
 	}
 
 	public boolean isOnLectern() {
-		return this.entityData.get(DATA_LECTERN);
+		return this.getEntityData().get(DATA_LECTERN);
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 				if (!this.level().isClientSide()) {
 					LootParams ctx = TFLootTables.createLootParams(this, true, src).create(LootContextParamSets.ENTITY);
 
-					Objects.requireNonNull(this.level().getServer()).getLootData().getLootTable(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+					Objects.requireNonNull(this.level().getServer()).reloadableRegistries().getLootTable(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
 				}
 			}
 			return true;

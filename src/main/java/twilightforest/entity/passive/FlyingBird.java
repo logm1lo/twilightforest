@@ -38,9 +38,9 @@ public abstract class FlyingBird extends Bird {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_BIRDFLAGS, (byte) 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_BIRDFLAGS, (byte) 0);
 	}
 
 	@Override
@@ -52,11 +52,6 @@ public abstract class FlyingBird extends Bird {
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
 	}
 
 	@Override

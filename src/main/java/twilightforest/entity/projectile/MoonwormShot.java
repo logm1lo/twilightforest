@@ -60,7 +60,7 @@ public class MoonwormShot extends TFThrowable {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.03F;
 	}
 
@@ -91,7 +91,7 @@ public class MoonwormShot extends TFThrowable {
 		} else {
 			if (this.level() instanceof ServerLevel serverLevel) {
 				LootParams ctx = new LootParams.Builder(serverLevel).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.DAMAGE_SOURCE, this.damageSources().fall()).create(LootContextParamSets.ENTITY);
-				serverLevel.getServer().getLootData().getLootTable(TFLootTables.MOONWORM_SQUISH_DROPS).getRandomItems(ctx).forEach((stack) -> {
+				serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.MOONWORM_SQUISH_DROPS).getRandomItems(ctx).forEach((stack) -> {
 					ItemEntity squish = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), stack);
 					squish.spawnAtLocation(squish.getItem());
                 });
@@ -110,7 +110,7 @@ public class MoonwormShot extends TFThrowable {
 			result.getEntity().hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.MOONWORM), this.random.nextInt(3) == 0 ? 1 : 0);
 			if (this.level() instanceof ServerLevel serverLevel) {
 				LootParams ctx = new LootParams.Builder(serverLevel).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.DAMAGE_SOURCE, this.damageSources().fall()).create(LootContextParamSets.ENTITY);
-				serverLevel.getServer().getLootData().getLootTable(TFLootTables.MOONWORM_SQUISH_DROPS).getRandomItems(ctx).forEach((stack) -> {
+				serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.MOONWORM_SQUISH_DROPS).getRandomItems(ctx).forEach((stack) -> {
 					ItemEntity squish = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), stack);
 					squish.spawnAtLocation(squish.getItem());
 				});

@@ -124,7 +124,7 @@ public class LampOfCindersItem extends Item {
 
 			//burn mobs!
 			for (LivingEntity targets : level.getEntitiesOfClass(LivingEntity.class, new AABB(pos.below(2)).inflate(4.0D))) {
-				if (!(targets instanceof Player)) targets.setSecondsOnFire(5);
+				if (!(targets instanceof Player)) targets.igniteForSeconds(5);
 			}
 		}
 	}

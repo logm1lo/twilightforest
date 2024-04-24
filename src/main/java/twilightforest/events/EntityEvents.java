@@ -132,7 +132,7 @@ public class EntityEvents {
 			int chillLevel = getGearCoverage(living, true);
 
 			if (fireLevel > 0 && living.getRandom().nextInt(25) < fireLevel && !trueSource.fireImmune()) {
-				trueSource.setSecondsOnFire(fireLevel / 2);
+				trueSource.igniteForSeconds(fireLevel / 2);
 			}
 
 			if (trueSource instanceof LivingEntity target) {

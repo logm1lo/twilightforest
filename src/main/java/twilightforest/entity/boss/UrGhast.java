@@ -88,13 +88,13 @@ public class UrGhast extends BaseTFBoss {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(ATTACK_STATUS, (byte) 0);
-		this.getEntityData().define(ATTACK_TIMER, (byte) 0);
-		this.getEntityData().define(ATTACK_PREVTIMER, (byte) 0);
-		this.getEntityData().define(DATA_IS_CHARGING, false);
-		this.getEntityData().define(DATA_TANTRUM, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(ATTACK_STATUS, (byte) 0);
+		builder.define(ATTACK_TIMER, (byte) 0);
+		builder.define(ATTACK_PREVTIMER, (byte) 0);
+		builder.define(DATA_IS_CHARGING, false);
+		builder.define(DATA_TANTRUM, false);
 	}
 
 	public List<BlockPos> getTrapLocations() {
@@ -258,7 +258,7 @@ public class UrGhast extends BaseTFBoss {
 
 			minion.moveTo(sx, sy, sz, level.getRandom().nextFloat() * 360.0F, 0.0F);
 			minion.makeBossMinion();
-			EventHooks.onFinalizeSpawn(minion, level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+			EventHooks.onFinalizeSpawn(minion, level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
 			if (minion.checkSpawnRules(level, MobSpawnType.MOB_SUMMONED)) {
 				level.addFreshEntity(minion);
 				minion.spawnAnim();
@@ -498,7 +498,7 @@ public class UrGhast extends BaseTFBoss {
 				double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
 				particlePacket.queueParticle(DustParticleOptions.REDSTONE, false, particlePos.add(x, y, z), Vec3.ZERO);
 			}
-			PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
+			PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 		}
 	}
 
@@ -513,11 +513,6 @@ public class UrGhast extends BaseTFBoss {
 	@Override
 	public int getMaxHeadXRot() {
 		return 500;
-	}
-
-	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-		return 0.5F;
 	}
 
 	@Override

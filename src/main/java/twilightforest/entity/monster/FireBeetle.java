@@ -9,8 +9,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -50,9 +48,9 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(BREATHING, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BREATHING, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -130,19 +128,9 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.6F;
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
-	}
-
-	@Override
 	public void doBreathAttack(Entity target) {
 		if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE)) {
-			target.setSecondsOnFire(BREATH_DURATION);
+			target.igniteForSeconds(BREATH_DURATION);
 		}
 	}
 

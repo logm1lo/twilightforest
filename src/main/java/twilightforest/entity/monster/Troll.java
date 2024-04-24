@@ -44,7 +44,7 @@ import java.util.Objects;
 public class Troll extends Monster implements RangedAttackMob {
 
 	private static final EntityDataAccessor<Boolean> ROCK_FLAG = SynchedEntityData.defineId(Troll.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, AttributeModifier.Operation.ADDITION);
+	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 8, AttributeModifier.Operation.ADD_VALUE);
 
 	private RangedAttackGoal aiArrowAttack;
 	private MeleeAttackGoal aiAttackOnCollide;
@@ -123,8 +123,8 @@ public class Troll extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return new Vector3f(0.0F, dimensions.height * 1.25F, 0.0F);
+	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vec3(0.0F, dimensions.height() * 1.25F, 0.0F);
 	}
 
 	@Override
@@ -135,9 +135,9 @@ public class Troll extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(ROCK_FLAG, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(ROCK_FLAG, false);
 	}
 
 	public boolean hasRock() {
@@ -153,7 +153,7 @@ public class Troll extends Monster implements RangedAttackMob {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ROCK_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ROCK_MODIFIER.getId());
+				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ROCK_MODIFIER.id());
 			}
 			this.setCombatTask();
 		}

@@ -129,9 +129,9 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 				this.getZ(),
 				this.getYRot(),
 				this.getXRot(),
-				this.dimensions.width,
-				this.dimensions.height,
-				this.dimensions.fixed,
+				this.dimensions.width(),
+				this.dimensions.height(),
+				this.dimensions.fixed(),
 				getEntityData().packDirty());
 
 	}

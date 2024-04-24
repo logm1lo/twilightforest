@@ -84,7 +84,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.001F;
 	}
 

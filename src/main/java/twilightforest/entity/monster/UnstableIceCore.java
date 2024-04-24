@@ -64,11 +64,6 @@ public class UnstableIceCore extends BaseIceMob {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.6F;
-	}
-
-	@Override
 	protected void tickDeath() {
 		++this.deathTime;
 

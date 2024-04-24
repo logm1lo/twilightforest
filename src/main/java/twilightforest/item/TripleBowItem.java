@@ -57,7 +57,7 @@ public class TripleBowItem extends BowItem {
 							if (k > 0) abstractArrow.setKnockback(k);
 
 							if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0)
-								abstractArrow.setSecondsOnFire(100);
+								abstractArrow.igniteForSeconds(100);
 
 							level.addFreshEntity(abstractArrow);
 						}

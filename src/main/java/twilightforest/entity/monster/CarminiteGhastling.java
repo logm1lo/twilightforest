@@ -45,11 +45,6 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	}
 
 	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-		return 0.5F;
-	}
-
-	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.CARMINITE_GHASTLING_AMBIENT.get();
 	}

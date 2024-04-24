@@ -28,7 +28,7 @@ import twilightforest.init.TFSounds;
 
 public class MazeSlime extends Slime {
 
-	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, AttributeModifier.Operation.MULTIPLY_BASE);
+	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 
 	public MazeSlime(EntityType<? extends MazeSlime> type, Level world) {
 		super(type, world);
@@ -51,11 +51,11 @@ public class MazeSlime extends Slime {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
 		AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
 		assert health != null;
 		health.addPermanentModifier(DOUBLE_HEALTH);
-		return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+		return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
 	}
 
 	@Override

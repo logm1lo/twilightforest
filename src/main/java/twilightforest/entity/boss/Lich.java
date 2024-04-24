@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +12,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,7 +28,6 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -47,6 +46,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -101,12 +101,12 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(MASTER_LICH, Optional.empty());
-		this.getEntityData().define(SHIELD_STRENGTH, INITIAL_SHIELD_STRENGTH);
-		this.getEntityData().define(MINIONS_LEFT, INITIAL_MINIONS_TO_SUMMON);
-		this.getEntityData().define(ATTACK_TYPE, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(MASTER_LICH, Optional.empty());
+		builder.define(SHIELD_STRENGTH, INITIAL_SHIELD_STRENGTH);
+		builder.define(MINIONS_LEFT, INITIAL_MINIONS_TO_SUMMON);
+		builder.define(ATTACK_TYPE, 0);
 	}
 
 	@Override
@@ -219,7 +219,7 @@ public class Lich extends BaseTFBoss {
 				blu = 0.00F * sparkle;
 			}
 
-			this.level().addParticle(ParticleTypes.ENTITY_EFFECT, dx + (this.getRandom().nextGaussian() * 0.025), dy + (this.getRandom().nextGaussian() * 0.025), dz + (this.getRandom().nextGaussian() * 0.025), red, grn, blu);
+			this.level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, red, grn, blu), dx + (this.getRandom().nextGaussian() * 0.025), dy + (this.getRandom().nextGaussian() * 0.025), dz + (this.getRandom().nextGaussian() * 0.025), 0.0F, 0.0F, 0.0F);
 		}
 
 		if (this.getPhase() == 3)
@@ -391,7 +391,7 @@ public class Lich extends BaseTFBoss {
 					}
 				}
 
-				PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
+				PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 			} else if (this.deathTime == 70) {
 				ParticlePacket particlePacket = new ParticlePacket();
 				for (int i = 0; i < 3; i++) {
@@ -400,7 +400,7 @@ public class Lich extends BaseTFBoss {
 					particlePacket.queueParticle(ParticleTypes.CLOUD, false, this.position().add(x, 0.0D, z), Vec3.ZERO);
 				}
 
-				PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
+				PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 			} else if (this.deathTime > 70) {
 				boolean flag = this.deathTime >= maxDeath && !this.isRemoved();
 
@@ -434,7 +434,7 @@ public class Lich extends BaseTFBoss {
 					particlePacket.queueParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.add(x, -0.25D, z), Vec3.ZERO);
 				}
 
-				PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
+				PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 
 				if (flag) this.remove(RemovalReason.KILLED);
 			}
@@ -620,10 +620,10 @@ public class Lich extends BaseTFBoss {
 						double tx = source.x() + (target.x() - source.x()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
 						double ty = source.y() + 0.2D + (target.y() - source.y()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
 						double tz = source.z() + (target.z() - source.z()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
-						packet.queueParticle(ParticleTypes.ENTITY_EFFECT, false, tx, ty, tz, red, green, blue);
+						packet.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, red, green, blue), false, tx, ty, tz, 0.0D, 0.0D, 0.0D);
 					}
 
-					PacketDistributor.TRACKING_ENTITY.with(this).send(packet);
+					PacketDistributor.sendToPlayersTrackingEntity(this, packet);
 				}
 			}
 		}
@@ -747,7 +747,7 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	public ResourceLocation getDefaultLootTable() {
+	public ResourceKey<LootTable> getDefaultLootTable() {
 		return !this.isShadowClone() ? super.getDefaultLootTable() : null;
 	}
 
@@ -760,11 +760,6 @@ public class Lich extends BaseTFBoss {
 	@Override
 	public boolean isLeftHanded() {
 		return false;
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.UNDEAD;
 	}
 
 	@Override

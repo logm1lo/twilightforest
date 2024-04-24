@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -30,7 +31,7 @@ public class NagaSegment extends TFPart<Naga> {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		this.deactivate();
 	}
 
@@ -142,10 +143,5 @@ public class NagaSegment extends TFPart<Naga> {
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 2.0F;
 	}
 }

@@ -37,7 +37,6 @@ public class GiantMiner extends Monster {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
-		//TODO verify giant's reach isnt messed up again
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -51,18 +50,14 @@ public class GiantMiner extends Monster {
 				.add(Attributes.MAX_HEALTH, 80.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.23D)
 				.add(Attributes.ATTACK_DAMAGE, 2.0D)
-				.add(Attributes.FOLLOW_RANGE, 40.0D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.2F;
+				.add(Attributes.FOLLOW_RANGE, 40.0D)
+				.add(Attributes.STEP_HEIGHT, 1.2D);
 	}
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
+		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn);
 		populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 

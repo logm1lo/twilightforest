@@ -110,10 +110,10 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(BEAM_FLAG, false);
-		this.getEntityData().define(PHASE_FLAG, (byte) 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BEAM_FLAG, false);
+		builder.define(PHASE_FLAG, (byte) 0);
 	}
 
 	@Override

@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -44,11 +42,6 @@ public class HelmetCrab extends Monster {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.4F;
-	}
-
-	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return TFSounds.HELMET_CRAB_HURT.get();
 	}
@@ -66,10 +59,5 @@ public class HelmetCrab extends Monster {
 	@Override
 	public int getMaxSpawnClusterSize() {
 		return 4;
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
 	}
 }

@@ -4,6 +4,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -37,7 +38,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.006F;
 	}
 
@@ -67,9 +68,9 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 		if (!this.level().isClientSide() && target instanceof LivingEntity) {
 			target.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SNOWBALL_FIGHT, this, this.getOwner()), DAMAGE);
 			//damage armor pieces
-			if (target instanceof Player) {
-				for (ItemStack stack : target.getArmorSlots())
-					stack.hurtAndBreak(this.random.nextInt(1), ((Player) target), (user) -> user.broadcastBreakEvent(stack.getEquipmentSlot()));
+			if (target instanceof Player player) {
+				for (ItemStack stack : player.getArmorSlots())
+					stack.hurtAndBreak(this.random.nextInt(1), player, stack.getEquipmentSlot() != null ? stack.getEquipmentSlot() : EquipmentSlot.CHEST);
 			}
 		}
 	}

@@ -86,8 +86,8 @@ public class SlideBlock extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(MOVE_DIRECTION, Direction.DOWN);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(MOVE_DIRECTION, Direction.DOWN);
 	}
 
 	@Override

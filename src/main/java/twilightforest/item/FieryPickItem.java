@@ -27,7 +27,7 @@ public class FieryPickItem extends PickaxeItem {
 
 		if (result && !target.fireImmune()) {
 			if (!target.level().isClientSide()) {
-				target.setSecondsOnFire(15);
+				target.igniteForSeconds(15);
 			} else {
 				target.level().addParticle(ParticleTypes.FLAME, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
 			}

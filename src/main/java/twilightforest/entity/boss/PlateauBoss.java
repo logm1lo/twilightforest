@@ -27,10 +27,6 @@ public class PlateauBoss extends BaseTFBoss {
 	}
 
 	@Override
-	protected void registerGoals() {
-	}
-
-	@Override
 	public int getHomeRadius() {
 		return 30;
 	}

@@ -35,7 +35,7 @@ public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.006F;
 	}
 
@@ -67,7 +67,7 @@ public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 			//damage armor pieces
 			if (target instanceof Player player) {
 				for (ItemStack stack : player.getArmorSlots())
-					stack.hurtAndBreak(this.random.nextInt(1), player, (user) -> user.broadcastBreakEvent(stack.getEquipmentSlot() != null ? stack.getEquipmentSlot() : EquipmentSlot.HEAD));
+					stack.hurtAndBreak(this.random.nextInt(1), player, stack.getEquipmentSlot() != null ? stack.getEquipmentSlot() : EquipmentSlot.CHEST);
 			}
 		}
 	}

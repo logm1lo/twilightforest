@@ -94,9 +94,9 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(HEAD_NAMES, List.of("", "", "", "", "", "", ""));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(HEAD_NAMES, List.of("", "", "", "", "", "", ""));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {

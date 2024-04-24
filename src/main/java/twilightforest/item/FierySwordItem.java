@@ -39,7 +39,7 @@ public class FierySwordItem extends SwordItem {
 		boolean result = super.hurtEnemy(stack, target, attacker);
 
 		if (result && !target.level().isClientSide() && !target.fireImmune()) {
-			target.setSecondsOnFire(15);
+			target.igniteForSeconds(15);
 		} else {
 			for (int var1 = 0; var1 < 20; ++var1) {
 				double px = target.getX() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();

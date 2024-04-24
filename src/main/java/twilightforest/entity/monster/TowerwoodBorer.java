@@ -102,11 +102,6 @@ public class TowerwoodBorer extends Monster {
 		super.tick();
 	}
 
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
-	}
-
 	// [VanillaCopy] Silverfish.SilverfishMergeWithStoneGoal. Changes noted
 	private static class HideInTowerwoodGoal extends RandomStrollGoal {
 

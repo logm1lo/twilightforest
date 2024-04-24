@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -44,16 +45,16 @@ public class TwilightWandBolt extends TFThrowable {
 			double dy = this.getY() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
 			double dz = this.getZ() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
 
-			double s1 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.17F;  // color
-			double s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
-			double s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
+			float s1 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.17F;  // color
+			float s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
+			float s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
 
-			this.level().addParticle(ParticleTypes.ENTITY_EFFECT, dx, dy, dz, s1, s2, s3);
+			this.level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, s1, s2, s3), dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.003F;
 	}
 

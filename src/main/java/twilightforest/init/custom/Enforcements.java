@@ -32,7 +32,7 @@ public class Enforcements {
 
 	public static final DeferredHolder<Enforcement, Enforcement> FIRE = ENFORCEMENTS.register("fire", () -> new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 60 == 0 && level.tickRateManager().runsNormally()) {
-			player.setSecondsOnFire((int) restriction.multiplier());
+			player.igniteForSeconds((int) restriction.multiplier());
 		}
 	}));
 

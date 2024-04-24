@@ -64,16 +64,6 @@ public class SlimeBeetle extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return 0.25F;
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
-	}
-
-	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		ThrowableProjectile projectile = new SlimeProjectile(TFEntities.SLIME_BLOB.get(), this.level(), this);
 		playSound(TFSounds.SLIME_BEETLE_SQUISH.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));

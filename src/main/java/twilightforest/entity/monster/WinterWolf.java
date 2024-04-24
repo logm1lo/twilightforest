@@ -61,9 +61,9 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(BREATH_FLAG, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BREATH_FLAG, false);
 	}
 
 	@Override

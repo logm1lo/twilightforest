@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -62,9 +63,9 @@ public class Kobold extends Monster {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(PANICKED, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(PANICKED, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -166,7 +167,7 @@ public class Kobold extends Monster {
 	}
 
 	private boolean canEat(ItemStack stack) {
-		return stack.getItem().isEdible() && !this.isPanicked();
+		return stack.get(DataComponents.FOOD) != null && !this.isPanicked();
 	}
 
 	@Override

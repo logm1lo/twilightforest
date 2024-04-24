@@ -21,4 +21,9 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 			this.setPos(shooter.getX(), shooter.getEyeY() - 0.1D, shooter.getZ());
 		}
 	}
+
+	@Override
+	protected ItemStack getDefaultPickupItem() {
+		return new ItemStack(Items.ARROW);
+	}
 }

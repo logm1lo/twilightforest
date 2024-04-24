@@ -37,9 +37,9 @@ public class ThrownWep extends TFThrowable {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(DATA_ITEMSTACK, ItemStack.EMPTY);
-		this.getEntityData().define(DATA_VELOCITY, 0.001F);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_ITEMSTACK, ItemStack.EMPTY);
+		builder.define(DATA_VELOCITY, 0.001F);
 	}
 
 	public ThrownWep setItem(ItemStack stack) {
@@ -100,7 +100,7 @@ public class ThrownWep extends TFThrowable {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return this.getEntityData().get(DATA_VELOCITY);
 	}
 }

@@ -21,7 +21,8 @@ public class Raven extends FlyingBird {
 	public static AttributeSupplier.Builder registerAttributes() {
 		return FlyingBird.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 10.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.2D);
+				.add(Attributes.MOVEMENT_SPEED, 0.2D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Override
@@ -37,11 +38,6 @@ public class Raven extends FlyingBird {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.RAVEN_SQUAWK.get();
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.75F;
 	}
 
 	@Override

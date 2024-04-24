@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -61,7 +62,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
 		super(type, thrower, world);
 		this.isReturning = false;
-		this.canSmashBlocks = EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0 && !thrower.hasEffect(MobEffects.DIG_SLOWDOWN);
+		this.canSmashBlocks = EnchantmentHelper.getEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), thrower) > 0 && !thrower.hasEffect(MobEffects.DIG_SLOWDOWN);
 		this.stack = stack;
 		this.setHand(hand);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
@@ -96,7 +97,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.05F;
 	}
 
@@ -108,15 +109,15 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 		if (!level.isClientSide() && result.getEntity() != this.getOwner() && level.getWorldBorder().isWithinBounds(result.getEntity().blockPosition())) {
 			float damage = 0.0F;
 			if (result.getEntity() instanceof LivingEntity living) {
-				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getMobType());
+				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getType());
 			} else if (result.getEntity() instanceof PartEntity<?> part && part.getParent() instanceof LivingEntity living) {
-				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getMobType());
+				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getType());
 			}
 
 			//properly disable shields
 			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
-				player.getUseItem().hurtAndBreak(5, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
-				player.disableShield(true);
+				player.getUseItem().hurtAndBreak(5, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
+				player.disableShield();
 			}
 
 			if (damage > 0.0F) {
@@ -127,7 +128,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 					this.isReturning = true;
 					this.tickCount += 60;
 					if (this.getOwner() instanceof LivingEntity living) {
-						this.stack.hurtAndBreak(1, living, user -> user.broadcastBreakEvent(this.getHand()));
+						this.stack.hurtAndBreak(1, living, LivingEntity.getSlotForHand(this.getHand()));
 					}
 				}
 			}
@@ -213,7 +214,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 		Level level = this.level();
 
 		return level.getWorldBorder().isWithinBounds(pos) && this.stack.isCorrectToolForDrops(state)
-				&& (!restrictedPlaceMode || this.stack.hasAdventureModeBreakTagForBlock(level.registryAccess().registryOrThrow(Registries.BLOCK), new BlockInWorld(level, pos, false)));
+				&& (!restrictedPlaceMode || this.stack.canBreakBlockInAdventureMode(new BlockInWorld(level, pos, false)));
 	}
 
 	private void affectBlocksInAABB(AABB box) {
@@ -258,7 +259,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 					// despawn if close enough
 					if (distToPlayer < 2F) {
 						if (this.getOwner() instanceof LivingEntity living && this.blocksSmashed > 0) {
-							this.stack.hurtAndBreak(Math.min(this.blocksSmashed, 3), living, user -> user.broadcastBreakEvent(this.getHand()));
+							this.stack.hurtAndBreak(Math.min(this.blocksSmashed, 3), living, LivingEntity.getSlotForHand(this.getHand()));
 						}
 						this.discard();
 					}
@@ -280,9 +281,9 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(HAND, true);
-		this.getEntityData().define(IS_FOIL, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(HAND, true);
+		builder.define(IS_FOIL, false);
 	}
 
 	@Override
@@ -298,24 +299,24 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	protected void readAdditionalSaveData(CompoundTag pCompound) {
 		super.readAdditionalSaveData(pCompound);
 		if (pCompound.contains("BlockAndChainStack", 10)) {
-			this.stack = ItemStack.of(pCompound.getCompound("BlockAndChainStack"));
+			this.stack = ItemStack.parseOptional(this.registryAccess(), pCompound.getCompound("BlockAndChainStack"));
 		}
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag pCompound) {
 		super.addAdditionalSaveData(pCompound);
-		pCompound.put("BlockAndChainStack", this.stack.save(new CompoundTag()));
+		pCompound.put("BlockAndChainStack", this.stack.save(this.registryAccess()));
 	}
 
 	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer) {
+	public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
 		buffer.writeInt(this.getOwner() != null ? this.getOwner().getId() : -1);
 		buffer.writeBoolean(this.getHand() == InteractionHand.MAIN_HAND);
 	}
 
 	@Override
-	public void readSpawnData(FriendlyByteBuf buf) {
+	public void readSpawnData(RegistryFriendlyByteBuf buf) {
 		Entity e = this.level().getEntity(buf.readInt());
 		if (e instanceof LivingEntity) {
 			this.setOwner(e);

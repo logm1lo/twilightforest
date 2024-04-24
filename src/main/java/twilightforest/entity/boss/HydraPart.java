@@ -29,8 +29,8 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(DATA_SIZEACTIVE, true);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_SIZEACTIVE, true);
 	}
 
 	@Override

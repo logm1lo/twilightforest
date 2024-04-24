@@ -59,9 +59,9 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(HOME_POINT, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void lavaHurt() {
 		if (!this.fireImmune()) {
-			this.setSecondsOnFire(5);
+			this.igniteForSeconds(5);
 			if (this.hurt(this.damageSources().lava(), 4.0F)) {
 				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.getRandom().nextFloat() * 0.4F);
 				EntityUtil.killLavaAround(this);

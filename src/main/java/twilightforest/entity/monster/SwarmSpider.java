@@ -77,11 +77,6 @@ public class SwarmSpider extends Spider {
 	}
 
 	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-		return 0.3F;
-	}
-
-	@Override
 	public boolean doHurtTarget(Entity entity) {
 		return this.getRandom().nextInt(4) == 0 && super.doHurtTarget(entity);
 	}
@@ -131,8 +126,8 @@ public class SwarmSpider extends Spider {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag dataTag) {
-		livingData = super.finalizeSpawn(accessor, difficulty, reason, livingData, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData) {
+		livingData = super.finalizeSpawn(accessor, difficulty, reason, livingData);
 
 		if (reason != MobSpawnType.CONVERSION && reason != MobSpawnType.REINFORCEMENT) {
 			int more = 1 + this.getRandom().nextInt(2);
@@ -153,7 +148,7 @@ public class SwarmSpider extends Spider {
 			if (druid != null) {
 				druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 				druid.setBaby(true);
-				EventHooks.onFinalizeSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null, null);
+				EventHooks.onFinalizeSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null);
 
 				if (this.hasPassenger(e -> true)) this.ejectPassengers();
 				druid.startRiding(this);

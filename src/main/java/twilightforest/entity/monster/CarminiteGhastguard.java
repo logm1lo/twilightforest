@@ -48,12 +48,12 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(ATTACK_STATUS, (byte) 0);
-		this.getEntityData().define(ATTACK_TIMER, (byte) 0);
-		this.getEntityData().define(ATTACK_PREVTIMER, (byte) 0);
-		this.getEntityData().define(HOME_POINT, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(ATTACK_STATUS, (byte) 0);
+		builder.define(ATTACK_TIMER, (byte) 0);
+		builder.define(ATTACK_PREVTIMER, (byte) 0);
+		builder.define(HOME_POINT, Optional.empty());
 	}
 
 	@Override

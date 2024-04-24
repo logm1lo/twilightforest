@@ -36,9 +36,9 @@ public class SeekerArrow extends TFArrow {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(TARGET, -1);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(TARGET, -1);
 	}
 
 	@Override

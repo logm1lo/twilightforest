@@ -71,11 +71,11 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(CHARGING, false);
-		this.getEntityData().define(GROUND_ATTACK, false);
-		this.getEntityData().define(GROUND_CHARGE, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(CHARGING, false);
+		builder.define(GROUND_ATTACK, false);
+		builder.define(GROUND_CHARGE, 0);
 	}
 
 	@Override
@@ -139,8 +139,8 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 		return data;

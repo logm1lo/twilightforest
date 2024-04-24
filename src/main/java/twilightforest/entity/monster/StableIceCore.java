@@ -42,11 +42,6 @@ public class StableIceCore extends BaseIceMob implements RangedAttackMob {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.6F;
-	}
-
-	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.ICE_CORE_AMBIENT.get();
 	}

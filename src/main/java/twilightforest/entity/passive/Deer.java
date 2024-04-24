@@ -44,11 +44,6 @@ public class Deer extends Animal {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.7F;
-	}
-
-	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.DEER_AMBIENT.get();
 	}
@@ -70,11 +65,6 @@ public class Deer extends Animal {
 	@Override
 	public Deer getBreedOffspring(ServerLevel level, AgeableMob mate) {
 		return TFEntities.DEER.get().create(level);
-	}
-
-	@Override
-	protected float getStandingEyeHeight(Pose pos, EntityDimensions size) {
-		return this.isBaby() ? size.height * 0.95F : 1.65F;
 	}
 
 	@Override

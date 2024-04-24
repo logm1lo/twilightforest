@@ -57,12 +57,8 @@ public class DwarfRabbit extends Animal implements VariantHolder<DwarfRabbitVari
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 3.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
+				.add(Attributes.MOVEMENT_SPEED, 0.3D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Nullable
@@ -85,9 +81,9 @@ public class DwarfRabbit extends Animal implements VariantHolder<DwarfRabbitVari
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(VARIANT, DwarfRabbitVariants.BROWN.get());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, DwarfRabbitVariants.BROWN.get());
 	}
 
 	@Override
@@ -106,8 +102,8 @@ public class DwarfRabbit extends Animal implements VariantHolder<DwarfRabbitVari
 	}
 
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
 		this.setVariant(DwarfRabbitVariant.getRandomVariant(this.getRandom()));
 		return data;
 	}
@@ -120,11 +116,6 @@ public class DwarfRabbit extends Animal implements VariantHolder<DwarfRabbitVari
 	@Override
 	public void setVariant(DwarfRabbitVariant variant) {
 		this.getEntityData().set(VARIANT, variant);
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.5F;
 	}
 
 	@Override

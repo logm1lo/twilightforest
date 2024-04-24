@@ -99,11 +99,11 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_DAZE, false);
-		this.getEntityData().define(DATA_CHARGE, false);
-		this.getEntityData().define(DATA_STUNLESS, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_DAZE, false);
+		builder.define(DATA_CHARGE, false);
+		builder.define(DATA_STUNLESS, false);
 	}
 
 	public boolean isDazed() {
@@ -177,7 +177,8 @@ public class Naga extends BaseTFBoss {
 				.add(Attributes.MOVEMENT_SPEED, DEFAULT_SPEED)
 				.add(Attributes.ATTACK_DAMAGE, 5.0D)
 				.add(Attributes.FOLLOW_RANGE, 80.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D);
+				.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
+				.add(Attributes.STEP_HEIGHT, 2.0F);
 	}
 
 	/**
@@ -197,7 +198,7 @@ public class Naga extends BaseTFBoss {
 
 		if (!this.level().isClientSide() && oldSegments != newSegments) {
 			double speedMod = ((float)MAX_SEGMENTS / newSegments * 0.02F);
-			AttributeModifier modifier = new AttributeModifier(MOVEMENT_SPEED_UUID, "Segment Count Speed Boost", speedMod, AttributeModifier.Operation.ADDITION);
+			AttributeModifier modifier = new AttributeModifier(MOVEMENT_SPEED_UUID, "Segment Count Speed Boost", speedMod, AttributeModifier.Operation.ADD_VALUE);
 			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(MOVEMENT_SPEED_UUID);
 			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(modifier);
 		}
@@ -205,10 +206,10 @@ public class Naga extends BaseTFBoss {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
 		if (this.level().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
 			boolean hard = this.level().getDifficulty() == Difficulty.HARD;
-			AttributeModifier modifier = new AttributeModifier("Difficulty Health Boost", hard ? 130 : 80, AttributeModifier.Operation.ADDITION);
+			AttributeModifier modifier = new AttributeModifier("Difficulty Health Boost", hard ? 130 : 80, AttributeModifier.Operation.ADD_VALUE);
 			if (!Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).hasModifier(modifier)) {
 				Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(modifier);
 				this.setHealth(this.getMaxHealth());
@@ -372,8 +373,8 @@ public class Naga extends BaseTFBoss {
 				toAttack.push(motion.x() * 1.5D, 0.5D, motion.z() * 1.5D);
 				this.push(motion.x() * -1.25D, 0.5D, motion.z() * -1.25D);
 				if (toAttack instanceof ServerPlayer player) {
-					player.getUseItem().hurtAndBreak(5, player, user -> user.broadcastBreakEvent(player.getUsedItemHand()));
-					PacketDistributor.PLAYER.with(player).send(new MovePlayerPacket(motion.x() * 3.0D, motion.y() + 0.75D, motion.z() * 3.0D));
+					player.getUseItem().hurtAndBreak(5, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
+					PacketDistributor.sendToPlayer(player, new MovePlayerPacket(motion.x() * 3.0D, motion.y() + 0.75D, motion.z() * 3.0D));
 				}
 				this.hurt(this.damageSources().generic(), 2.0F);
 				this.level().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
@@ -381,7 +382,7 @@ public class Naga extends BaseTFBoss {
 				return false;
 			} else if (this.getMovementPattern().getState() == NagaMovementPattern.MovementState.STUNLESS_CHARGE) {
 				if (toAttack instanceof ServerPlayer player) {
-					player.getUseItem().hurtAndBreak(10, player, user -> user.broadcastBreakEvent(player.getUsedItemHand()));
+					player.getUseItem().hurtAndBreak(10, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 					player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
 					player.stopUsingItem();
 					this.level().broadcastEntityEvent(player, (byte)30);
@@ -509,11 +510,6 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return dimensions.height * 0.75F;
-	}
-
-	@Override
 	protected void tickDeath() {
 		++this.deathTime;
 		if (!this.level().isClientSide() && !this.isRemoved()) {
@@ -565,7 +561,7 @@ public class Naga extends BaseTFBoss {
 							particlePacket.queueParticle(ParticleTypes.COMPOSTER, false, blockhitresult.getLocation().add(0.0D, 0.15D, 0.0D), Vec3.ZERO);
 						}
 					}
-					PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
+					PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 				}
 			}
 		}
@@ -603,11 +599,6 @@ public class Naga extends BaseTFBoss {
 	@Override
 	public PartEntity<?>[] getParts() {
 		return this.bodySegments;
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 2.0F;
 	}
 
 	@Override

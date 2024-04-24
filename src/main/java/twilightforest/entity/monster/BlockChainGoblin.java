@@ -77,11 +77,11 @@ public class BlockChainGoblin extends Monster {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_CHAINLENGTH, (byte) 0);
-		this.getEntityData().define(DATA_CHAINPOS, (byte) 0);
-		this.getEntityData().define(IS_THROWING, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_CHAINLENGTH, (byte) 0);
+		builder.define(DATA_CHAINPOS, (byte) 0);
+		builder.define(IS_THROWING, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -90,11 +90,6 @@ public class BlockChainGoblin extends Monster {
 				.add(Attributes.MOVEMENT_SPEED, 0.28D)
 				.add(Attributes.ATTACK_DAMAGE, 8.0D)
 				.add(Attributes.ARMOR, 11.0D);
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.78F;
 	}
 
 	@Override

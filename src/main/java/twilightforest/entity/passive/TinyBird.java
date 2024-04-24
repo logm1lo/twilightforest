@@ -40,15 +40,16 @@ public class TinyBird extends FlyingBird implements VariantHolder<TinyBirdVarian
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(VARIANT, TinyBirdVariant.getRandomVariant(this.getRandom()));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, TinyBirdVariant.getRandomVariant(this.getRandom()));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return FlyingBird.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 4.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.2D);
+				.add(Attributes.MOVEMENT_SPEED, 0.2D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Override
@@ -67,8 +68,8 @@ public class TinyBird extends FlyingBird implements VariantHolder<TinyBirdVarian
 	}
 
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
 		this.setVariant(TinyBirdVariant.getRandomVariant(this.getRandom()));
 		return data;
 	}
@@ -96,11 +97,6 @@ public class TinyBird extends FlyingBird implements VariantHolder<TinyBirdVarian
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.TINY_BIRD_HURT.get();
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.7F;
 	}
 
 	@Override

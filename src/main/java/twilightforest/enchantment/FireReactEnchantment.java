@@ -46,7 +46,7 @@ public class FireReactEnchantment extends LootOnlyEnchantment {
 	public void doPostHurt(LivingEntity user, @Nullable Entity attacker, int level) {
 		RandomSource random = user.getRandom();
 		if (attacker != null && shouldHit(level, random, attacker)) {
-			attacker.setSecondsOnFire(2 + (random.nextInt(level) * 3));
+			attacker.igniteForSeconds(2 + (random.nextInt(level) * 3));
 		}
 	}
 

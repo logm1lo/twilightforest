@@ -148,7 +148,7 @@ public class EntityUtil {
 
 		int i = EnchantmentHelper.getFireAspect(entity);
 		if (i > 0) {
-			victim.setSecondsOnFire(i * 4);
+			victim.igniteForSeconds(i * 4);
 		}
 
 		boolean flag = victim.hurt(source, f);

@@ -1,5 +1,7 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -31,11 +33,11 @@ public class HydraHead extends HydraPart {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_MOUTH_POSITION, 0F);
-		this.getEntityData().define(DATA_MOUTH_POSITION_LAST, 0F);
-		this.getEntityData().define(DATA_STATE, (byte) 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_MOUTH_POSITION, 0F);
+		builder.define(DATA_MOUTH_POSITION_LAST, 0F);
+		builder.define(DATA_STATE, (byte) 0);
 	}
 
 	public float getMouthOpen() {
@@ -62,9 +64,10 @@ public class HydraHead extends HydraPart {
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (stack.is(Items.NAME_TAG) && stack.hasCustomHoverName()) {
+		Component tagName = stack.get(DataComponents.CUSTOM_NAME);
+		if (stack.is(Items.NAME_TAG) && tagName != null) {
 			if (!this.level().isClientSide() && this.isAlive()) {
-				this.setCustomName(stack.getHoverName());
+				this.setCustomName(tagName);
 				stack.shrink(1);
 
 				//save name to main hydra
@@ -72,7 +75,7 @@ public class HydraHead extends HydraPart {
 				if (hydra != null) {
 					for (int i = 0; i < Hydra.MAX_HEADS; i++) {
 						if (hydra.hc[i].headEntity == this) {
-							hydra.setHeadNameFor(i, stack.getHoverName().getString());
+							hydra.setHeadNameFor(i, tagName.getString());
 						}
 					}
 				}

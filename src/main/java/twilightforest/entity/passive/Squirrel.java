@@ -47,17 +47,8 @@ public class Squirrel extends Animal {
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 6.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.7F;
+				.add(Attributes.MOVEMENT_SPEED, 0.3D)
+				.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Override
