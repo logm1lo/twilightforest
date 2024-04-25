@@ -60,11 +60,11 @@ public class TFItems {
 	public static final DeferredItem<ArmorItem> IRONWOOD_CHESTPLATE = ITEMS.register("ironwood_chestplate", () -> new ArmorItem(TFArmorMaterials.IRONWOOD, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 	public static final DeferredItem<ArmorItem> IRONWOOD_LEGGINGS = ITEMS.register("ironwood_leggings", () -> new ArmorItem(TFArmorMaterials.IRONWOOD, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 	public static final DeferredItem<ArmorItem> IRONWOOD_BOOTS = ITEMS.register("ironwood_boots", () -> new ArmorItem(TFArmorMaterials.IRONWOOD, ArmorItem.Type.BOOTS, new Item.Properties()));
-	public static final DeferredItem<Item> IRONWOOD_SWORD = ITEMS.register("ironwood_sword", () -> new SwordItem(TwilightItemTier.IRONWOOD, 3, -2.4F, new Item.Properties()));
-	public static final DeferredItem<Item> IRONWOOD_SHOVEL = ITEMS.register("ironwood_shovel", () -> new ShovelItem(TwilightItemTier.IRONWOOD, 1.5F, -3.0F, new Item.Properties()));
-	public static final DeferredItem<Item> IRONWOOD_PICKAXE = ITEMS.register("ironwood_pickaxe", () -> new PickaxeItem(TwilightItemTier.IRONWOOD, 1, -2.8F, new Item.Properties()));
-	public static final DeferredItem<Item> IRONWOOD_AXE = ITEMS.register("ironwood_axe", () -> new AxeItem(TwilightItemTier.IRONWOOD, 6.0F, -3.1F, new Item.Properties()));
-	public static final DeferredItem<Item> IRONWOOD_HOE = ITEMS.register("ironwood_hoe", () -> new HoeItem(TwilightItemTier.IRONWOOD, -2, -1.0F, new Item.Properties()));
+	public static final DeferredItem<Item> IRONWOOD_SWORD = ITEMS.register("ironwood_sword", () -> new SwordItem(TwilightItemTier.IRONWOOD, new Item.Properties().attributes(SwordItem.createAttributes(TwilightItemTier.IRONWOOD, 3, -2.4F))));
+	public static final DeferredItem<Item> IRONWOOD_SHOVEL = ITEMS.register("ironwood_shovel", () -> new ShovelItem(TwilightItemTier.IRONWOOD, new Item.Properties().attributes(ShovelItem.createAttributes(TwilightItemTier.IRONWOOD, 1.5F, -3.0F))));
+	public static final DeferredItem<Item> IRONWOOD_PICKAXE = ITEMS.register("ironwood_pickaxe", () -> new PickaxeItem(TwilightItemTier.IRONWOOD, new Item.Properties().attributes(PickaxeItem.createAttributes(TwilightItemTier.IRONWOOD, 1.0F, -2.8F))));
+	public static final DeferredItem<Item> IRONWOOD_AXE = ITEMS.register("ironwood_axe", () -> new AxeItem(TwilightItemTier.IRONWOOD, new Item.Properties().attributes(AxeItem.createAttributes(TwilightItemTier.IRONWOOD, 6.0F, -3.1F))));
+	public static final DeferredItem<Item> IRONWOOD_HOE = ITEMS.register("ironwood_hoe", () -> new HoeItem(TwilightItemTier.IRONWOOD, new Item.Properties().attributes(HoeItem.createAttributes(TwilightItemTier.IRONWOOD, -2, -1.0F))));
 	public static final DeferredItem<Item> TORCHBERRIES = ITEMS.register("torchberries", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().alwaysEdible().effect(() -> new MobEffectInstance(MobEffects.GLOWING, 100, 0), 0.75F).build())));
 	public static final DeferredItem<Item> RAW_VENISON = ITEMS.register("raw_venison", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).build())));
 	public static final DeferredItem<Item> COOKED_VENISON = ITEMS.register("cooked_venison", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8F).build())));
@@ -265,7 +265,7 @@ public class TFItems {
 	@OnlyIn(Dist.CLIENT)
 	public static void addItemModelProperties() {
 		ItemProperties.register(CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
-				CubeOfAnnihilationItem.getThrownUuid(stack) != null ? 1 : 0);
+				stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
 
 		ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), new ResourceLocation("blocking"), (stack, level, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
@@ -377,22 +377,22 @@ public class TFItems {
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
 		ItemProperties.register(BLOCK_AND_CHAIN.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
-				ChainBlockItem.getThrownUuid(stack) != null ? 1 : 0);
+				stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
 
 		ItemProperties.register(EXPERIMENT_115.get(), Experiment115Item.THINK, (stack, level, entity, idk) ->
-				stack.getTag() != null && stack.getTag().contains("think") ? 1 : 0);
+				stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("think") ? 1 : 0);
 
 		ItemProperties.register(EXPERIMENT_115.get(), Experiment115Item.FULL, (stack, level, entity, idk) ->
-				stack.getTag() != null && stack.getTag().contains("full") ? 1 : 0);
+				stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("full") ? 1 : 0);
 
 		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("breakage"), (stack, level, entity, i) ->
-				stack.getOrCreateTag().getInt("Breakage"));
+				stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).breakage());
 
 		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
-				stack.getOrCreateTag().getInt("Uses"));
+				stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
 
 		ItemProperties.register(TFItems.GREATER_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
-				stack.getOrCreateTag().getInt("Uses"));
+				stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
 
 		ItemProperties.register(TFItems.CRUMBLE_HORN.get(), TwilightForestMod.prefix("tooting"), (stack, world, entity, i) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F

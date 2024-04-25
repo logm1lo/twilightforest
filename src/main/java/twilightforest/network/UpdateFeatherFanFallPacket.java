@@ -13,7 +13,7 @@ import twilightforest.init.TFDataAttachments;
 
 public record UpdateFeatherFanFallPacket(int entityID, boolean falling) implements CustomPacketPayload {
 
-	public static final Type<UpdateFeatherFanFallPacket> TYPE = new Type<>(TwilightForestMod.prefix("update_feather_fan_attachment");
+	public static final Type<UpdateFeatherFanFallPacket> TYPE = new Type<>(TwilightForestMod.prefix("update_feather_fan_attachment"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateFeatherFanFallPacket> STREAM_CODEC = CustomPacketPayload.codec(UpdateFeatherFanFallPacket::write, UpdateFeatherFanFallPacket::new);
 
 	public UpdateFeatherFanFallPacket(FriendlyByteBuf buf) {

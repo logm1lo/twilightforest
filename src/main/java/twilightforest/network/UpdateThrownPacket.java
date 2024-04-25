@@ -15,7 +15,7 @@ import twilightforest.init.TFDataAttachments;
 
 public record UpdateThrownPacket(int entityID, boolean thrown, int thrower, int throwCooldown) implements CustomPacketPayload {
 
-	public static final Type<UpdateThrownPacket> TYPE = new Type<>(TwilightForestMod.prefix("update_thrown_attachment");
+	public static final Type<UpdateThrownPacket> TYPE = new Type<>(TwilightForestMod.prefix("update_thrown_attachment"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateThrownPacket> STREAM_CODEC = CustomPacketPayload.codec(UpdateThrownPacket::write, UpdateThrownPacket::new);
 
 	public UpdateThrownPacket(FriendlyByteBuf buf) {
