@@ -22,10 +22,8 @@ import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
-import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
-import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
@@ -46,36 +44,43 @@ public class TFOverlays {
 	public static Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
 	@SubscribeEvent
-	public static void registerOverlays(RegisterGuiOverlaysEvent event) {
-		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), TwilightForestMod.prefix("quest_ram_indicator"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+	public static void registerOverlays(RegisterGuiLayersEvent event) {
+		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
+			Gui gui = minecraft.gui;
 			if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {
 				RenderSystem.enableBlend();
-				renderIndicator(minecraft, graphics, gui, player, screenWidth, screenHeight);
+				renderIndicator(minecraft, graphics, gui, player, graphics.guiWidth(), graphics.guiHeight());
 				RenderSystem.disableBlend();
 			}
 		});
-		event.registerAbove(VanillaGuiOverlay.MOUNT_HEALTH.id(), TwilightForestMod.prefix("hostile_mount_hunger_bar"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
-			LocalPlayer player = Minecraft.getInstance().player;
-			if (!gui.getMinecraft().options.hideGui && gui.shouldDrawSurvivalElements() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
-				gui.setupOverlayRenderState(true, false);
-				gui.renderFood(screenWidth, screenHeight, graphics);
-			}
-		});
-		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
+			Gui gui = minecraft.gui;
+			if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
+				int xPos = graphics.guiWidth() / 2 + 91;
+				int yPos = graphics.guiHeight() - gui.rightHeight;
+				gui.renderFood(graphics, player, yPos, xPos);
+				gui.rightHeight += 10;
+			}
+		});
+		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, partialTicks) -> {
+			Minecraft minecraft = Minecraft.getInstance();
+			LocalPlayer player = minecraft.player;
+			Gui gui = minecraft.gui;
 			if (player != null && !minecraft.options.hideGui && !gui.getDebugOverlay().showDebugScreen() && minecraft.screen == null) {
 				renderOreMeterStats(graphics, player);
 			}
 		});
 
-		event.registerAbove(VanillaGuiOverlay.ARMOR_LEVEL.id(), TwilightForestMod.prefix("fortification_shield_count"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+		event.registerAbove(VanillaGuiLayers.ARMOR_LEVEL, TwilightForestMod.prefix("fortification_shield_count"), (graphics, partialTick) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
-			if (player != null && !minecraft.options.hideGui && gui.shouldDrawSurvivalElements() && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
-				renderShieldCount(graphics, gui, player, screenWidth, screenHeight, player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
+			Gui gui = minecraft.gui;
+			if (player != null && !minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
+				renderShieldCount(graphics, gui, player, graphics.guiWidth(), graphics.guiHeight(), player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
 			}
 		});
 	}
@@ -101,7 +106,7 @@ public class TFOverlays {
 		}
 	}
 
-	public static void renderShieldCount(GuiGraphics graphics, ExtendedGui gui, Player player, int screenWidth, int screenHeight, int shieldCount) {
+	public static void renderShieldCount(GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight, int shieldCount) {
 		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
 			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight + (player.getArmorValue() > 0 ? 0 : 10), 9, 9);
 		}
