@@ -1,5 +1,6 @@
 package twilightforest.enchantment;
 
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -7,39 +8,19 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import twilightforest.init.TFEnchantments;
 
 import javax.annotation.Nullable;
 
 public class FireReactEnchantment extends LootOnlyEnchantment {
-
-	public FireReactEnchantment(Rarity rarity) {
-		super(rarity, EnchantmentCategory.ARMOR, new EquipmentSlot[]{
-				EquipmentSlot.HEAD, EquipmentSlot.CHEST,
-				EquipmentSlot.LEGS, EquipmentSlot.FEET
-		});
+	public FireReactEnchantment(int weight) {
+		super(ItemTags.ARMOR_ENCHANTABLE, weight, 3, Enchantment.dynamicCost(5, 9), Enchantment.dynamicCost(20, 9), 2, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET);
 	}
 
 	@Override
 	public boolean canEnchant(ItemStack stack) {
 		return stack.getItem() instanceof ArmorItem || super.canEnchant(stack);
-	}
-
-	@Override
-	public int getMinCost(int level) {
-		return 5 + (level - 1) * 9;
-	}
-
-	@Override
-	public int getMaxCost(int level) {
-		return this.getMinCost(level) + 15;
-	}
-
-	@Override
-	public int getMaxLevel() {
-		return 3;
 	}
 
 	@Override

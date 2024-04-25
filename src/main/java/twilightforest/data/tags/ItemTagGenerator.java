@@ -74,6 +74,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = create("uncrafting_ignores_cost");
 
 	public static final TagKey<Item> KEPT_ON_DEATH = create("kept_on_death");
+	public static final TagKey<Item> BLOCK_AND_CHAIN = create("block_and_chain");
 
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider, ExistingFileHelper helper) {
 		super(output, future, provider, helper);
@@ -247,6 +248,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		tag(UNCRAFTING_IGNORES_COST).addTag(Tags.Items.RODS_WOODEN);
 
 		tag(KEPT_ON_DEATH).add(TFItems.TOWER_KEY.get(), TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
+
+		tag(BLOCK_AND_CHAIN).add(TFItems.BLOCK_AND_CHAIN.get());
 
 		tag(ItemTags.PIGLIN_LOVED).add(TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.CHARM_OF_KEEPING_3.get(), TFItems.CHARM_OF_LIFE_2.get(), TFItems.LAMP_OF_CINDERS.get());
 
