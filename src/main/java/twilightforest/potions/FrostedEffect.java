@@ -14,15 +14,16 @@ public class FrostedEffect extends MobEffect {
 
 	public FrostedEffect() {
 		super(MobEffectCategory.HARMFUL, 0x56CBFD);
-		this.addAttributeModifier(Attributes.MOVEMENT_SPEED, FrostedEffect.MOVEMENT_SPEED_MODIFIER_UUID.toString(), FROST_MULTIPLIER, AttributeModifier.Operation.MULTIPLY_TOTAL);
+		this.addAttributeModifier(Attributes.MOVEMENT_SPEED, FrostedEffect.MOVEMENT_SPEED_MODIFIER_UUID.toString(), FROST_MULTIPLIER, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 	}
 
 	@Override
-	public void applyEffectTick(LivingEntity living, int amplifier) {
+	public boolean applyEffectTick(LivingEntity living, int amplifier) {
 		living.setIsInPowderSnow(true);
 		if (amplifier > 0 && living.canFreeze()) {
 			living.setTicksFrozen(Math.min(living.getTicksRequiredToFreeze(), living.getTicksFrozen() + amplifier));
 		}
+		return true;
 	}
 
 	@Override
