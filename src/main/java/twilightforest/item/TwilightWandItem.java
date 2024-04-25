@@ -35,7 +35,7 @@ public class TwilightWandItem extends Item {
 
 			if (!level.isClientSide()) {
 				level.addFreshEntity(new TwilightWandBolt(level, player));
-				stack.hurt(1, level.getRandom(), null);
+				stack.hurtAndBreak(1, level.getRandom(), player, () -> {});
 			}
 
 			return InteractionResultHolder.success(player.getItemInHand(hand));
@@ -58,9 +58,8 @@ public class TwilightWandItem extends Item {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
 		tooltip.add(Component.translatable("item.twilightforest.scepter.desc", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

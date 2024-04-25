@@ -24,7 +24,7 @@ public class TripleBowItem extends BowItem {
 	@Override
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
 		if (living instanceof Player player) {
-			boolean flag = player.getAbilities().instabuild || EnchantmentHelper.getTagEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
+			boolean flag = player.getAbilities().instabuild || stack.getEnchantmentLevel(Enchantments.INFINITY) > 0;
 			ItemStack itemstack = player.getProjectile(stack);
 
 			int i = this.getUseDuration(stack) - timeLeft;
@@ -50,19 +50,19 @@ public class TripleBowItem extends BowItem {
 
 							if (f == 1.0F) abstractArrow.setCritArrow(true);
 
-							int p = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+							int p = stack.getEnchantmentLevel(Enchantments.POWER);
 							if (p > 0) abstractArrow.setBaseDamage(abstractArrow.getBaseDamage() + p * 0.5D + 0.5D);
 
-							int k = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
+							int k = stack.getEnchantmentLevel(Enchantments.PUNCH);
 							if (k > 0) abstractArrow.setKnockback(k);
 
-							if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0)
+							if (stack.getEnchantmentLevel(Enchantments.FLAME) > 0)
 								abstractArrow.igniteForSeconds(100);
 
 							level.addFreshEntity(abstractArrow);
 						}
 
-						stack.hurtAndBreak(1, player, (user) -> user.broadcastBreakEvent(player.getUsedItemHand()));
+						stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 					}
 
 					level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);

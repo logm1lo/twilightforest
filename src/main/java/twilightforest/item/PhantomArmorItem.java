@@ -50,7 +50,7 @@ public class PhantomArmorItem extends ArmorItem {
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
-		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+		book.getEnchantments().entrySet().forEach(enchantment -> {
 			for (Holder<Enchantment> banned : BuiltInRegistries.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get()) {
 				if (Objects.equals(banned.value(), enchantment)) {
 					badEnchant.set(true);

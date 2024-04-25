@@ -42,7 +42,7 @@ public class PocketWatchItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level getter, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(TOOLTIP);
     }
 }

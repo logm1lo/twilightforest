@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -49,10 +50,10 @@ public class PeacockFanItem extends Item {
 
 		if (!level.isClientSide()) {
 			int fanned = this.doFan(level, player);
-			stack.hurtAndBreak(fanned + 1, player, (user) -> user.broadcastBreakEvent(hand));
+			stack.hurtAndBreak(fanned + 1, player, LivingEntity.getSlotForHand(hand));
 			if (flag) {
 				player.setData(TFDataAttachments.FEATHER_FAN, true);
-				PacketDistributor.TRACKING_ENTITY_AND_SELF.with(player).send(new UpdateFeatherFanFallPacket(player.getId(), true));
+				PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new UpdateFeatherFanFallPacket(player.getId(), true));
 			} else {
 				AABB fanBox = this.getEffectAABB(player);
 				Vec3 lookVec = player.getLookAngle();
@@ -67,7 +68,7 @@ public class PeacockFanItem extends Item {
 									fanBox.minZ + level.getRandom().nextFloat() * (fanBox.maxZ - fanBox.minZ),
 									lookVec.x(), lookVec.y(), lookVec.z());
 						}
-						PacketDistributor.PLAYER.with(serverplayer).send(packet);
+						PacketDistributor.sendToPlayer(serverplayer, packet);
 					}
 				}
 			}
@@ -126,7 +127,7 @@ public class PeacockFanItem extends Item {
 			}
 
 			if (entity instanceof ServerPlayer pushedPlayer && pushedPlayer != player && !pushedPlayer.isShiftKeyDown()) {
-				PacketDistributor.PLAYER.with(pushedPlayer).send(new MovePlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
+				PacketDistributor.sendToPlayer(pushedPlayer, new MovePlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
 				player.getCooldowns().addCooldown(fan, 40);
 				fannedEntities += 2;
 			}

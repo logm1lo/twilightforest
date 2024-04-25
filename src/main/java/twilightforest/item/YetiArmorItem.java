@@ -44,7 +44,7 @@ public class YetiArmorItem extends ArmorItem {
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
-		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+		book.getEnchantments().entrySet().forEach(enchantment -> {
 			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.FIRE_REACT.get(), enchantment) || Objects.equals(TFEnchantments.CHILL_AURA.get(), enchantment)) {
 				badEnchant.set(true);
 			}

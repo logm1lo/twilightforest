@@ -29,15 +29,6 @@ import java.util.Map;
 public class OreScannerComponent {
 	private static final OreScannerComponent EMPTY = new OreScannerComponent(BlockPos.ZERO, 0, 0, 0);
 
-	public static final Codec<OreScannerComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Codec.INT.fieldOf("x_span").forGetter(o -> o.xSpan),
-			Codec.INT.fieldOf("z_span").forGetter(o -> o.zSpan),
-			Codec.INT.fieldOf("area").forGetter(o -> o.area),
-			Codec.INT.fieldOf("scan_duration").forGetter(o -> o.scanDurationTicks),
-			BlockPos.CODEC.fieldOf("origin").forGetter(o -> o.origin),
-			Codec.unboundedMap()
-	))
-
 	private final int xSpan, zSpan;
 	private final int area;
 	private final int scanDurationTicks;
