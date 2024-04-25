@@ -43,7 +43,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
@@ -58,11 +58,11 @@ import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.enchantment.ChillAuraEnchantment;
 import twilightforest.entity.projectile.ITFProjectile;
@@ -72,16 +72,16 @@ import twilightforest.item.OreMeterItem;
 import twilightforest.item.YetiArmorItem;
 import twilightforest.network.WipeOreMeterPacket;
 import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.type.HollowHillStructure;
 import twilightforest.world.components.structures.util.ControlledSpawns;
-import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+@EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EntityEvents {
 
 	private static final boolean SHIELD_PARRY_MOD_LOADED = ModList.get().isLoaded("parry");

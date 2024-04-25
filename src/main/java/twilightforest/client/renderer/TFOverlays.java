@@ -21,12 +21,13 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
 import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataAttachments;
@@ -37,7 +38,7 @@ import twilightforest.util.ComponentAlignment;
 import java.text.DecimalFormat;
 import java.util.*;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class TFOverlays {
 	private static final ResourceLocation QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
 	private static final ResourceLocation QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");

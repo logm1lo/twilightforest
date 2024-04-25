@@ -7,19 +7,19 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.network.UpdateShieldPacket;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+@EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CapabilityEvents {
 
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";

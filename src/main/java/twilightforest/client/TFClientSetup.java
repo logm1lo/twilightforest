@@ -25,14 +25,13 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.*;
@@ -40,6 +39,7 @@ import twilightforest.client.model.entity.newmodels.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.newmodels.*;
 import twilightforest.client.renderer.tileentity.*;
+import twilightforest.config.TFConfig;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraNeck;
@@ -59,7 +59,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
+@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
 public class TFClientSetup {
 
 	public static boolean optifinePresent = false;
@@ -68,7 +68,7 @@ public class TFClientSetup {
 		TFShaders.init(bus);
 	}
 
-	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
+	@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME, modid = TwilightForestMod.ID)
 	public static class ForgeEvents {
 
 		private static boolean firstTitleScreenShown = false;

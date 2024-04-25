@@ -11,6 +11,7 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import twilightforest.TwilightForestMod;
@@ -23,7 +24,7 @@ import twilightforest.item.ArcticArmorItem;
 import twilightforest.util.ColorUtil;
 import twilightforest.util.SimplexNoiseHelper;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public final class ColorHandler {
 
 	@SubscribeEvent

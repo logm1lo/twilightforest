@@ -5,16 +5,17 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.TickEvent;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.config.TFConfig;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.Restriction;
 
 import java.util.Optional;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
+@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
 public class LockedBiomeListener {
 
 	private static boolean shownToast = false;

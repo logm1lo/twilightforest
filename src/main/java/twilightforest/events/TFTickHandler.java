@@ -16,15 +16,16 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDimension;
 import twilightforest.init.TFStructures;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionClearPacket;
@@ -34,13 +35,12 @@ import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
-import twilightforest.init.TFDimension;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+@EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFTickHandler {
 
 	@SubscribeEvent

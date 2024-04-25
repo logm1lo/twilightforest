@@ -6,6 +6,7 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import twilightforest.TwilightForestMod;
@@ -18,7 +19,7 @@ import twilightforest.client.renderer.entity.TwilightBoatRenderer;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
 import twilightforest.entity.TwilightBoat;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class TFLayerDefinitions {
 
 	@SubscribeEvent

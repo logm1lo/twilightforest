@@ -40,13 +40,12 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.DimensionSpecialEffectsManager;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
@@ -60,11 +59,12 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
+import twilightforest.init.TFDimension;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
-import twilightforest.init.TFDimension;
 import twilightforest.item.recipe.EmperorsClothRecipe;
 
 import java.util.HashSet;
@@ -72,10 +72,10 @@ import java.util.List;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class TFClientEvents {
 
-	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+	@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 	public static class ModBusEvents {
 		@SubscribeEvent
 		public static void registerLoaders(ModelEvent.RegisterGeometryLoaders event) {

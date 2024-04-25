@@ -31,21 +31,21 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import org.apache.commons.lang3.tuple.Pair;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CloudBlock;
 import twilightforest.client.renderer.TFWeatherRenderer;
+import twilightforest.config.TFConfig;
 import twilightforest.util.Vec2i;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class CloudEvents {
     private static final List<PrecipitationRenderHelper> RENDER_HELPER = new ArrayList<>();
 
