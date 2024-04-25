@@ -64,6 +64,10 @@ runs {
     }
 }
 
+jar {
+    exclude 'data/twilightforest/functions/**'
+}
+
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
