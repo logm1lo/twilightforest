@@ -113,10 +113,12 @@ public class TwilightForestMod {
 		Enforcements.ENFORCEMENTS.register(bus);
 		TFCaveCarvers.CARVER_TYPES.register(bus);
 		TFEnchantments.ENCHANTMENTS.register(bus);
+		TFDataComponents.COMPONENTS.register(bus);
 		TFRecipes.RECIPE_SERIALIZERS.register(bus);
 		TFParticleType.PARTICLE_TYPES.register(bus);
 		TFBlockEntities.BLOCK_ENTITIES.register(bus);
 		TFLootModifiers.LOOT_MODIFIERS.register(bus);
+		TFArmorMaterials.ARMOR_MATERIALS.register(bus);
 		TFBannerPatterns.BANNER_PATTERNS.register(bus);
 		TFStructureTypes.STRUCTURE_TYPES.register(bus);
 		TFFeatureModifiers.TRUNK_PLACERS.register(bus);

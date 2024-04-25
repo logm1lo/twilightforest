@@ -9,6 +9,8 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
@@ -21,6 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -45,8 +48,8 @@ public class TFMagicMapData extends MapItemSavedData {
 		super(x, z, scale, trackpos, unlimited, locked, dim);
 	}
 
-	public static TFMagicMapData load(CompoundTag nbt) {
-		MapItemSavedData data = MapItemSavedData.load(nbt);
+	public static TFMagicMapData load(CompoundTag nbt, HolderLookup.Provider provider) {
+		MapItemSavedData data = MapItemSavedData.load(nbt, provider);
 		final boolean trackingPosition = !nbt.contains("trackingPosition", 1) || nbt.getBoolean("trackingPosition");
 		final boolean unlimitedTracking = nbt.getBoolean("unlimitedTracking");
 		final boolean locked = nbt.getBoolean("locked");
@@ -67,8 +70,8 @@ public class TFMagicMapData extends MapItemSavedData {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag cmp) {
-		cmp = super.save(cmp);
+	public CompoundTag save(CompoundTag cmp, HolderLookup.Provider provider) {
+		cmp = super.save(cmp, provider);
 
 		if (!this.tfDecorations.isEmpty()) {
 			cmp.putByteArray("features", serializeFeatures());
@@ -153,7 +156,7 @@ public class TFMagicMapData extends MapItemSavedData {
 
 	@Nullable
 	@Override
-	public Packet<?> getUpdatePacket(int mapId, Player player) {
+	public Packet<?> getUpdatePacket(MapId mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
 		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new ClientboundCustomPayloadPacket(new MagicMapPacket(this, mapItemDataPacket)) : packet;
 	}

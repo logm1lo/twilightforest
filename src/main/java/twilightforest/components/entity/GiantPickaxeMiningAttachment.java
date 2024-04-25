@@ -1,6 +1,4 @@
-package twilightforest.capabilities;
-
-import net.minecraft.nbt.CompoundTag;
+package twilightforest.components.entity;
 
 public class GiantPickaxeMiningAttachment {
 

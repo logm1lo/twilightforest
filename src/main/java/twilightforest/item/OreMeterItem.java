@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.capabilities.OreScannerAttachment;
+import twilightforest.components.item.OreScannerComponent;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFSounds;
@@ -46,7 +46,7 @@ public class OreMeterItem extends Item {
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean held) {
 		if (level.isClientSide() || !stack.hasData(TFDataAttachments.ORE_SCANNER)) return;
 
-		OreScannerAttachment data = stack.getData(TFDataAttachments.ORE_SCANNER);
+		OreScannerComponent data = stack.getData(TFDataAttachments.ORE_SCANNER);
 
 		if (data.isEmpty()) {
 			stack.removeData(TFDataAttachments.ORE_SCANNER);
@@ -96,7 +96,7 @@ public class OreMeterItem extends Item {
 			// It's not an exponent growth to match the increase in chunks, but range is capped at 2 anyway
 			int scanTime = LOAD_TIME + range * 25;
 
-			OreScannerAttachment data = OreScannerAttachment.scanFromCenter(player.blockPosition(), range, scanTime);
+			OreScannerComponent data = OreScannerComponent.scanFromCenter(player.blockPosition(), range, scanTime);
 			stack.setData(TFDataAttachments.ORE_SCANNER, data);
 		}
 

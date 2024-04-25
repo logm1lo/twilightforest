@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -74,7 +75,7 @@ public class LifedrainScepterItem extends Item {
 		// 1 in 100 chance of a big pop, you're welcome KD
 		double explosionPower = level.getRandom().nextInt(100) == 0 ? 0.5D : 0.15D;
 
-		for (int i = 0; i < 50 + ((int) target.dimensions.width * 75); ++i) {
+		for (int i = 0; i < 50 + ((int) target.dimensions.width() * 75); ++i) {
 			double gaussX = level.getRandom().nextGaussian() * 0.01D;
 			double gaussY = level.getRandom().nextGaussian() * 0.01D;
 			double gaussZ = level.getRandom().nextGaussian() * 0.01D;
@@ -182,7 +183,7 @@ public class LifedrainScepterItem extends Item {
 						}
 
 						if (living instanceof Player player && !player.isCreative()) {
-							stack.hurt(1, level.getRandom(), null);
+							stack.hurtAndBreak(1, level.getRandom(), player, () -> {});
 						}
 					}
 				}
@@ -207,7 +208,7 @@ public class LifedrainScepterItem extends Item {
 			double tx = source.getX() + (target.x() - source.getX()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
 			double ty = source.getEyeY() - 0.1D + (target.y() - source.getEyeY()) * trailFactor + level.getRandom().nextGaussian() * 0.005D - 0.1D;
 			double tz = source.getZ() + (target.z() - source.getZ()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
-			level.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
+			level.addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, f, f1, f2), tx, ty, tz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -232,9 +233,8 @@ public class LifedrainScepterItem extends Item {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, level, tooltip, flags);
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, context, tooltip, flags);
 		tooltip.add(Component.translatable("item.twilightforest.scepter.desc", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

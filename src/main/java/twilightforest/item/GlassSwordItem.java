@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
 
 import java.util.function.Consumer;
@@ -26,7 +28,7 @@ public class GlassSwordItem extends SwordItem {
 	protected static final BlockParticleOption GLASS_PARTICLE = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState());
 
 	public GlassSwordItem(Tier toolMaterial, Properties properties) {
-		super(toolMaterial, 3, -2.4F, properties);
+		super(toolMaterial, properties);
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class GlassSwordItem extends SwordItem {
 
 		this.hurtAndBreak(stack, attacker, (user) -> {
 			user.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
-			user.broadcastBreakEvent(InteractionHand.MAIN_HAND);
+			user.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 		});
 		return true;
 	}
@@ -60,10 +62,10 @@ public class GlassSwordItem extends SwordItem {
 	}
 
 	private boolean hurt(ItemStack stack, RandomSource random, @Nullable ServerPlayer player) {
-		if (stack.getTag() != null && stack.getTag().contains("TFInfiniteGlassSword")) {
+		if (stack.get(TFDataComponents.INFINITE_GLASS_SWORD) != null) {
 			return false;
 		} else {
-			if (DigDurabilityEnchantment.shouldIgnoreDurabilityDrop(stack, Math.min(3, EnchantmentHelper.getTagEnchantmentLevel(Enchantments.UNBREAKING, stack)), random)) {
+			if (DigDurabilityEnchantment.shouldIgnoreDurabilityDrop(stack, Math.min(3, stack.getEnchantmentLevel(Enchantments.UNBREAKING)), random)) {
 				return false;
 			}
 
@@ -75,8 +77,9 @@ public class GlassSwordItem extends SwordItem {
 		}
 	}
 
-	@Override
-	public int getDefaultTooltipHideFlags(ItemStack stack) {
-		return stack.getTag() != null && stack.getTag().contains("TFInfiniteGlassSword") ? super.getDefaultTooltipHideFlags(stack) : ItemStack.TooltipPart.UNBREAKABLE.getMask();
-	}
+	//TODO
+//	@Override
+//	public int getDefaultTooltipHideFlags(ItemStack stack) {
+//		return stack.get(TFDataComponents.INFINITE_GLASS_SWORD) != null ? super.getDefaultTooltipHideFlags(stack) : ItemStack.TooltipPart.UNBREAKABLE.getMask();
+//	}
 }

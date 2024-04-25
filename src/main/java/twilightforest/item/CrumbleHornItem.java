@@ -47,7 +47,7 @@ public class CrumbleHornItem extends Item {
 			int crumbled = this.doCrumble(serverLevel, living);
 
 			if (crumbled > 0) {
-				stack.hurtAndBreak(crumbled, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
+				stack.hurtAndBreak(crumbled, living, LivingEntity.getSlotForHand(living.getUsedItemHand()));
 			}
 
 			serverLevel.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.get(), living.getSoundSource(), 1.0F, 0.8F);

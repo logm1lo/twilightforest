@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.StructureTagGenerator;
@@ -34,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-
+//FIXME this probably needs a rewrite. Im too tired to look into it rn
 public class MagicMapItem extends MapItem {
 
 	public static final String STR_ID = "magicmap";
@@ -67,8 +69,8 @@ public class MagicMapItem extends MapItem {
 
 	@Nullable
 	public static TFMagicMapData getData(ItemStack stack, Level level) {
-		Integer id = getMapId(stack);
-		return id == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(id));
+		MapId mapid = stack.get(DataComponents.MAP_ID);
+		return mapid == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(mapid.id()));
 	}
 
 	@Nullable

@@ -60,7 +60,7 @@ public class OreMagnetItem extends Item {
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
-		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+		book.getEnchantments().entrySet().forEach(enchantment -> {
 			if (!Objects.equals(Enchantments.UNBREAKING, enchantment)) {
 				badEnchant.set(true);
 			}
@@ -114,7 +114,7 @@ public class OreMagnetItem extends Item {
 			}
 
 			if (moved > 0) {
-				stack.hurtAndBreak(moved, living, user -> user.broadcastBreakEvent(living.getUsedItemHand()));
+				stack.hurtAndBreak(moved, living, LivingEntity.getSlotForHand(living.getUsedItemHand()));
 				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.get(), living.getSoundSource(), 1.0F, 1.0F);
 			}
 		}
@@ -195,7 +195,7 @@ public class OreMagnetItem extends Item {
 									Vec3 offset = new Vec3((level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D);
 									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
 								}
-								PacketDistributor.PLAYER.with(serverplayer).send(particlePacket);
+								PacketDistributor.sendToPlayer(serverplayer, particlePacket);
 							}
 						}
 					}

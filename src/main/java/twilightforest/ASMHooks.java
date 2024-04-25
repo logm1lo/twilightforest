@@ -21,15 +21,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.TooltipFlag;
@@ -44,11 +40,8 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
@@ -59,14 +52,12 @@ import twilightforest.client.FoliageColorHandler;
 import twilightforest.client.TFClientSetup;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.TFPart;
-import twilightforest.events.ToolEvents;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.ChunkBlanketProcessors;
-import twilightforest.item.GiantItem;
 import twilightforest.item.mapdata.TFMagicMapData;
-import twilightforest.item.recipe.EmperorsClothRecipe;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
@@ -158,7 +149,7 @@ public class ASMHooks {
 	 */
 	public static Entity updateMultiparts(Entity entity) {
 		if (entity.isMultipartEntity())
-			PacketDistributor.TRACKING_ENTITY.with(entity).send(new UpdateTFMultipartPacket(entity));
+			PacketDistributor.sendToPlayersTrackingEntity(entity, new UpdateTFMultipartPacket(entity));
 		return entity;
 	}
 
@@ -246,62 +237,6 @@ public class ASMHooks {
 		if (tag.contains(TwilightForestMod.ID + ":book")) {
 			return Component.translatable(component.getString());
 		} else return component;
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.item.Item#getPlayerPOVHitResult(Level, Player, ClipContext.Fluid)}<br>
-	 * [BEFORE ARETURN]
-	 */
-	public static BlockHitResult reach(BlockHitResult o, Level level, Player player, ClipContext.Fluid fluidMode) {
-		InteractionHand hand = ToolEvents.INTERACTION_HAND;
-		if (hand != null) {
-			BlockHitResult hitResult = interactionTooFar(level, player, hand, fluidMode);
-			if (hitResult != null) {
-				return hitResult;
-			}
-		}
-		return o;
-	}
-
-	@Nullable
-	private static BlockHitResult interactionTooFar(Level level, Player player, InteractionHand hand, ClipContext.Fluid fluidMode) {
-		ItemStack heldStack = player.getItemInHand(hand);
-		if (ToolEvents.hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
-			UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
-			AttributeInstance reachDistance = player.getAttribute(NeoForgeMod.BLOCK_REACH.value());
-			if (reachDistance != null) {
-				AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
-				if (giantModifier != null) {
-					reachDistance.removeModifier(giantModifier.getId());
-					double reach = player.getAttributeValue(NeoForgeMod.BLOCK_REACH.value());
-					double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
-					BlockHitResult result = getPlayerPOVHitResultForReach(level, player, trueReach, fluidMode);
-					reachDistance.addTransientModifier(giantModifier);
-					return result;
-				}
-			}
-		}
-		return null;
-	}
-
-	/*
-		[VANILLA COPY]
-		Copied from Item#getPlayerPOVHitResult(Level, Player, ClipContext.Fluid).
-		Uses a parameter for reach in assigning vec31 instead of using IForgePlayer#getReachDistance().
-	 */
-	private static BlockHitResult getPlayerPOVHitResultForReach(Level level, Player player, double reach, ClipContext.Fluid fluidClip) {
-		float f = player.getXRot();
-		float f1 = player.getYRot();
-		Vec3 vec3 = player.getEyePosition();
-		float f2 = Mth.cos(-f1 * ((float) Math.PI / 180.0F) - (float) Math.PI);
-		float f3 = Mth.sin(-f1 * ((float) Math.PI / 180.0F) - (float) Math.PI);
-		float f4 = -Mth.cos(-f * ((float) Math.PI / 180.0F));
-		float f5 = Mth.sin(-f * ((float) Math.PI / 180.0F));
-		float f6 = f3 * f4;
-		float f7 = f2 * f4;
-		Vec3 vec31 = vec3.add((double) f6 * reach, (double) f5 * reach, (double) f7 * reach);
-		return level.clip(new ClipContext(vec3, vec31, ClipContext.Block.OUTLINE, fluidClip, player));
 	}
 
 	/**
@@ -416,7 +351,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br>
 	 */
 	public static boolean cancelArmorRendering(boolean o, ItemStack stack) {
-		if (o && stack.getTag() != null && stack.getTag().contains(EmperorsClothRecipe.INVISIBLE_TAG)) {
+		if (o && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {
 			return false;
 		}
 		return o;
@@ -432,7 +367,7 @@ public class ASMHooks {
 		int nonShroudedArmor = 0;
 
 		for (ItemStack stack : iterable) {
-			if (!stack.isEmpty() && stack.getTag() != null && stack.getTag().contains(EmperorsClothRecipe.INVISIBLE_TAG)) {
+			if (!stack.isEmpty() && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {
 				shroudedArmor++;
 			}
 

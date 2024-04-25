@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,17 +21,8 @@ import java.util.function.Consumer;
 
 public class KnightmetalArmorItem extends ArmorItem {
 
-	public KnightmetalArmorItem(ArmorMaterial material, Type type, Properties properties) {
+	public KnightmetalArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
 		super(material, type, properties);
-	}
-
-	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
-		if (slot == EquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "knightly_2.png";
-		} else {
-			return TwilightForestMod.ARMOR_DIR + "knightly_1.png";
-		}
 	}
 
 	@Override

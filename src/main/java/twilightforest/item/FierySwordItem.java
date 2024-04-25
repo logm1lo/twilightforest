@@ -21,7 +21,7 @@ import java.util.List;
 public class FierySwordItem extends SwordItem {
 
 	public FierySwordItem(Tier toolMaterial, Properties properties) {
-		super(toolMaterial, 3, -2.4F, properties);
+		super(toolMaterial, properties);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class FierySwordItem extends SwordItem {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return !EnchantmentHelper.getEnchantments(book).containsKey(Enchantments.FIRE_ASPECT) && super.isBookEnchantable(stack, book);
+		return book.getEnchantments().getLevel(Enchantments.FIRE_ASPECT) <= 0 && super.isBookEnchantable(stack, book);
 	}
 
 	@Override
@@ -53,9 +53,8 @@ public class FierySwordItem extends SwordItem {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
-		tooltip.add(Component.translatable(getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
+		tooltip.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
 	}
 }

@@ -17,13 +17,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class IceSwordItem extends SwordItem {
 
 	public IceSwordItem(Tier toolMaterial, Properties properties) {
-		super(toolMaterial, 3, -2.4F, properties);
+		super(toolMaterial, properties);
 	}
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
-		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+		book.getEnchantments().entrySet().forEach(enchantment -> {
 			if (Objects.equals(Enchantments.FIRE_ASPECT, enchantment)) {
 				badEnchant.set(true);
 			}

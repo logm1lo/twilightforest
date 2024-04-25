@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.capabilities.YetiThrowAttachment;
+import twilightforest.components.entity.YetiThrowAttachment;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataAttachments;

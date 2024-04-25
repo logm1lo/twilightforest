@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -36,7 +37,7 @@ import java.util.function.Consumer;
 public class YetiArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.yeti_armor.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-	public YetiArmorItem(ArmorMaterial material, Type type, Properties properties) {
+	public YetiArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
 		super(material, type, properties);
 	}
 
@@ -61,17 +62,8 @@ public class YetiArmorItem extends ArmorItem {
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
-		if (slot == EquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
-		} else {
-			return TwilightForestMod.ARMOR_DIR + "yetiarmor_1.png";
-		}
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
 		tooltip.add(TOOLTIP);
 	}
 

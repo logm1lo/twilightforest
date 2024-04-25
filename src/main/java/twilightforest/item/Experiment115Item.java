@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -28,7 +29,7 @@ public class Experiment115Item extends BlockItem {
 		Player player = context.getPlayer();
 		if (!player.isShiftKeyDown()) {
 			InteractionResult actionresulttype = this.place(new BlockPlaceContext(context));
-			return !actionresulttype.consumesAction() && this.isEdible() ? this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult() : actionresulttype;
+			return !actionresulttype.consumesAction() && context.getItemInHand().get(DataComponents.FOOD) != null ? this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult() : actionresulttype;
 		}
 		return InteractionResult.PASS;
 	}

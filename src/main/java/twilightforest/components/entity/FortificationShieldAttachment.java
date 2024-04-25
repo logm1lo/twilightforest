@@ -1,4 +1,4 @@
-package twilightforest.capabilities;
+package twilightforest.components.entity;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -16,9 +16,10 @@ public class MoonDialItem extends Item {
 		super(properties);
 	}
 
+	//FIXME we dont have access to the level anymore! Fuck you Mojang!
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
 		boolean aprilFools = LocalDate.of(LocalDate.now().getYear(), 4, 1).equals(LocalDate.now());
 		tooltip.add(Component.translatable("item.twilightforest.moon_dial.phase_" + (level != null && level.dimensionType().natural() ? level.getMoonPhase() : aprilFools ? "unknown_fools" : "unknown")).withStyle(ChatFormatting.GRAY));
 	}

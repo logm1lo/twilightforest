@@ -1,6 +1,8 @@
-package twilightforest.capabilities;
+package twilightforest.components.item;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
@@ -24,8 +26,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class OreScannerAttachment {
-	private static final OreScannerAttachment EMPTY = new OreScannerAttachment(BlockPos.ZERO, 0, 0, 0);
+public class OreScannerComponent {
+	private static final OreScannerComponent EMPTY = new OreScannerComponent(BlockPos.ZERO, 0, 0, 0);
+
+	public static final Codec<OreScannerComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.INT.fieldOf("x_span").forGetter(o -> o.xSpan),
+			Codec.INT.fieldOf("z_span").forGetter(o -> o.zSpan),
+			Codec.INT.fieldOf("area").forGetter(o -> o.area),
+			Codec.INT.fieldOf("scan_duration").forGetter(o -> o.scanDurationTicks),
+			BlockPos.CODEC.fieldOf("origin").forGetter(o -> o.origin),
+			Codec.unboundedMap()
+	))
 
 	private final int xSpan, zSpan;
 	private final int area;
@@ -36,7 +47,7 @@ public class OreScannerAttachment {
 
 	private int ticksProgressed = 0;
 
-	public static OreScannerAttachment scanFromCenter(BlockPos center, int range, int scanDurationTicks) {
+	public static OreScannerComponent scanFromCenter(BlockPos center, int range, int scanDurationTicks) {
 		int xChunkCenter = center.getX() >> 4;
 		int zChunkCenter = center.getZ() >> 4;
 
@@ -45,10 +56,10 @@ public class OreScannerAttachment {
 		int xSpan = SectionPos.sectionToBlockCoord(xChunkCenter + range, 15) - origin.getX();
 		int zSpan = SectionPos.sectionToBlockCoord(zChunkCenter + range, 15) - origin.getZ();
 
-		return new OreScannerAttachment(origin, xSpan, zSpan, scanDurationTicks);
+		return new OreScannerComponent(origin, xSpan, zSpan, scanDurationTicks);
 	}
 
-	public OreScannerAttachment(BlockPos origin, int xSpan, int zSpan, int scanDurationTicks) {
+	public OreScannerComponent(BlockPos origin, int xSpan, int zSpan, int scanDurationTicks) {
 		this.origin = origin;
 		this.xSpan = xSpan;
 		this.zSpan = zSpan;
@@ -119,19 +130,19 @@ public class OreScannerAttachment {
 		return this.area <= 0;
 	}
 
-	public static OreScannerAttachment getEmpty() {
+	public static OreScannerComponent getEmpty() {
 		return EMPTY;
 	}
 
 	// This attachment goes onto ItemStacks, so this seems better suited over using a Codec
-	public static class Serializer implements IAttachmentSerializer<CompoundTag, OreScannerAttachment> {
-		public static final OreScannerAttachment.Serializer INSTANCE = new Serializer();
+	public static class Serializer implements IAttachmentSerializer<CompoundTag, OreScannerComponent> {
+		public static final OreScannerComponent.Serializer INSTANCE = new Serializer();
 
 		private Serializer() {
 		}
 
 		@Override
-		public OreScannerAttachment read(IAttachmentHolder holder, CompoundTag tag) {
+		public OreScannerComponent read(IAttachmentHolder holder, CompoundTag tag) {
 			BlockPos origin = NbtUtils.readBlockPos(tag);
 
 			int xSpan = tag.getInt("span_x");
@@ -143,7 +154,7 @@ public class OreScannerAttachment {
 				return EMPTY;
 			}
 
-			OreScannerAttachment attachment = new OreScannerAttachment(origin, xSpan, zSpan, scanTimeTicks);
+			OreScannerComponent attachment = new OreScannerComponent(origin, xSpan, zSpan, scanTimeTicks);
 
 			ListTag list = tag.getList("counts", 10);
 
@@ -161,7 +172,7 @@ public class OreScannerAttachment {
 
 		@Nullable
 		@Override
-		public CompoundTag write(OreScannerAttachment attachment) {
+		public CompoundTag write(OreScannerComponent attachment) {
 			if (attachment.area <= 0)
 				return null;
 

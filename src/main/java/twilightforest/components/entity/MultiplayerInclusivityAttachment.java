@@ -1,4 +1,4 @@
-package twilightforest.capabilities;
+package twilightforest.components.entity;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;

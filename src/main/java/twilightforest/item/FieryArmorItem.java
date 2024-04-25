@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -37,14 +38,14 @@ import java.util.function.Consumer;
 public class FieryArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.fiery_armor.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-	public FieryArmorItem(ArmorMaterial material, Type type, Properties properties) {
+	public FieryArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
 		super(material, type, properties);
 	}
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
-		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+		book.getEnchantments().entrySet().forEach(enchantment -> {
 			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.CHILL_AURA.get(), enchantment)
 					|| Objects.equals(TFEnchantments.FIRE_REACT.get(), enchantment)
 					|| Objects.equals(Enchantments.FROST_WALKER, enchantment)) {
@@ -65,18 +66,8 @@ public class FieryArmorItem extends ArmorItem {
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
-		if (slot == EquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
-		} else {
-			return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
-		}
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, level, tooltip, flags);
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
 		tooltip.add(TOOLTIP);
 	}
 

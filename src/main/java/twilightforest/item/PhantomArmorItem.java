@@ -38,14 +38,8 @@ import java.util.function.Consumer;
 public class PhantomArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.phantom_armor.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-	public PhantomArmorItem(ArmorMaterial material, Type type, Properties properties) {
+	public PhantomArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
 		super(material, type, properties);
-	}
-
-	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
-		// there's no legs, so let's not worry about them
-		return TwilightForestMod.ARMOR_DIR + "phantom_1.png";
 	}
 
 	@Override
@@ -69,8 +63,7 @@ public class PhantomArmorItem extends ArmorItem {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(TOOLTIP);
 	}
 

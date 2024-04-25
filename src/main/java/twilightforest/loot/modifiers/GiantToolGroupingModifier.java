@@ -22,13 +22,12 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
-import twilightforest.capabilities.GiantPickaxeMiningAttachment;
+import twilightforest.components.entity.GiantPickaxeMiningAttachment;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.item.GiantPickItem;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class GiantToolGroupingModifier extends LootModifier {
