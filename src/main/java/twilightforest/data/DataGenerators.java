@@ -10,7 +10,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.util.InclusiveRange;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -21,7 +21,7 @@ import twilightforest.data.tags.*;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = TwilightForestMod.ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
 
 	@SubscribeEvent
@@ -52,9 +52,9 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, provider, blocktags.contentsGetter(), helper));
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.EnchantmentTagGenerator(output, provider, helper));
-		generator.addProvider(event.includeServer(), new LootGenerator(output));
+		generator.addProvider(event.includeServer(), new LootGenerator(output, provider));
 		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
-		generator.addProvider(event.includeServer(), new LootModifierGenerator(output));
+		generator.addProvider(event.includeServer(), new LootModifierGenerator(output, provider));
 
 		//registry-based tags
 		DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(output, provider);

@@ -27,6 +27,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 
@@ -37,13 +38,13 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	private final BlockStateProvider leaves;
 	private final BlockStateProvider inside;
 	private final BlockStateProvider lootContainer;
-	private final ResourceLocation lootTable;
+	private final ResourceKey<LootTable> lootTable;
 	private final Holder<EntityType<?>> monster;
 
 	/**
 	 * Make a blob of leaves
 	 */
-	protected HollowTreeLeafDungeon(int index, int x, int y, int z, int radius, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider inside, BlockStateProvider lootContainer, ResourceLocation lootTable, Holder<EntityType<?>> monster, RandomSource random) {
+	protected HollowTreeLeafDungeon(int index, int x, int y, int z, int radius, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider inside, BlockStateProvider lootContainer, ResourceKey<LootTable> lootTable, Holder<EntityType<?>> monster, RandomSource random) {
 		super(TFStructurePieceTypes.TFHTLD.value(), index, new BoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius));
 
 		this.setOrientation(StructurePiece.getRandomHorizontalDirection(random));
@@ -122,7 +123,7 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 */
-	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, RandomSource random, BlockStateProvider stateProvider, ResourceLocation lootTable) {
+	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, RandomSource random, BlockStateProvider stateProvider, ResourceKey<LootTable> lootTable) {
 		Direction direction = new Direction[]{ Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST }[random.nextInt(4)];
 		BlockPos pos = this.getWorldPos(x, y, z).relative(direction, 2);
 

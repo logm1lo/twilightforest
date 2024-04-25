@@ -63,6 +63,6 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
 
         world.removeBlock(info.pos(), false);
 
-        TFLootTables.FANCY_WELL.generateLootContainer(world, info.pos(), Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2);
+        TFLootTables.generateLootContainer(world, info.pos(), Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2, TFLootTables.FANCY_WELL);
     }
 }

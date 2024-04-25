@@ -18,6 +18,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
@@ -36,7 +37,6 @@ import twilightforest.loot.conditions.IsMinionCondition;
 
 import java.util.stream.Stream;
 
-@SuppressWarnings("deprecation")
 public class EntityLootTables extends EntityLootSubProvider {
 
 	protected EntityLootTables() {
@@ -112,7 +112,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootTableReference.lootTableReference(EntityType.GHAST.getDefaultLootTable()))
+								.add(NestedLootTable.lootTableReference(EntityType.GHAST.getDefaultLootTable()))
 								.when(IsMinionCondition.builder(true))));
 
 		/*registerLootTable(TFEntities.BOGGARD.get(),
@@ -380,7 +380,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 						.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.WRITABLE_BOOK).setWeight(2).setQuality(3))
 								.add(LootItem.lootTableItem(Items.BOOK).setWeight(19))
-								.add(LootTableReference.lootTableReference(TFLootTables.DEATH_TOME_BOOKS).setWeight(1)))
+								.add(NestedLootTable.lootTableReference(TFLootTables.DEATH_TOME_BOOKS).setWeight(1)))
 						.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 								.when(LootItemKilledByPlayerCondition.killedByPlayer())
 								.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.005F))
@@ -390,7 +390,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootTableReference.lootTableReference(BuiltInLootTables.EMPTY))
+								.add(NestedLootTable.lootTableReference(BuiltInLootTables.EMPTY))
 								.add(LootItem.lootTableItem(Items.PAPER))));
 
 		add(TFEntities.DEATH_TOME.get(), TFLootTables.DEATH_TOME_BOOKS,
@@ -596,11 +596,11 @@ public class EntityLootTables extends EntityLootSubProvider {
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
-						.add(LootTableReference.lootTableReference(parent.getDefaultLootTable())));
+						.add(NestedLootTable.lootTableReference(parent.getDefaultLootTable())));
 	}
 
 	private static LootTable.Builder sheepLootTableBuilderWithDrop(ItemLike wool) {
-		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(wool))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootTableReference.lootTableReference(EntityType.SHEEP.getDefaultLootTable())));
+		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(wool))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(NestedLootTable.lootTableReference(EntityType.SHEEP.getDefaultLootTable())));
 	}
 
 	@Override

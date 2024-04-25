@@ -174,7 +174,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						}
 						data.addAll(trap.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 						if (world.setBlock(placement.offset(chestloc), Blocks.TRAPPED_CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags)) {
-							TFLootTables.GRAVEYARD.generateChestContents(world, placement.offset(chestloc));
+							TFLootTables.generateChestContents(world, placement.offset(chestloc), TFLootTables.GRAVEYARD);
 							world.setBlock(placement.offset(chestloc).below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
 						}
 						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());

@@ -368,7 +368,7 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 	private static void makeLeafDungeonChest(WorldGenLevel world, RandomSource  random, BlockPos pos) {
 		Direction chestDir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
 		pos = pos.relative(chestDir, 2);
-		TFLootTables.TREE_CACHE.generateChest(world, pos.below(), chestDir.getOpposite(), false);
+		TFLootTables.generateChest(world, pos.below(), chestDir.getOpposite(), false, TFLootTables.TREE_CACHE);
 	}
 
 	/**

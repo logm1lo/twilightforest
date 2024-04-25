@@ -9,6 +9,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.FeatureLogic;
@@ -53,7 +55,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 			BlockStateProvider.CODEC.fieldOf("dungeon_wood").forGetter(s -> s.dungeonWood),
 			BlockStateProvider.CODEC.fieldOf("dungeon_air").forGetter(s -> s.dungeonAir),
 			BlockStateProvider.CODEC.fieldOf("dungeon_loot_block").forGetter(s -> s.dungeonLootBlock),
-			ResourceLocation.CODEC.fieldOf("dungeon_loot_table").forGetter(s -> s.dungeonLootTable),
+			ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("dungeon_loot_table").forGetter(s -> s.dungeonLootTable),
 			RegistryFixedCodec.create(Registries.ENTITY_TYPE).fieldOf("dungeon_monster").forGetter(s -> s.dungeonMonster)
 	).apply(instance, HollowTreeStructure::new));
 
@@ -72,7 +74,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 	private final BlockStateProvider dungeonWood;
 	private final BlockStateProvider dungeonAir;
 	private final BlockStateProvider dungeonLootBlock;
-	private final ResourceLocation dungeonLootTable;
+	private final ResourceKey<LootTable> dungeonLootTable;
 	private final Holder<EntityType<?>> dungeonMonster;
 
 	public HollowTreeStructure(
@@ -89,7 +91,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 			BlockStateProvider dungeonWood,
 			BlockStateProvider dungeonAir,
 			BlockStateProvider dungeonLootBlock,
-			ResourceLocation dungeonLootTable,
+			ResourceKey<LootTable> dungeonLootTable,
 			Holder<EntityType<?>> dungeonMonster
 	) {
 		super(settings);

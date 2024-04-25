@@ -104,7 +104,7 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
                 default  -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
             };
 
-            (s.endsWith("J") ? TFLootTables.HUT_JUNK : TFLootTables.BASEMENT).generateLootContainer(world, blockPos, chest, 16 | 2);
+            TFLootTables.generateLootContainer(world, blockPos, chest, 16 | 2, (s.endsWith("J") ? TFLootTables.HUT_JUNK : TFLootTables.BASEMENT));
         } else if (s.startsWith("barrel")) {
             world.removeBlock(blockPos, false);
             BlockState chest = Blocks.BARREL.defaultBlockState();
@@ -118,7 +118,7 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
                 default  -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.UP)));
             };
 
-            TFLootTables.HUT_JUNK.generateLootContainer(world, blockPos, chest, 16 | 2);
+            TFLootTables.generateLootContainer(world, blockPos, chest, 16 | 2, TFLootTables.HUT_JUNK);
         } else if (s.startsWith("painting")) {
             world.removeBlock(blockPos, false);
 

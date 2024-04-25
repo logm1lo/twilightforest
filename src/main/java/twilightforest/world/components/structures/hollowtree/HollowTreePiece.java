@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -23,6 +23,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStatePr
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.block.CritterBlock;
 import twilightforest.init.TFBlocks;
@@ -46,7 +47,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 	public static final BlockStateProvider DEFAULT_DUNGEON_AIR = BlockStateProvider.simple(Blocks.AIR);
 	public static final BlockStateProvider DEFAULT_DUNGEON_LOOT_BLOCK = BlockStateProvider.simple(Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST));
 
-	public static final ResourceLocation DEFAULT_DUNGEON_LOOT_TABLE = TFLootTables.TREE_CACHE.lootTable;
+	public static final ResourceKey<LootTable> DEFAULT_DUNGEON_LOOT_TABLE = TFLootTables.TREE_CACHE;
 	public static final Holder<EntityType<?>> DEFAULT_DUNGEON_MONSTER = TFEntities.SWARM_SPIDER;
 
 	protected HollowTreePiece(StructurePieceType type, int genDepth, BoundingBox boundingBox) {

@@ -79,7 +79,7 @@ public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
             default  -> rotation.rotate(mirror.mirror(Direction.NORTH));
         };
 
-        TFLootTables.WELL.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2);
+        TFLootTables.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2, TFLootTables.WELL);
 
         if (random.nextBoolean()) return;
 

@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -152,7 +154,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	 * Place a treasure chest at the specified coordinates
 	 *
 	 */
-	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFLootTables treasureType, BoundingBox sbb) {
+	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, ResourceKey<LootTable> treasureType, BoundingBox sbb) {
 		this.placeTreasureAtCurrentPosition(world, x, y, z, treasureType, false, sbb);
 	}
 
@@ -160,16 +162,16 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	 * Place a treasure chest at the specified coordinates
 	 *
 	 */
-	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
+	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, ResourceKey<LootTable> treasureType, boolean trapped, BoundingBox sbb) {
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
 		int dz = getWorldZ(x, z);
 		this.placeTreasureAtWorldPosition(world, treasureType, trapped, sbb, new BlockPos(dx, dy, dz));
 	}
 
-	protected void placeTreasureAtWorldPosition(WorldGenLevel world, TFLootTables treasureType, boolean trapped, BoundingBox sbb, BlockPos pos) {
+	protected void placeTreasureAtWorldPosition(WorldGenLevel world, ResourceKey<LootTable> treasureType, boolean trapped, BoundingBox sbb, BlockPos pos) {
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world, pos, this.getOrientation(), trapped);
+			TFLootTables.generateChest(world, pos, this.getOrientation(), trapped, treasureType);
 		}
 	}
 
@@ -177,7 +179,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	 * Place a treasure chest at the specified coordinates
 	 *
 	 */
-	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFLootTables treasureType, BoundingBox sbb) {
+	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, ResourceKey<LootTable> treasureType, BoundingBox sbb) {
 		this.placeTreasureRotated(world, x, y, z, facing, rotation, treasureType, false, sbb);
 	}
 
@@ -185,7 +187,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	 * Place a treasure chest at the specified coordinates
 	 *
 	 */
-	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
+	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, ResourceKey<LootTable> treasureType, boolean trapped, BoundingBox sbb) {
 		if(facing == null) {
 			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
 			facing = Direction.NORTH;
@@ -196,25 +198,25 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world, pos, facing, trapped);
+			TFLootTables.generateChest(world, pos, facing, trapped, treasureType);
 		}
 	}
 
-	protected void manualTreaurePlacement(WorldGenLevel world, int x, int y, int z, Direction facing, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
+	protected void manualTreaurePlacement(WorldGenLevel world, int x, int y, int z, Direction facing, ResourceKey<LootTable> treasureType, boolean trapped, BoundingBox sbb) {
 		int lootx = getWorldX(x, z);
 		int looty = getWorldY(y);
 		int lootz = getWorldZ(x, z);
 		BlockPos lootPos = new BlockPos(lootx, looty, lootz);
 		this.placeBlock(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.TYPE, ChestType.LEFT).setValue(ChestBlock.FACING, facing), x, y, z, sbb);
-		treasureType.generateChestContents(world, lootPos);
+		TFLootTables.generateChestContents(world, lootPos, treasureType);
 	}
 
 	//when adding a loot table to a chest using this method, please be aware it places 2 of the same loot table, one for each chest
-	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, @Nullable Direction facing, TFLootTables treasureType, BoundingBox sbb, boolean trapped) {
+	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, @Nullable Direction facing, ResourceKey<LootTable> treasureType, BoundingBox sbb, boolean trapped) {
 		this.setDoubleLootChest(world, x, y, z, otherx, othery, otherz, facing, treasureType, treasureType, sbb, trapped);
 	}
 
-	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, @Nullable Direction facing, TFLootTables treasureType, TFLootTables secondaryLootType, BoundingBox sbb, boolean trapped) {
+	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, @Nullable Direction facing, ResourceKey<LootTable> treasureType, ResourceKey<LootTable> secondaryLootType, BoundingBox sbb, boolean trapped) {
 		if (facing == null) {
 			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
 			facing = Direction.NORTH;
@@ -226,8 +228,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 
 		this.placeBlock(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.TYPE, ChestType.LEFT).setValue(ChestBlock.FACING, facing), x, y, z, sbb);
 		this.placeBlock(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.TYPE, ChestType.RIGHT).setValue(ChestBlock.FACING, facing), otherx, othery, otherz, sbb);
-		treasureType.generateChestContents(world, flipContents ? secondChestPos : firstChestPos);
-		secondaryLootType.generateChestContents(world, flipContents ? firstChestPos : secondChestPos);
+		TFLootTables.generateChestContents(world, flipContents ? secondChestPos : firstChestPos, treasureType);
+		TFLootTables.generateChestContents(world, flipContents ? firstChestPos : secondChestPos, secondaryLootType);
 	}
 
 	/**

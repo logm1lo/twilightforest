@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.FeatureLogic;
@@ -33,10 +34,10 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	private final BlockStateProvider dungeonWood;
 	private final BlockStateProvider dungeonAir;
 	private final BlockStateProvider dungeonLootBlock;
-	private final ResourceLocation dungeonLootTable;
+	private final ResourceKey<LootTable> dungeonLootTable;
 	private final Holder<EntityType<?>> dungeonMonster;
 
-	protected HollowTreeLargeBranch(int i, BlockPos src, double length, double angle, double tilt, boolean leafy, RandomSource rand, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceLocation dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
+	protected HollowTreeLargeBranch(int i, BlockPos src, double length, double angle, double tilt, boolean leafy, RandomSource rand, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceKey<LootTable> dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
 		super(TFStructurePieceTypes.TFHTLB.value(), i, src, FeatureLogic.translate(src, length, angle, tilt), length, angle, tilt, leafy, wood, leaves);
 
 		this.hasLeafDungeon = rand.nextInt(LEAF_DUNGEON_CHANCE) == 0;

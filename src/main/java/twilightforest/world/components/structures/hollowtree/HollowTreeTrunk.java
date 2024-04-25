@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.FeatureLogic;
@@ -42,10 +43,10 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	private final BlockStateProvider dungeonWood;
 	private final BlockStateProvider dungeonAir;
 	private final BlockStateProvider dungeonLootBlock;
-	private final ResourceLocation dungeonLootTable;
+	private final ResourceKey<LootTable> dungeonLootTable;
 	private final Holder<EntityType<?>> dungeonMonster;
 
-	public HollowTreeTrunk(int height, int radius, BoundingBox pBoundingBox, BlockStateProvider log1, BlockStateProvider wood, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider vine, BlockStateProvider bug, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceLocation dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
+	public HollowTreeTrunk(int height, int radius, BoundingBox pBoundingBox, BlockStateProvider log1, BlockStateProvider wood, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider vine, BlockStateProvider bug, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceKey<LootTable> dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
 		super(TFStructurePieceTypes.TFHTTr.value(), 0, pBoundingBox);
 
 		this.setOrientation(Direction.SOUTH);

@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -10,6 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.MoonwormBlockEntity;
 import twilightforest.init.TFBlockEntities;
@@ -41,7 +43,7 @@ public class MoonwormBlock extends CritterBlock {
 	}
 
 	@Override
-	public @Nullable ResourceLocation getSquishLootTable() {
+	public @Nullable ResourceKey<LootTable> getSquishLootTable() {
 		return TFLootTables.MOONWORM_SQUISH_DROPS;
 	}
 }

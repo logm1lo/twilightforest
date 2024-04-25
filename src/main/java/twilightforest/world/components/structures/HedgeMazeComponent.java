@@ -3,6 +3,7 @@ package twilightforest.world.components.structures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
@@ -186,7 +188,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	/**
 	 * Place a treasure chest within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomTreasure(WorldGenLevel world, RandomSource rand, int x, int z, int diameter, BoundingBox sbb, TFLootTables table) {
+	private void roomTreasure(WorldGenLevel world, RandomSource rand, int x, int z, int diameter, BoundingBox sbb, ResourceKey<LootTable> table) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
@@ -198,7 +200,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 			Direction facing;
 			if (Math.abs(xDiff) > Math.abs(zDiff)) facing = xDiff < 0 ? Direction.WEST : Direction.EAST;
 			else facing = zDiff < 0 ? Direction.NORTH : Direction.SOUTH;
-			table.generateChest(world, pos, facing, false);
+			TFLootTables.generateChest(world, pos, facing, false, table);
 		}
 	}
 

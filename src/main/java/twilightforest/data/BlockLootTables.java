@@ -18,7 +18,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
-import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyCustomDataFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
@@ -92,7 +92,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), createMushroomBlockDrop(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), TFBlocks.MUSHGLOOM.get()));
 		add(TFBlocks.TROLLVIDR.get(), createShearsOnlyDrop(TFBlocks.TROLLVIDR.get()));
 		add(TFBlocks.UNRIPE_TROLLBER.get(), createShearsOnlyDrop(TFBlocks.UNRIPE_TROLLBER.get()));
-		add(TFBlocks.TROLLBER.get(), createShearsDispatchTable(TFBlocks.TROLLBER.get(), LootItem.lootTableItem(TFItems.TORCHBERRIES.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(4.0F, 8.0F))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))));
+		add(TFBlocks.TROLLBER.get(), createShearsDispatchTable(TFBlocks.TROLLBER.get(), LootItem.lootTableItem(TFItems.TORCHBERRIES.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(4.0F, 8.0F))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.FORTUNE))));
 		dropSelf(TFBlocks.HUGE_LILY_PAD.get());
 		dropSelf(TFBlocks.HUGE_WATER_LILY.get());
 		dropSelf(TFBlocks.CASTLE_BRICK.get());
@@ -142,7 +142,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.RED_THREAD.get(), redThread());
 		dropWhenSilkTouch(TFBlocks.HEDGE.get());
 		add(TFBlocks.ROOT_BLOCK.get(), createSingleItemTableWithSilkTouch(TFBlocks.ROOT_BLOCK.get(), Items.STICK, UniformGenerator.between(3, 5)));
-		add(TFBlocks.LIVEROOT_BLOCK.get(), createSilkTouchDispatchTable(TFBlocks.LIVEROOT_BLOCK.get(), applyExplosionCondition(TFBlocks.LIVEROOT_BLOCK.get(), LootItem.lootTableItem(TFItems.LIVEROOT.get()).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))));
+		add(TFBlocks.LIVEROOT_BLOCK.get(), createSilkTouchDispatchTable(TFBlocks.LIVEROOT_BLOCK.get(), applyExplosionCondition(TFBlocks.LIVEROOT_BLOCK.get(), LootItem.lootTableItem(TFItems.LIVEROOT.get()).apply(ApplyBonusCount.addOreBonusCount(Enchantments.FORTUNE)))));
 		add(TFBlocks.MANGROVE_ROOT.get(), createSingleItemTableWithSilkTouch(TFBlocks.MANGROVE_ROOT.get(), Items.STICK, UniformGenerator.between(3, 5)));
 		dropSelf(TFBlocks.UNCRAFTING_TABLE.get());
 		dropSelf(TFBlocks.FIREFLY_JAR.get());
@@ -202,8 +202,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.WITHER_SKELETON_SKULL));
 		add(TFBlocks.CREEPER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
 		add(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
-		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
-		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
+		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(CopyCustomDataFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner"))); //FIXME 1.20.5 - validate
+		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(CopyCustomDataFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner"))); //FIXME 1.20.5 - validate
 		add(TFBlocks.PIGLIN_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PIGLIN_HEAD));
 		add(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PIGLIN_HEAD));
 
@@ -504,14 +504,14 @@ public class BlockLootTables extends BlockLootSubProvider {
 	private void registerLeavesNoSapling(Block leaves) {
 		LootPoolEntryContainer.Builder<?> sticks = applyExplosionDecay(leaves, LootItem.lootTableItem(Items.STICK)
 				.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
-				.when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
+				.when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
 		add(leaves, createSilkTouchOrShearsDispatchTable(leaves, sticks));
 	}
 
 	private LootTable.Builder hollowLog(Block log) {
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE)))))
+						.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE)))))
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(Blocks.SHORT_GRASS).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
@@ -531,12 +531,12 @@ public class BlockLootTables extends BlockLootSubProvider {
 	private LootTable.Builder verticalHollowLog(Block log) {
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE)))));
+						.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE)))));
 	}
 
 	// [VanillaCopy] super.droppingWithChancesAndSticks, but non-silk touch parameter can be an item instead of a block
 	private LootTable.Builder silkAndStick(Block block, ItemLike nonSilk, float... nonSilkFortune) {
-		return createSilkTouchOrShearsDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(nonSilk.asItem())).when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, nonSilkFortune))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when((HAS_SHEARS.or(HAS_SILK_TOUCH)).invert()).add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))).when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
+		return createSilkTouchOrShearsDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(nonSilk.asItem())).when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.FORTUNE, nonSilkFortune))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when((HAS_SHEARS.or(HAS_SILK_TOUCH)).invert()).add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))).when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
 	}
 
 	private static LootTable.Builder casketInfo(Block block) {
