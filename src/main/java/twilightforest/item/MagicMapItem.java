@@ -74,11 +74,18 @@ public class MagicMapItem extends MapItem {
 	}
 
 	@Nullable
+	public static TFMagicMapData getData(ItemStack stack, TooltipContext context) {
+		MapId mapid = stack.get(DataComponents.MAP_ID);
+		return mapid != null && context.mapData(mapid) instanceof TFMagicMapData mapData ? mapData : null;
+	}
+
+	@Nullable
 	@Override
 	protected TFMagicMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMagicMapData mapdata = getData(stack, level);
 		if (mapdata == null && !level.isClientSide()) {
-			mapdata = MagicMapItem.createMapData(stack, level, level.getLevelData().getXSpawn(), level.getLevelData().getZSpawn(), 3, false, false, level.dimension());
+			BlockPos sharedSpawnPos = level.getSharedSpawnPos();
+			mapdata = MagicMapItem.createMapData(stack, level, sharedSpawnPos.getX(), sharedSpawnPos.getZ(), 3, false, false, level.dimension());
 		}
 
 		return mapdata;
@@ -95,12 +102,12 @@ public class MagicMapItem extends MapItem {
 	}
 
 	private static TFMagicMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
-		int i = level.getFreeMapId();
+		MapId freeMapId = level.getFreeMapId();
 		ColumnPos pos = getMagicMapCenter(x, z);
 
 		TFMagicMapData mapdata = new TFMagicMapData(pos.x(), pos.z(), (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
-		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(i)); // call our own register method
-		stack.getOrCreateTag().putInt("map", i);
+		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(freeMapId.id())); // call our own register method
+		stack.set(DataComponents.MAP_ID, freeMapId);
 		return mapdata;
 	}
 
@@ -264,28 +271,27 @@ public class MagicMapItem extends MapItem {
 	@Override
 	@Nullable
 	public Packet<?> getUpdatePacket(ItemStack stack, Level world, Player player) {
-		Integer id = getMapId(stack);
+		MapId mapId = stack.get(DataComponents.MAP_ID);
 		TFMagicMapData mapdata = getCustomMapData(stack, world);
-		return id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
+		return mapId == null || mapdata == null ? null : mapdata.getUpdatePacket(mapId, player);
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		Integer integer = getMapId(stack);
-		TFMagicMapData mapitemsaveddata = level == null ? null : getData(stack, level);
-		if (flag.isAdvanced()) {
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		MapId mapId = stack.get(DataComponents.MAP_ID);
+		if (flag.isAdvanced() && mapId != null) {
+			MapItemSavedData mapitemsaveddata = context.mapData(mapId);
 			if (mapitemsaveddata != null) {
-				tooltip.add((Component.translatable("filled_map.id", integer)).withStyle(ChatFormatting.GRAY));
+				tooltip.add((Component.translatable("filled_map.id", mapId.id())).withStyle(ChatFormatting.GRAY));
 				tooltip.add((Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
 				tooltip.add((Component.translatable("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
 			} else {
 				tooltip.add((Component.translatable("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
 			}
 		} else {
-			if (integer != null) {
-				tooltip.add(Component.literal("#" + integer).withStyle(ChatFormatting.GRAY));
+			if (mapId != null) {
+				tooltip.add(Component.literal("#" + mapId.id()).withStyle(ChatFormatting.GRAY));
 			}
 		}
-
 	}
 }
