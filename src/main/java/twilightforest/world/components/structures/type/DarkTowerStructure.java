@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
@@ -43,7 +43,7 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
         return TFStructureTypes.DARK_TOWER.get();
     }
 
-    public static DarkTowerStructure buildDarkTowerConfig(BootstapContext<Structure> context) {
+    public static DarkTowerStructure buildDarkTowerConfig(BootstrapContext<Structure> context) {
         return new DarkTowerStructure(
                 ControlledSpawningConfig.create(List.of(List.of(
                         new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GOLEM.get(), 10, 1, 2),

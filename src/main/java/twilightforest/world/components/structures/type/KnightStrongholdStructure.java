@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
@@ -43,7 +43,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
         return TFStructureTypes.KNIGHT_STRONGHOLD.get();
     }
 
-    public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstapContext<Structure> context) {
+    public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstrapContext<Structure> context) {
         return new KnightStrongholdStructure(
                 ControlledSpawningConfig.firstIndexMonsters(
                         new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.get(), 10, 1, 2),

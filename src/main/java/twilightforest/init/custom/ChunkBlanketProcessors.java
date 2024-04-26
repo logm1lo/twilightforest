@@ -6,7 +6,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ChunkHolder;
@@ -64,7 +64,7 @@ public final class ChunkBlanketProcessors {
         return CHUNK_BLANKETING_TYPES.register(name, () -> () -> boxedCodec);
     }
 
-    public static void bootstrap(BootstapContext<ChunkBlanketProcessor> context) {
+    public static void bootstrap(BootstrapContext<ChunkBlanketProcessor> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
         HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 

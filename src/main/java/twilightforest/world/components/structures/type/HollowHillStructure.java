@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
@@ -86,7 +86,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
         return this.controlledSpawningConfig;
     }
 
-    public static HollowHillStructure buildSmallHillConfig(BootstapContext<Structure> context) {
+    public static HollowHillStructure buildSmallHillConfig(BootstrapContext<Structure> context) {
         return new HollowHillStructure(
                 1,
                 ControlledSpawningConfig.create(List.of(List.of(
@@ -107,7 +107,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
         );
     }
 
-    public static HollowHillStructure buildMediumHillConfig(BootstapContext<Structure> context) {
+    public static HollowHillStructure buildMediumHillConfig(BootstrapContext<Structure> context) {
         return new HollowHillStructure(
                 2,
                 ControlledSpawningConfig.create(List.of(List.of(
@@ -133,7 +133,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
         );
     }
 
-    public static HollowHillStructure buildLargeHillConfig(BootstapContext<Structure> context) {
+    public static HollowHillStructure buildLargeHillConfig(BootstrapContext<Structure> context) {
         return new HollowHillStructure(
                 3,
                 ControlledSpawningConfig.firstIndexMonsters(

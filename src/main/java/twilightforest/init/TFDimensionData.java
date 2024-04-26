@@ -2,7 +2,7 @@ package twilightforest.init;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -54,11 +54,11 @@ public class TFDimensionData {
 		);
 	}
 
-	public static void bootstrapType(BootstapContext<DimensionType> context) {
+	public static void bootstrapType(BootstrapContext<DimensionType> context) {
 		context.register(TWILIGHT_DIM_TYPE, twilightDimType());
 	}
 
-	public static NoiseGeneratorSettings makeNoiseSettings(BootstapContext<NoiseGeneratorSettings> context, boolean skylight) {
+	public static NoiseGeneratorSettings makeNoiseSettings(BootstrapContext<NoiseGeneratorSettings> context, boolean skylight) {
 		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
 		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctions.SKYLIGHT_TERRAIN : TFDensityFunctions.FORESTED_TERRAIN));
 
@@ -100,12 +100,12 @@ public class TFDimensionData {
 		);
 	}
 
-	public static void bootstrapNoise(BootstapContext<NoiseGeneratorSettings> context) {
+	public static void bootstrapNoise(BootstrapContext<NoiseGeneratorSettings> context) {
 		context.register(TWILIGHT_NOISE_GEN, makeNoiseSettings(context, false));
 		context.register(SKYLIGHT_NOISE_GEN, makeNoiseSettings(context, true));
 	}
 
-	public static void bootstrapStem(BootstapContext<LevelStem> context) {
+	public static void bootstrapStem(BootstrapContext<LevelStem> context) {
 		HolderGetter<DimensionType> dimTypes = context.lookup(Registries.DIMENSION_TYPE);
 		HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);
 

@@ -3,7 +3,7 @@ package twilightforest.init;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -218,7 +218,7 @@ public final class TFConfiguredFeatures {
 		return ResourceKey.create(Registries.CONFIGURED_FEATURE, TwilightForestMod.prefix(name));
 	}
 
-	public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
+	public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 		HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
 		context.register(LAKE_LAVA, new ConfiguredFeature<>(Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(Blocks.LAVA), BlockStateProvider.simple(Blocks.STONE))));
 		context.register(LAKE_WATER, new ConfiguredFeature<>(Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(Blocks.WATER), BlockStateProvider.simple(Blocks.STONE))));
@@ -336,7 +336,7 @@ public final class TFConfiguredFeatures {
 		context.register(FLOWER_PLACER_ALT, new ConfiguredFeature<>(Feature.FLOWER, SMALL_FLOWER_CONFIG_ALT));
 	}
 
-	private static void registerTemplateFeatures(BootstapContext<ConfiguredFeature<?, ?>> context) {
+	private static void registerTemplateFeatures(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 		HolderGetter<WoodPalette> paletteHolders = context.lookup(TFRegistries.Keys.WOOD_PALETTES);
 		var paletteChoices = SwizzleConfig.buildRarityPalette(paletteHolders);
 

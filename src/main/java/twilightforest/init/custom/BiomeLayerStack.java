@@ -6,7 +6,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -33,7 +33,7 @@ public class BiomeLayerStack {
         return ResourceKey.create(TFRegistries.Keys.BIOME_STACK, TwilightForestMod.prefix(name));
     }
 
-    public static void bootstrap(BootstapContext<BiomeLayerFactory> context) {
+    public static void bootstrap(BootstrapContext<BiomeLayerFactory> context) {
         BiomeLayerFactory biomes = new RandomBiomeLayer.Factory(1L, 15, ImmutableList.of(
                 TFBiomes.FOREST,
                 TFBiomes.DENSE_FOREST,
@@ -82,7 +82,7 @@ public class BiomeLayerStack {
         context.register(BIOMES_ALONG_STREAMS, new FilteredBiomeLayer.Factory(100L, TFBiomes.STREAM, Holder.direct(riverLayer), randomBiomes));
     }
 
-    public static void bootstrapData(BootstapContext<BiomeDensitySource> context) {
+    public static void bootstrapData(BootstrapContext<BiomeDensitySource> context) {
         HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
 
         context.register(BIOME_GRID, new BiomeDensitySource(

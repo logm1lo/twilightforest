@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
@@ -41,7 +41,7 @@ public class FinalCastleStructure extends ControlledSpawningStructure {
         return TFStructureTypes.FINAL_CASTLE.get();
     }
 
-    public static FinalCastleStructure buildFinalCastleConfig(BootstapContext<Structure> context) {
+    public static FinalCastleStructure buildFinalCastleConfig(BootstrapContext<Structure> context) {
         return new FinalCastleStructure( // TODO Re-enable mob spawns when proper castle mobs are created
                 ControlledSpawningConfig.create(List.of(List.of(
                         // plain parts of the castle, like the tower maze

@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
@@ -62,7 +62,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
         return true;
     }
 
-    public static YetiCaveStructure buildYetiCaveConfig(BootstapContext<Structure> context) {
+    public static YetiCaveStructure buildYetiCaveConfig(BootstrapContext<Structure> context) {
         return new YetiCaveStructure(
                 ControlledSpawningConfig.firstIndexMonsters(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 5, 1, 2)),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),

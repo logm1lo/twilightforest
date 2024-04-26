@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
@@ -35,7 +35,7 @@ public class NagaCourtyardStructure extends ConquerableStructure {
         return TFStructureTypes.NAGA_COURTYARD.get();
     }
 
-    public static NagaCourtyardStructure buildStructureConfig(BootstapContext<Structure> context) {
+    public static NagaCourtyardStructure buildStructureConfig(BootstrapContext<Structure> context) {
         return new NagaCourtyardStructure(
                 new DecorationConfig(3, false, true, true),
                 new StructureSettings(

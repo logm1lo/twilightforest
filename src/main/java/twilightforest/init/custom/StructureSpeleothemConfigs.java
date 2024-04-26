@@ -2,7 +2,7 @@ package twilightforest.init.custom;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +26,7 @@ public class StructureSpeleothemConfigs {
         return ResourceKey.create(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, name);
     }
 
-    public static void bootstrap(BootstapContext<StructureSpeleothemConfig> context) {
+    public static void bootstrap(BootstrapContext<StructureSpeleothemConfig> context) {
         bootstrapRegister(context, SMALL_HILL, RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT);
         bootstrapRegister(context, MEDIUM_HILL, RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT);
         bootstrapRegister(context, LARGE_HILL, RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT);
@@ -35,7 +35,7 @@ public class StructureSpeleothemConfigs {
         bootstrapRegister(context, TROLL_CAVE, new RectangleLatticeIterator.TriangularLatticeConfig(4.5f));
     }
 
-    private static void bootstrapRegister(BootstapContext<StructureSpeleothemConfig> context, ResourceKey<StructureSpeleothemConfig> configKey, RectangleLatticeIterator.TriangularLatticeConfig latticeConfig) {
+    private static void bootstrapRegister(BootstrapContext<StructureSpeleothemConfig> context, ResourceKey<StructureSpeleothemConfig> configKey, RectangleLatticeIterator.TriangularLatticeConfig latticeConfig) {
         context.register(configKey, StructureSpeleothemConfig.fromLocation(latticeConfig, configKey.location().getPath()));
     }
 

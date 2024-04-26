@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
@@ -71,7 +71,7 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
         return true;
     }
 
-    public static TrollCaveStructure buildTrollCaveConfig(BootstapContext<Structure> context) {
+    public static TrollCaveStructure buildTrollCaveConfig(BootstrapContext<Structure> context) {
         return new TrollCaveStructure(
                 ControlledSpawningConfig.create(List.of(List.of(
                         new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 5, 1, 2),

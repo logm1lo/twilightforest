@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
@@ -56,7 +56,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
         return TFStructureTypes.LABYRINTH.get();
     }
 
-    public static LabyrinthStructure buildLabyrinthConfig(BootstapContext<Structure> context) {
+    public static LabyrinthStructure buildLabyrinthConfig(BootstrapContext<Structure> context) {
         return new LabyrinthStructure(
                 ControlledSpawningConfig.firstIndexMonsters(
                         new MobSpawnSettings.SpawnerData(TFEntities.MINOTAUR.get(), 20, 2, 3),

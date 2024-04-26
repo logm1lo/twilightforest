@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
@@ -58,7 +58,7 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
         return TFStructureTypes.HYDRA_LAIR.get();
     }
 
-    public static HydraLairStructure buildHydraLairConfig(BootstapContext<Structure> context) {
+    public static HydraLairStructure buildHydraLairConfig(BootstrapContext<Structure> context) {
         return new HydraLairStructure(
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_labyrinth"))),
                 new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD.get()),

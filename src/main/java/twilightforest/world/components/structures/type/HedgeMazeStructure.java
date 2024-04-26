@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
@@ -36,7 +36,7 @@ public class HedgeMazeStructure extends LandmarkStructure {
         return TFStructureTypes.HEDGE_MAZE.get();
     }
 
-    public static HedgeMazeStructure buildStructureConfig(BootstapContext<Structure> context) {
+    public static HedgeMazeStructure buildStructureConfig(BootstrapContext<Structure> context) {
         return new HedgeMazeStructure(
                 new DecorationClearance.DecorationConfig(2, false, true, true),
                 new Structure.StructureSettings(

@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -39,7 +39,7 @@ public class TFDensityFunctions {
         return DENSITY_FUNCTION_TYPES.register(name, keyCodec::codec);
     }
 
-    public static void bootstrap(BootstapContext<DensityFunction> context) {
+    public static void bootstrap(BootstrapContext<DensityFunction> context) {
         DensityFunction referencedBiomeDensity = makeBiomeDensityRaw(context);
         DensityFunction ambientTerrainNoise = makeAmbientNoise2D(context);
 
@@ -48,7 +48,7 @@ public class TFDensityFunctions {
     }
 
     @NotNull
-    private static DensityFunction makeBiomeDensityRaw(BootstapContext<DensityFunction> context) {
+    private static DensityFunction makeBiomeDensityRaw(BootstrapContext<DensityFunction> context) {
         Holder.Reference<BiomeDensitySource> biomeGrid = context.lookup(TFRegistries.Keys.BIOME_TERRAIN_DATA).getOrThrow(BiomeLayerStack.BIOME_GRID);
         Holder.Reference<NormalNoise.NoiseParameters> surfaceParams = context.lookup(Registries.NOISE).getOrThrow(Noises.SURFACE);
 
@@ -69,7 +69,7 @@ public class TFDensityFunctions {
     }
 
     @NotNull
-    private static DensityFunction makeAmbientNoise2D(BootstapContext<DensityFunction> context) {
+    private static DensityFunction makeAmbientNoise2D(BootstrapContext<DensityFunction> context) {
         HolderGetter<NormalNoise.NoiseParameters> noiseLookup = context.lookup(Registries.NOISE);
         Holder.Reference<NormalNoise.NoiseParameters> surfaceParams = noiseLookup.getOrThrow(Noises.SURFACE);
         Holder.Reference<NormalNoise.NoiseParameters> ridgeParams = noiseLookup.getOrThrow(Noises.RIDGE);
@@ -100,7 +100,7 @@ public class TFDensityFunctions {
         );
     }
 
-    private static void makeForestedTerrain(BootstapContext<DensityFunction> context, DensityFunction rawBiomeDensity, DensityFunction ambientTerrainNoise) {
+    private static void makeForestedTerrain(BootstrapContext<DensityFunction> context, DensityFunction rawBiomeDensity, DensityFunction ambientTerrainNoise) {
         DensityFunction biomedLandscape = DensityFunctions.mul(
                 DensityFunctions.constant(1 / 6f),
                 DensityFunctions.add(
@@ -121,7 +121,7 @@ public class TFDensityFunctions {
     }
 
     // Heavy WIP
-    private static void makeSkylightTerrain(BootstapContext<DensityFunction> context, DensityFunction rawBiomeDensity, DensityFunction ambientTerrainNoise) {
+    private static void makeSkylightTerrain(BootstrapContext<DensityFunction> context, DensityFunction rawBiomeDensity, DensityFunction ambientTerrainNoise) {
         // FIXME Rapid terrain changes around Highlands are causing islands to stretch into walls when transitioning from the Stream biome
 
         DensityFunction skyIslandNoise = DensityFunctions.add(

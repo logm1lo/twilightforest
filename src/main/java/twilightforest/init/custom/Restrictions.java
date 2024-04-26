@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -44,7 +44,7 @@ public class Restrictions {
         return ResourceKey.create(TFRegistries.Keys.RESTRICTIONS, name);
     }
 
-    public static void bootstrap(BootstapContext<Restriction> context) {
+    public static void bootstrap(BootstrapContext<Restriction> context) {
         context.register(DARK_FOREST, new Restriction(TFStructures.KNIGHT_STRONGHOLD, Enforcements.DARKNESS.getKey(), 0.0F, asStack(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE), List.of(TwilightForestMod.prefix("progress_lich"))));
         context.register(DARK_FOREST_CENTER, new Restriction(TFStructures.DARK_TOWER, Enforcements.DARKNESS.getKey(), 0.0F, asStack(TFBlocks.KNIGHT_PHANTOM_TROPHY), List.of(TwilightForestMod.prefix("progress_knights"))));
         context.register(FINAL_PLATEAU, new Restriction(TFStructures.FINAL_CASTLE, Enforcements.ACID_RAIN.getKey(), 1.5F, asStack(TFItems.LAMP_OF_CINDERS), List.of(TwilightForestMod.prefix("progress_troll"))));

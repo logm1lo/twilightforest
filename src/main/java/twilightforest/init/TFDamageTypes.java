@@ -1,7 +1,7 @@
 package twilightforest.init;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageSource;
@@ -68,7 +68,7 @@ public class TFDamageTypes {
         return toIgnore.length > 0 ? new EntityExcludedDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), toIgnore) : new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), attacker, indirectAttacker);
     }
             
-    public static void bootstrap(BootstapContext<DamageType> context) {
+    public static void bootstrap(BootstrapContext<DamageType> context) {
         context.register(GHAST_TEAR, new DamageType("twilightforest.ghastTear", 0.0F));
         context.register(HYDRA_BITE, new DamageType("twilightforest.hydraBite", 0.0F));
         context.register(HYDRA_FIRE, new DamageType("twilightforest.hydraFire", 0.0F));

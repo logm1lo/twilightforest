@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
@@ -59,7 +59,7 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
         return true;
     }
 
-    public static GiantHouseStructure buildGiantHouseConfig(BootstapContext<Structure> context) {
+    public static GiantHouseStructure buildGiantHouseConfig(BootstrapContext<Structure> context) {
         return new GiantHouseStructure(
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
                 new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get()),

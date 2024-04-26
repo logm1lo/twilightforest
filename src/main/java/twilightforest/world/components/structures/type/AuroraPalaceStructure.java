@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
@@ -42,7 +42,7 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
         return TFStructureTypes.AURORA_PALACE.get();
     }
 
-    public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstapContext<Structure> context) {
+    public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstrapContext<Structure> context) {
         return new AuroraPalaceStructure(
                 ControlledSpawningConfig.firstIndexMonsters(
                         new MobSpawnSettings.SpawnerData(TFEntities.SNOW_GUARDIAN.get(), 10, 1, 2),

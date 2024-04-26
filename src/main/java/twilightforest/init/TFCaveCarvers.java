@@ -2,7 +2,7 @@ package twilightforest.init;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantFloat;
@@ -67,7 +67,7 @@ public class TFCaveCarvers {
 		return ResourceKey.create(Registries.CONFIGURED_CARVER, TwilightForestMod.prefix(name));
 	}
 
-	public static void bootstrap(BootstapContext<ConfiguredWorldCarver<?>> context) {
+	public static void bootstrap(BootstrapContext<ConfiguredWorldCarver<?>> context) {
 		HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
 		context.register(TFCAVES_CONFIGURED, TF_CAVES.value().configured(new CaveCarverConfiguration(
 				0.1F,

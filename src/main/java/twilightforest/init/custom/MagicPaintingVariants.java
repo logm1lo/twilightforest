@@ -3,7 +3,7 @@ package twilightforest.init.custom;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +31,7 @@ public class MagicPaintingVariants {
         return ResourceKey.create(TFRegistries.Keys.MAGIC_PAINTINGS, name);
     }
 
-    public static void bootstrap(BootstapContext<MagicPaintingVariant> context) {
+    public static void bootstrap(BootstrapContext<MagicPaintingVariant> context) {
         register(context, DARKNESS, "Darkness", "???", 4, 2, List.of(
                 new Layer("background", null, null, true),
                 new Layer("sky", new Parallax(Parallax.Type.VIEW_ANGLE, 0.01F, 128, 32), new OpacityModifier(OpacityModifier.Type.SINE_TIME, 0.03F, false, 0.0F, 1.0F), true),
@@ -72,7 +72,7 @@ public class MagicPaintingVariants {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private static void register(BootstapContext<MagicPaintingVariant> context, ResourceKey<MagicPaintingVariant> key, String title, String author, int width, int height, List<Layer> layers) {
+    private static void register(BootstrapContext<MagicPaintingVariant> context, ResourceKey<MagicPaintingVariant> key, String title, String author, int width, int height, List<Layer> layers) {
         MagicPaintingVariant variant = new MagicPaintingVariant(width * 16, height * 16, layers);
         AtlasGenerator.MAGIC_PAINTING_HELPER.put(key.location(), variant);
         LangGenerator.MAGIC_PAINTING_HELPER.put(key.location(), Pair.of(title, author));

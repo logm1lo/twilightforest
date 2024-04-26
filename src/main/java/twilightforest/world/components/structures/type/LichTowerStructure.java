@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
@@ -49,7 +49,7 @@ public class LichTowerStructure extends ControlledSpawningStructure {
         return true;
     }
 
-    public static LichTowerStructure buildLichTowerConfig(BootstapContext<Structure> context) {
+    public static LichTowerStructure buildLichTowerConfig(BootstrapContext<Structure> context) {
         return new LichTowerStructure(
                 ControlledSpawningConfig.firstIndexMonsters(
                         new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 10, 1, 2),

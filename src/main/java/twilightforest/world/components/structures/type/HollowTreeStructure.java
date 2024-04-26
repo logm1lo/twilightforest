@@ -7,7 +7,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -208,7 +208,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 		return this.decorationConfig.chunkClearanceRadius();
 	}
 
-	public static HollowTreeStructure buildStructureConfig(BootstapContext<Structure> context) {
+	public static HollowTreeStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new HollowTreeStructure(
 				new Structure.StructureSettings(
 						context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_TREE_BIOMES),

@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
@@ -36,7 +36,7 @@ public class QuestGroveStructure extends ConquerableStructure {
         return TFStructureTypes.QUEST_GROVE.get();
     }
 
-    public static QuestGroveStructure buildStructureConfig(BootstapContext<Structure> context) {
+    public static QuestGroveStructure buildStructureConfig(BootstrapContext<Structure> context) {
         return new QuestGroveStructure(
                 new DecorationConfig(1, false, true, true),
                 new StructureSettings(
