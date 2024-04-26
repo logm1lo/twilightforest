@@ -6,27 +6,28 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.attachment.IAttachmentHolder;
-import net.neoforged.neoforge.attachment.IAttachmentSerializer;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.Function;
 
 public class OreScannerComponent {
+	public static Codec<OreScannerComponent> CODEC = RecordCodecBuilder.<OreScannerComponent>create(inst -> inst.group(
+			BlockPos.CODEC.fieldOf("origin").forGetter(s -> s.origin),
+			Codec.INT.fieldOf("span_x").forGetter(s -> s.xSpan),
+			Codec.INT.fieldOf("span_z").forGetter(s -> s.zSpan),
+			Codec.INT.fieldOf("duration").forGetter(s -> s.scanDurationTicks),
+			Codec.unboundedMap(BuiltInRegistries.BLOCK.byNameCodec(), Codec.INT).<Object2IntMap<Block>>xmap(Object2IntArrayMap::new, Function.identity()).fieldOf("counts").<OreScannerComponent>forGetter(s -> s.blockCounter)
+	).apply(inst, OreScannerComponent::new)).orElseGet(OreScannerComponent::getEmpty);
+
 	private static final OreScannerComponent EMPTY = new OreScannerComponent(BlockPos.ZERO, 0, 0, 0);
 
 	private final int xSpan, zSpan;
@@ -36,6 +37,7 @@ public class OreScannerComponent {
 	private final BlockPos origin;
 	private final Object2IntMap<Block> blockCounter;
 
+	@Deprecated(forRemoval = true) // FIXME Component has to be immutable. Remove
 	private int ticksProgressed = 0;
 
 	public static OreScannerComponent scanFromCenter(BlockPos center, int range, int scanDurationTicks) {
@@ -51,6 +53,10 @@ public class OreScannerComponent {
 	}
 
 	public OreScannerComponent(BlockPos origin, int xSpan, int zSpan, int scanDurationTicks) {
+		this(origin, xSpan, zSpan, scanDurationTicks, xSpan * zSpan <= 0 ? Object2IntMaps.emptyMap() : new Object2IntArrayMap<>());
+	}
+
+	public OreScannerComponent(BlockPos origin, int xSpan, int zSpan, int scanDurationTicks, Object2IntMap<Block> blockCounter) {
 		this.origin = origin;
 		this.xSpan = xSpan;
 		this.zSpan = zSpan;
@@ -61,7 +67,7 @@ public class OreScannerComponent {
 
 		this.scanDurationTicks = scanDurationTicks;
 
-		this.blockCounter = this.area <= 0 ? Object2IntMaps.emptyMap() : new Object2IntArrayMap<>();
+		this.blockCounter = blockCounter;
 	}
 
 	public boolean tickScan(BlockGetter reader) {
@@ -87,11 +93,9 @@ public class OreScannerComponent {
 		return this.ticksProgressed >= this.scanDurationTicks;
 	}
 
-	public Map<String, Integer> getResults(@Nullable String assignedBlock) {
-		if (assignedBlock != null && !assignedBlock.isBlank()) {
-			Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(assignedBlock));
-
-			return ImmutableMap.of(block.getDescriptionId(), this.blockCounter.getOrDefault(block, 0));
+	public Map<String, Integer> getResults(@Nullable Block assignedBlock) {
+		if (assignedBlock != null) {
+			return ImmutableMap.of(assignedBlock.getDescriptionId(), this.blockCounter.getOrDefault(assignedBlock, 0));
 		}
 
 		ImmutableMap.Builder<String, Integer> builder = ImmutableMap.builder();
@@ -123,72 +127,5 @@ public class OreScannerComponent {
 
 	public static OreScannerComponent getEmpty() {
 		return EMPTY;
-	}
-
-	// This attachment goes onto ItemStacks, so this seems better suited over using a Codec
-	public static class Serializer implements IAttachmentSerializer<CompoundTag, OreScannerComponent> {
-		public static final OreScannerComponent.Serializer INSTANCE = new Serializer();
-
-		private Serializer() {
-		}
-
-		@Override
-		public OreScannerComponent read(IAttachmentHolder holder, CompoundTag tag) {
-			BlockPos origin = NbtUtils.readBlockPos(tag);
-
-			int xSpan = tag.getInt("span_x");
-			int zSpan = tag.getInt("span_z");
-
-			int scanTimeTicks = tag.getInt("duration");
-
-			if (xSpan <= 0 || zSpan <= 0 || scanTimeTicks <= 0) {
-				return EMPTY;
-			}
-
-			OreScannerComponent attachment = new OreScannerComponent(origin, xSpan, zSpan, scanTimeTicks);
-
-			ListTag list = tag.getList("counts", 10);
-
-			for (Tag tagEntry : list) {
-				if (tagEntry instanceof CompoundTag compoundEntry) {
-					Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(compoundEntry.getString("block")));
-					int counted = compoundEntry.getInt("counted");
-
-					attachment.blockCounter.put(block, counted);
-				}
-			}
-
-			return attachment;
-		}
-
-		@Nullable
-		@Override
-		public CompoundTag write(OreScannerComponent attachment) {
-			if (attachment.area <= 0)
-				return null;
-
-			CompoundTag tag = NbtUtils.writeBlockPos(attachment.origin);
-
-			tag.putInt("span_x", attachment.xSpan);
-			tag.putInt("span_z", attachment.zSpan);
-
-			tag.putInt("duration", attachment.scanDurationTicks);
-
-			ObjectSet<Object2IntMap.Entry<Block>> scanCounts = attachment.blockCounter.object2IntEntrySet();
-			ListTag list = new ListTag();
-
-			for (Object2IntMap.Entry<Block> counter : scanCounts) {
-				CompoundTag countTag = new CompoundTag();
-
-				countTag.putString("block", BuiltInRegistries.BLOCK.getKey(counter.getKey()).toString());
-				countTag.putInt("counted", counter.getIntValue());
-
-				list.add(countTag);
-			}
-
-			tag.put("counts", list);
-
-			return tag;
-		}
 	}
 }

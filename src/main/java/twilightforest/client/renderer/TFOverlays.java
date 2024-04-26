@@ -25,10 +25,12 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import twilightforest.TwilightForestMod;
+import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.item.OreMeterItem;
 import twilightforest.util.ComponentAlignment;
@@ -125,11 +127,16 @@ public class TFOverlays {
 				}
 				graphics.fill(0, 0, 56, 16, 0x9b000000);
 				graphics.drawString(Minecraft.getInstance().font, component, 4, 4, 16777215, false);
-			} else if (!OreMeterItem.getScanInfo(selectedMeter).isEmpty()) {
-				long identifier = OreMeterItem.getID(selectedMeter);
+			} else {
+				OreScannerData oreScannerData = selectedMeter.get(TFDataComponents.ORE_DATA);
+
+				if (oreScannerData == null) return;
+
+				long identifier = oreScannerData.universalId();
 				if (identifier != 0L && !ORE_METER_STAT_CACHE.containsKey(identifier)) {
-					initTooltips(identifier, selectedMeter);
+					initTooltips(identifier, selectedMeter.getOrDefault(TFDataComponents.ORE_RANGE, 1), oreScannerData);
 				}
+
 				if (ORE_METER_STAT_CACHE.containsKey(identifier)) {
 					OreMeterInfoCache info = ORE_METER_STAT_CACHE.get(identifier);
 
@@ -144,18 +151,18 @@ public class TFOverlays {
 
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.000");
 
-	public static void initTooltips(long id, ItemStack meter) {
-		ChunkPos pos = OreMeterItem.getScannedChunk(meter);
-		int totalScanned = OreMeterItem.getScannedBlocks(meter);
+	public static void initTooltips(long id, int range, OreScannerData data) {
+		ChunkPos pos = data.scannedChunk();
+		int totalScanned = data.totalScannedBlocks();
 
 		List<Component> headerRowTexts = ImmutableList.of(
-				Component.translatable("misc.twilightforest.ore_meter_range", OreMeterItem.getRange(meter), pos.x, pos.z),
+				Component.translatable("misc.twilightforest.ore_meter_range", range, pos.x, pos.z),
 				Component.translatable("misc.twilightforest.ore_meter_total", totalScanned)
 		);
 
 		ArrayList<ComponentColumn> columns = new ArrayList<>();
 
-		List<Pair<String, Integer>> scanData = OreMeterItem.getScanInfo(meter).entrySet().stream()
+		List<Pair<String, Integer>> scanData = data.counts().entrySet().stream()
 				.map(e -> Pair.of(e.getKey(), e.getValue())) // Convert Entries into Pairs
 				.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
 				.toList(); // Make sorted immutable list

@@ -305,7 +305,7 @@ public class TFItems {
 				int progress = OreMeterItem.getLoadProgress(stack);
 				return progress % 5 >= 2 + (int)(Math.random() * 2) && progress <= totalLoadTime - 15 ? 1 : 0;
 			}
-			return OreMeterItem.getScanInfo(stack).isEmpty() ? 0 : 1;
+			return stack.has(TFDataComponents.ORE_DATA) ? 1 : 0;
 		});
 
 		ItemProperties.register(MOONWORM_QUEEN.get(), TwilightForestMod.prefix("alt"), (stack, level, entity, idk) -> {
