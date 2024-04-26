@@ -25,10 +25,11 @@ public class OreScannerComponent {
 			Codec.INT.fieldOf("span_x").forGetter(s -> s.xSpan),
 			Codec.INT.fieldOf("span_z").forGetter(s -> s.zSpan),
 			Codec.INT.fieldOf("duration").forGetter(s -> s.scanDurationTicks),
-			Codec.unboundedMap(BuiltInRegistries.BLOCK.byNameCodec(), Codec.INT).<Object2IntMap<Block>>xmap(Object2IntArrayMap::new, Function.identity()).fieldOf("counts").<OreScannerComponent>forGetter(s -> s.blockCounter)
+			Codec.unboundedMap(BuiltInRegistries.BLOCK.byNameCodec(), Codec.INT).<Object2IntMap<Block>>xmap(Object2IntArrayMap::new, Function.identity()).fieldOf("counts").forGetter(s -> s.blockCounter),
+			Codec.INT.fieldOf("progression").forGetter(s -> s.ticksProgressed)
 	).apply(inst, OreScannerComponent::new)).orElseGet(OreScannerComponent::getEmpty);
 
-	private static final OreScannerComponent EMPTY = new OreScannerComponent(BlockPos.ZERO, 0, 0, 0);
+	private static final OreScannerComponent EMPTY = new OreScannerComponent(BlockPos.ZERO, 0, 0, 0, 0);
 
 	private final int xSpan, zSpan;
 	private final int area;
@@ -37,8 +38,7 @@ public class OreScannerComponent {
 	private final BlockPos origin;
 	private final Object2IntMap<Block> blockCounter;
 
-	@Deprecated(forRemoval = true) // FIXME Component has to be immutable. Remove
-	private int ticksProgressed = 0;
+	private final int ticksProgressed;
 
 	public static OreScannerComponent scanFromCenter(BlockPos center, int range, int scanDurationTicks) {
 		int xChunkCenter = center.getX() >> 4;
@@ -49,14 +49,14 @@ public class OreScannerComponent {
 		int xSpan = SectionPos.sectionToBlockCoord(xChunkCenter + range, 15) - origin.getX();
 		int zSpan = SectionPos.sectionToBlockCoord(zChunkCenter + range, 15) - origin.getZ();
 
-		return new OreScannerComponent(origin, xSpan, zSpan, scanDurationTicks);
+		return new OreScannerComponent(origin, xSpan, zSpan, scanDurationTicks, 0);
 	}
 
-	public OreScannerComponent(BlockPos origin, int xSpan, int zSpan, int scanDurationTicks) {
-		this(origin, xSpan, zSpan, scanDurationTicks, xSpan * zSpan <= 0 ? Object2IntMaps.emptyMap() : new Object2IntArrayMap<>());
+	public OreScannerComponent(BlockPos origin, int xSpan, int zSpan, int scanDurationTicks, int ticksProgressed) {
+		this(origin, xSpan, zSpan, scanDurationTicks, xSpan * zSpan <= 0 ? Object2IntMaps.emptyMap() : new Object2IntArrayMap<>(), ticksProgressed);
 	}
 
-	public OreScannerComponent(BlockPos origin, int xSpan, int zSpan, int scanDurationTicks, Object2IntMap<Block> blockCounter) {
+	public OreScannerComponent(BlockPos origin, int xSpan, int zSpan, int scanDurationTicks, Object2IntMap<Block> blockCounter, int ticksProgressed) {
 		this.origin = origin;
 		this.xSpan = xSpan;
 		this.zSpan = zSpan;
@@ -67,14 +67,17 @@ public class OreScannerComponent {
 
 		this.scanDurationTicks = scanDurationTicks;
 
-		this.blockCounter = blockCounter;
+		this.blockCounter = Object2IntMaps.unmodifiable(blockCounter.isEmpty() ? Object2IntMaps.emptyMap() : blockCounter);
+
+		this.ticksProgressed = ticksProgressed;
 	}
 
-	public boolean tickScan(BlockGetter reader) {
+	public OreScannerComponent tickScan(BlockGetter reader) {
 		BlockPos originPos = this.origin.atY(reader.getMinBuildHeight());
 		int volume = this.area * reader.getMaxBuildHeight();
 		int march = Mth.ceil((float) volume / Mth.abs(this.scanDurationTicks));
 		int totalProgress = this.ticksProgressed * march;
+		Object2IntMap<Block> nextCounter = new Object2IntArrayMap<>(this.blockCounter);
 
 		for (int scanSteps = 0; scanSteps < march && totalProgress + scanSteps < volume; scanSteps++) {
 			int xDelta = (totalProgress + scanSteps) % this.xSpan;
@@ -84,13 +87,11 @@ public class OreScannerComponent {
 			BlockPos pos = originPos.offset(xDelta, yDelta, zDelta);
 
 			Block blockFound = reader.getBlockState(pos).getBlock();
-			this.blockCounter.put(blockFound, 1 + this.blockCounter.getOrDefault(blockFound, 0));
+			nextCounter.put(blockFound, 1 + nextCounter.getOrDefault(blockFound, 0));
 		}
 
-		this.ticksProgressed++;
-
 		// Method returns true if scanning is complete, and results ready for syncing to itemstack nbt
-		return this.ticksProgressed >= this.scanDurationTicks;
+		return new OreScannerComponent(this.origin, this.xSpan, this.zSpan, this.scanDurationTicks, nextCounter, this.ticksProgressed + 1);
 	}
 
 	public Map<String, Integer> getResults(@Nullable Block assignedBlock) {
@@ -127,5 +128,9 @@ public class OreScannerComponent {
 
 	public static OreScannerComponent getEmpty() {
 		return EMPTY;
+	}
+
+	public boolean isFinished() {
+		return this.isEmpty() || this.ticksProgressed >= this.scanDurationTicks;
 	}
 }

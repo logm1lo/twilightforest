@@ -42,21 +42,21 @@ public class OreMeterItem extends Item {
 		if (level.isClientSide() || !stack.has(TFDataComponents.ORE_SCANNING))
 			return;
 
-		OreScannerComponent data = stack.get(TFDataComponents.ORE_SCANNING);
+		OreScannerComponent newScan = stack.get(TFDataComponents.ORE_SCANNING).tickScan(level);
 
-		if (data.isEmpty()) {
+		if (newScan.isEmpty()) {
 			stack.remove(TFDataComponents.ORE_SCANNING);
 			return;
 		}
 
-		if (!data.tickScan(level)) {
-			// TODO Re-set ORE_SCANNING component, as ORE_SCANNING must become immutable. Merge ORE_LOADING?
-			stack.set(TFDataComponents.ORE_LOADING, data.getTickProgress());
+		if (!newScan.isFinished()) {
+			stack.set(TFDataComponents.ORE_LOADING, newScan.getTickProgress());
+			stack.set(TFDataComponents.ORE_SCANNING, newScan);
 			return;
 		}
 
 		// Scanning completed, save results to item
-		stack.set(TFDataComponents.ORE_DATA, OreScannerData.create(data.getResults(stack.get(TFDataComponents.ORE_FILTER)), data.centerChunkPos(), data.getVolume(level), getRange(stack)));
+		stack.set(TFDataComponents.ORE_DATA, OreScannerData.create(newScan.getResults(stack.get(TFDataComponents.ORE_FILTER)), newScan.centerChunkPos(), newScan.getVolume(level), getRange(stack)));
 
 		stack.remove(TFDataComponents.ORE_LOADING);
 		stack.remove(TFDataComponents.ORE_SCANNING);

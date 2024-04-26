@@ -68,7 +68,6 @@ import twilightforest.enchantment.ChillAuraEnchantment;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
-import twilightforest.item.OreMeterItem;
 import twilightforest.item.YetiArmorItem;
 import twilightforest.network.WipeOreMeterPacket;
 import twilightforest.world.components.structures.TFStructureComponent;
