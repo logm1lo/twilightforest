@@ -10,7 +10,6 @@ import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.alchemy.Potion;
 import twilightforest.init.TFAdvancements;
 
@@ -31,9 +30,9 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 								  MinMaxBounds.Ints seconds, Optional<Holder<Potion>> potion) implements SimpleInstance {
 
 		public static final Codec<DrinkFromFlaskTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(DrinkFromFlaskTrigger.TriggerInstance::player),
-						ExtraCodecs.strictOptionalField(MinMaxBounds.Ints.CODEC, "doses", MinMaxBounds.Ints.between(0, 4)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::doses),
-						ExtraCodecs.strictOptionalField(MinMaxBounds.Ints.CODEC, "seconds", MinMaxBounds.Ints.exactly(8)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::seconds),
+						EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(DrinkFromFlaskTrigger.TriggerInstance::player),
+						MinMaxBounds.Ints.CODEC.optionalFieldOf("doses", MinMaxBounds.Ints.between(0, 4)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::doses),
+						MinMaxBounds.Ints.CODEC.optionalFieldOf("seconds", MinMaxBounds.Ints.exactly(8)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::seconds),
 						BuiltInRegistries.POTION.holderByNameCodec().optionalFieldOf("potion").forGetter(DrinkFromFlaskTrigger.TriggerInstance::potion))
 				.apply(instance, DrinkFromFlaskTrigger.TriggerInstance::new));
 

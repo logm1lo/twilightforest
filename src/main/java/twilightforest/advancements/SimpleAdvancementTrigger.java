@@ -7,7 +7,6 @@ import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 import twilightforest.init.TFAdvancements;
 
 import java.util.Optional;
@@ -26,7 +25,7 @@ public class SimpleAdvancementTrigger extends SimpleCriterionTrigger<SimpleAdvan
 	public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance {
 
 		public static final Codec<SimpleAdvancementTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(SimpleAdvancementTrigger.TriggerInstance::player))
+						EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(SimpleAdvancementTrigger.TriggerInstance::player))
 				.apply(instance, SimpleAdvancementTrigger.TriggerInstance::new));
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> makeTFPortal() {
