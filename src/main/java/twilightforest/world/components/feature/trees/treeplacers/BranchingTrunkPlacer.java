@@ -2,6 +2,7 @@ package twilightforest.world.components.feature.trees.treeplacers;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -20,13 +21,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class BranchingTrunkPlacer extends TrunkPlacer {
-    public static final Codec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
-            trunkPlacerParts(instance).and(instance.group(
-                    Codec.intRange(0, 24).fieldOf("branch_start_offset_down").forGetter(o -> o.branchDownwardOffset),
-                    BranchesConfig.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfig),
-                    Codec.BOOL.fieldOf("perpendicular_branches").forGetter(o -> o.perpendicularBranches)
-            )).apply(instance, BranchingTrunkPlacer::new)
-    );
+    public static final MapCodec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(instance -> trunkPlacerParts(instance).and(instance.group(
+            Codec.intRange(0, 24).fieldOf("branch_start_offset_down").forGetter(o -> o.branchDownwardOffset),
+            BranchesConfig.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfig),
+            Codec.BOOL.fieldOf("perpendicular_branches").forGetter(o -> o.perpendicularBranches)
+    )).apply(instance, BranchingTrunkPlacer::new));
 
     private final int branchDownwardOffset;
     private final BranchesConfig branchesConfig;

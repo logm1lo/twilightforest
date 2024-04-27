@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature.trees.treeplacers;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -16,17 +17,15 @@ import twilightforest.init.TFFeatureModifiers;
 import twilightforest.util.FeaturePlacers;
 
 public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
-    public static final Codec<LeafSpheroidFoliagePlacer> CODEC = RecordCodecBuilder.create(
-            instance -> instance.group(
-                    Codec.floatRange(0, 16f).fieldOf("horizontal_radius").forGetter(o -> o.horizontalRadius),
-                    Codec.floatRange(0, 16f).fieldOf("vertical_radius").forGetter(o -> o.verticalRadius),
-                    IntProvider.codec(0, 8).fieldOf("offset").forGetter(obj -> obj.offset),
-                    Codec.intRange(0, 16).fieldOf("random_add_horizontal").orElse(0).forGetter(o -> o.randomHorizontal),
-                    Codec.intRange(0, 16).fieldOf("random_add_vertical").orElse(0).forGetter(o -> o.randomVertical),
-                    Codec.floatRange(-0.5f, 0.5f).fieldOf("vertical_filler_bias").orElse(0f).forGetter(o -> o.verticalBias),
-                    Codec.intRange(0, 256).fieldOf("shag_factor").orElse(0).forGetter(o -> o.shag_factor) // Shhh
-            ).apply(instance, LeafSpheroidFoliagePlacer::new)
-    );
+    public static final MapCodec<LeafSpheroidFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.floatRange(0, 16f).fieldOf("horizontal_radius").forGetter(o -> o.horizontalRadius),
+            Codec.floatRange(0, 16f).fieldOf("vertical_radius").forGetter(o -> o.verticalRadius),
+            IntProvider.codec(0, 8).fieldOf("offset").forGetter(obj -> obj.offset),
+            Codec.intRange(0, 16).fieldOf("random_add_horizontal").orElse(0).forGetter(o -> o.randomHorizontal),
+            Codec.intRange(0, 16).fieldOf("random_add_vertical").orElse(0).forGetter(o -> o.randomVertical),
+            Codec.floatRange(-0.5f, 0.5f).fieldOf("vertical_filler_bias").orElse(0f).forGetter(o -> o.verticalBias),
+            Codec.intRange(0, 256).fieldOf("shag_factor").orElse(0).forGetter(o -> o.shag_factor) // Shhh
+    ).apply(instance, LeafSpheroidFoliagePlacer::new));
 
     // These two variables are floats to help round out the pixel-snapping of the sphere-filling algorithm
     // n+0.5 numbers seem to work best but messing with it is encouraged to find best results

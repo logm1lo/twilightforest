@@ -1,6 +1,6 @@
 package twilightforest.loot;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -11,15 +11,15 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFLoot;
 
 import java.util.List;
 
 public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFunction {
-	public static final Codec<MultiplayerBasedAdditionLootFunction> CODEC = RecordCodecBuilder.create(
+	public static final MapCodec<MultiplayerBasedAdditionLootFunction> CODEC = RecordCodecBuilder.mapCodec(
 			p_298131_ -> commonFields(p_298131_)
 					.and(NumberProviders.CODEC.fieldOf("extra_count_per_player").forGetter(o -> o.value))
 					.apply(p_298131_, MultiplayerBasedAdditionLootFunction::new)

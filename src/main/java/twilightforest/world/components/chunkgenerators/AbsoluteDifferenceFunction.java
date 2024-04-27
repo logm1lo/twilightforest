@@ -1,6 +1,7 @@
 package twilightforest.world.components.chunkgenerators;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.KeyDispatchDataCodec;
@@ -34,11 +35,12 @@ public abstract class AbsoluteDifferenceFunction implements DensityFunction.Simp
     }
 
     public static class Min extends AbsoluteDifferenceFunction {
-        public static final KeyDispatchDataCodec<Min> CODEC = KeyDispatchDataCodec.of(RecordCodecBuilder.create(instance -> instance.group(
+        public static final MapCodec<Min> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.DOUBLE.fieldOf("max").forGetter(f -> f.max),
                 Codec.DOUBLE.fieldOf("x_center").forGetter(f -> f.centerX),
                 Codec.DOUBLE.fieldOf("z_center").forGetter(f -> f.centerZ)
-        ).apply(instance, Min::new)));
+        ).apply(instance, Min::new));
+        public static final KeyDispatchDataCodec<Min> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
 
         public Min(double max, double xCenter, double zCenter) {
             super(max, xCenter, zCenter);
@@ -51,16 +53,17 @@ public abstract class AbsoluteDifferenceFunction implements DensityFunction.Simp
 
         @Override
         public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-            return CODEC;
+            return KEY_CODEC;
         }
     }
 
     public static class Max extends AbsoluteDifferenceFunction {
-        public static final KeyDispatchDataCodec<Max> CODEC = KeyDispatchDataCodec.of(RecordCodecBuilder.create(instance -> instance.group(
+        public static final MapCodec<Max> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.DOUBLE.fieldOf("max").forGetter(f -> f.max),
                 Codec.DOUBLE.fieldOf("x_center").forGetter(f -> f.centerX),
                 Codec.DOUBLE.fieldOf("z_center").forGetter(f -> f.centerZ)
-        ).apply(instance, Max::new)));
+        ).apply(instance, Max::new));
+        public static final KeyDispatchDataCodec<Max> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
 
         public Max(double max, double xCenter, double zCenter) {
             super(max, xCenter, zCenter);
@@ -73,7 +76,7 @@ public abstract class AbsoluteDifferenceFunction implements DensityFunction.Simp
 
         @Override
         public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-            return CODEC;
+            return KEY_CODEC;
         }
     }
 }

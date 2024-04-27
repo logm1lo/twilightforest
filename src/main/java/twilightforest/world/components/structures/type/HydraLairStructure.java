@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.type;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HydraLairStructure extends ProgressionStructure implements CustomDensitySource {
-    public static final Codec<HydraLairStructure> CODEC = RecordCodecBuilder.create(instance ->
+    public static final MapCodec<HydraLairStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
             progressionCodec(instance)
                     .and(StructureSpeleothemConfigs.CODEC.fieldOf("speleothem_config").forGetter(s -> s.speleothemConfig))
                     .apply(instance, HydraLairStructure::new)

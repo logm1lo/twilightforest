@@ -1,6 +1,6 @@
 package twilightforest.world.components.placements;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 public class ChunkCenterModifier extends PlacementModifier {
 	private static final ChunkCenterModifier INSTANCE = new ChunkCenterModifier();
-	public static final Codec<ChunkCenterModifier> CODEC = Codec.unit(() -> INSTANCE);
+	public static final MapCodec<ChunkCenterModifier> CODEC = MapCodec.unit(() -> INSTANCE);
 
 	public static ChunkCenterModifier center() {
 		return INSTANCE;

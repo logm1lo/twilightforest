@@ -1,6 +1,6 @@
 package twilightforest.loot.modifiers;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.SimpleContainer;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FieryToolSmeltingModifier extends LootModifier {
-	public static final Codec<FieryToolSmeltingModifier> CODEC = RecordCodecBuilder.create(inst -> LootModifier.codecStart(inst).apply(inst, FieryToolSmeltingModifier::new));
+	public static final MapCodec<FieryToolSmeltingModifier> CODEC = RecordCodecBuilder.mapCodec(inst -> LootModifier.codecStart(inst).apply(inst, FieryToolSmeltingModifier::new));
 
 	public FieryToolSmeltingModifier(LootItemCondition[] conditions) {
 		super(conditions);
@@ -46,7 +46,7 @@ public class FieryToolSmeltingModifier extends LootModifier {
 	}
 
 	@Override
-	public Codec<? extends IGlobalLootModifier> codec() {
+	public MapCodec<? extends IGlobalLootModifier> codec() {
 		return FieryToolSmeltingModifier.CODEC;
 	}
 }

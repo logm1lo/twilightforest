@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.type;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class MushroomTowerStructure extends LandmarkStructure {
-    public static final Codec<MushroomTowerStructure> CODEC = RecordCodecBuilder.create(instance -> landmarkCodec(instance).apply(instance, MushroomTowerStructure::new));
+    public static final MapCodec<MushroomTowerStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, MushroomTowerStructure::new));
 
     public MushroomTowerStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
         super(decorationConfig, structureSettings);

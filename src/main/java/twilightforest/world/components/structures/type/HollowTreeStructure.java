@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.type;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -10,7 +10,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
@@ -41,7 +40,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class HollowTreeStructure extends Structure implements DecorationClearance, TreeGrowerStartable {
-	public static final Codec<HollowTreeStructure> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+	public static final MapCodec<HollowTreeStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			Structure.settingsCodec(instance),
 			DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
 			IntProvider.codec(16, 128).fieldOf("height").forGetter(s -> s.height),

@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.type;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TrollCaveStructure extends ProgressionStructure implements ConfigurableSpawns {
-    public static final Codec<TrollCaveStructure> CODEC = RecordCodecBuilder.create(instance -> instance
+    public static final MapCodec<TrollCaveStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
                     .group(
                             ControlledSpawns.ControlledSpawningConfig.FLAT_CODEC.forGetter(ConfigurableSpawns::getConfig),
                             StructureSpeleothemConfigs.CODEC.fieldOf("speleothem_config").forGetter(s -> s.speleothemConfig)

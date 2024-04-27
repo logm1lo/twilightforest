@@ -1,6 +1,6 @@
 package twilightforest.world.components.processors;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 // Despite the name, any facts about actual Box Cutters being involved are lies
 public final class BoxCuttingProcessor extends StructureProcessor {
-    public static final Codec<BoxCuttingProcessor> CODEC = BoundingBox.CODEC.listOf().xmap(BoxCuttingProcessor::new, p -> p.cutouts);
+    public static final MapCodec<BoxCuttingProcessor> CODEC = BoundingBox.CODEC.listOf().xmap(BoxCuttingProcessor::new, p -> p.cutouts).fieldOf("boxes");
 
     public final List<BoundingBox> cutouts;
 

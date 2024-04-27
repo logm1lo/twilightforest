@@ -1,6 +1,6 @@
 package twilightforest.world.components.processors;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
@@ -15,7 +15,7 @@ import twilightforest.util.FeaturePlacers;
 
 public class SmoothStoneVariants extends StructureProcessor {
     public static final SmoothStoneVariants INSTANCE = new SmoothStoneVariants();
-    public static final Codec<SmoothStoneVariants> CODEC = Codec.unit(() -> INSTANCE);
+    public static final MapCodec<SmoothStoneVariants> CODEC = MapCodec.unit(() -> INSTANCE);
 
     private SmoothStoneVariants() {
     }

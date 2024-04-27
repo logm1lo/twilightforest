@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.placements;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
@@ -19,7 +19,7 @@ import java.util.Optional;
  * Does not filter for biome. That's for the structure's config to handle.
  */
 public class LandmarkGridPlacement extends StructurePlacement {
-    public static final Codec<LandmarkGridPlacement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final MapCodec<LandmarkGridPlacement> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_grid_lock").forGetter(p -> p.landmark)
     ).apply(inst, LandmarkGridPlacement::new));
 

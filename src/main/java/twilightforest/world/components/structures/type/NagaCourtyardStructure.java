@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.type;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class NagaCourtyardStructure extends ConquerableStructure {
-    public static final Codec<NagaCourtyardStructure> CODEC = RecordCodecBuilder.create(instance -> landmarkCodec(instance).apply(instance, NagaCourtyardStructure::new));
+    public static final MapCodec<NagaCourtyardStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, NagaCourtyardStructure::new));
 
     public NagaCourtyardStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
         super(decorationConfig, structureSettings);

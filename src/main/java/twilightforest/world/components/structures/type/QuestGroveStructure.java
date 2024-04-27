@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.type;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class QuestGroveStructure extends ConquerableStructure {
-    public static final Codec<QuestGroveStructure> CODEC = RecordCodecBuilder.create(instance -> landmarkCodec(instance).apply(instance, QuestGroveStructure::new));
+    public static final MapCodec<QuestGroveStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, QuestGroveStructure::new));
 
     public QuestGroveStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
         super(decorationConfig, structureSettings);

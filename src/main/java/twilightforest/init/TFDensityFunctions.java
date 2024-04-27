@@ -1,12 +1,11 @@
 package twilightforest.init;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.Noises;
@@ -22,21 +21,21 @@ import twilightforest.world.components.layer.BiomeDensitySource;
 
 @SuppressWarnings("unused")
 public class TFDensityFunctions {
-    public static final DeferredRegister<Codec<? extends DensityFunction>> DENSITY_FUNCTION_TYPES = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, TwilightForestMod.ID);
+    public static final DeferredRegister<MapCodec<? extends DensityFunction>> DENSITY_FUNCTION_TYPES = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, TwilightForestMod.ID);
 
-    public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<TerrainDensityRouter>> BIOME_DRIVEN = register("biome_driven", TerrainDensityRouter.CODEC);
-    public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<FocusedDensityFunction>> FOCUSED = register("focused", FocusedDensityFunction.CODEC);
-    public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<HollowHillFunction>> HOLLOW_HILL = register("hollow_hill", HollowHillFunction.CODEC);
-    public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<AbsoluteDifferenceFunction.Min>> COORD_MIN = register("coord_min", AbsoluteDifferenceFunction.Min.CODEC);
-    public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<AbsoluteDifferenceFunction.Max>> COORD_MAX = register("coord_max", AbsoluteDifferenceFunction.Max.CODEC);
-    public static final DeferredHolder<Codec<? extends DensityFunction>, Codec<SqrtDensityFunction>> SQRT = register("sqrt", SqrtDensityFunction.CODEC);
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<TerrainDensityRouter>> BIOME_DRIVEN = register("biome_driven", TerrainDensityRouter.CODEC);
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<FocusedDensityFunction>> FOCUSED = register("focused", FocusedDensityFunction.CODEC);
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<HollowHillFunction>> HOLLOW_HILL = register("hollow_hill", HollowHillFunction.CODEC);
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<AbsoluteDifferenceFunction.Min>> COORD_MIN = register("coord_min", AbsoluteDifferenceFunction.Min.CODEC);
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<AbsoluteDifferenceFunction.Max>> COORD_MAX = register("coord_max", AbsoluteDifferenceFunction.Max.CODEC);
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<SqrtDensityFunction>> SQRT = register("sqrt", SqrtDensityFunction.CODEC);
 
     public static final ResourceKey<DensityFunction> BIOMES_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("raw_biome_terrain"));
     public static final ResourceKey<DensityFunction> FORESTED_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("forested_terrain"));
     public static final ResourceKey<DensityFunction> SKYLIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("skylight_terrain"));
 
-    private static <T extends DensityFunction> DeferredHolder<Codec<? extends DensityFunction>, Codec<T>> register(String name, KeyDispatchDataCodec<T> keyCodec) {
-        return DENSITY_FUNCTION_TYPES.register(name, keyCodec::codec);
+    private static <T extends DensityFunction> DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<T>> register(String name, MapCodec<T> keyCodec) {
+        return DENSITY_FUNCTION_TYPES.register(name, () -> keyCodec);
     }
 
     public static void bootstrap(BootstrapContext<DensityFunction> context) {

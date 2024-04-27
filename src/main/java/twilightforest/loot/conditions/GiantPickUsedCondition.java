@@ -1,7 +1,7 @@
 package twilightforest.loot.conditions;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 public record GiantPickUsedCondition(LootContext.EntityTarget target) implements LootItemCondition {
 
-    public static final Codec<GiantPickUsedCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(LootContext.EntityTarget.CODEC.fieldOf("entity").forGetter(o -> o.target)).apply(instance, GiantPickUsedCondition::new));
+    public static final MapCodec<GiantPickUsedCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(LootContext.EntityTarget.CODEC.fieldOf("entity").forGetter(o -> o.target)).apply(instance, GiantPickUsedCondition::new));
 
     @Override
     public LootItemConditionType getType() {

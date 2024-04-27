@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature.trees.treeplacers;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -16,12 +17,10 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class TrunkRiser extends TrunkPlacer {
-    public static final Codec<TrunkRiser> CODEC = RecordCodecBuilder.create(instance ->
-            instance.group(
-                    Codec.intRange(0, 16).fieldOf("offset_up").forGetter(o -> o.offset),
-                    TrunkPlacer.CODEC.fieldOf("trunk_placer").forGetter(o -> o.placer)
-            ).apply(instance, TrunkRiser::new)
-    );
+    public static final MapCodec<TrunkRiser> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.intRange(0, 16).fieldOf("offset_up").forGetter(o -> o.offset),
+            TrunkPlacer.CODEC.fieldOf("trunk_placer").forGetter(o -> o.placer)
+    ).apply(instance, TrunkRiser::new));
 
     private final int offset;
     private final TrunkPlacer placer;

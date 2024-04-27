@@ -1,6 +1,7 @@
 package twilightforest.world.components.chunkblanketing;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import twilightforest.init.custom.ChunkBlanketProcessors;
 
 public record GlacierBlanketProcessor(HolderSet<Biome> biomesForApplication, BlockStateProvider glacierBody, BlockStateProvider glacierTop, int height) implements ChunkBlanketProcessor.SimpleProcessor {
-    public static final Codec<GlacierBlanketProcessor> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final MapCodec<GlacierBlanketProcessor> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             RegistryCodecs.homogeneousList(Registries.BIOME, true).fieldOf("biome_mask").forGetter(GlacierBlanketProcessor::biomesForApplication),
             BlockStateProvider.CODEC.fieldOf("body_block").forGetter(GlacierBlanketProcessor::glacierBody),
             BlockStateProvider.CODEC.fieldOf("top_block").forGetter(GlacierBlanketProcessor::glacierTop),

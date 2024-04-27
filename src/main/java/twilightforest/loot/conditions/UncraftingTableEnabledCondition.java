@@ -1,6 +1,6 @@
 package twilightforest.loot.conditions;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
@@ -10,7 +10,7 @@ import twilightforest.init.TFLoot;
 public class UncraftingTableEnabledCondition implements LootItemCondition {
 
 	private static final UncraftingTableEnabledCondition INSTANCE = new UncraftingTableEnabledCondition();
-	public static final Codec<UncraftingTableEnabledCondition> CODEC = Codec.unit(INSTANCE);
+	public static final MapCodec<UncraftingTableEnabledCondition> CODEC = MapCodec.unit(INSTANCE);
 
 
 	@Override

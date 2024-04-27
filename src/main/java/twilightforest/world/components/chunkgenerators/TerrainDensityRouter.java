@@ -1,6 +1,7 @@
 package twilightforest.world.components.chunkgenerators;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFileCodec;
@@ -15,16 +16,16 @@ import twilightforest.world.components.layer.BiomeDensitySource;
  * A DensityFunction implementation that enables Biomes to influence terrain formulations, if in the noise chunk generator.
  */
 public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
-
-	public static final KeyDispatchDataCodec<TerrainDensityRouter> CODEC = KeyDispatchDataCodec.of(RecordCodecBuilder.create(inst -> inst.group(
+	public static final MapCodec<TerrainDensityRouter> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 			RegistryFileCodec.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC, false).fieldOf("terrain_source").forGetter(TerrainDensityRouter::biomeDensitySourceHolder),
-			DensityFunction.NoiseHolder.CODEC.fieldOf("noise").forGetter(TerrainDensityRouter::noise),
+			NoiseHolder.CODEC.fieldOf("noise").forGetter(TerrainDensityRouter::noise),
 			Codec.doubleRange(-64, 0).fieldOf("lower_density_bound").forGetter(TerrainDensityRouter::lowerDensityBound),
 			Codec.doubleRange(0, 64).fieldOf("upper_density_bound").forGetter(TerrainDensityRouter::upperDensityBound),
 			Codec.doubleRange(0, 32).orElse(8.0).fieldOf("depth_scalar").forGetter(TerrainDensityRouter::depthScalar),
 			DensityFunction.HOLDER_HELPER_CODEC.fieldOf("base_factor").forGetter(TerrainDensityRouter::baseFactor),
 			DensityFunction.HOLDER_HELPER_CODEC.fieldOf("base_offset").forGetter(TerrainDensityRouter::baseOffset)
-	).apply(inst, TerrainDensityRouter::new)));
+	).apply(inst, TerrainDensityRouter::new));
+	public static final KeyDispatchDataCodec<TerrainDensityRouter> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
 
 	private final Holder<BiomeDensitySource> biomeDensitySourceHolder;
 	private final DensityFunction.NoiseHolder noise;
@@ -81,7 +82,7 @@ public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
 
 	@Override
 	public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-		return CODEC;
+		return KEY_CODEC;
 	}
 
 	public Holder<BiomeDensitySource> biomeDensitySourceHolder() {

@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.type;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class KnightStrongholdStructure extends ControlledSpawningStructure {
-    public static final Codec<KnightStrongholdStructure> CODEC = RecordCodecBuilder.create(instance ->
+    public static final MapCodec<KnightStrongholdStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
             controlledSpawningCodec(instance).apply(instance, KnightStrongholdStructure::new)
     );
 

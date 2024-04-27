@@ -1,6 +1,6 @@
 package twilightforest.world.components.processors;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -18,7 +18,7 @@ public final class WoodPaletteSwizzle extends StructureProcessor {
     private final Holder<WoodPalette> targetPalette;
     private final Holder<WoodPalette> replacementPalette;
 
-    public static final Codec<WoodPaletteSwizzle> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+    public static final MapCodec<WoodPaletteSwizzle> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
             WoodPalettes.CODEC.fieldOf("target_palette").forGetter(s -> s.targetPalette),
             WoodPalettes.CODEC.fieldOf("replacement_palette").forGetter(s -> s.replacementPalette)
     ).apply(instance, WoodPaletteSwizzle::new));

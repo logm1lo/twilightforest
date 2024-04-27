@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.courtyard;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
@@ -18,7 +18,7 @@ import java.util.HashSet;
 
 public final class CourtyardTerraceTemplateProcessor extends StructureProcessor {
     public static final CourtyardTerraceTemplateProcessor INSTANCE = new CourtyardTerraceTemplateProcessor();
-	public static final Codec<CourtyardTerraceTemplateProcessor> CODEC = Codec.unit(() -> INSTANCE);
+	public static final MapCodec<CourtyardTerraceTemplateProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
     private static final HashSet<BlockState> BLOCKS_REPLACE_TO_SLAB = new HashSet<>();
 

@@ -1,6 +1,7 @@
 package twilightforest.world.components.chunkblanketing;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -27,7 +28,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 public record CanopyBlanketProcessor(HolderSet<Biome> biomesForApplication, BlockStateProvider blockState, int height, HolderSet<Structure> avoidStructures) implements ChunkBlanketProcessor {
-    public static final Codec<CanopyBlanketProcessor> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final MapCodec<CanopyBlanketProcessor> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             RegistryCodecs.homogeneousList(Registries.BIOME, true).fieldOf("biome_mask").forGetter(CanopyBlanketProcessor::biomesForApplication),
             BlockStateProvider.CODEC.fieldOf("block").forGetter(CanopyBlanketProcessor::blockState),
             Codec.INT.fieldOf("height").forGetter(CanopyBlanketProcessor::height),

@@ -1,6 +1,7 @@
 package twilightforest.world.components.chunkgenerators;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.KeyDispatchDataCodec;
@@ -9,14 +10,15 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 
 // For making spheres
 public record FocusedDensityFunction(float centerX, float bottomY, float centerZ, float radius, float nearValue, float farValue) implements DensityFunction.SimpleFunction {
-    public static final KeyDispatchDataCodec<FocusedDensityFunction> CODEC = KeyDispatchDataCodec.of(RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<FocusedDensityFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.FLOAT.fieldOf("x_center").forGetter(FocusedDensityFunction::centerX),
             Codec.FLOAT.fieldOf("y_bottom").forGetter(FocusedDensityFunction::bottomY),
             Codec.FLOAT.fieldOf("z_center").forGetter(FocusedDensityFunction::centerZ),
             Codec.FLOAT.fieldOf("radius").forGetter(FocusedDensityFunction::radius),
             Codec.FLOAT.fieldOf("near_value").forGetter(FocusedDensityFunction::nearValue),
             Codec.FLOAT.fieldOf("far_value").forGetter(FocusedDensityFunction::farValue)
-    ).apply(instance, FocusedDensityFunction::new)));
+    ).apply(instance, FocusedDensityFunction::new));
+    public static final KeyDispatchDataCodec<FocusedDensityFunction> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
 
     public static FocusedDensityFunction fromPos(BlockPos blockPos, float radius, float nearValue, float farValue) {
         return new FocusedDensityFunction(blockPos.getX() + 0.5f, blockPos.getY() + 0.5f, blockPos.getZ() + 0.5f, radius, nearValue, farValue);
@@ -45,6 +47,6 @@ public record FocusedDensityFunction(float centerX, float bottomY, float centerZ
 
     @Override
     public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-        return CODEC;
+        return KEY_CODEC;
     }
 }

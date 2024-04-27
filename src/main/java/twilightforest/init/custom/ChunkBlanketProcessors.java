@@ -57,10 +57,8 @@ public final class ChunkBlanketProcessors {
     public static final ResourceKey<ChunkBlanketProcessor> DARK_FOREST_CANOPY = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TwilightForestMod.prefix("dark_forest_canopy"));
     public static final ResourceKey<ChunkBlanketProcessor> SNOWY_FOREST_GLACIER = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TwilightForestMod.prefix("snowy_forest_glacier"));
 
-    public static DeferredHolder<ChunkBlanketType, ChunkBlanketType> registerType(String name, Codec<? extends ChunkBlanketProcessor> codec) {
-        MapCodec<? extends ChunkBlanketProcessor> boxedCodec = codec.fieldOf("config");
-        // Ensures the codec is boxed and this same boxed codec is returned every time
-        return CHUNK_BLANKETING_TYPES.register(name, () -> () -> boxedCodec);
+    public static DeferredHolder<ChunkBlanketType, ChunkBlanketType> registerType(String name, MapCodec<? extends ChunkBlanketProcessor> codec) {
+        return CHUNK_BLANKETING_TYPES.register(name, () -> () -> codec);
     }
 
     public static void bootstrap(BootstrapContext<ChunkBlanketProcessor> context) {

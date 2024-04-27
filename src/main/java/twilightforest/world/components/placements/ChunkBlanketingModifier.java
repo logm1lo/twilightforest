@@ -1,6 +1,7 @@
 package twilightforest.world.components.placements;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
@@ -24,7 +25,7 @@ import java.util.stream.Stream;
 // This litters memory with 256 block positions for each chunk. USE SPARINGLY
 public class ChunkBlanketingModifier extends PlacementModifier {
 
-    public static final Codec<ChunkBlanketingModifier> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<ChunkBlanketingModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.floatRange(0.0f, 1.0f).fieldOf("integrity").forGetter(o -> o.integrity),
             Heightmap.Types.CODEC.fieldOf("heightmap").forGetter(o -> o.heightmap),
             RegistryCodecs.homogeneousList(Registries.BIOME).optionalFieldOf("biome_lock").forGetter(o -> o.biomeRLOptional)

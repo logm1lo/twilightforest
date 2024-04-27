@@ -1,6 +1,6 @@
 package twilightforest.world.components.processors;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -18,7 +18,7 @@ import twilightforest.util.RotationUtil;
 
 public class SmartGrassProcessor extends StructureProcessor {
     public static final SmartGrassProcessor INSTANCE = new SmartGrassProcessor();
-    public static final Codec<SmartGrassProcessor> CODEC = Codec.unit(() -> INSTANCE);
+    public static final MapCodec<SmartGrassProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
     private SmartGrassProcessor() {
     }

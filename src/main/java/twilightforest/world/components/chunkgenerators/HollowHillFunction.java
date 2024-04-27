@@ -1,6 +1,7 @@
 package twilightforest.world.components.chunkgenerators;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.KeyDispatchDataCodec;
@@ -9,13 +10,14 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 
 // Negative radius values cause a bowling-up shaped zero-threshold over this DensityFunction's field, making it useful for the hollow hill's floor alongside as its regular mound shape
 public record HollowHillFunction(float centerX, float bottomY, float centerZ, float radius, float heightScale) implements DensityFunction.SimpleFunction {
-    public static final KeyDispatchDataCodec<HollowHillFunction> CODEC = KeyDispatchDataCodec.of(RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<HollowHillFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.FLOAT.fieldOf("x_center").forGetter(HollowHillFunction::centerX),
             Codec.FLOAT.fieldOf("y_bottom").forGetter(HollowHillFunction::bottomY),
             Codec.FLOAT.fieldOf("z_center").forGetter(HollowHillFunction::centerZ),
             Codec.FLOAT.fieldOf("radius").forGetter(HollowHillFunction::radius),
             Codec.FLOAT.fieldOf("height_scale").forGetter(HollowHillFunction::heightScale)
-    ).apply(instance, HollowHillFunction::new)));
+    ).apply(instance, HollowHillFunction::new));
+    public static final KeyDispatchDataCodec<HollowHillFunction> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
 
     public static HollowHillFunction fromPos(BlockPos blockPos, float radius, float heightScale) {
         return new HollowHillFunction(blockPos.getX() + 0.5f, blockPos.getY() + 0.5f, blockPos.getZ() + 0.5f, radius, heightScale);
@@ -52,6 +54,6 @@ public record HollowHillFunction(float centerX, float bottomY, float centerZ, fl
 
     @Override
     public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-        return CODEC;
+        return KEY_CODEC;
     }
 }

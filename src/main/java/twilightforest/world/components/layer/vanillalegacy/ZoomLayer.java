@@ -1,6 +1,7 @@
 package twilightforest.world.components.layer.vanillalegacy;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -87,7 +88,7 @@ public enum ZoomLayer implements AreaTransformer1 {
 	}
 
 	public record Factory(long salt, boolean fuzzy, Holder<BiomeLayerFactory> parent) implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
 				Codec.BOOL.fieldOf("fuzzy").forGetter(Factory::fuzzy),
 				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)

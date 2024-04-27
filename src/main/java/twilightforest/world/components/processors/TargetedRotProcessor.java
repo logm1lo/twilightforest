@@ -2,6 +2,7 @@ package twilightforest.world.components.processors;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
@@ -16,7 +17,7 @@ import twilightforest.init.TFStructureProcessors;
 import java.util.ArrayList;
 
 public final class TargetedRotProcessor extends BlockRotProcessor {
-    public static final Codec<TargetedRotProcessor> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<TargetedRotProcessor> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             BlockState.CODEC.listOf().xmap(ImmutableSet::copyOf, ArrayList::new).fieldOf("blocks_to_rot").forGetter(p -> p.blocksToRot),
             Codec.FLOAT.fieldOf("integrity").orElse(1.0f).forGetter(p -> p.integrity)
     ).apply(instance, TargetedRotProcessor::new));

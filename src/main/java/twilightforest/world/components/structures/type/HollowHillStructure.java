@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.type;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -36,7 +37,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns, CustomDensitySource {
-    public static final Codec<HollowHillStructure> CODEC = RecordCodecBuilder.create(instance -> instance
+    public static final MapCodec<HollowHillStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
                     // TODO Clean up findGenerationPoint() first before even thinking about increasing upper limit
                     Codec.intRange(1, 3).fieldOf("hill_size").forGetter(s -> s.size),
