@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -42,8 +41,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.curios.CuriosCompat;
-import twilightforest.compat.top.TopCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -148,14 +145,16 @@ public class TwilightForestMod {
 		bus.addListener(ConfigSetup::reloadConfigs);
 		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
 
-		if (ModList.get().isLoaded("curios")) {
-			NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
-			bus.addListener(CuriosCompat::registerCuriosCapabilities);
-			bus.addListener(CuriosCompat::registerCurioRenderers);
-			bus.addListener(CuriosCompat::registerCurioLayers);
-		}
+		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
 
 		BiomeGrassColors.init();
+	}
+
+	private static void loadCuriosCompat(IEventBus bus) {
+		// NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+		// bus.addListener(CuriosCompat::registerCuriosCapabilities);
+		// bus.addListener(CuriosCompat::registerCurioRenderers);
+		// bus.addListener(CuriosCompat::registerCurioLayers);
 	}
 
 	private void registerGenericItemHandlers(RegisterCapabilitiesEvent event) {
@@ -212,9 +211,7 @@ public class TwilightForestMod {
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
-		if (ModList.get().isLoaded("theoneprobe")) {
-			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
-		}
+		// if (ModList.get().isLoaded("theoneprobe")) InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 	}
 
 	public void setupPackets(RegisterPayloadHandlersEvent event) {
