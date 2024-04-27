@@ -25,7 +25,7 @@ public class HydraRenderer extends MobRenderer<Hydra, HydraModel> {
 	}
 
 	@Override
-	protected void setupRotations(Hydra p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_) {
+	protected void setupRotations(Hydra p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_, float scale) {
 		if (this.isShaking(p_115317_)) {
 			p_115320_ += (float)(Math.cos((double)p_115317_.tickCount * 3.25) * Math.PI * 0.4F);
 		}
