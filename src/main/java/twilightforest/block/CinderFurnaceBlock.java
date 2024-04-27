@@ -93,13 +93,6 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 		return InteractionResult.PASS;
 	}
 
-	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		if (stack.hasCustomHoverName()) {
-			((CinderFurnaceBlockEntity) level.getBlockEntity(pos)).setCustomName(stack.getHoverName());
-		}
-	}
-
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {

@@ -6,14 +6,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.neoforged.neoforge.network.handling.ClientPayloadContext;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ProtectionBox;
@@ -69,7 +64,7 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					ClientLevel level = (ClientLevel) ctx.level().orElse(Minecraft.getInstance().level);
+					ClientLevel level = ctx.player().level() instanceof ClientLevel clientLevel ? clientLevel : Minecraft.getInstance().level;
 					message.sbb.forEach(box -> {
 						for (Entity entity : level.entitiesForRendering()) {
 							if (entity instanceof ProtectionBox prot) {
