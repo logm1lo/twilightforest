@@ -46,7 +46,7 @@ public class UpperGoblinKnight extends Monster {
 	private static final EntityDataAccessor<Boolean> SHIELD_DISABLED = SynchedEntityData.defineId(UpperGoblinKnight.class, EntityDataSerializers.BOOLEAN);
 
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 20, AttributeModifier.Operation.ADD_VALUE);
-	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier("Heavy spear attack boost", 12, AttributeModifier.Operation.ADDITION);
+	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier("Heavy spear attack boost", 12, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	public static final int HEAVY_SPEAR_TIMER_START = 60;
 
 	private int shieldHits = 0;
