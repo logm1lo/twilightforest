@@ -532,8 +532,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
 				BlockTags.DIRT,
-				Tags.Blocks.GRAVEL,
-				Tags.Blocks.SAND,
+				Tags.Blocks.GRAVELS,
+				Tags.Blocks.SANDS,
 				BlockTags.NYLIUM,
 				BlockTags.BASE_STONE_OVERWORLD,
 				BlockTags.BASE_STONE_NETHER,
@@ -582,10 +582,10 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				.addTag(BlockTags.BASE_STONE_OVERWORLD)
 				.addTag(BlockTags.BASE_STONE_NETHER)
 				.addTag(BlockTags.DIRT)
-				.addTag(Tags.Blocks.SAND)
-				.addTag(Tags.Blocks.SANDSTONE)
+				.addTag(Tags.Blocks.SANDS)
+				.addTag(Tags.Blocks.SANDSTONE_BLOCKS)
 				.addTag(BlockTags.TERRACOTTA)
-				.addTag(Tags.Blocks.GRAVEL)
+				.addTag(Tags.Blocks.GRAVELS)
 				.addTag(BlockTags.NYLIUM)
 				.add(Blocks.BUDDING_AMETHYST)
 				.add(Blocks.CALCITE)

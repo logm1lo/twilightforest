@@ -253,7 +253,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 
 		tag(ItemTags.PIGLIN_LOVED).add(TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.CHARM_OF_KEEPING_3.get(), TFItems.CHARM_OF_LIFE_2.get(), TFItems.LAMP_OF_CINDERS.get());
 
-		tag(Tags.Items.HEADS).add(
+		tag(ItemTags.SKULLS).add(
 				TFItems.ZOMBIE_SKULL_CANDLE.get(),
 				TFItems.SKELETON_SKULL_CANDLE.get(),
 				TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
@@ -269,7 +269,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 				TFItems.PLAYER_SKULL_CANDLE.get(),
 				TFItems.PIGLIN_SKULL_CANDLE.get());
 
-		tag(Tags.Items.ARMORS_HELMETS).add(
+		tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(
 				TFItems.IRONWOOD_HELMET.get(),
 				TFItems.STEELEAF_HELMET.get(),
 				TFItems.KNIGHTMETAL_HELMET.get(),
@@ -278,7 +278,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 				TFItems.ARCTIC_HELMET.get(),
 				TFItems.YETI_HELMET.get());
 		
-		tag(Tags.Items.ARMORS_CHESTPLATES).add(
+		tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(
 				TFItems.NAGA_CHESTPLATE.get(),
 				TFItems.IRONWOOD_CHESTPLATE.get(),
 				TFItems.STEELEAF_CHESTPLATE.get(),
@@ -288,7 +288,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 				TFItems.ARCTIC_CHESTPLATE.get(),
 				TFItems.YETI_CHESTPLATE.get());
 		
-		tag(Tags.Items.ARMORS_LEGGINGS).add(
+		tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(
 				TFItems.NAGA_LEGGINGS.get(),
 				TFItems.IRONWOOD_LEGGINGS.get(),
 				TFItems.STEELEAF_LEGGINGS.get(),
@@ -297,7 +297,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 				TFItems.ARCTIC_LEGGINGS.get(),
 				TFItems.YETI_LEGGINGS.get());
 		
-		tag(Tags.Items.ARMORS_BOOTS).add(
+		tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(
 				TFItems.IRONWOOD_BOOTS.get(),
 				TFItems.STEELEAF_BOOTS.get(),
 				TFItems.KNIGHTMETAL_BOOTS.get(),
