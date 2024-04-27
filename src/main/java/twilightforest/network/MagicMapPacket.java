@@ -2,15 +2,12 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapRenderer;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.MagicMapItem;
@@ -21,22 +18,23 @@ public class MagicMapPacket implements CustomPacketPayload {
 
 	public static final Type<MagicMapPacket> TYPE = new Type<>(TwilightForestMod.prefix("magic_map"));
 
+	public static final StreamCodec<RegistryFriendlyByteBuf, MagicMapPacket> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.byteArray(256), // TODO Is this enough? To how many bytes will the data require?
+			p -> p.featureData,
+			ClientboundMapItemDataPacket.STREAM_CODEC, p -> p.inner,
+			MagicMapPacket::new
+	);
+
 	private final byte[] featureData;
 	private final ClientboundMapItemDataPacket inner;
 
 	public MagicMapPacket(TFMagicMapData mapData, ClientboundMapItemDataPacket inner) {
-		this.featureData = mapData.serializeFeatures();
+		this(mapData.serializeFeatures(), inner);
+	}
+
+	public MagicMapPacket(byte[] mapData, ClientboundMapItemDataPacket inner) {
+		this.featureData = mapData;
 		this.inner = inner;
-	}
-
-	public MagicMapPacket(FriendlyByteBuf buf) {
-		this.featureData = buf.readByteArray();
-		this.inner = new ClientboundMapItemDataPacket(buf);
-	}
-
-	public void write(FriendlyByteBuf buf) {
-		buf.writeByteArray(this.featureData);
-		this.inner.write(buf);
 	}
 
 	@Override
@@ -52,7 +50,7 @@ public class MagicMapPacket implements CustomPacketPayload {
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					Level level = ctx.level().orElse(Minecraft.getInstance().level);
+					Level level = ctx.player().level();
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
 					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
 					String s = MagicMapItem.getMapName(message.inner.mapId().id());

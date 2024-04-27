@@ -2,32 +2,28 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapRenderer;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.mapdata.TFMazeMapData;
 import twilightforest.item.MazeMapItem;
+import twilightforest.item.mapdata.TFMazeMapData;
 
 // Rewraps vanilla ClientboundMapItemDataPacket to properly add our own data
 public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int yCenter) implements CustomPacketPayload {
 
 	public static final Type<MazeMapPacket> TYPE = new Type<>(TwilightForestMod.prefix("maze_map"));
 
-	public MazeMapPacket(FriendlyByteBuf buf) {
-		this(new ClientboundMapItemDataPacket(buf), buf.readBoolean(), buf.readVarInt());
-	}
-
-	public void write(FriendlyByteBuf buf) {
-		this.inner().write(buf);
-		buf.writeBoolean(this.ore());
-		buf.writeVarInt(this.yCenter());
-	}
+	public static final StreamCodec<RegistryFriendlyByteBuf, MazeMapPacket> STREAM_CODEC = StreamCodec.composite(
+			ClientboundMapItemDataPacket.STREAM_CODEC, MazeMapPacket::inner,
+			ByteBufCodecs.BOOL, MazeMapPacket::ore,
+			ByteBufCodecs.INT, MazeMapPacket::yCenter,
+			MazeMapPacket::new
+	);
 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
