@@ -83,6 +83,7 @@ public class TFLootTables {
 
 	// Special loot
 	public static final ResourceKey<LootTable> QUESTING_RAM_REWARDS = register("entities/questing_ram_rewards");
+	public static final ResourceKey<LootTable> QUESTING_RAM_REWARD_BLOCKS = register("entities/questing_ram_reward_blocks");
 	public static final ResourceKey<LootTable> DEATH_TOME_HURT = register("entities/death_tome_hurt");
 	public static final ResourceKey<LootTable> DEATH_TOME_BOOKS = register("entities/death_tome_books");
 

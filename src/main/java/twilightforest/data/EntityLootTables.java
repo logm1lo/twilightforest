@@ -1,23 +1,15 @@
 package twilightforest.data;
 
-import net.minecraft.Util;
 import net.minecraft.data.loot.EntityLootSubProvider;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.*;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
@@ -30,8 +22,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
-import twilightforest.loot.MultiplayerBasedNumberProvider;
 import twilightforest.loot.MultiplayerBasedAdditionLootFunction;
+import twilightforest.loot.MultiplayerBasedNumberProvider;
 import twilightforest.loot.TFLootTables;
 import twilightforest.loot.conditions.IsMinionCondition;
 
@@ -142,7 +134,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SmeltItemFunction.smelted()
 												.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-										.apply(SetNameFunction.setName(Component.translatable("item.twilightforest.boarkchop").withStyle(Style.EMPTY.withItalic(false)))
+										.apply(SetNameFunction.setName(Component.translatable("item.twilightforest.boarkchop").withStyle(Style.EMPTY.withItalic(false)), SetNameFunction.Target.ITEM_NAME)
 												.when(LootItemRandomChanceCondition.randomChance(0.002F))
 												.when(LootItemKilledByPlayerCondition.killedByPlayer())))));
 
@@ -570,22 +562,19 @@ public class EntityLootTables extends EntityLootSubProvider {
 								.add(LootItem.lootTableItem(TFItems.CRUMBLE_HORN.get())))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(Items.BUNDLE)
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											ListTag items = new ListTag();
+								.add(LootItem.lootTableItem(Items.BUNDLE).apply(SetContainerContents.setContents(ContainerComponentManipulators.BUNDLE_CONTENTS)
+												.withEntry(LootItem.lootTableItem(TFBlocks.QUEST_RAM_TROPHY.value()))
+												.withEntry(NestedLootTable.lootTableReference(TFLootTables.QUESTING_RAM_REWARD_BLOCKS))
+								))));
 
-											// Do NOT overstuff the bag.
-											items.add(new ItemStack(TFBlocks.QUEST_RAM_TROPHY.get()).save(new CompoundTag()));
-											items.add(new ItemStack(Blocks.COAL_BLOCK).save(new CompoundTag()));
-											items.add(new ItemStack(Blocks.IRON_BLOCK).save(new CompoundTag()));
-											items.add(new ItemStack(Blocks.COPPER_BLOCK).save(new CompoundTag()));
-											items.add(new ItemStack(Blocks.LAPIS_BLOCK).save(new CompoundTag()));
-											items.add(new ItemStack(Blocks.GOLD_BLOCK).save(new CompoundTag()));
-											items.add(new ItemStack(Blocks.DIAMOND_BLOCK).save(new CompoundTag()));
-											items.add(new ItemStack(Blocks.EMERALD_BLOCK).save(new CompoundTag()));
-
-											nbt.put("Items", items);
-										}))))));
+		add(TFEntities.QUEST_RAM.get(), TFLootTables.QUESTING_RAM_REWARD_BLOCKS, LootTable.lootTable()
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.COAL_BLOCK)))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.IRON_BLOCK)))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.COPPER_BLOCK)))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.LAPIS_BLOCK)))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.GOLD_BLOCK)))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.DIAMOND_BLOCK)))
+		);
 	}
 
 	public LootTable.Builder emptyLootTable() {
