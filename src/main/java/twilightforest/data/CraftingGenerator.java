@@ -1,35 +1,34 @@
 package twilightforest.data;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.conditions.TrueCondition;
-import net.neoforged.neoforge.common.crafting.CompoundIngredient;
-import net.neoforged.neoforge.common.crafting.NBTIngredient;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.NoSmithingTemplateRecipeBuilder;
 import twilightforest.data.custom.UncraftingGenerator;
 import twilightforest.data.helpers.CraftingDataHelper;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.*;
 
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class CraftingGenerator extends CraftingDataHelper {
-	public CraftingGenerator(PackOutput output) {
-		super(output);
+	public CraftingGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+		super(output, provider);
 	}
 
 	@Override
@@ -371,7 +370,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		NoSmithingTemplateRecipeBuilder
 				.noTemplate(Ingredient.of(Tags.Items.ARMORS), Ingredient.of(TFItems.EMPERORS_CLOTH.get()), RecipeCategory.MISC)
-				.attachData(tag -> tag.putBoolean(EmperorsClothRecipe.INVISIBLE_TAG, true))
+				.attachData(TFDataComponents.EMPERORS_CLOTH::value, Unit.INSTANCE)
 				.unlocks("has_cloth", has(TFItems.EMPERORS_CLOTH))
 				.save(output, TwilightForestMod.prefix("emperors_cloth_smithing"));
 
@@ -424,29 +423,30 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(output, locEquip(TFItems.KNIGHTMETAL_SHIELD.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.LIFEDRAIN_SCEPTER.get())
-				.requires(this.nbtItem(TFItems.LIFEDRAIN_SCEPTER.get(), tag -> tag.putInt(ItemStack.TAG_DAMAGE, 99)))
+				.requires(Ingredient.of(new ItemStack(TFItems.LIFEDRAIN_SCEPTER, 1, DataComponentPatch.builder().set(DataComponents.DAMAGE, 99).build())))
 				.requires(Ingredient.of(Items.FERMENTED_SPIDER_EYE))
 				.unlockedBy("has_item", has(TFItems.LIFEDRAIN_SCEPTER.get()))
 				.save(output, locEquip(TFItems.LIFEDRAIN_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.FORTIFICATION_SCEPTER.get())
-				.requires(this.nbtItem(TFItems.FORTIFICATION_SCEPTER.get(), tag -> tag.putInt(ItemStack.TAG_DAMAGE, 9)))
+				.requires(Ingredient.of(new ItemStack(TFItems.FORTIFICATION_SCEPTER, 1, DataComponentPatch.builder().set(DataComponents.DAMAGE, 9).build())))
 				.requires(Ingredient.of(Items.GOLDEN_APPLE))
 				.unlockedBy("has_item", has(TFItems.FORTIFICATION_SCEPTER.get()))
 				.save(output, locEquip(TFItems.FORTIFICATION_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.TWILIGHT_SCEPTER.get())
-				.requires(this.nbtItem(TFItems.TWILIGHT_SCEPTER.get(), tag -> tag.putInt(ItemStack.TAG_DAMAGE, 99)))
+				.requires(Ingredient.of(new ItemStack(TFItems.TWILIGHT_SCEPTER, 1, DataComponentPatch.builder().set(DataComponents.DAMAGE, 99).build())))
 				.requires(Tags.Items.ENDER_PEARLS)
 				.unlockedBy("has_item", has(TFItems.TWILIGHT_SCEPTER.get()))
 				.save(output, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.ZOMBIE_SCEPTER.get())
-				.requires(CompoundIngredient.of(
-						NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRENGTH)),
-						NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_STRENGTH)),
-						NBTIngredient.of(false, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_STRENGTH))))
-				.requires(this.nbtItem(TFItems.ZOMBIE_SCEPTER.get(), tag -> tag.putInt(ItemStack.TAG_DAMAGE, 9)))
+				.requires(Ingredient.of(
+						PotionContents.createItemStack(Items.POTION, Potions.STRENGTH),
+						PotionContents.createItemStack(Items.POTION, Potions.LONG_STRENGTH),
+						PotionContents.createItemStack(Items.POTION, Potions.STRONG_STRENGTH)
+				))
+				.requires(Ingredient.of(new ItemStack(TFItems.ZOMBIE_SCEPTER, 1, DataComponentPatch.builder().set(DataComponents.DAMAGE, 9).build())))
 				.requires(Ingredient.of(Items.ROTTEN_FLESH))
 				.unlockedBy("has_item", has(TFItems.ZOMBIE_SCEPTER.get()))
 				.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));

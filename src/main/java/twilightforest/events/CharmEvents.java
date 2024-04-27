@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -31,7 +30,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.enums.BlockLoggingEnum;
@@ -216,14 +214,11 @@ public class CharmEvents {
 						casket.playeruuid = null;
 					}
 
+					casket.playerName = player.getName().getString();
 					//some names are way too long for the casket so we'll cut them down
-					String modifiedName;
-					if (player.getName().getString().length() > 12)
-						modifiedName = player.getName().getString().substring(0, 12);
-					else modifiedName = player.getName().getString();
-					casket.name = player.getName().getString();
+					String modifiedName = casket.playerName.substring(0, Math.min(12, player.getName().getString().length()));
 					casket.casketname = modifiedName;
-					casket.setCustomName(Component.literal(modifiedName + "'s " + (level.getRandom().nextInt(1000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
+					casket.name = (Component.literal(modifiedName + "'s " + (level.getRandom().nextInt(1000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
 					int damage = level.getBlockState(immutablePos).getValue(KeepsakeCasketBlock.BREAKAGE);
 					if (level.getRandom().nextFloat() <= 1.0F) {
 						if (damage >= 2) {
@@ -270,14 +265,14 @@ public class CharmEvents {
 		CompoundTag playerData = getPlayerData(player);
 		if (!player.level().isClientSide() && playerData.contains(CHARM_INV_TAG)) {
 			ListTag tagList = playerData.getList(CHARM_INV_TAG, 10);
-			TFItemStackUtils.loadNoClear(tagList, player.getInventory());
+			TFItemStackUtils.loadNoClear(player.registryAccess(), tagList, player.getInventory());
 			getPlayerData(player).getList(CHARM_INV_TAG, 10).clear();
 			getPlayerData(player).remove(CHARM_INV_TAG);
 		}
 
 		// spawn effect thingers
 		if (getPlayerData(player).contains(CONSUMED_CHARM_TAG)) {
-			ItemStack stack = ItemStack.of((CompoundTag) getPlayerData(player).get(CONSUMED_CHARM_TAG));
+			ItemStack stack = ItemStack.parseOptional(player.registryAccess(), (CompoundTag) getPlayerData(player).get(CONSUMED_CHARM_TAG));
 
 			if (player instanceof ServerPlayer serverPlayer) {
 				PacketDistributor.sendToPlayer(serverPlayer, new SpawnCharmPacket(stack, TFSounds.CHARM_KEEP.getKey()));
@@ -303,9 +298,9 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.findAndConsumeCurio(item, player);
-		}
+		//if (ModList.get().isLoaded("curios")) {
+		//	FIXME return CuriosCompat.findAndConsumeCurio(item, player);
+		//}
 
 		return false;
 	}

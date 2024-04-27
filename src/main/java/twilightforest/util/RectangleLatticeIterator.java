@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jetbrains.annotations.NotNull;
@@ -106,7 +105,7 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 
         public static final TriangularLatticeConfig DEFAULT = new TriangularLatticeConfig(3.5f);
 
-        public static final Codec<TriangularLatticeConfig> CODEC = ExtraCodecs.withAlternative(VERBOSE_CODEC, ExtraCodecs.withAlternative(OFFSET_CODEC, ExtraCodecs.withAlternative(SPACING_CODEC, Codec.unit(DEFAULT))));
+        public static final Codec<TriangularLatticeConfig> CODEC = Codec.withAlternative(VERBOSE_CODEC, Codec.withAlternative(OFFSET_CODEC, Codec.withAlternative(SPACING_CODEC, Codec.unit(DEFAULT))));
 
         public TriangularLatticeConfig(float spacing) {
             this(spacing, Mth.cos(Mth.PI/6f) * spacing, Mth.sin(Mth.PI/6f) * spacing);

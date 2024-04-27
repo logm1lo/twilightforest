@@ -5,9 +5,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +18,6 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.ICancellableEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
@@ -130,7 +131,7 @@ public class ToolEvents {
 		ItemStack stack = event.getPlayer().getMainHandItem();
 		if (event.getState().is(BlockTagGenerator.MAZESTONE) || event.getState().is(BlockTagGenerator.CASTLE_BLOCKS)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
-				stack.hurtAndBreak(16, event.getPlayer(), (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+				stack.hurtAndBreak(16, event.getPlayer(), EquipmentSlot.MAINHAND);
 			}
 		}
 	}
@@ -160,12 +161,12 @@ public class ToolEvents {
 			ItemStack heldStack = player.getItemInHand(hand);
 			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 				UUID uuidForOppositeHand = GiantItem.GIANT_RANGE_MODIFIER;
-				AttributeInstance attackRange = player.getAttribute(NeoForgeMod.ENTITY_REACH.value());
+				AttributeInstance attackRange = player.getAttribute(Attributes.ENTITY_INTERACTION_RANGE);
 				if (attackRange != null) {
 					AttributeModifier giantModifier = attackRange.getModifier(uuidForOppositeHand);
 					if (giantModifier != null) {
-						attackRange.removeModifier(giantModifier.getId());
-						double range = player.getAttributeValue(NeoForgeMod.ENTITY_REACH.value());
+						attackRange.removeModifier(giantModifier);
+						double range = player.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE);
 						double trueReach = range == 0 ? 0 : range + (player.isCreative() ? 3 : 0); // Copied from IForgePlayer#getAttackRange().
 						boolean tooFar = !player.isCloseEnough(target, trueReach);
 						attackRange.addTransientModifier(giantModifier);
@@ -181,12 +182,12 @@ public class ToolEvents {
 			ItemStack heldStack = player.getItemInHand(hand);
 			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 				UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
-				AttributeInstance reachDistance = player.getAttribute(NeoForgeMod.BLOCK_REACH.value());
+				AttributeInstance reachDistance = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
 				if (reachDistance != null) {
 					AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
 					if (giantModifier != null) {
-						reachDistance.removeModifier(giantModifier.getId());
-						double reach = player.getAttributeValue(NeoForgeMod.BLOCK_REACH.value());
+						reachDistance.removeModifier(giantModifier);
+						double reach = player.getAttributeValue(Attributes.BLOCK_INTERACTION_RANGE);
 						double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
 						boolean tooFar = player.pick(trueReach, 0.0F, false).getType() != HitResult.Type.BLOCK;
 						reachDistance.addTransientModifier(giantModifier);

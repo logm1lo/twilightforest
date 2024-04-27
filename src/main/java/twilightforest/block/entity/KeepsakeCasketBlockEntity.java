@@ -34,7 +34,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 	private static final int limit = 9 * 5;
 	public NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
 	@Nullable
-	public String name;
+	public String playerName;
 	@Nullable
 	public String casketname;
 	@Nullable
@@ -173,7 +173,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 				return super.canOpen(user);
 			} else {
 				user.playNotifySound(TFSounds.CASKET_LOCKED.get(), SoundSource.BLOCKS, 0.5F, 0.5F);
-				user.displayClientMessage(Component.translatable("block.twilightforest.casket.locked", name).withStyle(ChatFormatting.RED), true);
+				user.displayClientMessage(Component.translatable("block.twilightforest.casket.locked", playerName).withStyle(ChatFormatting.RED), true);
 				return false;
 			}
 		} else {

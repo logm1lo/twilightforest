@@ -158,7 +158,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 			BlockEntity tile = level.getBlockEntity(pos);
 			if (tile instanceof KeepsakeCasketBlockEntity casket) {
 				ItemStack stack = new ItemStack(this);
-				String nameCheck = Component.literal(casket.name + "'s " + casket.getDisplayName()).getString();
+				String nameCheck = Component.literal(casket.playerName + "'s " + casket.getDisplayName()).getString();
 				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
 				CompoundTag nbt = new CompoundTag();
 				nbt.putInt("damage", state.getValue(BREAKAGE));

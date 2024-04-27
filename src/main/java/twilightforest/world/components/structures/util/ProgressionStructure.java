@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.util;
 import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -62,7 +63,7 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
     }
 
     @Override
-    public ItemStack createHintBook() {
+    public ItemStack createHintBook(RegistryAccess registryAccess) {
         return this.hintConfig.hintItem().copy();
     }
 

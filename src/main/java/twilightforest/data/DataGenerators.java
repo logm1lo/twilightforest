@@ -53,7 +53,7 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.EnchantmentTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new LootGenerator(output, provider));
-		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
+		generator.addProvider(event.includeServer(), new CraftingGenerator(output, provider));
 		generator.addProvider(event.includeServer(), new LootModifierGenerator(output, provider));
 
 		//registry-based tags

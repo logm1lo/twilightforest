@@ -6,26 +6,30 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.network.Filterable;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 public interface StructureHints {
     String BOOK_AUTHOR = TwilightForestMod.ID + ".book.author";
@@ -33,31 +37,33 @@ public interface StructureHints {
     /**
      * Create a hint book for the specified feature.  Only features with block protection will need this.
      */
-    default ItemStack createHintBook() {
+    default ItemStack createHintBook(RegistryAccess registryAccess) {
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-        book.getOrCreateTag().putBoolean(TwilightForestMod.ID + ":book", true);
-        this.addBookInformation(book, new ListTag());
+        this.addBookInformation(book);
         return book;
     }
 
-    default void addBookInformation(ItemStack book, ListTag bookPages) {
-        addBookInformationStatic(book, bookPages, "unknown", 2);
+    default void addBookInformation(ItemStack book) {
+        addBookInformationStatic(book, "unknown", 2);
     }
 
-    static void addBookInformationStatic(ItemStack book, ListTag bookPages, @Nullable String name, int pageCount) {
+    static void addBookInformationStatic(ItemStack book, @Nullable String name, int pageCount) {
         String key = name == null ? "unknown" : name;
 
-        addTranslatedPages(bookPages, TwilightForestMod.ID + ".book." + key, pageCount);
+        Function<Integer, Filterable<Component>> pageGenerationFunc = index -> Filterable.passThrough(Component.translatable(TwilightForestMod.ID + ".book." + key + "." + index));
 
-        book.addTagElement("pages", bookPages);
-        book.addTagElement("generation", IntTag.valueOf(3));
-        book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-        book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book." + key));
-    }
+        List<Filterable<Component>> list = Stream.iterate(0, index -> index + 1)
+                .limit(pageCount)
+                .map(pageGenerationFunc)
+                .toList();
 
-    static void addTranslatedPages(ListTag bookPages, String translationKey, int pageCount) {
-        for (int i = 1; i <= pageCount; i++)
-            bookPages.add(StringTag.valueOf(Component.Serializer.toJson(Component.translatable(translationKey + "." + i))));
+		book.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(
+                Filterable.passThrough(TwilightForestMod.ID + ".book." + key),
+                BOOK_AUTHOR,
+                3,
+                list,
+                true
+        ));
     }
 
     /**
@@ -100,7 +106,7 @@ public interface StructureHints {
         if (hinty.checkSpawnObstruction(world) && hinty.getSensing().hasLineOfSight(player)) {
 
             // add items and hint book
-            ItemStack book = this.createHintBook();
+            ItemStack book = this.createHintBook(world.registryAccess());
 
             hinty.setItemSlot(EquipmentSlot.MAINHAND, book);
             hinty.setDropChance(EquipmentSlot.MAINHAND, 1.0F);
@@ -138,8 +144,7 @@ public interface StructureHints {
 
         public static ItemStack book(String name, int pageCount) {
             ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-            book.getOrCreateTag().putBoolean(TwilightForestMod.ID + ":book", true);
-            StructureHints.addBookInformationStatic(book, new ListTag(), name, pageCount);
+            StructureHints.addBookInformationStatic(book, name, pageCount);
             return book;
         }
     }

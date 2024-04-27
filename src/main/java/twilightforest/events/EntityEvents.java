@@ -1,6 +1,5 @@
 package twilightforest.events;
 
-import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,6 +24,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.LeadItem;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.StructureManager;
@@ -187,11 +187,11 @@ public class EntityEvents {
 	public static void onLivingHurtEvent(LivingHurtEvent event) {
 		LivingEntity living = event.getEntity();
 		if (living != null) {
-			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
+			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY)).ifPresent(mobEffectInstance -> {
 				if (event.getSource().is(DamageTypes.FREEZE)) {
 					event.setAmount(event.getAmount() + (float) (mobEffectInstance.getAmplifier() / 2));
 				} else if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
-					living.removeEffect(TFMobEffects.FROSTY.get());
+					living.removeEffect(TFMobEffects.FROSTY);
 					mobEffectInstance.amplifier -= 1;
 					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
 				}
@@ -282,8 +282,9 @@ public class EntityEvents {
 		}
 	}
 
+	// TODO Merge method with below
 	private static void makeFloorSkull(PlayerInteractEvent.RightClickBlock event, Block newBlock) {
-		GameProfile profile = null;
+		ResolvableProfile profile = null;
 		Level level = event.getLevel();
 		if (level.getBlockEntity(event.getPos()) instanceof SkullBlockEntity skull)
 			profile = skull.getOwnerProfile();
@@ -299,8 +300,9 @@ public class EntityEvents {
 		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 
+	// TODO Merge method with above
 	private static void makeWallSkull(PlayerInteractEvent.RightClickBlock event, Block newBlock) {
-		GameProfile profile = null;
+		ResolvableProfile profile = null;
 		Level level = event.getLevel();
 		if (level.getBlockEntity(event.getPos()) instanceof SkullBlockEntity skull)
 			profile = skull.getOwnerProfile();
@@ -417,7 +419,7 @@ public class EntityEvents {
 			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
 				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
 				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
-					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(GROUP_HEALTH_UUID, "Multiplayer Bonus Health", getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADDITION));
+					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(GROUP_HEALTH_UUID, "Multiplayer Bonus Health", getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
 				}
 			}
 		}

@@ -75,9 +75,10 @@ public class EntityRenderingUtil {
 			}
 			// catch exceptions drawing the entity to be safe, any caught exceptions blacklist the entity
 			try {
-				PoseStack modelView = RenderSystem.getModelViewStack();
+				PoseStack modelView = new PoseStack();
+				modelView.last().pose().set(RenderSystem.getModelViewStack());
 				modelView.pushPose();
-				modelView.mulPoseMatrix(stack.last().pose());
+				modelView.mulPose(stack.last().pose());
 				renderTheEntity(size / 2, size - 2, scale, living);
 				modelView.popPose();
 				RenderSystem.applyModelViewMatrix();
@@ -91,7 +92,8 @@ public class EntityRenderingUtil {
 
 	//[VanillaCopy] of InventoryScreen.renderEntityInInventory, with added rotations and some other modified values
 	private static void renderTheEntity(int x, int y, int scale, LivingEntity entity) {
-		PoseStack posestack = RenderSystem.getModelViewStack();
+		PoseStack posestack = new PoseStack();
+		posestack.last().pose().set(RenderSystem.getModelViewStack());
 		posestack.pushPose();
 		posestack.translate(x, y, 1050.0D);
 		applyAdditionalTransforms(entity.getType(), posestack);
@@ -155,7 +157,8 @@ public class EntityRenderingUtil {
 	}
 
 	public static void renderItemEntity(ItemStack stack, @Nullable Level level, float bobOffset) {
-		PoseStack posestack = RenderSystem.getModelViewStack();
+		PoseStack posestack = new PoseStack();
+		posestack.last().pose().set(RenderSystem.getModelViewStack());
 		posestack.pushPose();
 		posestack.translate(16.0D, 32.0D, 1050.0D);
 		posestack.scale(1.0F, 1.0F, -1.0F);

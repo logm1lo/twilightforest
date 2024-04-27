@@ -15,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -27,23 +26,20 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import twilightforest.TwilightForestMod;
@@ -58,14 +54,13 @@ import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
-import twilightforest.item.recipe.EmperorsClothRecipe;
 
 import java.util.HashSet;
 import java.util.List;
@@ -119,8 +114,8 @@ public class TFClientEvents {
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
 	@SubscribeEvent
-	public static void preOverlay(RenderGuiOverlayEvent.Pre event) {
-		if (event.getOverlay().id() == VanillaGuiOverlay.MOUNT_HEALTH.id()) {
+	public static void preOverlay(RenderGuiLayerEvent.Pre event) {
+		if (VanillaGuiLayers.VEHICLE_HEALTH == event.getName()) {
 			if (HostileMountEvents.isRidingUnfriendly(Minecraft.getInstance().player)) {
 				event.setCanceled(true);
 			}
@@ -276,7 +271,7 @@ public class TFClientEvents {
 	public static void tooltipEvent(ItemTooltipEvent event) {
 		ItemStack item = event.getItemStack();
 
-		if (item.getTag() != null && item.getTag().contains(EmperorsClothRecipe.INVISIBLE_TAG)) {
+		if (item.has(TFDataComponents.EMPERORS_CLOTH)) {
 			event.getToolTip().add(1, EMPERORS_CLOTH_TOOLTIP);
 		}
 
@@ -320,26 +315,29 @@ public class TFClientEvents {
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
-		}
+		// FIXME Curios Compat
+		//if (ModList.get().isLoaded("curios")) {
+		//	return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
+		//}
 		return false;
 	}
 
 	@SubscribeEvent
 	public static void translateBookAuthor(ItemTooltipEvent event) {
-		ItemStack stack = event.getItemStack();
-		if (stack.getItem() instanceof WrittenBookItem && stack.hasTag()) {
-			CompoundTag tag = stack.getOrCreateTag();
-			if (tag.contains(TwilightForestMod.ID + ":book")) {
-				List<Component> components = event.getToolTip();
-				for (Component component : components) {
-					if (component.toString().contains("book.byAuthor")) {
-						components.set(components.indexOf(component), (Component.translatable("book.byAuthor", Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
-					}
-				}
-			}
-		}
+		// FIXME: Port this code once the Book Provider
+		// ItemStack stack = event.getItemStack();
+		// if (stack.getItem() instanceof WrittenBookItem && stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
+		// 	CompoundTag tag = stack.getOrCreateTag();
+		// 	if (tag.contains(TwilightForestMod.ID + ":book")) {
+		// 		List<Component> components = event.getToolTip();
+		// 		for (int i = 0; i < components.size(); i++) {
+		// 			Component component = components.get(i);
+		// 			if (component.toString().contains("book.byAuthor")) {
+		// 				components.set(i, (Component.translatable("book.byAuthor", Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
+		// 			}
+		// 		}
+		// 	}
+		// }
 	}
 
 	@SubscribeEvent
@@ -377,8 +375,8 @@ public class TFClientEvents {
 			xSize /= sqrt;
 			ySize /= sqrt;
 			zSize /= sqrt;
-			consumer.vertex(last.pose(), (float)(x + posX), (float)(y + posY), (float)(z + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last.normal(), xSize, ySize, zSize).endVertex();
-			consumer.vertex(last.pose(), (float)(x1 + posX), (float)(y1 + posY), (float)(z1 + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last.normal(), xSize, ySize, zSize).endVertex();
+			consumer.vertex(last.pose(), (float)(x + posX), (float)(y + posY), (float)(z + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
+			consumer.vertex(last.pose(), (float)(x1 + posX), (float)(y1 + posY), (float)(z1 + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
 		});
 	}
 }

@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
@@ -28,15 +27,14 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TomeSpawnerBlock;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;
 import twilightforest.entity.passive.Squirrel;
 import twilightforest.entity.passive.TinyBird;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
-import twilightforest.item.recipe.EmperorsClothRecipe;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -73,9 +71,10 @@ public class MiscEvents {
 		// we only have to check equipping, when its unequipped the sound instance handles the rest
 
 		//if we have a cicada in our curios slot, don't try to run this
-		if (ModList.get().isLoaded("curios")) {
-			if (CuriosCompat.isCurioEquipped(living, stack -> stack.is(TFBlocks.CICADA.asItem()))) return;
-		}
+		// TODO Compat
+		// if (ModList.get().isLoaded("curios")) {
+		// 	if (CuriosCompat.isCurioEquipped(living, stack -> stack.is(TFBlocks.CICADA.asItem()))) return;
+		// }
 
 		if (living != null && !living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.asItem())) {
 			PacketDistributor.sendToPlayersTrackingEntityAndSelf(living, new CreateMovingCicadaSoundPacket(living.getId()));
@@ -87,7 +86,7 @@ public class MiscEvents {
 		Player player = event.getEntity();
 		ItemStack stack = player.getItemInHand(event.getHand());
 
-        if (!(stack.getItem() instanceof SpawnEggItem spawnEggItem) || spawnEggItem.getType(stack.getTag()) != TFEntities.DEATH_TOME.get())
+        if (!(stack.getItem() instanceof SpawnEggItem spawnEggItem) || spawnEggItem.getType(stack) != TFEntities.DEATH_TOME.get())
             return;
 
         BlockPos pos = event.getPos();
@@ -126,9 +125,9 @@ public class MiscEvents {
 		if (event.isCanceled()) return;
 		BlockState state = event.getLevel().getBlockState(event.getPos());
 		if (!state.is(Blocks.WATER_CAULDRON) || state.getValue(LayeredCauldronBlock.LEVEL) <= 0) return;
-		if (event.getItemStack().getTag() != null && event.getItemStack().getTag().contains(EmperorsClothRecipe.INVISIBLE_TAG)) {
+		if (event.getItemStack().has(TFDataComponents.EMPERORS_CLOTH)) {
 			LayeredCauldronBlock.lowerFillLevel(state, event.getLevel(), event.getPos());
-			event.getItemStack().getTag().remove(EmperorsClothRecipe.INVISIBLE_TAG);
+			event.getItemStack().remove(TFDataComponents.EMPERORS_CLOTH);
 			event.getEntity().awardStat(Stats.CLEAN_ARMOR);
 			event.setCancellationResult(InteractionResult.SUCCESS);
 			event.setCanceled(true);

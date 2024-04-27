@@ -1,6 +1,5 @@
 package twilightforest.data.helpers;
 
-import net.minecraft.Util;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -8,7 +7,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.crafting.NBTIngredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFChestBlock;
@@ -28,15 +25,10 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public abstract class CraftingDataHelper extends RecipeProvider {
-	public CraftingDataHelper(PackOutput output) {
-		super(output);
-	}
-
-	public final NBTIngredient nbtItem(Item scepter, Consumer<CompoundTag> tag) {
-		return NBTIngredient.of(false, Util.make(new CompoundTag(), tag), scepter);
+	public CraftingDataHelper(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+		super(output, provider);
 	}
 
 	protected final void charmRecipe(RecipeOutput output, String name, DeferredHolder<Item, ? extends Item> result, DeferredHolder<Item, ? extends Item> item) {
