@@ -500,23 +500,23 @@ public class TFCreativeTabs {
 			.icon(() -> new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()))
 			.displayItems((parameters, output) -> {
 				generateGearWithEnchants(output, TFItems.IRONWOOD_HELMET, new EnchantmentInstance(Enchantments.AQUA_AFFINITY, 1));
-				generateGearWithEnchants(output, TFItems.IRONWOOD_CHESTPLATE, new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 1));
-				generateGearWithEnchants(output, TFItems.IRONWOOD_LEGGINGS, new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 1));
-				generateGearWithEnchants(output, TFItems.IRONWOOD_BOOTS, new EnchantmentInstance(Enchantments.FALL_PROTECTION, 1));
+				generateGearWithEnchants(output, TFItems.IRONWOOD_CHESTPLATE, new EnchantmentInstance(Enchantments.PROTECTION, 1));
+				generateGearWithEnchants(output, TFItems.IRONWOOD_LEGGINGS, new EnchantmentInstance(Enchantments.PROTECTION, 1));
+				generateGearWithEnchants(output, TFItems.IRONWOOD_BOOTS, new EnchantmentInstance(Enchantments.FEATHER_FALLING, 1));
 				generateGearWithEnchants(output, TFItems.IRONWOOD_SWORD, new EnchantmentInstance(Enchantments.KNOCKBACK, 1));
 				generateGearWithEnchants(output, TFItems.IRONWOOD_SHOVEL, new EnchantmentInstance(Enchantments.UNBREAKING, 1));
-				generateGearWithEnchants(output, TFItems.IRONWOOD_PICKAXE, new EnchantmentInstance(Enchantments.BLOCK_EFFICIENCY, 1));
-				generateGearWithEnchants(output, TFItems.IRONWOOD_AXE, new EnchantmentInstance(Enchantments.BLOCK_FORTUNE, 1));
-				generateGearWithEnchants(output, TFItems.IRONWOOD_HOE, new EnchantmentInstance(Enchantments.BLOCK_EFFICIENCY, 1));
+				generateGearWithEnchants(output, TFItems.IRONWOOD_PICKAXE, new EnchantmentInstance(Enchantments.EFFICIENCY, 1));
+				generateGearWithEnchants(output, TFItems.IRONWOOD_AXE, new EnchantmentInstance(Enchantments.FORTUNE, 1));
+				generateGearWithEnchants(output, TFItems.IRONWOOD_HOE, new EnchantmentInstance(Enchantments.EFFICIENCY, 1));
 				generateGearWithEnchants(output, TFItems.STEELEAF_HELMET, new EnchantmentInstance(Enchantments.PROJECTILE_PROTECTION, 2));
 				generateGearWithEnchants(output, TFItems.STEELEAF_CHESTPLATE, new EnchantmentInstance(Enchantments.BLAST_PROTECTION, 2));
 				generateGearWithEnchants(output, TFItems.STEELEAF_LEGGINGS, new EnchantmentInstance(Enchantments.FIRE_PROTECTION, 2));
-				generateGearWithEnchants(output, TFItems.STEELEAF_BOOTS, new EnchantmentInstance(Enchantments.FALL_PROTECTION, 2));
-				generateGearWithEnchants(output, TFItems.STEELEAF_SWORD, new EnchantmentInstance(Enchantments.MOB_LOOTING, 2));
-				generateGearWithEnchants(output, TFItems.STEELEAF_SHOVEL, new EnchantmentInstance(Enchantments.BLOCK_EFFICIENCY, 2));
-				generateGearWithEnchants(output, TFItems.STEELEAF_PICKAXE, new EnchantmentInstance(Enchantments.BLOCK_FORTUNE, 2));
-				generateGearWithEnchants(output, TFItems.STEELEAF_AXE, new EnchantmentInstance(Enchantments.BLOCK_EFFICIENCY, 2));
-				generateGearWithEnchants(output, TFItems.STEELEAF_HOE, new EnchantmentInstance(Enchantments.BLOCK_FORTUNE, 2));
+				generateGearWithEnchants(output, TFItems.STEELEAF_BOOTS, new EnchantmentInstance(Enchantments.FEATHER_FALLING, 2));
+				generateGearWithEnchants(output, TFItems.STEELEAF_SWORD, new EnchantmentInstance(Enchantments.LOOTING, 2));
+				generateGearWithEnchants(output, TFItems.STEELEAF_SHOVEL, new EnchantmentInstance(Enchantments.EFFICIENCY, 2));
+				generateGearWithEnchants(output, TFItems.STEELEAF_PICKAXE, new EnchantmentInstance(Enchantments.FORTUNE, 2));
+				generateGearWithEnchants(output, TFItems.STEELEAF_AXE, new EnchantmentInstance(Enchantments.EFFICIENCY, 2));
+				generateGearWithEnchants(output, TFItems.STEELEAF_HOE, new EnchantmentInstance(Enchantments.FORTUNE, 2));
 				output.accept(TFItems.KNIGHTMETAL_HELMET);
 				output.accept(TFItems.KNIGHTMETAL_CHESTPLATE);
 				output.accept(TFItems.KNIGHTMETAL_LEGGINGS);
@@ -532,7 +532,7 @@ public class TFCreativeTabs {
 				output.accept(TFItems.FIERY_BOOTS);
 				output.accept(TFItems.FIERY_SWORD);
 				output.accept(TFItems.FIERY_PICKAXE);
-				generateGearWithEnchants(output, TFItems.MAZEBREAKER_PICKAXE, new EnchantmentInstance(Enchantments.BLOCK_EFFICIENCY, 4), new EnchantmentInstance(Enchantments.UNBREAKING, 3), new EnchantmentInstance(Enchantments.BLOCK_FORTUNE, 2));
+				generateGearWithEnchants(output, TFItems.MAZEBREAKER_PICKAXE, new EnchantmentInstance(Enchantments.EFFICIENCY, 4), new EnchantmentInstance(Enchantments.UNBREAKING, 3), new EnchantmentInstance(Enchantments.FORTUNE, 2));
 				output.accept(TFItems.GOLDEN_MINOTAUR_AXE);
 				output.accept(TFItems.DIAMOND_MINOTAUR_AXE);
 				output.accept(TFItems.ARCTIC_HELMET);
@@ -544,10 +544,10 @@ public class TFCreativeTabs {
 				output.accept(TFItems.SEEKER_BOW);
 				output.accept(TFItems.ICE_BOW);
 				output.accept(TFItems.ENDER_BOW);
-				generateGearWithEnchants(output, TFItems.YETI_HELMET, new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 2));
-				generateGearWithEnchants(output, TFItems.YETI_CHESTPLATE, new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 2));
-				generateGearWithEnchants(output, TFItems.YETI_LEGGINGS, new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 2));
-				generateGearWithEnchants(output, TFItems.YETI_BOOTS, new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 2), new EnchantmentInstance(Enchantments.FALL_PROTECTION, 4));
+				generateGearWithEnchants(output, TFItems.YETI_HELMET, new EnchantmentInstance(Enchantments.PROTECTION, 2));
+				generateGearWithEnchants(output, TFItems.YETI_CHESTPLATE, new EnchantmentInstance(Enchantments.PROTECTION, 2));
+				generateGearWithEnchants(output, TFItems.YETI_LEGGINGS, new EnchantmentInstance(Enchantments.PROTECTION, 2));
+				generateGearWithEnchants(output, TFItems.YETI_BOOTS, new EnchantmentInstance(Enchantments.PROTECTION, 2), new EnchantmentInstance(Enchantments.FEATHER_FALLING, 4));
 				output.accept(TFItems.GIANT_SWORD);
 				output.accept(TFItems.GIANT_PICKAXE);
 				createGlassSwordAndLoreVer(output);
@@ -555,7 +555,7 @@ public class TFCreativeTabs {
 				output.accept(TFItems.PHANTOM_HELMET);
 				output.accept(TFItems.PHANTOM_CHESTPLATE);
 				generateGearWithEnchants(output, TFItems.NAGA_CHESTPLATE, new EnchantmentInstance(Enchantments.FIRE_PROTECTION, 3));
-				generateGearWithEnchants(output, TFItems.NAGA_LEGGINGS, new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 3));
+				generateGearWithEnchants(output, TFItems.NAGA_LEGGINGS, new EnchantmentInstance(Enchantments.PROTECTION, 3));
 				output.accept(TFItems.TWILIGHT_SCEPTER);
 				output.accept(TFItems.LIFEDRAIN_SCEPTER);
 				output.accept(TFItems.ZOMBIE_SCEPTER);
