@@ -83,7 +83,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 						Vec3 offset = new Vec3(Math.cos(angle), 0.0D, Math.sin(angle)).scale(2.0D);
 						particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), false, xyz.add(offset), Vec3.ZERO.subtract(offset));
 					}
-					PacketDistributor.PLAYER.with(serverplayer).send(particlePacket);
+					PacketDistributor.sendToPlayer(serverplayer, particlePacket);
 				}
 			}
 			break;

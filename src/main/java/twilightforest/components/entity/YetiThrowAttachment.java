@@ -30,7 +30,7 @@ public class YetiThrowAttachment {
 				player.push(this.throwVector.x(), this.throwVector.y(), this.throwVector.z());
 
 				if (player instanceof ServerPlayer server) {
-					PacketDistributor.PLAYER.with(server).send(new MovePlayerPacket(this.throwVector.x(), this.throwVector.y(), this.throwVector.z()));
+					PacketDistributor.sendToPlayer(server, new MovePlayerPacket(this.throwVector.x(), this.throwVector.y(), this.throwVector.z()));
 				}
 				this.throwVector = Vec3.ZERO;
 			}
@@ -69,7 +69,7 @@ public class YetiThrowAttachment {
 		if (!player.level().isClientSide()) {
 			int throwerID = 0;
 			if (this.thrower != null) throwerID = this.thrower.getId();
-			PacketDistributor.TRACKING_ENTITY_AND_SELF.with(player).send(new UpdateThrownPacket(player.getId(), this.thrown, throwerID, this.throwCooldown));
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new UpdateThrownPacket(player.getId(), this.thrown, throwerID, this.throwCooldown));
 		}
 	}
 }

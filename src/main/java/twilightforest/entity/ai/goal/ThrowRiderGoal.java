@@ -88,7 +88,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 				player.push(throwVec.x(), throwVec.y(), throwVec.z());
 
 				if (player instanceof ServerPlayer server) {
-					PacketDistributor.PLAYER.with(server).send(new MovePlayerPacket(throwVec.x(), throwVec.y(), throwVec.z()));
+					PacketDistributor.sendToPlayer(server, new MovePlayerPacket(throwVec.x(), throwVec.y(), throwVec.z()));
 				}
 			} else rider.push(throwVec.x(), throwVec.y(), throwVec.z());
 		}

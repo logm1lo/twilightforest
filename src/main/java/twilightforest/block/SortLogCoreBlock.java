@@ -138,7 +138,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 											double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
 											double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
 											particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
-											PacketDistributor.PLAYER.with(serverplayer).send(particlePacket);
+											PacketDistributor.sendToPlayer(serverplayer, particlePacket);
 										}
 									}
 									break;

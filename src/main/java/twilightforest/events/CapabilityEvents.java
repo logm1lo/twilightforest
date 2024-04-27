@@ -96,7 +96,7 @@ public class CapabilityEvents {
 	private static void updateCapabilities(ServerPlayer clientTarget, Entity shielded) {
 		var attachment = shielded.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
 		if (attachment.shieldsLeft() > 0) {
-			PacketDistributor.PLAYER.with(clientTarget).send(new UpdateShieldPacket(shielded.getId(), attachment.temporaryShieldsLeft(), attachment.permanentShieldsLeft()));
+			PacketDistributor.sendToPlayer(clientTarget, new UpdateShieldPacket(shielded.getId(), attachment.temporaryShieldsLeft(), attachment.permanentShieldsLeft()));
 		}
 	}
 

@@ -8,16 +8,8 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.dimension.LevelStem;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +20,6 @@ import twilightforest.util.PlayerHelper;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class TFConfig {
@@ -188,7 +179,7 @@ public class TFConfig {
 		//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things don't desync.
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null && server.isDedicatedServer()) {
-			PacketDistributor.ALL.noArg().send(new SyncUncraftingTableConfigPacket(
+			PacketDistributor.sendToAllPlayers(new SyncUncraftingTableConfigPacket(
 					uncraftingXpCostMultiplier, repairingXpCostMultiplier,
 					allowShapelessUncrafting, disableIngredientSwitching,
 					disableUncraftingOnly, disableEntireTable,

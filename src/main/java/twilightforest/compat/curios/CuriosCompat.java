@@ -52,7 +52,7 @@ public class CuriosCompat {
 						//check that we don't have a cicada already on our head before trying to start the sound
 						if (!context.entity().getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.get().asItem())) {
 							if (stack.is(TFBlocks.CICADA.get().asItem()) && !context.entity().level().isClientSide()) {
-								PacketDistributor.TRACKING_ENTITY_AND_SELF.with(context.entity()).send(new CreateMovingCicadaSoundPacket(context.entity().getId()));
+								PacketDistributor.sendToPlayersTrackingEntityAndSelf(context.entity(), new CreateMovingCicadaSoundPacket(context.entity().getId()));
 							}
 						}
 					}

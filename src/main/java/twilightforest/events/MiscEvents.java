@@ -78,7 +78,7 @@ public class MiscEvents {
 		}
 
 		if (living != null && !living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.asItem())) {
-			PacketDistributor.TRACKING_ENTITY_AND_SELF.with(living).send(new CreateMovingCicadaSoundPacket(living.getId()));
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(living, new CreateMovingCicadaSoundPacket(living.getId()));
 		}
 	}
 

@@ -52,7 +52,7 @@ public final class ConfigSetup {
 	public static void syncUncraftingConfig(PlayerEvent.PlayerLoggedInEvent event) {
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null && server.isDedicatedServer() && event.getEntity() instanceof ServerPlayer player) {
-			PacketDistributor.PLAYER.with(player).send(new SyncUncraftingTableConfigPacket(
+			PacketDistributor.sendToPlayer(player, new SyncUncraftingTableConfigPacket(
 					COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),

@@ -149,7 +149,7 @@ public class CloudBlock extends Block {
             particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(),  false, x, y, z, xSpeed, ySpeed, zSpeed);
         }
 
-        PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(pos)).send(particlePacket);
+        PacketDistributor.sendToPlayersTrackingChunk(level, new ChunkPos(pos), particlePacket);
 
         return true;
     }

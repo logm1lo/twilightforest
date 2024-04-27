@@ -99,6 +99,6 @@ public class FortificationShieldAttachment {
 
 	private void sendUpdatePacket(LivingEntity entity) {
 		if (entity instanceof ServerPlayer)
-			PacketDistributor.TRACKING_ENTITY_AND_SELF.with(entity).send(new UpdateShieldPacket(entity.getId(), this.temporaryShields, this.permanentShields));
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new UpdateShieldPacket(entity.getId(), this.temporaryShields, this.permanentShields));
 	}
 }

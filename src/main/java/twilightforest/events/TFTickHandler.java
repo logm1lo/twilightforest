@@ -76,13 +76,13 @@ public class TFTickHandler {
 
 	private static void sendStructureProtectionPacket(Player player, BoundingBox sbb) {
 		if (player instanceof ServerPlayer sp) {
-			PacketDistributor.PLAYER.with(sp).send(new StructureProtectionPacket(sbb));
+			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(sbb));
 		}
 	}
 
 	private static void sendAllClearPacket(Player player) {
 		if (player instanceof ServerPlayer sp) {
-			PacketDistributor.PLAYER.with(sp).send(new StructureProtectionClearPacket());
+			PacketDistributor.sendToPlayer(sp, new StructureProtectionClearPacket());
 		}
 	}
 
@@ -133,7 +133,7 @@ public class TFTickHandler {
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.value().display().orElse(null);
-						PacketDistributor.PLAYER.with(player).send(info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}

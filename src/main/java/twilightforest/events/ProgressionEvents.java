@@ -3,10 +3,12 @@ package twilightforest.events;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -47,7 +49,7 @@ public class ProgressionEvents {
 	public static void breakBlock(BlockEvent.BreakEvent event) {
 		Player player = event.getPlayer();
 
-		if (!(event.getLevel() instanceof Level level) || level.isClientSide()) return;
+		if (!(event.getLevel() instanceof ServerLevel level) || level.isClientSide()) return;
 
 		BlockPos pos = event.getPos();
 		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
@@ -64,7 +66,7 @@ public class ProgressionEvents {
 	public static void placeBlock(BlockEvent.EntityPlaceEvent event) {
 		Entity entity = event.getEntity();
 
-		if (!(event.getLevel() instanceof Level level) || !(entity instanceof Player player)) return;
+		if (!(event.getLevel() instanceof ServerLevel level) || !(entity instanceof Player player)) return;
 
 		BlockPos pos = event.getPos();
 		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
@@ -81,7 +83,7 @@ public class ProgressionEvents {
 	public static void placeMultiBlock(BlockEvent.EntityMultiPlaceEvent event) {
 		Entity entity = event.getEntity();
 
-		if (!(event.getLevel() instanceof Level level) || !(entity instanceof Player player)) return;
+		if (!(event.getLevel() instanceof ServerLevel level) || !(entity instanceof Player player)) return;
 
 		for (BlockSnapshot snapshot : event.getReplacedBlockSnapshots()) {
 			BlockPos pos = snapshot.getPos();
@@ -101,16 +103,16 @@ public class ProgressionEvents {
 		Player player = event.getEntity();
 		Level level = player.level();
 
-		if (!level.isClientSide() && isBlockProtectedFromInteraction(level, event.getPos()) && isAreaProtected(level, player, event.getPos())) {
+		if (!level.isClientSide() && level instanceof ServerLevel serverLevel && isBlockProtectedFromInteraction(level, event.getPos()) && isAreaProtected(serverLevel, player, event.getPos())) {
 			event.setUseBlock(Event.Result.DENY);
 		}
 	}
 
-	private static boolean isBlockProtectedFromInteraction(Level level, BlockPos pos) {
+	private static boolean isBlockProtectedFromInteraction(BlockGetter level, BlockPos pos) {
 		return level.getBlockState(pos).is(BlockTagGenerator.STRUCTURE_BANNED_INTERACTIONS);
 	}
 
-	private static boolean isBlockProtectedFromBreaking(Level level, BlockPos pos) {
+	private static boolean isBlockProtectedFromBreaking(BlockGetter level, BlockPos pos) {
 		return !level.getBlockState(pos).is(BlockTagGenerator.PROGRESSION_ALLOW_BREAKING);
 	}
 
@@ -118,7 +120,7 @@ public class ProgressionEvents {
 	 * Return if the area at the coordinates is considered protected for that player.
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
-	private static boolean isAreaProtected(Level level, Player player, BlockPos pos) {
+	private static boolean isAreaProtected(ServerLevel level, Player player, BlockPos pos) {
 		if (player.getAbilities().instabuild || player.isSpectator() ||
 				!LandmarkUtil.isProgressionEnforced(level) || player instanceof FakePlayer) {
 			return false;
@@ -155,17 +157,16 @@ public class ProgressionEvents {
 		return false;
 	}
 
-	private static void sendAreaProtectionPacket(Level level, BlockPos pos, List<BoundingBox> sbb) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, level.dimension());
-		PacketDistributor.NEAR.with(targetPoint).send(new AreaProtectionPacket(sbb, pos));
+	private static void sendAreaProtectionPacket(ServerLevel level, BlockPos pos, List<BoundingBox> sbb) {
+		PacketDistributor.sendToPlayersNear(level, null, pos.getX(), pos.getY(), pos.getZ(), 64, new AreaProtectionPacket(sbb, pos));
 	}
 
 	@SubscribeEvent
 	public static void livingAttack(LivingAttackEvent event) {
 		LivingEntity living = event.getEntity();
 		// cancel attacks in protected areas
-		if (!living.level().isClientSide() && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
-				&& isAreaProtected(living.level(), (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
+		if (living.level() instanceof ServerLevel serverLevel && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
+				&& isAreaProtected(serverLevel, (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
 
 			event.setCanceled(true);
 		}
