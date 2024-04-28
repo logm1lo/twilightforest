@@ -1,6 +1,6 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -44,7 +44,7 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
+	public ItemStack assemble(CraftingContainer container, HolderLookup.Provider access) {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 

@@ -26,9 +26,7 @@ public abstract class DamageableStackDispenseBehavior extends DefaultDispenseIte
 				Projectile projectileentity = this.getProjectileEntity(level, pos, stack);
 				projectileentity.shoot(direction.getStepX(), (float) direction.getStepY() + 0.1F, direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
 				level.addFreshEntity(projectileentity);
-				if (stack.hurt(this.getDamageAmount(), level.getRandom(), null)) {
-					stack.setCount(0);
-				}
+				stack.hurtAndBreak(this.getDamageAmount(), level.getRandom(), null, () -> stack.setCount(0));
 				this.fired = true;
 			}
 		}

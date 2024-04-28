@@ -22,8 +22,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 import twilightforest.client.MagicPaintingTextureManager;
 import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
@@ -40,8 +38,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 
     @Override
     public void render(MagicPainting painting, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
-        MagicPaintingVariant paintingVariant = painting.getVariant().orElse(null);
-        if (paintingVariant == null) return;
+        MagicPaintingVariant paintingVariant = painting.getVariant().value();
 
         stack.pushPose();
         stack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
@@ -67,8 +64,6 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
         int heightAsBlock = height / 16;
 
         PoseStack.Pose pose = stack.last();
-        Matrix4f matrix4f = pose.pose();
-        Matrix3f matrix3f = pose.normal();
 
         float x = (float)(-width) / 2.0F;
         float y = (float)(-height) / 2.0F;
@@ -121,10 +116,10 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
                     float xStart = layerTexture.getU((float) (layerWidthFactor * (double) (widthAsBlock - (k + 1)) + widthOffset));
                     float yEnd = layerTexture.getV((float) (layerHeightFactor * (double) (heightAsBlock - l) + heightOffset));
                     float yStart = layerTexture.getV((float) (layerHeightFactor * (double) (heightAsBlock - (l + 1)) + heightOffset));
-                    this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, xStart, yEnd, 0, 0, -1, light, alpha);
-                    this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, xEnd, yEnd, 0, 0, -1, light, alpha);
-                    this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, xEnd, yStart, 0, 0, -1, light, alpha);
-                    this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, xStart, yStart, 0, 0, -1, light, alpha);
+                    this.vertex(pose, vertex, xMax, yMin, -z, xStart, yEnd, 0, 0, -1, light, alpha);
+                    this.vertex(pose, vertex, xMin, yMin, -z, xEnd, yEnd, 0, 0, -1, light, alpha);
+                    this.vertex(pose, vertex, xMin, yMax, -z, xEnd, yStart, 0, 0, -1, light, alpha);
+                    this.vertex(pose, vertex, xMax, yMax, -z, xStart, yStart, 0, 0, -1, light, alpha);
                 }
             }
         }
@@ -157,36 +152,36 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 
                 int light = LevelRenderer.getLightColor(painting.level(), new BlockPos(posX, Mth.floor(painting.getY() + (double)((yMax + yMin) / 2.0F / 16.0F)), posZ));
 
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, z, u1, v0, 0, 0, 1, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, z, u0, v0, 0, 0, 1, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, z, u0, v1, 0, 0, 1, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, z, u1, v1, 0, 0, 1, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, u01, v01, 0, 1, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, u11, v01, 0, 1, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, z, u11, v, 0, 1, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, z, u01, v, 0, 1, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, z, u01, v01, 0, -1, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, z, u11, v01, 0, -1, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, u11, v, 0, -1, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, u01, v, 0, -1, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, z, u, v02, -1, 0, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, z, u, v11, -1, 0, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, u02, v11, -1, 0, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, u02, v02, -1, 0, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, u, v02, 1, 0, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, u, v11, 1, 0, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, z, u02, v11, 1, 0, 0, light);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, z, u02, v02, 1, 0, 0, light);
+                this.vertex(pose, vertex, xMax, yMax, z, u1, v0, 0, 0, 1, light);
+                this.vertex(pose, vertex, xMin, yMax, z, u0, v0, 0, 0, 1, light);
+                this.vertex(pose, vertex, xMin, yMin, z, u0, v1, 0, 0, 1, light);
+                this.vertex(pose, vertex, xMax, yMin, z, u1, v1, 0, 0, 1, light);
+                this.vertex(pose, vertex, xMax, yMax, -z, u01, v01, 0, 1, 0, light);
+                this.vertex(pose, vertex, xMin, yMax, -z, u11, v01, 0, 1, 0, light);
+                this.vertex(pose, vertex, xMin, yMax, z, u11, v, 0, 1, 0, light);
+                this.vertex(pose, vertex, xMax, yMax, z, u01, v, 0, 1, 0, light);
+                this.vertex(pose, vertex, xMax, yMin, z, u01, v01, 0, -1, 0, light);
+                this.vertex(pose, vertex, xMin, yMin, z, u11, v01, 0, -1, 0, light);
+                this.vertex(pose, vertex, xMin, yMin, -z, u11, v, 0, -1, 0, light);
+                this.vertex(pose, vertex, xMax, yMin, -z, u01, v, 0, -1, 0, light);
+                this.vertex(pose, vertex, xMax, yMax, z, u, v02, -1, 0, 0, light);
+                this.vertex(pose, vertex, xMax, yMin, z, u, v11, -1, 0, 0, light);
+                this.vertex(pose, vertex, xMax, yMin, -z, u02, v11, -1, 0, 0, light);
+                this.vertex(pose, vertex, xMax, yMax, -z, u02, v02, -1, 0, 0, light);
+                this.vertex(pose, vertex, xMin, yMax, -z, u, v02, 1, 0, 0, light);
+                this.vertex(pose, vertex, xMin, yMin, -z, u, v11, 1, 0, 0, light);
+                this.vertex(pose, vertex, xMin, yMin, z, u02, v11, 1, 0, 0, light);
+                this.vertex(pose, vertex, xMin, yMax, z, u02, v02, 1, 0, 0, light);
             }
         }
     }
 
-    protected void vertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer vertex, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light) {
-        this.vertex(matrix4f, matrix3f, vertex, x, y, z, u, v, normX, normY, normZ, light, 1.0F);
+    protected void vertex(PoseStack.Pose pose, VertexConsumer vertex, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light) {
+        this.vertex(pose, vertex, x, y, z, u, v, normX, normY, normZ, light, 1.0F);
     }
 
-    protected void vertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer vertex, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light, float a) {
-        vertex.vertex(matrix4f, x, y, z).color(255, 255, 255, (int)(255.0F * a)).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, normX, normY, normZ).endVertex();
+    protected void vertex(PoseStack.Pose pose, VertexConsumer vertex, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light, float a) {
+        vertex.vertex(pose, x, y, z).color(255, 255, 255, (int)(255.0F * a)).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(pose, normX, normY, normZ).endVertex();
     }
 
     protected double getWidthOffset(@Nullable Parallax parallax, MagicPainting painting, double widthDiff) {
@@ -286,7 +281,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
                 case HOLDING_ITEM -> {
                     if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
                         ItemStack key = opacityModifier.item();
-                        if (key != null && !living.isHolding(stack -> ItemStack.isSameItemSameTags(stack, key))) a = 0.0F;
+                        if (key != null && !living.isHolding(stack -> ItemStack.isSameItemSameComponents(stack, key))) a = 0.0F;
                     }
                 }
             }

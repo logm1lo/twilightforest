@@ -1,10 +1,8 @@
 package twilightforest.block;
 
-import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -35,11 +33,11 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.components.item.SkullCandles;
 import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFDataComponents;
 
 import java.util.*;
 
@@ -107,22 +105,12 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		super.setPlacedBy(level, pos, state, placer, stack);
 		BlockEntity blockentity = level.getBlockEntity(pos);
 		if (blockentity instanceof SkullCandleBlockEntity sc) {
-			if (stack.hasTag() && stack.getTag() != null) {
-				CompoundTag tag = stack.getTagElement("BlockEntityTag");
-				if (tag != null) {
-					if (tag.contains("CandleAmount")) sc.setCandleAmount(tag.getInt("CandleAmount"));
-					if (tag.contains("CandleColor")) sc.setCandleColor(tag.getInt("CandleColor"));
-				}
-				if (this.type == SkullBlock.Types.PLAYER) {
-					GameProfile gameprofile = null;
-					CompoundTag compoundtag = stack.getTag();
-					if (compoundtag.contains("SkullOwner", 10)) {
-						gameprofile = NbtUtils.readGameProfile(compoundtag.getCompound("SkullOwner"));
-					} else if (compoundtag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundtag.getString("SkullOwner"))) {
-						gameprofile = new GameProfile(null, compoundtag.getString("SkullOwner"));
-					}
-					sc.setOwner(gameprofile);
-				}
+			SkullCandles skullCandles = stack.getOrDefault(TFDataComponents.SKULL_CANDLES, SkullCandles.DEFAULT);
+			sc.setCandleColor(skullCandles.color());
+			sc.setCandleAmount(skullCandles.count());
+
+			if (this.type == SkullBlock.Types.PLAYER && stack.has(DataComponents.PROFILE)) {
+				sc.setOwner(stack.get(DataComponents.PROFILE));
 			}
 		}
 	}
@@ -130,17 +118,18 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	@Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 		List<ItemStack> drops = super.getDrops(state, builder);
-		Optional<ItemStack> skullStack = drops.stream().filter(item -> item.is(Tags.Items.HEADS) && !item.is(this.asItem())).findFirst();
+		Optional<ItemStack> skullStack = drops.stream().filter(item -> item.is(ItemTags.SKULLS) && !item.is(this.asItem())).findFirst();
 		if (skullStack.isPresent()) {
 			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 			if (blockEntity instanceof SkullCandleBlockEntity sc) {
 				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
 					ItemStack newStack = new ItemStack(this);
-					CompoundTag tag = new CompoundTag();
-					tag.putInt("CandleColor", sc.getCandleColor());
-					tag.putInt("CandleAmount", sc.getCandleAmount());
-					newStack.addTagElement("BlockEntityTag", tag);
-					if (sc.getOwnerProfile() != null) newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), sc.getOwnerProfile()));
+
+					newStack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(sc.getCandleColor(), sc.getCandleAmount()));
+
+					if (this.type == SkullBlock.Types.PLAYER && sc.getOwnerProfile() != null)
+						newStack.set(DataComponents.PROFILE, sc.getOwnerProfile());
+
 					drops.remove(skullStack.get());
 					drops.add(newStack);
 				} else {
@@ -155,14 +144,14 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		ItemStack newStack = new ItemStack(this);
-		CompoundTag tag = new CompoundTag();
+
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			if (sc.getOwnerProfile() != null)
-				newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), sc.getOwnerProfile()));
-			tag.putInt("CandleColor", sc.getCandleColor());
-			tag.putInt("CandleAmount", sc.getCandleAmount());
-			newStack.addTagElement("BlockEntityTag", tag);
+			newStack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(sc.getCandleColor(), sc.getCandleAmount()));
+
+			if (this.type == SkullBlock.Types.PLAYER && sc.getOwnerProfile() != null)
+				newStack.set(DataComponents.PROFILE, sc.getOwnerProfile());
 		}
+
 		return newStack;
 	}
 

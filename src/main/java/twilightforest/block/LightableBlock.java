@@ -8,8 +8,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Items;
@@ -40,8 +40,9 @@ public interface LightableBlock {
 			if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)) {
 				this.setLit(level, state, pos, true);
 				level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-				if (!player.getAbilities().instabuild) player.getItemInHand(hand).hurtAndBreak(1, player, res ->
-						res.broadcastBreakEvent(hand));
+				if (!player.getAbilities().instabuild) {
+					player.getItemInHand(hand).hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+				}
 				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			} else if (player.getItemInHand(hand).is(Items.FIRE_CHARGE)) {
 				this.setLit(level, state, pos, true);

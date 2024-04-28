@@ -5,16 +5,12 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -25,8 +21,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
-import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
 
 import java.util.Collection;
@@ -609,10 +605,7 @@ public class TFCreativeTabs {
 
 	private static void makeSkullCandle(CreativeModeTab.Output output, ItemLike item) {
 		ItemStack stack = new ItemStack(item);
-		CompoundTag tag = new CompoundTag();
-		tag.putInt("CandleAmount", 1);
-		tag.putInt("CandleColor", 0);
-		stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag));
+		stack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(0, 1));
 		output.accept(stack);
 	}
 
@@ -632,14 +625,10 @@ public class TFCreativeTabs {
 			variant.height() * variant.width()).thenComparing(MagicPaintingVariant::width));
 
 	private static void createPaintings(CreativeModeTab.Output output, HolderLookup.RegistryLookup<MagicPaintingVariant> lookup) {
-		lookup.listElements().sorted(MAGIC_COMPARATOR).forEach((holder) -> {
+		lookup.listElements().sorted(MAGIC_COMPARATOR).forEach(holder -> {
 			ItemStack itemstack = new ItemStack(TFItems.MAGIC_PAINTING.get());
 
-			// FIXME Switch to Components
-			CompoundTag tag = new CompoundTag();
-			tag.putString("variant", holder.unwrapKey().map(ResourceKey::location).map(ResourceLocation::toString).orElse(MagicPainting.EMPTY));
-
-			itemstack.set(DataComponents.ENTITY_DATA, CustomData.of(tag));
+			itemstack.set(TFDataComponents.MAGIC_PAINTING_VARIANT, holder);
 
 			output.accept(itemstack);
 		});

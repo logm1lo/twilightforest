@@ -24,7 +24,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import java.util.Collection;
@@ -71,7 +71,7 @@ public class MapLocatorCommand {
 
 		ItemStack itemstack = MapItem.create(serverlevel, foundPos.getX(), foundPos.getZ(), (byte) 4, true, true);
 		//MapItem.renderBiomePreviewMap(serverlevel, itemstack);
-		MapItemSavedData.addTargetDecoration(itemstack, foundPos, "+", MapDecoration.Type.RED_X);
+		MapItemSavedData.addTargetDecoration(itemstack, foundPos, "+", MapDecorationTypes.RED_X);
 
 		for (ServerPlayer player : players)
 			player.getInventory().add(itemstack.copy());

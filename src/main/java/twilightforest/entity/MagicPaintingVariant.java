@@ -2,12 +2,16 @@ package twilightforest.entity;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TFRegistries;
+import twilightforest.init.custom.MagicPaintingVariants;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -21,12 +25,16 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
             ExtraCodecs.nonEmptyList(Layer.CODEC.listOf()).fieldOf("layers").forGetter(MagicPaintingVariant::layers)
     ).apply(recordCodecBuilder, MagicPaintingVariant::new));
 
-    public static Optional<MagicPaintingVariant> getVariant(RegistryAccess regAccess, String id) {
+    public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, String id) {
         return getVariant(regAccess, new ResourceLocation(id));
     }
 
-    public static Optional<MagicPaintingVariant> getVariant(RegistryAccess regAccess, ResourceLocation id) {
-        return regAccess.registry(TFRegistries.Keys.MAGIC_PAINTINGS).map(reg -> reg.get(id));
+    public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, ResourceLocation id) {
+        return getVariant(regAccess, ResourceKey.create(TFRegistries.Keys.MAGIC_PAINTINGS, id));
+    }
+
+    public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, ResourceKey<MagicPaintingVariant> id) {
+        return regAccess == null ? Optional.empty() : regAccess.asGetterLookup().lookup(TFRegistries.Keys.MAGIC_PAINTINGS).flatMap(reg -> reg.get(id)).map(Holder.Reference::value);
     }
 
     public static String getVariantId(RegistryAccess regAccess, MagicPaintingVariant variant) {
@@ -34,7 +42,7 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
     }
 
     public static ResourceLocation getVariantResourceLocation(RegistryAccess regAccess, MagicPaintingVariant variant) {
-        return regAccess.registry(TFRegistries.Keys.MAGIC_PAINTINGS).map(reg -> reg.getKey(variant)).orElse(new ResourceLocation(MagicPainting.EMPTY));
+        return regAccess.registry(TFRegistries.Keys.MAGIC_PAINTINGS).map(reg -> reg.getKey(variant)).orElse(MagicPaintingVariants.DEFAULT.location());
     }
 
     public record Layer(String path, @Nullable Parallax parallax, @Nullable OpacityModifier opacityModifier, boolean fullbright) {

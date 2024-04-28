@@ -4,12 +4,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -31,8 +30,8 @@ public class LiverootBlock extends Block {
 			level.setBlockAndUpdate(pos, TFBlocks.ROOT_BLOCK.get().defaultBlockState());
 			int amountOfRoots = 1;
 			//fortune formula copied from ApplyBonusCount.OreDrops.calculateNewCount so it acts exactly like the loot table
-			if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack) > 0) {
-				int i = level.getRandom().nextInt(EnchantmentHelper.getTagEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack) + 2) - 1;
+			if (stack.getEnchantmentLevel(Enchantments.FORTUNE) > 0) {
+				int i = level.getRandom().nextInt(stack.getEnchantmentLevel(Enchantments.FORTUNE) + 2) - 1;
 				if (i < 0) {
 					i = 0;
 				}
@@ -42,7 +41,7 @@ public class LiverootBlock extends Block {
 			ItemEntity liveroot = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.LIVEROOT.get(), amountOfRoots));
 			level.addFreshEntity(liveroot);
 			level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-			stack.hurtAndBreak(1, player, evt -> evt.broadcastBreakEvent(hand));
+			stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return super.useItemOn(stack, state, level, pos, player, hand, result);

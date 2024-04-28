@@ -1,13 +1,17 @@
 package twilightforest.init;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -111,7 +115,7 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> MOSSY_MAZESTONE = register("mossy_mazestone", () -> new Block(BlockBehaviour.Properties.ofFullCopy(MAZESTONE.get())));
 	public static final DeferredBlock<Block> MAZESTONE_MOSAIC = register("mazestone_mosaic", () -> new Block(BlockBehaviour.Properties.ofFullCopy(MAZESTONE.get())));
 	public static final DeferredBlock<Block> MAZESTONE_BORDER = register("mazestone_border", () -> new Block(BlockBehaviour.Properties.ofFullCopy(MAZESTONE.get())));
-	public static final DeferredBlock<Block> RED_THREAD = register("red_thread", () -> new RedThreadBlock(BlockBehaviour.Properties.of().instabreak().mapColor(MapColor.FIRE).noCollission().noOcclusion().noTerrainParticles().pushReaction(PushReaction.DESTROY)));
+	public static final DeferredBlock<Block> RED_THREAD = register("red_thread", () -> new RedThreadBlock(BlockBehaviour.Properties.of().instabreak().mapColor(MapColor.FIRE).isValidSpawn(TFBlocks::noSpawning).noCollission().noOcclusion().noTerrainParticles().pushReaction(PushReaction.DESTROY)));
 
 	//stronghold
 	public static final DeferredBlock<Block> STRONGHOLD_SHIELD = register("stronghold_shield", () -> new StrongholdShieldBlock(BlockBehaviour.Properties.of().noLootTable().mapColor(MapColor.STONE).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(-1.0F, 6000000.0F)));
@@ -167,8 +171,8 @@ public class TFBlocks {
 
 	public static final DeferredBlock<Block> GIANT_COBBLESTONE = register("giant_cobblestone", () -> new GiantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().strength(128.0F, 50.0F)));
 	public static final DeferredBlock<Block> GIANT_LOG = register("giant_log", () -> new GiantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().strength(128.0F, 30.0F)));
-	public static final DeferredBlock<Block> GIANT_LEAVES = register("giant_leaves", () -> new GiantLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noOcclusion().pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.AZALEA_LEAVES).strength(0.2F * 64.0F, 15.0F).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
-	public static final DeferredBlock<Block> GIANT_OBSIDIAN = register("giant_obsidian", () -> new GiantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().strength(50.0F * 64.0F * 64.0F, 2000.0F * 64.0F * 64.0F).isValidSpawn((state, getter, pos, type) -> false)));
+	public static final DeferredBlock<Block> GIANT_LEAVES = register("giant_leaves", () -> new GiantLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noOcclusion().pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.AZALEA_LEAVES).strength(0.2F * 64.0F, 15.0F).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false).isValidSpawn(TFBlocks::noSpawning)));
+	public static final DeferredBlock<Block> GIANT_OBSIDIAN = register("giant_obsidian", () -> new GiantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().strength(50.0F * 64.0F * 64.0F, 2000.0F * 64.0F * 64.0F).isValidSpawn(TFBlocks::noSpawning)));
 	public static final DeferredBlock<Block> UBEROUS_SOIL = register("uberous_soil", () -> new UberousSoilBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(0.6F)));
 	public static final DeferredBlock<RotatedPillarBlock> HUGE_STALK = register("huge_stalk", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.PLANT).sound(SoundType.STEM).strength(1.5F, 3.0F)));
 	public static final DeferredBlock<Block> BEANSTALK_GROWER = BLOCKS.register("beanstalk_grower", () -> new GrowingBeanstalkBlock(BlockBehaviour.Properties.of().noCollission().noLootTable().noOcclusion().noTerrainParticles().strength(-1.0F, 6000000.0F)));
@@ -417,7 +421,7 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> CANOPY_LEAVES = register("canopy_leaves", () -> new TFLeavesBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).ignitedByLava().pushReaction(PushReaction.DESTROY).strength(0.2F).randomTicks().noOcclusion().sound(SoundType.AZALEA_LEAVES).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
 	public static final DeferredBlock<Block> MANGROVE_LEAVES = register("mangrove_leaves", () -> new TFLeavesBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).ignitedByLava().pushReaction(PushReaction.DESTROY).strength(0.2F).randomTicks().noOcclusion().sound(SoundType.AZALEA_LEAVES).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
 	public static final DeferredBlock<Block> DARK_LEAVES = register("dark_leaves", () -> new DarkLeavesBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).ignitedByLava().pushReaction(PushReaction.DESTROY).strength(2.0F, 10.0F).sound(SoundType.AZALEA_LEAVES).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
-	public static final DeferredBlock<Block> HARDENED_DARK_LEAVES = BLOCKS.register("hardened_dark_leaves", () -> new HardenedDarkLeavesBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).ignitedByLava().pushReaction(PushReaction.DESTROY).strength(2.0F, 10.0F).sound(SoundType.AZALEA_LEAVES)));
+	public static final DeferredBlock<Block> HARDENED_DARK_LEAVES = BLOCKS.register("hardened_dark_leaves", () -> new HardenedDarkLeavesBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).ignitedByLava().pushReaction(PushReaction.DESTROY).strength(2.0F, 10.0F).sound(SoundType.AZALEA_LEAVES).isValidSpawn(TFBlocks::noSpawning)));
 	public static final DeferredBlock<Block> RAINBOW_OAK_LEAVES = register("rainbow_oak_leaves", () -> new TFLeavesBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).ignitedByLava().pushReaction(PushReaction.DESTROY).strength(0.2F).randomTicks().noOcclusion().sound(SoundType.AZALEA_LEAVES).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
 	public static final DeferredBlock<Block> TIME_LEAVES = register("time_leaves", () -> new MagicLeavesBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).ignitedByLava().pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.AZALEA_LEAVES).randomTicks().noOcclusion().isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
 	public static final DeferredBlock<Block> TRANSFORMATION_LEAVES = register("transformation_leaves", () -> new MagicLeavesBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).ignitedByLava().pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.AZALEA_LEAVES).randomTicks().noOcclusion().isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
@@ -628,5 +632,9 @@ public class TFBlocks {
 
 	private static BlockBehaviour.Properties logProperties(MapColor top, MapColor side) {
 		return BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor((state) -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
+	}
+
+	private static boolean noSpawning(BlockState pState, BlockGetter pLevel, BlockPos pPos, EntityType<?> pValue) {
+		return false;
 	}
 }

@@ -1,10 +1,10 @@
 package twilightforest.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 
@@ -28,7 +28,7 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 
 	public static void handle(EnforceProgressionStatusPacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() ->
-				ctx.level().orElseThrow().getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce(), null)
+				Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce(), null)
 		);
 	}
 }

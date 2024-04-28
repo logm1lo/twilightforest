@@ -42,7 +42,7 @@ public class UncraftingResultSlot extends ResultSlot {
 		this.tempRemainderMap.clear();
 
 		for (RecipeHolder<CraftingRecipe> recipe : player.level().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix, this.player.level())) {
-			if (ItemStack.isSameItemSameTags(recipe.value().getResultItem(player.level().registryAccess()), stack)) {
+			if (ItemStack.isSameItemSameComponents(recipe.value().getResultItem(player.level().registryAccess()), stack)) {
 				combined = false;
 				break;
 			}
@@ -86,7 +86,7 @@ public class UncraftingResultSlot extends ResultSlot {
 			if (!remainingStack.isEmpty()) {
 				if (currentStack.isEmpty()) {
 					this.assemblyMatrix.setItem(i, remainingStack);
-				} else if (!ItemStack.isSameItemSameTags(currentStack, remainingStack) && !this.player.getInventory().add(remainingStack)) {
+				} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack) && !this.player.getInventory().add(remainingStack)) {
 					this.player.drop(remainingStack, false);
 				}
 			}

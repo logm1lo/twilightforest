@@ -97,7 +97,7 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 		if (!flag)
 			return;
 		BlockPos finalPos = pos.offset(0, y, 0);
-		if (this.state.getBlock().canSurvive(this.state, level, finalPos))
+		if (this.state.canSurvive(level, finalPos))
 			level.setBlock(finalPos, this.state.setValue(FallenLeavesBlock.LAYERS, pileLayer), 16 | 2);
 	}
 

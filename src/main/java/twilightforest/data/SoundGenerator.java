@@ -345,7 +345,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.FLASK_FILL, SoundEvents.BREWING_STAND_BREW);
 		this.generateExistingSoundWithSubtitle(TFSounds.GLASS_SWORD_BREAK, SoundEvents.GLASS_BREAK);
 		this.generateExistingSoundWithSubtitle(TFSounds.ICE_BOMB_FIRED, SoundEvents.ARROW_SHOOT);
-		this.generateExistingSoundWithSubtitle(TFSounds.KNIGHTMETAL_EQUIP, SoundEvents.ARMOR_EQUIP_NETHERITE);
+		this.generateExistingSoundWithSubtitle(TFSounds.KNIGHTMETAL_EQUIP, SoundEvents.ARMOR_EQUIP_NETHERITE.value());
 		this.generateExistingSoundWithSubtitle(TFSounds.LAMP_BURN, SoundEvents.GHAST_SHOOT);
 		this.generateExistingSoundWithSubtitle(TFSounds.MAGNET_GRAB, SoundEvents.CHORUS_FRUIT_TELEPORT);
 		this.generateExistingSoundWithSubtitle(TFSounds.METAL_SHIELD_SHATTERS, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR);

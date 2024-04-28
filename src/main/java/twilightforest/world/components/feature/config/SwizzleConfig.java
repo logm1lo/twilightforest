@@ -16,7 +16,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.data.tags.CustomTagGenerator;
-import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.WoodPalette;
 import twilightforest.world.components.processors.StateTransfiguringProcessor;
 import twilightforest.world.components.processors.WoodPaletteSwizzle;
@@ -64,7 +63,7 @@ public record SwizzleConfig(HolderSet<WoodPalette> targets, WeightedRandomList<W
             settings.addProcessor(new StateTransfiguringProcessor(this.preprocessingRules()));
 
         for (Holder<WoodPalette> targetPalette : this.targets) {
-            settings.addProcessor(new WoodPaletteSwizzle(targetPalette, this.paletteChoices().getRandom(random).get().getData().getRandomElement(random).get()));
+            settings.addProcessor(new WoodPaletteSwizzle(targetPalette, this.paletteChoices().getRandom(random).get().data().getRandomElement(random).get()));
         }
     }
 }

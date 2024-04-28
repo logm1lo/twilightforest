@@ -74,7 +74,7 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 		this.inside = BlockStateProvider.CODEC.parse(ops, tag.getCompound("air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
 		this.lootContainer = BlockStateProvider.CODEC.parse(ops, tag.getCompound("loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
-		this.lootTable = new ResourceLocation(tag.getString("loot_table"));
+		this.lootTable = ResourceKey.create(Registries.LOOT_TABLE, new ResourceLocation(tag.getString("loot_table")));
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("monster")));
 		this.monster = context.registryAccess().registry(Registries.ENTITY_TYPE)
@@ -94,7 +94,7 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 		tag.put("air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.inside).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 		tag.put("loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.lootContainer).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 
-		tag.putString("loot_table", this.lootTable.toString());
+		tag.putString("loot_table", this.lootTable.location().toString());
 
 		tag.putString("monster", BuiltInRegistries.ENTITY_TYPE.getKey(this.monster.value()).toString());
 	}

@@ -1,14 +1,17 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -26,7 +29,7 @@ import twilightforest.init.TFParticleType;
 
 import java.util.List;
 
-public class IceBomb extends TFThrowable {
+public class IceBomb extends TFThrowable implements ProjectileItem {
 	private int zoneTimer = 101;
 	private boolean hasHit;
 
@@ -182,5 +185,11 @@ public class IceBomb extends TFThrowable {
 	protected void readAdditionalSaveData(CompoundTag pCompound) {
 		this.zoneTimer = pCompound.getInt("zone_timer");
 		this.hasHit = pCompound.getBoolean("has_hit");
+	}
+
+
+	@Override
+	public Projectile asProjectile(Level level, Position pos, ItemStack stack, Direction direction) {
+		return new IceBomb(level, pos);
 	}
 }

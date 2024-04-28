@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -11,12 +12,12 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
@@ -364,8 +365,8 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
 					ItemStack newStack = new ItemStack(this);
 					CompoundTag tag = new CompoundTag();
-					candelabra.saveAdditional(tag);
-					newStack.addTagElement("BlockEntityTag", tag);
+					candelabra.saveAdditional(tag, blockEntity.getLevel().registryAccess());
+					newStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag));
 					drops.remove(base.get());
 					drops.add(newStack);
 				} else {
@@ -438,8 +439,8 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		ItemStack newStack = new ItemStack(this);
 		if (reader.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
 			CompoundTag tag = new CompoundTag();
-			candelabra.saveAdditional(tag);
-			newStack.addTagElement("BlockEntityTag", tag);
+			candelabra.saveAdditional(tag, reader.registryAccess());
+			newStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag));
 		}
 		return newStack;
 	}

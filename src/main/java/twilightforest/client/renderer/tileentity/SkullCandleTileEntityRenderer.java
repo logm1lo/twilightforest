@@ -2,7 +2,6 @@ package twilightforest.client.renderer.tileentity;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.Util;
@@ -21,6 +20,7 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -103,11 +103,11 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		stack.popPose();
 	}
 
-	public static RenderType getRenderType(SkullBlock.Type type, @Nullable GameProfile profile) {
+	public static RenderType getRenderType(SkullBlock.Type type, @Nullable ResolvableProfile profile) {
 		ResourceLocation resourcelocation = SKIN_BY_TYPE.get(type);
 		if (type == SkullBlock.Types.PLAYER && profile != null) {
 			SkinManager skinmanager = Minecraft.getInstance().getSkinManager();
-			return RenderType.entityTranslucent(skinmanager.getInsecureSkin(profile).texture());
+			return RenderType.entityTranslucent(skinmanager.getInsecureSkin(profile.gameProfile()).texture());
 		} else {
 			return RenderType.entityCutoutNoCullZOffset(resourcelocation);
 		}

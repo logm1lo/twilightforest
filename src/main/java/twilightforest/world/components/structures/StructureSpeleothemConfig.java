@@ -124,7 +124,7 @@ public record StructureSpeleothemConfig(
                     .add("Ore Counterweight: " + oreCounterweight);
 
             for (WeightedEntry.Wrapper<Stalactite> e : unbakedRandomList)
-                joiner.add(e.getData() + " - After counterweight: " + e.getWeight().asInt());
+                joiner.add(e.data() + " - After counterweight: " + e.getWeight().asInt());
 
             joiner.add("Total weight after counterweights: " + unbakedRandomList.stream().mapToInt(e -> e.getWeight().asInt()).sum());
 
@@ -152,7 +152,7 @@ public record StructureSpeleothemConfig(
 
         // Return a function representing anonymous access to the randomList, by passing a RandomSource in which a Speleothem is returned.
         // This ensures the randomList is constructed only once.
-        return random -> randomList.getRandom(random).map(WeightedEntry.Wrapper::getData).orElse(BlockSpikeFeature.STONE_STALACTITE);
+        return random -> randomList.getRandom(random).map(WeightedEntry.Wrapper::data).orElse(BlockSpikeFeature.STONE_STALACTITE);
     }
 
     public SpeleothemVarietyConfig getVarietyConfig() {

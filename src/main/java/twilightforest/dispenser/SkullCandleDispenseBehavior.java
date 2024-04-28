@@ -1,6 +1,5 @@
 package twilightforest.dispenser;
 
-import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
@@ -9,6 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
@@ -92,7 +92,7 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 	}
 
 	private static void makeFloorSkull(Level level, BlockPos pos, Block newBlock, Item candle) {
-		GameProfile profile = null;
+		ResolvableProfile profile = null;
 		if (level.getBlockEntity(pos) instanceof SkullBlockEntity skull) profile = skull.getOwnerProfile();
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
@@ -106,7 +106,7 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 	}
 
 	private static void makeWallSkull(Level level, BlockPos pos, Block newBlock, Item candle) {
-		GameProfile profile = null;
+		ResolvableProfile profile = null;
 		if (level.getBlockEntity(pos) instanceof SkullBlockEntity skull) profile = skull.getOwnerProfile();
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)

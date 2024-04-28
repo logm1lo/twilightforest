@@ -19,8 +19,8 @@ public interface UncraftingPlaceRecipe<C> extends PlaceRecipe<C> {
 		int widthModified = width;
 		int heightModified = height;
 		if (recipe.value() instanceof IShapedRecipe<?> shapedRecipe) {
-			widthModified = shapedRecipe.getRecipeWidth();
-			heightModified = shapedRecipe.getRecipeHeight();
+			widthModified = shapedRecipe.getWidth();
+			heightModified = shapedRecipe.getHeight();
 		}
 
 		int slotIndex = matrixOffset;
