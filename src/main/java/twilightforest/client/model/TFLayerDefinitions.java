@@ -7,7 +7,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.armor.*;
@@ -95,7 +94,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME_OUTER, SlimeModel::createOuterBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.MINOSHROOM, NewMinoshroomModel::create);
 		event.registerLayerDefinition(TFModelLayers.MINOTAUR, NewMinotaurModel::create);
-		event.registerLayerDefinition(TFModelLayers.MIST_WOLF, WolfModel::createBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.MIST_WOLF, () -> LayerDefinition.create(WolfModel.createMeshDefinition(CubeDeformation.NONE), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.MOSQUITO_SWARM, MosquitoSwarmModel::create);
 		event.registerLayerDefinition(TFModelLayers.NAGA, NewNagaModel::create);
 		event.registerLayerDefinition(TFModelLayers.NAGA_BODY, NewNagaModel::create);
@@ -124,7 +123,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.UNSTABLE_ICE_CORE, UnstableIceCoreModel::create);
 		event.registerLayerDefinition(TFModelLayers.UPPER_GOBLIN_KNIGHT, NewUpperGoblinKnightModel::create);
 		event.registerLayerDefinition(TFModelLayers.UR_GHAST, NewUrGhastModel::create);
-		event.registerLayerDefinition(TFModelLayers.WINTER_WOLF, WolfModel::createBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.WINTER_WOLF, () -> LayerDefinition.create(WolfModel.createMeshDefinition(CubeDeformation.NONE), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.WRAITH, WraithModel::create);
 		event.registerLayerDefinition(TFModelLayers.YETI, YetiModel::create);
 
