@@ -1,10 +1,11 @@
 package twilightforest.block;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -160,9 +162,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				ItemStack stack = new ItemStack(this);
 				String nameCheck = Component.literal(casket.playerName + "'s " + casket.getDisplayName()).getString();
 				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
-				CompoundTag nbt = new CompoundTag();
-				nbt.putInt("damage", state.getValue(BREAKAGE));
-				stack.addTagElement("BlockStateTag", nbt);
+				stack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(ImmutableMap.of("damage", String.valueOf(state.getValue(BREAKAGE)))));
 				if (casket.hasCustomName()) {
 					if (nameCheck.equals(casket.getCustomName().getString()))
 						itementity.setCustomName(casket.getDisplayName());
@@ -186,17 +186,18 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		CompoundTag nbt = stack.getOrCreateTag();
-		if (nbt.contains("BlockStateTag")) {
-			CompoundTag damageNbt = nbt.getCompound("BlockStateTag");
-			if (damageNbt.contains("damage")) {
-				level.setBlock(pos, state.setValue(BREAKAGE, damageNbt.getInt("damage")), 2);
-			}
+		BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
+		if (blockItemStateProperties != null) {
+			level.setBlock(pos, blockItemStateProperties.apply(state), 2);
 		}
-		if (stack.hasCustomHoverName()) {
-			BlockEntity tileentity = level.getBlockEntity(pos);
-			if (tileentity instanceof KeepsakeCasketBlockEntity) {
-				((KeepsakeCasketBlockEntity) tileentity).setCustomName(stack.getHoverName());
+
+		Component customName = stack.get(DataComponents.CUSTOM_NAME);
+		if (customName == null)
+			customName = stack.get(DataComponents.ITEM_NAME);
+
+		if (customName != null) {
+			if (level.getBlockEntity(pos) instanceof KeepsakeCasketBlockEntity casket) {
+				casket.name = customName;
 			}
 		}
 	}

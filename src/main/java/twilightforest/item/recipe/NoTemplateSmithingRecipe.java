@@ -6,7 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.Level;
 import twilightforest.init.TFRecipes;
 
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 public class NoTemplateSmithingRecipe implements SmithingRecipe {
@@ -90,11 +88,15 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 
 	private void setComponents(ItemStack itemstack) {
 		for (TypedDataComponent<?> data : this.additionalData)
-			setComponent(data, itemstack::set);
+			setComponent(data, itemstack);
 	}
 
-	private static <T> void setComponent(TypedDataComponent<T> data, BiConsumer<DataComponentType<T>, T> consumer) {
-		consumer.accept(data.type(), data.value());
+	private static <T> void setComponent(TypedDataComponent<T> data, ItemStack stack) {
+		stack.set(data.type(), data.value());
+	}
+
+	private static <T> void setComponent(TypedDataComponent<T> data, DataComponentMap.Builder builder) {
+		builder.set(data.type(), data.value());
 	}
 
 	@Override
@@ -111,7 +113,7 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 		DataComponentMap.Builder builder = DataComponentMap.builder();
 
 		for (TypedDataComponent<?> typedDataComponent : typedDataComponents)
-			setComponent(typedDataComponent, builder::set);
+			setComponent(typedDataComponent, builder);
 
 		return builder.build();
 	});
