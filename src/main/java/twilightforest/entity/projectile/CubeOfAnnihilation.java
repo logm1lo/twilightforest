@@ -1,7 +1,6 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
@@ -37,6 +36,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 		super(type, world);
 	}
 
+	@SuppressWarnings("this-escape")
 	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world, LivingEntity thrower, ItemStack stack) {
 		super(type, thrower, world);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);

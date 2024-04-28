@@ -36,6 +36,7 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		super(type, level);
 	}
 
+	@SuppressWarnings("this-escape")
 	public CharmEffect(EntityType<? extends CharmEffect> type, Level level, LivingEntity owner, ItemStack item) {
 		this(type, level);
 		this.orbiter = owner;

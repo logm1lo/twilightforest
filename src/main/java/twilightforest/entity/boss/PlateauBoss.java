@@ -14,7 +14,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
 
 public class PlateauBoss extends BaseTFBoss {
-
+	@SuppressWarnings("this-escape")
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 
 	public PlateauBoss(EntityType<? extends PlateauBoss> type, Level level) {

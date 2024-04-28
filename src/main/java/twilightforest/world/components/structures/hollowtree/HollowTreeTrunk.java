@@ -46,6 +46,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	private final ResourceKey<LootTable> dungeonLootTable;
 	private final Holder<EntityType<?>> dungeonMonster;
 
+	@SuppressWarnings("this-escape")
 	public HollowTreeTrunk(int height, int radius, BoundingBox pBoundingBox, BlockStateProvider log1, BlockStateProvider wood, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider vine, BlockStateProvider bug, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceKey<LootTable> dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
 		super(TFStructurePieceTypes.TFHTTr.value(), 0, pBoundingBox);
 

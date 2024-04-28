@@ -3,7 +3,6 @@ package twilightforest.entity;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -38,6 +37,7 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 		super(type, level);
 	}
 
+	@SuppressWarnings("this-escape")
 	public TwilightChestBoat(Level level, double x, double y, double z) {
 		this(TFEntities.CHEST_BOAT.get(), level);
 		this.setPos(x, y, z);

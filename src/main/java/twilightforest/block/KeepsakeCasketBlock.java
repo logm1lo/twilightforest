@@ -71,6 +71,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	private static final VoxelShape SOLID_X = Shapes.or(SOLID, TOPPER_X);
 	private static final VoxelShape SOLID_Z = Shapes.or(SOLID, TOPPER_Z);
 
+	@SuppressWarnings("this-escape")
 	public KeepsakeCasketBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(BREAKAGE, 0));

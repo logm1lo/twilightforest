@@ -42,6 +42,7 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final float BLOCK_DAMAGE = 4;
 
+	@SuppressWarnings("this-escape")
 	public KnightmetalBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));

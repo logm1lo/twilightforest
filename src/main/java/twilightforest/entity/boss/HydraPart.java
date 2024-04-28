@@ -22,6 +22,7 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	boolean markedDead;
 	private EntityDimensions cacheSize;
 
+	@SuppressWarnings("this-escape")
 	public HydraPart(Hydra parent, float width, float height) {
 		super(parent);
 		this.setSize(EntityDimensions.scalable(width, height));

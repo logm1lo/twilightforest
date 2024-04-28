@@ -54,6 +54,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Byte> PHASE_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BYTE);
 
+	@SuppressWarnings("this-escape")
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
 	private static final float BREATH_DAMAGE = 4.0F;
@@ -67,6 +68,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	private int maxDrops;
 	private int damageWhileBeaming;
 
+	@SuppressWarnings("this-escape")
 	public SnowQueen(EntityType<? extends SnowQueen> type, Level level) {
 		super(type, level);
 

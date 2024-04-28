@@ -25,6 +25,7 @@ public class ProtectionBox extends Entity {
 		this.sbb = null;
 	}
 
+	@SuppressWarnings("this-escape")
 	public ProtectionBox(Level world, BoundingBox sbb) {
 		super(TFEntities.PROTECTION_BOX.get(), world);
 

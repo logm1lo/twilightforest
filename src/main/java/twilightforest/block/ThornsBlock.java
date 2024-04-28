@@ -42,6 +42,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	private static final float THORN_DAMAGE = 4.0F;
 
+	@SuppressWarnings("this-escape")
 	public ThornsBlock(Properties properties) {
 		super(properties, 10);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y)

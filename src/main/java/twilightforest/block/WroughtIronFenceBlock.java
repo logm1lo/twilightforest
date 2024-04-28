@@ -54,6 +54,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
     private static final VoxelShape EAST_SHAPE = Block.box(8.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
     private static final VoxelShape WEST_SHAPE = Block.box(0.0D, 0.0D, 7.0D, 8.0D, 16.0D, 9.0D);
 
+    @SuppressWarnings("this-escape")
     public WroughtIronFenceBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(POST, PostState.POST).setValue(EAST_FENCE, FenceSide.NONE).setValue(NORTH_FENCE, FenceSide.NONE).setValue(SOUTH_FENCE, FenceSide.NONE).setValue(WEST_FENCE, FenceSide.NONE).setValue(WATERLOGGED, false));

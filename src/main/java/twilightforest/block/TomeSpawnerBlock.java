@@ -36,6 +36,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	public static final IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, MAX_STAGES);
 	public static final BooleanProperty SPAWNER = BooleanProperty.create("spawner");
 
+	@SuppressWarnings("this-escape")
 	public TomeSpawnerBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(BOOK_STAGES, 10).setValue(SPAWNER, true));

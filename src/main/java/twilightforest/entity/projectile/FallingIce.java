@@ -61,6 +61,7 @@ public class FallingIce extends Entity {
 		super(type, level);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FallingIce(Level level, double x, double y, double z, BlockState state, int hangTime) {
 		this(TFEntities.FALLING_ICE.get(), level);
 		this.hangTime = hangTime;

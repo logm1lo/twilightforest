@@ -147,7 +147,7 @@ public class HydraHeadContainer {
 	private final Map<State, Float>[] stateYRotations;
 	private final Map<State, Float>[] stateMouthOpen;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"this-escape", "unchecked"})
 	public HydraHeadContainer(Hydra hydra, int number, boolean startActive) {
 		this.headNum = number;
 		this.hydra = hydra;

@@ -32,7 +32,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import twilightforest.entity.projectile.ThrownBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
@@ -52,6 +51,7 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Nullable
 	private BlockState rock;
 
+	@SuppressWarnings("this-escape")
 	public Troll(EntityType<? extends Troll> type, Level level) {
 		super(type, level);
 		this.rockCooldown = 300 + this.getRandom().nextInt(100);

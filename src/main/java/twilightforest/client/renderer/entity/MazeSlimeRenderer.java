@@ -16,6 +16,7 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeModel<MazeSli
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mazeslime.png");
 
+	@SuppressWarnings("this-escape")
 	public MazeSlimeRenderer(EntityRendererProvider.Context manager, float shadowSize) {
 		super(manager, new SlimeModel<>(manager.bakeLayer(TFModelLayers.MAZE_SLIME)), shadowSize);
 		this.addLayer(new SlimeOuterLayer<>(this, manager.getModelSet()));

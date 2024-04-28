@@ -36,6 +36,7 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     protected static final VoxelShape Y_SHAPE = Block.box(6.5, 0.0, 6.5, 9.5, 16.0, 9.5);
     protected static final VoxelShape Z_SHAPE = Block.box(6.5, 6.5, 0.0, 9.5, 9.5, 16.0);
 
+    @SuppressWarnings("this-escape")
     public RopeBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.getStateDefinition().any()

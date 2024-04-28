@@ -35,6 +35,7 @@ public class TrollsteinnBlock extends Block {
 
 	private static final int LIGHT_THRESHOLD = 7;
 
+	@SuppressWarnings("this-escape")
 	public TrollsteinnBlock(Properties properties) {
 		super(properties);
 

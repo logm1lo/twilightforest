@@ -25,11 +25,13 @@ public class SeekerArrow extends TFArrow {
 	private static final double seekAngle = Math.PI / 6.0;
 	private static final double seekThreshold = 0.5;
 
+	@SuppressWarnings("this-escape")
 	public SeekerArrow(EntityType<? extends SeekerArrow> type, Level world) {
 		super(type, world);
 		this.setBaseDamage(1.0D);
 	}
 
+	@SuppressWarnings("this-escape")
 	public SeekerArrow(Level world, Entity shooter, ItemStack stack) {
 		super(TFEntities.SEEKER_ARROW.get(), world, shooter, stack);
 		this.setBaseDamage(1.0D);

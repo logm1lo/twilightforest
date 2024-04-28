@@ -19,6 +19,7 @@ public class LichAbsorbMinionsGoal extends Goal {
 
 	private final Lich lich;
 
+	@SuppressWarnings("this-escape")
 	public LichAbsorbMinionsGoal(Lich lich) {
 		this.lich = lich;
 		this.setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));

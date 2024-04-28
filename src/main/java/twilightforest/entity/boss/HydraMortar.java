@@ -34,6 +34,7 @@ public class HydraMortar extends ThrowableProjectile {
 		super(type, world);
 	}
 
+	@SuppressWarnings("this-escape")
 	public HydraMortar(EntityType<? extends HydraMortar> type, Level world, HydraHead head) {
 		super(type, head.getParent(), world);
 

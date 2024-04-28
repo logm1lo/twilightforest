@@ -44,6 +44,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+@SuppressWarnings("this-escape")
 public class Hydra extends BaseTFBoss {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;

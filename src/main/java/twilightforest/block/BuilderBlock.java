@@ -34,6 +34,7 @@ public class BuilderBlock extends BaseEntityBlock {
 	public static final MapCodec<BuilderBlock> CODEC = simpleCodec(BuilderBlock::new);
 	public static final EnumProperty<TowerDeviceVariant> STATE = EnumProperty.create("state", TowerDeviceVariant.class);
 
+	@SuppressWarnings("this-escape")
 	public BuilderBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));

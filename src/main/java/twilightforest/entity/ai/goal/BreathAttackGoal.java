@@ -27,6 +27,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 
 	private int durationLeft;
 
+	@SuppressWarnings("this-escape")
 	public BreathAttackGoal(T living, float range, int time, float chance) {
 		this.entityHost = living;
 		this.breathRange = range;

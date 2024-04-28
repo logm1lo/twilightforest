@@ -22,6 +22,7 @@ public class TwilightBoat extends Boat {
 		this.blocksBuilding = true;
 	}
 
+	@SuppressWarnings("this-escape")
 	public TwilightBoat(Level level, double x, double y, double z) {
 		this(TFEntities.BOAT.get(), level);
 		this.setPos(x, y, z);

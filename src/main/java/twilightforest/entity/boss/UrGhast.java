@@ -66,8 +66,10 @@ public class UrGhast extends BaseTFBoss {
 	private int inTrapCounter;
 
 	private float damageUntilNextPhase = 10; // how much damage can we take before we toggle tantrum mode
+	@SuppressWarnings("this-escape")
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 
+	@SuppressWarnings("this-escape")
 	public UrGhast(EntityType<? extends UrGhast> type, Level level) {
 		super(type, level);
 		this.noPhysics = true;

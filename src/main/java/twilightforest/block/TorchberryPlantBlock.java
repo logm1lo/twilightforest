@@ -33,6 +33,7 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 	public static final BooleanProperty HAS_BERRIES = BooleanProperty.create("has_torchberries");
 	private static final VoxelShape TORCHBERRY_SHAPE = Block.box(1, 2, 1, 15, 16, 15);
 
+	@SuppressWarnings("this-escape")
 	public TorchberryPlantBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(HAS_BERRIES, false));

@@ -22,6 +22,7 @@ public class LockedVanishingBlock extends VanishingBlock {
 
 	public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
 
+	@SuppressWarnings("this-escape")
 	public LockedVanishingBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState().setValue(LOCKED, true));

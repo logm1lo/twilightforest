@@ -13,6 +13,7 @@ public class DirectionalRotatedPillarBlock extends RotatedPillarBlock {
 
 	public static final BooleanProperty REVERSED = BooleanProperty.create("reversed");
 
+	@SuppressWarnings("this-escape")
 	public DirectionalRotatedPillarBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(AXIS, Direction.Axis.Y).setValue(REVERSED, false));

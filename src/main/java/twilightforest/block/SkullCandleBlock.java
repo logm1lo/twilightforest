@@ -59,6 +59,7 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 		return Int2ObjectMaps.unmodifiable(var0);
 	});
 
+	@SuppressWarnings("this-escape")
 	public SkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(type, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ROTATION, 0));

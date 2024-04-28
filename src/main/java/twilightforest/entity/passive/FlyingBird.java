@@ -31,6 +31,7 @@ public abstract class FlyingBird extends Bird {
 	private BlockPos targetPosition;
 	private int currentFlightTime;
 
+	@SuppressWarnings("this-escape")
 	public FlyingBird(EntityType<? extends Bird> entity, Level world) {
 		super(entity, world);
 		this.setIsBirdLanded(true);

@@ -33,6 +33,7 @@ public class UncraftingTableBlock extends Block {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
+	@SuppressWarnings("this-escape")
 	public UncraftingTableBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(POWERED, false));

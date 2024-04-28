@@ -25,6 +25,7 @@ public class NagaSegment extends TFPart<Naga> {
 
 	private int deathCounter;
 
+	@SuppressWarnings("this-escape")
 	public NagaSegment(Naga naga) {
 		super(naga);
 		this.setPos(naga.getX(), naga.getY(), naga.getZ());

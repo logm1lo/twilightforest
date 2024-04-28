@@ -34,6 +34,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		super(TFStructurePieceTypes.TFTCGard.get(), ctx, nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public TrollCaveGardenComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(TFStructurePieceTypes.TFTCGard.get(), index, x, y, z, speleothemConfig);
 		this.size = caveSize;

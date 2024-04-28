@@ -48,6 +48,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 
 	private static final VoxelShape FINAL = Shapes.or(BOTTOM, MID, TOP, CORNER1, CORNER2, CORNER3, CORNER4);
 
+	@SuppressWarnings("this-escape")
 	public TrophyPedestalBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false).setValue(WATERLOGGED, false));

@@ -15,6 +15,7 @@ public class EtchedNagastoneBlock extends DirectionalBlock {
 
 	public static final MapCodec<EtchedNagastoneBlock> CODEC = simpleCodec(EtchedNagastoneBlock::new);
 
+	@SuppressWarnings("this-escape")
     public EtchedNagastoneBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.DOWN));

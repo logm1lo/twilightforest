@@ -38,6 +38,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Wraith.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
+	@SuppressWarnings("this-escape")
 	public Wraith(EntityType<? extends Wraith> type, Level level) {
 		super(type, level);
 		this.moveControl = new NoClipMoveControl(this);
@@ -222,6 +223,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	public static class LookAroundGoal extends Goal {
 		private final Wraith wraith;
 
+		@SuppressWarnings("this-escape")
 		public LookAroundGoal(Wraith wraith) {
 			this.wraith = wraith;
 			this.setFlags(EnumSet.of(Flag.LOOK));
@@ -258,6 +260,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 		private double wantedZ;
 		private final double speedModifier;
 
+		@SuppressWarnings("this-escape")
 		public MoveTowardsHomeGoal(Wraith mob, double speedModifier) {
 			this.mob = mob;
 			this.speedModifier = speedModifier;

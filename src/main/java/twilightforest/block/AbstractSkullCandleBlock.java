@@ -45,6 +45,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 
 	private final SkullBlock.Type type;
 
+	@SuppressWarnings("this-escape")
 	public AbstractSkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(properties);
 		this.type = type;

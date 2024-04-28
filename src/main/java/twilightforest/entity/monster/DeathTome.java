@@ -50,6 +50,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	public float flipT;
 	public float flipA;
 
+	@SuppressWarnings("this-escape")
 	public DeathTome(EntityType<? extends DeathTome> type, Level world) {
 		super(type, world);
 		this.moveControl = new FlyingMoveControl(this, 10, false);

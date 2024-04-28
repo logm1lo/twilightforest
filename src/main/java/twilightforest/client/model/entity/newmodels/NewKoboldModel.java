@@ -20,6 +20,7 @@ public class NewKoboldModel extends HumanoidModel<Kobold> {
 
     boolean isJumping;
 
+    @SuppressWarnings("this-escape")
     public NewKoboldModel(ModelPart root) {
         super(root);
         this.mouth = getHead().getChild("mouth");

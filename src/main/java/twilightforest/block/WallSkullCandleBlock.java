@@ -58,6 +58,7 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 		return Int2ObjectMaps.unmodifiable(var0);
 	});
 
+	@SuppressWarnings("this-escape")
 	public WallSkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(type, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));

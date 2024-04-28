@@ -30,6 +30,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	public static final int DEACTIVATE_EVENT = 1;
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
+	@SuppressWarnings("this-escape")
 	public GhastTrapBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));

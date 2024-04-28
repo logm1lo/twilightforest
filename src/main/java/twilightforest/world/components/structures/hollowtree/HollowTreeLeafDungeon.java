@@ -44,6 +44,7 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	/**
 	 * Make a blob of leaves
 	 */
+	@SuppressWarnings("this-escape")
 	protected HollowTreeLeafDungeon(int index, int x, int y, int z, int radius, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider inside, BlockStateProvider lootContainer, ResourceKey<LootTable> lootTable, Holder<EntityType<?>> monster, RandomSource random) {
 		super(TFStructurePieceTypes.TFHTLD.value(), index, new BoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius));
 

@@ -34,6 +34,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
 	}
 
+	@SuppressWarnings("this-escape")
 	public CloudCastleComponent(int index, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFClCa.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);

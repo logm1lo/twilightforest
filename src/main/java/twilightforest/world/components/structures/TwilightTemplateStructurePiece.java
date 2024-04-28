@@ -25,6 +25,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
     private final BlockPos originalPlacement;
     private final BoundingBox originalBox;
 
+    @SuppressWarnings("this-escape")
     public TwilightTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings rl2SettingsFunction) {
         super(structurePieceType, compoundTag, ctx.structureTemplateManager(), rl -> rl2SettingsFunction);
         this.rotation = this.getRotation();
@@ -36,6 +37,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
         this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
     }
 
+    @SuppressWarnings("this-escape")
     public TwilightTemplateStructurePiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
         super(type, genDepth, structureManager, templateLocation, templateLocation.toString(), placeSettings, startPosition);
         this.rotation = this.getRotation();

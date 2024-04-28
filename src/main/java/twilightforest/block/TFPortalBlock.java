@@ -69,6 +69,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	private static final int MIN_PORTAL_SIZE = 4;
 	private static final HashSet<ServerPlayer> playersNotified = new HashSet<>();
 
+	@SuppressWarnings("this-escape")
 	public TFPortalBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(DISALLOW_RETURN, false));

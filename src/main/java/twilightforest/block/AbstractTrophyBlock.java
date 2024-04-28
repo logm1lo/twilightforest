@@ -39,6 +39,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 	private final int comparatorValue;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
+	@SuppressWarnings("this-escape")
 	protected AbstractTrophyBlock(BossVariant variant, int value, BlockBehaviour.Properties builder) {
 		super(builder);
 		this.variant = variant;

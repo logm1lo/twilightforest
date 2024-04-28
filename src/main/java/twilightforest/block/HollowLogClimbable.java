@@ -63,6 +63,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 
 	private final Holder<Block> vertical;
 
+	@SuppressWarnings("this-escape")
 	public HollowLogClimbable(Holder<Block> vertical, Properties properties) {
 		super(properties);
 		this.vertical = vertical;

@@ -26,7 +26,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -38,6 +37,7 @@ public class LowerGoblinKnight extends Monster {
 	private static final EntityDataAccessor<Boolean> ARMOR = SynchedEntityData.defineId(LowerGoblinKnight.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 17, AttributeModifier.Operation.ADD_VALUE);
 
+	@SuppressWarnings("this-escape")
 	public LowerGoblinKnight(EntityType<? extends LowerGoblinKnight> type, Level world) {
 		super(type, world);
 		this.setHasArmor(true);

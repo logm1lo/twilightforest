@@ -47,6 +47,7 @@ public class VanishingBlock extends Block {
 	public static final BooleanProperty VANISHED = BooleanProperty.create("vanished");
 	private static final VoxelShape VANISHED_SHAPE = box(6, 6, 6, 10, 10, 10);
 
+	@SuppressWarnings("this-escape")
 	public VanishingBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));

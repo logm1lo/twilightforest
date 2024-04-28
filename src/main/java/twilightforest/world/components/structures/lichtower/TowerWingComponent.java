@@ -70,6 +70,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		this.highestOpening = 0;
 	}
 
+	@SuppressWarnings("this-escape")
 	protected TowerWingComponent(StructurePieceType type, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(type, i, x, y, z);
 

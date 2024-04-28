@@ -21,6 +21,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
+	@SuppressWarnings("this-escape")
 	protected SpecialMagicLogBlock(BlockBehaviour.Properties properties) {
 		super(properties.strength(2.0F).sound(SoundType.WOOD).lightLevel((state) -> state.getValue(ACTIVE) ? 15 : 0));
 

@@ -28,6 +28,7 @@ public class CarminiteGolem extends Monster {
 
 	private int attackTimer;
 
+	@SuppressWarnings("this-escape")
 	public CarminiteGolem(EntityType<? extends CarminiteGolem> type, Level world) {
 		super(type, world);
 		this.setPathfindingMalus(PathType.WATER, -1.0F);

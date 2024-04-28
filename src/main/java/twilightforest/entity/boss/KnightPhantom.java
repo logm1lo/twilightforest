@@ -60,6 +60,7 @@ public class KnightPhantom extends BaseTFBoss {
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, AttributeModifier.Operation.ADD_VALUE);
 	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier("Inactive Armor boost", 4.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
+	@SuppressWarnings("this-escape")
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 
 	private int number;
@@ -70,6 +71,7 @@ public class KnightPhantom extends BaseTFBoss {
 	private final EntityDimensions invisibleSize = EntityDimensions.fixed(1.25F, 2.5F);
 	private final EntityDimensions visibleSize = EntityDimensions.fixed(1.75F, 4.0F);
 
+	@SuppressWarnings("this-escape")
 	public KnightPhantom(EntityType<? extends KnightPhantom> type, Level level) {
 		super(type, level);
 		this.noPhysics = true;

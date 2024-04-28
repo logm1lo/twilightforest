@@ -27,6 +27,7 @@ public class SpiralBrickBlock extends Block implements SimpleWaterloggedBlock {
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+	@SuppressWarnings("this-escape")
 	public SpiralBrickBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(DIAGONAL, Diagonals.BOTTOM_RIGHT).setValue(AXIS_FACING, Direction.Axis.X).setValue(WATERLOGGED, false));

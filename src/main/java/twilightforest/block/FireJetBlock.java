@@ -30,6 +30,7 @@ public class FireJetBlock extends BaseEntityBlock {
 	public static final MapCodec<FireJetBlock> CODEC = simpleCodec(FireJetBlock::new);
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
+	@SuppressWarnings("this-escape")
 	public FireJetBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, FireJetVariant.IDLE));

@@ -41,6 +41,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		super(piece, nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleDungeonRoom31Component(StructurePieceType piece, int i, int x, int y, int z, Direction direction, int level) {
 		super(piece, i, x, y, z);
 		this.setOrientation(direction);

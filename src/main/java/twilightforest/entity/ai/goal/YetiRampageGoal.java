@@ -18,6 +18,7 @@ public class YetiRampageGoal extends Goal {
 	private final int maxTantrumTimeOut;
 	private final int tantrumDuration;
 
+	@SuppressWarnings("this-escape")
 	public YetiRampageGoal(AlphaYeti yeti, int timeout, int duration) {
 		this.yeti = yeti;
 		this.currentTimeOut = timeout;

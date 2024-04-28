@@ -18,6 +18,7 @@ public class KoboldModel extends HumanoidModel<Kobold> {
 	final ModelPart jaw;
 	boolean isJumping;
 
+	@SuppressWarnings("this-escape")
 	public KoboldModel(ModelPart root) {
 		super(root);
 		this.isJumping = false;

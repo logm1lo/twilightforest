@@ -20,6 +20,7 @@ public class QuestRamEatWoolGoal extends Goal {
 	@Nullable
 	private ItemEntity targetItem = null;
 
+	@SuppressWarnings("this-escape")
 	public QuestRamEatWoolGoal(QuestRam ram) {
 		this.ram = ram;
 		this.navigation = ram.getNavigation();

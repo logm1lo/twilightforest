@@ -31,6 +31,7 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 	private final PlayerModel<T> normalModel;
 	private final PlayerModel<T> slimModel;
 
+	@SuppressWarnings("this-escape")
 	public TFGiantRenderer(EntityRendererProvider.Context context) {
 		super(context, new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER), false), 1.8F);
 		this.normalModel = this.getModel();

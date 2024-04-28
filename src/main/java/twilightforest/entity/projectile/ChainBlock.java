@@ -1,9 +1,7 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -59,6 +57,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 		super(type, world);
 	}
 
+	@SuppressWarnings("this-escape")
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
 		super(type, thrower, world);
 		this.isReturning = false;

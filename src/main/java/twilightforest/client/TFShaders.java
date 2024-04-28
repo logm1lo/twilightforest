@@ -88,6 +88,7 @@ public class TFShaders {
 		@Nullable
 		public final Uniform POSITION;
 
+		@SuppressWarnings("this-escape")
 		public PositionAwareShaderInstance(ResourceProvider p_173336_, ResourceLocation shaderLocation, VertexFormat p_173338_) throws IOException {
 			super(p_173336_, shaderLocation, p_173338_);
 			SEED = getUniform("SeedContext");

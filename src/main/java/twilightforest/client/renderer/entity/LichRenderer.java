@@ -15,6 +15,7 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichModel> {
 
 	private static final ResourceLocation LICH_TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");
 
+	@SuppressWarnings("this-escape")
 	public LichRenderer(EntityRendererProvider.Context manager, LichModel modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);
 		addLayer(new ShieldLayer<>(this));

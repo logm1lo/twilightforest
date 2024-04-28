@@ -45,6 +45,7 @@ public class Experiment115Block extends Block {
 	private static final VoxelShape THREE_QUARTER_SHAPE = Shapes.join(HALF_SHAPE, box(8, 0, 8, 15, 8, 15), BooleanOp.OR);
 	private static final VoxelShape FULL_SHAPE = box(1, 0, 1, 15, 8, 15);
 
+	@SuppressWarnings("this-escape")
 	public Experiment115Block(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(BITES_TAKEN, 7).setValue(REGENERATE, false));

@@ -12,6 +12,7 @@ import java.util.EnumSet;
 public class GhastguardHomedFlightGoal extends Goal {
 	private final CarminiteGhastguard ghast;
 
+	@SuppressWarnings("this-escape")
 	public GhastguardHomedFlightGoal(CarminiteGhastguard ghast) {
 		this.ghast = ghast;
 		this.setFlags(EnumSet.of(Flag.MOVE));

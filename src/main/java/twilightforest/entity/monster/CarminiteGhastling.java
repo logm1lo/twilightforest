@@ -23,6 +23,7 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 
 	private boolean isMinion = false;
 
+	@SuppressWarnings("this-escape")
 	public CarminiteGhastling(EntityType<? extends CarminiteGhastling> type, Level world) {
 		super(type, world);
 		this.wanderFactor = 4.0F;

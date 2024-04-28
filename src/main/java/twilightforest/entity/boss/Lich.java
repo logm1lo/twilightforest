@@ -79,6 +79,7 @@ public class Lich extends BaseTFBoss {
 	private int popCooldown;
 	private int heldScepterTime;
 	private int spawnTime;
+	@SuppressWarnings("this-escape")
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.YELLOW, BossEvent.BossBarOverlay.NOTCHED_6);
 	private final List<UUID> summonedClones = new ArrayList<>();
 
@@ -87,6 +88,7 @@ public class Lich extends BaseTFBoss {
 		this.xpReward = 217;
 	}
 
+	@SuppressWarnings("this-escape")
 	public Lich(Level level, Lich otherLich) {
 		this(TFEntities.LICH.get(), level);
 		this.setMasterUUID(otherLich.getUUID());

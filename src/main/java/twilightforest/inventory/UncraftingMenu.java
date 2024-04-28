@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 
+@SuppressWarnings("this-escape")
 public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
 	private static final String TAG_MARKER = "TwilightForestMarker";

@@ -3,7 +3,6 @@ package twilightforest.entity.boss;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -47,8 +46,10 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	private float prevClientSideChargeAnimation;
 	private float clientSideChargeAnimation;
 	private boolean groundSmashState = false;
+	@SuppressWarnings("this-escape")
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 
+	@SuppressWarnings("this-escape")
 	public Minoshroom(EntityType<? extends Minoshroom> type, Level level) {
 		super(type, level);
 		this.xpReward = 100;

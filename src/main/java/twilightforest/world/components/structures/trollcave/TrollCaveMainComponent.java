@@ -55,6 +55,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.speleothemConfig = this.speleothemConfigHolder.value();
 	}
 
+	@SuppressWarnings("this-escape")
 	public TrollCaveMainComponent(StructurePieceType type, int i, int x, int y, int z, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(type, i, x, y, z);
 		this.setOrientation(Direction.SOUTH); // DEPTH_AVERAGE

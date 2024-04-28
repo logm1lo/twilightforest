@@ -60,7 +60,7 @@ import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import java.util.Locale;
 
 @Mod(TwilightForestMod.ID)
-public class TwilightForestMod {
+public final class TwilightForestMod {
 
 	public static final String ID = "twilightforest";
 

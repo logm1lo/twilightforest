@@ -18,6 +18,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 	private int delay;
 	private BlockPos tntPos = null;
 
+	@SuppressWarnings("this-escape")
 	public RedcapLightTNTGoal(Redcap hostEntity, float speed) {
 		super(hostEntity);
 		this.pursueSpeed = speed;

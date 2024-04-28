@@ -14,6 +14,7 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 		super(type, level, new ItemStack(Items.ARROW));
 	}
 
+	@SuppressWarnings("this-escape")
 	public TFArrow(EntityType<? extends TFArrow> type, Level level, @Nullable Entity shooter, ItemStack stack) {
 		super(type, level, stack);
 		this.setOwner(shooter);

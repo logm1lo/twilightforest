@@ -1,7 +1,6 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
@@ -26,6 +25,7 @@ import java.util.List;
 
 public class GiantMiner extends Monster {
 
+	@SuppressWarnings("this-escape")
 	public GiantMiner(EntityType<? extends GiantMiner> type, Level world) {
 		super(type, world);
 

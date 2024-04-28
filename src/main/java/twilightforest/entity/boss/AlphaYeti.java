@@ -35,7 +35,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.entity.ai.goal.YetiRampageGoal;
@@ -50,6 +49,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 
 	private static final EntityDataAccessor<Boolean> RAMPAGE_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> TIRED_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BOOLEAN);
+	@SuppressWarnings("this-escape")
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private int collisionCounter;
 	private boolean canRampage;

@@ -24,6 +24,7 @@ public class TwilightWandBolt extends TFThrowable {
 		super(type, world);
 	}
 
+	@SuppressWarnings("this-escape")
 	public TwilightWandBolt(Level world, LivingEntity thrower) {
 		super(TFEntities.WAND_BOLT.get(), world, thrower);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0, 1.5F, 1.0F);

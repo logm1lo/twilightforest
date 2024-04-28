@@ -21,6 +21,7 @@ public class NagaMovementPattern extends Goal {
 	private boolean clockwise;
 	private boolean stunCalculated;
 
+	@SuppressWarnings("this-escape")
 	public NagaMovementPattern(Naga naga) {
 		this.naga = naga;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));

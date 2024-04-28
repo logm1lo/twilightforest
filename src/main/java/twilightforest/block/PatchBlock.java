@@ -30,6 +30,7 @@ public class PatchBlock extends TFPlantBlock {
 	public static final BooleanProperty WEST = BlockStateProperties.WEST;
 	private static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = PipeBlock.PROPERTY_BY_DIRECTION.entrySet().stream().filter(directionPropertyPair -> directionPropertyPair.getKey().getAxis().isHorizontal()).collect(Util.toMap());
 
+	@SuppressWarnings("this-escape")
 	public PatchBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false));

@@ -30,6 +30,7 @@ public class ChargeAttackGoal extends Goal {
 	private int windup;
 	private boolean hasAttacked;
 
+	@SuppressWarnings("this-escape")
 	public ChargeAttackGoal(PathfinderMob mob, float f, boolean canBreak) {
 		this.charger = mob;
 		this.speed = f;

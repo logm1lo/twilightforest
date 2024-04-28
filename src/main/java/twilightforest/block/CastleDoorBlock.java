@@ -28,6 +28,7 @@ public class CastleDoorBlock extends Block {
 
 	private static final VoxelShape REAPPEARING_BB = Shapes.create(new AABB(0.375F, 0.375F, 0.375F, 0.625F, 0.625F, 0.625F));
 
+	@SuppressWarnings("this-escape")
 	public CastleDoorBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false).setValue(VANISHED, false));

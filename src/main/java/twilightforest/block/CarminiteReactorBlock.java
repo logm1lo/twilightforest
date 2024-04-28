@@ -28,6 +28,7 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 	public static final MapCodec<CarminiteReactorBlock> CODEC = simpleCodec(CarminiteReactorBlock::new);
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
+	@SuppressWarnings("this-escape")
 	public CarminiteReactorBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));

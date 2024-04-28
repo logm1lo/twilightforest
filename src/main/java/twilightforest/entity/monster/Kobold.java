@@ -41,6 +41,7 @@ public class Kobold extends Monster {
 	private int lastEatenBreadTicks;
 	private int eatingTime;
 
+	@SuppressWarnings("this-escape")
 	public Kobold(EntityType<? extends Kobold> type, Level world) {
 		super(type, world);
 		this.setCanPickUpLoot(true);

@@ -38,6 +38,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	public static final BooleanProperty LIT = BooleanProperty.create("lit");
 	private static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 
+	@SuppressWarnings("this-escape")
 	public CinderFurnaceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(LIT, false));

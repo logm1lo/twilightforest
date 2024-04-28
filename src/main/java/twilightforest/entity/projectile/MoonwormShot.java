@@ -40,6 +40,7 @@ public class MoonwormShot extends TFThrowable {
 		super(type, level);
 	}
 
+	@SuppressWarnings("this-escape")
 	public MoonwormShot(EntityType<? extends MoonwormShot> type, Level level, LivingEntity thrower) {
 		super(type, level, thrower);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1.0F);
