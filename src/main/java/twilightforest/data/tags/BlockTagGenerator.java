@@ -96,6 +96,14 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 	public static final TagKey<Block> CARVER_REPLACEABLES = BlockTags.create(TwilightForestMod.prefix("carver_replaceables"));
 
+	public static final TagKey<Block> INCORRECT_FOR_IRONWOOD_TOOL = BlockTags.create(TwilightForestMod.prefix("incorrect_for_ironwood_tool"));
+	public static final TagKey<Block> INCORRECT_FOR_FIERY_TOOL = BlockTags.create(TwilightForestMod.prefix("incorrect_for_fiery_tool"));
+	public static final TagKey<Block> INCORRECT_FOR_STEELEAF_TOOL = BlockTags.create(TwilightForestMod.prefix("incorrect_for_steeleaf_tool"));
+	public static final TagKey<Block> INCORRECT_FOR_KNIGHTMETAL_TOOL = BlockTags.create(TwilightForestMod.prefix("incorrect_for_knightmetal_tool"));
+	public static final TagKey<Block> INCORRECT_FOR_GIANT_TOOL = BlockTags.create(TwilightForestMod.prefix("incorrect_for_giant_tool"));
+	public static final TagKey<Block> INCORRECT_FOR_ICE_TOOL = BlockTags.create(TwilightForestMod.prefix("incorrect_for_ice_tool"));
+	public static final TagKey<Block> INCORRECT_FOR_GLASS_TOOL = BlockTags.create(TwilightForestMod.prefix("incorrect_for_glass_tool"));
+
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, ExistingFileHelper helper) {
 		super(output, future, helper);
 	}
@@ -806,6 +814,14 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 		tag(SUPPORTS_STALAGMITES).addTag(DEADROCK).add(Blocks.PACKED_ICE);
 
 		tag(CARVER_REPLACEABLES).addTag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(Blocks.SNOW_BLOCK);
+
+		tag(INCORRECT_FOR_IRONWOOD_TOOL).addTag(BlockTags.INCORRECT_FOR_IRON_TOOL);
+		tag(INCORRECT_FOR_FIERY_TOOL).addTag(BlockTags.INCORRECT_FOR_NETHERITE_TOOL);
+		tag(INCORRECT_FOR_STEELEAF_TOOL).addTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL);
+		tag(INCORRECT_FOR_KNIGHTMETAL_TOOL).addTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL);
+		tag(INCORRECT_FOR_GIANT_TOOL).addTag(BlockTags.INCORRECT_FOR_STONE_TOOL);
+		tag(INCORRECT_FOR_ICE_TOOL).addTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
+		tag(INCORRECT_FOR_GLASS_TOOL).addTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {
