@@ -37,7 +37,7 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 	}
 
 	@Override
-	public LootItemFunctionType getType() {
+	public LootItemFunctionType<? extends LootItemConditionalFunction> getType() {
 		return TFLoot.MULTIPLAYER_MULTIPLIER.get();
 	}
 

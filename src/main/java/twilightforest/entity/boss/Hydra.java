@@ -189,7 +189,7 @@ public class Hydra extends BaseTFBoss {
 		byte headData = 0;
 		for (int i = 0; i < MAX_HEADS; i++) {
 			if (this.hc[i].isActive()) {
-				headData |= 1 << i;
+				headData |= (byte) (1 << i);
 			}
 		}
 		compound.putByte("NumHeads", headData);

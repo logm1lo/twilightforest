@@ -41,6 +41,7 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 
 	private final DeferredHolder<Block, HollowLogClimbable> climbable;
 
+	@SuppressWarnings("this-escape")
 	public HollowLogVertical(Properties properties, DeferredHolder<Block, HollowLogClimbable> climbable) {
 		super(properties);
 		this.climbable = climbable;

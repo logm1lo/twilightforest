@@ -175,16 +175,16 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> {
             this.rightArm.yRot += Mth.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
 			this.leftArm.yRot -= Mth.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
 
-			this.rightArm.xRot += Math.PI * 1.25;
-			this.leftArm.xRot += Math.PI * 1.25;
+			this.rightArm.xRot += Mth.PI * 1.25F;
+			this.leftArm.xRot += Mth.PI * 1.25F;
 			this.rightArm.zRot = 0.0F;
 			this.leftArm.zRot = 0.0F;
 		}
 
 		if (entity.isVehicle()) {
 			// arms up!
-			this.rightArm.xRot += Math.PI;
-			this.leftArm.xRot += Math.PI;
+			this.rightArm.xRot += Mth.PI;
+			this.leftArm.xRot += Mth.PI;
 		}
 	}
 }

@@ -60,7 +60,7 @@ public class BlockChainGoblinModel<T extends BlockChainGoblin> extends FixedHuma
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-		this.rightArm.xRot += Math.PI;
-		this.leftArm.xRot += Math.PI;
+		this.rightArm.xRot += Mth.PI;
+		this.leftArm.xRot += Mth.PI;
 	}
 }

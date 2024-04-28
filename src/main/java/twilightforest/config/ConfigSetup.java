@@ -22,12 +22,12 @@ public final class ConfigSetup {
 	static {
 		{
 			final Pair<TFCommonConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFCommonConfig::new);
-			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
+			ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
 			COMMON_CONFIG = specPair.getLeft();
 		}
 		{
 			final Pair<TFClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFClientConfig::new);
-			ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
+			ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
 			CLIENT_CONFIG = specPair.getLeft();
 		}
 	}

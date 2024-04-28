@@ -133,8 +133,8 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> {
 				this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
 			} else {
 				// arms up
-				this.rightArm.xRot += Math.PI;
-				this.leftArm.xRot += Math.PI;
+				this.rightArm.xRot += Mth.PI;
+				this.leftArm.xRot += Mth.PI;
 			}
 		}
 	}

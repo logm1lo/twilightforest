@@ -279,7 +279,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 		boolean result = super.hurt(source, damage);
 
 		if (result && this.getCurrentPhase() == Phase.BEAM) {
-			this.damageWhileBeaming += damage;
+			this.damageWhileBeaming += (int) damage;
 		}
 		return result;
 	}

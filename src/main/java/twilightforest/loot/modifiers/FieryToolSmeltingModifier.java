@@ -12,7 +12,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,8 +30,9 @@ public class FieryToolSmeltingModifier extends LootModifier {
 		List<Pair<ItemStack, Float>> list = generatedLoot.stream().map(stack ->
 			context.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
 					.map(holder -> {
-						ItemStack result = holder.value().getResultItem(context.getLevel().registryAccess());
-						return Pair.of(ItemHandlerHelper.copyStackWithSize(result, stack.getCount() * result.getCount()), holder.value().getExperience());
+						ItemStack result = holder.value().getResultItem(context.getLevel().registryAccess()).copy();
+						result.setCount(stack.getCount() * result.getCount());
+						return Pair.of(result, holder.value().getExperience());
 					})
 					.filter(pair -> !pair.getLeft().isEmpty())
 					.orElse(Pair.of(stack, 0.0F))).toList();

@@ -49,6 +49,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 	private static final VoxelShape COLLISION_SHAPE_X = Shapes.join(Shapes.block(), Block.box(0, 1, 1, 16, 15, 15), BooleanOp.ONLY_FIRST);
 	private static final VoxelShape COLLISION_SHAPE_Z = Shapes.join(Shapes.block(), Block.box(1, 1, 0, 15, 15, 16), BooleanOp.ONLY_FIRST);
 
+	@SuppressWarnings("this-escape")
 	public HollowLogHorizontal(Properties properties) {
 		super(properties);
 

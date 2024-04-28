@@ -357,7 +357,7 @@ public class Naga extends BaseTFBoss {
 		if (super.hurt(source, amount)) {
 			this.ticksSinceDamaged = 0;
 			if (this.isDazed()) {
-				this.damageDuringCurrentStun += amount;
+				this.damageDuringCurrentStun += (int) amount;
 			}
 			return true;
 		} else {

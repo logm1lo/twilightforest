@@ -46,6 +46,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 	public static final EnumProperty<BanisterShape> SHAPE = EnumProperty.create("shape", BanisterShape.class);
 	public static final BooleanProperty EXTENDED = BooleanProperty.create("extended");
 
+	@SuppressWarnings("this-escape")
 	public BanisterBlock(Properties properties) {
 		super(properties);
 

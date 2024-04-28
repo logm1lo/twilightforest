@@ -72,22 +72,22 @@ public class NewTrollModel extends HumanoidModel<Troll> {
 
 		if (entity.isVehicle()) {
 			// arms up!
-			this.rightArm.xRot += Math.PI;
-			this.leftArm.xRot += Math.PI;
+			this.rightArm.xRot += Mth.PI;
+			this.leftArm.xRot += Mth.PI;
 		}
 
 		if (this.leftArmPose != ArmPose.EMPTY) {
-			this.rightArm.xRot += Math.PI;
+			this.rightArm.xRot += Mth.PI;
 		}
 		if (this.rightArmPose != ArmPose.EMPTY) {
-			this.leftArm.xRot += Math.PI;
+			this.leftArm.xRot += Mth.PI;
 		}
 
 		if (this.attackTime > 0F) {
 			float swing = 1.0F - this.attackTime;
 
-			this.rightArm.xRot -= (Math.PI * swing);
-			this.leftArm.xRot -= (Math.PI * swing);
+			this.rightArm.xRot -= (Mth.PI * swing);
+			this.leftArm.xRot -= (Mth.PI * swing);
 		}
 
 		this.rightArm.yRot = 0.0F;
@@ -102,8 +102,8 @@ public class NewTrollModel extends HumanoidModel<Troll> {
 	@Override
 	public void prepareMobModel(Troll entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		if (entity.getTarget() != null) {
-			this.rightArm.xRot += Math.PI;
-			this.leftArm.xRot += Math.PI;
+			this.rightArm.xRot += Mth.PI;
+			this.leftArm.xRot += Mth.PI;
 		}
 	}
 }

@@ -962,7 +962,7 @@ public class HydraHeadContainer {
 	 * Add to our damage taken counter
 	 */
 	public void addDamage(float damageAmount) {
-		this.damageTaken += damageAmount;
+		this.damageTaken += (int) damageAmount;
 	}
 
 	/**
