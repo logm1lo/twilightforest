@@ -85,13 +85,13 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
 			}
 		}
 
-		public record OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to, @Nullable ItemStack item) {
+		public record OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to, ItemStack item) {
 			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max) {
-				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, null);
+				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, ItemStack.EMPTY);
 			}
 
 			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to) {
-				this(type, multiplier, invert, min, max, from, to, null);
+				this(type, multiplier, invert, min, max, from, to, ItemStack.EMPTY);
 			}
 
 			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, ItemStack item) {
@@ -106,7 +106,7 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
 				ExtraCodecs.POSITIVE_FLOAT.fieldOf("max").forGetter(OpacityModifier::max),
 				Codec.FLOAT.optionalFieldOf("from").forGetter((modifier) -> Float.isNaN(modifier.from()) ? Optional.empty() : Optional.of(modifier.from())),
 				Codec.FLOAT.optionalFieldOf("to").forGetter((modifier) -> Float.isNaN(modifier.to()) ? Optional.empty() : Optional.of(modifier.to())),
-				ItemStack.CODEC.optionalFieldOf("item_stack").forGetter((modifier) -> Optional.ofNullable(modifier.item()))
+				ItemStack.CODEC.optionalFieldOf("item_stack").forGetter((modifier) -> modifier.item().isEmpty() ? Optional.empty() : Optional.of(modifier.item()))
 			).apply(recordCodecBuilder, OpacityModifier::create));
 
 			@SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this too
