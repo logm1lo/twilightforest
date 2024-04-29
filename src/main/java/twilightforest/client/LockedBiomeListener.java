@@ -14,7 +14,7 @@ import twilightforest.util.Restriction;
 
 import java.util.Optional;
 
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
+@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME, modid = TwilightForestMod.ID)
 public class LockedBiomeListener {
 
 	private static boolean shownToast = false;

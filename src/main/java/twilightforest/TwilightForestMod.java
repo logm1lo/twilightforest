@@ -113,7 +113,6 @@ public final class TwilightForestMod {
 		TFBlockEntities.BLOCK_ENTITIES.register(bus);
 		TFLootModifiers.LOOT_MODIFIERS.register(bus);
 		TFArmorMaterials.ARMOR_MATERIALS.register(bus);
-		TFBannerPatterns.BANNER_PATTERNS.register(bus);
 		TFStructureTypes.STRUCTURE_TYPES.register(bus);
 		TFFeatureModifiers.TRUNK_PLACERS.register(bus);
 		BiomeLayerTypes.BIOME_LAYER_TYPES.register(bus);

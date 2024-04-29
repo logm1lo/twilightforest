@@ -268,7 +268,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.CINDER_WOOD.get(), models().cubeAll(TFBlocks.CINDER_WOOD.getId().getPath(), prefix("block/" + TFBlocks.CINDER_LOG.getId().getPath())));
 		ModelFile furnaceOff = models().getExistingFile(new ResourceLocation("block/furnace"));
 		ModelFile furnaceOn = models().getExistingFile(new ResourceLocation("block/furnace_on"));
-		horizontalBlock(TFBlocks.CINDER_FURNACE.get(), state -> state.getValue(AbstractFurnaceBlock.LIT) ? furnaceOn : furnaceOff);
+		horizontalBlock(TFBlocks.CINDER_FURNACE.get(), state -> state.getValue(CinderFurnaceBlock.LIT) ? furnaceOn : furnaceOff);
 
 		castleDoor(TFBlocks.YELLOW_CASTLE_DOOR.get());
 		castleDoor(TFBlocks.VIOLET_CASTLE_DOOR.get());
