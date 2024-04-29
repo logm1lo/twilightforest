@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.doubles.Double2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.doubles.Double2ObjectSortedMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
@@ -13,9 +14,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.saveddata.maps.MapId;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +30,22 @@ public final class Codecs {
 	public static final Codec<Direction> ONLY_HORIZONTAL = Direction.CODEC.comapFlatMap(direction -> direction.getAxis() != Direction.Axis.Y ? DataResult.success(direction) : DataResult.error(() -> "Horizontal direction only!", direction), Function.identity());
 	public static final Codec<Float> FLOAT_STRING = Codec.STRING.comapFlatMap(Codecs::parseString2Float, f -> Float.toString(f));
 	public static final Codec<Double> DOUBLE_STRING = Codec.STRING.comapFlatMap(Codecs::parseString2Double, f -> Double.toString(f));
+	public static final StreamCodec<ByteBuf, BoundingBox> BOX_STREAM_CODEC = new StreamCodec<>() {
+		@Override
+		public BoundingBox decode(ByteBuf buf) {
+			return new BoundingBox(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt());
+		}
+
+		@Override
+		public void encode(ByteBuf buf, BoundingBox box) {
+			buf.writeInt(box.minX());
+			buf.writeInt(box.minY());
+			buf.writeInt(box.minZ());
+			buf.writeInt(box.maxX());
+			buf.writeInt(box.maxY());
+			buf.writeInt(box.maxZ());
+		}
+	};
 
 	public static final Codec<Climate.ParameterList<Holder<Biome>>> CLIMATE_SYSTEM = ExtraCodecs.nonEmptyList(RecordCodecBuilder.<Pair<Climate.ParameterPoint, Holder<Biome>>>create((instance) -> instance.group(Climate.ParameterPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst), Biome.CODEC.fieldOf("biome").forGetter(Pair::getSecond)).apply(instance, Pair::of)).listOf()).xmap(Climate.ParameterList::new, Climate.ParameterList::values);
 

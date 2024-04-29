@@ -28,7 +28,6 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFStructures;
 import twilightforest.network.MissingAdvancementToastPacket;
-import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.util.Enforcement;
 import twilightforest.util.LandmarkUtil;
@@ -38,6 +37,7 @@ import twilightforest.world.components.structures.util.AdvancementLockedStructur
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -76,13 +76,13 @@ public class TFTickHandler {
 
 	private static void sendStructureProtectionPacket(Player player, BoundingBox sbb) {
 		if (player instanceof ServerPlayer sp) {
-			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(sbb));
+			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.of(sbb)));
 		}
 	}
 
 	private static void sendAllClearPacket(Player player) {
 		if (player instanceof ServerPlayer sp) {
-			PacketDistributor.sendToPlayer(sp, new StructureProtectionClearPacket());
+			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.empty()));
 		}
 	}
 
