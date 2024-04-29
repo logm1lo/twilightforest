@@ -52,7 +52,7 @@ public class BrittleFlaskItem extends Item {
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
-		PotionContents potionContents = stack.get(DataComponents.POTION_CONTENTS);
+		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
 
 		if (potionContents != null) {
 			if (action == ClickAction.SECONDARY && other.is(Items.POTION)) {
