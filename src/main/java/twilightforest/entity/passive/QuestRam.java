@@ -38,9 +38,9 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
+import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
@@ -86,8 +86,8 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 70.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D);
+			.add(Attributes.MAX_HEALTH, 70.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D);
 	}
 
 	@Override
@@ -225,10 +225,10 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 
 					for (int i = 0; i < iterations; i++) {
 						packet.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, red, green, blue), false,
-								this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,
-								this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 1.5D,
-								this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,
-								0.0F, 0.0F, 0.0F);
+							this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,
+							this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 1.5D,
+							this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,
+							0.0F, 0.0F, 0.0F);
 					}
 
 					PacketDistributor.sendToPlayer(serverplayer, packet);

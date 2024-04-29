@@ -14,19 +14,19 @@ import twilightforest.TwilightForestMod;
 import java.util.List;
 
 public record SyncUncraftingTableConfigPacket(
-		double uncraftingMultiplier, double repairingMultiplier,
-		boolean allowShapeless, boolean disableIngredientSwitching, boolean disabledUncrafting, boolean disabledTable,
-		List<? extends String> disabledRecipes, boolean flipRecipeList,
-		List<? extends String> disabledModids, boolean flipModidList) implements CustomPacketPayload {
+	double uncraftingMultiplier, double repairingMultiplier,
+	boolean allowShapeless, boolean disableIngredientSwitching, boolean disabledUncrafting, boolean disabledTable,
+	List<? extends String> disabledRecipes, boolean flipRecipeList,
+	List<? extends String> disabledModids, boolean flipModidList) implements CustomPacketPayload {
 
 	public static final Type<SyncUncraftingTableConfigPacket> TYPE = new Type<>(TwilightForestMod.prefix("sync_uncrafting_config"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncUncraftingTableConfigPacket> STREAM_CODEC = CustomPacketPayload.codec(SyncUncraftingTableConfigPacket::write, SyncUncraftingTableConfigPacket::new);
 
 	public SyncUncraftingTableConfigPacket(FriendlyByteBuf buf) {
 		this(buf.readDouble(), buf.readDouble(),
-				buf.readBoolean(), buf.readBoolean(), buf.readBoolean(), buf.readBoolean(),
-				buf.readList(FriendlyByteBuf::readUtf), buf.readBoolean(),
-				buf.readList(FriendlyByteBuf::readUtf), buf.readBoolean());
+			buf.readBoolean(), buf.readBoolean(), buf.readBoolean(), buf.readBoolean(),
+			buf.readList(FriendlyByteBuf::readUtf), buf.readBoolean(),
+			buf.readList(FriendlyByteBuf::readUtf), buf.readBoolean());
 	}
 
 	public void write(FriendlyByteBuf buf) {

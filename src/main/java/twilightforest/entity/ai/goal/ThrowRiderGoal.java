@@ -29,10 +29,10 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	@Override
 	public boolean canUse() {
 		return this.mob.getPassengers().isEmpty() &&
-				this.mob.getTarget() != null &&
-				!this.mob.getTarget().getType().is(Tags.EntityTypes.BOSSES) &&
-				this.mob.getTarget().getData(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
-				super.canUse();
+			this.mob.getTarget() != null &&
+			!this.mob.getTarget().getType().is(Tags.EntityTypes.BOSSES) &&
+			this.mob.getTarget().getData(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
+			super.canUse();
 	}
 
 	@Override

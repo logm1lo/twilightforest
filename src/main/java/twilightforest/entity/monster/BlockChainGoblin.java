@@ -86,10 +86,10 @@ public class BlockChainGoblin extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 8.0D)
-				.add(Attributes.ARMOR, 11.0D);
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D)
+			.add(Attributes.ATTACK_DAMAGE, 8.0D)
+			.add(Attributes.ARMOR, 11.0D);
 	}
 
 	@Override

@@ -73,8 +73,8 @@ public class CrumbleHornCategory implements IRecipeCategory<CrumbleRecipe> {
 			builder.addSlot(RecipeIngredientRole.OUTPUT, 81, 19).addItemStack(new ItemStack(recipe.output().asItem()));
 		} else {
 			builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 12)
-					.setCustomRenderer(JEICompat.FAKE_ITEM_ENTITY, this.itemRenderer)
-					.addIngredient(JEICompat.FAKE_ITEM_ENTITY, new FakeItemEntity(new ItemStack(recipe.input().asItem())));
+				.setCustomRenderer(JEICompat.FAKE_ITEM_ENTITY, this.itemRenderer)
+				.addIngredient(JEICompat.FAKE_ITEM_ENTITY, new FakeItemEntity(new ItemStack(recipe.input().asItem())));
 		}
 	}
 }

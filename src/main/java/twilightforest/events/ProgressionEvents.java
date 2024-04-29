@@ -122,7 +122,7 @@ public class ProgressionEvents {
 	 */
 	private static boolean isAreaProtected(ServerLevel level, Player player, BlockPos pos) {
 		if (player.getAbilities().instabuild || player.isSpectator() ||
-				!LandmarkUtil.isProgressionEnforced(level) || player instanceof FakePlayer) {
+			!LandmarkUtil.isProgressionEnforced(level) || player instanceof FakePlayer) {
 			return false;
 		}
 
@@ -166,7 +166,7 @@ public class ProgressionEvents {
 		LivingEntity living = event.getEntity();
 		// cancel attacks in protected areas
 		if (living.level() instanceof ServerLevel serverLevel && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
-				&& isAreaProtected(serverLevel, (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
+			&& isAreaProtected(serverLevel, (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
 
 			event.setCanceled(true);
 		}

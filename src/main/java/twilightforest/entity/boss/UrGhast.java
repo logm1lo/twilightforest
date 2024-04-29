@@ -84,9 +84,9 @@ public class UrGhast extends BaseTFBoss {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return CarminiteGhastguard.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 250)
-				.add(Attributes.FOLLOW_RANGE, 128.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+			.add(Attributes.MAX_HEALTH, 250)
+			.add(Attributes.FOLLOW_RANGE, 128.0D)
+			.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
 	}
 
 	@Override
@@ -134,13 +134,13 @@ public class UrGhast extends BaseTFBoss {
 			if (this.getRandom().nextBoolean()) {
 				this.level().addParticle(DustParticleOptions.REDSTONE, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), 0.0D, 0.0D, 0.0D);
 			}
-			
+
 			if (this.isInTantrum() && !this.isDeadOrDying()) {
 				this.level().addParticle(TFParticleType.BOSS_TEAR.get(),
-						this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
-						this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 0.5D,
-						this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
-						0.0D, 0.0D, 0.0D
+					this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
+					this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 0.5D,
+					this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
+					0.0D, 0.0D, 0.0D
 				);
 			}
 		}
@@ -352,13 +352,13 @@ public class UrGhast extends BaseTFBoss {
 		PoiManager poimanager = level.getPoiManager();
 		Stream<PoiRecord> stream = poimanager.getInRange(type ->
 				type.is(TFPOITypes.GHAST_TRAP.getKey()),
-				this.getLogicalScanPoint(),
-				this.getHomeRadius(),
-				PoiManager.Occupancy.ANY);
+			this.getLogicalScanPoint(),
+			this.getHomeRadius(),
+			PoiManager.Occupancy.ANY);
 		return stream.map(PoiRecord::getPos)
-				.filter(trapPos -> level.canSeeSky(trapPos.above()))
-				.sorted(Comparator.comparingDouble(trapPos -> trapPos.distSqr(this.getLogicalScanPoint())))
-				.collect(Collectors.toList());
+			.filter(trapPos -> level.canSeeSky(trapPos.above()))
+			.sorted(Comparator.comparingDouble(trapPos -> trapPos.distSqr(this.getLogicalScanPoint())))
+			.collect(Collectors.toList());
 	}
 
 	private void doTantrumDamageEffects() {
@@ -465,10 +465,10 @@ public class UrGhast extends BaseTFBoss {
 				double d2 = this.random.nextGaussian() * 0.02D;
 
 				this.level().addParticle(this.random.nextBoolean() ? (this.random.nextBoolean() ? ParticleTypes.POOF : ParticleTypes.EXPLOSION) : DustParticleOptions.REDSTONE,
-						(this.getX() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
-						this.getY() + this.random.nextFloat() * bbHeight,
-						(this.getZ() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
-						d, d1, d2
+					(this.getX() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
+					this.getY() + this.random.nextFloat() * bbHeight,
+					(this.getZ() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
+					d, d1, d2
 				);
 			}
 		} else if (this.level() instanceof ServerLevel) {
@@ -548,7 +548,7 @@ public class UrGhast extends BaseTFBoss {
 
 				this.moveRelative(this.onGround() ? 0.1F * f1 : 0.02F, vec3);
 				this.move(MoverType.SELF, this.getDeltaMovement());
-				this.setDeltaMovement(this.getDeltaMovement().scale((double)f));
+				this.setDeltaMovement(this.getDeltaMovement().scale((double) f));
 			}
 		}
 

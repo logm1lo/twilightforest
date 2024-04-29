@@ -55,9 +55,9 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 25.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D);
+			.add(Attributes.MAX_HEALTH, 25.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override

@@ -159,9 +159,8 @@ public class ASMHooks {
 	 * [BEFORE LAST ARETURN]
 	 */
 	@Nullable
-	@OnlyIn(Dist.CLIENT)
 	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
-		if(entity instanceof TFPart<?>)
+		if (entity instanceof TFPart<?>)
 			return TFClientSetup.BakedMultiPartRenderers.lookup(((TFPart<?>) entity).renderer());
 		return renderer;
 	}
@@ -171,7 +170,6 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#onResourceManagerReload(ResourceManager)}<br>
 	 * [AFTER FIRST INVOKESPECIAL]
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static EntityRendererProvider.Context bakeMultipartRenders(EntityRendererProvider.Context context) {
 		TFClientSetup.BakedMultiPartRenderers.bakeMultiPartRenderers(context);
 		return context;
@@ -186,9 +184,9 @@ public class ASMHooks {
 		List<Entity> list = new ArrayList<>();
 		iter.forEach(entity -> {
 			list.add(entity);
-			if(entity.isMultipartEntity() && entity.getParts() != null) {
+			if (entity.isMultipartEntity() && entity.getParts() != null) {
 				for (PartEntity<?> part : entity.getParts()) {
-					if(part instanceof TFPart)
+					if (part instanceof TFPart)
 						list.add(part);
 				}
 			}
@@ -201,7 +199,6 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}<br>
 	 * [BEFORE IRETURN]
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static int foliage(int o, Biome biome, double x, double z) {
 		return FoliageColorHandler.get(o, biome, x, z);
 	}

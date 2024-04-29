@@ -19,8 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
@@ -29,7 +27,6 @@ import twilightforest.init.TFSounds;
 import java.util.UUID;
 
 //used a fair bit of chest logic in this for the lid
-@OnlyIn(value = Dist.CLIENT, _interface = LidBlockEntity.class)
 public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity implements LidBlockEntity {
 	private static final int limit = 9 * 5;
 	public NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
@@ -184,7 +181,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 	//remove stored player when chest is broken
 	@Override
 	public void setRemoved() {
-        this.playeruuid = null;
+		this.playeruuid = null;
 		this.invalidateCapabilities();
 		super.setRemoved();
 	}
@@ -208,7 +205,6 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public float getOpenNess(float partialTicks) {
 		return Mth.lerp(partialTicks, this.prevLidAngle, this.lidAngle);

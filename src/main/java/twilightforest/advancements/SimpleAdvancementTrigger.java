@@ -25,8 +25,8 @@ public class SimpleAdvancementTrigger extends SimpleCriterionTrigger<SimpleAdvan
 	public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance {
 
 		public static final Codec<SimpleAdvancementTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(SimpleAdvancementTrigger.TriggerInstance::player))
-				.apply(instance, SimpleAdvancementTrigger.TriggerInstance::new));
+				EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(SimpleAdvancementTrigger.TriggerInstance::player))
+			.apply(instance, SimpleAdvancementTrigger.TriggerInstance::new));
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> makeTFPortal() {
 			return TFAdvancements.MADE_TF_PORTAL.get().createCriterion(new TriggerInstance(Optional.empty()));

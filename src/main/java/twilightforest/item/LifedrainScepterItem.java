@@ -23,8 +23,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFDamageTypes;
@@ -81,10 +79,10 @@ public class LifedrainScepterItem extends Item {
 			double gaussZ = level.getRandom().nextGaussian() * 0.01D;
 			double gaussFactor = 5.0D;
 			level.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, itemId),
-					target.getX() + level.getRandom().nextFloat() * target.getBbWidth() * 1.5F - target.getBbWidth() - gaussX * gaussFactor,
-					target.getY() + level.getRandom().nextFloat() * target.getBbHeight() - gaussY * gaussFactor,
-					target.getZ() + level.getRandom().nextFloat() * target.getBbWidth() * 1.5F - target.getBbWidth() - gaussZ * gaussFactor,
-					1, gaussX, gaussY, gaussZ, level.getRandom().nextGaussian() * explosionPower);
+				target.getX() + level.getRandom().nextFloat() * target.getBbWidth() * 1.5F - target.getBbWidth() - gaussX * gaussFactor,
+				target.getY() + level.getRandom().nextFloat() * target.getBbHeight() - gaussY * gaussFactor,
+				target.getZ() + level.getRandom().nextFloat() * target.getBbWidth() * 1.5F - target.getBbWidth() - gaussZ * gaussFactor,
+				1, gaussX, gaussY, gaussZ, level.getRandom().nextGaussian() * explosionPower);
 		}
 	}
 
@@ -183,7 +181,8 @@ public class LifedrainScepterItem extends Item {
 						}
 
 						if (living instanceof Player player && !player.isCreative()) {
-							stack.hurtAndBreak(1, level.getRandom(), player, () -> {});
+							stack.hurtAndBreak(1, level.getRandom(), player, () -> {
+							});
 						}
 					}
 				}

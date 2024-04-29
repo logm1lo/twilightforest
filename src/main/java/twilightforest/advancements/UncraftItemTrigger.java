@@ -28,9 +28,9 @@ public class UncraftItemTrigger extends SimpleCriterionTrigger<UncraftItemTrigge
 	public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<ItemPredicate> item) implements SimpleInstance {
 
 		public static final Codec<UncraftItemTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(UncraftItemTrigger.TriggerInstance::player),
-						ItemPredicate.CODEC.optionalFieldOf("item").forGetter(UncraftItemTrigger.TriggerInstance::item))
-				.apply(instance, UncraftItemTrigger.TriggerInstance::new));
+				EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(UncraftItemTrigger.TriggerInstance::player),
+				ItemPredicate.CODEC.optionalFieldOf("item").forGetter(UncraftItemTrigger.TriggerInstance::item))
+			.apply(instance, UncraftItemTrigger.TriggerInstance::new));
 
 		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(ItemPredicate predicate) {
 			return TFAdvancements.UNCRAFT_ITEM.get().createCriterion(new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate)));

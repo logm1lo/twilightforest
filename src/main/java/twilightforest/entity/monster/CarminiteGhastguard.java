@@ -71,8 +71,8 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Ghast.createAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.FOLLOW_RANGE, 64.0D);
+			.add(Attributes.MAX_HEALTH, 30.0D)
+			.add(Attributes.FOLLOW_RANGE, 64.0D);
 	}
 
 	@Override
@@ -175,8 +175,8 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 		// TF - restrict valid y levels
 		// Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
 		return entity.blockPosition().getY() > this.level().getMinBuildHeight() + 64 &&
-				entity.blockPosition().getY() < this.level().getMaxBuildHeight() - 64 &&
-				this.getRestrictionPoint().pos().distSqr(entity.blockPosition()) < (double) (this.getHomeRadius() * this.getHomeRadius());
+			entity.blockPosition().getY() < this.level().getMaxBuildHeight() - 64 &&
+			this.getRestrictionPoint().pos().distSqr(entity.blockPosition()) < (double) (this.getHomeRadius() * this.getHomeRadius());
 
 	}
 

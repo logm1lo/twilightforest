@@ -54,9 +54,9 @@ public class NoSmithingTemplateRecipeBuilder {
 	public void save(RecipeOutput output, ResourceLocation id) {
 		this.ensureValid(id);
 		Advancement.Builder advancement$builder = output.advancement()
-				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
-				.rewards(AdvancementRewards.Builder.recipe(id))
-				.requirements(AdvancementRequirements.Strategy.OR);
+			.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
+			.rewards(AdvancementRewards.Builder.recipe(id))
+			.requirements(AdvancementRequirements.Strategy.OR);
 		this.criteria.forEach(advancement$builder::addCriterion);
 		NoTemplateSmithingRecipe smithingtrimrecipe = new NoTemplateSmithingRecipe(this.base, this.addition, this.additionalData);
 		output.accept(id, smithingtrimrecipe, advancement$builder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));

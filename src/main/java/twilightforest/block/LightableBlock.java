@@ -94,7 +94,7 @@ public interface LightableBlock {
 
 		if (state.getBlock() instanceof LightableBlock lightableBlock) {
 			lightableBlock.getParticleOffsets(state, accessor, pos).forEach((vec3) ->
-					accessor.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + vec3.x, (double) pos.getY() + vec3.y, (double) pos.getZ() + vec3.z, 0.0D, 0.025D, 0.0D));
+				accessor.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + vec3.x, (double) pos.getY() + vec3.y, (double) pos.getZ() + vec3.z, 0.0D, 0.025D, 0.0D));
 		}
 
 		accessor.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);

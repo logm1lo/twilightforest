@@ -95,8 +95,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.copy(BlockTagGenerator.TF_LOGS, TWILIGHT_LOGS);
 		tag(ItemTags.LOGS).addTag(TWILIGHT_LOGS);
 		tag(ItemTags.LOGS_THAT_BURN)
-				.addTag(TWILIGHT_OAK_LOGS).addTag(CANOPY_LOGS).addTag(MANGROVE_LOGS)
-				.addTag(TIME_LOGS).addTag(TRANSFORMATION_LOGS).addTag(MINING_LOGS).addTag(SORTING_LOGS);
+			.addTag(TWILIGHT_OAK_LOGS).addTag(CANOPY_LOGS).addTag(MANGROVE_LOGS)
+			.addTag(TIME_LOGS).addTag(TRANSFORMATION_LOGS).addTag(MINING_LOGS).addTag(SORTING_LOGS);
 
 		this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 		this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
@@ -132,9 +132,9 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_STEELEAF, STORAGE_BLOCKS_STEELEAF);
 
 		tag(Tags.Items.STORAGE_BLOCKS)
-				.addTag(STORAGE_BLOCKS_FIERY).addTag(STORAGE_BLOCKS_ARCTIC_FUR)
-				.addTag(STORAGE_BLOCKS_CARMINITE).addTag(STORAGE_BLOCKS_IRONWOOD)
-				.addTag(STORAGE_BLOCKS_KNIGHTMETAL).addTag(STORAGE_BLOCKS_STEELEAF);
+			.addTag(STORAGE_BLOCKS_FIERY).addTag(STORAGE_BLOCKS_ARCTIC_FUR)
+			.addTag(STORAGE_BLOCKS_CARMINITE).addTag(STORAGE_BLOCKS_IRONWOOD)
+			.addTag(STORAGE_BLOCKS_KNIGHTMETAL).addTag(STORAGE_BLOCKS_STEELEAF);
 
 		this.copy(BlockTagGenerator.TOWERWOOD, TOWERWOOD);
 		this.copy(BlockTagGenerator.BANISTERS, BANISTERS);
@@ -154,65 +154,65 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		tag(Tags.Items.GEMS).addTag(CARMINITE_GEMS);
 
 		tag(Tags.Items.INGOTS)
-				.addTag(IRONWOOD_INGOTS).addTag(FIERY_INGOTS)
-				.addTag(KNIGHTMETAL_INGOTS).addTag(STEELEAF_INGOTS);
+			.addTag(IRONWOOD_INGOTS).addTag(FIERY_INGOTS)
+			.addTag(KNIGHTMETAL_INGOTS).addTag(STEELEAF_INGOTS);
 
 		tag(RAW_MATERIALS_IRONWOOD).add(TFItems.RAW_IRONWOOD.get());
 		tag(RAW_MATERIALS_KNIGHTMETAL).add(TFItems.ARMOR_SHARD_CLUSTER.get());
 		tag(Tags.Items.RAW_MATERIALS).addTag(RAW_MATERIALS_IRONWOOD).addTag(RAW_MATERIALS_KNIGHTMETAL);
 
 		tag(PORTAL_ACTIVATOR).addTag(Tags.Items.GEMS_DIAMOND);
-		
+
 		tag(ItemTags.BOATS).add(
-				TFItems.TWILIGHT_OAK_BOAT.get(), TFItems.CANOPY_BOAT.get(),
-				TFItems.MANGROVE_BOAT.get(), TFItems.DARK_BOAT.get(),
-				TFItems.TIME_BOAT.get(), TFItems.TRANSFORMATION_BOAT.get(),
-				TFItems.MINING_BOAT.get(), TFItems.SORTING_BOAT.get()
+			TFItems.TWILIGHT_OAK_BOAT.get(), TFItems.CANOPY_BOAT.get(),
+			TFItems.MANGROVE_BOAT.get(), TFItems.DARK_BOAT.get(),
+			TFItems.TIME_BOAT.get(), TFItems.TRANSFORMATION_BOAT.get(),
+			TFItems.MINING_BOAT.get(), TFItems.SORTING_BOAT.get()
 		);
 
 		tag(ItemTags.CHEST_BOATS).add(
-				TFItems.TWILIGHT_OAK_CHEST_BOAT.get(), TFItems.CANOPY_CHEST_BOAT.get(),
-				TFItems.MANGROVE_CHEST_BOAT.get(), TFItems.DARK_CHEST_BOAT.get(),
-				TFItems.TIME_CHEST_BOAT.get(), TFItems.TRANSFORMATION_CHEST_BOAT.get(),
-				TFItems.MINING_CHEST_BOAT.get(), TFItems.SORTING_CHEST_BOAT.get()
+			TFItems.TWILIGHT_OAK_CHEST_BOAT.get(), TFItems.CANOPY_CHEST_BOAT.get(),
+			TFItems.MANGROVE_CHEST_BOAT.get(), TFItems.DARK_CHEST_BOAT.get(),
+			TFItems.TIME_CHEST_BOAT.get(), TFItems.TRANSFORMATION_CHEST_BOAT.get(),
+			TFItems.MINING_CHEST_BOAT.get(), TFItems.SORTING_CHEST_BOAT.get()
 		);
 
 		tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(
-				TFItems.FIERY_HELMET.get(),
-				TFItems.FIERY_CHESTPLATE.get(),
-				TFItems.FIERY_LEGGINGS.get(),
-				TFItems.FIERY_BOOTS.get(),
-				TFItems.ARCTIC_HELMET.get(),
-				TFItems.ARCTIC_CHESTPLATE.get(),
-				TFItems.ARCTIC_LEGGINGS.get(),
-				TFItems.ARCTIC_BOOTS.get(),
-				TFItems.YETI_HELMET.get(),
-				TFItems.YETI_CHESTPLATE.get(),
-				TFItems.YETI_LEGGINGS.get(),
-				TFItems.YETI_BOOTS.get()
+			TFItems.FIERY_HELMET.get(),
+			TFItems.FIERY_CHESTPLATE.get(),
+			TFItems.FIERY_LEGGINGS.get(),
+			TFItems.FIERY_BOOTS.get(),
+			TFItems.ARCTIC_HELMET.get(),
+			TFItems.ARCTIC_CHESTPLATE.get(),
+			TFItems.ARCTIC_LEGGINGS.get(),
+			TFItems.ARCTIC_BOOTS.get(),
+			TFItems.YETI_HELMET.get(),
+			TFItems.YETI_CHESTPLATE.get(),
+			TFItems.YETI_LEGGINGS.get(),
+			TFItems.YETI_BOOTS.get()
 		);
 
 		tag(WIP).add(
-				TFBlocks.KEEPSAKE_CASKET.get().asItem(),
-				TFBlocks.CANDELABRA.get().asItem(),
-				TFItems.BRITTLE_FLASK.get(),
-				TFItems.GREATER_FLASK.get(),
-				TFItems.CUBE_OF_ANNIHILATION.get(),
-				TFBlocks.WROUGHT_IRON_FENCE.get().asItem()
+			TFBlocks.KEEPSAKE_CASKET.get().asItem(),
+			TFBlocks.CANDELABRA.get().asItem(),
+			TFItems.BRITTLE_FLASK.get(),
+			TFItems.GREATER_FLASK.get(),
+			TFItems.CUBE_OF_ANNIHILATION.get(),
+			TFBlocks.WROUGHT_IRON_FENCE.get().asItem()
 		);
 
 		tag(NYI).add(
-				TFBlocks.CINDER_FURNACE.get().asItem(),
-				TFBlocks.CINDER_LOG.get().asItem(),
-				TFBlocks.CINDER_WOOD.get().asItem(),
-				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get().asItem(),
-				TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get().asItem(),
-				TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get().asItem(),
-				TFBlocks.AURORALIZED_GLASS.get().asItem(),
-				TFBlocks.SLIDER.get().asItem(),
-				TFItems.MAGIC_PAINTING.get(),
-				TFItems.QUEST_RAM_BANNER_PATTERN.get(),
-				TFBlocks.FINAL_BOSS_BOSS_SPAWNER.asItem()
+			TFBlocks.CINDER_FURNACE.get().asItem(),
+			TFBlocks.CINDER_LOG.get().asItem(),
+			TFBlocks.CINDER_WOOD.get().asItem(),
+			TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get().asItem(),
+			TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get().asItem(),
+			TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get().asItem(),
+			TFBlocks.AURORALIZED_GLASS.get().asItem(),
+			TFBlocks.SLIDER.get().asItem(),
+			TFItems.MAGIC_PAINTING.get(),
+			TFItems.QUEST_RAM_BANNER_PATTERN.get(),
+			TFBlocks.FINAL_BOSS_BOSS_SPAWNER.asItem()
 		);
 
 		tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
@@ -225,24 +225,24 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		tag(TINY_BIRD_TEMPT_ITEMS).addTag(Tags.Items.SEEDS);
 
 		tag(ItemTags.MUSIC_DISCS).add(
-				TFItems.MUSIC_DISC_FINDINGS.get(),
-				TFItems.MUSIC_DISC_HOME.get(),
-				TFItems.MUSIC_DISC_MAKER.get(),
-				TFItems.MUSIC_DISC_MOTION.get(),
-				TFItems.MUSIC_DISC_RADIANCE.get(),
-				TFItems.MUSIC_DISC_STEPS.get(),
-				TFItems.MUSIC_DISC_SUPERSTITIOUS.get(),
-				TFItems.MUSIC_DISC_THREAD.get(),
-				TFItems.MUSIC_DISC_WAYFARER.get());
+			TFItems.MUSIC_DISC_FINDINGS.get(),
+			TFItems.MUSIC_DISC_HOME.get(),
+			TFItems.MUSIC_DISC_MAKER.get(),
+			TFItems.MUSIC_DISC_MOTION.get(),
+			TFItems.MUSIC_DISC_RADIANCE.get(),
+			TFItems.MUSIC_DISC_STEPS.get(),
+			TFItems.MUSIC_DISC_SUPERSTITIOUS.get(),
+			TFItems.MUSIC_DISC_THREAD.get(),
+			TFItems.MUSIC_DISC_WAYFARER.get());
 
 		tag(BANNED_UNCRAFTING_INGREDIENTS).add(
-				TFBlocks.INFESTED_TOWERWOOD.get().asItem(),
-				TFBlocks.HOLLOW_OAK_SAPLING.get().asItem(),
-				TFBlocks.TIME_SAPLING.get().asItem(),
-				TFBlocks.TRANSFORMATION_SAPLING.get().asItem(),
-				TFBlocks.MINING_SAPLING.get().asItem(),
-				TFBlocks.SORTING_SAPLING.get().asItem(),
-				TFItems.TRANSFORMATION_POWDER.get());
+			TFBlocks.INFESTED_TOWERWOOD.get().asItem(),
+			TFBlocks.HOLLOW_OAK_SAPLING.get().asItem(),
+			TFBlocks.TIME_SAPLING.get().asItem(),
+			TFBlocks.TRANSFORMATION_SAPLING.get().asItem(),
+			TFBlocks.MINING_SAPLING.get().asItem(),
+			TFBlocks.SORTING_SAPLING.get().asItem(),
+			TFItems.TRANSFORMATION_POWDER.get());
 
 		tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.get().asItem());
 		tag(UNCRAFTING_IGNORES_COST).addTag(Tags.Items.RODS_WOODEN);
@@ -254,73 +254,73 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		tag(ItemTags.PIGLIN_LOVED).add(TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.CHARM_OF_KEEPING_3.get(), TFItems.CHARM_OF_LIFE_2.get(), TFItems.LAMP_OF_CINDERS.get());
 
 		tag(ItemTags.SKULLS).add(
-				TFItems.ZOMBIE_SKULL_CANDLE.get(),
-				TFItems.SKELETON_SKULL_CANDLE.get(),
-				TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
-				TFItems.CREEPER_SKULL_CANDLE.get(),
-				TFItems.PLAYER_SKULL_CANDLE.get(),
-				TFItems.PIGLIN_SKULL_CANDLE.get());
+			TFItems.ZOMBIE_SKULL_CANDLE.get(),
+			TFItems.SKELETON_SKULL_CANDLE.get(),
+			TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
+			TFItems.CREEPER_SKULL_CANDLE.get(),
+			TFItems.PLAYER_SKULL_CANDLE.get(),
+			TFItems.PIGLIN_SKULL_CANDLE.get());
 
 		tag(ItemTags.NOTE_BLOCK_TOP_INSTRUMENTS).add(
-				TFItems.ZOMBIE_SKULL_CANDLE.get(),
-				TFItems.SKELETON_SKULL_CANDLE.get(),
-				TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
-				TFItems.CREEPER_SKULL_CANDLE.get(),
-				TFItems.PLAYER_SKULL_CANDLE.get(),
-				TFItems.PIGLIN_SKULL_CANDLE.get());
+			TFItems.ZOMBIE_SKULL_CANDLE.get(),
+			TFItems.SKELETON_SKULL_CANDLE.get(),
+			TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
+			TFItems.CREEPER_SKULL_CANDLE.get(),
+			TFItems.PLAYER_SKULL_CANDLE.get(),
+			TFItems.PIGLIN_SKULL_CANDLE.get());
 
 		tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(
-				TFItems.IRONWOOD_HELMET.get(),
-				TFItems.STEELEAF_HELMET.get(),
-				TFItems.KNIGHTMETAL_HELMET.get(),
-				TFItems.PHANTOM_HELMET.get(),
-				TFItems.FIERY_HELMET.get(),
-				TFItems.ARCTIC_HELMET.get(),
-				TFItems.YETI_HELMET.get());
-		
+			TFItems.IRONWOOD_HELMET.get(),
+			TFItems.STEELEAF_HELMET.get(),
+			TFItems.KNIGHTMETAL_HELMET.get(),
+			TFItems.PHANTOM_HELMET.get(),
+			TFItems.FIERY_HELMET.get(),
+			TFItems.ARCTIC_HELMET.get(),
+			TFItems.YETI_HELMET.get());
+
 		tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(
-				TFItems.NAGA_CHESTPLATE.get(),
-				TFItems.IRONWOOD_CHESTPLATE.get(),
-				TFItems.STEELEAF_CHESTPLATE.get(),
-				TFItems.KNIGHTMETAL_CHESTPLATE.get(),
-				TFItems.PHANTOM_CHESTPLATE.get(),
-				TFItems.FIERY_CHESTPLATE.get(),
-				TFItems.ARCTIC_CHESTPLATE.get(),
-				TFItems.YETI_CHESTPLATE.get());
-		
+			TFItems.NAGA_CHESTPLATE.get(),
+			TFItems.IRONWOOD_CHESTPLATE.get(),
+			TFItems.STEELEAF_CHESTPLATE.get(),
+			TFItems.KNIGHTMETAL_CHESTPLATE.get(),
+			TFItems.PHANTOM_CHESTPLATE.get(),
+			TFItems.FIERY_CHESTPLATE.get(),
+			TFItems.ARCTIC_CHESTPLATE.get(),
+			TFItems.YETI_CHESTPLATE.get());
+
 		tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(
-				TFItems.NAGA_LEGGINGS.get(),
-				TFItems.IRONWOOD_LEGGINGS.get(),
-				TFItems.STEELEAF_LEGGINGS.get(),
-				TFItems.KNIGHTMETAL_LEGGINGS.get(),
-				TFItems.FIERY_LEGGINGS.get(),
-				TFItems.ARCTIC_LEGGINGS.get(),
-				TFItems.YETI_LEGGINGS.get());
-		
+			TFItems.NAGA_LEGGINGS.get(),
+			TFItems.IRONWOOD_LEGGINGS.get(),
+			TFItems.STEELEAF_LEGGINGS.get(),
+			TFItems.KNIGHTMETAL_LEGGINGS.get(),
+			TFItems.FIERY_LEGGINGS.get(),
+			TFItems.ARCTIC_LEGGINGS.get(),
+			TFItems.YETI_LEGGINGS.get());
+
 		tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(
-				TFItems.IRONWOOD_BOOTS.get(),
-				TFItems.STEELEAF_BOOTS.get(),
-				TFItems.KNIGHTMETAL_BOOTS.get(),
-				TFItems.FIERY_BOOTS.get(),
-				TFItems.ARCTIC_BOOTS.get(),
-				TFItems.YETI_BOOTS.get());
-		
+			TFItems.IRONWOOD_BOOTS.get(),
+			TFItems.STEELEAF_BOOTS.get(),
+			TFItems.KNIGHTMETAL_BOOTS.get(),
+			TFItems.FIERY_BOOTS.get(),
+			TFItems.ARCTIC_BOOTS.get(),
+			TFItems.YETI_BOOTS.get());
+
 		tag(ItemTags.SWORDS).add(
-				TFItems.IRONWOOD_SWORD.get(),
-				TFItems.STEELEAF_SWORD.get(),
-				TFItems.KNIGHTMETAL_SWORD.get(),
-				TFItems.FIERY_SWORD.get(),
-				TFItems.GIANT_SWORD.get(),
-				TFItems.ICE_SWORD.get(),
-				TFItems.GLASS_SWORD.get());
+			TFItems.IRONWOOD_SWORD.get(),
+			TFItems.STEELEAF_SWORD.get(),
+			TFItems.KNIGHTMETAL_SWORD.get(),
+			TFItems.FIERY_SWORD.get(),
+			TFItems.GIANT_SWORD.get(),
+			TFItems.ICE_SWORD.get(),
+			TFItems.GLASS_SWORD.get());
 
 		tag(ItemTags.PICKAXES).add(
-				TFItems.IRONWOOD_PICKAXE.get(),
-				TFItems.STEELEAF_PICKAXE.get(),
-				TFItems.KNIGHTMETAL_PICKAXE.get(),
-				TFItems.MAZEBREAKER_PICKAXE.get(),
-				TFItems.FIERY_PICKAXE.get(),
-				TFItems.GIANT_PICKAXE.get());
+			TFItems.IRONWOOD_PICKAXE.get(),
+			TFItems.STEELEAF_PICKAXE.get(),
+			TFItems.KNIGHTMETAL_PICKAXE.get(),
+			TFItems.MAZEBREAKER_PICKAXE.get(),
+			TFItems.FIERY_PICKAXE.get(),
+			TFItems.GIANT_PICKAXE.get());
 
 		tag(ItemTags.AXES).add(TFItems.IRONWOOD_AXE.get(), TFItems.STEELEAF_AXE.get(), TFItems.KNIGHTMETAL_AXE.get());
 		tag(ItemTags.SHOVELS).add(TFItems.IRONWOOD_SHOVEL.get(), TFItems.STEELEAF_SHOVEL.get());
@@ -329,24 +329,24 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		tag(Tags.Items.TOOLS_BOWS).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());
 
 		tag(ItemTags.CLUSTER_MAX_HARVESTABLES).add(
-				TFItems.IRONWOOD_PICKAXE.get(),
-				TFItems.STEELEAF_PICKAXE.get(),
-				TFItems.KNIGHTMETAL_PICKAXE.get(),
-				TFItems.MAZEBREAKER_PICKAXE.get(),
-				TFItems.FIERY_PICKAXE.get(),
-				TFItems.GIANT_PICKAXE.get());
+			TFItems.IRONWOOD_PICKAXE.get(),
+			TFItems.STEELEAF_PICKAXE.get(),
+			TFItems.KNIGHTMETAL_PICKAXE.get(),
+			TFItems.MAZEBREAKER_PICKAXE.get(),
+			TFItems.FIERY_PICKAXE.get(),
+			TFItems.GIANT_PICKAXE.get());
 
 		tag(ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.get().asItem());
 
 		tag(ItemTags.TRIMMABLE_ARMOR)
-				.add(TFItems.IRONWOOD_HELMET.get(), TFItems.IRONWOOD_CHESTPLATE.get(), TFItems.IRONWOOD_LEGGINGS.get(), TFItems.IRONWOOD_BOOTS.get())
-				.add(TFItems.STEELEAF_HELMET.get(), TFItems.STEELEAF_CHESTPLATE.get(), TFItems.STEELEAF_LEGGINGS.get(), TFItems.STEELEAF_BOOTS.get())
-				.add(TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get())
-				.add(TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get())
-				//due to yeti helmets being bigger than normal helmets trims won't work properly on it. If we ever decide to change the model we can add trim compatibility
-				.add(/*TFItems.YETI_HELMET.get(),*/ TFItems.YETI_CHESTPLATE.get(), TFItems.YETI_LEGGINGS.get(), TFItems.YETI_BOOTS.get())
-				.add(TFItems.FIERY_HELMET.get(), TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get())
-				.add(TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get(), TFItems.NAGA_CHESTPLATE.get(), TFItems.NAGA_LEGGINGS.get());
+			.add(TFItems.IRONWOOD_HELMET.get(), TFItems.IRONWOOD_CHESTPLATE.get(), TFItems.IRONWOOD_LEGGINGS.get(), TFItems.IRONWOOD_BOOTS.get())
+			.add(TFItems.STEELEAF_HELMET.get(), TFItems.STEELEAF_CHESTPLATE.get(), TFItems.STEELEAF_LEGGINGS.get(), TFItems.STEELEAF_BOOTS.get())
+			.add(TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get())
+			.add(TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get())
+			//due to yeti helmets being bigger than normal helmets trims won't work properly on it. If we ever decide to change the model we can add trim compatibility
+			.add(/*TFItems.YETI_HELMET.get(),*/ TFItems.YETI_CHESTPLATE.get(), TFItems.YETI_LEGGINGS.get(), TFItems.YETI_BOOTS.get())
+			.add(TFItems.FIERY_HELMET.get(), TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get())
+			.add(TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get(), TFItems.NAGA_CHESTPLATE.get(), TFItems.NAGA_LEGGINGS.get());
 
 		tag(ItemTags.TRIM_MATERIALS).add(TFItems.IRONWOOD_INGOT.get(), TFItems.STEELEAF_INGOT.get(), TFItems.KNIGHTMETAL_INGOT.get(), TFItems.NAGA_SCALE.get(), TFItems.CARMINITE.get(), TFItems.FIERY_INGOT.get());
 	}

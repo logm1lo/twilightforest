@@ -91,7 +91,7 @@ public class ChainBlockItem extends Item {
 		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null) return false;
 		if (stack.getEnchantmentLevel(TFEnchantments.DESTRUCTION.get()) > 0) {
 			if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
-					|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
+				|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
 				return this.getHarvestLevel(stack).createToolProperties(BlockTags.MINEABLE_WITH_AXE).isCorrectForDrops(state);
 		}
 		return false;

@@ -48,7 +48,7 @@ public class LichAbsorbMinionsGoal extends Goal {
 		if (this.lich.getScepterTimeLeft() > 0) return;
 
 		List<LichMinion> minions = this.lich.level().getEntitiesOfClass(LichMinion.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D))
-				.stream().filter(m -> m.master == this.lich).toList();
+			.stream().filter(m -> m.master == this.lich).toList();
 
 		if (!minions.isEmpty()) {
 			LichMinion minion = minions.get(0);

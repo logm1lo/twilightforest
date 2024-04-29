@@ -78,7 +78,7 @@ public class UncraftingTableBlock extends Block {
 	@Override
 	public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
 		return new SimpleMenuProvider((id, inv, player) -> new UncraftingMenu(id, inv, player.level(), ContainerLevelAccess.create(level, pos)),
-				Component.translatable("container.twilightforest.uncrafting_table"));
+			Component.translatable("container.twilightforest.uncrafting_table"));
 	}
 
 	@Override

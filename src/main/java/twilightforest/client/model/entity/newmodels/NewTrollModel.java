@@ -18,39 +18,39 @@ public class NewTrollModel extends HumanoidModel<Troll> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(52, 31)
-						.addBox(-5.0F, -8.0F, -8.0F, 10.0F, 10.0F, 10.0F)
-						.texOffs(36, 41)
-						.addBox(-2.0F, -4.0F, -11.0F, 4.0F, 8.0F, 4.0F),
-				PartPose.offset(0.0F, -11.0F, -1.0F));
+				.texOffs(52, 31)
+				.addBox(-5.0F, -8.0F, -8.0F, 10.0F, 10.0F, 10.0F)
+				.texOffs(36, 41)
+				.addBox(-2.0F, -4.0F, -11.0F, 4.0F, 8.0F, 4.0F),
+			PartPose.offset(0.0F, -11.0F, -1.0F));
 
 		definition.addOrReplaceChild("hat", CubeListBuilder.create(),
-				PartPose.ZERO);
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -37.0F, -6.0F, 16.0F, 26.0F, 15.0F),
-				PartPose.offset(0.0F, 24.0F, 0.0F));
+				.texOffs(0, 0)
+				.addBox(-8.0F, -37.0F, -6.0F, 16.0F, 26.0F, 15.0F),
+			PartPose.offset(0.0F, 24.0F, 0.0F));
 
 		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(0, 41)
-						.addBox(-6.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
-				PartPose.offset(-8.0F, -9.0F, 0.0F));
+				.texOffs(0, 41)
+				.addBox(-6.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
+			PartPose.offset(-8.0F, -9.0F, 0.0F));
 
 		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(0, 41)
-						.addBox(0.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
-				PartPose.offset(8.0F, -9.0F, 0.0F));
+				.texOffs(0, 41)
+				.addBox(0.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
+			PartPose.offset(8.0F, -9.0F, 0.0F));
 
 		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(28, 54)
-						.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
-				PartPose.offset(-4.0F, 13.0F, 0.0F));
+				.texOffs(28, 54)
+				.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
+			PartPose.offset(-4.0F, 13.0F, 0.0F));
 
 		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-						.texOffs(28, 54)
-						.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
-				PartPose.offset(4.0F, 13.0F, 0.0F));
+				.texOffs(28, 54)
+				.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
+			PartPose.offset(4.0F, 13.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 128, 128);
 	}

@@ -25,8 +25,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.client.particle.data.LeafParticleData;
 import twilightforest.network.SpawnFallenLeafFromPacket;
@@ -117,7 +115,6 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		super.animateTick(state, level, pos, random);
 		if (random.nextInt(50) == 0) {
@@ -144,19 +141,19 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		super.entityInside(state, level, pos, entity);
 		if (entity instanceof LivingEntity && (entity.getDeltaMovement().x() != 0 || entity.getDeltaMovement().z() != 0) && level.getRandom().nextBoolean()) {
-			if(level.isClientSide()) {
+			if (level.isClientSide()) {
 				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), level, pos, 0);
 				int r = Mth.clamp(((color >> 16) & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
 				int g = Mth.clamp(((color >> 8) & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
 				int b = Mth.clamp((color & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
 				level.addParticle(new LeafParticleData(r, g, b),
-						pos.getX() + level.getRandom().nextFloat(),
-						pos.getY() + ((2F / 16F) * (state.getValue(LAYERS) - 1)),
-						pos.getZ() + level.getRandom().nextFloat(),
+					pos.getX() + level.getRandom().nextFloat(),
+					pos.getY() + ((2F / 16F) * (state.getValue(LAYERS) - 1)),
+					pos.getZ() + level.getRandom().nextFloat(),
 
-						(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().x(),
-						level.getRandom().nextFloat() * 0.5F + 0.25F,
-						(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
+					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().x(),
+					level.getRandom().nextFloat() * 0.5F + 0.25F,
+					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
 				);
 			} else if (level instanceof ServerLevel)
 				PacketDistributor.sendToPlayersTrackingEntity(entity, new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));

@@ -23,8 +23,8 @@ public class TFItemStackUtils {
 
 	public static boolean consumeInventoryItem(final Player player, final Item item, CompoundTag persistentTag, boolean saveItemToTag) {
 		return consumeInventoryItem(player.getInventory().armor, item, persistentTag, saveItemToTag, player.registryAccess())
-				|| consumeInventoryItem(player.getInventory().items, item, persistentTag, saveItemToTag, player.registryAccess())
-				|| consumeInventoryItem(player.getInventory().offhand, item, persistentTag, saveItemToTag, player.registryAccess());
+			|| consumeInventoryItem(player.getInventory().items, item, persistentTag, saveItemToTag, player.registryAccess())
+			|| consumeInventoryItem(player.getInventory().offhand, item, persistentTag, saveItemToTag, player.registryAccess());
 	}
 
 	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
@@ -143,6 +143,6 @@ public class TFItemStackUtils {
 			}
 		}
 
-		if(!blockedItems.isEmpty()) blockedItems.forEach(inventory::add);
+		if (!blockedItems.isEmpty()) blockedItems.forEach(inventory::add);
 	}
 }

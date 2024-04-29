@@ -19,11 +19,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.saveddata.maps.*;
+import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
+import net.minecraft.world.level.saveddata.maps.MapId;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.item.mapdata.TFMazeMapData;
 import twilightforest.init.TFItems;
+import twilightforest.item.mapdata.TFMazeMapData;
 
 import java.util.Optional;
 

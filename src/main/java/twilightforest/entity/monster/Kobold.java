@@ -71,9 +71,9 @@ public class Kobold extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 13.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D);
+			.add(Attributes.MAX_HEALTH, 13.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D)
+			.add(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override
@@ -268,7 +268,7 @@ public class Kobold extends Monster {
 	private static class SeekBreadGoal extends Goal {
 
 		private static final Predicate<ItemEntity> ALLOWED_ITEMS = (item) ->
-				item.getItem().is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS);
+			item.getItem().is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS);
 
 		private final Kobold mob;
 

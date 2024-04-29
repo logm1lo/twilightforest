@@ -37,8 +37,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -46,13 +44,13 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDimension;
 import twilightforest.init.TFSounds;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
-import twilightforest.init.TFDimension;
 
 import java.util.*;
 
@@ -249,7 +247,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	private static ResourceKey<Level> getDestination(Entity entity) {
 		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.originDimension));
 		return !entity.getCommandSenderWorld().dimension().location().equals(TFDimension.DIMENSION)
-				? TFDimension.DIMENSION_KEY : cachedOriginDimension;
+			? TFDimension.DIMENSION_KEY : cachedOriginDimension;
 	}
 
 	public static void attemptSendEntity(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {
@@ -276,9 +274,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 	}
 
-	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
+	// Full [VanillaCopy] of NetherPortalBlock.animateTick
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		int random = rand.nextInt(100);
 		if (state.getValue(DISALLOW_RETURN) && random < 80) return;

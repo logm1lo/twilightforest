@@ -213,7 +213,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 		Level level = this.level();
 
 		return level.getWorldBorder().isWithinBounds(pos) && this.stack.isCorrectToolForDrops(state)
-				&& (!restrictedPlaceMode || this.stack.canBreakBlockInAdventureMode(new BlockInWorld(level, pos, false)));
+			&& (!restrictedPlaceMode || this.stack.canBreakBlockInAdventureMode(new BlockInWorld(level, pos, false)));
 	}
 
 	private void affectBlocksInAABB(AABB box) {
@@ -270,9 +270,9 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 
 					// separate the return velocity from the normal bouncy velocity
 					this.setDeltaMovement(new Vec3(
-							this.velX * (1.0 - age) + (back.x() * 2F * age),
-							this.velY * (1.0 - age) + (back.y() * 2F * age) - this.getGravity(),
-							this.velZ * (1.0 - age) + (back.z() * 2F * age)
+						this.velX * (1.0 - age) + (back.x() * 2F * age),
+						this.velY * (1.0 - age) + (back.y() * 2F * age) - this.getGravity(),
+						this.velZ * (1.0 - age) + (back.z() * 2F * age)
 					));
 				}
 			}

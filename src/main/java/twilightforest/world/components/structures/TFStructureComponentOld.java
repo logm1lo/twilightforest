@@ -81,22 +81,24 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	public static BoundingBox getComponentToAddBoundingBox2(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Direction dir) {
 		return switch (dir) {
 			case WEST -> // '\001'
-					new BoundingBox(x - maxZ - minZ, y + minY, z + minX, x - minZ, y + maxY + minY, z + maxX + minX);
+				new BoundingBox(x - maxZ - minZ, y + minY, z + minX, x - minZ, y + maxY + minY, z + maxX + minX);
 			case NORTH -> // '\002'
-					new BoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
+				new BoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
 			case EAST -> // '\003'
-					new BoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z - minX);
+				new BoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z - minX);
 			default -> // '\0'
-					new BoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
+				new BoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 		};
 	}
 
 	protected void setSpawner(WorldGenLevel world, Vec3i pos, BoundingBox sbb, EntityType<?> monsterID) {
-		setSpawner(world, pos.getX(), pos.getY(), pos.getZ(), sbb, monsterID, v -> {});
+		setSpawner(world, pos.getX(), pos.getY(), pos.getZ(), sbb, monsterID, v -> {
+		});
 	}
 
 	protected void setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID) {
-		setSpawner(world, x, y, z, sbb, monsterID, v -> {});
+		setSpawner(world, x, y, z, sbb, monsterID, v -> {
+		});
 	}
 
 	// [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
@@ -152,7 +154,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 
 	/**
 	 * Place a treasure chest at the specified coordinates
-	 *
 	 */
 	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, ResourceKey<LootTable> treasureType, BoundingBox sbb) {
 		this.placeTreasureAtCurrentPosition(world, x, y, z, treasureType, false, sbb);
@@ -160,7 +161,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 
 	/**
 	 * Place a treasure chest at the specified coordinates
-	 *
 	 */
 	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, ResourceKey<LootTable> treasureType, boolean trapped, BoundingBox sbb) {
 		int dx = getWorldX(x, z);
@@ -177,7 +177,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 
 	/**
 	 * Place a treasure chest at the specified coordinates
-	 *
 	 */
 	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, ResourceKey<LootTable> treasureType, BoundingBox sbb) {
 		this.placeTreasureRotated(world, x, y, z, facing, rotation, treasureType, false, sbb);
@@ -185,10 +184,9 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 
 	/**
 	 * Place a treasure chest at the specified coordinates
-	 *
 	 */
 	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, ResourceKey<LootTable> treasureType, boolean trapped, BoundingBox sbb) {
-		if(facing == null) {
+		if (facing == null) {
 			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
 			facing = Direction.NORTH;
 		}
@@ -237,7 +235,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	 * <p>
 	 * Tries to delay notifying tripwire blocks of placement so they won't
 	 * scan unloaded chunks looking for connections.
-	 *
 	 */
 	protected void placeTripwire(WorldGenLevel world, int x, int y, int z, int size, Direction facing, BoundingBox sbb) {
 
@@ -456,8 +453,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 					if (predicate.test(this.getBlock(world, x, y, z, boundingBox))) {
 
 						boolean isBorder = yMin != yMax && (y == yMin || y == yMax)
-								|| xMin != xMax && (x == xMin || x == xMax)
-								|| zMin != zMax && (z == zMin || z == zMax);
+							|| xMin != xMax && (x == xMin || x == xMax)
+							|| zMin != zMax && (z == zMin || z == zMax);
 
 						this.placeBlock(world, isBorder ? borderState : interiorState, x, y, z, boundingBox);
 					}
@@ -564,22 +561,22 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 
 	public BlockPos getBlockPosWithOffset(int x, int y, int z) {
 		return new BlockPos(
-				getWorldX(x, z),
-				getWorldY(y),
-				getWorldZ(x, z)
+			getWorldX(x, z),
+			getWorldY(y),
+			getWorldZ(x, z)
 		);
 	}
 
 	/* BlockState Helpers */
 	protected static BlockState getStairState(BlockState stairState, Direction direction, boolean isTopHalf) {
 		return stairState
-				.setValue(StairBlock.FACING, direction)
-				.setValue(StairBlock.HALF, isTopHalf ? Half.TOP : Half.BOTTOM);
+			.setValue(StairBlock.FACING, direction)
+			.setValue(StairBlock.HALF, isTopHalf ? Half.TOP : Half.BOTTOM);
 	}
 
 	protected static BlockState getSlabState(BlockState inputBlockState, SlabType half) {
 		return inputBlockState
-				.setValue(SlabBlock.TYPE, half);
+			.setValue(SlabBlock.TYPE, half);
 	}
 
 	@Override

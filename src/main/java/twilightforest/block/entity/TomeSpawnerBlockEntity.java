@@ -41,23 +41,23 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 
 	public static void tick(Level level, BlockPos pos, BlockState state, TomeSpawnerBlockEntity te) {
 		if (!level.isClientSide() && !(level.getDifficulty() == Difficulty.PEACEFUL) && te.isNearPlayer(level, pos)) {
-            if (te.elapsedTime < te.spawnTime) {
-                te.elapsedTime++;
-            } else {
-                te.elapsedTime = 0;
+			if (te.elapsedTime < te.spawnTime) {
+				te.elapsedTime++;
+			} else {
+				te.elapsedTime = 0;
 
 				if (!te.attemptSpawnTome((ServerLevel) level, pos, false, null)) return;
 
-                int tomesLeft = state.getValue(TomeSpawnerBlock.BOOK_STAGES);
+				int tomesLeft = state.getValue(TomeSpawnerBlock.BOOK_STAGES);
 
-                if (tomesLeft <= 1) {
-                    te.invalidateCapabilities();
-                    level.setBlockAndUpdate(pos, TFBlocks.EMPTY_CANOPY_BOOKSHELF.get().defaultBlockState());
-                } else {
-                    level.setBlockAndUpdate(pos, state.setValue(TomeSpawnerBlock.BOOK_STAGES, tomesLeft - 1));
-                }
-            }
-        }
+				if (tomesLeft <= 1) {
+					te.invalidateCapabilities();
+					level.setBlockAndUpdate(pos, TFBlocks.EMPTY_CANOPY_BOOKSHELF.get().defaultBlockState());
+				} else {
+					level.setBlockAndUpdate(pos, state.setValue(TomeSpawnerBlock.BOOK_STAGES, tomesLeft - 1));
+				}
+			}
+		}
 	}
 
 	public boolean attemptSpawnTome(ServerLevel level, BlockPos pos, boolean fire, @Nullable LivingEntity assailant) {
@@ -72,7 +72,7 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 
 					EntityType<?> type = nbtType.orElse(TFEntities.DEATH_TOME.get());
 					if (level.noCollision(type.getSpawnAABB(x, y, z))) {
-                        Entity entity = type.create(level);
+						Entity entity = type.create(level);
 						entity.moveTo(BlockPos.containing(x, y, z), entity.getYRot(), entity.getXRot());
 
 						if (fire)

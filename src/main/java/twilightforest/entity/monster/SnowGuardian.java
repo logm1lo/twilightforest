@@ -1,6 +1,5 @@
 package twilightforest.entity.monster;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -44,9 +43,9 @@ public class SnowGuardian extends BaseIceMob {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 3.0D)
-				.add(Attributes.MAX_HEALTH, 10.0D);
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 3.0D)
+			.add(Attributes.MAX_HEALTH, 10.0D);
 	}
 
 	@Override

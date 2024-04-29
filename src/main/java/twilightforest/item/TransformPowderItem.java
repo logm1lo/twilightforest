@@ -45,9 +45,9 @@ public class TransformPowderItem extends Item {
 			// particle effect
 			for (int i = 0; i < 30; i++) {
 				level.addParticle(ParticleTypes.CRIT, area.minX + level.getRandom().nextFloat() * (area.maxX - area.minX),
-						area.minY + level.getRandom().nextFloat() * (area.maxY - area.minY),
-						area.minZ + level.getRandom().nextFloat() * (area.maxZ - area.minZ),
-						0, 0, 0);
+					area.minY + level.getRandom().nextFloat() * (area.maxY - area.minY),
+					area.minZ + level.getRandom().nextFloat() * (area.maxZ - area.minZ),
+					0, 0, 0);
 			}
 
 		}

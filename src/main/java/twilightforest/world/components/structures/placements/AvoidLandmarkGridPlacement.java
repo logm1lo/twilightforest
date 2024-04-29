@@ -17,11 +17,11 @@ import java.util.Optional;
 
 public class AvoidLandmarkGridPlacement extends RandomSpreadStructurePlacement {
 	public static final MapCodec<AvoidLandmarkGridPlacement> CODEC = RecordCodecBuilder.<AvoidLandmarkGridPlacement>mapCodec(instance -> placementCodec(instance).and(instance.group(
-							Codec.intRange(0, 4096).fieldOf("spacing").forGetter(AvoidLandmarkGridPlacement::spacing),
-							Codec.intRange(0, 4096).fieldOf("separation").forGetter(AvoidLandmarkGridPlacement::separation),
-							RandomSpreadType.CODEC.optionalFieldOf("spread_type", RandomSpreadType.LINEAR).forGetter(AvoidLandmarkGridPlacement::spreadType))
-					)
-					.apply(instance, AvoidLandmarkGridPlacement::new)
+				Codec.intRange(0, 4096).fieldOf("spacing").forGetter(AvoidLandmarkGridPlacement::spacing),
+				Codec.intRange(0, 4096).fieldOf("separation").forGetter(AvoidLandmarkGridPlacement::separation),
+				RandomSpreadType.CODEC.optionalFieldOf("spread_type", RandomSpreadType.LINEAR).forGetter(AvoidLandmarkGridPlacement::spreadType))
+			)
+			.apply(instance, AvoidLandmarkGridPlacement::new)
 	).validate(AvoidLandmarkGridPlacement::validate);
 
 	private static DataResult<AvoidLandmarkGridPlacement> validate(AvoidLandmarkGridPlacement placement) {

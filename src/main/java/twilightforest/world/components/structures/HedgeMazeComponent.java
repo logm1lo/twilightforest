@@ -213,7 +213,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
 		placeBlock(world, Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.from2DDataValue(rand.nextInt(4))),
-				rx, FLOOR_LEVEL, rz, sbb);
+			rx, FLOOR_LEVEL, rz, sbb);
 	}
 
 	@Override

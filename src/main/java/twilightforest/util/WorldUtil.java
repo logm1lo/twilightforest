@@ -26,7 +26,8 @@ import java.util.Map;
 import java.util.Set;
 
 public final class WorldUtil {
-	private WorldUtil() {}
+	private WorldUtil() {
+	}
 
 	/**
 	 * Inclusive of edges
@@ -56,8 +57,8 @@ public final class WorldUtil {
 
 	public static int getGeneratorSeaLevel(LevelAccessor level) {
 		return level.getChunkSource() instanceof ServerChunkCache chunkSource
-				? chunkSource.chunkMap.generator().getSeaLevel()
-				: TFDimensionData.SEALEVEL; // Should only ever hit if this method is called on client FIXME Fix causes
+			? chunkSource.chunkMap.generator().getSeaLevel()
+			: TFDimensionData.SEALEVEL; // Should only ever hit if this method is called on client FIXME Fix causes
 	}
 
 	@Nullable
@@ -88,7 +89,7 @@ public final class WorldUtil {
 
 				for (Holder<Structure> targetStructure : targetStructures) {
 					if (landmarkPlacement.getValue().contains(targetStructure)) {
-                        Holder<Biome> biome = level.getBiome(landmarkCenterPosition);
+						Holder<Biome> biome = level.getBiome(landmarkCenterPosition);
 
 						if (targetStructure.value().biomes().contains(biome)) {
 							if (skipKnownStructures && structureManager.checkStructurePresence(new ChunkPos(landmarkCenterPosition), targetStructure.value(), landmarkPlacement.getKey(), true) == StructureCheckResult.START_PRESENT)

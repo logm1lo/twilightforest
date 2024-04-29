@@ -1108,53 +1108,53 @@ public class LangGenerator extends TFLangProvider {
 		this.add("twilightforest.book.author", "a forgotten explorer");
 
 		this.addBookAndContents("lichtower", "Notes on a Pointy Tower",
-				"§8[An explorer's notebook, gnawed on by monsters]§0\n\nI have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse is boiling off into the",
-				"surrounding area.\n\nIn my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...",
-				"§8[[Many entries later]]§0\n\nA breakthrough! In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\nThe magic in the scale seems to have the curse-breaking",
-				"properties I need, but the magic is too dim. I may need to acquire a fresher specimen, directly from the creature.");
+			"§8[An explorer's notebook, gnawed on by monsters]§0\n\nI have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse is boiling off into the",
+			"surrounding area.\n\nIn my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...",
+			"§8[[Many entries later]]§0\n\nA breakthrough! In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\nThe magic in the scale seems to have the curse-breaking",
+			"properties I need, but the magic is too dim. I may need to acquire a fresher specimen, directly from the creature.");
 
 		this.addBookAndContents("labyrinth", "Notes on a Swampy Labyrinth",
-				"§8[[An explorer's notebook, written on waterproof paper]]§0\n\nThe mosquitoes in this swamp are vexing, but strange. The vast majority of them seem to have no natural source, nor do they seem to have a role in the local ecology. I have begun to suspect that they are",
-				"some kind of magical curse.\n\n§8[[Next entry]]§0\n\nNow that I have encountered a protection spell on the ruined labyrinth here, I consider my suspicions confirmed. Both the protection spell and the mosquitoes are a",
-				"curse. This curse seems to have a different source from the others I have encountered. I will have to research further...\n\n§8[[Next entry]]§0\n\nThe curse seems to be of a type too powerful for one being alone to",
-				"produce. Several wizards working in combination would be necessary.\n\nIf one of the wizards stopped contributing, the whole of the curse over the entire swamp would fall. Strangely, my divinations do not show signs of any nearby living wizards.",
-				"I did see something interesting in one of the nearby pointy-roofed towers though...");
+			"§8[[An explorer's notebook, written on waterproof paper]]§0\n\nThe mosquitoes in this swamp are vexing, but strange. The vast majority of them seem to have no natural source, nor do they seem to have a role in the local ecology. I have begun to suspect that they are",
+			"some kind of magical curse.\n\n§8[[Next entry]]§0\n\nNow that I have encountered a protection spell on the ruined labyrinth here, I consider my suspicions confirmed. Both the protection spell and the mosquitoes are a",
+			"curse. This curse seems to have a different source from the others I have encountered. I will have to research further...\n\n§8[[Next entry]]§0\n\nThe curse seems to be of a type too powerful for one being alone to",
+			"produce. Several wizards working in combination would be necessary.\n\nIf one of the wizards stopped contributing, the whole of the curse over the entire swamp would fall. Strangely, my divinations do not show signs of any nearby living wizards.",
+			"I did see something interesting in one of the nearby pointy-roofed towers though...");
 
 		this.addBookAndContents("hydralair", "Notes on the Fire Swamp",
-				"§8[[An explorer's notebook, written on fireproof paper]]§0\n\nFire is a trivial obstacle for a master explorer such as myself. I have traversed seas of fire, and swam through oceans of lava. The burning air here is an interesting variation, but",
-				"ultimately no hindrance.\n\nWhat does stop me though is that I have encountered another protection spell, this time surrounding a mighty creature that must be king of this fire swamp. This is not the first protection spell I have encountered, and I am",
-				"beginning to unravel the mysteries of how they work.\n\nIf this spell is like the others, it will be sustained by a powerful creature nearby. Surrounding the fire swamp are several wet swamps, and under those swamps are labyrinths full of minotaurs.",
-				"The logical choice to bind such a spell to would be some sort of powerful minotaur, different in some way from the others that surround it...");
+			"§8[[An explorer's notebook, written on fireproof paper]]§0\n\nFire is a trivial obstacle for a master explorer such as myself. I have traversed seas of fire, and swam through oceans of lava. The burning air here is an interesting variation, but",
+			"ultimately no hindrance.\n\nWhat does stop me though is that I have encountered another protection spell, this time surrounding a mighty creature that must be king of this fire swamp. This is not the first protection spell I have encountered, and I am",
+			"beginning to unravel the mysteries of how they work.\n\nIf this spell is like the others, it will be sustained by a powerful creature nearby. Surrounding the fire swamp are several wet swamps, and under those swamps are labyrinths full of minotaurs.",
+			"The logical choice to bind such a spell to would be some sort of powerful minotaur, different in some way from the others that surround it...");
 
 		this.addBookAndContents("tfstronghold", "Notes on a Stronghold",
-				"§8[[An explorer's notebook, written on faintly glowing paper]]§0\n\nThe tendrils of darkness surrounding this area are just a manifestation of a protective spell over the entire dark forest. The spell causes blindness, which is quite vexing. I have seen several",
-				"interesting things in the area and would like to keep exploring.\n\n§8[[Next entry]]§0\n\nI have found ruins in the dark forest. They belong to a stronghold, of a type usually inhabited by knights. Rather than knights though, this stronghold is full of",
-				"goblins. They wear knightly armor, but their behavior is most un-knightly.\n\n§8[[Next entry]]§0\n\nDeep in the ruins, I have found a pedestal. The pedestal seems to be of a type that knights would place trophies on to prove their strength.",
-				"Obtaining a powerful scepter would seem to weaken the curse on the dark forest, and placing a trophy associated with a powerful creature on the pedestal would likely grant access into the main part of the stronghold.");
+			"§8[[An explorer's notebook, written on faintly glowing paper]]§0\n\nThe tendrils of darkness surrounding this area are just a manifestation of a protective spell over the entire dark forest. The spell causes blindness, which is quite vexing. I have seen several",
+			"interesting things in the area and would like to keep exploring.\n\n§8[[Next entry]]§0\n\nI have found ruins in the dark forest. They belong to a stronghold, of a type usually inhabited by knights. Rather than knights though, this stronghold is full of",
+			"goblins. They wear knightly armor, but their behavior is most un-knightly.\n\n§8[[Next entry]]§0\n\nDeep in the ruins, I have found a pedestal. The pedestal seems to be of a type that knights would place trophies on to prove their strength.",
+			"Obtaining a powerful scepter would seem to weaken the curse on the dark forest, and placing a trophy associated with a powerful creature on the pedestal would likely grant access into the main part of the stronghold.");
 
 		this.addBookAndContents("darktower", "Notes on a Wooden Tower",
-				"§8[[An explorer's notebook that seems to have survived an explosion]]§0\n\nThis tower clearly has mechanisms that are not responding to me. Their magic almost yearns to acknowledge my touch, but it cannot. It is if the devices of the tower are being",
-				"suppressed by a powerful group of beings nearby.\n\n§8[[Next entry]]§0\n\nThe magic seems to emanate from deep within the strongholds nearby. It can't come from the goblins, as their magic is charming, but unfocused. There",
-				"must still be some force still active in the strongholds.\n\n§8[[Next entry]]§0\n\nMy analysis indicates that it comes from several sources, operating as a group. I will head back to the stronghold after I resupply...");
+			"§8[[An explorer's notebook that seems to have survived an explosion]]§0\n\nThis tower clearly has mechanisms that are not responding to me. Their magic almost yearns to acknowledge my touch, but it cannot. It is if the devices of the tower are being",
+			"suppressed by a powerful group of beings nearby.\n\n§8[[Next entry]]§0\n\nThe magic seems to emanate from deep within the strongholds nearby. It can't come from the goblins, as their magic is charming, but unfocused. There",
+			"must still be some force still active in the strongholds.\n\n§8[[Next entry]]§0\n\nMy analysis indicates that it comes from several sources, operating as a group. I will head back to the stronghold after I resupply...");
 
 		this.addBookAndContents("yeticave", "Notes on an Icy Cave",
-				"§8[[An explorer's notebook, covered in frost]]§0\n\nThe blizzard surrounding these snowy lands is unceasing. This is no ordinary snowfall--this is a magical phenomenon. I will have to conduct experiments to find what is capable of",
-				"causing such an effect.\n\n§8[[Next entry]]§0\n\nThe curse seems to be of a type too powerful for one being alone to produce. Several wizards working in combination would be necessary. If one of the wizards stopped",
-				"contributing, the blizzard would calm. Strangely, my divinations do not show signs of any nearby living wizards. I did see something interesting in one of the nearby pointy-roofed towers though...");
+			"§8[[An explorer's notebook, covered in frost]]§0\n\nThe blizzard surrounding these snowy lands is unceasing. This is no ordinary snowfall--this is a magical phenomenon. I will have to conduct experiments to find what is capable of",
+			"causing such an effect.\n\n§8[[Next entry]]§0\n\nThe curse seems to be of a type too powerful for one being alone to produce. Several wizards working in combination would be necessary. If one of the wizards stopped",
+			"contributing, the blizzard would calm. Strangely, my divinations do not show signs of any nearby living wizards. I did see something interesting in one of the nearby pointy-roofed towers though...");
 
 		this.addBookAndContents("icetower", "Notes on Auroral Fortification",
-				"§8[[An explorer's notebook, caked in ice]]§0\n\nI overcame one blizzard, only to run into this terrible ice storm atop the glacier. My explorations have shown me the splendor of an ice palace, shining with the colors of the",
-				"polar aurora. It all seems protected by some sort of curse.\n\n§8[[Next entry]]§0\n\nI am no novice. This curse is fed by the power of a creature nearby. The cause of the curse surrounding the fire swamp was built off the power of the",
-				"leader of the minotaurs nearby.\n\nSurrounding this glacier, there are masses of yetis. Perhaps the yetis have some sort of leader...");
+			"§8[[An explorer's notebook, caked in ice]]§0\n\nI overcame one blizzard, only to run into this terrible ice storm atop the glacier. My explorations have shown me the splendor of an ice palace, shining with the colors of the",
+			"polar aurora. It all seems protected by some sort of curse.\n\n§8[[Next entry]]§0\n\nI am no novice. This curse is fed by the power of a creature nearby. The cause of the curse surrounding the fire swamp was built off the power of the",
+			"leader of the minotaurs nearby.\n\nSurrounding this glacier, there are masses of yetis. Perhaps the yetis have some sort of leader...");
 
 		this.addBookAndContents("trollcave", "Notes on the Highlands",
-				"§8[[An explorer's notebook, damaged by acid]]§0\n\nThere seems to be no way to protect myself from the toxic rainstorm surrounding this area. In my brief excursions, I have also encountered another protection spell, similar to the others I have",
-				"witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n§8[[Next entry]]§0\n\nSuch supreme weather magic must be the result of multiple undefeated great evils in this world. My studies contain",
-				"several clues pointing at a searing swamp, a forest coated in deep darkness, and a realm coated in snow.");
+			"§8[[An explorer's notebook, damaged by acid]]§0\n\nThere seems to be no way to protect myself from the toxic rainstorm surrounding this area. In my brief excursions, I have also encountered another protection spell, similar to the others I have",
+			"witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n§8[[Next entry]]§0\n\nSuch supreme weather magic must be the result of multiple undefeated great evils in this world. My studies contain",
+			"several clues pointing at a searing swamp, a forest coated in deep darkness, and a realm coated in snow.");
 
 		this.addBookAndContents("unknown", "Notes on the Unexplained",
-				"§8[[This book shows signs of having been copied many times]]§0\n\nI cannot explain the field surrounding this structure, but the magic is powerful. If this curse is like the others, then the answer to unlocking it lies elsewhere. Perhaps there is something I have left",
-				"undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.");
+			"§8[[This book shows signs of having been copied many times]]§0\n\nI cannot explain the field surrounding this structure, but the magic is powerful. If this curse is like the others, then the answer to unlocking it lies elsewhere. Perhaps there is something I have left",
+			"undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.");
 
 		this.addScreenMessage("optifine.title", "WARNING: OPTIFINE DETECTED");
 		this.addScreenMessage("optifine.message", "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug, please remove Optifine first and check again to see if the bug is still present.\n\nOptifine-related issues are not solvable on Twilight Forest's end!\n\nThis screen may be disabled in the Client Config.");

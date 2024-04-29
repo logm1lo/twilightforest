@@ -58,7 +58,7 @@ public class CharmEvents {
 
 		//ensure our player is real and in survival before attempting anything
 		if (living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
-				player.isCreative() || player.isSpectator()) return;
+			player.isCreative() || player.isSpectator()) return;
 
 		if (charmOfLife(player)) {
 			event.setCanceled(true); // Executes if the player had charms

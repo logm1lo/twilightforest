@@ -10,8 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.KnightPhantom;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
@@ -56,7 +54,6 @@ public class ThrownWep extends TFThrowable {
 		return this;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {

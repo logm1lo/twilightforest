@@ -17,28 +17,28 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class TrunkRiser extends TrunkPlacer {
-    public static final MapCodec<TrunkRiser> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.intRange(0, 16).fieldOf("offset_up").forGetter(o -> o.offset),
-            TrunkPlacer.CODEC.fieldOf("trunk_placer").forGetter(o -> o.placer)
-    ).apply(instance, TrunkRiser::new));
+	public static final MapCodec<TrunkRiser> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		Codec.intRange(0, 16).fieldOf("offset_up").forGetter(o -> o.offset),
+		TrunkPlacer.CODEC.fieldOf("trunk_placer").forGetter(o -> o.placer)
+	).apply(instance, TrunkRiser::new));
 
-    private final int offset;
-    private final TrunkPlacer placer;
+	private final int offset;
+	private final TrunkPlacer placer;
 
-    public TrunkRiser(int baseHeight, TrunkPlacer placer) {
-        super(placer.baseHeight, placer.heightRandA, placer.heightRandB);
+	public TrunkRiser(int baseHeight, TrunkPlacer placer) {
+		super(placer.baseHeight, placer.heightRandA, placer.heightRandB);
 
-        this.offset = baseHeight;
-        this.placer = placer;
-    }
+		this.offset = baseHeight;
+		this.placer = placer;
+	}
 
-    @Override
-    protected TrunkPlacerType<TrunkRiser> type() {
-        return TFFeatureModifiers.TRUNK_RISER.get();
-    }
+	@Override
+	protected TrunkPlacerType<TrunkRiser> type() {
+		return TFFeatureModifiers.TRUNK_RISER.get();
+	}
 
-    @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
-        return this.placer.placeTrunk(worldReader, worldPlacer, random, height, startPos.above(this.offset), treeConfig);
-    }
+	@Override
+	public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
+		return this.placer.placeTrunk(worldReader, worldPlacer, random, height, startPos.above(this.offset), treeConfig);
+	}
 }

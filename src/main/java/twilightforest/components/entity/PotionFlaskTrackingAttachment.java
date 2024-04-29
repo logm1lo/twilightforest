@@ -20,10 +20,10 @@ public class PotionFlaskTrackingAttachment {
 	private long lastTimeStarted;
 
 	public static final Codec<PotionFlaskTrackingAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					BuiltInRegistries.POTION.holderByNameCodec().optionalFieldOf("last_used_potion").forGetter(o -> o.lastUsedPotion),
-					Codec.INT.fieldOf("doses_drank").forGetter(o -> o.doses),
-					Codec.LONG.fieldOf("last_game_time_started").forGetter(o -> o.lastTimeStarted))
-			.apply(instance, PotionFlaskTrackingAttachment::new));
+			BuiltInRegistries.POTION.holderByNameCodec().optionalFieldOf("last_used_potion").forGetter(o -> o.lastUsedPotion),
+			Codec.INT.fieldOf("doses_drank").forGetter(o -> o.doses),
+			Codec.LONG.fieldOf("last_game_time_started").forGetter(o -> o.lastTimeStarted))
+		.apply(instance, PotionFlaskTrackingAttachment::new));
 
 	public PotionFlaskTrackingAttachment() {
 		this(Optional.empty(), 0, 0);

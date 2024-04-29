@@ -178,7 +178,7 @@ public class EntityRenderingUtil {
 		ItemEntity item = (ItemEntity) fetchEntity(EntityType.ITEM, level);
 		Objects.requireNonNull(item).setItem(stack);
 		RenderSystem.runAsFancy(() ->
-				render(item, Minecraft.getInstance().getDeltaFrameTime(), posestack1, buffer, bobOffset));
+			render(item, Minecraft.getInstance().getDeltaFrameTime(), posestack1, buffer, bobOffset));
 		buffer.endBatch();
 		posestack.popPose();
 		RenderSystem.applyModelViewMatrix();
@@ -220,8 +220,8 @@ public class EntityRenderingUtil {
 
 	public static String getModIdForTooltip(String modId) {
 		return ModList.get().getModContainerById(modId)
-				.map(ModContainer::getModInfo)
-				.map(IModInfo::getDisplayName)
-				.orElseGet(() -> StringUtils.capitalize(modId));
+			.map(ModContainer::getModInfo)
+			.map(IModInfo::getDisplayName)
+			.orElseGet(() -> StringUtils.capitalize(modId));
 	}
 }

@@ -32,10 +32,10 @@ public class RedcapShyGoal extends RedcapBaseGoal {
 		LivingEntity attackTarget = this.redcap.getTarget();
 
 		if (attackTarget == null
-				|| !this.redcap.isShy()
-				|| attackTarget.distanceTo(this.redcap) > maxDistance
-				|| attackTarget.distanceTo(this.redcap) < minDistance
-				|| !isTargetLookingAtMe(attackTarget)) {
+			|| !this.redcap.isShy()
+			|| attackTarget.distanceTo(this.redcap) > maxDistance
+			|| attackTarget.distanceTo(this.redcap) < minDistance
+			|| !isTargetLookingAtMe(attackTarget)) {
 			return false;
 		} else {
 			this.entityTarget = attackTarget;

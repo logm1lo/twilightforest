@@ -11,8 +11,8 @@ import twilightforest.init.TFFeatureModifiers;
 
 public class TreeCorePlacer extends TreeDecorator {
 	public static final MapCodec<TreeCorePlacer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Codec.intRange(0, 20).fieldOf("core_position").forGetter(o -> o.corePos),
-			BlockStateProvider.CODEC.fieldOf("deco_provider").forGetter(o -> o.core)
+		Codec.intRange(0, 20).fieldOf("core_position").forGetter(o -> o.corePos),
+		BlockStateProvider.CODEC.fieldOf("deco_provider").forGetter(o -> o.core)
 	).apply(instance, TreeCorePlacer::new));
 
 	private final int corePos;

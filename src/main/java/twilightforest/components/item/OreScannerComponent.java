@@ -21,12 +21,12 @@ import java.util.function.Function;
 
 public class OreScannerComponent {
 	public static Codec<OreScannerComponent> CODEC = RecordCodecBuilder.<OreScannerComponent>create(inst -> inst.group(
-			BlockPos.CODEC.fieldOf("origin").forGetter(s -> s.origin),
-			Codec.INT.fieldOf("span_x").forGetter(s -> s.xSpan),
-			Codec.INT.fieldOf("span_z").forGetter(s -> s.zSpan),
-			Codec.INT.fieldOf("duration").forGetter(s -> s.scanDurationTicks),
-			Codec.unboundedMap(BuiltInRegistries.BLOCK.byNameCodec(), Codec.INT).<Object2IntMap<Block>>xmap(Object2IntArrayMap::new, Function.identity()).fieldOf("counts").forGetter(s -> s.blockCounter),
-			Codec.INT.fieldOf("progression").forGetter(s -> s.ticksProgressed)
+		BlockPos.CODEC.fieldOf("origin").forGetter(s -> s.origin),
+		Codec.INT.fieldOf("span_x").forGetter(s -> s.xSpan),
+		Codec.INT.fieldOf("span_z").forGetter(s -> s.zSpan),
+		Codec.INT.fieldOf("duration").forGetter(s -> s.scanDurationTicks),
+		Codec.unboundedMap(BuiltInRegistries.BLOCK.byNameCodec(), Codec.INT).<Object2IntMap<Block>>xmap(Object2IntArrayMap::new, Function.identity()).fieldOf("counts").forGetter(s -> s.blockCounter),
+		Codec.INT.fieldOf("progression").forGetter(s -> s.ticksProgressed)
 	).apply(inst, OreScannerComponent::new)).orElseGet(OreScannerComponent::getEmpty);
 
 	private static final OreScannerComponent EMPTY = new OreScannerComponent(BlockPos.ZERO, 0, 0, 0, 0);

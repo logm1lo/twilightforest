@@ -13,7 +13,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
@@ -25,9 +24,9 @@ public class KingSpider extends Spider {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Spider.createAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.35D)
-				.add(Attributes.ATTACK_DAMAGE, 6.0D);
+			.add(Attributes.MAX_HEALTH, 30.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.35D)
+			.add(Attributes.ATTACK_DAMAGE, 6.0D);
 	}
 
 	@Override

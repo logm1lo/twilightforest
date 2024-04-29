@@ -24,7 +24,7 @@ public class TFLayerDefinitions {
 	@SubscribeEvent
 	public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
 
-		for(TwilightBoat.Type boatType : TwilightBoat.Type.values()) {
+		for (TwilightBoat.Type boatType : TwilightBoat.Type.values()) {
 			event.registerLayerDefinition(TwilightBoatRenderer.createBoatModelName(boatType), BoatModel::createBodyModel);
 			event.registerLayerDefinition(TwilightBoatRenderer.createChestBoatModelName(boatType), ChestBoatModel::createBodyModel);
 		}

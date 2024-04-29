@@ -111,7 +111,7 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
 		if (!FMLLoader.isProduction()) {
 			// Debug slot listing
-            NonNullList<Slot> slots = this.slots;
+			NonNullList<Slot> slots = this.slots;
 
 			StringJoiner joiner = new StringJoiner(",\n", "Uncrafting Menu Slots:\n", "(" + slots.size() + " total slots)");
 
@@ -279,11 +279,11 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 		if (!inputStack.isEmpty()) {
 			for (RecipeHolder<?> recipe : world.getRecipeManager().getRecipes()) {
 				if (isRecipeSupported(recipe.value()) &&
-						!recipe.value().isIncomplete() &&
-						recipe.value().canCraftInDimensions(3, 3) &&
-						!recipe.value().getIngredients().isEmpty() &&
-						matches(inputStack, recipe.value().getResultItem(world.registryAccess())) &&
-						TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(recipe.id().toString())) {
+					!recipe.value().isIncomplete() &&
+					recipe.value().canCraftInDimensions(3, 3) &&
+					!recipe.value().getIngredients().isEmpty() &&
+					matches(inputStack, recipe.value().getResultItem(world.registryAccess())) &&
+					TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(recipe.id().toString())) {
 					if (TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) {
 						recipes.add(recipe.value());
 					}
@@ -448,7 +448,7 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
 		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.assemblyMatrix
-				&& player.containerMenu.getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
+			&& player.containerMenu.getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
 
 			// is the assembly matrix empty?
 			if (this.assemblyMatrix.isEmpty() && (clickType != ClickType.SWAP || player.getInventory().getItem(mouseButton).isEmpty())) {
@@ -458,7 +458,7 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
 		// if the player is trying to take the result item and they don't have the XP to pay for it, reject them
 		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.tinkerResult
-				&& this.calculateRecraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
+			&& this.calculateRecraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
 
 			return;
 		}

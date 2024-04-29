@@ -10,14 +10,11 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ResolvableProfile;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.apache.commons.lang3.text.WordUtils;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.client.ISTER;
-import twilightforest.init.TFBlocks;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -35,13 +32,13 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 			CompoundTag tag = data.copyTag();
 			if (tag.contains("CandleColor") && tag.contains("CandleAmount")) {
 				tooltip.add(
-						Component.translatable(tag.getInt("CandleAmount") > 1 ?
-												"item.twilightforest.skull_candle.desc.multiple" :
-												"item.twilightforest.skull_candle.desc",
-										String.valueOf(tag.getInt("CandleAmount")),
-										WordUtils.capitalize(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")).getSerializedName()
-												.replace("\"", "").replace("_", " ")))
-								.withStyle(ChatFormatting.GRAY));
+					Component.translatable(tag.getInt("CandleAmount") > 1 ?
+								"item.twilightforest.skull_candle.desc.multiple" :
+								"item.twilightforest.skull_candle.desc",
+							String.valueOf(tag.getInt("CandleAmount")),
+							WordUtils.capitalize(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")).getSerializedName()
+								.replace("\"", "").replace("_", " ")))
+						.withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}
@@ -50,8 +47,8 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 	public Component getName(ItemStack pStack) {
 		ResolvableProfile resolvableprofile = pStack.get(DataComponents.PROFILE);
 		return resolvableprofile != null && resolvableprofile.name().isPresent()
-				? Component.translatable(this.getDescriptionId() + ".named", resolvableprofile.name().get())
-				: super.getName(pStack);
+			? Component.translatable(this.getDescriptionId() + ".named", resolvableprofile.name().get())
+			: super.getName(pStack);
 	}
 
 	@Override

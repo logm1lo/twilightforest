@@ -39,14 +39,14 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
 			var spike = definition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
-							.texOffs(0, 16)
-							.addBox(-1.0F, -1.0F, -1.0F, 2.0F, spikeLength, 2.0F),
-					PartPose.ZERO);
+					.texOffs(0, 16)
+					.addBox(-1.0F, -1.0F, -1.0F, 2.0F, spikeLength, 2.0F),
+				PartPose.ZERO);
 
 			spike.addOrReplaceChild("cube_" + i, CubeListBuilder.create()
-							.texOffs(8, 16)
-							.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
-					PartPose.offsetAndRotation(0.0F, spikeLength, 0.0F, 0.0F, 0.0F, (Mth.PI / 4F)));
+					.texOffs(8, 16)
+					.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
+				PartPose.offsetAndRotation(0.0F, spikeLength, 0.0F, 0.0F, 0.0F, (Mth.PI / 4F)));
 		}
 
 		return LayerDefinition.create(mesh, 32, 32);

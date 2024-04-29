@@ -64,12 +64,12 @@ public class PatchBlock extends TFPlantBlock {
 		int zOff1 = (int) (seed >> 21 & 3L);
 
 		return Block.box(
-				xConnect1 ? 0F : (1F + xOff1),
-				0.0F,
-				zConnect1 ? 0F : (1F + zOff1),
-				xConnect0 ? 16F : (15F - xOff0),
-				1F,
-				zConnect0 ? 16F : (15F - zOff0)
+			xConnect1 ? 0F : (1F + xOff1),
+			0.0F,
+			zConnect1 ? 0F : (1F + zOff1),
+			xConnect0 ? 16F : (15F - xOff0),
+			1F,
+			zConnect0 ? 16F : (15F - zOff0)
 		);
 	}
 

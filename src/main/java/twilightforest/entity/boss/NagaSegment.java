@@ -12,8 +12,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
@@ -37,7 +35,6 @@ public class NagaSegment extends TFPart<Naga> {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public ResourceLocation renderer() {
 		return RENDERER;
 	}
@@ -79,10 +76,10 @@ public class NagaSegment extends TFPart<Naga> {
 				float height = this.getBbHeight();
 				for (int k = 0; k < 20; k++) {
 					this.level().addParticle(this.random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.EXPLOSION_EMITTER,
-							(pos.x() + this.random.nextFloat() * width * 2.0F) - width,
-							pos.y() + this.random.nextFloat() * height,
-							(pos.z() + this.random.nextFloat() * width * 2.0F) - width,
-							this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
+						(pos.x() + this.random.nextFloat() * width * 2.0F) - width,
+						pos.y() + this.random.nextFloat() * height,
+						(pos.z() + this.random.nextFloat() * width * 2.0F) - width,
+						this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
 				}
 
 				this.getParent().deathTime = 0;

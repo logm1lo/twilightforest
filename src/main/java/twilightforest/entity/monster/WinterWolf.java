@@ -56,8 +56,8 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return HostileWolf.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.ATTACK_DAMAGE, 6);
+			.add(Attributes.MAX_HEALTH, 30.0D)
+			.add(Attributes.ATTACK_DAMAGE, 6);
 	}
 
 	@Override

@@ -290,13 +290,13 @@ public class EntityEvents {
 			profile = skull.getOwnerProfile();
 		level.playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		level.setBlockAndUpdate(event.getPos(), newBlock.defaultBlockState()
-				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(event.getPos()).getValue(SkullBlock.ROTATION)));
+			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
+			.setValue(SkullCandleBlock.ROTATION, level.getBlockState(event.getPos()).getValue(SkullBlock.ROTATION)));
 		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(),
-				newBlock.defaultBlockState()
-						.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-						.setValue(SkullCandleBlock.ROTATION, level.getBlockState(event.getPos()).getValue(SkullBlock.ROTATION)),
-				AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue(), 1));
+			newBlock.defaultBlockState()
+				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
+				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(event.getPos()).getValue(SkullBlock.ROTATION)),
+			AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue(), 1));
 		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 
@@ -308,13 +308,13 @@ public class EntityEvents {
 			profile = skull.getOwnerProfile();
 		level.playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		level.setBlockAndUpdate(event.getPos(), newBlock.defaultBlockState()
-				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(event.getPos()).getValue(WallSkullBlock.FACING)));
+			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
+			.setValue(WallSkullCandleBlock.FACING, level.getBlockState(event.getPos()).getValue(WallSkullBlock.FACING)));
 		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(),
-				newBlock.defaultBlockState()
-						.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-						.setValue(WallSkullCandleBlock.FACING, level.getBlockState(event.getPos()).getValue(WallSkullBlock.FACING)),
-				AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue(), 1));
+			newBlock.defaultBlockState()
+				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
+				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(event.getPos()).getValue(WallSkullBlock.FACING)),
+			AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue(), 1));
 		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 
@@ -404,7 +404,7 @@ public class EntityEvents {
 		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise
 		// The tag distinguishes our Interaction entities from other Mods' utilization
 		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
-				&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
+			&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
 			AABB bounds = interaction.getBoundingBox();
 			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
 			interaction.discard();

@@ -71,8 +71,8 @@ public final class TwilightForestMod {
 	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
 	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression",
-			GameRules.Category.UPDATES,  //Putting it in UPDATES since other world stuff is here
-			GameRules.BooleanValue.create(true, (server, enforced) ->
+		GameRules.Category.UPDATES,  //Putting it in UPDATES since other world stuff is here
+		GameRules.BooleanValue.create(true, (server, enforced) ->
 			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(enforced.get())))); //sends a packet to every player online when this changes so weather effects update accordingly
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
@@ -160,24 +160,24 @@ public final class TwilightForestMod {
 	private void registerGenericItemHandlers(RegisterCapabilitiesEvent event) {
 		IBlockCapabilityProvider<IItemHandler, @Nullable Direction> itemHandlerProvider = (level, pos, state, blockEntity, side) -> level.getBlockEntity(pos) instanceof TFChestBlockEntity tfChestBlock ? new InvWrapper(tfChestBlock) : null;
 		event.registerBlock(
-				Capabilities.ItemHandler.BLOCK,
-				itemHandlerProvider,
-				TFBlocks.TWILIGHT_OAK_CHEST.get(),
-				TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(),
-				TFBlocks.CANOPY_CHEST.get(),
-				TFBlocks.CANOPY_TRAPPED_CHEST.get(),
-				TFBlocks.MANGROVE_CHEST.get(),
-				TFBlocks.MANGROVE_TRAPPED_CHEST.get(),
-				TFBlocks.DARK_CHEST.get(),
-				TFBlocks.DARK_TRAPPED_CHEST.get(),
-				TFBlocks.TIME_CHEST.get(),
-				TFBlocks.TIME_TRAPPED_CHEST.get(),
-				TFBlocks.TRANSFORMATION_CHEST.get(),
-				TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(),
-				TFBlocks.MINING_CHEST.get(),
-				TFBlocks.MINING_TRAPPED_CHEST.get(),
-				TFBlocks.SORTING_CHEST.get(),
-				TFBlocks.SORTING_TRAPPED_CHEST.get()
+			Capabilities.ItemHandler.BLOCK,
+			itemHandlerProvider,
+			TFBlocks.TWILIGHT_OAK_CHEST.get(),
+			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(),
+			TFBlocks.CANOPY_CHEST.get(),
+			TFBlocks.CANOPY_TRAPPED_CHEST.get(),
+			TFBlocks.MANGROVE_CHEST.get(),
+			TFBlocks.MANGROVE_TRAPPED_CHEST.get(),
+			TFBlocks.DARK_CHEST.get(),
+			TFBlocks.DARK_TRAPPED_CHEST.get(),
+			TFBlocks.TIME_CHEST.get(),
+			TFBlocks.TIME_TRAPPED_CHEST.get(),
+			TFBlocks.TRANSFORMATION_CHEST.get(),
+			TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(),
+			TFBlocks.MINING_CHEST.get(),
+			TFBlocks.MINING_TRAPPED_CHEST.get(),
+			TFBlocks.SORTING_CHEST.get(),
+			TFBlocks.SORTING_TRAPPED_CHEST.get()
 		);
 	}
 

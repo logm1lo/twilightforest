@@ -147,7 +147,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void addSubtitle(DeferredHolder<SoundEvent, SoundEvent> sound, String name) {
-		String[] splitSoundName  = sound.getId().getPath().split("\\.", 3);
+		String[] splitSoundName = sound.getId().getPath().split("\\.", 3);
 		this.add("subtitles.twilightforest." + splitSoundName[0] + "." + splitSoundName[2], name);
 	}
 

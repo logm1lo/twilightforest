@@ -1,7 +1,6 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -60,8 +59,8 @@ public class Bighorn extends Sheep {
 
 	private static DyeColor getRandomFleeceColor(RandomSource random) {
 		return random.nextBoolean()
-				? DyeColor.BROWN
-				: DyeColor.byId(random.nextInt(16));
+			? DyeColor.BROWN
+			: DyeColor.byId(random.nextInt(16));
 	}
 
 	@Nullable

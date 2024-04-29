@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector3f;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
@@ -41,10 +40,10 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D)
-				.add(Attributes.ARMOR, 2.0D);
+			.add(Attributes.MAX_HEALTH, 40.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 4.0D)
+			.add(Attributes.ARMOR, 2.0D);
 	}
 
 	@Override
@@ -94,7 +93,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	@Override
 	public void knockback(double x, double y, double z) {
 		//only take knockback if not holding something
-		if(this.getPassengers().isEmpty()) {
+		if (this.getPassengers().isEmpty()) {
 			super.knockback(x, y, z);
 		}
 	}

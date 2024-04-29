@@ -56,11 +56,11 @@ public record SeamLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<B
 
 	public static final class Factory implements BiomeLayerFactory {
 		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				ResourceKey.codec(Registries.BIOME).fieldOf("dividing_biome").forGetter(Factory::partitioningBiome),
-				ResourceKey.codec(Registries.BIOME).listOf().fieldOf("excluded_neighbor_biomes").forGetter(Factory::excludedBiomeNeighbors),
-				ResourceKey.codec(Registries.BIOME).listOf().comapFlatMap(Codecs::arrayToPair, p -> List.of(p.getFirst(), p.getSecond())).listOf().fieldOf("excluded_biome_intersections").forGetter(Factory::excludedBiomeIntersections),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			ResourceKey.codec(Registries.BIOME).fieldOf("dividing_biome").forGetter(Factory::partitioningBiome),
+			ResourceKey.codec(Registries.BIOME).listOf().fieldOf("excluded_neighbor_biomes").forGetter(Factory::excludedBiomeNeighbors),
+			ResourceKey.codec(Registries.BIOME).listOf().comapFlatMap(Codecs::arrayToPair, p -> List.of(p.getFirst(), p.getSecond())).listOf().fieldOf("excluded_biome_intersections").forGetter(Factory::excludedBiomeIntersections),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 
 		private final long salt;

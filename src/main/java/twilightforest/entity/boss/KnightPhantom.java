@@ -98,8 +98,8 @@ public class KnightPhantom extends BaseTFBoss {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 35.0D)
-				.add(Attributes.ATTACK_DAMAGE, 1.0D);
+			.add(Attributes.MAX_HEALTH, 35.0D)
+			.add(Attributes.ATTACK_DAMAGE, 1.0D);
 	}
 
 	@Override
@@ -240,9 +240,9 @@ public class KnightPhantom extends BaseTFBoss {
 		float distance = 0.2F;
 		this.setDeltaMovement(new Vec3(this.getDeltaMovement().x() / 2.0D, this.getDeltaMovement().y() / 2.0D, this.getDeltaMovement().z() / 2.0D));
 		this.setDeltaMovement(new Vec3(
-				this.getDeltaMovement().x() - xRatio / f * distance,
-				this.getDeltaMovement().y() + distance,
-				this.getDeltaMovement().z() - zRatio / f * distance));
+			this.getDeltaMovement().x() - xRatio / f * distance,
+			this.getDeltaMovement().y() + distance,
+			this.getDeltaMovement().z() - zRatio / f * distance));
 
 		if (this.getDeltaMovement().y() > 0.4D) {
 			this.setDeltaMovement(this.getDeltaMovement().x(), 0.4D, this.getDeltaMovement().z());

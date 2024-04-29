@@ -16,9 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -57,7 +54,8 @@ public class ZombieWandItem extends Item {
 				level.addFreshEntity(zombie);
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
 
-				stack.hurtAndBreak(1, level.getRandom(), player, () -> {});
+				stack.hurtAndBreak(1, level.getRandom(), player, () -> {
+				});
 				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON.get(), 1.0F, zombie.getVoicePitch());
 			}
 		}

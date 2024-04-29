@@ -13,12 +13,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class IceSnowball extends TFThrowable implements ItemSupplier {
 
 	private static final int DAMAGE = 2;
@@ -49,7 +46,6 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 		return true;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {

@@ -13,7 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
@@ -150,10 +149,10 @@ public class TFEntities {
 
 	private static <E extends Entity> EntityType.Builder<E> makeBuilder(EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int range, int interval) {
 		return EntityType.Builder.of(factory, classification)
-				.sized(width, height)
-				.setTrackingRange(range)
-				.setUpdateInterval(interval)
-				.setShouldReceiveVelocityUpdates(true);
+			.sized(width, height)
+			.setTrackingRange(range)
+			.setUpdateInterval(interval)
+			.setShouldReceiveVelocityUpdates(true);
 	}
 
 	@SubscribeEvent

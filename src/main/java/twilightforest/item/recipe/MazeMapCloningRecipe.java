@@ -21,7 +21,7 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 
-		for(int j = 0; j < container.getContainerSize(); j++) {
+		for (int j = 0; j < container.getContainerSize(); j++) {
 			ItemStack itemstack1 = container.getItem(j);
 			if (!itemstack1.isEmpty()) {
 				if (itemstack1.is(TFItems.FILLED_MAZE_MAP.get())) {
@@ -48,7 +48,7 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 
-		for(int j = 0; j < container.getContainerSize(); j++) {
+		for (int j = 0; j < container.getContainerSize(); j++) {
 			ItemStack itemstack1 = container.getItem(j);
 			if (!itemstack1.isEmpty()) {
 				if (itemstack1.is(TFItems.FILLED_MAZE_MAP)) {

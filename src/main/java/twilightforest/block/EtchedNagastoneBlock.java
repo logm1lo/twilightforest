@@ -16,10 +16,10 @@ public class EtchedNagastoneBlock extends DirectionalBlock {
 	public static final MapCodec<EtchedNagastoneBlock> CODEC = simpleCodec(EtchedNagastoneBlock::new);
 
 	@SuppressWarnings("this-escape")
-    public EtchedNagastoneBlock(Properties properties) {
-        super(properties);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.DOWN));
-    }
+	public EtchedNagastoneBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.DOWN));
+	}
 
 	@Override
 	protected MapCodec<? extends DirectionalBlock> codec() {
@@ -33,10 +33,10 @@ public class EtchedNagastoneBlock extends DirectionalBlock {
 	}
 
 	@Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(FACING);
-    }
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
+		builder.add(FACING);
+	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {

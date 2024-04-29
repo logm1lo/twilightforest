@@ -25,8 +25,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.block.MoonwormBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
@@ -65,7 +63,6 @@ public class MoonwormShot extends TFThrowable {
 		return 0.03F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
@@ -84,8 +81,8 @@ public class MoonwormShot extends TFThrowable {
 		BlockState currentState = this.level().getBlockState(pos);
 		if (currentState.canBeReplaced() && !currentState.is(BlockTags.FIRE) && MoonwormBlock.canSurvive(this.level(), pos, result.getDirection()) && !currentState.is(Blocks.LAVA)) {
 			this.level().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState()
-					.setValue(DirectionalBlock.FACING, result.getDirection())
-					.setValue(BlockStateProperties.WATERLOGGED, currentState.getFluidState().is(Fluids.WATER)));
+				.setValue(DirectionalBlock.FACING, result.getDirection())
+				.setValue(BlockStateProperties.WATERLOGGED, currentState.getFluidState().is(Fluids.WATER)));
 
 			this.gameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
 			this.level().playSound(null, result.getBlockPos(), TFSounds.MOONWORM_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -95,7 +92,7 @@ public class MoonwormShot extends TFThrowable {
 				serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.MOONWORM_SQUISH_DROPS).getRandomItems(ctx).forEach((stack) -> {
 					ItemEntity squish = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), stack);
 					squish.spawnAtLocation(squish.getItem());
-                });
+				});
 			}
 			this.level().playSound(null, pos, TFSounds.BUG_SQUISH.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
 			this.gameEvent(GameEvent.ENTITY_DIE);

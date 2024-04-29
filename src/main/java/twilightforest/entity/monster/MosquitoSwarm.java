@@ -36,10 +36,10 @@ public class MosquitoSwarm extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 12.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 3.0D)
-				.add(Attributes.STEP_HEIGHT, 2.1D);
+			.add(Attributes.MAX_HEALTH, 12.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 3.0D)
+			.add(Attributes.STEP_HEIGHT, 2.1D);
 	}
 
 	@Override

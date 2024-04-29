@@ -202,10 +202,10 @@ public class NagaMovementPattern extends Goal {
 					double d2 = this.naga.getRandom().nextGaussian() * 0.02D;
 
 					this.naga.level().addParticle(ParticleTypes.CRIT,
-							(this.naga.getX() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
-							this.naga.getY() + this.naga.getRandom().nextFloat() * this.naga.getBbHeight(),
-							(this.naga.getZ() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
-							d, d1, d2);
+						(this.naga.getX() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
+						this.naga.getY() + this.naga.getRandom().nextFloat() * this.naga.getBbHeight(),
+						(this.naga.getZ() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
+						d, d1, d2);
 				}
 			}
 		}

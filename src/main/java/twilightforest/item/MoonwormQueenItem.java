@@ -3,7 +3,6 @@ package twilightforest.item;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -24,8 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.projectile.MoonwormShot;
@@ -110,7 +107,8 @@ public class MoonwormQueenItem extends Item {
 		if (!level.isClientSide() && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
 
 			if (level.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT.get(), level, living))) {
-				if (living instanceof Player player && !player.getAbilities().instabuild) stack.hurtAndBreak(2, level.getRandom(), player, () -> {});
+				if (living instanceof Player player && !player.getAbilities().instabuild) stack.hurtAndBreak(2, level.getRandom(), player, () -> {
+				});
 
 				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH.get(), living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1.0F, 1.0F);
 			}
@@ -162,7 +160,8 @@ public class MoonwormQueenItem extends Item {
 					SoundType soundtype = blockstate1.getSoundType(world, blockpos, context.getPlayer());
 					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, Objects.requireNonNull(context.getPlayer())), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 					if (playerentity == null || !playerentity.getAbilities().instabuild) {
-						itemstack.hurtAndBreak(1, world.getRandom(), playerentity, () -> {});
+						itemstack.hurtAndBreak(1, world.getRandom(), playerentity, () -> {
+						});
 					}
 
 					return InteractionResult.SUCCESS;

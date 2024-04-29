@@ -61,10 +61,10 @@ public class EntityUtil {
 	public static boolean canDestroyBlock(Level world, BlockPos pos, BlockState state, Entity entity) {
 		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.isAir()
-				&& !(world.getBlockEntity(pos) instanceof Container)
-				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
-				&& (/* rude type limit */!(entity instanceof LivingEntity)
-				|| EventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
+			&& !(world.getBlockEntity(pos) instanceof Container)
+			&& state.getBlock().canEntityDestroy(state, world, pos, entity)
+			&& (/* rude type limit */!(entity instanceof LivingEntity)
+			|| EventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
 	}
 
 	/**
@@ -136,11 +136,11 @@ public class EntityUtil {
 
 	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
 	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
-		float f = (float)entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		float f1 = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		float f = (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		float f1 = (float) entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 		if (victim instanceof LivingEntity) {
 			f += EnchantmentHelper.getDamageBonus(entity.getMainHandItem(), victim.getType());
-			f1 += (float)EnchantmentHelper.getKnockbackBonus(entity);
+			f1 += (float) EnchantmentHelper.getKnockbackBonus(entity);
 		}
 
 		int i = EnchantmentHelper.getFireAspect(entity);
@@ -151,7 +151,7 @@ public class EntityUtil {
 		boolean flag = victim.hurt(source, f);
 		if (flag) {
 			if (f1 > 0.0F && victim instanceof LivingEntity) {
-				((LivingEntity)victim).knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(entity.getYRot() * ((float)Math.PI / 180F)));
+				((LivingEntity) victim).knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(entity.getYRot() * ((float) Math.PI / 180F)));
 				entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
 			}
 
@@ -174,7 +174,7 @@ public class EntityUtil {
 	// [VanillaCopy] Method deleted between 1.20.4 and 1.20.5
 	private static void maybeDisableShield(Mob self, Player pPlayer, ItemStack pMobItemStack, ItemStack pPlayerItemStack) {
 		if (!pMobItemStack.isEmpty() && !pPlayerItemStack.isEmpty() && pMobItemStack.getItem() instanceof AxeItem && pPlayerItemStack.is(Items.SHIELD)) {
-			float f = 0.25F + (float)EnchantmentHelper.getBlockEfficiency(self) * 0.05F;
+			float f = 0.25F + (float) EnchantmentHelper.getBlockEfficiency(self) * 0.05F;
 			if (self.getRandom().nextFloat() < f) {
 				pPlayer.getCooldowns().addCooldown(Items.SHIELD, 100);
 				self.level().broadcastEntityEvent(pPlayer, EntityEvent.SHIELD_DISABLED);
@@ -208,6 +208,7 @@ public class EntityUtil {
 		if (checkValidPaintingPosition(world, painting))
 			world.addFreshEntity(painting);
 	}
+
 	@Nullable
 	public static ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
 		return getPaintingOfSize(rand, minSize, minSize, false);

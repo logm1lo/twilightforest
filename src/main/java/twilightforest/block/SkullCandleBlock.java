@@ -28,8 +28,8 @@ import java.util.List;
 public class SkullCandleBlock extends AbstractSkullCandleBlock {
 
 	public static final MapCodec<SkullCandleBlock> CODEC = RecordCodecBuilder.mapCodec(
-			instance -> instance.group(SkullBlock.Type.CODEC.fieldOf("kind").forGetter(AbstractSkullCandleBlock::getType), propertiesCodec())
-					.apply(instance, SkullCandleBlock::new)
+		instance -> instance.group(SkullBlock.Type.CODEC.fieldOf("kind").forGetter(AbstractSkullCandleBlock::getType), propertiesCodec())
+			.apply(instance, SkullCandleBlock::new)
 	);
 	public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 

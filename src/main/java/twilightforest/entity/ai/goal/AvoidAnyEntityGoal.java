@@ -42,8 +42,8 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 			@Override
 			public boolean test(@Nullable Entity input) {
 				return input != null && input.isAlive() &&
-						AvoidAnyEntityGoal.this.entity.getSensing().hasLineOfSight(input) &&
-						!AvoidAnyEntityGoal.this.entity.isAlliedTo(input);
+					AvoidAnyEntityGoal.this.entity.getSensing().hasLineOfSight(input) &&
+					!AvoidAnyEntityGoal.this.entity.isAlliedTo(input);
 			}
 		};
 

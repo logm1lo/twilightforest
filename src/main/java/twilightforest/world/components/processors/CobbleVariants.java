@@ -20,7 +20,7 @@ public final class CobbleVariants extends StructureProcessor {
 	public static final MapCodec<CobbleVariants> CODEC = MapCodec.unit(() -> INSTANCE);
 
 	private CobbleVariants() {
-    }
+	}
 
 	@Override
 	public StructureTemplate.StructureBlockInfo process(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_215194_3_, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {

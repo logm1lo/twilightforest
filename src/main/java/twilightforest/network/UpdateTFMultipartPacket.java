@@ -1,11 +1,9 @@
 package twilightforest.network;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -63,9 +61,9 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 					if (part instanceof TFPart<?> tfPart) {
 						if (message.data == null && message.entity != null) // Account for Singleplayer
 							Arrays.stream(message.entity.getParts())
-									.filter(p -> p instanceof TFPart<?> && p.getId() == part.getId())
-									.map(p -> (TFPart<?>) p)
-									.findFirst().ifPresent(p -> tfPart.readData(p.writeData()));
+								.filter(p -> p instanceof TFPart<?> && p.getId() == part.getId())
+								.map(p -> (TFPart<?>) p)
+								.findFirst().ifPresent(p -> tfPart.readData(p.writeData()));
 						else if (message.data != null) {
 							PartDataHolder data = message.data.get(tfPart.getId());
 							if (data != null)
@@ -103,10 +101,10 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 
 		static PartDataHolder decode(RegistryFriendlyByteBuf buffer) {
 			return new PartDataHolder(buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
-					buffer.readFloat(), buffer.readFloat(),
-					buffer.readFloat(), buffer.readFloat(),
-					buffer.readBoolean(),
-					unpack(buffer)
+				buffer.readFloat(), buffer.readFloat(),
+				buffer.readFloat(), buffer.readFloat(),
+				buffer.readBoolean(),
+				unpack(buffer)
 			);
 		}
 

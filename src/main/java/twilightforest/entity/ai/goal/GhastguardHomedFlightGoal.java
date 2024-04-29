@@ -31,7 +31,7 @@ public class GhastguardHomedFlightGoal extends Goal {
 			double d2 = control.getWantedZ() - this.ghast.getZ();
 			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 			return (d3 < 1.0D || d3 > 3600.0D)
-					&& !this.ghast.isMobWithinHomeArea(this.ghast);
+				&& !this.ghast.isMobWithinHomeArea(this.ghast);
 		}
 	}
 

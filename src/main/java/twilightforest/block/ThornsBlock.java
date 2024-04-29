@@ -46,17 +46,17 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	public ThornsBlock(Properties properties) {
 		super(properties, 10);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y)
-				.setValue(DOWN, false).setValue(UP, false)
-				.setValue(NORTH, false).setValue(SOUTH, false)
-				.setValue(WEST, false).setValue(EAST, false));
+			.setValue(DOWN, false).setValue(UP, false)
+			.setValue(NORTH, false).setValue(SOUTH, false)
+			.setValue(WEST, false).setValue(EAST, false));
 	}
 
 	@Override
 	public boolean canConnectTo(Direction.Axis thisAxis, Direction facing, BlockState facingState, boolean solidSide) {
 		return (facingState.getBlock() instanceof ThornsBlock
-						|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.get())
-						|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.get())
-						|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.get()));
+			|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.get())
+			|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.get())
+			|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.get()));
 	}
 
 	@Override

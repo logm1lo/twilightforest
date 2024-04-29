@@ -8,7 +8,10 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
@@ -47,9 +50,9 @@ public class TinyBird extends FlyingBird implements VariantHolder<TinyBirdVarian
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return FlyingBird.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 4.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.2D)
-				.add(Attributes.STEP_HEIGHT, 1.0D);
+			.add(Attributes.MAX_HEALTH, 4.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.2D)
+			.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Override

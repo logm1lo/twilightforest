@@ -52,11 +52,11 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 					BlockState underState = level.getBlockState(BlockPos.containing(x, pos.below().getY(), z));
 					if (underState.isSolid()) {
 						level.addAlwaysVisibleParticle(
-								new BlockParticleOption(ParticleTypes.BLOCK, underState),
-								x,
-								pos.getY(),
-								z,
-								0.0F, 0.0F, 0.0F);
+							new BlockParticleOption(ParticleTypes.BLOCK, underState),
+							x,
+							pos.getY(),
+							z,
+							0.0F, 0.0F, 0.0F);
 					}
 				}
 			}

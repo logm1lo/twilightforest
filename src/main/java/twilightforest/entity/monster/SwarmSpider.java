@@ -1,7 +1,6 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -9,7 +8,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -36,8 +38,8 @@ public class SwarmSpider extends Spider {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Spider.createAttributes()
-				.add(Attributes.MAX_HEALTH, 3.0D)
-				.add(Attributes.ATTACK_DAMAGE, 1.0D);
+			.add(Attributes.MAX_HEALTH, 3.0D)
+			.add(Attributes.ATTACK_DAMAGE, 1.0D);
 	}
 
 	@Override

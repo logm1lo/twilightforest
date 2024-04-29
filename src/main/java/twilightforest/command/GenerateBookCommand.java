@@ -23,10 +23,10 @@ public class GenerateBookCommand {
 
 	public static LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("genbook")
-				.executes(context -> generateBook(context.getSource(), null))
-				.requires(cs -> cs.hasPermission(3))
-				.then(Commands.argument("structure", ResourceKeyArgument.key(Registries.STRUCTURE))
-						.executes(context -> generateBook(context.getSource(), ResourceKeyArgument.getStructure(context, "structure"))));
+			.executes(context -> generateBook(context.getSource(), null))
+			.requires(cs -> cs.hasPermission(3))
+			.then(Commands.argument("structure", ResourceKeyArgument.key(Registries.STRUCTURE))
+				.executes(context -> generateBook(context.getSource(), ResourceKeyArgument.getStructure(context, "structure"))));
 	}
 
 	private static int generateBook(CommandSourceStack source, @Nullable Holder.Reference<Structure> structureKey) throws CommandSyntaxException {

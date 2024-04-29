@@ -28,9 +28,9 @@ public class StructureClearedTrigger extends SimpleCriterionTrigger<StructureCle
 	public record TriggerInstance(Optional<ContextAwarePredicate> player, ResourceKey<Structure> structure) implements SimpleInstance {
 
 		public static final Codec<StructureClearedTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(StructureClearedTrigger.TriggerInstance::player),
-						ResourceKey.codec(Registries.STRUCTURE).fieldOf("structure").forGetter(StructureClearedTrigger.TriggerInstance::structure))
-				.apply(instance, StructureClearedTrigger.TriggerInstance::new));
+				EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(StructureClearedTrigger.TriggerInstance::player),
+				ResourceKey.codec(Registries.STRUCTURE).fieldOf("structure").forGetter(StructureClearedTrigger.TriggerInstance::structure))
+			.apply(instance, StructureClearedTrigger.TriggerInstance::new));
 
 		public static Criterion<StructureClearedTrigger.TriggerInstance> clearedStructure(ResourceKey<Structure> structure) {
 			return TFAdvancements.STRUCTURE_CLEARED.get().createCriterion(new StructureClearedTrigger.TriggerInstance(Optional.empty(), structure));

@@ -29,7 +29,7 @@ public class TFRegistries {
 
 	public static final class Keys {
 		public static final String REGISTRY_NAMESPACE = "twilight";
-		
+
 		//Normal Registries
 		public static final ResourceKey<Registry<BiomeLayerType>> BIOME_LAYER_TYPE = ResourceKey.createRegistryKey(namedRegistry("biome_layer_type"));
 		public static final ResourceKey<Registry<DwarfRabbitVariant>> DWARF_RABBIT_VARIANT = ResourceKey.createRegistryKey(TwilightForestMod.prefix("dwarf_rabbit_variant"));

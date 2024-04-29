@@ -27,8 +27,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
@@ -99,8 +97,8 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Minotaur.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 120.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
+			.add(Attributes.MAX_HEALTH, 120.0D)
+			.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
 	}
 
 	@Override
@@ -151,7 +149,7 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	public boolean doHurtTarget(Entity entity) {
 		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), TFSounds.MINOSHROOM_ATTACK.get());
 	}
-	
+
 	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.MINOSHROOM_AMBIENT.get();
@@ -177,7 +175,6 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 		return (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 0.7F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public float getChargeAnimationScale(float scale) {
 		return (this.prevClientSideChargeAnimation + (this.clientSideChargeAnimation - this.prevClientSideChargeAnimation) * scale) / 6.0F;
 	}

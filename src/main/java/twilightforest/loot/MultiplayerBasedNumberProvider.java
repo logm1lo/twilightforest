@@ -17,9 +17,9 @@ import java.util.Set;
 
 public record MultiplayerBasedNumberProvider(NumberProvider rollsPerPlayer, NumberProvider defaultRolls) implements NumberProvider {
 	public static final MapCodec<MultiplayerBasedNumberProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-					NumberProviders.CODEC.fieldOf("per_player_rolls").forGetter(MultiplayerBasedNumberProvider::rollsPerPlayer),
-					NumberProviders.CODEC.fieldOf("default_rolls").forGetter(MultiplayerBasedNumberProvider::defaultRolls))
-			.apply(instance, MultiplayerBasedNumberProvider::new)
+			NumberProviders.CODEC.fieldOf("per_player_rolls").forGetter(MultiplayerBasedNumberProvider::rollsPerPlayer),
+			NumberProviders.CODEC.fieldOf("default_rolls").forGetter(MultiplayerBasedNumberProvider::defaultRolls))
+		.apply(instance, MultiplayerBasedNumberProvider::new)
 	);
 
 	@Override

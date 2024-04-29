@@ -117,7 +117,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	}
 
 	@Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 		List<ItemStack> drops = super.getDrops(state, builder);
 		Optional<ItemStack> skullStack = drops.stream().filter(item -> item.is(ItemTags.SKULLS) && !item.is(this.asItem())).findFirst();
 		if (skullStack.isPresent()) {
@@ -160,8 +160,8 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			if (stack.is(ItemTags.CANDLES)
-					&& stack.is(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor())).asItem())
-					&& !player.isShiftKeyDown()) {
+				&& stack.is(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor())).asItem())
+				&& !player.isShiftKeyDown()) {
 				if (sc.getCandleAmount() < 4) {
 					sc.incrementCandleAmount();
 					level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);

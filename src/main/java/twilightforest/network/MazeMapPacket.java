@@ -19,10 +19,10 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 	public static final Type<MazeMapPacket> TYPE = new Type<>(TwilightForestMod.prefix("maze_map"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MazeMapPacket> STREAM_CODEC = StreamCodec.composite(
-			ClientboundMapItemDataPacket.STREAM_CODEC, MazeMapPacket::inner,
-			ByteBufCodecs.BOOL, MazeMapPacket::ore,
-			ByteBufCodecs.INT, MazeMapPacket::yCenter,
-			MazeMapPacket::new
+		ClientboundMapItemDataPacket.STREAM_CODEC, MazeMapPacket::inner,
+		ByteBufCodecs.BOOL, MazeMapPacket::ore,
+		ByteBufCodecs.INT, MazeMapPacket::yCenter,
+		MazeMapPacket::new
 	);
 
 	@Override

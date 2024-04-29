@@ -218,7 +218,7 @@ public class TFBlocks {
 
 	//mini structures
 	public static final DeferredBlock<Block> TWILIGHT_PORTAL_MINIATURE_STRUCTURE = register("twilight_portal_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.of().noCollission().noOcclusion().requiresCorrectToolForDrops().strength(0.75F)));
-//	public static final DeferredBlock<Block> HEDGE_MAZE_MINIATURE_STRUCTURE = register("hedge_maze_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.ofFullCopy(TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())));
+	//	public static final DeferredBlock<Block> HEDGE_MAZE_MINIATURE_STRUCTURE = register("hedge_maze_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.ofFullCopy(TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())));
 //	public static final DeferredBlock<Block> HOLLOW_HILL_MINIATURE_STRUCTURE = register("hollow_hill_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.ofFullCopy(TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())));
 //	public static final DeferredBlock<Block> QUEST_GROVE_MINIATURE_STRUCTURE = register("quest_grove_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.ofFullCopy(TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())));
 //	public static final DeferredBlock<Block> MUSHROOM_TOWER_MINIATURE_STRUCTURE = register("mushroom_tower_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.ofFullCopy(TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())));
@@ -469,7 +469,7 @@ public class TFBlocks {
 	public static final DeferredBlock<CeilingHangingSignBlock> CANOPY_HANGING_SIGN = BLOCKS.register("canopy_hanging_sign", () -> new TFCeilingHangingSignBlock(TFWoodTypes.CANOPY_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<WallHangingSignBlock> CANOPY_WALL_HANGING_SIGN = BLOCKS.register("canopy_wall_hanging_sign", () -> new TFWallHangingSignBlock(TFWoodTypes.CANOPY_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<BanisterBlock> CANOPY_BANISTER = register("canopy_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get())));
-	
+
 	public static final DeferredBlock<Block> MANGROVE_PLANKS = register("mangrove_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.DIRT).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final DeferredBlock<StairBlock> MANGROVE_STAIRS = register("mangrove_stairs", () -> new StairBlock(() -> MANGROVE_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get())));
 	public static final DeferredBlock<Block> MANGROVE_SLAB = register("mangrove_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get())));
@@ -484,7 +484,7 @@ public class TFBlocks {
 	public static final DeferredBlock<CeilingHangingSignBlock> MANGROVE_HANGING_SIGN = BLOCKS.register("mangrove_hanging_sign", () -> new TFCeilingHangingSignBlock(TFWoodTypes.MANGROVE_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<WallHangingSignBlock> MANGROVE_WALL_HANGING_SIGN = BLOCKS.register("mangrove_wall_hanging_sign", () -> new TFWallHangingSignBlock(TFWoodTypes.MANGROVE_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<BanisterBlock> MANGROVE_BANISTER = register("mangrove_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get())));
-	
+
 	public static final DeferredBlock<Block> DARK_PLANKS = register("dark_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.COLOR_ORANGE).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final DeferredBlock<StairBlock> DARK_STAIRS = register("dark_stairs", () -> new StairBlock(() -> DARK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get())));
 	public static final DeferredBlock<Block> DARK_SLAB = register("dark_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get()).sound(SoundType.WOOD)));
@@ -499,7 +499,7 @@ public class TFBlocks {
 	public static final DeferredBlock<CeilingHangingSignBlock> DARK_HANGING_SIGN = BLOCKS.register("dark_hanging_sign", () -> new TFCeilingHangingSignBlock(TFWoodTypes.DARK_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<WallHangingSignBlock> DARK_WALL_HANGING_SIGN = BLOCKS.register("dark_wall_hanging_sign", () -> new TFWallHangingSignBlock(TFWoodTypes.DARK_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<BanisterBlock> DARK_BANISTER = register("dark_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get())));
-	
+
 	public static final DeferredBlock<Block> TIME_PLANKS = register("time_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.DIRT).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final DeferredBlock<StairBlock> TIME_STAIRS = register("time_stairs", () -> new StairBlock(() -> TIME_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get())));
 	public static final DeferredBlock<Block> TIME_SLAB = register("time_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get()).sound(SoundType.WOOD)));
@@ -514,7 +514,7 @@ public class TFBlocks {
 	public static final DeferredBlock<CeilingHangingSignBlock> TIME_HANGING_SIGN = BLOCKS.register("time_hanging_sign", () -> new TFCeilingHangingSignBlock(TFWoodTypes.TIME_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<WallHangingSignBlock> TIME_WALL_HANGING_SIGN = BLOCKS.register("time_wall_hanging_sign", () -> new TFWallHangingSignBlock(TFWoodTypes.TIME_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<BanisterBlock> TIME_BANISTER = register("time_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get())));
-	
+
 	public static final DeferredBlock<Block> TRANSFORMATION_PLANKS = register("transformation_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final DeferredBlock<StairBlock> TRANSFORMATION_STAIRS = register("transformation_stairs", () -> new StairBlock(() -> TRANSFORMATION_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get())));
 	public static final DeferredBlock<Block> TRANSFORMATION_SLAB = register("transformation_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get())));
@@ -529,7 +529,7 @@ public class TFBlocks {
 	public static final DeferredBlock<CeilingHangingSignBlock> TRANSFORMATION_HANGING_SIGN = BLOCKS.register("transformation_hanging_sign", () -> new TFCeilingHangingSignBlock(TFWoodTypes.TRANSFORMATION_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<WallHangingSignBlock> TRANSFORMATION_WALL_HANGING_SIGN = BLOCKS.register("transformation_wall_hanging_sign", () -> new TFWallHangingSignBlock(TFWoodTypes.TRANSFORMATION_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<BanisterBlock> TRANSFORMATION_BANISTER = register("transformation_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get())));
-	
+
 	public static final DeferredBlock<Block> MINING_PLANKS = register("mining_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.SAND).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final DeferredBlock<StairBlock> MINING_STAIRS = register("mining_stairs", () -> new StairBlock(() -> MINING_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get())));
 	public static final DeferredBlock<Block> MINING_SLAB = register("mining_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get())));
@@ -544,7 +544,7 @@ public class TFBlocks {
 	public static final DeferredBlock<CeilingHangingSignBlock> MINING_HANGING_SIGN = BLOCKS.register("mining_hanging_sign", () -> new TFCeilingHangingSignBlock(TFWoodTypes.MINING_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<WallHangingSignBlock> MINING_WALL_HANGING_SIGN = BLOCKS.register("mining_wall_hanging_sign", () -> new TFWallHangingSignBlock(TFWoodTypes.MINING_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get()).noCollission().strength(1.0F)));
 	public static final DeferredBlock<BanisterBlock> MINING_BANISTER = register("mining_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get())));
-	
+
 	public static final DeferredBlock<Block> SORTING_PLANKS = register("sorting_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.PODZOL).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final DeferredBlock<StairBlock> SORTING_STAIRS = register("sorting_stairs", () -> new StairBlock(() -> SORTING_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(SORTING_PLANKS.get())));
 	public static final DeferredBlock<Block> SORTING_SLAB = register("sorting_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(SORTING_PLANKS.get())));

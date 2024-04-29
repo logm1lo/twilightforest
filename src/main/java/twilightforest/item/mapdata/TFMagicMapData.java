@@ -9,7 +9,6 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -25,8 +24,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
@@ -84,8 +81,8 @@ public class TFMagicMapData extends MapItemSavedData {
 	 * Checks existing features against the feature cache changes wrong ones
 	 */
 	public void checkExistingFeatures(Level world) {
-        IntArrayList toRemove = new IntArrayList();
-        Int2ObjectLinkedOpenHashMap<TFMapDecoration> toAdd = new Int2ObjectLinkedOpenHashMap<>();
+		IntArrayList toRemove = new IntArrayList();
+		Int2ObjectLinkedOpenHashMap<TFMapDecoration> toAdd = new Int2ObjectLinkedOpenHashMap<>();
 
 		for (var entry : tfDecorations.int2ObjectEntrySet()) {
 			TFMapDecoration coord = entry.getValue();
@@ -96,8 +93,8 @@ public class TFMagicMapData extends MapItemSavedData {
 			if (coord.featureId != trueId) {
 				toRemove.add(entry.getIntKey());
 				if (trueId != 0) {
-                    toAdd.put(entry.getIntKey(), new TFMapDecoration(trueId, coord.x, coord.y, coord.rot, LandmarkUtil.isConquered(world, worldX, worldZ)));
-                }
+					toAdd.put(entry.getIntKey(), new TFMapDecoration(trueId, coord.x, coord.y, coord.rot, LandmarkUtil.isConquered(world, worldX, worldZ)));
+				}
 			}
 		}
 
@@ -139,13 +136,13 @@ public class TFMagicMapData extends MapItemSavedData {
 	@Nullable
 	public static TFMagicMapData getMagicMapData(Level level, String name) {
 		if (level.isClientSide()) return CLIENT_DATA.get(name);
-		else return (TFMagicMapData) ((ServerLevel)level).getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
+		else return (TFMagicMapData) ((ServerLevel) level).getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMagicMapData(Level level, TFMagicMapData data, String id) {
 		if (level.isClientSide()) CLIENT_DATA.put(id, data);
-		else ((ServerLevel)level).getServer().overworld().getDataStorage().set(id, data);
+		else ((ServerLevel) level).getServer().overworld().getDataStorage().set(id, data);
 	}
 
 	public static Factory<MapItemSavedData> factory() {
@@ -171,7 +168,7 @@ public class TFMagicMapData extends MapItemSavedData {
 
 	public static class TFMapDecoration {
 
-		private static final Object2IntArrayMap<ResourceKey<Structure>> ICONS = new Object2IntArrayMap<>(){{
+		private static final Object2IntArrayMap<ResourceKey<Structure>> ICONS = new Object2IntArrayMap<>() {{
 			defaultReturnValue(0); // Empty space on icons texture, renders nothing if added anyway
 			put(TFStructures.HOLLOW_HILL_SMALL, 1);
 			put(TFStructures.HOLLOW_HILL_MEDIUM, 2);
@@ -208,7 +205,6 @@ public class TFMagicMapData extends MapItemSavedData {
 			this.conquered = conquered;
 		}
 
-		@OnlyIn(Dist.CLIENT)
 		public boolean render(int idx, PoseStack stack, MultiBufferSource buffer, int light) {
 			if (featureId > 0) {
 				stack.pushPose();
@@ -229,10 +225,10 @@ public class TFMagicMapData extends MapItemSavedData {
 				mapIconVertices.vertex(matrix4f, -1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(uMin, vMax).uv2(light).endVertex();
 
 				if (this.conquered) {
-					uMin = 10f/16f;
-					vMin = 1f/16f;
-					uMax = 11f/16f;
-					vMax = 2f/16f;
+					uMin = 10f / 16f;
+					vMin = 1f / 16f;
+					uMax = 11f / 16f;
+					vMax = 2f / 16f;
 					depth -= 0.002f;
 					VertexConsumer vanillaIconVertices = buffer.getBuffer(DecorationRenderTypes.VANILLA_ICONS);
 					vanillaIconVertices.vertex(matrix4f, -1, 0, depth).color(255, 255, 255, 255).uv(uMin, vMin).uv2(light).endVertex();
@@ -258,7 +254,6 @@ public class TFMagicMapData extends MapItemSavedData {
 			return Objects.hash(featureId, x, y, rot, conquered);
 		}
 
-		@OnlyIn(Dist.CLIENT)
 		private static class DecorationRenderTypes {
 			private static final RenderType MAP_ICONS = RenderType.text(TwilightForestMod.prefix("textures/gui/mapicons.png"));
 			private static final RenderType VANILLA_ICONS = RenderType.text(new ResourceLocation("textures/map/map_icons.png"));

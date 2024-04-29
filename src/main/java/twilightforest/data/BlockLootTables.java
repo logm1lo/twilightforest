@@ -503,35 +503,35 @@ public class BlockLootTables extends BlockLootSubProvider {
 
 	private void registerLeavesNoSapling(Block leaves) {
 		LootPoolEntryContainer.Builder<?> sticks = applyExplosionDecay(leaves, LootItem.lootTableItem(Items.STICK)
-				.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
-				.when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
+			.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
+			.when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
 		add(leaves, createSilkTouchOrShearsDispatchTable(leaves, sticks));
 	}
 
 	private LootTable.Builder hollowLog(Block log) {
 		return LootTable.lootTable()
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE)))))
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(Blocks.SHORT_GRASS).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(TFBlocks.MOSS_PATCH.get()).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(TFBlocks.MOSS_PATCH.get()).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.MOSS)))))
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(Items.SNOWBALL).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.SNOW)))))
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(Blocks.VINE).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.VINE)))))
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(Blocks.LADDER).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.LADDER)))))
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(Blocks.LADDER).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.LADDER_WATERLOGGED)))));
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE)))))
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(Blocks.SHORT_GRASS).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(TFBlocks.MOSS_PATCH.get()).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(TFBlocks.MOSS_PATCH.get()).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.MOSS)))))
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(Items.SNOWBALL).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.SNOW)))))
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(Blocks.VINE).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.VINE)))))
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(Blocks.LADDER).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.LADDER)))))
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(Blocks.LADDER).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.LADDER_WATERLOGGED)))));
 	}
 
 	private LootTable.Builder verticalHollowLog(Block log) {
 		return LootTable.lootTable()
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE)))));
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.FORTUNE)))));
 	}
 
 	// [VanillaCopy] super.droppingWithChancesAndSticks, but non-silk touch parameter can be an item instead of a block
@@ -545,81 +545,81 @@ public class BlockLootTables extends BlockLootSubProvider {
 
 	private LootTable.Builder particleSpawner() {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(this.applyExplosionDecay(TFBlocks.FIREFLY_SPAWNER.get(), LootItem.lootTableItem(TFBlocks.FIREFLY_SPAWNER.get()))))
-				.withPool(LootPool.lootPool()
-						.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FireflySpawnerBlock.RADIUS.getPossibleValues(), layer ->
-								LootItem.lootTableItem(TFBlocks.FIREFLY.get())
-										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get())
-												.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FireflySpawnerBlock.RADIUS, layer)))
-										.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer - 1)))))));
+				.add(this.applyExplosionDecay(TFBlocks.FIREFLY_SPAWNER.get(), LootItem.lootTableItem(TFBlocks.FIREFLY_SPAWNER.get()))))
+			.withPool(LootPool.lootPool()
+				.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FireflySpawnerBlock.RADIUS.getPossibleValues(), layer ->
+					LootItem.lootTableItem(TFBlocks.FIREFLY.get())
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FireflySpawnerBlock.RADIUS, layer)))
+						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer - 1)))))));
 	}
 
 	protected LootTable.Builder torchberryPlant(Block pBlock) {
 		return LootTable.lootTable()
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(pBlock).when(HAS_SHEARS)))
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(TFItems.TORCHBERRIES.get())
-								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(pBlock).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TorchberryPlantBlock.HAS_BERRIES, true)))));
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(pBlock).when(HAS_SHEARS)))
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(TFItems.TORCHBERRIES.get())
+					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(pBlock).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TorchberryPlantBlock.HAS_BERRIES, true)))));
 	}
 
 	protected LootTable.Builder redThread() {
 		return LootTable.lootTable()
-				.withPool(LootPool.lootPool()
-						.add(this.applyExplosionDecay(TFBlocks.RED_THREAD.get(), LootItem.lootTableItem(TFBlocks.RED_THREAD.get())
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
-										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-												.setProperties(StatePropertiesPredicate.Builder.properties()
-														.hasProperty(PipeBlock.EAST, true))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
-										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-												.setProperties(StatePropertiesPredicate.Builder.properties()
-														.hasProperty(PipeBlock.WEST, true))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
-										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-												.setProperties(StatePropertiesPredicate.Builder.properties()
-														.hasProperty(PipeBlock.NORTH, true))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
-										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-												.setProperties(StatePropertiesPredicate.Builder.properties()
-														.hasProperty(PipeBlock.SOUTH, true))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
-										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-												.setProperties(StatePropertiesPredicate.Builder.properties()
-														.hasProperty(PipeBlock.UP, true))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
-										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-												.setProperties(StatePropertiesPredicate.Builder.properties()
-														.hasProperty(PipeBlock.DOWN, true))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
+			.withPool(LootPool.lootPool()
+				.add(this.applyExplosionDecay(TFBlocks.RED_THREAD.get(), LootItem.lootTableItem(TFBlocks.RED_THREAD.get())
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties()
+								.hasProperty(PipeBlock.EAST, true))))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties()
+								.hasProperty(PipeBlock.WEST, true))))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties()
+								.hasProperty(PipeBlock.NORTH, true))))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties()
+								.hasProperty(PipeBlock.SOUTH, true))))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties()
+								.hasProperty(PipeBlock.UP, true))))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties()
+								.hasProperty(PipeBlock.DOWN, true))))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
 	}
 
 	protected LootTable.Builder rope() {
 		return LootTable.lootTable()
-				.withPool(LootPool.lootPool()
-						.add(this.applyExplosionDecay(TFBlocks.ROPE.get(), LootItem.lootTableItem(TFBlocks.ROPE.get())
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
-										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
-												.setProperties(StatePropertiesPredicate.Builder.properties()
-														.hasProperty(RopeBlock.X, true))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
-										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
-												.setProperties(StatePropertiesPredicate.Builder.properties()
-														.hasProperty(RopeBlock.Y, true))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
-										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
-												.setProperties(StatePropertiesPredicate.Builder.properties()
-														.hasProperty(RopeBlock.Z, true))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
+			.withPool(LootPool.lootPool()
+				.add(this.applyExplosionDecay(TFBlocks.ROPE.get(), LootItem.lootTableItem(TFBlocks.ROPE.get())
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties()
+								.hasProperty(RopeBlock.X, true))))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties()
+								.hasProperty(RopeBlock.Y, true))))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties()
+								.hasProperty(RopeBlock.Z, true))))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
 	}
 
 	protected LootTable.Builder fallenLeaves() {
 		return LootTable.lootTable().withPool(LootPool.lootPool()
-				.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FallenLeavesBlock.LAYERS.getPossibleValues(), layer ->
-						LootItem.lootTableItem(TFBlocks.FALLEN_LEAVES.get())
-								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FALLEN_LEAVES.get())
-										.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FallenLeavesBlock.LAYERS, layer)))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer)))).when(HAS_SHEARS))));
+			.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FallenLeavesBlock.LAYERS.getPossibleValues(), layer ->
+				LootItem.lootTableItem(TFBlocks.FALLEN_LEAVES.get())
+					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FALLEN_LEAVES.get())
+						.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FallenLeavesBlock.LAYERS, layer)))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer)))).when(HAS_SHEARS))));
 	}
 
 	//[VanillaCopy] of a few different methods from BlockLoot. These are here just so we can use the modded shears thing

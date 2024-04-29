@@ -20,9 +20,9 @@ import java.util.List;
 
 public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFunction {
 	public static final MapCodec<MultiplayerBasedAdditionLootFunction> CODEC = RecordCodecBuilder.mapCodec(
-			p_298131_ -> commonFields(p_298131_)
-					.and(NumberProviders.CODEC.fieldOf("extra_count_per_player").forGetter(o -> o.value))
-					.apply(p_298131_, MultiplayerBasedAdditionLootFunction::new)
+		p_298131_ -> commonFields(p_298131_)
+			.and(NumberProviders.CODEC.fieldOf("extra_count_per_player").forGetter(o -> o.value))
+			.apply(p_298131_, MultiplayerBasedAdditionLootFunction::new)
 	);
 
 	private final NumberProvider value;

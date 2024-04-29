@@ -19,7 +19,7 @@ public final class StoneBricksVariants extends StructureProcessor {
 	public static final MapCodec<StoneBricksVariants> CODEC = MapCodec.unit(() -> INSTANCE);
 
 	private StoneBricksVariants() {
-    }
+	}
 
 	@Override
 	public StructureTemplate.StructureBlockInfo process(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo originalBlock, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {

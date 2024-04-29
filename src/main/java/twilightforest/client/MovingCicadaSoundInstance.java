@@ -26,9 +26,9 @@ public class MovingCicadaSoundInstance extends AbstractTickableSoundInstance {
 	@Override
 	public void tick() {
 		if (!this.wearer.isRemoved() && (this.wearer.getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.asItem()) || this.isWearingCicadaCurio())) {
-			this.x = (float)this.wearer.getX();
-			this.y = (float)this.wearer.getY();
-			this.z = (float)this.wearer.getZ();
+			this.x = (float) this.wearer.getX();
+			this.y = (float) this.wearer.getY();
+			this.z = (float) this.wearer.getZ();
 		} else {
 			this.stop();
 		}

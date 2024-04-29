@@ -21,15 +21,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.util.EntityUtil;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSupplier {
 
 	public NatureBolt(EntityType<? extends NatureBolt> type, Level level) {
@@ -51,7 +48,6 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 		return 0.003F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
@@ -85,7 +81,7 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 		Entity entityHit = result.getEntity();
 		if (entityHit instanceof LivingEntity living && (owner == null || (entityHit != owner && entityHit != owner.getVehicle()))) {
 			if (entityHit.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.LEAF_BRAIN, this, this.getOwner()), 2)
-					&& this.level().getDifficulty() != Difficulty.PEACEFUL) {
+				&& this.level().getDifficulty() != Difficulty.PEACEFUL) {
 				int poisonTime = this.level().getDifficulty() == Difficulty.HARD ? 7 : 3;
 				living.addEffect(new MobEffectInstance(MobEffects.POISON, poisonTime * 20, 0));
 			}

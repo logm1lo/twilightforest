@@ -14,7 +14,7 @@ import twilightforest.world.components.feature.trees.*;
 public class TFFeatures {
 
 	public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, TwilightForestMod.ID);
-	
+
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () -> new BigMushgloomFeature(HugeMushroomFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_BROWN_MUSHROOM = FEATURES.register("canopy_brown_mushroom", () -> new BrownCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_MUSHROOM = FEATURES.register("canopy_red_mushroom", () -> new RedCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));

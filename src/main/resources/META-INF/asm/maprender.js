@@ -34,9 +34,9 @@ function initializeCoreMod() {
                             'mapRenderDecorations',
                             '(ILnet/minecraft/world/level/saveddata/maps/MapItemSavedData;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)I',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         },
@@ -64,9 +64,9 @@ function initializeCoreMod() {
                             'shouldMapRender',
                             '(ZLnet/minecraft/world/item/ItemStack;)Z',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         },
@@ -117,9 +117,9 @@ function initializeCoreMod() {
                             'renderMapData',
                             '(Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;)Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         },
@@ -143,9 +143,9 @@ function initializeCoreMod() {
                             'renderMapData',
                             '(Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;)Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         }

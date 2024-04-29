@@ -5,7 +5,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -79,11 +78,11 @@ public record UncraftingRecipe(int cost, Ingredient input, int count,
 	public static class Serializer implements RecipeSerializer<UncraftingRecipe> {
 
 		public static final MapCodec<UncraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-						Codec.INT.optionalFieldOf("cost", -1).forGetter(UncraftingRecipe::cost),
-						Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(UncraftingRecipe::input),
-						Codec.INT.optionalFieldOf("input_count", 1).forGetter(UncraftingRecipe::count),
-						ShapedRecipePattern.MAP_CODEC.forGetter(UncraftingRecipe::pattern)
-				).apply(instance, UncraftingRecipe::new)
+				Codec.INT.optionalFieldOf("cost", -1).forGetter(UncraftingRecipe::cost),
+				Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(UncraftingRecipe::input),
+				Codec.INT.optionalFieldOf("input_count", 1).forGetter(UncraftingRecipe::count),
+				ShapedRecipePattern.MAP_CODEC.forGetter(UncraftingRecipe::pattern)
+			).apply(instance, UncraftingRecipe::new)
 		);
 		public static final StreamCodec<RegistryFriendlyByteBuf, UncraftingRecipe> STREAM_CODEC = StreamCodec.of(UncraftingRecipe.Serializer::toNetwork, UncraftingRecipe.Serializer::fromNetwork);
 

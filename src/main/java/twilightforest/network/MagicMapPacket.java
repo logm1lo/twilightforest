@@ -19,10 +19,10 @@ public class MagicMapPacket implements CustomPacketPayload {
 	public static final Type<MagicMapPacket> TYPE = new Type<>(TwilightForestMod.prefix("magic_map"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MagicMapPacket> STREAM_CODEC = StreamCodec.composite(
-			ByteBufCodecs.byteArray(256), // TODO Is this enough? To how many bytes will the data require?
-			p -> p.featureData,
-			ClientboundMapItemDataPacket.STREAM_CODEC, p -> p.inner,
-			MagicMapPacket::new
+		ByteBufCodecs.byteArray(256), // TODO Is this enough? To how many bytes will the data require?
+		p -> p.featureData,
+		ClientboundMapItemDataPacket.STREAM_CODEC, p -> p.inner,
+		MagicMapPacket::new
 	);
 
 	private final byte[] featureData;

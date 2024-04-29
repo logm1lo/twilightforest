@@ -13,18 +13,18 @@ public record PotionFlaskComponent(PotionContents potion, int doses, int breakag
 	public static final PotionFlaskComponent EMPTY_UNBREAKABLE = new PotionFlaskComponent(PotionContents.EMPTY, 0, 0, false);
 
 	public static final Codec<PotionFlaskComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			PotionContents.CODEC.optionalFieldOf("potion", PotionContents.EMPTY).forGetter(PotionFlaskComponent::potion),
-			Codec.INT.optionalFieldOf("doses", 0).forGetter(PotionFlaskComponent::doses),
-			Codec.INT.optionalFieldOf("breakage", 0).forGetter(PotionFlaskComponent::breakage),
-			Codec.BOOL.optionalFieldOf("breakable", true).forGetter(PotionFlaskComponent::breakable)
+		PotionContents.CODEC.optionalFieldOf("potion", PotionContents.EMPTY).forGetter(PotionFlaskComponent::potion),
+		Codec.INT.optionalFieldOf("doses", 0).forGetter(PotionFlaskComponent::doses),
+		Codec.INT.optionalFieldOf("breakage", 0).forGetter(PotionFlaskComponent::breakage),
+		Codec.BOOL.optionalFieldOf("breakable", true).forGetter(PotionFlaskComponent::breakable)
 	).apply(instance, PotionFlaskComponent::new));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, PotionFlaskComponent> STREAM_CODEC = StreamCodec.composite(
-			PotionContents.STREAM_CODEC, PotionFlaskComponent::potion,
-			ByteBufCodecs.INT, PotionFlaskComponent::doses,
-			ByteBufCodecs.INT, PotionFlaskComponent::breakage,
-			ByteBufCodecs.BOOL, PotionFlaskComponent::breakable,
-			PotionFlaskComponent::new);
+		PotionContents.STREAM_CODEC, PotionFlaskComponent::potion,
+		ByteBufCodecs.INT, PotionFlaskComponent::doses,
+		ByteBufCodecs.INT, PotionFlaskComponent::breakage,
+		ByteBufCodecs.BOOL, PotionFlaskComponent::breakable,
+		PotionFlaskComponent::new);
 
 	public PotionFlaskComponent tryAddDose(PotionContents potion) {
 		if (this.breakage() <= 0) {

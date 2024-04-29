@@ -6,7 +6,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -47,12 +46,12 @@ public record SpawnFallenLeafFromPacket(BlockPos pos, Vec3 motion) implements Cu
 			int g = Mth.clamp(((color >> 8) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
 			int b = Mth.clamp((color & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
 			level.addParticle(new LeafParticleData(r, g, b),
-					message.pos().getX() + level.getRandom().nextFloat(),
-					message.pos().getY(),
-					message.pos().getZ() + level.getRandom().nextFloat(),
-					(level.getRandom().nextFloat() * -0.5F) * message.motion().x(),
-					level.getRandom().nextFloat() * 0.5F + 0.25F,
-					(level.getRandom().nextFloat() * -0.5F) * message.motion().z()
+				message.pos().getX() + level.getRandom().nextFloat(),
+				message.pos().getY(),
+				message.pos().getZ() + level.getRandom().nextFloat(),
+				(level.getRandom().nextFloat() * -0.5F) * message.motion().x(),
+				level.getRandom().nextFloat() * 0.5F + 0.25F,
+				(level.getRandom().nextFloat() * -0.5F) * message.motion().z()
 			);
 		});
 	}

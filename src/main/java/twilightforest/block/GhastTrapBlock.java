@@ -18,8 +18,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFAdvancements;
 import twilightforest.block.entity.GhastTrapBlockEntity;
+import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 

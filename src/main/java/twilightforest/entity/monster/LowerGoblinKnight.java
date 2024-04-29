@@ -22,8 +22,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
@@ -65,9 +63,9 @@ public class LowerGoblinKnight extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D);
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D)
+			.add(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override
@@ -204,7 +202,6 @@ public class LowerGoblinKnight extends Monster {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void handleEntityEvent(byte id) {
 		if (id == 5) {
 			ItemStack broken = new ItemStack(Items.IRON_CHESTPLATE);

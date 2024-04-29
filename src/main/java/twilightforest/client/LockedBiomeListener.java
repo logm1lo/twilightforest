@@ -6,7 +6,6 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.TickEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
@@ -28,18 +27,18 @@ public class LockedBiomeListener {
 			return;
 
 		//attempt to send a biome locked toast if our player is in a locked biome, only every 5 ticks
-		if(level.isClientSide() && event.phase == TickEvent.Phase.END && player.tickCount % 5 == 0
-				&& LandmarkUtil.isProgressionEnforced(level)
-				&& !player.isCreative() && !player.isSpectator() && !TFConfig.disableLockedBiomeToasts) {
+		if (level.isClientSide() && event.phase == TickEvent.Phase.END && player.tickCount % 5 == 0
+			&& LandmarkUtil.isProgressionEnforced(level)
+			&& !player.isCreative() && !player.isSpectator() && !TFConfig.disableLockedBiomeToasts) {
 			Optional<Restriction> restriction = Restriction.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player);
 			if (restriction.isPresent() && restriction.get().lockedBiomeToast() != null) {
 				timeUntilToast--;
-				if(!shownToast && timeUntilToast <= 0) {
+				if (!shownToast && timeUntilToast <= 0) {
 					Minecraft.getInstance().getToasts().addToast(new LockedBiomeToast(restriction.get().lockedBiomeToast()));
 					shownToast = true;
 				}
 			} else {
-				if(shownToast) {
+				if (shownToast) {
 					timeUntilToast = 60;
 					shownToast = false;
 				}

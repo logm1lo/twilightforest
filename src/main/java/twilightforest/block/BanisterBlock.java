@@ -63,9 +63,9 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 		BlockPos pos = context.getClickedPos();
 
 		return this.defaultBlockState()
-				.setValue(FACING, context.getHorizontalDirection())
-				.setValue(SHAPE, context.getLevel().getBlockState(pos.above()).is(BlockTagGenerator.BANISTERS) ? BanisterShape.CONNECTED : BanisterShape.TALL)
-				.setValue(WATERLOGGED, context.getLevel().getFluidState(pos).getType() == Fluids.WATER);
+			.setValue(FACING, context.getHorizontalDirection())
+			.setValue(SHAPE, context.getLevel().getBlockState(pos.above()).is(BlockTagGenerator.BANISTERS) ? BanisterShape.CONNECTED : BanisterShape.TALL)
+			.setValue(WATERLOGGED, context.getLevel().getFluidState(pos).getType() == Fluids.WATER);
 	}
 
 	@Override
@@ -173,54 +173,54 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 
 	// These extend upwards to 16 instead of 12 because they're used on both the Tall and Connected shapes
 	private static final VoxelShape NORTH_SUPPORTS_TALL = Shapes.or(
-			Block.box(2.5D, 0.0D, 0.0D, 5.5D, 16.0D, 3.0D),
-			Block.box(10.5D, 0.0D, 0.0D, 13.5D, 16.0D, 3.0D)
+		Block.box(2.5D, 0.0D, 0.0D, 5.5D, 16.0D, 3.0D),
+		Block.box(10.5D, 0.0D, 0.0D, 13.5D, 16.0D, 3.0D)
 	);
 	private static final VoxelShape EAST_SUPPORTS_TALL = Shapes.or(
-			Block.box(13.0D, 0.0D, 2.5D, 16.0D, 16.0D, 5.5D),
-			Block.box(13.0D, 0.0D, 10.5D, 16.0D, 16.0D, 13.5D)
+		Block.box(13.0D, 0.0D, 2.5D, 16.0D, 16.0D, 5.5D),
+		Block.box(13.0D, 0.0D, 10.5D, 16.0D, 16.0D, 13.5D)
 	);
 	private static final VoxelShape SOUTH_SUPPORTS_TALL = Shapes.or(
-			Block.box(2.5D, 0.0D, 13.0D, 5.5D, 16.0D, 16.0D),
-			Block.box(10.5D, 0.0D, 13.0D, 13.5D, 16.0D, 16.0D)
+		Block.box(2.5D, 0.0D, 13.0D, 5.5D, 16.0D, 16.0D),
+		Block.box(10.5D, 0.0D, 13.0D, 13.5D, 16.0D, 16.0D)
 	);
 	private static final VoxelShape WEST_SUPPORTS_TALL = Shapes.or(
-			Block.box(0.0D, 0.0D, 2.5D, 3.0D, 16.0D, 5.5D),
-			Block.box(0.0D, 0.0D, 10.5D, 3.0D, 16.0D, 13.5D)
+		Block.box(0.0D, 0.0D, 2.5D, 3.0D, 16.0D, 5.5D),
+		Block.box(0.0D, 0.0D, 10.5D, 3.0D, 16.0D, 13.5D)
 	);
 
 	private static final VoxelShape NORTH_SUPPORTS_SHORT = Shapes.or(
-			Block.box(2.5D, 0.0D, 0.0D, 5.5D, 4.0D, 3.0D),
-			Block.box(10.5D, 0.0D, 0.0D, 13.5D, 4.0D, 3.0D)
+		Block.box(2.5D, 0.0D, 0.0D, 5.5D, 4.0D, 3.0D),
+		Block.box(10.5D, 0.0D, 0.0D, 13.5D, 4.0D, 3.0D)
 	);
 	private static final VoxelShape EAST_SUPPORTS_SHORT = Shapes.or(
-			Block.box(13.0D, 0.0D, 2.5D, 16.0D, 4.0D, 5.5D),
-			Block.box(13.0D, 0.0D, 10.5D, 16.0D, 4.0D, 13.5D)
+		Block.box(13.0D, 0.0D, 2.5D, 16.0D, 4.0D, 5.5D),
+		Block.box(13.0D, 0.0D, 10.5D, 16.0D, 4.0D, 13.5D)
 	);
 	private static final VoxelShape SOUTH_SUPPORTS_SHORT = Shapes.or(
-			Block.box(2.5D, 0.0D, 13.0D, 5.5D, 4.0D, 16.0D),
-			Block.box(10.5D, 0.0D, 13.0D, 13.5D, 4.0D, 16.0D)
+		Block.box(2.5D, 0.0D, 13.0D, 5.5D, 4.0D, 16.0D),
+		Block.box(10.5D, 0.0D, 13.0D, 13.5D, 4.0D, 16.0D)
 	);
 	private static final VoxelShape WEST_SUPPORTS_SHORT = Shapes.or(
-			Block.box(0.0D, 0.0D, 2.5D, 3.0D, 4.0D, 5.5D),
-			Block.box(0.0D, 0.0D, 10.5D, 3.0D, 4.0D, 13.5D)
+		Block.box(0.0D, 0.0D, 2.5D, 3.0D, 4.0D, 5.5D),
+		Block.box(0.0D, 0.0D, 10.5D, 3.0D, 4.0D, 13.5D)
 	);
 
 	private static final VoxelShape NORTH_EXTENSION = Shapes.or(
-			Block.box(2.5D, -8.0D, 0.0D, 5.5D, 0.0D, 3.0D),
-			Block.box(10.5D, -8.0D, 0.0D, 13.5D, 0.0D, 3.0D)
+		Block.box(2.5D, -8.0D, 0.0D, 5.5D, 0.0D, 3.0D),
+		Block.box(10.5D, -8.0D, 0.0D, 13.5D, 0.0D, 3.0D)
 	);
 	private static final VoxelShape EAST_EXTENSION = Shapes.or(
-			Block.box(13.0D, -8.0D, 2.5D, 16.0D, 0.0D, 5.5D),
-			Block.box(13.0D, -8.0D, 10.5D, 16.0D, 0.0D, 13.5D)
+		Block.box(13.0D, -8.0D, 2.5D, 16.0D, 0.0D, 5.5D),
+		Block.box(13.0D, -8.0D, 10.5D, 16.0D, 0.0D, 13.5D)
 	);
 	private static final VoxelShape SOUTH_EXTENSION = Shapes.or(
-			Block.box(2.5D, -8.0D, 13.0D, 5.5D, 0.0D, 16.0D),
-			Block.box(10.5D, -8.0D, 13.0D, 13.5D, 0.0D, 16.0D)
+		Block.box(2.5D, -8.0D, 13.0D, 5.5D, 0.0D, 16.0D),
+		Block.box(10.5D, -8.0D, 13.0D, 13.5D, 0.0D, 16.0D)
 	);
 	private static final VoxelShape WEST_EXTENSION = Shapes.or(
-			Block.box(0.0D, -8.0D, 2.5D, 3.0D, 0.0D, 5.5D),
-			Block.box(0.0D, -8.0D, 10.5D, 3.0D, 0.0D, 13.5D)
+		Block.box(0.0D, -8.0D, 2.5D, 3.0D, 0.0D, 5.5D),
+		Block.box(0.0D, -8.0D, 10.5D, 3.0D, 0.0D, 13.5D)
 	);
 
 	private static final VoxelShape NORTH_TALL = Shapes.or(Block.box(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 4.0D), NORTH_SUPPORTS_TALL);

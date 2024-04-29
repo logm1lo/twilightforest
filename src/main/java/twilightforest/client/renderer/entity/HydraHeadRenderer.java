@@ -65,12 +65,12 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadModel>
 				stack.scale(-0.05F, -0.05F, 0.05F);
 				Matrix4f matrix4f = stack.last().pose();
 				float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
-				int j = (int)(f1 * 255.0F) << 24;
+				int j = (int) (f1 * 255.0F) << 24;
 				Font font = this.getFont();
-				float f2 = (float)(-font.width(component) / 2);
-				font.drawInBatch(component, f2, (float)0, 553648127, false, matrix4f, source, flag ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, j, light);
+				float f2 = (float) (-font.width(component) / 2);
+				font.drawInBatch(component, f2, (float) 0, 553648127, false, matrix4f, source, flag ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, j, light);
 				if (flag) {
-					font.drawInBatch(component, f2, (float)0, -1, false, matrix4f, source, Font.DisplayMode.NORMAL, 0, light);
+					font.drawInBatch(component, f2, (float) 0, -1, false, matrix4f, source, Font.DisplayMode.NORMAL, 0, light);
 				}
 
 				stack.popPose();

@@ -173,8 +173,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				SkullCandles skullCandles = stack.getOrDefault(TFDataComponents.SKULL_CANDLES, SkullCandles.DEFAULT);
 
 				minecraft.getBlockRenderer().renderSingleBlock(
-						AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(skullCandles.color()))
-								.defaultBlockState().setValue(CandleBlock.CANDLES, skullCandles.count()), ms, buffers, light, overlay, ModelData.EMPTY, RenderType.cutout());
+					AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(skullCandles.color()))
+						.defaultBlockState().setValue(CandleBlock.CANDLES, skullCandles.count()), ms, buffers, light, overlay, ModelData.EMPTY, RenderType.cutout());
 			} else if (block instanceof CandelabraBlock) {
 				//we need to render the candelabra block here since we have to use builtin/entity on the item.
 				//This doesnt allow us to set the item parent to the candelabra block, and without it, only the candles render, if any

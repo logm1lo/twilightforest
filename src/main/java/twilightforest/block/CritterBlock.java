@@ -123,7 +123,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	@Deprecated
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		Direction facing = state.getValue(DirectionalBlock.FACING);
-		return canSurvive(reader, pos ,facing);
+		return canSurvive(reader, pos, facing);
 	}
 
 	public static boolean canSurvive(LevelReader reader, BlockPos pos, Direction facing) {
@@ -173,10 +173,10 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 			for (int i = 0; i < 50; i++) {
 				boolean wallBug = state.getValue(FACING) != Direction.UP;
 				level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true,
-						pos.getX() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
-						pos.getY() + (wallBug ? 0.5F : 0.0F),
-						pos.getZ() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
-						0.0D, 0.0D, 0.0D);
+					pos.getX() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
+					pos.getY() + (wallBug ? 0.5F : 0.0F),
+					pos.getZ() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
+					0.0D, 0.0D, 0.0D);
 			}
 			if (entity instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
 				player.awardStat(TFStats.BUGS_SQUISHED.get());

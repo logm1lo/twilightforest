@@ -59,9 +59,9 @@ public class LoyalZombie extends TamableAnimal {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D)
-				.add(Attributes.ARMOR, 3.0D);
+			.add(Attributes.MAX_HEALTH, 40.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.3D)
+			.add(Attributes.ARMOR, 3.0D);
 	}
 
 	@Override

@@ -25,16 +25,16 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.ITeleporter;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDimension;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.Restriction;
-import twilightforest.init.TFDimension;
 
 import java.util.*;
 import java.util.function.Function;
@@ -528,9 +528,9 @@ public class TFTeleporter implements ITeleporter {
 
 	private static BlockState randNatureBlock(RandomSource random) {
 		Optional<Block> optional = BuiltInRegistries.BLOCK
-				.getTag(BlockTagGenerator.GENERATED_PORTAL_DECO)
-				.flatMap(tag -> tag.getRandomElement(random))
-				.map(Holder::value);
+			.getTag(BlockTagGenerator.GENERATED_PORTAL_DECO)
+			.flatMap(tag -> tag.getRandomElement(random))
+			.map(Holder::value);
 		return optional.map(Block::defaultBlockState).orElseGet(Blocks.SHORT_GRASS::defaultBlockState);
 	}
 

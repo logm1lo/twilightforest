@@ -7,7 +7,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 
 public final class TFSounds {
-	
+
 	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, TwilightForestMod.ID);
 
 	public static final DeferredHolder<SoundEvent, SoundEvent> ACID_RAIN_BURNS = createEvent("environment.twilightforest.acid_rain");

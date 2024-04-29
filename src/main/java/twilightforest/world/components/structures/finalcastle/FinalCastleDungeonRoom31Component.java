@@ -150,9 +150,9 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		 Predicate<Biome> plateauBiomes = biome ->
-				biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.THORNLANDS) ||
-						biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.FINAL_PLATEAU);
+		Predicate<Biome> plateauBiomes = biome ->
+			biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.THORNLANDS) ||
+				biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.FINAL_PLATEAU);
 
 		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes)) {
 			return;
@@ -171,8 +171,8 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		final int cs = 7;
 
-		this.fillWithBlocks(world, sbb, cs , -1, cs, this.size - 1 - cs, -1, this.size - 1 - cs, border, floor, replacing);
-		this.fillWithBlocks(world, sbb, cs , this.height, cs, this.size - 1 - cs, this.height, this.size - 1 - cs, border, floor, replacing);
+		this.fillWithBlocks(world, sbb, cs, -1, cs, this.size - 1 - cs, -1, this.size - 1 - cs, border, floor, replacing);
+		this.fillWithBlocks(world, sbb, cs, this.height, cs, this.size - 1 - cs, this.height, this.size - 1 - cs, border, floor, replacing);
 
 		BlockState forceField = getForceFieldColor(decoRNG);
 		BlockState castleMagic = getRuneColor(forceField);

@@ -28,7 +28,7 @@ public enum ZoomLayer implements AreaTransformer1 {
 	private static final int ZOOM_MASK = 1;
 
 	@Override
-    public int getParentX(int x) {
+	public int getParentX(int x) {
 		return x >> 1;
 	}
 
@@ -89,9 +89,9 @@ public enum ZoomLayer implements AreaTransformer1 {
 
 	public record Factory(long salt, boolean fuzzy, Holder<BiomeLayerFactory> parent) implements BiomeLayerFactory {
 		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				Codec.BOOL.fieldOf("fuzzy").forGetter(Factory::fuzzy),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			Codec.BOOL.fieldOf("fuzzy").forGetter(Factory::fuzzy),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 
 		// TODO Parameterize bit-shifting quantities

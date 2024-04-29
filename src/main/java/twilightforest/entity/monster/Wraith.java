@@ -57,9 +57,9 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.5D)
-				.add(Attributes.ATTACK_DAMAGE, 5.0D);
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.5D)
+			.add(Attributes.ATTACK_DAMAGE, 5.0D);
 	}
 
 	@Override
@@ -272,8 +272,8 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 				return false;
 			} else {
 				BlockPos pos = this.mob.getRestrictionPoint().pos()
-						.relative(Direction.getRandom(this.mob.getRandom()))
-						.offset(this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5));
+					.relative(Direction.getRandom(this.mob.getRandom()))
+					.offset(this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5));
 				if (!this.mob.level().isLoaded(pos)) {
 					return false;
 				} else {

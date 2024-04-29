@@ -79,8 +79,8 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("monster")));
 		this.monster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
-				.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
+			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	 * Place a treasure chest at the specified coordinates
 	 */
 	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, RandomSource random, BlockStateProvider stateProvider, ResourceKey<LootTable> lootTable) {
-		Direction direction = new Direction[]{ Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST }[random.nextInt(4)];
+		Direction direction = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST}[random.nextInt(4)];
 		BlockPos pos = this.getWorldPos(x, y, z).relative(direction, 2);
 
 		BlockState state = stateProvider.getState(random, pos).mirror(this.mirror).rotate(world, pos, this.rotation);

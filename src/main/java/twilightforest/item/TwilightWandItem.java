@@ -10,9 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.init.TFSounds;
 
@@ -35,7 +32,8 @@ public class TwilightWandItem extends Item {
 
 			if (!level.isClientSide()) {
 				level.addFreshEntity(new TwilightWandBolt(level, player));
-				stack.hurtAndBreak(1, level.getRandom(), player, () -> {});
+				stack.hurtAndBreak(1, level.getRandom(), player, () -> {
+				});
 			}
 
 			return InteractionResultHolder.success(player.getItemInHand(hand));

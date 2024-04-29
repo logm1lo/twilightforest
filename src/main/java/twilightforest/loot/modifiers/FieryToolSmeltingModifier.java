@@ -29,13 +29,13 @@ public class FieryToolSmeltingModifier extends LootModifier {
 	protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		List<Pair<ItemStack, Float>> list = generatedLoot.stream().map(stack ->
 			context.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
-					.map(holder -> {
-						ItemStack result = holder.value().getResultItem(context.getLevel().registryAccess()).copy();
-						result.setCount(stack.getCount() * result.getCount());
-						return Pair.of(result, holder.value().getExperience());
-					})
-					.filter(pair -> !pair.getLeft().isEmpty())
-					.orElse(Pair.of(stack, 0.0F))).toList();
+				.map(holder -> {
+					ItemStack result = holder.value().getResultItem(context.getLevel().registryAccess()).copy();
+					result.setCount(stack.getCount() * result.getCount());
+					return Pair.of(result, holder.value().getExperience());
+				})
+				.filter(pair -> !pair.getLeft().isEmpty())
+				.orElse(Pair.of(stack, 0.0F))).toList();
 
 		float xp = (float) list.stream().mapToDouble(Pair::getRight).sum();
 		if (xp > 0.0F && context.hasParam(LootContextParams.THIS_ENTITY)) {

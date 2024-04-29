@@ -28,9 +28,9 @@ function initializeCoreMod() {
                             'book',
                             '(Lnet/minecraft/network/chat/Component;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/network/chat/Component;',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         }

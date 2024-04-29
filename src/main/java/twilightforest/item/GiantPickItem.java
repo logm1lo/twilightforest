@@ -1,24 +1,19 @@
 package twilightforest.item;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.common.NeoForgeMod;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.GiantBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
@@ -39,8 +34,8 @@ public class GiantPickItem extends PickaxeItem implements GiantItem {
 
 	public static ItemAttributeModifiers createGiantAttributes(Tier tier, int damage, float speed) {
 		return PickaxeItem.createAttributes(tier, damage, speed)
-				.withModifierAdded(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(GIANT_REACH_MODIFIER, "Reach modifier", 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
-				.withModifierAdded(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(GIANT_RANGE_MODIFIER, "Range modifier", 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND);
+			.withModifierAdded(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(GIANT_REACH_MODIFIER, "Reach modifier", 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
+			.withModifierAdded(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(GIANT_RANGE_MODIFIER, "Range modifier", 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND);
 	}
 
 	@Override

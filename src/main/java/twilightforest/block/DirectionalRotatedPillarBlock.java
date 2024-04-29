@@ -36,8 +36,8 @@ public class DirectionalRotatedPillarBlock extends RotatedPillarBlock {
 		if (mirror != Mirror.NONE) {
 			Direction.Axis axis = state.getValue(AXIS);
 			if (axis == Direction.Axis.Y
-					|| mirror == Mirror.LEFT_RIGHT && axis == Direction.Axis.Z
-					|| mirror == Mirror.FRONT_BACK && axis == Direction.Axis.X) {
+				|| mirror == Mirror.LEFT_RIGHT && axis == Direction.Axis.Z
+				|| mirror == Mirror.FRONT_BACK && axis == Direction.Axis.X) {
 
 				return state.cycle(REVERSED);
 			}

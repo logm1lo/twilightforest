@@ -35,7 +35,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
@@ -66,7 +65,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-@OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class TFClientEvents {
 
@@ -85,8 +83,8 @@ public class TFClientEvents {
 		public static void modelBake(ModelEvent.ModifyBakingResult event) {
 			TFItems.addItemModelProperties();
 
-			List<Map.Entry<ResourceLocation, BakedModel>> models =  event.getModels().entrySet().stream()
-					.filter(entry -> entry.getKey().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().getPath().contains("leaves") && !entry.getKey().getPath().contains("dark")).toList();
+			List<Map.Entry<ResourceLocation, BakedModel>> models = event.getModels().entrySet().stream()
+				.filter(entry -> entry.getKey().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().getPath().contains("leaves") && !entry.getKey().getPath().contains("dark")).toList();
 
 			models.forEach(entry -> event.getModels().put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 		}
@@ -145,8 +143,8 @@ public class TFClientEvents {
 			RenderSystem.enableDepthTest();
 			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F * 0.5F);
 			TFShaders.AURORA.invokeThenEndTesselator(
-					Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
-					(float) pos.x(), (float) pos.y(), (float) pos.z()
+				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
+				(float) pos.x(), (float) pos.y(), (float) pos.z()
 			);
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			RenderSystem.disableDepthTest();
@@ -232,16 +230,16 @@ public class TFClientEvents {
 				for (ChunkPos pos : chunksInRange) {
 					if (mc.level.getChunk(pos.x, pos.z, ChunkStatus.FULL, false) != null) {
 						List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream()
-								.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
-								.toList();
+							.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
+							.toList();
 						if (!beanstalksInChunk.isEmpty()) {
 							BlockEntity beanstalk = beanstalksInChunk.get(0);
 							Player player = mc.player;
 							intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
 							if (intensity > 0) {
 								player.moveTo(player.getX(), player.getY(), player.getZ(),
-										player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * intensity,
-										player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * intensity);
+									player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * intensity,
+									player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * intensity);
 								intensity = 0.0F;
 								break;
 							}
@@ -364,19 +362,19 @@ public class TFClientEvents {
 
 	private static void renderGiantHitOutline(PoseStack poseStack, VertexConsumer consumer, Vec3 cam, BlockPos pos) {
 		PoseStack.Pose last = poseStack.last();
-		float posX = pos.getX() - (float)cam.x();
-		float posY = pos.getY() - (float)cam.y();
-		float posZ = pos.getZ() - (float)cam.z();
+		float posX = pos.getX() - (float) cam.x();
+		float posY = pos.getY() - (float) cam.y();
+		float posZ = pos.getZ() - (float) cam.z();
 		GIANT_BLOCK.forAllEdges((x, y, z, x1, y1, z1) -> {
-			float xSize = (float)(x1 - x);
-			float ySize = (float)(y1 - y);
-			float zSize = (float)(z1 - z);
+			float xSize = (float) (x1 - x);
+			float ySize = (float) (y1 - y);
+			float zSize = (float) (z1 - z);
 			float sqrt = Mth.sqrt(xSize * xSize + ySize * ySize + zSize * zSize);
 			xSize /= sqrt;
 			ySize /= sqrt;
 			zSize /= sqrt;
-			consumer.vertex(last.pose(), (float)(x + posX), (float)(y + posY), (float)(z + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
-			consumer.vertex(last.pose(), (float)(x1 + posX), (float)(y1 + posY), (float)(z1 + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
+			consumer.vertex(last.pose(), (float) (x + posX), (float) (y + posY), (float) (z + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
+			consumer.vertex(last.pose(), (float) (x1 + posX), (float) (y1 + posY), (float) (z1 + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
 		});
 	}
 }

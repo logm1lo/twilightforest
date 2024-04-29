@@ -86,26 +86,26 @@ public class MiscEvents {
 		Player player = event.getEntity();
 		ItemStack stack = player.getItemInHand(event.getHand());
 
-        if (!(stack.getItem() instanceof SpawnEggItem spawnEggItem) || spawnEggItem.getType(stack) != TFEntities.DEATH_TOME.get())
-            return;
+		if (!(stack.getItem() instanceof SpawnEggItem spawnEggItem) || spawnEggItem.getType(stack) != TFEntities.DEATH_TOME.get())
+			return;
 
-        BlockPos pos = event.getPos();
+		BlockPos pos = event.getPos();
 		Level level = event.getLevel();
 		BlockState state = level.getBlockState(pos);
 
-        if (state.getBlock() instanceof LecternBlock && !state.getValue(BlockStateProperties.HAS_BOOK)) {
-            event.setCanceled(true);
-            level.playSound(null, pos, SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1.0F, 1.0F);
+		if (state.getBlock() instanceof LecternBlock && !state.getValue(BlockStateProperties.HAS_BOOK)) {
+			event.setCanceled(true);
+			level.playSound(null, pos, SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1.0F, 1.0F);
 
-            if (level instanceof ServerLevel serverLevel) {
-                DeathTome tome = TFEntities.DEATH_TOME.get().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
-                if (tome != null) {
-                    if (!player.getAbilities().instabuild) stack.shrink(1);
-                    serverLevel.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
-                    tome.setOnLectern(true);
-                }
-            }
-        } else if (state.is(TFBlocks.DEATH_TOME_SPAWNER) && state.getValue(TomeSpawnerBlock.SPAWNER)) {
+			if (level instanceof ServerLevel serverLevel) {
+				DeathTome tome = TFEntities.DEATH_TOME.get().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
+				if (tome != null) {
+					if (!player.getAbilities().instabuild) stack.shrink(1);
+					serverLevel.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
+					tome.setOnLectern(true);
+				}
+			}
+		} else if (state.is(TFBlocks.DEATH_TOME_SPAWNER) && state.getValue(TomeSpawnerBlock.SPAWNER)) {
 			int bookCount = state.getValue(TomeSpawnerBlock.BOOK_STAGES);
 			if (bookCount < TomeSpawnerBlock.MAX_STAGES) {
 				level.setBlockAndUpdate(pos, state.setValue(TomeSpawnerBlock.BOOK_STAGES, bookCount + 1));
@@ -118,7 +118,7 @@ public class MiscEvents {
 
 			event.setCanceled(true);
 		}
-    }
+	}
 
 	@SubscribeEvent
 	public static void washOffCloth(PlayerInteractEvent.RightClickBlock event) {

@@ -22,9 +22,9 @@ import java.util.stream.Stream;
 public class AvoidLandmarkModifier extends PlacementModifier {
 
 	public static final MapCodec<AvoidLandmarkModifier> CODEC = RecordCodecBuilder.<AvoidLandmarkModifier>mapCodec(instance -> instance.group(
-			Codec.BOOL.fieldOf("occupies_surface").forGetter(o -> o.occupiesSurface),
-			Codec.BOOL.fieldOf("occupies_underground").forGetter(o -> o.occupiesUnderground),
-			Codec.INT.fieldOf("additional_clearance").forGetter(o -> o.additionalClearance)
+		Codec.BOOL.fieldOf("occupies_surface").forGetter(o -> o.occupiesSurface),
+		Codec.BOOL.fieldOf("occupies_underground").forGetter(o -> o.occupiesUnderground),
+		Codec.INT.fieldOf("additional_clearance").forGetter(o -> o.additionalClearance)
 	).apply(instance, AvoidLandmarkModifier::new)).validate(AvoidLandmarkModifier::validate);
 
 	private final boolean occupiesSurface;

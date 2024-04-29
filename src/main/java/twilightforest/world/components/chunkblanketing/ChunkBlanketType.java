@@ -4,5 +4,5 @@ import com.mojang.serialization.MapCodec;
 
 @FunctionalInterface
 public interface ChunkBlanketType {
-    MapCodec<? extends ChunkBlanketProcessor> getCodec();
+	MapCodec<? extends ChunkBlanketProcessor> getCodec();
 }

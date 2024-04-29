@@ -107,16 +107,16 @@ public class TFTickHandler {
 
 	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
 		if (world.dimension().location().equals(new ResourceLocation(TFConfig.originDimension))
-				|| TFDimension.isTwilightPortalDestination(world)
-				|| TFConfig.allowPortalsInOtherDimensions) {
+			|| TFDimension.isTwilightPortalDestination(world)
+			|| TFConfig.allowPortalsInOtherDimensions) {
 
 			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
 			ItemEntity qualified = null;
 
 			for (ItemEntity entityItem : itemList) {
 				if (entityItem.getItem().is(ItemTagGenerator.PORTAL_ACTIVATOR) &&
-						TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(world.getBlockState(entityItem.blockPosition())) &&
-						Objects.equals(entityItem.getOwner(), player)) {
+					TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(world.getBlockState(entityItem.blockPosition())) &&
+					Objects.equals(entityItem.getOwner(), player)) {
 
 					qualified = entityItem;
 					break;

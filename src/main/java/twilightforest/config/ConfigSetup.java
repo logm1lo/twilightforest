@@ -53,16 +53,16 @@ public final class ConfigSetup {
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null && server.isDedicatedServer() && event.getEntity() instanceof ServerPlayer player) {
 			PacketDistributor.sendToPlayer(player, new SyncUncraftingTableConfigPacket(
-					COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
+				COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
+				COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
+				COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
+				COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get(),
+				COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
+				COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
+				COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
+				COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
+				COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
+				COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
 		}
 	}
 }

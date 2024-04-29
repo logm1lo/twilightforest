@@ -74,7 +74,7 @@ public class CandelabraBlockEntity extends BlockEntity {
 		if (index >= 0 && index < 3) {
 			BlockState blockstate = this.getBlockState();
 
-			for(int i = 0; i < CandelabraBlock.CANDLES.size(); ++i) {
+			for (int i = 0; i < CandelabraBlock.CANDLES.size(); ++i) {
 				boolean flag = !this.getCandle(i).defaultBlockState().isAir();
 				BooleanProperty booleanproperty = CandelabraBlock.CANDLES.get(i);
 				blockstate = blockstate.setValue(booleanproperty, flag);

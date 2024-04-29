@@ -31,8 +31,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.ai.goal.HeavySpearAttackGoal;
 import twilightforest.init.TFSounds;
 
@@ -80,9 +78,9 @@ public class UpperGoblinKnight extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 8.0D);
+			.add(Attributes.MAX_HEALTH, 30.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D)
+			.add(Attributes.ATTACK_DAMAGE, 8.0D);
 	}
 
 	@Override
@@ -144,12 +142,12 @@ public class UpperGoblinKnight extends Monster {
 
 		if (this.isShieldDisabled()) {
 			this.level().addParticle(ParticleTypes.SPLASH,
-					this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
-					this.getY() + this.getEyeHeight(),
-					this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
-					(this.getRandom().nextFloat() - 0.5F) * 0.75F,
-					0,
-					(this.getRandom().nextFloat() - 0.5F) * 0.75F);
+				this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
+				this.getY() + this.getEyeHeight(),
+				this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
+				(this.getRandom().nextFloat() - 0.5F) * 0.75F,
+				0,
+				(this.getRandom().nextFloat() - 0.5F) * 0.75F);
 		}
 	}
 
@@ -210,10 +208,10 @@ public class UpperGoblinKnight extends Monster {
 		if (this.level() instanceof ServerLevel server) {
 			for (int i = 0; i < 50; i++) {
 				server.sendParticles(
-						ParticleTypes.LARGE_SMOKE, px, py, pz, 1,
-						(this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F,
-						0,
-						(this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F, 0);
+					ParticleTypes.LARGE_SMOKE, px, py, pz, 1,
+					(this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F,
+					0,
+					(this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F, 0);
 			}
 		}
 
@@ -235,7 +233,6 @@ public class UpperGoblinKnight extends Monster {
 		this.gameEvent(GameEvent.HIT_GROUND);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 4) {

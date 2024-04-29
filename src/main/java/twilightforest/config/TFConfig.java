@@ -130,7 +130,7 @@ public class TFConfig {
 
 	protected static void rebakeCommonOptions(TFCommonConfig config) {
 		casketUUIDLocking = config.casketUUIDLocking.get();
-		disableSkullCandles =config.disableSkullCandles.get();
+		disableSkullCandles = config.disableSkullCandles.get();
 		defaultItemEnchants = config.defaultItemEnchants.get();
 		bossDropChests = config.bossDropChests.get();
 		commonCloudBlockPrecipitationDistance = config.cloudBlockPrecipitationDistance.get();
@@ -180,11 +180,11 @@ public class TFConfig {
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null && server.isDedicatedServer()) {
 			PacketDistributor.sendToAllPlayers(new SyncUncraftingTableConfigPacket(
-					uncraftingXpCostMultiplier, repairingXpCostMultiplier,
-					allowShapelessUncrafting, disableIngredientSwitching,
-					disableUncraftingOnly, disableEntireTable,
-					disableUncraftingRecipes, reverseRecipeBlacklist,
-					blacklistedUncraftingModIds, flipUncraftingModIdList));
+				uncraftingXpCostMultiplier, repairingXpCostMultiplier,
+				allowShapelessUncrafting, disableIngredientSwitching,
+				disableUncraftingOnly, disableEntireTable,
+				disableUncraftingRecipes, reverseRecipeBlacklist,
+				blacklistedUncraftingModIds, flipUncraftingModIdList));
 		}
 		//sets cached portal locking advancement to null just in case it changed
 		portalLockingAdvancement = null;

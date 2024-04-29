@@ -28,9 +28,9 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Trigge
 	public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<Block> bugType) implements SimpleInstance {
 
 		public static final Codec<KillBugTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(KillBugTrigger.TriggerInstance::player),
-						BuiltInRegistries.BLOCK.byNameCodec().optionalFieldOf("bug").forGetter(KillBugTrigger.TriggerInstance::bugType))
-				.apply(instance, KillBugTrigger.TriggerInstance::new));
+				EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(KillBugTrigger.TriggerInstance::player),
+				BuiltInRegistries.BLOCK.byNameCodec().optionalFieldOf("bug").forGetter(KillBugTrigger.TriggerInstance::bugType))
+			.apply(instance, KillBugTrigger.TriggerInstance::new));
 
 		public static Criterion<TriggerInstance> killBug(Block bug) {
 			return TFAdvancements.KILL_BUG.get().createCriterion(new TriggerInstance(Optional.empty(), Optional.of(bug)));

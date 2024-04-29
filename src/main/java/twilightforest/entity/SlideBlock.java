@@ -18,8 +18,6 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
@@ -61,11 +59,11 @@ public class SlideBlock extends Entity {
 
 		Direction[] toCheck = switch (myState.getValue(RotatedPillarBlock.AXIS)) {
 			case X -> // horizontal blocks will go up or down if there is a block on one side and air on the other
-					new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH};
+				new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH};
 			case Z -> // horizontal blocks will go up or down if there is a block on one side and air on the other
-					new Direction[]{Direction.DOWN, Direction.UP, Direction.WEST, Direction.EAST};
+				new Direction[]{Direction.DOWN, Direction.UP, Direction.WEST, Direction.EAST};
 			case Y -> // vertical blocks priority is -x, +x, -z, +z
-					new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH};
+				new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH};
 		};
 
 		for (Direction e : toCheck) {
@@ -174,7 +172,6 @@ public class SlideBlock extends Entity {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean displayFireAnimation() {
 		return false;
 	}

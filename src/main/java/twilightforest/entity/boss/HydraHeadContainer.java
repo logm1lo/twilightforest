@@ -948,14 +948,14 @@ public class HydraHeadContainer {
 
 	public boolean isAttacking() {
 		return this.currentState == State.BITE_BEGINNING || this.currentState == State.BITE_READY
-				|| this.currentState == State.BITING || this.currentState == State.FLAME_BEGINNING
-				|| this.currentState == State.FLAMING || this.currentState == State.MORTAR_BEGINNING
-				|| this.currentState == State.MORTAR_SHOOTING;
+			|| this.currentState == State.BITING || this.currentState == State.FLAME_BEGINNING
+			|| this.currentState == State.FLAMING || this.currentState == State.MORTAR_BEGINNING
+			|| this.currentState == State.MORTAR_SHOOTING;
 	}
 
 	public boolean isBiting() {
 		return this.currentState == State.BITE_BEGINNING || this.currentState == State.BITE_READY
-				|| this.currentState == State.BITING || this.nextState == State.BITE_BEGINNING;
+			|| this.currentState == State.BITING || this.nextState == State.BITE_BEGINNING;
 	}
 
 	/**

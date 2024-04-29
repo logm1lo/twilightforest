@@ -94,7 +94,6 @@ public class UncraftingSlot extends Slot {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean isActive() {
 		return false;
 	}

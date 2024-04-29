@@ -45,15 +45,15 @@ public class SpiralBrickBlock extends Block implements SimpleWaterloggedBlock {
 		if (context.isSecondaryUseActive()) {
 			//if sneaking, place on the y axis with glazed terracotta logic
 			return this.defaultBlockState()
-					.setValue(AXIS_FACING, Direction.Axis.Y)
-					.setValue(DIAGONAL, convertVerticalDirectionToDiagonal(context.getHorizontalDirection()))
-					.setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+				.setValue(AXIS_FACING, Direction.Axis.Y)
+				.setValue(DIAGONAL, convertVerticalDirectionToDiagonal(context.getHorizontalDirection()))
+				.setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
 		} else {
 			//otherwise, place on the x and z with stair logic
 			return this.defaultBlockState()
-					.setValue(AXIS_FACING, context.getHorizontalDirection().getAxis())
-					.setValue(DIAGONAL, getHorizontalDiagonalFromPlayerPlacement(context.getPlayer(), context.getHorizontalDirection(), context.getClickLocation().y - (double) context.getClickedPos().getY() > 0.5D))
-					.setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+				.setValue(AXIS_FACING, context.getHorizontalDirection().getAxis())
+				.setValue(DIAGONAL, getHorizontalDiagonalFromPlayerPlacement(context.getPlayer(), context.getHorizontalDirection(), context.getClickLocation().y - (double) context.getClickedPos().getY() > 0.5D))
+				.setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
 		}
 	}
 

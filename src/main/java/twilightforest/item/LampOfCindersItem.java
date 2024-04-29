@@ -114,9 +114,9 @@ public class LampOfCindersItem extends Item {
 		if (living instanceof Player player) {
 			for (int i = 0; i < 6; i++) {
 				BlockPos rPos = pos.offset(
-						level.getRandom().nextInt(range) - level.getRandom().nextInt(range),
-						level.getRandom().nextInt(2),
-						level.getRandom().nextInt(range) - level.getRandom().nextInt(range)
+					level.getRandom().nextInt(range) - level.getRandom().nextInt(range),
+					level.getRandom().nextInt(2),
+					level.getRandom().nextInt(range) - level.getRandom().nextInt(range)
 				);
 
 				level.levelEvent(player, 2004, rPos, 0);

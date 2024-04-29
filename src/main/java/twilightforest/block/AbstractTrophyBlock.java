@@ -159,74 +159,74 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					case NAGA:
 						for (int daze = 0; daze < 10; daze++) {
 							server.sendParticles(ParticleTypes.CRIT,
-									((double) pos.getX() + rand.nextFloat() * 0.5 * 2.0F),
-									(double) pos.getY() + 0.25,
-									((double) pos.getZ() + rand.nextFloat() * 0.5 * 2.0F),
-									1, 0, 0, 0, rand.nextGaussian() * 0.02D);
+								((double) pos.getX() + rand.nextFloat() * 0.5 * 2.0F),
+								(double) pos.getY() + 0.25,
+								((double) pos.getZ() + rand.nextFloat() * 0.5 * 2.0F),
+								1, 0, 0, 0, rand.nextGaussian() * 0.02D);
 						}
 						break;
 					case LICH:
 						for (int a = 0; a < 5; a++) {
 							server.sendParticles(ParticleTypes.ANGRY_VILLAGER,
-									(double) pos.getX() + rand.nextFloat() * 0.5 * 2.0F,
-									(double) pos.getY() + 0.5 + rand.nextFloat() * 0.25,
-									(double) pos.getZ() + rand.nextFloat() * 0.5 * 2.0F, 1,
-									rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D, 0);
+								(double) pos.getX() + rand.nextFloat() * 0.5 * 2.0F,
+								(double) pos.getY() + 0.5 + rand.nextFloat() * 0.25,
+								(double) pos.getZ() + rand.nextFloat() * 0.5 * 2.0F, 1,
+								rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D, 0);
 						}
 						break;
 					case MINOSHROOM:
 						for (int g = 0; g < 10; g++) {
 							server.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, level.getBlockState(pos.below())),
-									(double) pos.getX() + rand.nextFloat() * 10F - 5F,
-									(double) pos.getY() + 0.1F + rand.nextFloat() * 0.3F,
-									(double) pos.getZ() + rand.nextFloat() * 10F - 5F,
-									1, 0, 0, 0, 0);
+								(double) pos.getX() + rand.nextFloat() * 10F - 5F,
+								(double) pos.getY() + 0.1F + rand.nextFloat() * 0.3F,
+								(double) pos.getZ() + rand.nextFloat() * 10F - 5F,
+								1, 0, 0, 0, 0);
 						}
 						break;
 					case KNIGHT_PHANTOM:
 						for (int brek = 0; brek < 10; brek++) {
 							server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get())),
-									pos.getX() + 0.5 + (rand.nextFloat() - 0.5),
-									pos.getY() + rand.nextFloat() + 0.5,
-									pos.getZ() + 0.5 + (rand.nextFloat() - 0.5),
-									1, 0, .25, 0, 0);
+								pos.getX() + 0.5 + (rand.nextFloat() - 0.5),
+								pos.getY() + rand.nextFloat() + 0.5,
+								pos.getZ() + 0.5 + (rand.nextFloat() - 0.5),
+								1, 0, .25, 0, 0);
 
 						}
 						break;
 					case UR_GHAST:
 						for (int red = 0; red < 10; red++) {
 							server.sendParticles(DustParticleOptions.REDSTONE,
-									(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
-									(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
-									(double) pos.getZ() + (rand.nextDouble() * 1),
-									1, 0, 0, 0, 0);
+								(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
+								(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
+								(double) pos.getZ() + (rand.nextDouble() * 1),
+								1, 0, 0, 0, 0);
 						}
 						break;
 					case ALPHA_YETI:
 						for (int sweat = 0; sweat < 10; sweat++) {
 							server.sendParticles(ParticleTypes.SPLASH,
-									(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
-									(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
-									(double) pos.getZ() + (rand.nextDouble() * 1),
-									1, 0, 0, 0, 0);
+								(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
+								(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
+								(double) pos.getZ() + (rand.nextDouble() * 1),
+								1, 0, 0, 0, 0);
 						}
 						break;
 					case SNOW_QUEEN:
 						for (int b = 0; b < 20; b++) {
 							server.sendParticles(TFParticleType.SNOW_WARNING.get(),
-									(double) pos.getX() - 1 + (rand.nextDouble() * 3.25),
-									(double) pos.getY() + 5,
-									(double) pos.getZ() - 1 + (rand.nextDouble() * 3.25), 1,
-									0, 1, 0, 0);
+								(double) pos.getX() - 1 + (rand.nextDouble() * 3.25),
+								(double) pos.getY() + 5,
+								(double) pos.getZ() - 1 + (rand.nextDouble() * 3.25), 1,
+								0, 1, 0, 0);
 						}
 						break;
 					case QUEST_RAM:
 						for (int p = 0; p < 10; p++) {
 							server.sendParticles(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, rand.nextFloat(), rand.nextFloat(), rand.nextFloat()),
-									(double) pos.getX() + 0.5 + (rand.nextDouble() - 0.5),
-									(double) pos.getY() + (rand.nextDouble() - 0.5),
-									(double) pos.getZ() + 0.5 + (rand.nextDouble() - 0.5), 1,
-									0.0F, 0.0F, 0.0F, 1);
+								(double) pos.getX() + 0.5 + (rand.nextDouble() - 0.5),
+								(double) pos.getY() + (rand.nextDouble() - 0.5),
+								(double) pos.getZ() + 0.5 + (rand.nextDouble() - 0.5), 1,
+								0.0F, 0.0F, 0.0F, 1);
 						}
 						break;
 					default:

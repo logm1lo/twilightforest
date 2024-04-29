@@ -273,12 +273,12 @@ public class OreMagnetItem extends Item {
 				if (BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("forge")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
 					//add each ground type to each ore
 					BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, new ResourceLocation("forge", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
-							BuiltInRegistries.BLOCK.getTag(tag).get().forEach(ore -> {
-								//exclude ignored ores
-								if (!ore.value().defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
-									ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
-								}
-							}));
+						BuiltInRegistries.BLOCK.getTag(tag).get().forEach(ore -> {
+							//exclude ignored ores
+							if (!ore.value().defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
+								ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
+							}
+						}));
 				}
 			}
 		}

@@ -9,7 +9,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
@@ -17,15 +16,9 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.FieryArmorModel;
 import twilightforest.init.TFEnchantments;
@@ -47,8 +40,8 @@ public class FieryArmorItem extends ArmorItem {
 		AtomicBoolean badEnchant = new AtomicBoolean();
 		book.getEnchantments().entrySet().forEach(enchantment -> {
 			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.CHILL_AURA.get(), enchantment)
-					|| Objects.equals(TFEnchantments.FIRE_REACT.get(), enchantment)
-					|| Objects.equals(Enchantments.FROST_WALKER, enchantment)) {
+				|| Objects.equals(TFEnchantments.FIRE_REACT.get(), enchantment)
+				|| Objects.equals(Enchantments.FROST_WALKER, enchantment)) {
 				badEnchant.set(true);
 			}
 		});
@@ -59,10 +52,10 @@ public class FieryArmorItem extends ArmorItem {
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return !TFEnchantments.FIRE_REACT.get().equals(enchantment) &&
-				!Enchantments.THORNS.equals(enchantment) &&
-				!TFEnchantments.CHILL_AURA.get().equals(enchantment) &&
-				!Enchantments.FROST_WALKER.equals(enchantment) &&
-				super.canApplyAtEnchantingTable(stack, enchantment);
+			!Enchantments.THORNS.equals(enchantment) &&
+			!TFEnchantments.CHILL_AURA.get().equals(enchantment) &&
+			!Enchantments.FROST_WALKER.equals(enchantment) &&
+			super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override

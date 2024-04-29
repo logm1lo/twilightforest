@@ -33,20 +33,20 @@ import java.util.Collections;
 public class MapLocatorCommand {
 	// [vanillacopy] LocateCommand.java
 	private static final DynamicCommandExceptionType ERROR_STRUCTURE_INVALID = new DynamicCommandExceptionType(
-			info -> Component.translatableEscape("commands.locate.structure.invalid", info)
+		info -> Component.translatableEscape("commands.locate.structure.invalid", info)
 	);
 	private static final DynamicCommandExceptionType ERROR_STRUCTURE_NOT_FOUND = new DynamicCommandExceptionType(
-			info -> Component.translatableEscape("commands.locate.structure.not_found", info)
+		info -> Component.translatableEscape("commands.locate.structure.not_found", info)
 	);
 
 	public static LiteralArgumentBuilder<CommandSourceStack> register() {
 		// TODO A magic map variation might be cool
 		return Commands.literal("map_locator").requires(cs -> cs.hasPermission(2)).then(
-				Commands.argument("structure", ResourceOrTagKeyArgument.resourceOrTagKey(Registries.STRUCTURE)).executes(context -> run(context, Collections.singleton(context.getSource().getPlayerOrException()), false)).then(
-						Commands.argument("player", EntityArgument.players()).executes(context -> run(context, EntityArgument.getPlayers(context, "player"), false)).then(
-								Commands.argument("skip_known_structures", BoolArgumentType.bool()).executes(context -> run(context, EntityArgument.getPlayers(context, "player"), BoolArgumentType.getBool(context, "skip_known_structures")))
-						)
+			Commands.argument("structure", ResourceOrTagKeyArgument.resourceOrTagKey(Registries.STRUCTURE)).executes(context -> run(context, Collections.singleton(context.getSource().getPlayerOrException()), false)).then(
+				Commands.argument("player", EntityArgument.players()).executes(context -> run(context, EntityArgument.getPlayers(context, "player"), false)).then(
+					Commands.argument("skip_known_structures", BoolArgumentType.bool()).executes(context -> run(context, EntityArgument.getPlayers(context, "player"), BoolArgumentType.getBool(context, "skip_known_structures")))
 				)
+			)
 		);
 	}
 
@@ -60,8 +60,8 @@ public class MapLocatorCommand {
 		ServerLevel serverlevel = source.getLevel();
 		Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
 		Pair<BlockPos, Holder<Structure>> pair = serverlevel.getChunkSource()
-				.getGenerator()
-				.findNearestMapStructure(serverlevel, holderset, blockpos, 100, skipKnownStructures);
+			.getGenerator()
+			.findNearestMapStructure(serverlevel, holderset, blockpos, 100, skipKnownStructures);
 		stopwatch.stop();
 
 		if (pair == null)

@@ -79,7 +79,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 
 		if (!pBox.isInside(worldPos)) return;
 
-		while(this.isReplaceableByStructures(pLevel.getBlockState(worldPos)) && worldPos.getY() > pLevel.getMinBuildHeight() + 1) {
+		while (this.isReplaceableByStructures(pLevel.getBlockState(worldPos)) && worldPos.getY() > pLevel.getMinBuildHeight() + 1) {
 			pLevel.setBlock(worldPos, possibleBlocks.getState(random, worldPos), PLACE_FLAG);
 			worldPos.move(Direction.DOWN);
 		}
@@ -91,7 +91,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 
 		if (!pBox.isInside(worldPos)) return;
 
-		while(this.isReplaceableByStructures(pLevel.getBlockState(worldPos)) && worldPos.getY() > pLevel.getMinBuildHeight() + 1) {
+		while (this.isReplaceableByStructures(pLevel.getBlockState(worldPos)) && worldPos.getY() > pLevel.getMinBuildHeight() + 1) {
 			pLevel.setBlock(worldPos, possibleBlocks.getState(random, worldPos).setValue(VineBlock.getPropertyForFace(direction), true), PLACE_FLAG);
 			worldPos.move(Direction.DOWN);
 		}
@@ -120,11 +120,11 @@ public abstract class HollowTreePiece extends StructurePiece {
 					byte dist;
 
 					if (dx >= dy && dx >= dz) {
-						dist = (byte) (dx + (byte)((Math.max(dy, dz) * 0.5) + (Math.min(dy, dz) * 0.25)));
+						dist = (byte) (dx + (byte) ((Math.max(dy, dz) * 0.5) + (Math.min(dy, dz) * 0.25)));
 					} else if (dy >= dx && dy >= dz) {
-						dist = (byte) (dy + (byte)((Math.max(dx, dz) * 0.5) + (Math.min(dx, dz) * 0.25)));
+						dist = (byte) (dy + (byte) ((Math.max(dx, dz) * 0.5) + (Math.min(dx, dz) * 0.25)));
 					} else {
-						dist = (byte) (dz + (byte)((Math.max(dx, dy) * 0.5) + (Math.min(dx, dy) * 0.25)));
+						dist = (byte) (dz + (byte) ((Math.max(dx, dy) * 0.5) + (Math.min(dx, dy) * 0.25)));
 					}
 
 					// if we're inside the blob, fill it

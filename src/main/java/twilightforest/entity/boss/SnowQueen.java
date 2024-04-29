@@ -103,12 +103,12 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.FLYING_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 7.0D)
-				.add(Attributes.FOLLOW_RANGE, 40.0D)
-				.add(Attributes.MAX_HEALTH, 200.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.75D);
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.FLYING_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 7.0D)
+			.add(Attributes.FOLLOW_RANGE, 40.0D)
+			.add(Attributes.MAX_HEALTH, 200.0D)
+			.add(Attributes.KNOCKBACK_RESISTANCE, 0.75D);
 	}
 
 	@Override
@@ -223,9 +223,9 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
 				double d2 = this.getRandom().nextGaussian() * 0.02D;
 				this.level().addParticle(this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
-						(this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
-						this.getY() + this.getRandom().nextFloat() * this.getBbHeight(),
-						(this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(), d, d1, d2);
+					(this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
+					this.getY() + this.getRandom().nextFloat() * this.getBbHeight(),
+					(this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(), d, d1, d2);
 			}
 		}
 	}

@@ -97,9 +97,9 @@ public class Lich extends BaseTFBoss {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.ATTACK_DAMAGE, 3.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.45D); // Same speed as an angry enderman
+			.add(Attributes.MAX_HEALTH, MAX_HEALTH)
+			.add(Attributes.ATTACK_DAMAGE, 3.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.45D); // Same speed as an angry enderman
 	}
 
 	@Override
@@ -226,10 +226,10 @@ public class Lich extends BaseTFBoss {
 
 		if (this.getPhase() == 3)
 			this.level().addParticle(ParticleTypes.ANGRY_VILLAGER,
-					this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
-					this.getY() + 1.0D + this.getRandom().nextFloat() * this.getBbHeight(),
-					this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
-					this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
+				this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
+				this.getY() + 1.0D + this.getRandom().nextFloat() * this.getBbHeight(),
+				this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
+				this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
 	}
 
 	@Override
@@ -520,9 +520,9 @@ public class Lich extends BaseTFBoss {
 
 	public int countMyMinions() {
 		return (int) this.level().getEntitiesOfClass(LichMinion.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D))
-				.stream()
-				.filter(m -> m.master == this)
-				.count();
+			.stream()
+			.filter(m -> m.master == this)
+			.count();
 	}
 
 	//-----------------------------------------//
@@ -635,7 +635,7 @@ public class Lich extends BaseTFBoss {
 	private void extinguishNearbyCandles() {
 		int range = 16;
 		int yRange = 10;
-		for (BlockPos pos : BlockPos.betweenClosed(this.blockPosition().offset(-range, 0, -range), this.blockPosition().offset(range, yRange, range))){
+		for (BlockPos pos : BlockPos.betweenClosed(this.blockPosition().offset(-range, 0, -range), this.blockPosition().offset(range, yRange, range))) {
 			if (this.level().getBlockState(pos).getBlock() instanceof AbstractCandleBlock && this.level().getBlockState(pos).getValue(BlockStateProperties.LIT)) {
 				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(BlockStateProperties.LIT, false));
 				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);

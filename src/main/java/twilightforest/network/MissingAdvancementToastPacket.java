@@ -18,9 +18,9 @@ public record MissingAdvancementToastPacket(Component title, ItemStack icon) imp
 
 	public static final Type<MissingAdvancementToastPacket> TYPE = new Type<>(TwilightForestMod.prefix("missing_advancement_toast"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, MissingAdvancementToastPacket> STREAM_CODEC = StreamCodec.composite(
-			ComponentSerialization.STREAM_CODEC, MissingAdvancementToastPacket::title,
-			ItemStack.STREAM_CODEC, MissingAdvancementToastPacket::icon,
-			MissingAdvancementToastPacket::new);
+		ComponentSerialization.STREAM_CODEC, MissingAdvancementToastPacket::title,
+		ItemStack.STREAM_CODEC, MissingAdvancementToastPacket::icon,
+		MissingAdvancementToastPacket::new);
 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {

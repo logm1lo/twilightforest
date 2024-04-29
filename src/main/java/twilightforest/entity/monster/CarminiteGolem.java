@@ -19,8 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Vector3f;
 import twilightforest.init.TFSounds;
 
@@ -46,10 +44,10 @@ public class CarminiteGolem extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.25D)
-				.add(Attributes.ATTACK_DAMAGE, 9.0D)
-				.add(Attributes.ARMOR, 2.0D);
+			.add(Attributes.MAX_HEALTH, 40.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.25D)
+			.add(Attributes.ATTACK_DAMAGE, 9.0D)
+			.add(Attributes.ARMOR, 2.0D);
 	}
 
 	@Override
@@ -93,7 +91,6 @@ public class CarminiteGolem extends Monster {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 4) {
@@ -115,6 +112,6 @@ public class CarminiteGolem extends Monster {
 
 	@Override
 	public boolean canSpawnSprintParticle() {
-		return this.getDeltaMovement().horizontalDistanceSqr() > (double)2.5000003E-7F && this.getRandom().nextInt(5) == 0;
+		return this.getDeltaMovement().horizontalDistanceSqr() > (double) 2.5000003E-7F && this.getRandom().nextInt(5) == 0;
 	}
 }

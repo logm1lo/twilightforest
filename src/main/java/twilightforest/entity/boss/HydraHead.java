@@ -11,8 +11,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 
 public class HydraHead extends HydraPart {
@@ -27,7 +25,7 @@ public class HydraHead extends HydraPart {
 		super(hydra, 4F, 4F);
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Override
 	public ResourceLocation renderer() {
 		return RENDERER;
 	}

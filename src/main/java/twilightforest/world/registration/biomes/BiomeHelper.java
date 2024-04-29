@@ -513,12 +513,12 @@ public abstract class BiomeHelper {
 	// Defaults
 	public static BiomeSpecialEffects.Builder defaultAmbientBuilder() {
 		return new BiomeSpecialEffects.Builder()
-				.fogColor(0xC0FFD8)
-				.waterColor(0x3F76E4)
-				.waterFogColor(0x050533)
-				.skyColor(0x20224A)
-				.ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) // We should probably change it
-				.backgroundMusic(TFConfiguredFeatures.TFMUSICTYPE);
+			.fogColor(0xC0FFD8)
+			.waterColor(0x3F76E4)
+			.waterFogColor(0x050533)
+			.skyColor(0x20224A)
+			.ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) // We should probably change it
+			.backgroundMusic(TFConfiguredFeatures.TFMUSICTYPE);
 
 	}
 
@@ -572,12 +572,12 @@ public abstract class BiomeHelper {
 
 	public static Biome.BiomeBuilder biomeWithDefaults(BiomeSpecialEffects.Builder biomeAmbience, MobSpawnSettings.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
 		return new Biome.BiomeBuilder()
-				.hasPrecipitation(true)
-				.temperature(0.5F)
-				.downfall(0.5F)
-				.specialEffects(biomeAmbience.build())
-				.mobSpawnSettings(mobSpawnInfo.build())
-				.generationSettings(biomeGenerationSettings.build())
-				.temperatureAdjustment(Biome.TemperatureModifier.NONE);
+			.hasPrecipitation(true)
+			.temperature(0.5F)
+			.downfall(0.5F)
+			.specialEffects(biomeAmbience.build())
+			.mobSpawnSettings(mobSpawnInfo.build())
+			.generationSettings(biomeGenerationSettings.build())
+			.temperatureAdjustment(Biome.TemperatureModifier.NONE);
 	}
 }

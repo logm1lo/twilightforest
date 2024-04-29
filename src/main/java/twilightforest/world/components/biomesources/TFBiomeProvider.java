@@ -18,11 +18,11 @@ public class TFBiomeProvider extends BiomeSource {
 
 	private final Holder<BiomeDensitySource> biomeTerrainDataHolder;
 
-    public TFBiomeProvider(Holder<BiomeDensitySource> biomeTerrainDataHolder) {
+	public TFBiomeProvider(Holder<BiomeDensitySource> biomeTerrainDataHolder) {
 		super();
 
 		this.biomeTerrainDataHolder = biomeTerrainDataHolder;
-    }
+	}
 
 	private Holder<BiomeDensitySource> getBiomeConfig() {
 		return this.biomeTerrainDataHolder;

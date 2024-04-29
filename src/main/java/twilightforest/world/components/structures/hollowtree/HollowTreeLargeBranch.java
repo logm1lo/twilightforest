@@ -64,8 +64,8 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("dungeon_monster")));
 		this.dungeonMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
-				.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
+			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	@Override
@@ -93,9 +93,9 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 		// go about halfway out and make a few medium branches.
 		// the number of medium branches we can support depends on the length of the big branch
 		// every other branch switches sides
-		int numMedBranches = rand.nextInt((int)(this.length / 6)) + (int)(this.length / 8);
+		int numMedBranches = rand.nextInt((int) (this.length / 6)) + (int) (this.length / 8);
 
-		for(int i = 0; i <= numMedBranches; i++) {
+		for (int i = 0; i <= numMedBranches; i++) {
 			double outVar = (rand.nextDouble() * 0.3) + 0.3;
 			double angleVar = rand.nextDouble() * 0.225 * ((i & 1) == 0 ? 1.0 : -1.0);
 
@@ -133,7 +133,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 
 		// reinforce it
 		int reinforcements = 4;
-		for(int i = 0; i <= reinforcements; i++) {
+		for (int i = 0; i <= reinforcements; i++) {
 			int vx = (i & 2) == 0 ? 1 : 0;
 			int vy = (i & 1) == 0 ? 1 : -1;
 			int vz = (i & 2) == 0 ? 0 : 1;
@@ -143,7 +143,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 		// make 1-2 small branches near the base
 		//Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781) ^ (this.boundingBox.minZ() * 756839));
 		int numSmallBranches = decoRNG.nextInt(2) + 1;
-		for(int i = 0; i <= numSmallBranches; i++) {
+		for (int i = 0; i <= numSmallBranches; i++) {
 			double outVar = (decoRNG.nextFloat() * 0.25F) + 0.25F;
 			double angleVar = decoRNG.nextFloat() * 0.25F * ((i & 1) == 0 ? 1.0F : -1.0F);
 

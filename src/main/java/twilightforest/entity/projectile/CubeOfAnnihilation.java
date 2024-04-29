@@ -119,7 +119,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
 		return (state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0)
-				&& (!restrictedPlaceMode || this.stack.canBreakBlockInAdventureMode(new BlockInWorld(this.level(), pos, false)));
+			&& (!restrictedPlaceMode || this.stack.canBreakBlockInAdventureMode(new BlockInWorld(this.level(), pos, false)));
 	}
 
 	private void annihilateParticles(Level level, BlockPos pos) {
@@ -178,9 +178,9 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 
 			if (currentSpeed > maxSpeed) {
 				this.setDeltaMovement(new Vec3(
-						this.getDeltaMovement().x() / (currentSpeed / maxSpeed),
-						this.getDeltaMovement().y() / (currentSpeed / maxSpeed),
-						this.getDeltaMovement().z() / (currentSpeed / maxSpeed)));
+					this.getDeltaMovement().x() / (currentSpeed / maxSpeed),
+					this.getDeltaMovement().y() / (currentSpeed / maxSpeed),
+					this.getDeltaMovement().z() / (currentSpeed / maxSpeed)));
 			} else {
 				float slow = 0.5F;
 				this.getDeltaMovement().multiply(slow, slow, slow);

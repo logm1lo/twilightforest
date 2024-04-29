@@ -72,8 +72,8 @@ public class TransformationPowderCategory implements IRecipeCategory<Transformat
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, TransformationRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 8, 11)
-				.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
-				.addIngredient(JEICompat.ENTITY_TYPE, recipe.input());
+			.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
+			.addIngredient(JEICompat.ENTITY_TYPE, recipe.input());
 
 		SpawnEggItem inputEgg = DeferredSpawnEggItem.byId(recipe.input().type());
 		if (inputEgg != null) {
@@ -81,8 +81,8 @@ public class TransformationPowderCategory implements IRecipeCategory<Transformat
 			builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStack(new ItemStack(inputEgg));
 		}
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 11)
-				.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
-				.addIngredient(JEICompat.ENTITY_TYPE, recipe.output());
+			.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
+			.addIngredient(JEICompat.ENTITY_TYPE, recipe.output());
 
 		SpawnEggItem outputEgg = DeferredSpawnEggItem.byId(recipe.output().type());
 		if (outputEgg != null) {

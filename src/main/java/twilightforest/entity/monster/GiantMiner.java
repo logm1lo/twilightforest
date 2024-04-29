@@ -47,11 +47,11 @@ public class GiantMiner extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 80.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 2.0D)
-				.add(Attributes.FOLLOW_RANGE, 40.0D)
-				.add(Attributes.STEP_HEIGHT, 1.2D);
+			.add(Attributes.MAX_HEALTH, 80.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 2.0D)
+			.add(Attributes.FOLLOW_RANGE, 40.0D)
+			.add(Attributes.STEP_HEIGHT, 1.2D);
 	}
 
 	@Nullable

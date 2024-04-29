@@ -370,14 +370,14 @@ public class SoundGenerator extends TFSoundProvider {
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_MOTION, "motion");
 
 		this.add(TFSounds.MUSIC, SoundDefinition.definition().with(
-				SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/superstitious"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-				SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/steps"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-				SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/radiance"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-				SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/home"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-				SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/wayfarer"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-				SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/findings"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-				SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/maker"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-				SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/thread"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-				SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/motion"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F)));
+			SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/superstitious"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/steps"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/radiance"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/home"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/wayfarer"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/findings"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/maker"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/thread"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/motion"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F)));
 	}
 }

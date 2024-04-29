@@ -94,8 +94,8 @@ public class HollowTreeTrunk extends HollowTreePiece {
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("dungeon_monster")));
 		this.dungeonMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
-				.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
+			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		// 3-5 couple branches on the way up...
 		int numBranches = rand.nextInt(3) + 3;
 		for (int i = 0; i <= numBranches; i++) {
-			int branchHeight = (int)(this.height * rand.nextDouble() * 0.9) + (this.height / 10);
+			int branchHeight = (int) (this.height * rand.nextDouble() * 0.9) + (this.height / 10);
 			double branchRotation = rand.nextDouble();
 
 			this.makeSmallBranch(list, rand, index + i + 1, branchHeight, 4, branchRotation, 0.35D, true);
@@ -252,7 +252,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 				// determine how far we are from the center.
 				int ax = Math.abs(dx - this.radius);
 				int az = Math.abs(dz - this.radius);
-				int dist = (int)(Math.max(ax, az) + (Math.min(ax, az) * 0.5));
+				int dist = (int) (Math.max(ax, az) + (Math.min(ax, az) * 0.5));
 
 				for (int dy = 0; dy <= this.height; dy++) {
 					// fill the body of the trunk
@@ -276,7 +276,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		// fireflies & cicadas
 		int numInsects = decoRNG.nextInt(3 * this.radius) + decoRNG.nextInt(3 * this.radius) + 10;
 		for (int i = 0; i <= numInsects; i++) {
-			int fHeight = (int)(this.height * decoRNG.nextDouble() * 0.9) + (this.height / 10);
+			int fHeight = (int) (this.height * decoRNG.nextDouble() * 0.9) + (this.height / 10);
 			double fAngle = decoRNG.nextDouble();
 			this.addInsect(level, decoRNG, fHeight, fAngle, writeableBounds);
 		}

@@ -8,7 +8,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
@@ -56,7 +55,6 @@ public class TFParticleType {
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> LOG_CORE_PARTICLE = PARTICLE_TYPES.register("log_core_particle", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> CLOUD_PUFF = PARTICLE_TYPES.register("cloud_puff", () -> new SimpleParticleType(false));
 
-	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void registerFactories(RegisterParticleProvidersEvent event) {
 		event.registerSpriteSet(TFParticleType.LARGE_FLAME.get(), LargeFlameParticle.Factory::new);

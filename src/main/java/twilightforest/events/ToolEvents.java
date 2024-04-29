@@ -46,9 +46,9 @@ public class ToolEvents {
 	public static void onEnderBowHit(ProjectileImpactEvent evt) {
 		Projectile arrow = evt.getProjectile();
 		if (arrow.getOwner() instanceof Player player
-				&& evt.getRayTraceResult() instanceof EntityHitResult result
-				&& result.getEntity() instanceof LivingEntity living
-				&& arrow.getOwner() != result.getEntity()) {
+			&& evt.getRayTraceResult() instanceof EntityHitResult result
+			&& result.getEntity() instanceof LivingEntity living
+			&& arrow.getOwner() != result.getEntity()) {
 
 			if (arrow.getPersistentData().contains(EnderBowItem.KEY)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();

@@ -38,9 +38,9 @@ import twilightforest.enums.HollowLogVariants;
 public class HollowLogClimbable extends HorizontalDirectionalBlock implements WaterloggedBlock {
 
 	public static final MapCodec<HollowLogClimbable> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-					BuiltInRegistries.BLOCK.holderByNameCodec().fieldOf("vertical_log").forGetter(o -> o.vertical),
-					propertiesCodec())
-			.apply(instance, HollowLogClimbable::new)
+			BuiltInRegistries.BLOCK.holderByNameCodec().fieldOf("vertical_log").forGetter(o -> o.vertical),
+			propertiesCodec())
+		.apply(instance, HollowLogClimbable::new)
 	);
 	public static final EnumProperty<HollowLogVariants.Climbable> VARIANT = EnumProperty.create("variant", HollowLogVariants.Climbable.class);
 
@@ -104,8 +104,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 	@Override
 	public BlockState setWaterlog(BlockState prior, boolean doWater) {
 		return switch (prior.getValue(VARIANT)) {
-			case VINE ->
-					doWater ? this.vertical.value().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, true) : prior;
+			case VINE -> doWater ? this.vertical.value().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, true) : prior;
 			case LADDER -> prior.setValue(VARIANT, HollowLogVariants.Climbable.LADDER_WATERLOGGED);
 			case LADDER_WATERLOGGED -> prior.setValue(VARIANT, HollowLogVariants.Climbable.LADDER);
 		};

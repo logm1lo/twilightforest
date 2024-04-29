@@ -1,6 +1,5 @@
 package twilightforest.data.helpers;
 
-import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -54,8 +53,8 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 
 	public void generateSoundWithCustomSubtitle(DeferredHolder<SoundEvent, SoundEvent> event, SoundEvent referencedSound, String subtitle) {
 		this.add(event, SoundDefinition.definition()
-				.subtitle(subtitle)
-				.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT)));
+			.subtitle(subtitle)
+			.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT)));
 	}
 
 	public void generateExistingSound(DeferredHolder<SoundEvent, SoundEvent> event, SoundEvent referencedSound, boolean subtitle, float volume, float pitch) {
@@ -65,19 +64,19 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 			definition.subtitle("subtitles.twilightforest." + splitSoundName[0] + "." + splitSoundName[2]);
 		}
 		this.add(event, definition
-				.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT).volume(volume).pitch(pitch)));
+			.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT).volume(volume).pitch(pitch)));
 	}
 
 	public void makeStepSound(DeferredHolder<SoundEvent, SoundEvent> event, SoundEvent referencedSound) {
 		this.add(event, SoundDefinition.definition()
-				.subtitle("subtitles.block.generic.footsteps")
-				.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT)));
+			.subtitle("subtitles.block.generic.footsteps")
+			.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT)));
 	}
 
 	public void makeMusicDisc(DeferredHolder<SoundEvent, SoundEvent> event, String discName) {
 		this.add(event, SoundDefinition.definition()
-				.with(SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/" + discName), SoundDefinition.SoundType.SOUND)
-						.stream()));
+			.with(SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/" + discName), SoundDefinition.SoundType.SOUND)
+				.stream()));
 	}
 
 	public void generateParrotSound(DeferredHolder<SoundEvent, SoundEvent> event, SoundEvent referencedSound) {
@@ -86,6 +85,6 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 		definition.subtitle("subtitles.twilightforest." + splitSoundName[0] + "." + splitSoundName[2]);
 
 		this.add(event, definition
-				.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT).pitch(1.8F).volume(0.6F)));
+			.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT).pitch(1.8F).volume(0.6F)));
 	}
 }

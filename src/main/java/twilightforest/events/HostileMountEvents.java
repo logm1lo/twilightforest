@@ -54,9 +54,9 @@ public class HostileMountEvents {
 	@SubscribeEvent
 	public static void preventMountDismount(EntityMountEvent event) {
 		if (!event.getEntityBeingMounted().level().isClientSide() &&
-				!event.isMounting() && event.getEntityBeingMounted().isAlive() &&
-				event.getEntityMounting() instanceof Player player && player.isAlive() &&
-				isRidingUnfriendly(player) && !allowDismount && !player.getAbilities().invulnerable)
+			!event.isMounting() && event.getEntityBeingMounted().isAlive() &&
+			event.getEntityMounting() instanceof Player player && player.isAlive() &&
+			isRidingUnfriendly(player) && !allowDismount && !player.getAbilities().invulnerable)
 			event.setCanceled(true);
 	}
 

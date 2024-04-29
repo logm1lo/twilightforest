@@ -45,11 +45,11 @@ public class LichPopMobsGoal extends Goal {
 	@Override
 	public boolean canUse() {
 		return !this.lich.isShadowClone() &&
-				this.lich.getHealth() < this.lich.getMaxHealth() &&
-				this.lich.getPopCooldown() == 0 &&
-				!this.lich.level().getEntitiesOfClass(Mob.class,
-						this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D),
-						e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES) && this.lich.hasLineOfSight(e)).isEmpty();
+			this.lich.getHealth() < this.lich.getMaxHealth() &&
+			this.lich.getPopCooldown() == 0 &&
+			!this.lich.level().getEntitiesOfClass(Mob.class,
+				this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D),
+				e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES) && this.lich.hasLineOfSight(e)).isEmpty();
 	}
 
 	@Override

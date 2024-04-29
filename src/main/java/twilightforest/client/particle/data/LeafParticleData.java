@@ -14,16 +14,16 @@ import javax.annotation.Nonnull;
 
 public class LeafParticleData implements ParticleOptions {
 	public static MapCodec<LeafParticleData> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Codec.INT.fieldOf("r").forGetter((obj) -> obj.r),
-			Codec.INT.fieldOf("g").forGetter((obj) -> obj.g),
-			Codec.INT.fieldOf("b").forGetter((obj) -> obj.b)
+		Codec.INT.fieldOf("r").forGetter((obj) -> obj.r),
+		Codec.INT.fieldOf("g").forGetter((obj) -> obj.g),
+		Codec.INT.fieldOf("b").forGetter((obj) -> obj.b)
 	).apply(instance, LeafParticleData::new));
 
 	public static StreamCodec<? super RegistryFriendlyByteBuf, LeafParticleData> STREAM_CODEC = StreamCodec.composite(
-			ByteBufCodecs.VAR_INT, p -> p.r,
-			ByteBufCodecs.VAR_INT, p -> p.g,
-			ByteBufCodecs.VAR_INT, p -> p.b,
-			LeafParticleData::new
+		ByteBufCodecs.VAR_INT, p -> p.r,
+		ByteBufCodecs.VAR_INT, p -> p.g,
+		ByteBufCodecs.VAR_INT, p -> p.b,
+		LeafParticleData::new
 	);
 
 	public final int r;

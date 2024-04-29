@@ -76,7 +76,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Nullable
 	public static TFMazeMapData getMazeMapData(Level level, String name) {
 		if (level.isClientSide()) return CLIENT_DATA.get(name);
-		else return (TFMazeMapData) ((ServerLevel)level).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
+		else return (TFMazeMapData) ((ServerLevel) level).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
 	}
 
 	public static SavedData.Factory<MapItemSavedData> factory() {

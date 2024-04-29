@@ -45,10 +45,10 @@ public class TowerwoodBorer extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 15.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.27D)
-				.add(Attributes.ATTACK_DAMAGE, 5.0D)
-				.add(Attributes.FOLLOW_RANGE, 8.0D);
+			.add(Attributes.MAX_HEALTH, 15.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.27D)
+			.add(Attributes.ATTACK_DAMAGE, 5.0D)
+			.add(Attributes.FOLLOW_RANGE, 8.0D);
 	}
 
 	@Override

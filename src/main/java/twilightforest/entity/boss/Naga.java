@@ -174,12 +174,12 @@ public class Naga extends BaseTFBoss {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 120)
-				.add(Attributes.MOVEMENT_SPEED, DEFAULT_SPEED)
-				.add(Attributes.ATTACK_DAMAGE, 5.0D)
-				.add(Attributes.FOLLOW_RANGE, 80.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
-				.add(Attributes.STEP_HEIGHT, 2.0F);
+			.add(Attributes.MAX_HEALTH, 120)
+			.add(Attributes.MOVEMENT_SPEED, DEFAULT_SPEED)
+			.add(Attributes.ATTACK_DAMAGE, 5.0D)
+			.add(Attributes.FOLLOW_RANGE, 80.0D)
+			.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
+			.add(Attributes.STEP_HEIGHT, 2.0F);
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class Naga extends BaseTFBoss {
 		}
 
 		if (!this.level().isClientSide() && oldSegments != newSegments) {
-			double speedMod = ((float)MAX_SEGMENTS / newSegments * 0.02F);
+			double speedMod = ((float) MAX_SEGMENTS / newSegments * 0.02F);
 			AttributeModifier modifier = new AttributeModifier(MOVEMENT_SPEED_UUID, "Segment Count Speed Boost", speedMod, AttributeModifier.Operation.ADD_VALUE);
 			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(MOVEMENT_SPEED_UUID);
 			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(modifier);
@@ -349,8 +349,8 @@ public class Naga extends BaseTFBoss {
 	@Override
 	public boolean isInvulnerableTo(DamageSource src) {
 		return src.getEntity() != null && !this.isOtherEntityWithinHomeArea(src.getEntity()) // reject damage from outside of our home radius
-				|| src.getDirectEntity() != null && !this.isOtherEntityWithinHomeArea(src.getDirectEntity())
-				|| src.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(src);
+			|| src.getDirectEntity() != null && !this.isOtherEntityWithinHomeArea(src.getDirectEntity())
+			|| src.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(src);
 	}
 
 	@Override
@@ -386,7 +386,7 @@ public class Naga extends BaseTFBoss {
 					player.getUseItem().hurtAndBreak(10, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 					player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
 					player.stopUsingItem();
-					this.level().broadcastEntityEvent(player, (byte)30);
+					this.level().broadcastEntityEvent(player, (byte) 30);
 				}
 				living.hurt(this.damageSources().mobAttack(this), 4.0F);
 				this.playSound(SoundEvents.FOX_BITE, 2.0F, 0.5F);
@@ -459,10 +459,10 @@ public class Naga extends BaseTFBoss {
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
 				double d2 = this.getRandom().nextGaussian() * 0.02D;
 				this.level().addParticle(ParticleTypes.EXPLOSION,
-						segment.getX() + this.getRandom().nextFloat() * segment.getBbWidth() * 2.0F - segment.getBbWidth() - d0 * 10.0D,
-						segment.getY() + this.getRandom().nextFloat() * segment.getBbHeight() - d1 * 10.0D,
-						segment.getZ() + this.getRandom().nextFloat() * segment.getBbWidth() * 2.0F - segment.getBbWidth() - d2 * 10.0D,
-						d0, d1, d2);
+					segment.getX() + this.getRandom().nextFloat() * segment.getBbWidth() * 2.0F - segment.getBbWidth() - d0 * 10.0D,
+					segment.getY() + this.getRandom().nextFloat() * segment.getBbHeight() - d1 * 10.0D,
+					segment.getZ() + this.getRandom().nextFloat() * segment.getBbWidth() * 2.0F - segment.getBbWidth() - d2 * 10.0D,
+					d0, d1, d2);
 			}
 		}
 	}
@@ -576,10 +576,10 @@ public class Naga extends BaseTFBoss {
 			float height = this.getBbHeight();
 			for (int k = 0; k < 20; k++) {
 				this.level().addParticle(this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.EXPLOSION_EMITTER,
-						(pos.x() + this.getRandom().nextFloat() * width * 2.0F) - width,
-						pos.y() + this.getRandom().nextFloat() * height,
-						(pos.z() + this.getRandom().nextFloat() * width * 2.0F) - width,
-						this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
+					(pos.x() + this.getRandom().nextFloat() * width * 2.0F) - width,
+					pos.y() + this.getRandom().nextFloat() * height,
+					(pos.z() + this.getRandom().nextFloat() * width * 2.0F) - width,
+					this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
 			}
 		}
 		super.handleEntityEvent(id);

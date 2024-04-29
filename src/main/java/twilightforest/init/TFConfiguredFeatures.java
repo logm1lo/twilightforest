@@ -94,9 +94,9 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BIRCH_FALLEN_LOG = registerKey("birch_fallen_log");
 
 	//smol stone veins
-	public static final ResourceKey<ConfiguredFeature<?,?>> SMALL_GRANITE = registerKey("small_granite");
-	public static final ResourceKey<ConfiguredFeature<?,?>> SMALL_DIORITE = registerKey("small_diorite");
-	public static final ResourceKey<ConfiguredFeature<?,?>> SMALL_ANDESITE = registerKey("small_andesite");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_GRANITE = registerKey("small_granite");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_DIORITE = registerKey("small_diorite");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_ANDESITE = registerKey("small_andesite");
 
 	//Ores! Lets keep pre 1.18 ore rates :)
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LEGACY_COAL_ORE = registerKey("legacy_coal_ore");
@@ -117,7 +117,7 @@ public final class TFConfiguredFeatures {
 
 	//troll caves special stuff
 	public static final ResourceKey<ConfiguredFeature<?, ?>> UBEROUS_SOIL_PATCH_BIG = registerKey("uberous_soil_patch_big");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_MYCELIUM =  registerKey("troll_cave_mycelium");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_MYCELIUM = registerKey("troll_cave_mycelium");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_DIRT = registerKey("troll_cave_dirt");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> UBEROUS_SOIL_PATCH_SMALL = registerKey("uberous_soil_patch_small");
 
@@ -174,40 +174,40 @@ public final class TFConfiguredFeatures {
 
 	//ground decoration
 	public static final RandomPatchConfiguration SMALL_FLOWER_CONFIG = (new RandomPatchConfiguration(32, 7, 7,
-			PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
-					new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
-							Blocks.POPPY.defaultBlockState(),
-							Blocks.DANDELION.defaultBlockState(),
-							Blocks.RED_TULIP.defaultBlockState(),
-							Blocks.ORANGE_TULIP.defaultBlockState(),
-							Blocks.PINK_TULIP.defaultBlockState(),
-							Blocks.WHITE_TULIP.defaultBlockState(),
-							Blocks.CORNFLOWER.defaultBlockState(),
-							Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
-							Blocks.BLUE_ORCHID.defaultBlockState(),
-							Blocks.ALLIUM.defaultBlockState(),
-							Blocks.AZURE_BLUET.defaultBlockState(),
-							Blocks.OXEYE_DAISY.defaultBlockState())
-					)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
+		PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
+			new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
+				Blocks.POPPY.defaultBlockState(),
+				Blocks.DANDELION.defaultBlockState(),
+				Blocks.RED_TULIP.defaultBlockState(),
+				Blocks.ORANGE_TULIP.defaultBlockState(),
+				Blocks.PINK_TULIP.defaultBlockState(),
+				Blocks.WHITE_TULIP.defaultBlockState(),
+				Blocks.CORNFLOWER.defaultBlockState(),
+				Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
+				Blocks.BLUE_ORCHID.defaultBlockState(),
+				Blocks.ALLIUM.defaultBlockState(),
+				Blocks.AZURE_BLUET.defaultBlockState(),
+				Blocks.OXEYE_DAISY.defaultBlockState())
+			)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
 
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_PLACER = registerKey("flower_placer");
 
 	public static final RandomPatchConfiguration SMALL_FLOWER_CONFIG_ALT = (new RandomPatchConfiguration(32, 7, 7,
-			PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
-					new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
-							Blocks.WHITE_TULIP.defaultBlockState(),
-							Blocks.PINK_TULIP.defaultBlockState(),
-							Blocks.ORANGE_TULIP.defaultBlockState(),
-							Blocks.RED_TULIP.defaultBlockState(),
-							Blocks.DANDELION.defaultBlockState(),
-							Blocks.POPPY.defaultBlockState(),
-							Blocks.OXEYE_DAISY.defaultBlockState(),
-							Blocks.AZURE_BLUET.defaultBlockState(),
-							Blocks.ALLIUM.defaultBlockState(),
-							Blocks.BLUE_ORCHID.defaultBlockState(),
-							Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
-							Blocks.CORNFLOWER.defaultBlockState())
-					)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
+		PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
+			new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
+				Blocks.WHITE_TULIP.defaultBlockState(),
+				Blocks.PINK_TULIP.defaultBlockState(),
+				Blocks.ORANGE_TULIP.defaultBlockState(),
+				Blocks.RED_TULIP.defaultBlockState(),
+				Blocks.DANDELION.defaultBlockState(),
+				Blocks.POPPY.defaultBlockState(),
+				Blocks.OXEYE_DAISY.defaultBlockState(),
+				Blocks.AZURE_BLUET.defaultBlockState(),
+				Blocks.ALLIUM.defaultBlockState(),
+				Blocks.BLUE_ORCHID.defaultBlockState(),
+				Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
+				Blocks.CORNFLOWER.defaultBlockState())
+			)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
 
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_PLACER_ALT = registerKey("flower_placer_alt");
 

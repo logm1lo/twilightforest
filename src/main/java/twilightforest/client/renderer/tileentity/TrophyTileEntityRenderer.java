@@ -84,6 +84,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	}
 
 	public static final ItemStack stack = new ItemStack(TFBlocks.NAGA_TROPHY.get());
+
 	@Override
 	public void render(TrophyBlockEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		float f = tileEntityIn.getAnimationProgress(partialTicks);
@@ -98,7 +99,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 			trophy.openMouthForTrophy(flag ? 0.5F : 0.0F);
 		}
 		if (variant == BossVariant.UR_GHAST) {
-			((UrGhastTrophyModel)trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
+			((UrGhastTrophyModel) trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
 		}
 		render(direction, f1, trophy, variant, f, matrixStackIn, bufferIn, combinedLightIn, ItemDisplayContext.NONE);
 		matrixStackIn.popPose();

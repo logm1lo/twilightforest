@@ -40,8 +40,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.enums.BlockLoggingEnum;
@@ -272,7 +270,6 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		return false;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static DoubleBlockCombiner.Combiner<KeepsakeCasketBlockEntity, Float2FloatFunction> getLidRotationCallback(final LidBlockEntity lid) {
 		return new DoubleBlockCombiner.Combiner<>() {
 			public Float2FloatFunction acceptDouble(KeepsakeCasketBlockEntity casket, KeepsakeCasketBlockEntity oldCasket) {

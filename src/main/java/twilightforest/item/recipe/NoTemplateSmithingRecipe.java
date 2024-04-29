@@ -41,11 +41,11 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 	public boolean matches(Container container, Level level) {
 		if (!container.getItem(0).isEmpty() || !this.base.test(container.getItem(1)) || !this.addition.test(container.getItem(2))) return false;
 		ItemStack armor = container.getItem(1);
-		
+
 		for (TypedDataComponent<?> data : this.additionalData)
 			if (armor.has(data.type()))
 				return false;
-		
+
 		return true;
 	}
 
@@ -120,16 +120,16 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 
 	public static class Serializer implements RecipeSerializer<NoTemplateSmithingRecipe> {
 		private static final MapCodec<NoTemplateSmithingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-				Ingredient.CODEC.fieldOf("base").forGetter(NoTemplateSmithingRecipe::getBase),
-				Ingredient.CODEC.fieldOf("addition").forGetter(NoTemplateSmithingRecipe::getAddition),
-				DATA_COMPONENT_CODEC.optionalFieldOf("additional_data", List.of()).forGetter(NoTemplateSmithingRecipe::additionalData)
+			Ingredient.CODEC.fieldOf("base").forGetter(NoTemplateSmithingRecipe::getBase),
+			Ingredient.CODEC.fieldOf("addition").forGetter(NoTemplateSmithingRecipe::getAddition),
+			DATA_COMPONENT_CODEC.optionalFieldOf("additional_data", List.of()).forGetter(NoTemplateSmithingRecipe::additionalData)
 		).apply(instance, NoTemplateSmithingRecipe::new));
 
 		private static final StreamCodec<RegistryFriendlyByteBuf, NoTemplateSmithingRecipe> STREAM_CODEC = StreamCodec.composite(
-				Ingredient.CONTENTS_STREAM_CODEC, NoTemplateSmithingRecipe::getBase,
-				Ingredient.CONTENTS_STREAM_CODEC, NoTemplateSmithingRecipe::getAddition,
-				TypedDataComponent.STREAM_CODEC.apply(ByteBufCodecs.list()), NoTemplateSmithingRecipe::additionalData,
-				NoTemplateSmithingRecipe::new
+			Ingredient.CONTENTS_STREAM_CODEC, NoTemplateSmithingRecipe::getBase,
+			Ingredient.CONTENTS_STREAM_CODEC, NoTemplateSmithingRecipe::getAddition,
+			TypedDataComponent.STREAM_CODEC.apply(ByteBufCodecs.list()), NoTemplateSmithingRecipe::additionalData,
+			NoTemplateSmithingRecipe::new
 		);
 
 		@Override

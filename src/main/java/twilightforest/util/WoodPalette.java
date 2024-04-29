@@ -16,14 +16,14 @@ import java.util.Set;
 
 public class WoodPalette {
 	public static final Codec<WoodPalette> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("planks").forGetter(p -> p.planks),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("stairs").forGetter(p -> p.stairs),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("slab").forGetter(p -> p.slab),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("button").forGetter(p -> p.button),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("fence").forGetter(p -> p.fence),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("gate").forGetter(p -> p.gate),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("plate").forGetter(p -> p.plate),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("banister").forGetter(p -> p.banister)
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("planks").forGetter(p -> p.planks),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("stairs").forGetter(p -> p.stairs),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("slab").forGetter(p -> p.slab),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("button").forGetter(p -> p.button),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("fence").forGetter(p -> p.fence),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("gate").forGetter(p -> p.gate),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("plate").forGetter(p -> p.plate),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("banister").forGetter(p -> p.banister)
 	).apply(instance, WoodPalette::new));
 
 	public WoodPalette(DeferredHolder<Block, Block> planks, DeferredHolder<Block, StairBlock> stairs, DeferredHolder<Block, Block> slab, DeferredHolder<Block, Block> button, DeferredHolder<Block, Block> fence, DeferredHolder<Block, Block> gate, DeferredHolder<Block, Block> plate, DeferredHolder<Block, BanisterBlock> banister) {

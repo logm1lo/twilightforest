@@ -21,12 +21,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import twilightforest.init.TFDataMaps;
-import twilightforest.init.TFRecipes;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.util.WorldUtil;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CrumbleHornItem extends Item {
 

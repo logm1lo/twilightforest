@@ -82,9 +82,9 @@ public class TFREIClientPlugin implements REIClientPlugin {
 			if (!TFConfig.disableUncraftingOnly) {
 				registry.registerRecipeFiller(CraftingRecipe.class, RecipeType.CRAFTING, recipe -> {
 					if (recipe.value().getResultItem(registryAccess).isEmpty() ||
-							recipe.value().getResultItem(registryAccess).is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
-							TFConfig.disableUncraftingRecipes.contains(recipe.id().toString()) ||
-							TFConfig.flipUncraftingModIdList != TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) {
+						recipe.value().getResultItem(registryAccess).is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
+						TFConfig.disableUncraftingRecipes.contains(recipe.id().toString()) ||
+						TFConfig.flipUncraftingModIdList != TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) {
 						return null;
 					}
 					if (recipe.value() instanceof ShapelessRecipe && !TFConfig.allowShapelessUncrafting) {
@@ -96,10 +96,10 @@ public class TFREIClientPlugin implements REIClientPlugin {
 			}
 		}
 		RecipeViewerConstants.getCrumbleHornRecipes().forEach(info ->
-				registry.add(new REICrumbleHornDisplay(
-						Collections.singletonList(EntryIngredients.of(info.getFirst().asItem())),
-						Collections.singletonList(EntryIngredients.of(info.getSecond().asItem())),
-						info.getSecond() == Blocks.AIR))
+			registry.add(new REICrumbleHornDisplay(
+				Collections.singletonList(EntryIngredients.of(info.getFirst().asItem())),
+				Collections.singletonList(EntryIngredients.of(info.getSecond().asItem())),
+				info.getSecond() == Blocks.AIR))
 		);
 
 		RecipeViewerConstants.getTransformationPowderRecipes().forEach(info -> registry.add(REITransformationPowderDisplay.of(info)));

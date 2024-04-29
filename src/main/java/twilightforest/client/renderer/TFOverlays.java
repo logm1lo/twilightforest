@@ -156,16 +156,16 @@ public class TFOverlays {
 		int totalScanned = data.totalScannedBlocks();
 
 		List<Component> headerRowTexts = ImmutableList.of(
-				Component.translatable("misc.twilightforest.ore_meter_range", range, pos.x, pos.z),
-				Component.translatable("misc.twilightforest.ore_meter_total", totalScanned)
+			Component.translatable("misc.twilightforest.ore_meter_range", range, pos.x, pos.z),
+			Component.translatable("misc.twilightforest.ore_meter_total", totalScanned)
 		);
 
 		ArrayList<ComponentColumn> columns = new ArrayList<>();
 
 		List<Pair<String, Integer>> scanData = data.counts().entrySet().stream()
-				.map(e -> Pair.of(e.getKey(), e.getValue())) // Convert Entries into Pairs
-				.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
-				.toList(); // Make sorted immutable list
+			.map(e -> Pair.of(e.getKey(), e.getValue())) // Convert Entries into Pairs
+			.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
+			.toList(); // Make sorted immutable list
 
 		if (TFConfig.prettifyOreMeterGui) {
 			ComponentColumn padding = ComponentColumn.padding(1);
@@ -191,10 +191,10 @@ public class TFOverlays {
 		for (Pair<String, Integer> entry : entries) {
 			String percentage = FORMAT.format(entry.getSecond() * 100.0F / totalScanned);
 			Component formattedEntry = Component.translatable(entry.getFirst())
-					.append(Component.literal(" "))
-					.append(Component.translatable("misc.twilightforest.ore_meter_separator"))
-					.append(Component.literal(" " + entry.getSecond() + " "))
-					.append(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
+				.append(Component.literal(" "))
+				.append(Component.translatable("misc.twilightforest.ore_meter_separator"))
+				.append(Component.literal(" " + entry.getSecond() + " "))
+				.append(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
 
 			tooltips.add(formattedEntry);
 		}

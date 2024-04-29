@@ -102,8 +102,8 @@ public class Hydra extends BaseTFBoss {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D);
+			.add(Attributes.MAX_HEALTH, MAX_HEALTH)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D);
 	}
 
 	@Override
@@ -471,10 +471,10 @@ public class Hydra extends BaseTFBoss {
 	@Nullable
 	private LivingEntity findSecondaryTarget(double range) {
 		return this.level().getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
-				.stream()
-				.filter(e -> !(e instanceof Hydra))
-				.filter(e -> e != this.getTarget() && !this.isAnyHeadTargeting(e) && this.getSensing().hasLineOfSight(e) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(e))
-				.min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
+			.stream()
+			.filter(e -> !(e instanceof Hydra))
+			.filter(e -> e != this.getTarget() && !this.isAnyHeadTargeting(e) && this.getSensing().hasLineOfSight(e) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(e))
+			.min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
 	}
 
 	private boolean isAnyHeadTargeting(Entity targetEntity) {
@@ -717,10 +717,10 @@ public class Hydra extends BaseTFBoss {
 			double vy = this.getRandom().nextGaussian() * 0.02D;
 			double vz = this.getRandom().nextGaussian() * 0.02D;
 			this.level().addParticle((this.getRandom().nextInt(2) == 0 ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
-					this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
-					this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
-					this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
-					vx, vy, vz
+				this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+				this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
+				this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+				vx, vy, vz
 			);
 		}
 	}

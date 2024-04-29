@@ -14,9 +14,9 @@ import twilightforest.network.UpdateShieldPacket;
 public class FortificationShieldAttachment {
 
 	public static final Codec<FortificationShieldAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					Codec.INT.fieldOf("temporary_shields").forGetter(o -> o.temporaryShields),
-					Codec.INT.fieldOf("permanent_shields").forGetter(o -> o.permanentShields))
-			.apply(instance, FortificationShieldAttachment::new));
+			Codec.INT.fieldOf("temporary_shields").forGetter(o -> o.temporaryShields),
+			Codec.INT.fieldOf("permanent_shields").forGetter(o -> o.permanentShields))
+		.apply(instance, FortificationShieldAttachment::new));
 
 	private int temporaryShields;
 	private int permanentShields;

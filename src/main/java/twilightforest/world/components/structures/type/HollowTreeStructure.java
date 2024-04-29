@@ -41,21 +41,21 @@ import java.util.stream.Collectors;
 
 public class HollowTreeStructure extends Structure implements DecorationClearance, TreeGrowerStartable {
 	public static final MapCodec<HollowTreeStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Structure.settingsCodec(instance),
-			DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
-			IntProvider.codec(16, 128).fieldOf("height").forGetter(s -> s.height),
-			IntProvider.codec(1, 8).fieldOf("radius").forGetter(s -> s.radius),
-			BlockStateProvider.CODEC.fieldOf("log").forGetter(s -> s.log),
-			BlockStateProvider.CODEC.fieldOf("wood").forGetter(s -> s.wood),
-			BlockStateProvider.CODEC.fieldOf("root").forGetter(s -> s.root),
-			BlockStateProvider.CODEC.fieldOf("leaves").forGetter(s -> s.leaves),
-			BlockStateProvider.CODEC.fieldOf("vine").forGetter(s -> s.vine),
-			BlockStateProvider.CODEC.fieldOf("bug").forGetter(s -> s.bug),
-			BlockStateProvider.CODEC.fieldOf("dungeon_wood").forGetter(s -> s.dungeonWood),
-			BlockStateProvider.CODEC.fieldOf("dungeon_air").forGetter(s -> s.dungeonAir),
-			BlockStateProvider.CODEC.fieldOf("dungeon_loot_block").forGetter(s -> s.dungeonLootBlock),
-			ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("dungeon_loot_table").forGetter(s -> s.dungeonLootTable),
-			RegistryFixedCodec.create(Registries.ENTITY_TYPE).fieldOf("dungeon_monster").forGetter(s -> s.dungeonMonster)
+		Structure.settingsCodec(instance),
+		DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
+		IntProvider.codec(16, 128).fieldOf("height").forGetter(s -> s.height),
+		IntProvider.codec(1, 8).fieldOf("radius").forGetter(s -> s.radius),
+		BlockStateProvider.CODEC.fieldOf("log").forGetter(s -> s.log),
+		BlockStateProvider.CODEC.fieldOf("wood").forGetter(s -> s.wood),
+		BlockStateProvider.CODEC.fieldOf("root").forGetter(s -> s.root),
+		BlockStateProvider.CODEC.fieldOf("leaves").forGetter(s -> s.leaves),
+		BlockStateProvider.CODEC.fieldOf("vine").forGetter(s -> s.vine),
+		BlockStateProvider.CODEC.fieldOf("bug").forGetter(s -> s.bug),
+		BlockStateProvider.CODEC.fieldOf("dungeon_wood").forGetter(s -> s.dungeonWood),
+		BlockStateProvider.CODEC.fieldOf("dungeon_air").forGetter(s -> s.dungeonAir),
+		BlockStateProvider.CODEC.fieldOf("dungeon_loot_block").forGetter(s -> s.dungeonLootBlock),
+		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("dungeon_loot_table").forGetter(s -> s.dungeonLootTable),
+		RegistryFixedCodec.create(Registries.ENTITY_TYPE).fieldOf("dungeon_monster").forGetter(s -> s.dungeonMonster)
 	).apply(instance, HollowTreeStructure::new));
 
 	private final DecorationConfig decorationConfig;
@@ -77,21 +77,21 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 	private final Holder<EntityType<?>> dungeonMonster;
 
 	public HollowTreeStructure(
-			StructureSettings settings,
-			DecorationConfig decorationConfig,
-			IntProvider height,
-			IntProvider radius,
-			BlockStateProvider log,
-			BlockStateProvider wood,
-			BlockStateProvider root,
-			BlockStateProvider leaves,
-			BlockStateProvider vine,
-			BlockStateProvider bug,
-			BlockStateProvider dungeonWood,
-			BlockStateProvider dungeonAir,
-			BlockStateProvider dungeonLootBlock,
-			ResourceKey<LootTable> dungeonLootTable,
-			Holder<EntityType<?>> dungeonMonster
+		StructureSettings settings,
+		DecorationConfig decorationConfig,
+		IntProvider height,
+		IntProvider radius,
+		BlockStateProvider log,
+		BlockStateProvider wood,
+		BlockStateProvider root,
+		BlockStateProvider leaves,
+		BlockStateProvider vine,
+		BlockStateProvider bug,
+		BlockStateProvider dungeonWood,
+		BlockStateProvider dungeonAir,
+		BlockStateProvider dungeonLootBlock,
+		ResourceKey<LootTable> dungeonLootTable,
+		Holder<EntityType<?>> dungeonMonster
 	) {
 		super(settings);
 
@@ -209,26 +209,26 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 
 	public static HollowTreeStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new HollowTreeStructure(
-				new Structure.StructureSettings(
-						context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_TREE_BIOMES),
-						Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
-						GenerationStep.Decoration.SURFACE_STRUCTURES,
-						TerrainAdjustment.NONE
-				),
-				new DecorationClearance.DecorationConfig(2, false, true, true),
-				HollowTreePiece.DEFAULT_HEIGHT,
-				HollowTreePiece.DEFAULT_RADIUS,
-				HollowTreePiece.DEFAULT_LOG,
-				HollowTreePiece.DEFAULT_WOOD,
-				HollowTreePiece.DEFAULT_ROOT,
-				HollowTreePiece.DEFAULT_LEAVES,
-				HollowTreePiece.DEFAULT_VINE,
-				HollowTreePiece.DEFAULT_BUG,
-				HollowTreePiece.DEFAULT_WOOD,
-				HollowTreePiece.DEFAULT_DUNGEON_AIR,
-				HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK,
-				HollowTreePiece.DEFAULT_DUNGEON_LOOT_TABLE,
-				HollowTreePiece.DEFAULT_DUNGEON_MONSTER
+			new Structure.StructureSettings(
+				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_TREE_BIOMES),
+				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
+				GenerationStep.Decoration.SURFACE_STRUCTURES,
+				TerrainAdjustment.NONE
+			),
+			new DecorationClearance.DecorationConfig(2, false, true, true),
+			HollowTreePiece.DEFAULT_HEIGHT,
+			HollowTreePiece.DEFAULT_RADIUS,
+			HollowTreePiece.DEFAULT_LOG,
+			HollowTreePiece.DEFAULT_WOOD,
+			HollowTreePiece.DEFAULT_ROOT,
+			HollowTreePiece.DEFAULT_LEAVES,
+			HollowTreePiece.DEFAULT_VINE,
+			HollowTreePiece.DEFAULT_BUG,
+			HollowTreePiece.DEFAULT_WOOD,
+			HollowTreePiece.DEFAULT_DUNGEON_AIR,
+			HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK,
+			HollowTreePiece.DEFAULT_DUNGEON_LOOT_TABLE,
+			HollowTreePiece.DEFAULT_DUNGEON_MONSTER
 		);
 	}
 }

@@ -13,13 +13,13 @@ import twilightforest.init.TFFeatureModifiers;
 
 public class DangleFromTreeDecorator extends TreeDecorator {
 	public static final MapCodec<DangleFromTreeDecorator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Codec.intRange(0, 32).fieldOf("attempts_minimum").forGetter(o -> o.count),
-			Codec.intRange(0, 32).fieldOf("random_add_attempts").orElse(0).forGetter(o -> o.randomAddCount),
-			Codec.intRange(1, 24).fieldOf("minimum_required_length").forGetter(o -> o.minimumRequiredLength),
-			Codec.intRange(1, 24).fieldOf("base_length").forGetter(o -> o.baseLength),
-			Codec.intRange(0, 16).fieldOf("random_add_length").orElse(0).forGetter(o -> o.randomAddLength),
-			WeightedStateProvider.CODEC.fieldOf("rope_provider").forGetter(o -> o.rope),
-			WeightedStateProvider.CODEC.fieldOf("baggage_provider").forGetter(o -> o.baggage)
+		Codec.intRange(0, 32).fieldOf("attempts_minimum").forGetter(o -> o.count),
+		Codec.intRange(0, 32).fieldOf("random_add_attempts").orElse(0).forGetter(o -> o.randomAddCount),
+		Codec.intRange(1, 24).fieldOf("minimum_required_length").forGetter(o -> o.minimumRequiredLength),
+		Codec.intRange(1, 24).fieldOf("base_length").forGetter(o -> o.baseLength),
+		Codec.intRange(0, 16).fieldOf("random_add_length").orElse(0).forGetter(o -> o.randomAddLength),
+		WeightedStateProvider.CODEC.fieldOf("rope_provider").forGetter(o -> o.rope),
+		WeightedStateProvider.CODEC.fieldOf("baggage_provider").forGetter(o -> o.baggage)
 	).apply(instance, DangleFromTreeDecorator::new));
 	private final int count;
 	private final int randomAddCount;

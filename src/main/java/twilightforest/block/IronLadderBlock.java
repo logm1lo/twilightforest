@@ -37,6 +37,6 @@ public class IronLadderBlock extends LadderBlock {
 		BlockState rightState = accessor.getBlockState(currentPos.relative(facing.getClockWise()));
 
 		return superUpdated.setValue(LEFT, leftState.getBlock() instanceof IronLadderBlock && leftState.getValue(LadderBlock.FACING) == facing)
-				.setValue(RIGHT, rightState.getBlock() instanceof IronLadderBlock && rightState.getValue(LadderBlock.FACING) == facing);
+			.setValue(RIGHT, rightState.getBlock() instanceof IronLadderBlock && rightState.getValue(LadderBlock.FACING) == facing);
 	}
 }

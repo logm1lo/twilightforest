@@ -183,7 +183,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 		Direction.Axis stateAxis = state.getValue(HORIZONTAL_AXIS);
 		if (!isInside(hit, stateAxis, pos)) return super.useWithoutItem(state, level, pos, player, hit);
 		if (player.isSecondaryUseActive() && player.getDirection().getAxis().equals(stateAxis) &&
-				player.blockPosition().getY() == pos.getY() && !player.isFallFlying() && player.position().distanceTo(Vec3.atBottomCenterOf(pos)) < 0.81D) {
+			player.blockPosition().getY() == pos.getY() && !player.isFallFlying() && player.position().distanceTo(Vec3.atBottomCenterOf(pos)) < 0.81D) {
 			player.setPose(Pose.SWIMMING);
 		}
 		return super.useWithoutItem(state, level, pos, player, hit);

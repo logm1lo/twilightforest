@@ -58,30 +58,30 @@ public class CustomTagGenerator {
 		@Override
 		protected void addTags(HolderLookup.Provider provider) {
 			this.tag(RELOCATION_NOT_SUPPORTED).add(
-					TFBlockEntities.ANTIBUILDER.getKey(),
-					TFBlockEntities.BEANSTALK_GROWER.getKey(),
-					TFBlockEntities.NAGA_SPAWNER.getKey(),
-					TFBlockEntities.LICH_SPAWNER.getKey(),
-					TFBlockEntities.MINOSHROOM_SPAWNER.getKey(),
-					TFBlockEntities.HYDRA_SPAWNER.getKey(),
-					TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.getKey(),
-					TFBlockEntities.UR_GHAST_SPAWNER.getKey(),
-					TFBlockEntities.ALPHA_YETI_SPAWNER.getKey(),
-					TFBlockEntities.SNOW_QUEEN_SPAWNER.getKey(),
-					TFBlockEntities.FINAL_BOSS_SPAWNER.getKey());
+				TFBlockEntities.ANTIBUILDER.getKey(),
+				TFBlockEntities.BEANSTALK_GROWER.getKey(),
+				TFBlockEntities.NAGA_SPAWNER.getKey(),
+				TFBlockEntities.LICH_SPAWNER.getKey(),
+				TFBlockEntities.MINOSHROOM_SPAWNER.getKey(),
+				TFBlockEntities.HYDRA_SPAWNER.getKey(),
+				TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.getKey(),
+				TFBlockEntities.UR_GHAST_SPAWNER.getKey(),
+				TFBlockEntities.ALPHA_YETI_SPAWNER.getKey(),
+				TFBlockEntities.SNOW_QUEEN_SPAWNER.getKey(),
+				TFBlockEntities.FINAL_BOSS_SPAWNER.getKey());
 
 			this.tag(IMMOVABLE).add(
-					TFBlockEntities.ANTIBUILDER.getKey(),
-					TFBlockEntities.BEANSTALK_GROWER.getKey(),
-					TFBlockEntities.NAGA_SPAWNER.getKey(),
-					TFBlockEntities.LICH_SPAWNER.getKey(),
-					TFBlockEntities.MINOSHROOM_SPAWNER.getKey(),
-					TFBlockEntities.HYDRA_SPAWNER.getKey(),
-					TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.getKey(),
-					TFBlockEntities.UR_GHAST_SPAWNER.getKey(),
-					TFBlockEntities.ALPHA_YETI_SPAWNER.getKey(),
-					TFBlockEntities.SNOW_QUEEN_SPAWNER.getKey(),
-					TFBlockEntities.FINAL_BOSS_SPAWNER.getKey());
+				TFBlockEntities.ANTIBUILDER.getKey(),
+				TFBlockEntities.BEANSTALK_GROWER.getKey(),
+				TFBlockEntities.NAGA_SPAWNER.getKey(),
+				TFBlockEntities.LICH_SPAWNER.getKey(),
+				TFBlockEntities.MINOSHROOM_SPAWNER.getKey(),
+				TFBlockEntities.HYDRA_SPAWNER.getKey(),
+				TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.getKey(),
+				TFBlockEntities.UR_GHAST_SPAWNER.getKey(),
+				TFBlockEntities.ALPHA_YETI_SPAWNER.getKey(),
+				TFBlockEntities.SNOW_QUEEN_SPAWNER.getKey(),
+				TFBlockEntities.FINAL_BOSS_SPAWNER.getKey());
 		}
 
 		@Override
