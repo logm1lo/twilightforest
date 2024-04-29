@@ -67,8 +67,6 @@ public final class TwilightForestMod {
 	private static final String MODEL_DIR = "textures/entity/";
 	private static final String GUI_DIR = "textures/gui/";
 	private static final String ENVIRO_DIR = "textures/environment/";
-	// odd one out, as armor textures are a stringy mess at present
-	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
 	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression",
 		GameRules.Category.UPDATES,  //Putting it in UPDATES since other world stuff is here

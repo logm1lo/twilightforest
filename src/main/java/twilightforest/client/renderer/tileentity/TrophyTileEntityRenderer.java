@@ -44,7 +44,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	private static final ResourceLocation textureLocSnowQueen = TwilightForestMod.getModelTexture("snowqueen.png");
 	private static final ResourceLocation textureLocMinoshroom = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 	private static final ResourceLocation textureLocKnightPhantom = TwilightForestMod.getModelTexture("phantomskeleton.png");
-	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
+	private static final ResourceLocation textureLocKnightPhantomArmor = TwilightForestMod.prefix("textures/model/armor/phantom_1.png");
 	private static final ResourceLocation textureLocYeti = TwilightForestMod.getModelTexture("yetialpha.png");
 	private static final ResourceLocation textureLocQuestRam = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocQuestRamLines = TwilightForestMod.getModelTexture("questram_lines.png");
