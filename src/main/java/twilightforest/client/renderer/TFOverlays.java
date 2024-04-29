@@ -6,7 +6,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
@@ -88,25 +87,20 @@ public class TFOverlays {
 	}
 
 	public static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
-		Options options = minecraft.options;
-		if (options.getCameraType().isFirstPerson()) {
-			if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) {
+        if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
+            ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
+            if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
 				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 				int j = ((screenHeight - 1) / 2) - 11;
 				int k = ((screenWidth - 1) / 2) - 3;
-				if (minecraft.crosshairPickEntity instanceof QuestRam ram) {
-					ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
-					if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
-						if (ram.guessColor(stack) != null && !ram.isColorPresent(Objects.requireNonNull(ram.guessColor(stack)))) {
-							graphics.blitSprite(QUESTING_RAM_X_SPRITE, k, j, 7, 7);
-						} else {
-							graphics.blitSprite(QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
-						}
-					}
-				}
+                if (ram.guessColor(stack) != null && !ram.isColorPresent(Objects.requireNonNull(ram.guessColor(stack)))) {
+                    graphics.blitSprite(QUESTING_RAM_X_SPRITE, k, j, 7, 7);
+                } else {
+                    graphics.blitSprite(QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
+                }
 				RenderSystem.defaultBlendFunc();
-			}
-		}
+            }
+        }
 	}
 
 	public static void renderShieldCount(GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight, int shieldCount) {
