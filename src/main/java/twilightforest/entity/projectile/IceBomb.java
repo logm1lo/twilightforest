@@ -29,24 +29,24 @@ import twilightforest.init.TFParticleType;
 
 import java.util.List;
 
-public class IceBomb extends TFThrowable implements ProjectileItem {
+public class IceBomb extends TFThrowable {
 	private int zoneTimer = 101;
 	private boolean hasHit;
 
-	public IceBomb(EntityType<? extends IceBomb> type, Level world) {
-		super(type, world);
+	public IceBomb(EntityType<? extends IceBomb> type, Level level) {
+		super(type, level);
 	}
 
-	public IceBomb(EntityType<? extends IceBomb> type, Level world, LivingEntity thrower) {
-		super(type, world, thrower);
+	public IceBomb(EntityType<? extends IceBomb> type, Level level, LivingEntity thrower) {
+		super(type, level, thrower);
 	}
 
-	public IceBomb(Level world, Position pos) {
-		super(TFEntities.THROWN_ICE.get(), world, pos.x(), pos.y(), pos.z());
+	public IceBomb(Level level, Position pos) {
+		super(TFEntities.THROWN_ICE.get(), level, pos.x(), pos.y(), pos.z());
 	}
 
 	@Override
-	protected void onHitBlock(BlockHitResult pResult) {
+	protected void onHitBlock(BlockHitResult result) {
 		this.setDeltaMovement(0.0D, 0.0D, 0.0D);
 		this.hasHit = true;
 		this.doTerrainEffects(2);
@@ -185,11 +185,5 @@ public class IceBomb extends TFThrowable implements ProjectileItem {
 	protected void readAdditionalSaveData(CompoundTag pCompound) {
 		this.zoneTimer = pCompound.getInt("zone_timer");
 		this.hasHit = pCompound.getBoolean("has_hit");
-	}
-
-
-	@Override
-	public Projectile asProjectile(Level level, Position pos, ItemStack stack, Direction direction) {
-		return new IceBomb(level, pos);
 	}
 }

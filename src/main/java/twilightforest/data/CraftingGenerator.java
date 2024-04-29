@@ -1,5 +1,6 @@
 package twilightforest.data;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
@@ -12,6 +13,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import twilightforest.TwilightForestMod;
@@ -37,6 +40,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		UncraftingGenerator.buildRecipes(output);
 
 		// The Recipe Builder currently doesn't support enchantment-resulting recipes, those must be manually created.
+		// IT DOES NOW WOOOOOOOOO
 		blockCompressionRecipes(output);
 		equipmentRecipes(output);
 		emptyMapRecipes(output);
@@ -321,25 +325,91 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void equipmentRecipes(RecipeOutput output) {
-		bootsItem(output, "arctic_boots", TFItems.ARCTIC_BOOTS, ItemTagGenerator.ARCTIC_FUR);
-		chestplateItem(output, "arctic_chestplate", TFItems.ARCTIC_CHESTPLATE, ItemTagGenerator.ARCTIC_FUR);
-		helmetItem(output, "arctic_helmet", TFItems.ARCTIC_HELMET, ItemTagGenerator.ARCTIC_FUR);
-		leggingsItem(output, "arctic_leggings", TFItems.ARCTIC_LEGGINGS, ItemTagGenerator.ARCTIC_FUR);
+		bootsItem(output, TFItems.IRONWOOD_BOOTS, ItemTagGenerator.IRONWOOD_INGOTS, this.buildEnchants(Pair.of(Enchantments.FEATHER_FALLING, 1)));
+		leggingsItem(output, TFItems.IRONWOOD_LEGGINGS, ItemTagGenerator.IRONWOOD_INGOTS, this.buildEnchants(Pair.of(Enchantments.PROTECTION, 1)));
+		chestplateItem(output, TFItems.IRONWOOD_CHESTPLATE, ItemTagGenerator.IRONWOOD_INGOTS, this.buildEnchants(Pair.of(Enchantments.PROTECTION, 1)));
+		helmetItem(output, TFItems.IRONWOOD_HELMET, ItemTagGenerator.IRONWOOD_INGOTS, this.buildEnchants(Pair.of(Enchantments.AQUA_AFFINITY, 1)));
+		swordItem(output, TFItems.IRONWOOD_SWORD, ItemTagGenerator.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(Pair.of(Enchantments.KNOCKBACK, 1)));
+		pickaxeItem(output, TFItems.IRONWOOD_PICKAXE, ItemTagGenerator.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(Pair.of(Enchantments.EFFICIENCY, 1)));
+		axeItem(output, TFItems.IRONWOOD_AXE, ItemTagGenerator.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(Pair.of(Enchantments.FORTUNE, 1)));
+		shovelItem(output, TFItems.IRONWOOD_SHOVEL, ItemTagGenerator.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(Pair.of(Enchantments.UNBREAKING, 1)));
+		hoeItem(output, TFItems.IRONWOOD_HOE, ItemTagGenerator.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(Pair.of(Enchantments.EFFICIENCY, 1)));
 
-		bootsItem(output, "fiery_boots", TFItems.FIERY_BOOTS, ItemTagGenerator.FIERY_INGOTS);
-		chestplateItem(output, "fiery_chestplate", TFItems.FIERY_CHESTPLATE, ItemTagGenerator.FIERY_INGOTS);
-		helmetItem(output, "fiery_helmet", TFItems.FIERY_HELMET, ItemTagGenerator.FIERY_INGOTS);
-		leggingsItem(output, "fiery_leggings", TFItems.FIERY_LEGGINGS, ItemTagGenerator.FIERY_INGOTS);
-		swordItem(output, "fiery_sword", TFItems.FIERY_SWORD, ItemTagGenerator.FIERY_INGOTS, Tags.Items.RODS_BLAZE);
-		pickaxeItem(output, "fiery_pickaxe", TFItems.FIERY_PICKAXE, ItemTagGenerator.FIERY_INGOTS, Tags.Items.RODS_BLAZE);
+		bootsItem(output, TFItems.STEELEAF_BOOTS, ItemTagGenerator.STEELEAF_INGOTS, this.buildEnchants(Pair.of(Enchantments.FEATHER_FALLING, 2)));
+		leggingsItem(output, TFItems.STEELEAF_LEGGINGS, ItemTagGenerator.STEELEAF_INGOTS, this.buildEnchants(Pair.of(Enchantments.FIRE_PROTECTION, 2)));
+		chestplateItem(output, TFItems.STEELEAF_CHESTPLATE, ItemTagGenerator.STEELEAF_INGOTS, this.buildEnchants(Pair.of(Enchantments.BLAST_PROTECTION, 2)));
+		helmetItem(output, TFItems.STEELEAF_HELMET, ItemTagGenerator.STEELEAF_INGOTS, this.buildEnchants(Pair.of(Enchantments.PROJECTILE_PROTECTION, 2)));
+		swordItem(output, TFItems.STEELEAF_SWORD, ItemTagGenerator.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(Pair.of(Enchantments.LOOTING, 2)));
+		pickaxeItem(output, TFItems.STEELEAF_PICKAXE, ItemTagGenerator.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(Pair.of(Enchantments.FORTUNE, 2)));
+		axeItem(output, TFItems.STEELEAF_AXE, ItemTagGenerator.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(Pair.of(Enchantments.EFFICIENCY, 2)));
+		shovelItem(output, TFItems.STEELEAF_SHOVEL, ItemTagGenerator.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(Pair.of(Enchantments.EFFICIENCY, 2)));
+		hoeItem(output, TFItems.STEELEAF_HOE, ItemTagGenerator.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(Pair.of(Enchantments.FORTUNE, 2)));
 
-		bootsItem(output, "knightmetal_boots", TFItems.KNIGHTMETAL_BOOTS, ItemTagGenerator.KNIGHTMETAL_INGOTS);
-		chestplateItem(output, "knightmetal_chestplate", TFItems.KNIGHTMETAL_CHESTPLATE, ItemTagGenerator.KNIGHTMETAL_INGOTS);
-		helmetItem(output, "knightmetal_helmet", TFItems.KNIGHTMETAL_HELMET, ItemTagGenerator.KNIGHTMETAL_INGOTS);
-		leggingsItem(output, "knightmetal_leggings", TFItems.KNIGHTMETAL_LEGGINGS, ItemTagGenerator.KNIGHTMETAL_INGOTS);
-		pickaxeItem(output, "knightmetal_pickaxe", TFItems.KNIGHTMETAL_PICKAXE, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
-		swordItem(output, "knightmetal_sword", TFItems.KNIGHTMETAL_SWORD, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
-		axeItem(output, "knightmetal_axe", TFItems.KNIGHTMETAL_AXE, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
+		bootsItem(output, TFItems.ARCTIC_BOOTS, ItemTagGenerator.ARCTIC_FUR);
+		chestplateItem(output, TFItems.ARCTIC_CHESTPLATE, ItemTagGenerator.ARCTIC_FUR);
+		helmetItem(output, TFItems.ARCTIC_HELMET, ItemTagGenerator.ARCTIC_FUR);
+		leggingsItem(output, TFItems.ARCTIC_LEGGINGS, ItemTagGenerator.ARCTIC_FUR);
+
+		bootsItem(output, TFItems.FIERY_BOOTS, ItemTagGenerator.FIERY_INGOTS);
+		chestplateItem(output, TFItems.FIERY_CHESTPLATE, ItemTagGenerator.FIERY_INGOTS);
+		helmetItem(output, TFItems.FIERY_HELMET, ItemTagGenerator.FIERY_INGOTS);
+		leggingsItem(output, TFItems.FIERY_LEGGINGS, ItemTagGenerator.FIERY_INGOTS);
+		swordItem(output, TFItems.FIERY_SWORD, ItemTagGenerator.FIERY_INGOTS, Tags.Items.RODS_BLAZE);
+		pickaxeItem(output, TFItems.FIERY_PICKAXE, ItemTagGenerator.FIERY_INGOTS, Tags.Items.RODS_BLAZE);
+
+		bootsItem(output, TFItems.KNIGHTMETAL_BOOTS, ItemTagGenerator.KNIGHTMETAL_INGOTS);
+		chestplateItem(output, TFItems.KNIGHTMETAL_CHESTPLATE, ItemTagGenerator.KNIGHTMETAL_INGOTS);
+		helmetItem(output, TFItems.KNIGHTMETAL_HELMET, ItemTagGenerator.KNIGHTMETAL_INGOTS);
+		leggingsItem(output, TFItems.KNIGHTMETAL_LEGGINGS, ItemTagGenerator.KNIGHTMETAL_INGOTS);
+		pickaxeItem(output, TFItems.KNIGHTMETAL_PICKAXE, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
+		swordItem(output, TFItems.KNIGHTMETAL_SWORD, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
+		axeItem(output, TFItems.KNIGHTMETAL_AXE, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.NAGA_CHESTPLATE, 1, this.buildEnchants(Pair.of(Enchantments.FIRE_PROTECTION, 3)).build()))
+			.pattern("# #")
+			.pattern("###")
+			.pattern("###")
+			.define('#', TFItems.NAGA_SCALE)
+			.unlockedBy("has_item", has(TFItems.NAGA_SCALE))
+			.save(output, locEquip(TFItems.NAGA_CHESTPLATE.getKey().location().getPath()));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.NAGA_LEGGINGS, 1, this.buildEnchants(Pair.of(Enchantments.PROTECTION, 3)).build()))
+			.pattern("###")
+			.pattern("# #")
+			.pattern("# #")
+			.define('#', TFItems.NAGA_SCALE)
+			.unlockedBy("has_item", has(TFItems.NAGA_SCALE))
+			.save(output, locEquip(TFItems.NAGA_LEGGINGS.getKey().location().getPath()));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.YETI_HELMET, 1, this.buildEnchants(Pair.of(Enchantments.PROTECTION, 2)).build()))
+			.pattern("###")
+			.pattern("# #")
+			.define('#', TFItems.ALPHA_YETI_FUR)
+			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
+			.save(output, locEquip(TFItems.YETI_HELMET.getKey().location().getPath()));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.YETI_CHESTPLATE, 1, this.buildEnchants(Pair.of(Enchantments.PROTECTION, 2)).build()))
+			.pattern("# #")
+			.pattern("###")
+			.pattern("###")
+			.define('#', TFItems.ALPHA_YETI_FUR)
+			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
+			.save(output, locEquip(TFItems.YETI_CHESTPLATE.getKey().location().getPath()));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.YETI_LEGGINGS, 1, this.buildEnchants(Pair.of(Enchantments.PROTECTION, 2)).build()))
+			.pattern("###")
+			.pattern("# #")
+			.pattern("# #")
+			.define('#', TFItems.ALPHA_YETI_FUR)
+			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
+			.save(output, locEquip(TFItems.YETI_LEGGINGS.getKey().location().getPath()));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.YETI_BOOTS, 1, this.buildEnchants(Pair.of(Enchantments.PROTECTION, 2), Pair.of(Enchantments.FEATHER_FALLING, 4)).build()))
+			.pattern("# #")
+			.pattern("# #")
+			.define('#', TFItems.ALPHA_YETI_FUR)
+			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
+			.save(output, locEquip(TFItems.YETI_BOOTS.getKey().location().getPath()));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TFItems.GIANT_PICKAXE.get())
 			.pattern("###")

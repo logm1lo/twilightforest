@@ -1,9 +1,12 @@
 package twilightforest.data.helpers;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -11,8 +14,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -84,75 +90,134 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 			.save(output, TwilightForestMod.prefix("compressed_blocks/reversed/" + name));
 	}
 
-	protected final void helmetItem(RecipeOutput output, String name, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result.get())
+	protected final void helmetItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material) {
+		this.helmetItem(output, result, material, DataComponentPatch.builder());
+	}
+
+	protected final void helmetItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, DataComponentPatch.Builder component) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(result, 1, component.build()))
 			.pattern("###")
 			.pattern("# #")
 			.define('#', material)
 			.unlockedBy("has_item", has(material))
-			.save(output, locEquip(name));
+			.save(output, locEquip(result.getKey().location().getPath()));
 	}
 
-	protected final void chestplateItem(RecipeOutput output, String name, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result.get())
+	protected final void chestplateItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material) {
+		this.chestplateItem(output, result, material, DataComponentPatch.builder());
+	}
+
+	protected final void chestplateItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, DataComponentPatch.Builder component) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(result, 1, component.build()))
 			.pattern("# #")
 			.pattern("###")
 			.pattern("###")
 			.define('#', material)
 			.unlockedBy("has_item", has(material))
-			.save(output, locEquip(name));
+			.save(output, locEquip(result.getKey().location().getPath()));
 	}
 
-	protected final void leggingsItem(RecipeOutput output, String name, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result.get())
+	protected final void leggingsItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material) {
+		this.leggingsItem(output, result, material, DataComponentPatch.builder());
+	}
+
+	protected final void leggingsItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, DataComponentPatch.Builder component) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(result, 1, component.build()))
 			.pattern("###")
 			.pattern("# #")
 			.pattern("# #")
 			.define('#', material)
 			.unlockedBy("has_item", has(material))
-			.save(output, locEquip(name));
+			.save(output, locEquip(result.getKey().location().getPath()));
 	}
 
-	protected final void bootsItem(RecipeOutput output, String name, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result.get())
+	protected final void bootsItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material) {
+		this.bootsItem(output, result, material, DataComponentPatch.builder());
+	}
+
+	protected final void bootsItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, DataComponentPatch.Builder component) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(result, 1, component.build()))
 			.pattern("# #")
 			.pattern("# #")
 			.define('#', material)
 			.unlockedBy("has_item", has(material))
-			.save(output, locEquip(name));
+			.save(output, locEquip(result.getKey().location().getPath()));
 	}
 
-	protected final void pickaxeItem(RecipeOutput output, String name, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result.get())
+	protected final void pickaxeItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle) {
+		this.pickaxeItem(output, result, material, handle, DataComponentPatch.builder());
+	}
+
+	protected final void pickaxeItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle, DataComponentPatch.Builder component) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, new ItemStack(result, 1, component.build()))
 			.pattern("###")
 			.pattern(" X ")
 			.pattern(" X ")
 			.define('#', material)
 			.define('X', handle)
 			.unlockedBy("has_item", has(material))
-			.save(output, locEquip(name));
+			.save(output, locEquip(result.getKey().location().getPath()));
 	}
 
-	protected final void swordItem(RecipeOutput output, String name, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result.get())
+	protected final void swordItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle) {
+		this.swordItem(output, result, material, handle, DataComponentPatch.builder());
+	}
+
+	protected final void swordItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle, DataComponentPatch.Builder component) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(result, 1, component.build()))
 			.pattern("#")
 			.pattern("#")
 			.pattern("X")
 			.define('#', material)
 			.define('X', handle)
 			.unlockedBy("has_item", has(material))
-			.save(output, locEquip(name));
+			.save(output, locEquip(result.getKey().location().getPath()));
 	}
 
-	protected final void axeItem(RecipeOutput output, String name, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result.get())
+	protected final void axeItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle) {
+		this.axeItem(output, result, material, handle, DataComponentPatch.builder());
+	}
+
+	protected final void axeItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle, DataComponentPatch.Builder component) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, new ItemStack(result, 1, component.build()))
 			.pattern("##")
 			.pattern("#X")
 			.pattern(" X")
 			.define('#', material)
 			.define('X', handle)
 			.unlockedBy("has_item", has(material))
-			.save(output, locEquip(name));
+			.save(output, locEquip(result.getKey().location().getPath()));
+	}
+
+	protected final void shovelItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle, DataComponentPatch.Builder component) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, new ItemStack(result, 1, component.build()))
+			.pattern("#")
+			.pattern("X")
+			.pattern("X")
+			.define('#', material)
+			.define('X', handle)
+			.unlockedBy("has_item", has(material))
+			.save(output, locEquip(result.getKey().location().getPath()));
+	}
+
+	protected final void hoeItem(RecipeOutput output, DeferredHolder<Item, ? extends Item> result, TagKey<Item> material, TagKey<Item> handle, DataComponentPatch.Builder component) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, new ItemStack(result, 1, component.build()))
+			.pattern("##")
+			.pattern(" X")
+			.pattern(" X")
+			.define('#', material)
+			.define('X', handle)
+			.unlockedBy("has_item", has(material))
+			.save(output, locEquip(result.getKey().location().getPath()));
+	}
+
+	@SafeVarargs
+	protected final DataComponentPatch.Builder buildEnchants(Pair<Enchantment, Integer>... enchantments) {
+		var itemEnchants = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+		for (var pair : enchantments) {
+			itemEnchants.set(pair.getFirst(), pair.getSecond());
+		}
+		return DataComponentPatch.builder().set(DataComponents.ENCHANTMENTS, itemEnchants.toImmutable());
 	}
 
 	protected final void buttonBlock(RecipeOutput output, String name, DeferredHolder<Block, ? extends Block> result, DeferredHolder<Block, ? extends Block> material) {
