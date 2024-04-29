@@ -20,16 +20,6 @@ public class FierySwordItem extends SwordItem {
 	}
 
 	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return enchantment != Enchantments.FIRE_ASPECT && super.canApplyAtEnchantingTable(stack, enchantment);
-	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return book.getEnchantments().getLevel(Enchantments.FIRE_ASPECT) <= 0 && super.isBookEnchantable(stack, book);
-	}
-
-	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hurtEnemy(stack, target, attacker);
 

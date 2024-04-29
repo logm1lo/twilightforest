@@ -9,7 +9,7 @@ import twilightforest.item.ChainBlockItem;
 
 public class DestructionEnchantment extends LootOnlyEnchantment {
 	public DestructionEnchantment(int weight) {
-		super(ItemTagGenerator.BLOCK_AND_CHAIN, weight, 3, Enchantment.dynamicCost(5, 9), Enchantment.dynamicCost(20, 9), 2, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
+		super(ItemTagGenerator.BLOCK_AND_CHAIN_ENCHANTABLE, weight, 3, Enchantment.dynamicCost(5, 9), Enchantment.dynamicCost(20, 9), 2, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	}
 
 	@Override

@@ -1290,7 +1290,7 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(ItemTagGenerator.DARKWOOD_LOGS, "Darkwood Logs");
 		this.translateTag(ItemTagGenerator.FIERY_VIAL, "Fiery Vials");
 		this.translateTag(ItemTagGenerator.KEPT_ON_DEATH, "Kept on Death");
-		this.translateTag(ItemTagGenerator.BLOCK_AND_CHAIN, "Block and Chain");
+		this.translateTag(ItemTagGenerator.BLOCK_AND_CHAIN_ENCHANTABLE, "Block and Chain Enchantable");
 		this.translateTag(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS, "Kobold Pacification Items");
 		this.translateTag(ItemTagGenerator.BOAR_TEMPT_ITEMS, "Boar Temptables");
 		this.translateTag(ItemTagGenerator.DEER_TEMPT_ITEMS, "Deer Temptables");

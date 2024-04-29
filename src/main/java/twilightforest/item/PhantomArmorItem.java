@@ -36,26 +36,6 @@ public class PhantomArmorItem extends ArmorItem {
 	}
 
 	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !BuiltInRegistries.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(enchantment)) && super.canApplyAtEnchantingTable(stack, enchantment);
-	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		AtomicBoolean badEnchant = new AtomicBoolean();
-		book.getEnchantments().entrySet().forEach(enchantment -> {
-			for (Holder<Enchantment> banned : BuiltInRegistries.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get()) {
-				if (Objects.equals(banned.value(), enchantment)) {
-					badEnchant.set(true);
-					break;
-				}
-			}
-		});
-
-		return !badEnchant.get();
-	}
-
-	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(TOOLTIP);
 	}

@@ -20,23 +20,6 @@ public class IceSwordItem extends SwordItem {
 	}
 
 	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		AtomicBoolean badEnchant = new AtomicBoolean();
-		book.getEnchantments().entrySet().forEach(enchantment -> {
-			if (Objects.equals(Enchantments.FIRE_ASPECT, enchantment)) {
-				badEnchant.set(true);
-			}
-		});
-
-		return !badEnchant.get();
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Enchantments.FIRE_ASPECT.equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
-	}
-
-	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hurtEnemy(stack, target, attacker);
 
