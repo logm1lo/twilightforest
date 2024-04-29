@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
@@ -44,14 +44,14 @@ import java.util.Random;
 public class TFTickHandler {
 
 	@SubscribeEvent
-	public static void playerTick(TickEvent.PlayerTickEvent event) {
-		Player eventPlayer = event.player;
+	public static void playerTick(PlayerTickEvent.Post event) {
+		Player eventPlayer = event.getEntity();
 
 		if (!(eventPlayer instanceof ServerPlayer player)) return;
 		if (!(player.level() instanceof ServerLevel world)) return;
 
 		// check for portal creation, at least if it's not disabled
-		if (!TFConfig.disablePortalCreation && event.phase == TickEvent.Phase.END && player.tickCount % (!TFConfig.checkPortalPlacement ? 100 : 20) == 0) {
+		if (!TFConfig.disablePortalCreation && player.tickCount % (!TFConfig.checkPortalPlacement ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
 			if (world.getServer().getProfilePermissions(player.getGameProfile()) >= TFConfig.portalCreationPermission) {
 				// reduce range to 4.0 if config is set to admins/owners only
@@ -60,12 +60,12 @@ public class TFTickHandler {
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(world) && !player.isCreative() && !player.isSpectator()) {
+		if (player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(world) && !player.isCreative() && !player.isSpectator()) {
 			Enforcement.enforceBiomeProgression(player, world);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(world)) {
+		if (player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(world)) {
 			if (player.isCreative() || player.isSpectator()) {
 				sendAllClearPacket(player);
 			} else {

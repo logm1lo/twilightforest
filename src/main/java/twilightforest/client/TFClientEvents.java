@@ -41,7 +41,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
@@ -158,22 +157,19 @@ public class TFClientEvents {
 	 * On the tick, we kill the vignette
 	 */
 	@SubscribeEvent
-	public static void renderTick(TickEvent.RenderTickEvent event) {
-		if (event.phase == TickEvent.Phase.START) {
-			Minecraft minecraft = Minecraft.getInstance();
-
-			// only fire if we're in the twilight forest
-			if (minecraft.level != null && TFDimension.DIMENSION_KEY.equals(minecraft.level.dimension())) {
-				// vignette
-				if (minecraft.gui != null) {
-					minecraft.gui.vignetteBrightness = 0.0F;
-				}
+	public static void renderTick(RenderFrameEvent.Pre event) {
+		Minecraft minecraft = Minecraft.getInstance();
+		// only fire if we're in the twilight forest
+		if (minecraft.level != null && TFDimension.DIMENSION_KEY.equals(minecraft.level.dimension())) {
+			// vignette
+			if (minecraft.gui != null) {
+				minecraft.gui.vignetteBrightness = 0.0F;
 			}
+		}
 
-			if (minecraft.player != null && HostileMountEvents.isRidingUnfriendly(minecraft.player)) {
-				if (minecraft.gui != null) {
-					minecraft.gui.setOverlayMessage(Component.empty(), false);
-				}
+		if (minecraft.player != null && HostileMountEvents.isRidingUnfriendly(minecraft.player)) {
+			if (minecraft.gui != null) {
+				minecraft.gui.setOverlayMessage(Component.empty(), false);
 			}
 		}
 	}
@@ -191,8 +187,7 @@ public class TFClientEvents {
 	private static int lastAurora = 0;
 
 	@SubscribeEvent
-	public static void clientTick(TickEvent.ClientTickEvent event) {
-		if (event.phase != TickEvent.Phase.END) return;
+	public static void clientTick(ClientTickEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
 		float partial = mc.getFrameTime();
 

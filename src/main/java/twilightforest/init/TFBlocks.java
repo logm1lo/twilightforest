@@ -71,16 +71,16 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> SPIRAL_BRICKS = register("spiral_bricks", () -> new SpiralBrickBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).noOcclusion().requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
 	public static final DeferredBlock<Block> ETCHED_NAGASTONE = register("etched_nagastone", () -> new EtchedNagastoneBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
 	public static final DeferredBlock<Block> NAGASTONE_PILLAR = register("nagastone_pillar", () -> new DirectionalRotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
-	public static final DeferredBlock<StairBlock> NAGASTONE_STAIRS_LEFT = register("nagastone_stairs_left", () -> new StairBlock(() -> ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(ETCHED_NAGASTONE.get())));
-	public static final DeferredBlock<StairBlock> NAGASTONE_STAIRS_RIGHT = register("nagastone_stairs_right", () -> new StairBlock(() -> ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(ETCHED_NAGASTONE.get())));
+	public static final DeferredBlock<StairBlock> NAGASTONE_STAIRS_LEFT = register("nagastone_stairs_left", () -> new StairBlock(ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(ETCHED_NAGASTONE.get())));
+	public static final DeferredBlock<StairBlock> NAGASTONE_STAIRS_RIGHT = register("nagastone_stairs_right", () -> new StairBlock(ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(ETCHED_NAGASTONE.get())));
 	public static final DeferredBlock<Block> MOSSY_ETCHED_NAGASTONE = register("mossy_etched_nagastone", () -> new EtchedNagastoneBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
 	public static final DeferredBlock<Block> MOSSY_NAGASTONE_PILLAR = register("mossy_nagastone_pillar", () -> new DirectionalRotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
-	public static final DeferredBlock<StairBlock> MOSSY_NAGASTONE_STAIRS_LEFT = register("mossy_nagastone_stairs_left", () -> new StairBlock(() -> MOSSY_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MOSSY_ETCHED_NAGASTONE.get())));
-	public static final DeferredBlock<StairBlock> MOSSY_NAGASTONE_STAIRS_RIGHT = register("mossy_nagastone_stairs_right", () -> new StairBlock(() -> MOSSY_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MOSSY_ETCHED_NAGASTONE.get())));
+	public static final DeferredBlock<StairBlock> MOSSY_NAGASTONE_STAIRS_LEFT = register("mossy_nagastone_stairs_left", () -> new StairBlock(MOSSY_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MOSSY_ETCHED_NAGASTONE.get())));
+	public static final DeferredBlock<StairBlock> MOSSY_NAGASTONE_STAIRS_RIGHT = register("mossy_nagastone_stairs_right", () -> new StairBlock(MOSSY_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MOSSY_ETCHED_NAGASTONE.get())));
 	public static final DeferredBlock<Block> CRACKED_ETCHED_NAGASTONE = register("cracked_etched_nagastone", () -> new EtchedNagastoneBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
 	public static final DeferredBlock<Block> CRACKED_NAGASTONE_PILLAR = register("cracked_nagastone_pillar", () -> new DirectionalRotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
-	public static final DeferredBlock<StairBlock> CRACKED_NAGASTONE_STAIRS_LEFT = register("cracked_nagastone_stairs_left", () -> new StairBlock(() -> CRACKED_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CRACKED_ETCHED_NAGASTONE.get())));
-	public static final DeferredBlock<StairBlock> CRACKED_NAGASTONE_STAIRS_RIGHT = register("cracked_nagastone_stairs_right", () -> new StairBlock(() -> CRACKED_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CRACKED_ETCHED_NAGASTONE.get())));
+	public static final DeferredBlock<StairBlock> CRACKED_NAGASTONE_STAIRS_LEFT = register("cracked_nagastone_stairs_left", () -> new StairBlock(CRACKED_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CRACKED_ETCHED_NAGASTONE.get())));
+	public static final DeferredBlock<StairBlock> CRACKED_NAGASTONE_STAIRS_RIGHT = register("cracked_nagastone_stairs_right", () -> new StairBlock(CRACKED_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CRACKED_ETCHED_NAGASTONE.get())));
 
 	//lich tower
 	public static final DeferredBlock<RotatedPillarBlock> TWISTED_STONE = register("twisted_stone", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
@@ -193,12 +193,12 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> ENCASED_CASTLE_BRICK_TILE = register("encased_castle_brick_tile", () -> new Block(BlockBehaviour.Properties.ofFullCopy(CASTLE_BRICK.get())));
 	public static final DeferredBlock<Block> BOLD_CASTLE_BRICK_PILLAR = register("bold_castle_brick_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(CASTLE_BRICK.get())));
 	public static final DeferredBlock<Block> BOLD_CASTLE_BRICK_TILE = register("bold_castle_brick_tile", () -> new Block(BlockBehaviour.Properties.ofFullCopy(CASTLE_BRICK.get())));
-	public static final DeferredBlock<StairBlock> CASTLE_BRICK_STAIRS = register("castle_brick_stairs", () -> new StairBlock(() -> CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CASTLE_BRICK.get())));
-	public static final DeferredBlock<StairBlock> WORN_CASTLE_BRICK_STAIRS = register("worn_castle_brick_stairs", () -> new StairBlock(() -> WORN_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(WORN_CASTLE_BRICK.get())));
-	public static final DeferredBlock<StairBlock> CRACKED_CASTLE_BRICK_STAIRS = register("cracked_castle_brick_stairs", () -> new StairBlock(() -> CRACKED_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CRACKED_CASTLE_BRICK.get())));
-	public static final DeferredBlock<StairBlock> MOSSY_CASTLE_BRICK_STAIRS = register("mossy_castle_brick_stairs", () -> new StairBlock(() -> MOSSY_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MOSSY_CASTLE_BRICK.get())));
-	public static final DeferredBlock<StairBlock> ENCASED_CASTLE_BRICK_STAIRS = register("encased_castle_brick_stairs", () -> new StairBlock(() -> ENCASED_CASTLE_BRICK_PILLAR.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(ENCASED_CASTLE_BRICK_PILLAR.get())));
-	public static final DeferredBlock<StairBlock> BOLD_CASTLE_BRICK_STAIRS = register("bold_castle_brick_stairs", () -> new StairBlock(() -> BOLD_CASTLE_BRICK_PILLAR.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(BOLD_CASTLE_BRICK_PILLAR.get())));
+	public static final DeferredBlock<StairBlock> CASTLE_BRICK_STAIRS = register("castle_brick_stairs", () -> new StairBlock(CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CASTLE_BRICK.get())));
+	public static final DeferredBlock<StairBlock> WORN_CASTLE_BRICK_STAIRS = register("worn_castle_brick_stairs", () -> new StairBlock(WORN_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(WORN_CASTLE_BRICK.get())));
+	public static final DeferredBlock<StairBlock> CRACKED_CASTLE_BRICK_STAIRS = register("cracked_castle_brick_stairs", () -> new StairBlock(CRACKED_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CRACKED_CASTLE_BRICK.get())));
+	public static final DeferredBlock<StairBlock> MOSSY_CASTLE_BRICK_STAIRS = register("mossy_castle_brick_stairs", () -> new StairBlock(MOSSY_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MOSSY_CASTLE_BRICK.get())));
+	public static final DeferredBlock<StairBlock> ENCASED_CASTLE_BRICK_STAIRS = register("encased_castle_brick_stairs", () -> new StairBlock(ENCASED_CASTLE_BRICK_PILLAR.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(ENCASED_CASTLE_BRICK_PILLAR.get())));
+	public static final DeferredBlock<StairBlock> BOLD_CASTLE_BRICK_STAIRS = register("bold_castle_brick_stairs", () -> new StairBlock(BOLD_CASTLE_BRICK_PILLAR.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(BOLD_CASTLE_BRICK_PILLAR.get())));
 	public static final DeferredBlock<Block> PINK_CASTLE_RUNE_BRICK = register("pink_castle_rune_brick", () -> new Block(BlockBehaviour.Properties.ofFullCopy(CASTLE_BRICK.get()).mapColor(DyeColor.MAGENTA)));
 	public static final DeferredBlock<Block> BLUE_CASTLE_RUNE_BRICK = register("blue_castle_rune_brick", () -> new Block(BlockBehaviour.Properties.ofFullCopy(CASTLE_BRICK.get()).mapColor(DyeColor.LIGHT_BLUE)));
 	public static final DeferredBlock<Block> YELLOW_CASTLE_RUNE_BRICK = register("yellow_castle_rune_brick", () -> new Block(BlockBehaviour.Properties.ofFullCopy(CASTLE_BRICK.get()).mapColor(DyeColor.YELLOW)));
@@ -440,7 +440,7 @@ public class TFBlocks {
 	public static final DeferredBlock<SaplingBlock> RAINBOW_OAK_SAPLING = register("rainbow_oak_sapling", () -> new SaplingBlock(TFTreeGrowers.RAINBOW_OAK, BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).pushReaction(PushReaction.DESTROY).instabreak().sound(SoundType.GRASS).noCollission().randomTicks()));
 
 	public static final DeferredBlock<Block> TWILIGHT_OAK_PLANKS = register("twilight_oak_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final DeferredBlock<StairBlock> TWILIGHT_OAK_STAIRS = register("twilight_oak_stairs", () -> new StairBlock(() -> TWILIGHT_OAK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TWILIGHT_OAK_PLANKS.get())));
+	public static final DeferredBlock<StairBlock> TWILIGHT_OAK_STAIRS = register("twilight_oak_stairs", () -> new StairBlock(TWILIGHT_OAK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TWILIGHT_OAK_PLANKS.get())));
 	public static final DeferredBlock<Block> TWILIGHT_OAK_SLAB = register("twilight_oak_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(TWILIGHT_OAK_PLANKS.get())));
 	public static final DeferredBlock<Block> TWILIGHT_OAK_BUTTON = register("twilight_oak_button", () -> new ButtonBlock(TFWoodTypes.TWILIGHT_OAK_SET, 30, BlockBehaviour.Properties.ofFullCopy(TWILIGHT_OAK_PLANKS.get()).noCollission().strength(0.5F)));
 	public static final DeferredBlock<Block> TWILIGHT_OAK_FENCE = register("twilight_oak_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(TWILIGHT_OAK_PLANKS.get())));
@@ -455,7 +455,7 @@ public class TFBlocks {
 	public static final DeferredBlock<BanisterBlock> TWILIGHT_OAK_BANISTER = register("twilight_oak_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(TWILIGHT_OAK_PLANKS.get())));
 
 	public static final DeferredBlock<Block> CANOPY_PLANKS = register("canopy_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.PODZOL).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final DeferredBlock<StairBlock> CANOPY_STAIRS = register("canopy_stairs", () -> new StairBlock(() -> CANOPY_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get())));
+	public static final DeferredBlock<StairBlock> CANOPY_STAIRS = register("canopy_stairs", () -> new StairBlock(CANOPY_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get())));
 	public static final DeferredBlock<Block> CANOPY_SLAB = register("canopy_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get())));
 	public static final DeferredBlock<Block> CANOPY_BUTTON = register("canopy_button", () -> new ButtonBlock(TFWoodTypes.CANOPY_WOOD_SET, 30, BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get()).noCollission().strength(0.5F)));
 	public static final DeferredBlock<Block> CANOPY_FENCE = register("canopy_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get())));
@@ -471,7 +471,7 @@ public class TFBlocks {
 	public static final DeferredBlock<BanisterBlock> CANOPY_BANISTER = register("canopy_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get())));
 
 	public static final DeferredBlock<Block> MANGROVE_PLANKS = register("mangrove_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.DIRT).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final DeferredBlock<StairBlock> MANGROVE_STAIRS = register("mangrove_stairs", () -> new StairBlock(() -> MANGROVE_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get())));
+	public static final DeferredBlock<StairBlock> MANGROVE_STAIRS = register("mangrove_stairs", () -> new StairBlock(MANGROVE_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get())));
 	public static final DeferredBlock<Block> MANGROVE_SLAB = register("mangrove_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get())));
 	public static final DeferredBlock<Block> MANGROVE_BUTTON = register("mangrove_button", () -> new ButtonBlock(TFWoodTypes.MANGROVE_WOOD_SET, 30, BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get()).noCollission().strength(0.5F)));
 	public static final DeferredBlock<Block> MANGROVE_FENCE = register("mangrove_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get())));
@@ -486,7 +486,7 @@ public class TFBlocks {
 	public static final DeferredBlock<BanisterBlock> MANGROVE_BANISTER = register("mangrove_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get())));
 
 	public static final DeferredBlock<Block> DARK_PLANKS = register("dark_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.COLOR_ORANGE).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final DeferredBlock<StairBlock> DARK_STAIRS = register("dark_stairs", () -> new StairBlock(() -> DARK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get())));
+	public static final DeferredBlock<StairBlock> DARK_STAIRS = register("dark_stairs", () -> new StairBlock(DARK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get())));
 	public static final DeferredBlock<Block> DARK_SLAB = register("dark_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get()).sound(SoundType.WOOD)));
 	public static final DeferredBlock<Block> DARK_BUTTON = register("dark_button", () -> new ButtonBlock(TFWoodTypes.DARK_WOOD_SET, 30, BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get()).noCollission().strength(0.5F)));
 	public static final DeferredBlock<Block> DARK_FENCE = register("dark_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get())));
@@ -501,7 +501,7 @@ public class TFBlocks {
 	public static final DeferredBlock<BanisterBlock> DARK_BANISTER = register("dark_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get())));
 
 	public static final DeferredBlock<Block> TIME_PLANKS = register("time_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.DIRT).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final DeferredBlock<StairBlock> TIME_STAIRS = register("time_stairs", () -> new StairBlock(() -> TIME_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get())));
+	public static final DeferredBlock<StairBlock> TIME_STAIRS = register("time_stairs", () -> new StairBlock(TIME_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get())));
 	public static final DeferredBlock<Block> TIME_SLAB = register("time_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get()).sound(SoundType.WOOD)));
 	public static final DeferredBlock<Block> TIME_BUTTON = register("time_button", () -> new ButtonBlock(TFWoodTypes.TIME_WOOD_SET, 30, BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get()).noCollission().strength(0.5F)));
 	public static final DeferredBlock<Block> TIME_FENCE = register("time_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get())));
@@ -516,7 +516,7 @@ public class TFBlocks {
 	public static final DeferredBlock<BanisterBlock> TIME_BANISTER = register("time_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get())));
 
 	public static final DeferredBlock<Block> TRANSFORMATION_PLANKS = register("transformation_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final DeferredBlock<StairBlock> TRANSFORMATION_STAIRS = register("transformation_stairs", () -> new StairBlock(() -> TRANSFORMATION_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get())));
+	public static final DeferredBlock<StairBlock> TRANSFORMATION_STAIRS = register("transformation_stairs", () -> new StairBlock(TRANSFORMATION_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get())));
 	public static final DeferredBlock<Block> TRANSFORMATION_SLAB = register("transformation_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get())));
 	public static final DeferredBlock<Block> TRANSFORMATION_BUTTON = register("transformation_button", () -> new ButtonBlock(TFWoodTypes.TRANSFORMATION_WOOD_SET, 30, BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get()).noCollission().strength(0.5F)));
 	public static final DeferredBlock<Block> TRANSFORMATION_FENCE = register("transformation_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get())));
@@ -531,7 +531,7 @@ public class TFBlocks {
 	public static final DeferredBlock<BanisterBlock> TRANSFORMATION_BANISTER = register("transformation_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get())));
 
 	public static final DeferredBlock<Block> MINING_PLANKS = register("mining_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.SAND).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final DeferredBlock<StairBlock> MINING_STAIRS = register("mining_stairs", () -> new StairBlock(() -> MINING_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get())));
+	public static final DeferredBlock<StairBlock> MINING_STAIRS = register("mining_stairs", () -> new StairBlock(MINING_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get())));
 	public static final DeferredBlock<Block> MINING_SLAB = register("mining_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get())));
 	public static final DeferredBlock<Block> MINING_BUTTON = register("mining_button", () -> new ButtonBlock(TFWoodTypes.MINING_WOOD_SET, 30, BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get()).noCollission().strength(0.5F)));
 	public static final DeferredBlock<Block> MINING_FENCE = register("mining_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get())));
@@ -546,7 +546,7 @@ public class TFBlocks {
 	public static final DeferredBlock<BanisterBlock> MINING_BANISTER = register("mining_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get())));
 
 	public static final DeferredBlock<Block> SORTING_PLANKS = register("sorting_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.PODZOL).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final DeferredBlock<StairBlock> SORTING_STAIRS = register("sorting_stairs", () -> new StairBlock(() -> SORTING_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(SORTING_PLANKS.get())));
+	public static final DeferredBlock<StairBlock> SORTING_STAIRS = register("sorting_stairs", () -> new StairBlock(SORTING_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(SORTING_PLANKS.get())));
 	public static final DeferredBlock<Block> SORTING_SLAB = register("sorting_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(SORTING_PLANKS.get())));
 	public static final DeferredBlock<Block> SORTING_BUTTON = register("sorting_button", () -> new ButtonBlock(TFWoodTypes.SORTING_WOOD_SET, 30, BlockBehaviour.Properties.ofFullCopy(SORTING_PLANKS.get()).noCollission().strength(0.5F)));
 	public static final DeferredBlock<Block> SORTING_FENCE = register("sorting_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(SORTING_PLANKS.get())));

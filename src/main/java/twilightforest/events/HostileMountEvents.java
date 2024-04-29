@@ -11,6 +11,7 @@ import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.IHostileMount;
 import twilightforest.init.TFDamageTypes;
@@ -61,7 +62,7 @@ public class HostileMountEvents {
 	}
 
 	@SubscribeEvent
-	public static void livingUpdate(LivingEvent.LivingTickEvent event) {
+	public static void livingUpdate(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof IHostileMount)
 			event.getEntity().getPassengers().forEach(e -> e.setShiftKeyDown(false));
 	}

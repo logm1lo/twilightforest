@@ -8,10 +8,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
@@ -25,21 +26,22 @@ public class CapabilityEvents {
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 
 	@SubscribeEvent
-	public static void updateShields(LivingEvent.LivingTickEvent event) {
-		event.getEntity().getData(TFDataAttachments.FORTIFICATION_SHIELDS).tick(event.getEntity());
+	public static void updateShields(EntityTickEvent.Post event) {
+		if (event.getEntity() instanceof LivingEntity living && living.hasData(TFDataAttachments.FORTIFICATION_SHIELDS)) {
+			event.getEntity().getData(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
+		}
 	}
 
 	@SubscribeEvent
-	public static void updatePlayerCaps(TickEvent.PlayerTickEvent event) {
-		if (event.phase != TickEvent.Phase.END) return;
-		if (event.player.getData(TFDataAttachments.FEATHER_FAN)) {
-			event.player.resetFallDistance();
+	public static void updatePlayerCaps(PlayerTickEvent.Post event) {
+		if (event.getEntity().getData(TFDataAttachments.FEATHER_FAN)) {
+			event.getEntity().resetFallDistance();
 
-			if (event.player.onGround() || event.player.isSwimming() || event.player.isInWater()) {
-				event.player.setData(TFDataAttachments.FEATHER_FAN, false);
+			if (event.getEntity().onGround() || event.getEntity().isSwimming() || event.getEntity().isInWater()) {
+				event.getEntity().setData(TFDataAttachments.FEATHER_FAN, false);
 			}
 		}
-		event.player.getData(TFDataAttachments.YETI_THROWING).tick(event.player);
+		event.getEntity().getData(TFDataAttachments.YETI_THROWING).tick(event.getEntity());
 	}
 
 	@SubscribeEvent

@@ -31,8 +31,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.event.TickEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CloudBlock;
@@ -52,8 +52,7 @@ public class CloudEvents {
 	}
 
 	@SubscribeEvent
-	public static void clientTick(TickEvent.ClientTickEvent event) {
-		if (event.phase != TickEvent.Phase.END) return;
+	public static void clientTick(ClientTickEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
 
 		if (!mc.isPaused()) {
