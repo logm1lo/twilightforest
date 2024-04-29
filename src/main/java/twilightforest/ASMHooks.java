@@ -230,8 +230,8 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}<br>
 	 * [BEFORE ARETURN]
 	 */
-	public static Component book(Component component, CompoundTag tag) {
-		if (tag.contains(TwilightForestMod.ID + ":book")) {
+	public static Component book(Component component, ItemStack stack) {
+		if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
 			return Component.translatable(component.getString());
 		} else return component;
 	}
@@ -290,7 +290,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.chunk.ChunkStatus#getStatusList()}<br>
+	 * {@link net.minecraft.world.level.chunk.status.ChunkStatus#getStatusList()}<br>
 	 * [HEAD]
 	 */
 	public static void assertChunkBlanketing() {

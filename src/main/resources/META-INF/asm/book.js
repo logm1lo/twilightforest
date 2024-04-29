@@ -21,12 +21,12 @@ function initializeCoreMod() {
                 instructions.insertBefore(
                     ASM.findFirstInstruction(methodNode, Opcodes.ARETURN),
                     ASM.listOf(
-                        new VarInsnNode(Opcodes.ALOAD, 2),
+                        new VarInsnNode(Opcodes.ALOAD, 1),
                         new MethodInsnNode(
                             Opcodes.INVOKESTATIC,
                             'twilightforest/ASMHooks',
                             'book',
-                            '(Lnet/minecraft/network/chat/Component;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/network/chat/Component;',
+                            '(Lnet/minecraft/network/chat/Component;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/network/chat/Component;',
                             false
                         )
                     )

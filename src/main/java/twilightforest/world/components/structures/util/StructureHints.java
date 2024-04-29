@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.Filterable;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFDataComponents;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +41,7 @@ public interface StructureHints {
 	 */
 	default ItemStack createHintBook(RegistryAccess registryAccess) {
 		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+		book.set(TFDataComponents.TRANSLATABLE_BOOK, Unit.INSTANCE);
 		this.addBookInformation(book);
 		return book;
 	}

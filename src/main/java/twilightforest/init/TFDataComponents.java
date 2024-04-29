@@ -37,6 +37,7 @@ public class TFDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> EXPERIMENT_115_VARIANTS = COMPONENTS.register("e115_variant", () -> DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SkullCandles>> SKULL_CANDLES = COMPONENTS.register("skull_candles", () -> DataComponentType.<SkullCandles>builder().persistent(SkullCandles.CODEC).networkSynchronized(SkullCandles.STREAM_CODEC).build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Holder<MagicPaintingVariant>>> MAGIC_PAINTING_VARIANT = COMPONENTS.register("magic_painting_variant", () -> DataComponentType.<Holder<MagicPaintingVariant>>builder().persistent(MagicPaintingVariants.CODEC).networkSynchronized(MagicPaintingVariants.STREAM_CODEC).build());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> TRANSLATABLE_BOOK = COMPONENTS.register("translatable_book", () -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).build());
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<OreScannerComponent>> ORE_SCANNING = register("ore_scanner", OreScannerComponent.CODEC);
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<OreScannerData>> ORE_DATA = register("ore_data", OreScannerData.CODEC, OreScannerData.STREAM_CODEC);

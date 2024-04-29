@@ -11,7 +11,7 @@ function initializeCoreMod() {
         'chunkstatus': {
             'target': {
                 'type': 'METHOD',
-                'class': 'net.minecraft.world.level.chunk.ChunkStatus',
+                'class': 'net.minecraft.world.level.chunk.status.ChunkStatus',
                 'methodName': 'getStatusList',
                 'methodDesc': '()Ljava/util/List;'
             },

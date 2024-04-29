@@ -14,6 +14,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -322,20 +324,18 @@ public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void translateBookAuthor(ItemTooltipEvent event) {
-		// FIXME: Port this code once the Book Provider
-		// ItemStack stack = event.getItemStack();
-		// if (stack.getItem() instanceof WrittenBookItem && stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
-		// 	CompoundTag tag = stack.getOrCreateTag();
-		// 	if (tag.contains(TwilightForestMod.ID + ":book")) {
-		// 		List<Component> components = event.getToolTip();
-		// 		for (int i = 0; i < components.size(); i++) {
-		// 			Component component = components.get(i);
-		// 			if (component.toString().contains("book.byAuthor")) {
-		// 				components.set(i, (Component.translatable("book.byAuthor", Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
-		// 			}
-		// 		}
-		// 	}
-		// }
+		 ItemStack stack = event.getItemStack();
+		 if (stack.getItem() instanceof WrittenBookItem && stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
+		 	if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
+		 		List<Component> components = event.getToolTip();
+		 		for (int i = 0; i < components.size(); i++) {
+		 			Component component = components.get(i);
+		 			if (component.toString().contains("book.byAuthor")) {
+		 				components.set(i, (Component.translatable("book.byAuthor", Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
+		 			}
+		 		}
+		 	}
+		 }
 	}
 
 	@SubscribeEvent
