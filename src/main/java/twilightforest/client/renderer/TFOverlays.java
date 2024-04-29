@@ -104,6 +104,7 @@ public class TFOverlays {
 						}
 					}
 				}
+				RenderSystem.defaultBlendFunc();
 			}
 		}
 	}
