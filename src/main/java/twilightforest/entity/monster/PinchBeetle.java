@@ -130,7 +130,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 		if (!this.getPassengers().isEmpty()) {
 			return EntityDimensions.scalable(2.2F, 1.6F);
 		} else {
-			return super.getDimensions(pose);
+			return super.getDefaultDimensions(pose);
 		}
 	}
 }
