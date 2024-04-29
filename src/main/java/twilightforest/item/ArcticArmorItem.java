@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 
 public class ArcticArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.arctic_armor.desc").withStyle(ChatFormatting.GRAY);
-	private static final int DEFAULT_COLOR = 0xBD_CF_D9;
+	public static final int DEFAULT_COLOR = 0xFFBDCFD9;
 
 	public ArcticArmorItem(Holder<ArmorMaterial> armorMaterial, Type type, Properties properties) {
 		super(armorMaterial, type, properties);
@@ -47,11 +47,6 @@ public class ArcticArmorItem extends ArmorItem {
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 		consumer.accept(ArmorRender.INSTANCE);
-	}
-
-	public static int getColor(ItemStack stack, int tintIndex) {
-		DyedItemColor dyedItemColor = stack.get(DataComponents.DYED_COLOR);
-		return dyedItemColor == null ? DEFAULT_COLOR : dyedItemColor.rgb();
 	}
 
 	private static final class ArmorRender implements IClientItemExtensions {

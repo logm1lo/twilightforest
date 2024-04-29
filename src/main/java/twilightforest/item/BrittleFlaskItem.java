@@ -32,11 +32,6 @@ public class BrittleFlaskItem extends Item {
 		super(properties);
 	}
 
-	public static int getColor(ItemStack stack, int tintIndex) {
-		PotionContents potionContents = stack.get(DataComponents.POTION_CONTENTS);
-		return tintIndex > 0 || potionContents == null ? -1 : potionContents.getColor();
-	}
-
 	@Override
 	public ItemStack getDefaultInstance() {
 		ItemStack itemstack = super.getDefaultInstance();
