@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/fiery"
+      "tag": "c:storage_blocks/fiery"
     }
   ],
   "result": {
     "count": 9,
-    "item": "twilightforest:fiery_ingot"
+    "id": "twilightforest:fiery_ingot"
   }
 }

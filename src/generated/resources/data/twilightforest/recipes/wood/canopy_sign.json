@@ -6,7 +6,7 @@
       "item": "twilightforest:canopy_planks"
     },
     "-": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
@@ -16,6 +16,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "twilightforest:canopy_sign"
+    "id": "twilightforest:canopy_sign"
   }
 }

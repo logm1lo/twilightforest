@@ -3,15 +3,14 @@
   "category": "equipment",
   "ingredients": [
     {
-      "type": "neoforge:nbt",
-      "item": "twilightforest:fortification_scepter",
-      "tag": "{Damage:9}"
+      "item": "twilightforest:fortification_scepter"
     },
     {
       "item": "minecraft:golden_apple"
     }
   ],
   "result": {
-    "item": "twilightforest:fortification_scepter"
+    "count": 1,
+    "id": "twilightforest:fortification_scepter"
   }
 }

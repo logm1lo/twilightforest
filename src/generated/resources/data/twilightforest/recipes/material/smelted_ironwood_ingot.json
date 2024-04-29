@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "twilightforest:raw_ironwood"
   },
-  "result": "twilightforest:ironwood_ingot"
+  "result": {
+    "count": 1,
+    "id": "twilightforest:ironwood_ingot"
+  }
 }

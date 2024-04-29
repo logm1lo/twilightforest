@@ -6,7 +6,7 @@
       "item": "minecraft:spruce_slab"
     },
     "|": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
@@ -15,6 +15,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "twilightforest:spruce_banister"
+    "id": "twilightforest:spruce_banister"
   }
 }

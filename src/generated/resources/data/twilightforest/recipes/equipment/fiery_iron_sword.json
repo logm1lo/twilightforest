@@ -12,10 +12,11 @@
       "tag": "twilightforest:fiery_vial"
     },
     {
-      "tag": "forge:rods/blaze"
+      "tag": "c:rods/blaze"
     }
   ],
   "result": {
-    "item": "twilightforest:fiery_sword"
+    "count": 1,
+    "id": "twilightforest:fiery_sword"
   }
 }

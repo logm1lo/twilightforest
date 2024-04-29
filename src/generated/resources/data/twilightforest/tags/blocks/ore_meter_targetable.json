@@ -1,13 +1,13 @@
 {
   "values": [
-    "#forge:ores",
+    "#c:ores",
     "#minecraft:base_stone_overworld",
     "#minecraft:base_stone_nether",
     "#minecraft:dirt",
-    "#forge:sand",
-    "#forge:sandstone",
+    "#c:sands",
+    "#c:sandstone/blocks",
     "#minecraft:terracotta",
-    "#forge:gravel",
+    "#c:gravel",
     "#minecraft:nylium",
     "minecraft:budding_amethyst",
     "minecraft:calcite",

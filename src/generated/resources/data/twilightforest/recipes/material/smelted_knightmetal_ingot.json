@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "twilightforest:armor_shard_cluster"
   },
-  "result": "twilightforest:knightmetal_ingot"
+  "result": {
+    "count": 1,
+    "id": "twilightforest:knightmetal_ingot"
+  }
 }

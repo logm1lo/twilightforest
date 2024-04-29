@@ -6,7 +6,7 @@
       "item": "twilightforest:mangrove_planks"
     },
     "C": {
-      "tag": "forge:chests/trapped"
+      "tag": "c:chests/trapped"
     }
   },
   "pattern": [
@@ -16,6 +16,6 @@
   ],
   "result": {
     "count": 2,
-    "item": "twilightforest:mangrove_trapped_chest"
+    "id": "twilightforest:mangrove_trapped_chest"
   }
 }

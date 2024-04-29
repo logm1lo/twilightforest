@@ -4,31 +4,24 @@
   "ingredients": [
     [
       {
-        "type": "neoforge:nbt",
-        "item": "minecraft:potion",
-        "tag": "{Potion:\"minecraft:strength\"}"
+        "item": "minecraft:potion"
       },
       {
-        "type": "neoforge:nbt",
-        "item": "minecraft:potion",
-        "tag": "{Potion:\"minecraft:long_strength\"}"
+        "item": "minecraft:potion"
       },
       {
-        "type": "neoforge:nbt",
-        "item": "minecraft:potion",
-        "tag": "{Potion:\"minecraft:strong_strength\"}"
+        "item": "minecraft:potion"
       }
     ],
     {
-      "type": "neoforge:nbt",
-      "item": "twilightforest:zombie_scepter",
-      "tag": "{Damage:9}"
+      "item": "twilightforest:zombie_scepter"
     },
     {
       "item": "minecraft:rotten_flesh"
     }
   ],
   "result": {
-    "item": "twilightforest:zombie_scepter"
+    "count": 1,
+    "id": "twilightforest:zombie_scepter"
   }
 }

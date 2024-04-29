@@ -6,7 +6,7 @@
       "item": "twilightforest:twilight_oak_planks"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
@@ -14,6 +14,7 @@
     "S#S"
   ],
   "result": {
-    "item": "twilightforest:twilight_oak_fence_gate"
+    "count": 1,
+    "id": "twilightforest:twilight_oak_fence_gate"
   }
 }
