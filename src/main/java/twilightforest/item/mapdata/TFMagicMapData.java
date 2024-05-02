@@ -140,6 +140,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	}
 
 	// Like the method above, but if we know we're on client
+	@Nullable
 	public static TFMagicMapData getClientMagicMapData(String name) {
 		return CLIENT_DATA.get(name);
 	}
