@@ -12,15 +12,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.EntityEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID)
 public class NagaSegment extends TFPart<Naga> {
 
 	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("naga_segment");
@@ -31,11 +27,7 @@ public class NagaSegment extends TFPart<Naga> {
 	public NagaSegment(Naga naga) {
 		super(naga);
 		this.setPos(naga.getX(), naga.getY(), naga.getZ());
-	}
-
-	@SubscribeEvent
-	public static void onEntityConstructingEvent(EntityEvent.EntityConstructing event) {
-		if (event.getEntity() instanceof NagaSegment segment) segment.deactivate();
+		this.deactivate();
 	}
 
 	@Override
