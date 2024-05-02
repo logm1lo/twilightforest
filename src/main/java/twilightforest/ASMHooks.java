@@ -177,7 +177,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(PoseStack, float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f)}<br>
+	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br>
 	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterable<Entity> renderMultiparts(Iterable<Entity> iter) {
@@ -252,9 +252,6 @@ public class ASMHooks {
 		}
 		return o;
 	}
-
-	private static final List<Float> defibrator = new ArrayList<>();
-	private static float average;
 
 	/**
 	 * Injection Point:<br>
