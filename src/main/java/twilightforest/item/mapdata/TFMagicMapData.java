@@ -135,14 +135,19 @@ public class TFMagicMapData extends MapItemSavedData {
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
 	public static TFMagicMapData getMagicMapData(Level level, String name) {
-		if (level.isClientSide()) return CLIENT_DATA.get(name);
-		else return (TFMagicMapData) ((ServerLevel) level).getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
+		if (level instanceof ServerLevel serverLevel) return (TFMagicMapData) serverLevel.getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
+		else return CLIENT_DATA.get(name);
+	}
+
+	// Like the method above, but if we know we're on client
+	public static TFMagicMapData getClientMagicMapData(String name) {
+		return CLIENT_DATA.get(name);
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMagicMapData(Level level, TFMagicMapData data, String id) {
-		if (level.isClientSide()) CLIENT_DATA.put(id, data);
-		else ((ServerLevel) level).getServer().overworld().getDataStorage().set(id, data);
+		if (level instanceof ServerLevel serverLevel) serverLevel.getServer().overworld().getDataStorage().set(id, data);
+		else CLIENT_DATA.put(id, data);
 	}
 
 	public static Factory<MapItemSavedData> factory() {
