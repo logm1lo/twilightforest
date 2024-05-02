@@ -128,7 +128,7 @@ function initializeCoreMod() {
                 'type': 'METHOD',
                 'class': 'net.minecraft.world.item.MapItem',
                 'methodName': 'appendHoverText',
-                'methodDesc': '(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V'
+                'methodDesc': '(Lnet/minecraft/world/item/ItemStack;Lnet.minecraft.world.item.Item.TooltipContext;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
