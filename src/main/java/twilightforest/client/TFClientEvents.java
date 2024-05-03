@@ -4,11 +4,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
@@ -21,6 +23,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -54,12 +57,11 @@ import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
+import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
-import twilightforest.init.TFDataComponents;
-import twilightforest.init.TFDimension;
-import twilightforest.init.TFItems;
+import twilightforest.init.*;
 import twilightforest.item.*;
 
 import java.util.HashSet;
@@ -117,6 +119,30 @@ public class TFClientEvents {
 		if (VanillaGuiLayers.VEHICLE_HEALTH == event.getName()) {
 			if (HostileMountEvents.isRidingUnfriendly(Minecraft.getInstance().player)) {
 				event.setCanceled(true);
+			}
+		} else if (VanillaGuiLayers.CAMERA_OVERLAYS == event.getName()) {
+			Entity camera = Minecraft.getInstance().cameraEntity;
+			if (camera != null) {
+				TFPortalAttachment portalAttachment = camera.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
+				if (portalAttachment.getPortalTimer() <= 0) return;
+				GuiGraphics pGuiGraphics = event.getGuiGraphics();
+
+				RenderSystem.disableDepthTest();
+				RenderSystem.depthMask(false);
+				RenderSystem.enableBlend();
+				pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, (float) portalAttachment.getPortalTimer() / (float) TFPortalAttachment.MAX_TICKS);
+
+				@SuppressWarnings("deprecation")
+				TextureAtlasSprite textureatlassprite = Minecraft.getInstance()
+					.getBlockRenderer()
+					.getBlockModelShaper()
+					.getParticleIcon(TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState());
+
+				pGuiGraphics.blit(0, 0, -90, pGuiGraphics.guiWidth(), pGuiGraphics.guiHeight(), textureatlassprite);
+				RenderSystem.disableBlend();
+				RenderSystem.depthMask(true);
+				RenderSystem.enableDepthTest();
+				pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 			}
 		}
 	}
