@@ -65,8 +65,9 @@ public class TFTeleporter implements ITeleporter {
 			pos = createPosition(dest, entity, destPos, cache);
 		}
 
-		return pos == null ? ITeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
-	}
+		if (pos != null) return pos;
+        return this.isVanilla() ? defaultPortalInfo.apply(dest) : new PortalInfo(Vec3.atCenterOf(destPos.atY(dest.getSeaLevel())), Vec3.ZERO, entity.getYRot(), entity.getXRot());
+    }
 
 	@Nullable
 	protected PortalInfo createPosition(ServerLevel dest, Entity entity, BlockPos destPos, TeleporterCache cache) {
