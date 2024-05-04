@@ -231,6 +231,7 @@ public final class TwilightForestMod {
 		registrar.playToClient(UpdateTFMultipartPacket.TYPE, UpdateTFMultipartPacket.STREAM_CODEC, UpdateTFMultipartPacket::handle);
 		registrar.playToClient(UpdateThrownPacket.TYPE, UpdateThrownPacket.STREAM_CODEC, UpdateThrownPacket::handle);
 		registrar.playToServer(WipeOreMeterPacket.TYPE, WipeOreMeterPacket.STREAM_CODEC, WipeOreMeterPacket::handle);
+		registrar.playToClient(ClientboundWhiskToTwilightForestPacket.TYPE, ClientboundWhiskToTwilightForestPacket.STREAM_CODEC, ClientboundWhiskToTwilightForestPacket::handle);
 	}
 
 	public void init(FMLCommonSetupEvent evt) {

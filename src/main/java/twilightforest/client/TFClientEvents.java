@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ReceivingLevelScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
@@ -57,6 +58,7 @@ import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
+import twilightforest.client.screen.WhiskAwayScreen;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -397,5 +399,28 @@ public class TFClientEvents {
 			consumer.vertex(last.pose(), (float) (x + posX), (float) (y + posY), (float) (z + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
 			consumer.vertex(last.pose(), (float) (x1 + posX), (float) (y1 + posY), (float) (z1 + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
 		});
+	}
+
+	@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
+	public static class LoadingScreenEvents {
+		private static boolean useOurLoadingScreen = false;
+		private static boolean whiskingAway = false;
+
+		public static void useOurScreen(boolean whiskAway) {
+			whiskingAway = whiskAway;
+			useOurLoadingScreen = true;
+		}
+
+		@SubscribeEvent
+		public static void onClientPlayerNetworkCloneEvent(ClientPlayerNetworkEvent.Clone event) {
+			useOurLoadingScreen = false;
+		}
+
+		@SubscribeEvent
+		public static void onScreenOpeningEvent(ScreenEvent.Opening event) {
+			if (event.getNewScreen() instanceof ReceivingLevelScreen receivingLevelScreen && (useOurLoadingScreen || (Minecraft.getInstance().cameraEntity != null && Minecraft.getInstance().cameraEntity.level().dimension() == TFDimension.DIMENSION_KEY))) {
+				event.setNewScreen(new WhiskAwayScreen(receivingLevelScreen.levelReceived, whiskingAway));
+			}
+		}
 	}
 }

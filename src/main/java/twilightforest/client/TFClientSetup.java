@@ -38,6 +38,8 @@ import twilightforest.client.model.entity.newmodels.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.newmodels.*;
 import twilightforest.client.renderer.tileentity.*;
+import twilightforest.client.screen.OptifineWarningScreen;
+import twilightforest.client.screen.UncraftingScreen;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.boss.HydraHead;

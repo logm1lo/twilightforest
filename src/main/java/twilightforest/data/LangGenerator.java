@@ -1107,6 +1107,9 @@ public class LangGenerator extends TFLangProvider {
 
 		this.add("twilightforest.book.author", "a forgotten explorer");
 
+		this.add("twilightforest.loading.title.enter", "Whisking you off to the Twilight Forest...");
+		this.add("twilightforest.loading.title.leave", "Whisking you from the Twilight Forest...");
+
 		this.addBookAndContents("lichtower", "Notes on a Pointy Tower",
 			"§8[An explorer's notebook, gnawed on by monsters]§0\n\nI have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse is boiling off into the",
 			"surrounding area.\n\nIn my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...",

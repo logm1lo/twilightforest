@@ -1,4 +1,4 @@
-package twilightforest.client;
+package twilightforest.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
@@ -19,6 +19,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.UncraftingRecipeBookComponent;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.inventory.UncraftingMenu;

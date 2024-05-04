@@ -44,6 +44,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityTravelToDimensionEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
@@ -69,6 +70,7 @@ import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.YetiArmorItem;
+import twilightforest.network.ClientboundWhiskToTwilightForestPacket;
 import twilightforest.network.WipeOreMeterPacket;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
@@ -448,6 +450,14 @@ public class EntityEvents {
 	public static void grantAdvancementIfNeeded(LivingDeathEvent event) {
 		if (!event.isCanceled() && event.getEntity().hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
 			event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT).grantGroupAdvancement(event.getEntity());
+		}
+	}
+
+	@SubscribeEvent
+	public static void atEntityTravelToDimensionEvent(EntityTravelToDimensionEvent event) {
+		if (!event.isCanceled() && event.getEntity() instanceof ServerPlayer player) {
+			if (event.getDimension() == TFDimension.DIMENSION_KEY) PacketDistributor.sendToPlayer(player, new ClientboundWhiskToTwilightForestPacket(true));
+			else if (player.level().dimension() == TFDimension.DIMENSION_KEY) PacketDistributor.sendToPlayer(player, new ClientboundWhiskToTwilightForestPacket(false));
 		}
 	}
 }
