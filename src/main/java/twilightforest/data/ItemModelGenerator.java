@@ -146,11 +146,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
 		toBlockModel(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
 		toBlockModel(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
-		forcefield(TFBlocks.PINK_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_pink"));
-		forcefield(TFBlocks.BLUE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_blue"));
-		forcefield(TFBlocks.GREEN_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_green"));
-		forcefield(TFBlocks.VIOLET_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_purple"));
-		forcefield(TFBlocks.ORANGE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_orange"));
+		forcefield(TFBlocks.PINK_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.BLUE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.GREEN_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.VIOLET_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.ORANGE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
 		toBlock(TFBlocks.CINDER_LOG.get());
 		toBlock(TFBlocks.CINDER_WOOD.get());
 		toBlockModel(TFBlocks.CINDER_FURNACE.get(), new ResourceLocation("block/furnace"));
@@ -718,7 +718,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
-		return builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType("minecraft:translucent", 0).end();
+		builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType("minecraft:translucent", 0).end();
+		return builder;
 	}
 
 	private ItemModelBuilder singleTexFullbright(DeferredHolder<Item, ? extends Item> item) {
