@@ -834,7 +834,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_AMBIENT, "Loyal Zombie groans");
 		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_DEATH, "Loyal Zombie dies");
 		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_HURT, "Loyal Zombie hurts");
-		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_SUMMON, "Loyal Zombie summoned");
 
 		this.addSubtitle(TFSounds.MAZE_SLIME_DEATH, "Maze Slime dies");
 		this.addSubtitle(TFSounds.MAZE_SLIME_HURT, "Maze Slime hurts");
@@ -1015,6 +1014,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.ICE_BOMB_FIRED, "Ice Bomb thrown");
 		this.addSubtitle(TFSounds.KNIGHTMETAL_EQUIP, "Knightmetal Armor clanks");
 		this.addSubtitle(TFSounds.LAMP_BURN, "Lamp of Cinders ignites area");
+		this.addSubtitle(TFSounds.LIFE_SCEPTER_DRAIN, "Life Scepter drains");
 		this.addSubtitle(TFSounds.MAGNET_GRAB, "Ore Magnet pulls up ore");
 		this.addSubtitle(TFSounds.METAL_SHIELD_SHATTERS, "Metal Shield shatters");
 		this.addSubtitle(TFSounds.MOONWORM_SQUISH, "Moonworm fires");
@@ -1022,10 +1022,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.ORE_METER_CRACKLE, "Ore Meter crackles");
 		this.addSubtitle(TFSounds.ORE_METER_TARGET_BLOCK, "Ore Meter locks onto block");
 		this.addSubtitle(TFSounds.POWDER_USE, "Mob transforms");
-		this.addSubtitle(TFSounds.SCEPTER_DRAIN, "Mob explodes");
-		this.addSubtitle(TFSounds.SCEPTER_PEARL, "Twilight Scepter throws pearl");
-		this.addSubtitle(TFSounds.SCEPTER_USE, "Life Scepter drains");
+		this.addSubtitle(TFSounds.TWILIGHT_SCEPTER_HIT, "Twilight Pearl hits mob");
+		this.addSubtitle(TFSounds.TWILIGHT_SCEPTER_USE, "Twilight Scepter throws pearl");
 		this.addSubtitle(TFSounds.WOOD_SHIELD_SHATTERS, "Wooden Shield shatters");
+		this.addSubtitle(TFSounds.ZOMBIE_SCEPTER_USE, "Loyal Zombie summoned");
 
 		this.addDeathMessage("ghastTear", "%1$s was scalded by fiery tears");
 		this.addDeathMessage("ghastTear.player", "%1$s was scalded by fiery tears while escaping %2$s");

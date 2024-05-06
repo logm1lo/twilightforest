@@ -58,7 +58,7 @@ public class ZombieWandItem extends Item {
 					stack.hurtAndBreak(1, level.getRandom(), player, () -> {
 					});
 				}
-				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON.get(), 1.0F, zombie.getVoicePitch());
+				zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.get(), 1.0F, 1.0F);
 			}
 		}
 
