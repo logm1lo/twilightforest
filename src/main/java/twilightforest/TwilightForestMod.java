@@ -41,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -148,10 +149,10 @@ public final class TwilightForestMod {
 	}
 
 	private static void loadCuriosCompat(IEventBus bus) {
-		// NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
-		// bus.addListener(CuriosCompat::registerCuriosCapabilities);
-		// bus.addListener(CuriosCompat::registerCurioRenderers);
-		// bus.addListener(CuriosCompat::registerCurioLayers);
+		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+		bus.addListener(CuriosCompat::registerCuriosCapabilities);
+		bus.addListener(CuriosCompat::registerCurioRenderers);
+		bus.addListener(CuriosCompat::registerCurioLayers);
 	}
 
 	private void registerGenericItemHandlers(RegisterCapabilitiesEvent event) {
