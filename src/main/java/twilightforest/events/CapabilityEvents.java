@@ -34,7 +34,8 @@ public class CapabilityEvents {
 	@SubscribeEvent
 	public static void updatePlayerCaps(PlayerTickEvent.Post event) {
 		if (event.getEntity().getData(TFDataAttachments.FEATHER_FAN)) {
-			event.getEntity().resetFallDistance();
+			event.getEntity().ignoreFallDamageFromCurrentImpulse = true;
+			event.getEntity().currentImpulseImpactPos = event.getEntity().position();
 
 			if (event.getEntity().onGround() || event.getEntity().isSwimming() || event.getEntity().isInWater()) {
 				event.getEntity().setData(TFDataAttachments.FEATHER_FAN, false);
