@@ -93,7 +93,7 @@ public class ASMHooks {
 	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}<br>
-	 * [BEFORE ISTORE 5]
+	 * [BEFORE ISTORE 10]
 	 */
 	public static int mapRenderDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
 		if (data instanceof TFMagicMapData mapData) {

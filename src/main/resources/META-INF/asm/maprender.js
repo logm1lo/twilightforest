@@ -21,7 +21,7 @@ function initializeCoreMod() {
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 instructions.insertBefore(
-                    findFirstVarInstruction(methodNode, Opcodes.ISTORE, 5),
+                    findFirstVarInstruction(methodNode, Opcodes.ISTORE, 10),
                     ASM.listOf(
                         new VarInsnNode(Opcodes.ALOAD, 0),
                         new FieldInsnNode(Opcodes.GETFIELD, 'net/minecraft/client/gui/MapRenderer$MapInstance', 'data', 'Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;'),

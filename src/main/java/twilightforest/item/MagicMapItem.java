@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-//FIXME this probably needs a rewrite. Im too tired to look into it rn
 public class MagicMapItem extends MapItem {
 
 	public static final String STR_ID = "magicmap";

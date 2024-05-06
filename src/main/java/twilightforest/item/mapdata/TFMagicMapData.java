@@ -223,7 +223,7 @@ public class TFMagicMapData extends MapItemSavedData {
 				float uMax = (featureId % 8 + 1) / 8.0F;
 				float vMax = (featureId / 8 + 1) / 8.0F;
 				Matrix4f matrix4f = stack.last().pose();
-				float depth = idx * -0.004F;
+				float depth = idx * -0.001F;
 				VertexConsumer mapIconVertices = buffer.getBuffer(DecorationRenderTypes.MAP_ICONS);
 				mapIconVertices.vertex(matrix4f, -1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(uMin, vMin).uv2(light).endVertex();
 				mapIconVertices.vertex(matrix4f, 1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(uMax, vMin).uv2(light).endVertex();
