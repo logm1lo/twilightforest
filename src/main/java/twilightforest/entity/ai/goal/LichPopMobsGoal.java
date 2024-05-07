@@ -56,7 +56,7 @@ public class LichPopMobsGoal extends Goal {
 	public void tick() {
 		super.tick();
 		if (this.lich.getScepterTimeLeft() > 0) return;
-		for (Mob mob : this.lich.level().getEntitiesOfClass(Mob.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D), e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES))) {
+		for (Mob mob : this.lich.level().getEntitiesOfClass(Mob.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D), e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES) && !e.equals(this.lich))) {
 			if (this.lich.getSensing().hasLineOfSight(mob)) {
 				if (!this.lich.level().isClientSide()) {
 					mob.discard();
