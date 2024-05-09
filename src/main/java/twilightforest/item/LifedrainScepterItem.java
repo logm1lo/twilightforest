@@ -1,7 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Direction;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -9,11 +9,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -23,10 +25,12 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
+import twilightforest.network.LifedrainParticlePacket;
 import twilightforest.util.EntityUtil;
 
 import java.util.List;
@@ -139,13 +143,12 @@ public class LifedrainScepterItem extends Item {
 			Entity pointedEntity = getPlayerLookTarget(level, living);
 
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
-				if (level.isClientSide()) {
-					this.makeRedMagicTrail(level, living, target.getEyePosition());
-				} else {
+                if (!level.isClientSide()) {
+					PacketDistributor.sendToPlayersTrackingEntityAndSelf(living, new LifedrainParticlePacket(living.getId(), target.getEyePosition()));
 					level.playSound(null, living.blockPosition(), TFSounds.LIFE_SCEPTER_DRAIN.get(), SoundSource.PLAYERS);
 				}
 
-				if (target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), 1)) {
+                if (target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), 1)) {
 					// make it explode
 					if (!level.isClientSide()) {
 						if (target.getHealth() <= 1) {
@@ -194,19 +197,50 @@ public class LifedrainScepterItem extends Item {
 		}
 	}
 
-	private void makeRedMagicTrail(Level level, LivingEntity source, Vec3 target) {
+	public static void makeRedMagicTrail(Level level, LivingEntity source, Vec3 target) {
 		// make particle trail
-		int particles = 32;
-		for (int i = 0; i < particles; i++) {
-			double trailFactor = i / (particles - 1.0D);
-			float f = 1.0F;
-			float f1 = 0.5F;
-			float f2 = 0.5F;
-			double handOffset = source.getItemInHand(InteractionHand.OFF_HAND).is(this) ? -0.35D : 0.35D;
-			double tx = source.getX() + (target.x() - source.getX()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
-			double ty = source.getEyeY() - 0.1D + (target.y() - source.getEyeY()) * trailFactor + level.getRandom().nextGaussian() * 0.005D - 0.1D;
-			double tz = source.getZ() + (target.z() - source.getZ()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
-			level.addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, f, f1, f2), tx, ty, tz, 0.0D, 0.0D, 0.0D);
+		Vec3 handPos = getPlayerHandPos(source, Minecraft.getInstance().getPartialTick());
+		double distance = handPos.distanceTo(target);
+
+		for (double i = 0; i <= distance * 3; i++) {
+			Vec3 particlePos = handPos.subtract(target).scale(i / (distance * 3));
+			particlePos = handPos.subtract(particlePos);
+			float r = 1.0F;
+			float g = 0.5F;
+			float b = 0.5F;
+			level.addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, r, g, b), particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
+		}
+	}
+
+	/**
+	 * Slightly reformatted vanilla copy of:
+	 * net.minecraft.client.renderer.entity.FishingHookRenderer#getPlayerHandPos(net.minecraft.world.entity.player.Player, float, float)
+	 * ( cant link it cuz its client only or some shit, idk, you do it, wise guy )
+	 */
+	private static Vec3 getPlayerHandPos(LivingEntity living, float partialTicks) {
+		float armSwing = Mth.sin(Mth.sqrt(living.getAttackAnim(partialTicks)) * (float) Math.PI);
+		int hand = living.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
+		if (!(living.getMainHandItem().getItem() instanceof LifedrainScepterItem)) hand = -hand;
+
+		Minecraft minecraft = Minecraft.getInstance();
+		if (minecraft.options.getCameraType().isFirstPerson() && living == minecraft.player) {
+			Vec3 vec3 = minecraft.getEntityRenderDispatcher()
+				.camera
+				.getNearPlane()
+				.getPointOnPlane((float)hand * 0.525F, -0.1F)
+				.scale(960.0D / (double) minecraft.options.fov().get())
+				.yRot(armSwing * 0.5F)
+				.xRot(-armSwing * 0.7F);
+			return living.getEyePosition(partialTicks).add(vec3);
+		} else {
+			float yRot = Mth.lerp(partialTicks, living.yBodyRotO, living.yBodyRot) * (float) (Math.PI / 180.0);
+			double sin = Mth.sin(yRot);
+			double cos = Mth.cos(yRot);
+			float scale = living.getScale();
+			double offset = (double)hand * 0.35 * (double)scale;
+			double factor = 0.8 * (double)scale;
+			float crouch = living.isCrouching() ? -0.1875F : 0.0F;
+			return living.getEyePosition(partialTicks).add(-cos * offset - sin * factor, (double)crouch - 0.45 * (double)scale, -sin * offset + cos * factor);
 		}
 	}
 
