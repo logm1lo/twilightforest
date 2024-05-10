@@ -12,6 +12,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -23,6 +24,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -30,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
+import twilightforest.loot.TFLootTables;
 import twilightforest.network.LifedrainParticlePacket;
 import twilightforest.util.EntityUtil;
 
@@ -148,14 +153,23 @@ public class LifedrainScepterItem extends Item {
 					level.playSound(null, living.blockPosition(), TFSounds.LIFE_SCEPTER_DRAIN.get(), SoundSource.PLAYERS);
 				}
 
-                if (target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), 1)) {
+				DamageSource damageSource = TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living);
+                if (target.hurt(damageSource, 1)) {
 					// make it explode
 					if (!level.isClientSide()) {
 						if (target.getHealth() <= 1) {
-							if (!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH)) {
-								target.spawnAtLocation(new ItemStack(Items.ROTTEN_FLESH, level.getRandom().nextInt(3)));
-								animateTargetShatter((ServerLevel) level, target);
+							if (!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH) && level instanceof ServerLevel serverLevel && living instanceof Player player) {
+								LootParams ctx = new LootParams.Builder(serverLevel)
+									.withParameter(LootContextParams.THIS_ENTITY, target)
+									.withParameter(LootContextParams.ORIGIN, target.getEyePosition())
+									.withParameter(LootContextParams.DAMAGE_SOURCE, damageSource)
+									.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player)
+									.withParameter(LootContextParams.KILLER_ENTITY, player)
+									.withParameter(LootContextParams.DIRECT_KILLER_ENTITY, player).create(LootContextParamSets.ENTITY);
+								serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.LIFEDRAIN_SCEPTER_KILL_BONUS).getRandomItems(ctx).forEach(target::spawnAtLocation);
+								animateTargetShatter(serverLevel, target);
 							}
+
 							if (target instanceof Mob mob) {
 								mob.spawnAnim();
 							}

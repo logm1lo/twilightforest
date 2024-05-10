@@ -1,4 +1,4 @@
-// 1.20.6	2024-05-06T02:30:26.4079164	Loot Tables
+// 1.20.6	2024-05-10T19:14:44.3962877	Loot Tables
 e359421e93c03f9b33ec738b61a875ad9b88b504 data/twilightforest/loot_tables/aurora_cache.json
 81271636fc9a92d48fef83c8218cfe3df48433cd data/twilightforest/loot_tables/aurora_room.json
 6b7c07d237e56f84d11d308552cd943af7a906e5 data/twilightforest/loot_tables/basement.json
@@ -529,6 +529,7 @@ dd0573fe117ece9d4fa2ef965943046fd2e1aa88 data/twilightforest/loot_tables/hill_1.
 b756340514bc4130a16b31996a029b04f923a6a2 data/twilightforest/loot_tables/hill_2.json
 7aaa2eb4d95cd26b40b56d26a0d2e09ba7b62c45 data/twilightforest/loot_tables/hill_3.json
 d19218fa83d1043835629ce55279da22aeff6209 data/twilightforest/loot_tables/hut_junk.json
+42461e9335487ecf2212a6e86d52a7a0418bbf9b data/twilightforest/loot_tables/items/lifedrain_scepter_kill_bonus.json
 f82757cbbc2ad1896504a87985bf5db33aab4345 data/twilightforest/loot_tables/labyrinth_dead_end.json
 fc68bb6f06292896b0a8eeb92051fbadcd09c3d5 data/twilightforest/loot_tables/labyrinth_room.json
 bb5febb80f7e79cb532ed1d81e763f4800b3e823 data/twilightforest/loot_tables/labyrinth_vault.json

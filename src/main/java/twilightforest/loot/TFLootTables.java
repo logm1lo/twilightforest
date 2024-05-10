@@ -86,6 +86,7 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> QUESTING_RAM_REWARD_BLOCKS = register("entities/questing_ram_reward_blocks");
 	public static final ResourceKey<LootTable> DEATH_TOME_HURT = register("entities/death_tome_hurt");
 	public static final ResourceKey<LootTable> DEATH_TOME_BOOKS = register("entities/death_tome_books");
+	public static final ResourceKey<LootTable> LIFEDRAIN_SCEPTER_KILL_BONUS = register("items/lifedrain_scepter_kill_bonus");
 
 	// Big bug squish loot
 	public static final ResourceKey<LootTable> CICADA_SQUISH_DROPS = register("blocks/cicada_squish");
