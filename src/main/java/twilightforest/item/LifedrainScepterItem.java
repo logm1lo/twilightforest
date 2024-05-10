@@ -155,7 +155,7 @@ public class LifedrainScepterItem extends Item {
 			Entity pointedEntity = getPlayerLookTarget(level, living);
 
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
-                if (!level.isClientSide()) {
+                if (!level.isClientSide() && !target.isDeadOrDying()) {
 					PacketDistributor.sendToPlayersTrackingEntityAndSelf(living, new LifedrainParticlePacket(living.getId(), target.getEyePosition()));
 					level.playSound(null, living.blockPosition(), TFSounds.LIFE_SCEPTER_DRAIN.get(), SoundSource.PLAYERS);
 				}
