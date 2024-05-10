@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -36,6 +37,7 @@ import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.LifedrainParticlePacket;
+import twilightforest.network.ParticlePacket;
 import twilightforest.util.EntityUtil;
 
 import java.util.List;
@@ -78,21 +80,27 @@ public class LifedrainScepterItem extends Item {
 	 * Animates the target falling apart into a rain of shatter particles
 	 */
 	public static void animateTargetShatter(ServerLevel level, LivingEntity target) {
-		ItemStack itemId = Items.ROTTEN_FLESH.getDefaultInstance();
+		ParticleOptions options = new ItemParticleOption(ParticleTypes.ITEM, Items.ROTTEN_FLESH.getDefaultInstance());
 		// 1 in 100 chance of a big pop, you're welcome KD
-		double explosionPower = level.getRandom().nextInt(100) == 0 ? 0.5D : 0.15D;
+		boolean big = level.getRandom().nextInt(100) == 0;
+		double explosionPower = big ? 1.0D : 0.3D;
 
-		for (int i = 0; i < 50 + ((int) target.dimensions.width() * 75); ++i) {
+		ParticlePacket particlePacket = new ParticlePacket();
+		double gaussFactor = 5.0D;
+
+		for (int i = 0; i < 50 + ((int) target.dimensions.width() * (big ? 75 : 25)); ++i) {
 			double gaussX = level.getRandom().nextGaussian() * 0.01D;
 			double gaussY = level.getRandom().nextGaussian() * 0.01D;
 			double gaussZ = level.getRandom().nextGaussian() * 0.01D;
-			double gaussFactor = 5.0D;
-			level.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, itemId),
-				target.getX() + level.getRandom().nextFloat() * target.getBbWidth() * 1.5F - target.getBbWidth() - gaussX * gaussFactor,
-				target.getY() + level.getRandom().nextFloat() * target.getBbHeight() - gaussY * gaussFactor,
-				target.getZ() + level.getRandom().nextFloat() * target.getBbWidth() * 1.5F - target.getBbWidth() - gaussZ * gaussFactor,
-				1, gaussX, gaussY, gaussZ, level.getRandom().nextGaussian() * explosionPower);
+			double speed = level.getRandom().nextFloat() * explosionPower;
+			double x = level.getRandom().nextFloat() * target.getBbWidth() * 1.5F - target.getBbWidth() - gaussX * gaussFactor + (level.random.nextGaussian() * gaussX);
+			double y = level.getRandom().nextFloat() * target.getBbHeight() - gaussY * gaussFactor + (level.random.nextGaussian() * gaussY);
+			double z = level.getRandom().nextFloat() * target.getBbWidth() * 1.5F - target.getBbWidth() - gaussZ * gaussFactor + (level.random.nextGaussian() * gaussZ);
+
+			particlePacket.queueParticle(options, false, target.getX() + x, target.getY() + y, target.getZ() + z, x * speed, y * speed, z * speed);
 		}
+
+		PacketDistributor.sendToPlayersTrackingEntity(target, particlePacket);
 	}
 
 	/**
@@ -143,7 +151,6 @@ public class LifedrainScepterItem extends Item {
 		}
 
 		if (count % 5 == 0) {
-
 			// is the player looking at an entity
 			Entity pointedEntity = getPlayerLookTarget(level, living);
 
