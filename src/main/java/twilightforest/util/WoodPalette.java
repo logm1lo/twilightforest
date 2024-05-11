@@ -27,7 +27,7 @@ public class WoodPalette {
 		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("banister").forGetter(p -> p.banister)
 	).apply(instance, WoodPalette::new));
 
-	public WoodPalette(Holder<Block> planks, Holder<StairBlock> stairs, Holder<Block> slab, Holder<Block> button, Holder<Block> fence, Holder<Block> gate, Holder<Block> plate, Holder<BanisterBlock> banister) {
+	public WoodPalette(Holder<Block> planks, Holder<Block> stairs, Holder<Block> slab, Holder<Block> button, Holder<Block> fence, Holder<Block> gate, Holder<Block> plate, Holder<Block> banister) {
 		this(planks.value(), stairs.value(), slab.value(), button.value(), fence.value(), gate.value(), plate.value(), banister.value());
 	}
 
