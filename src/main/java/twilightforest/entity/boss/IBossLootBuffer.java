@@ -83,7 +83,10 @@ public interface IBossLootBuffer {
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> boolean tryDeposit(T boss, BlockState chest, BlockPos pos, ServerLevel serverLevel) {
-		if ((serverLevel.getBlockState(pos).is(chest.getBlock()) || (serverLevel.getBlockState(pos).getPistonPushReaction() != PushReaction.BLOCK && serverLevel.getBlockEntity(pos) == null && serverLevel.setBlock(pos, chest, TFLootTables.DEFAULT_PLACE_FLAG))) && serverLevel.getBlockEntity(pos) instanceof Container container) {
+		if ((serverLevel.getBlockState(pos).is(chest.getBlock()) ||
+			((serverLevel.getBlockState(pos).canBeReplaced() || serverLevel.getBlockState(pos).getPistonPushReaction() != PushReaction.BLOCK) && serverLevel.getBlockEntity(pos) == null && serverLevel.setBlock(pos, chest, TFLootTables.DEFAULT_PLACE_FLAG))) &&
+			serverLevel.getBlockEntity(pos) instanceof Container container) {
+
 			for (int i = 0; i < CONTAINER_SIZE && i < container.getContainerSize(); i++) {
 				container.setItem(i, boss.getItem(i));
 			}
