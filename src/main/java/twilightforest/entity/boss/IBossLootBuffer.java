@@ -13,7 +13,9 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
@@ -64,13 +66,32 @@ public interface IBossLootBuffer {
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void depositDropsIntoChest(T boss, BlockState chest, BlockPos pos, ServerLevel serverLevel) {
-		if (TFConfig.bossDropChests && (serverLevel.setBlock(pos, chest, TFLootTables.DEFAULT_PLACE_FLAG) || serverLevel.getBlockState(pos).is(chest.getBlock())) && serverLevel.getBlockEntity(pos) instanceof Container container) {
+		if (TFConfig.bossDropChests) {
+			if (!tryDeposit(boss, chest, pos, serverLevel)) {
+				BlockPos.MutableBlockPos chestPos = pos.mutable();
+				for (int y = pos.getY(); y < serverLevel.getMaxBuildHeight(); y++) {
+					chestPos.setY(y);
+					if (tryDeposit(boss, chest, chestPos, serverLevel)) return;
+				}
+			} else return;
+		}
+		for (int i = 0; i < CONTAINER_SIZE; i++) {
+			Block.popResource(serverLevel, pos, boss.getItem(i));
+			Vec3 vec3 = Vec3.atCenterOf(pos);
+			serverLevel.playSound(null, vec3.x, vec3.y, vec3.z, TFSounds.BOSS_CHEST_APPEAR.get(), boss.getSoundSource(), 128.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.175F + 0.5F);
+		}
+	}
+
+	static <T extends LivingEntity & IBossLootBuffer> boolean tryDeposit(T boss, BlockState chest, BlockPos pos, ServerLevel serverLevel) {
+		if ((serverLevel.getBlockState(pos).is(chest.getBlock()) || (serverLevel.getBlockState(pos).getPistonPushReaction() != PushReaction.BLOCK && serverLevel.getBlockEntity(pos) == null && serverLevel.setBlock(pos, chest, TFLootTables.DEFAULT_PLACE_FLAG))) && serverLevel.getBlockEntity(pos) instanceof Container container) {
 			for (int i = 0; i < CONTAINER_SIZE && i < container.getContainerSize(); i++) {
 				container.setItem(i, boss.getItem(i));
 			}
 			Vec3 vec3 = Vec3.atCenterOf(pos);
 			serverLevel.playSound(null, vec3.x, vec3.y, vec3.z, TFSounds.BOSS_CHEST_APPEAR.get(), boss.getSoundSource(), 128.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.175F + 0.5F);
+			return true;
 		}
+		return false;
 	}
 
 	default <T extends LivingEntity & IBossLootBuffer> void fill(T boss, LootParams context, LootTable table) {
