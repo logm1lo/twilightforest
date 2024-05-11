@@ -111,6 +111,11 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
+	protected boolean useShapeForLightOcclusion(BlockState state) {
+		return true;
+	}
+
+	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (level.isClientSide() && rand.nextInt(5) == 0) {
 			for (Player player : level.players()) {
