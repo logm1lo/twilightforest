@@ -34,8 +34,8 @@ public interface IBossLootBuffer {
 
 	default void setItem(int slot, ItemStack stack) {
 		this.getItemStacks().set(slot, stack);
-		if (!stack.isEmpty() && stack.getCount() > 64) {
-			stack.setCount(64);
+		if (!stack.isEmpty() && stack.getCount() > stack.getMaxStackSize()) {
+			stack.setCount(stack.getMaxStackSize());
 		}
 	}
 
