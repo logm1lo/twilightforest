@@ -122,22 +122,27 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if (this.shouldSpawnLoot()) {
-			// mark the boss structure as conquered
-			if (this.level() instanceof ServerLevel server) {
-				this.getBossBar().setProgress(0.0F);
-				IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), server);
-				LandmarkUtil.markStructureConquered(this.level(), this, this.getHomeStructure(), true);
-			}
-		}
+		if (this.shouldSpawnLoot() && this.level() instanceof ServerLevel server) this.postmortem(server, cause);
+	}
+
+	// mark the boss structure as conquered, separate method, so it can be overridden
+	protected void postmortem(ServerLevel serverLevel, DamageSource cause) {
+		this.getBossBar().setProgress(0.0F);
+		IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
+		LandmarkUtil.markStructureConquered(serverLevel, this, this.getHomeStructure(), true);
 	}
 
 	@Override
 	public void remove(RemovalReason reason) {
-		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot() && this.level() instanceof ServerLevel serverLevel) {
+		if (this.level() instanceof ServerLevel serverLevel) this.postRemoval(serverLevel, reason);
+		super.remove(reason);
+	}
+
+	// drop loot into a chest after removal, separate method, so it can be overridden
+	protected void postRemoval(ServerLevel serverLevel, RemovalReason reason) {
+		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot()) {
 			IBossLootBuffer.depositDropsIntoChest(this, this.getDeathContainer(this.getRandom()).defaultBlockState().setValue(ChestBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(this.level().getRandom())), EntityUtil.bossChestLocation(this), serverLevel);
 		}
-		super.remove(reason);
 	}
 
 	@Override

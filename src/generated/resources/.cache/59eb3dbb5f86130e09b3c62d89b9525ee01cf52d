@@ -1,4 +1,4 @@
-// 1.20.6	2024-05-10T19:14:44.3962877	Loot Tables
+// 1.20.6	2024-05-12T23:11:35.4855434	Loot Tables
 e359421e93c03f9b33ec738b61a875ad9b88b504 data/twilightforest/loot_tables/aurora_cache.json
 81271636fc9a92d48fef83c8218cfe3df48433cd data/twilightforest/loot_tables/aurora_room.json
 6b7c07d237e56f84d11d308552cd943af7a906e5 data/twilightforest/loot_tables/basement.json
@@ -481,7 +481,8 @@ df1d0b2ff70524b1628e7cfe0e62d2a360f238a6 data/twilightforest/loot_tables/entitie
 ab95bea37e483551135ecadc2482216b50ed9e34 data/twilightforest/loot_tables/entities/hydra.json
 00a97d21ec6f11bbbeaf396f9545e87d3787fa02 data/twilightforest/loot_tables/entities/ice_crystal.json
 1b4e8a059c51e647c5a15dda1c3d2ba037d76f56 data/twilightforest/loot_tables/entities/king_spider.json
-8083e3eee44883334413c736262c5fc1eb3d8294 data/twilightforest/loot_tables/entities/knight_phantom.json
+85b7dd2ac002e77a8c09c5c8fa31b887a5e5d20c data/twilightforest/loot_tables/entities/knight_phantom.json
+fb79c365be167bb0b59121cc2c48a8c7edf3c5ac data/twilightforest/loot_tables/entities/knight_phantom_defeated.json
 c4ea8539e0a9b3974bdf66db77766c4826e8d147 data/twilightforest/loot_tables/entities/kobold.json
 c6c292438ddfc39a2534ee07f3cc997373476392 data/twilightforest/loot_tables/entities/lich.json
 dd9f751f1bc91d7ed522830b3c23fbfbf78f25e9 data/twilightforest/loot_tables/entities/lich_minion.json
@@ -535,7 +536,6 @@ fc68bb6f06292896b0a8eeb92051fbadcd09c3d5 data/twilightforest/loot_tables/labyrin
 bb5febb80f7e79cb532ed1d81e763f4800b3e823 data/twilightforest/loot_tables/labyrinth_vault.json
 ccede40e5a85ce909603a4c02f98b9d5abd2f7b8 data/twilightforest/loot_tables/labyrinth_vault_jackpot.json
 84258bf660cdd27de4c96d0886020d45017f14df data/twilightforest/loot_tables/quest_grove_dropper.json
-ac12a1e498a745e72f20527e026963030ab0d6cf data/twilightforest/loot_tables/stronghold_boss.json
 d06ea9152d215a4cee4471ef281226e298842ea6 data/twilightforest/loot_tables/stronghold_cache.json
 42604baccfe5be485934b31ca64d1961dcb02689 data/twilightforest/loot_tables/stronghold_room.json
 8e254b2f9debd22c590cf2c63f0859bcb887d8b1 data/twilightforest/loot_tables/tower_library.json
