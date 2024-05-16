@@ -5,6 +5,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -19,9 +20,11 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
+import twilightforest.network.ParticlePacket;
 
 import java.util.List;
 
@@ -77,9 +80,8 @@ public interface IBossLootBuffer {
 		}
 		for (int i = 0; i < CONTAINER_SIZE; i++) {
 			Block.popResource(serverLevel, pos, boss.getItem(i));
-			Vec3 vec3 = Vec3.atCenterOf(pos);
-			serverLevel.playSound(null, vec3.x, vec3.y, vec3.z, TFSounds.BOSS_CHEST_APPEAR.get(), boss.getSoundSource(), 128.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.175F + 0.5F);
 		}
+		celebrateAt(boss, pos.getCenter(), serverLevel);
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> boolean tryDeposit(T boss, BlockState chest, BlockPos pos, ServerLevel serverLevel) {
@@ -90,11 +92,23 @@ public interface IBossLootBuffer {
 			for (int i = 0; i < CONTAINER_SIZE && i < container.getContainerSize(); i++) {
 				container.setItem(i, boss.getItem(i));
 			}
-			Vec3 vec3 = Vec3.atCenterOf(pos);
-			serverLevel.playSound(null, vec3.x, vec3.y, vec3.z, TFSounds.BOSS_CHEST_APPEAR.get(), boss.getSoundSource(), 128.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.175F + 0.5F);
+			celebrateAt(boss, pos.getCenter(), serverLevel);
 			return true;
 		}
 		return false;
+	}
+
+	static <T extends LivingEntity & IBossLootBuffer> void celebrateAt(T boss, Vec3 vec3, ServerLevel serverLevel) {
+		serverLevel.playSound(null, vec3.x, vec3.y, vec3.z, TFSounds.BOSS_CHEST_APPEAR.get(), boss.getSoundSource(), 128.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.175F + 0.5F);
+
+		ParticlePacket particlePacket = new ParticlePacket();
+		for (int i = 0; i < 40; i++) {
+			double x = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
+			double y = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
+			double z = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
+			particlePacket.queueParticle(ParticleTypes.POOF, false, vec3.add(x, y, z), Vec3.ZERO);
+		}
+		PacketDistributor.sendToPlayersTrackingEntity(boss, particlePacket);
 	}
 
 	default <T extends LivingEntity & IBossLootBuffer> void fill(T boss, LootParams context, LootTable table) {
