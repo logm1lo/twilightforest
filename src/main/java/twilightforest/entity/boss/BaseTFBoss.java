@@ -206,4 +206,29 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	public NonNullList<ItemStack> getItemStacks() {
 		return this.dyingInventory;
 	}
+
+	@Override
+	protected void tickDeath() {
+		this.deathTime++;
+		if (!this.isRemoved()) {
+			if (this.isDeathAnimationFinished() && !this.level().isClientSide()) {
+				this.level().broadcastEntityEvent(this, (byte) 60); // makePoofParticles()
+				this.remove(RemovalReason.KILLED);
+			} else if (this.level().isClientSide()) this.tickDeathAnimation();
+		}
+	}
+
+	@Override
+	public void makePoofParticles() {
+		if (this.getDeathSound() != null) this.playSound(this.getDeathSound(), this.getSoundVolume() * 1.2F, this.getVoicePitch() * 0.25F);
+		super.makePoofParticles();
+	}
+
+	public boolean isDeathAnimationFinished() {
+		return this.deathTime >= 20;
+	}
+
+	public void tickDeathAnimation() {
+
+	}
 }

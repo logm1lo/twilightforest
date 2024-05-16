@@ -183,19 +183,6 @@ public class KnightPhantom extends BaseTFBoss {
 	}
 
 	@Override
-	protected void tickDeath() {
-		super.tickDeath();
-
-		for (int i = 0; i < 20; ++i) {
-			double d0 = this.getRandom().nextGaussian() * 0.02D;
-			double d1 = this.getRandom().nextGaussian() * 0.02D;
-			double d2 = this.getRandom().nextGaussian() * 0.02D;
-			this.level().addParticle(ParticleTypes.EXPLOSION, this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * this.getBbHeight(), this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(), d0, d1, d2);
-		}
-	}
-
-
-	@Override
 	protected void postmortem(ServerLevel serverLevel, DamageSource cause) {
 		List<KnightPhantom> knights = this.getNearbyKnights();
 
@@ -556,7 +543,15 @@ public class KnightPhantom extends BaseTFBoss {
 		return TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get();
 	}
 
-
+	@Override
+	public void tickDeathAnimation() {
+		for (int i = 0; i < 20; ++i) {
+			double d0 = this.getRandom().nextGaussian() * 0.02D;
+			double d1 = this.getRandom().nextGaussian() * 0.02D;
+			double d2 = this.getRandom().nextGaussian() * 0.02D;
+			this.level().addParticle(ParticleTypes.EXPLOSION, this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * this.getBbHeight(), this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(), d0, d1, d2);
+		}
+	}
 
 	public enum Formation {
 		HOVER(90),
