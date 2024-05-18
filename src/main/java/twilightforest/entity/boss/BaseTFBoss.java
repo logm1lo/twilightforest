@@ -26,10 +26,12 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.loot.TFLootTables;
+import twilightforest.network.UpdateDeathTimePacket;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
@@ -83,6 +85,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	public void startSeenByPlayer(ServerPlayer player) {
 		super.startSeenByPlayer(player);
 		this.getBossBar().addPlayer(player);
+		if (this.deathTime > 0) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
 	}
 
 	@Override
@@ -216,12 +219,6 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 				this.remove(RemovalReason.KILLED);
 			} else if (this.level().isClientSide()) this.tickDeathAnimation();
 		}
-	}
-
-	@Override
-	public void makePoofParticles() {
-		if (this.getDeathSound() != null) this.playSound(this.getDeathSound(), this.getSoundVolume() * 1.2F, this.getVoicePitch() * 0.25F);
-		super.makePoofParticles();
 	}
 
 	public boolean isDeathAnimationFinished() {
