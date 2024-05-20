@@ -183,20 +183,20 @@ public class KnightPhantom extends BaseTFBoss {
 	protected void customServerAiStep() {
 		super.customServerAiStep();
 		if (this.totalKnownKnights == Integer.MIN_VALUE) this.updateMyNumber();
-        float health = 0F;
-        float maxHealth = 0F;
-        int amount = 0;
-        for (KnightPhantom nearbyKnight : this.getNearbyKnights()) {
-            health += nearbyKnight.getHealth();
-            maxHealth += nearbyKnight.getMaxHealth();
-            amount++;
-        }
-        int remaining = this.totalKnownKnights - amount;
-        if (remaining > 0) {
-            maxHealth += (this.getMaxHealth() * (float) remaining);
-        }
-        this.getBossBar().setProgress(health / maxHealth);
-    }
+		float health = 0F;
+		float maxHealth = 0F;
+		int amount = 0;
+		for (KnightPhantom nearbyKnight : this.getNearbyKnights()) {
+			health += nearbyKnight.getHealth();
+			maxHealth += nearbyKnight.getMaxHealth();
+			amount++;
+		}
+		int remaining = this.totalKnownKnights - amount;
+		if (remaining > 0) {
+			maxHealth += (this.getMaxHealth() * (float) remaining);
+		}
+		this.getBossBar().setProgress(health / maxHealth);
+	}
 
 	@Override
 	protected void postmortem(ServerLevel serverLevel, DamageSource cause) {
@@ -226,9 +226,9 @@ public class KnightPhantom extends BaseTFBoss {
 				.withParameter(LootContextParams.DAMAGE_SOURCE, cause);
 
 			if (this.lastHurtByPlayer != null) {
-                builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer)
-                    .withLuck(this.lastHurtByPlayer.getLuck());
-            }
+				builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer)
+					.withLuck(this.lastHurtByPlayer.getLuck());
+			}
 
 			if (cause.getEntity() != null) {
 				builder = builder.withParameter(LootContextParams.KILLER_ENTITY, cause.getEntity());
@@ -264,7 +264,7 @@ public class KnightPhantom extends BaseTFBoss {
 		}
 	}
 
-	protected static  void giveKnightLoot(KnightPhantom phantom, ObjectArrayList<ItemStack> items, ServerLevel serverLevel, List<Integer> list, Vec3 dropOff) {
+	protected static void giveKnightLoot(KnightPhantom phantom, ObjectArrayList<ItemStack> items, ServerLevel serverLevel, List<Integer> list, Vec3 dropOff) {
 		for (ItemStack itemstack : items) {
 			if (!list.isEmpty()) { // If there are still more slots to be occupied, occupy them :)
 				while (!list.isEmpty()) {
