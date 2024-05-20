@@ -70,7 +70,7 @@ public class KnightPhantom extends BaseTFBoss {
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 
 	private int number;
-	private int totalKnownKnights = 1;
+	private int totalKnownKnights = Integer.MIN_VALUE;
 	private int ticksProgress;
 	private Formation currentFormation;
 	private BlockPos chargePos = BlockPos.ZERO;
@@ -110,12 +110,19 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public void startSeenByPlayer(ServerPlayer player) {
-		if (this.getNumber() == 0)
-			this.getBossBar().addPlayer(player);
+		if (this.isDeadOrDying()) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
+		else if (this.getNumber() == 0) this.getBossBar().addPlayer(player);
+	}
+
+	@Override
+	public void die(DamageSource cause) {
+		super.die(cause);
+		if (!this.getNearbyKnights().isEmpty()) this.getBossBar().removeAllPlayers(); // Remove boss bar if there is another knight alive
 	}
 
 	@Nullable
 	@Override
+	@SuppressWarnings({"deprecation", "OverrideOnly"})
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
@@ -165,22 +172,21 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	protected void customServerAiStep() {
 		super.customServerAiStep();
-		if (this.getNumber() == 0) {
-			float health = 0F;
-			float maxHealth = 0F;
-			int amount = 0;
-			for (KnightPhantom nearbyKnight : this.getNearbyKnights()) {
-				health += nearbyKnight.getHealth();
-				maxHealth += nearbyKnight.getMaxHealth();
-				amount++;
-			}
-			int remaining = this.totalKnownKnights - amount;
-			if (remaining > 0) {
-				maxHealth += (this.getMaxHealth() * (float) remaining);
-			}
-			this.getBossBar().setProgress(health / maxHealth);
-		}
-	}
+		if (this.totalKnownKnights == Integer.MIN_VALUE) this.updateMyNumber();
+        float health = 0F;
+        float maxHealth = 0F;
+        int amount = 0;
+        for (KnightPhantom nearbyKnight : this.getNearbyKnights()) {
+            health += nearbyKnight.getHealth();
+            maxHealth += nearbyKnight.getMaxHealth();
+            amount++;
+        }
+        int remaining = this.totalKnownKnights - amount;
+        if (remaining > 0) {
+            maxHealth += (this.getMaxHealth() * (float) remaining);
+        }
+        this.getBossBar().setProgress(health / maxHealth);
+    }
 
 	@Override
 	protected void postmortem(ServerLevel serverLevel, DamageSource cause) {
@@ -366,7 +372,7 @@ public class KnightPhantom extends BaseTFBoss {
 		int[] n = Ints.toArray(nums);
 		Arrays.sort(n);
 		int smallest = n[0];
-		int largest = knights.size() + 1;
+		int largest = knights.size();
 		int smallestUnused = largest + 1;
 		if (smallest > 0) {
 			smallestUnused = 0;
@@ -482,8 +488,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	public void setNumber(int number) {
 		this.number = number;
-		if (number == 0)
-			this.level().getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(64.0D)).forEach(this::startSeenByPlayer);
+		if (number == 0 && !this.isDeadOrDying()) this.level().getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(64.0D)).forEach(player -> this.getBossBar().addPlayer(player));
 
 		// set weapon per number
 		switch (number % 3) {
@@ -496,6 +501,7 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
+		compound.putInt("TotalKnownKnights", this.totalKnownKnights);
 		compound.putInt("MyNumber", this.getNumber());
 		compound.putInt("Formation", this.getFormationAsNumber());
 		compound.putInt("TicksProgress", this.getTicksProgress());
@@ -504,6 +510,7 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
+		this.totalKnownKnights = compound.getInt("TotalKnownKnights");
 		this.setNumber(compound.getInt("MyNumber"));
 		this.switchToFormationByNumber(compound.getInt("Formation"));
 		this.setTicksProgress(compound.getInt("TicksProgress"));
