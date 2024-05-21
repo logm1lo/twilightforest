@@ -246,13 +246,9 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 				//remove any incompatible enchants
 				enchants.removeIf(holder -> !holder.value().canEnchant(result));
 
-				//add all components from input onto the output
-				result.applyComponents(input.getComponents());
 				//remove enchantments and replace with filtered list
 				result.remove(DataComponents.ENCHANTMENTS);
 				EnchantmentHelper.setEnchantments(result, enchants.toImmutable());
-				//remove damage from the result as itll get copied over from the input otherwise
-				result.remove(DataComponents.DAMAGE);
 
 				this.tinkerResult.setItem(0, result);
 				this.uncraftingMatrix.uncraftingCost = 0;
