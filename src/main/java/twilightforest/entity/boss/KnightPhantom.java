@@ -656,6 +656,10 @@ public class KnightPhantom extends BaseTFBoss {
 		// We poof before the mob gets removed, so blank this out.
 	}
 
+	@Override
+	public Component getBossBarTitle() {
+		return Component.translatable("entity.twilightforest.knight_phantom.plural");
+	}
 
 	@Override
 	public int getBossBarColor() {
