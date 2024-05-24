@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.LiverootBlock;
 import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
 import twilightforest.init.TFBlocks;
 
@@ -519,6 +520,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.addTag(BlockTags.TERRACOTTA)
 			.addTag(Tags.Blocks.GRAVELS)
 			.addTag(BlockTags.NYLIUM)
+			.addTag(ROOT_ORES)
 			.add(Blocks.BUDDING_AMETHYST)
 			.add(Blocks.CALCITE)
 			.add(Blocks.SOUL_SAND)
@@ -582,7 +584,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.ARCTIC_FUR_BLOCK.get()
 		);
 
-		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(DEADROCK).add(
+		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
 			TFBlocks.NAGASTONE.get(),
 			TFBlocks.NAGASTONE_HEAD.get(),
 			TFBlocks.STRONGHOLD_SHIELD.get(),
@@ -638,7 +640,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.BOLD_STONE_PILLAR.get(),
 			TFBlocks.TERRORCOTTA_LINES.get(),
 			TFBlocks.TERRORCOTTA_CURVES.get()
-		).addTags(MAZESTONE, CASTLE_BLOCKS);
+		).addTags(MAZESTONE, CASTLE_BLOCKS, DEADROCK);
 
 		this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
 			TFBlocks.SMOKER.get(),
