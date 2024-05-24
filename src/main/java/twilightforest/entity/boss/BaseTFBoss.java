@@ -1,5 +1,9 @@
 package twilightforest.entity.boss;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.BossHealthOverlay;
+import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.NonNullList;
@@ -9,11 +13,14 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -29,6 +36,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.loot.TFLootTables;
@@ -40,15 +48,17 @@ import java.util.Optional;
 
 public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, EnforcedHomePoint {
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(BaseTFBoss.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+
+	private final ServerBossEvent bossEvent;
 	private final NonNullList<ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
 
+	@SuppressWarnings("this-escape")
 	protected BaseTFBoss(EntityType<? extends Monster> type, Level level) {
 		super(type, level);
+		this.bossEvent = this.createBossEvent();
 	}
 
 	public abstract ResourceKey<Structure> getHomeStructure();
-
-	public abstract ServerBossEvent getBossBar();
 
 	public abstract Block getDeathContainer(RandomSource random);
 
@@ -77,12 +87,6 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	@Override
-	public void setCustomName(@Nullable Component name) {
-		super.setCustomName(name);
-		this.getBossBar().setName(this.getDisplayName());
-	}
-
-	@Override
 	public void startSeenByPlayer(ServerPlayer player) {
 		super.startSeenByPlayer(player);
 		this.getBossBar().addPlayer(player);
@@ -107,9 +111,6 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 		super.readAdditionalSaveData(compound);
 		this.readDeathItemsSaveData(compound, this.registryAccess());
 		this.loadHomePointFromNbt(compound);
-		if (this.hasCustomName()) {
-			this.getBossBar().setName(this.getDisplayName());
-		}
 	}
 
 	@Override
@@ -228,5 +229,54 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 
 	public void tickDeathAnimation() {
 
+	}
+
+	public ServerBossEvent getBossBar() {
+		return this.bossEvent;
+	}
+
+	@Override
+	public void setId(int pId) {
+		super.setId(pId);
+		this.getBossBar().setName(this.createBossBarID());
+	}
+
+	protected ServerBossEvent createBossEvent() {
+		return new ServerBossEvent(this.createBossBarID(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
+	}
+
+	protected Component createBossBarID() {
+		return Component.literal(TwilightForestMod.ID + ":" + this.getId());
+	}
+
+	public Component getBossBarTitle() {
+		return this.getDisplayName() != null ? this.getDisplayName() : this.getTypeName();
+	}
+
+	public BossEvent.BossBarOverlay getBossBarOverlay() {
+		return BossEvent.BossBarOverlay.PROGRESS;
+	}
+
+	public abstract int getBossBarColor();
+
+	private static final ResourceLocation BAR_BACKGROUND = new ResourceLocation("boss_bar/white_background");
+	private static final ResourceLocation BAR_PROGRESS = new ResourceLocation("boss_bar/white_progress");
+
+	public void renderBossBar(LerpingBossEvent bossEvent, GuiGraphics guiGraphics, int x, int y, float progress) {
+		RenderSystem.enableBlend();
+		int color = this.getBossBarColor();
+		RenderSystem.setShaderColor(((color >> 16) & 255) / 255F, ((color >> 8) & 255) / 255F, (color & 255) / 255F, 1.0F);
+
+		BossEvent.BossBarOverlay style = this.getBossBarOverlay();
+		guiGraphics.blitSprite(BAR_BACKGROUND, 182, 5, 0, 0, x, y, 182, 5);
+		if (style != BossEvent.BossBarOverlay.PROGRESS) guiGraphics.blitSprite(BossHealthOverlay.OVERLAY_BACKGROUND_SPRITES[style.ordinal() - 1], 182, 5, 0, 0, x, y, 182, 5);
+		int i = Mth.lerpDiscrete(progress, 0, 182);
+		if (i > 0) {
+			guiGraphics.blitSprite(BAR_PROGRESS, 182, 5, 0, 0, x, y, i, 5);
+			if (style != BossEvent.BossBarOverlay.PROGRESS) guiGraphics.blitSprite(BossHealthOverlay.OVERLAY_PROGRESS_SPRITES[style.ordinal() - 1], 182, 5, 0, 0, x, y, i, 5);
+		}
+
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.disableBlend();
 	}
 }

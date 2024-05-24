@@ -1,5 +1,7 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -12,7 +14,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -82,8 +83,6 @@ public class Lich extends BaseTFBoss {
 	private int popCooldown;
 	private int heldScepterTime;
 	private int spawnTime;
-	@SuppressWarnings("this-escape")
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.YELLOW, BossEvent.BossBarOverlay.NOTCHED_6);
 	private final List<UUID> summonedClones = new ArrayList<>();
 
 	public Lich(EntityType<? extends Lich> type, Level level) {
@@ -240,16 +239,9 @@ public class Lich extends BaseTFBoss {
 		super.customServerAiStep();
 
 		this.getBossBar().setVisible(!this.isShadowClone());
-		if (this.getPhase() == 1) {
-			this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
-		} else {
-			this.getBossBar().setOverlay(BossEvent.BossBarOverlay.PROGRESS);
-			this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
-			if (this.getPhase() == 2)
-				this.getBossBar().setColor(BossEvent.BossBarColor.PURPLE);
-			else
-				this.getBossBar().setColor(BossEvent.BossBarColor.RED);
-		}
+		if (this.getPhase() == 1) this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
+        else this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
+
 		// Teleport home if we get too far away from it
 		if (this.getRestrictionPoint() != null && this.getRestrictionPoint().pos().distSqr(this.blockPosition()) > (this.getHomeRadius() * this.getHomeRadius()) || (this.getPhase() == 3 && this.getRestrictionPoint() != null && this.getY() < this.getRestrictionPoint().pos().below(3).getY())) {
 			this.level().setBlockAndUpdate(this.getRestrictionPoint().pos().below(2), Blocks.GLASS.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
@@ -390,7 +382,7 @@ public class Lich extends BaseTFBoss {
 	}
 
 	public void setMasterUUID(@Nullable UUID lich) {
-		this.bossInfo.setVisible(lich != null);
+		this.getBossBar().setVisible(lich != null);
 		this.getEntityData().set(MASTER_LICH, Optional.ofNullable(lich));
 	}
 
@@ -675,11 +667,6 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return getRandom().nextBoolean() ? TFBlocks.CANOPY_CHEST.get() : TFBlocks.TWILIGHT_OAK_CHEST.get();
 	}
@@ -777,4 +764,35 @@ public class Lich extends BaseTFBoss {
             }
         }
     }
+
+	private boolean wasPhase1 = true;
+
+	@Override
+	public BossEvent.BossBarOverlay getBossBarOverlay() {
+		if (this.getShieldStrength() > 0) {
+			this.wasPhase1 = true;
+			return BossEvent.BossBarOverlay.NOTCHED_6;
+		}
+		return super.getBossBarOverlay();
+	}
+
+	@Override
+	public int getBossBarColor() {
+		if (this.getShieldStrength() > 0) return 0xFFD800;
+		return this.getPhase() == 2 ? 0xBE23FF : 0xFF0000;
+	}
+
+	@Override
+	public void renderBossBar(LerpingBossEvent bossEvent, GuiGraphics guiGraphics, int x, int y, float progress) {
+		// If we just switched from the shield bar to the normal health bar, we remove the lerp and set it straight to the wanted value, avoiding the jitter it would make otherwise
+		if (this.getPhase() == 1) {
+			this.wasPhase1 = true;
+		} else if (this.wasPhase1) {
+			this.wasPhase1 = false;
+			bossEvent.setTime -= 200L;
+			progress = this.getHealth() / this.getMaxHealth();
+		}
+
+		super.renderBossBar(bossEvent, guiGraphics, x, y, progress);
+	}
 }
