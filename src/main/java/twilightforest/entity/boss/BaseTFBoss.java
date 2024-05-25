@@ -200,10 +200,12 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	protected void tickDeath() {
 		this.deathTime++;
 		if (!this.isRemoved()) {
-			if (this.isDeathAnimationFinished() && !this.level().isClientSide()) {
-				this.level().broadcastEntityEvent(this, (byte) 60); // makePoofParticles()
-				this.remove(RemovalReason.KILLED);
-			} else if (this.level().isClientSide()) this.tickDeathAnimation();
+            if (!this.level().isClientSide()) {
+                if (this.isDeathAnimationFinished()) {
+                    this.level().broadcastEntityEvent(this, (byte) 60); // makePoofParticles()
+                    this.remove(RemovalReason.KILLED);
+                } else this.tickBossBar();
+            } else this.tickDeathAnimation();
 		}
 	}
 
