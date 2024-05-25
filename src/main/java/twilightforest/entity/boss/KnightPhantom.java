@@ -14,12 +14,10 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -212,7 +210,7 @@ public class KnightPhantom extends BaseTFBoss {
 			table.shuffleAndSplitItems(items, list.size(), this.random);
 
 			giveKnightLoot(knights.getFirst(), items, serverLevel, list, this.position());
-		} else if (!cause.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+		} else {
 			this.getBossBar().setProgress(0.0F);
 			BlockPos treasurePos = this.getRestrictionPoint() != null ? serverLevel.getBlockState(this.getRestrictionPoint().pos().below()).canBeReplaced() ? this.getRestrictionPoint().pos().below() : this.getRestrictionPoint().pos() : this.blockPosition();
 
