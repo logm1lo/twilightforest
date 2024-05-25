@@ -47,7 +47,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 
 	protected BaseTFBoss(EntityType<? extends Monster> type, Level level) {
 		super(type, level);
-		this.bossEvent = this.createBossEvent();
+		this.bossEvent = this.createBossBar();
 	}
 
 	public abstract ResourceKey<Structure> getHomeStructure();
@@ -68,14 +68,6 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(HOME_POINT, Optional.empty());
-	}
-
-	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
-		if (!this.level().isClientSide()) {
-			this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
-		}
 	}
 
 	@Override
@@ -227,7 +219,17 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 		return this.bossEvent;
 	}
 
-	protected ServerTFBossBar createBossEvent() {
+	@Override
+	protected void customServerAiStep() {
+		super.customServerAiStep();
+		if (!this.level().isClientSide()) this.tickBossBar();
+	}
+
+	protected void tickBossBar() {
+		this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
+	}
+
+	protected ServerTFBossBar createBossBar() {
 		return new ServerTFBossBar(this.getBossBarTitle(), this.getBossBarColor(), this.getBossBarOverlay());
 	}
 

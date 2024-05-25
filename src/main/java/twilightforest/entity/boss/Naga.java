@@ -316,9 +316,6 @@ public class Naga extends BaseTFBoss {
 			this.getMovementPattern().forceCircle();
 			this.damageDuringCurrentStun = 0;
 		}
-
-		// BOSS BAR!
-		this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
 	}
 
 	public boolean shouldDestroyAllBlocks() {

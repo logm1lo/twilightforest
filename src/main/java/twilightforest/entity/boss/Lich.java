@@ -237,13 +237,6 @@ public class Lich extends BaseTFBoss {
 	protected void customServerAiStep() {
 		super.customServerAiStep();
 
-		this.getBossBar().setVisible(!this.isShadowClone());
-		int phase = this.getPhase();
-		if (phase == 1) this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
-		else this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
-		if (phase != this.previousPhase) this.getBossBar().updateStyle(this.getBossBarColor(), this.getBossBarOverlay(), this.previousPhase != 1);
-		this.previousPhase = phase;
-
 		// Teleport home if we get too far away from it
 		if (this.getRestrictionPoint() != null && this.getRestrictionPoint().pos().distSqr(this.blockPosition()) > (this.getHomeRadius() * this.getHomeRadius()) || (this.getPhase() == 3 && this.getRestrictionPoint() != null && this.getY() < this.getRestrictionPoint().pos().below(3).getY())) {
 			this.level().setBlockAndUpdate(this.getRestrictionPoint().pos().below(2), Blocks.GLASS.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
@@ -765,6 +758,16 @@ public class Lich extends BaseTFBoss {
 				this.level().addParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.x() + x, particlePos.y() - 0.25D, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 		}
+	}
+
+	@Override
+	protected void tickBossBar() {
+		this.getBossBar().setVisible(!this.isShadowClone());
+		int phase = this.getPhase();
+		if (phase == 1) this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
+		else this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
+		if (phase != this.previousPhase) this.getBossBar().updateStyle(this.getBossBarColor(), this.getBossBarOverlay(), this.previousPhase != 1);
+		this.previousPhase = phase;
 	}
 
 	@Override
