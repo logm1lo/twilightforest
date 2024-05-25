@@ -9,6 +9,7 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,7 +22,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -75,8 +75,6 @@ public class KnightPhantom extends BaseTFBoss {
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, AttributeModifier.Operation.ADD_VALUE);
 	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier("Inactive Armor boost", 4.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
-	@SuppressWarnings("this-escape")
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 
 	private int number;
 	private int totalKnownKnights = Integer.MIN_VALUE;
@@ -555,11 +553,6 @@ public class KnightPhantom extends BaseTFBoss {
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return TFBlocks.DARK_CHEST.get();
 	}
@@ -661,6 +654,16 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	public void makePoofParticles() {
 		// We poof before the mob gets removed, so blank this out.
+	}
+
+	@Override
+	public Component getBossBarTitle() {
+		return Component.translatable("entity.twilightforest.knight_phantom.plural");
+	}
+
+	@Override
+	public int getBossBarColor() {
+		return 0x86BF37;
 	}
 
 	public enum Formation {
