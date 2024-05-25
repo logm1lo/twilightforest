@@ -1,7 +1,5 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -84,6 +82,7 @@ public class Lich extends BaseTFBoss {
 	private int heldScepterTime;
 	private int spawnTime;
 	private final List<UUID> summonedClones = new ArrayList<>();
+	private int previousPhase = 1;
 
 	public Lich(EntityType<? extends Lich> type, Level level) {
 		super(type, level);
@@ -239,8 +238,11 @@ public class Lich extends BaseTFBoss {
 		super.customServerAiStep();
 
 		this.getBossBar().setVisible(!this.isShadowClone());
-		if (this.getPhase() == 1) this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
-        else this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
+		int phase = this.getPhase();
+		if (phase == 1) this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
+		else this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
+		if (phase != this.previousPhase) this.getBossBar().updateStyle(this.getBossBarColor(), this.getBossBarOverlay(), this.previousPhase != 1);
+		this.previousPhase = phase;
 
 		// Teleport home if we get too far away from it
 		if (this.getRestrictionPoint() != null && this.getRestrictionPoint().pos().distSqr(this.blockPosition()) > (this.getHomeRadius() * this.getHomeRadius()) || (this.getPhase() == 3 && this.getRestrictionPoint() != null && this.getY() < this.getRestrictionPoint().pos().below(3).getY())) {
@@ -695,84 +697,79 @@ public class Lich extends BaseTFBoss {
 	public void tickDeathAnimation() {
 		if (this.isShadowClone()) return;
 
-        if (this.deathTime <= DEATH_ANIMATION_POINT_A) {
-            boolean done = this.deathTime == DEATH_ANIMATION_POINT_A;
-            boolean hurt = this.deathTime % 17 == 0;
+		if (this.deathTime <= DEATH_ANIMATION_POINT_A) {
+			boolean done = this.deathTime == DEATH_ANIMATION_POINT_A;
+			boolean hurt = this.deathTime % 17 == 0;
 
-            if (hurt) {
+			if (hurt) {
 				SoundEvent soundevent = this.getHurtSound(this.damageSources().generic());
 				if (soundevent != null) {
 					this.level().playLocalSound(this, soundevent, SoundSource.HOSTILE, this.getSoundVolume(), this.getVoicePitch());
 				}
-            }
-            if (done) {
-                SoundEvent soundevent = this.getDeathSound();
-                if (soundevent != null) {
+			}
+			if (done) {
+				SoundEvent soundevent = this.getDeathSound();
+				if (soundevent != null) {
 					this.level().playLocalSound(this, soundevent, SoundSource.HOSTILE, this.getSoundVolume(), this.getVoicePitch());
-                }
-            }
+				}
+			}
 
-            Vec3 pos = this.position();
-
-            for (int i = 0; i < (hurt ? 12 : 3); i++) {
-                double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-                double y = this.getRandom().nextDouble() * this.getBbHeight();
-                double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-				this.level().addParticle(this.getRandom().nextBoolean() || hurt ? BONE_PARTICLE : ParticleTypes.SMOKE, false, pos.x() + x, pos.y() + y, pos.z() + z, 0.0D, 0.0D, 0.0D);
-            }
-
-            if (hurt) {
-                double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-                double y = this.getRandom().nextDouble() * this.getBbHeight();
-                double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-                for (int i = 0; i < 7; i++) {
-                    double x1 = x + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
-                    double y1 = y + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
-                    double z1 = z + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
-					this.level().addParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.x() + x1, pos.y() + y1, pos.z() + z1, 0.0D, 0.0D, 0.0D);
-                }
-            }
-
-            if (done) {
-                for (int i = 0; i < 32; i++) {
-                    double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-                    double y = this.getRandom().nextDouble() * this.getBbHeight();
-                    double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-					this.level().addParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.x() + x, pos.y() + y, pos.z() + z, 0.0D, 0.0D, 0.0D);
-                }
-            }
-        } else if (this.deathTime == DEATH_ANIMATION_POINT_B) {
 			Vec3 pos = this.position();
-            for (int i = 0; i < 3; i++) {
-                double x = (this.getRandom().nextDouble() - 0.5D) * 0.75D;
-                double z = (this.getRandom().nextDouble() - 0.5D) * 0.75D;
+
+			for (int i = 0; i < (hurt ? 12 : 3); i++) {
+				double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+				double y = this.getRandom().nextDouble() * this.getBbHeight();
+				double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+				this.level().addParticle(this.getRandom().nextBoolean() || hurt ? BONE_PARTICLE : ParticleTypes.SMOKE, false, pos.x() + x, pos.y() + y, pos.z() + z, 0.0D, 0.0D, 0.0D);
+			}
+
+			if (hurt) {
+				double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+				double y = this.getRandom().nextDouble() * this.getBbHeight();
+				double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+				for (int i = 0; i < 7; i++) {
+					double x1 = x + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
+					double y1 = y + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
+					double z1 = z + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
+					this.level().addParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.x() + x1, pos.y() + y1, pos.z() + z1, 0.0D, 0.0D, 0.0D);
+				}
+			}
+
+			if (done) {
+				for (int i = 0; i < 32; i++) {
+					double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+					double y = this.getRandom().nextDouble() * this.getBbHeight();
+					double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+					this.level().addParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.x() + x, pos.y() + y, pos.z() + z, 0.0D, 0.0D, 0.0D);
+				}
+			}
+		} else if (this.deathTime == DEATH_ANIMATION_POINT_B) {
+			Vec3 pos = this.position();
+			for (int i = 0; i < 3; i++) {
+				double x = (this.getRandom().nextDouble() - 0.5D) * 0.75D;
+				double z = (this.getRandom().nextDouble() - 0.5D) * 0.75D;
 				this.level().addParticle(ParticleTypes.CLOUD, false, pos.x() + x, pos.y(), pos.z() + z, 0.0D, 0.0D, 0.0D);
-            }
-        } else if (this.deathTime > DEATH_ANIMATION_POINT_B) {
-            Vec3 start = this.position().add(0.0D, 0.45F, 0.0D);
-            Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
-            int deathTime2 = this.deathTime - DEATH_ANIMATION_POINT_B;
-            double factor = (double) deathTime2 / 105.0D;
-            double powFactor = Math.pow(factor, 2.0D) * 2.0D;
-            double expandFactor = (Math.cos((factor + 0.5D) * Math.PI * 2) + 1.0D) * 0.5D;
-            Vec3 particlePos = start.add(end.subtract(start).scale(Math.min(((double) deathTime2 / (double) DEATH_ANIMATION_POINT_B) * 1.25D, 1.0D)));
+			}
+		} else if (this.deathTime > DEATH_ANIMATION_POINT_B) {
+			Vec3 start = this.position().add(0.0D, 0.45F, 0.0D);
+			Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
+			int deathTime2 = this.deathTime - DEATH_ANIMATION_POINT_B;
+			double factor = (double) deathTime2 / 105.0D;
+			double powFactor = Math.pow(factor, 2.0D) * 2.0D;
+			double expandFactor = (Math.cos((factor + 0.5D) * Math.PI * 2) + 1.0D) * 0.5D;
+			Vec3 particlePos = start.add(end.subtract(start).scale(Math.min(((double) deathTime2 / (double) DEATH_ANIMATION_POINT_B) * 1.25D, 1.0D)));
 
-            for (double i = 0.0D; i < 1.0D; i += 0.2D) {
-                double x = Math.sin((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
-                double z = Math.cos((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
+			for (double i = 0.0D; i < 1.0D; i += 0.2D) {
+				double x = Math.sin((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
+				double z = Math.cos((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
 				this.level().addParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.x() + x, particlePos.y() - 0.25D, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
-            }
-        }
-    }
-
-	private boolean wasPhase1 = true;
+			}
+		}
+	}
 
 	@Override
 	public BossEvent.BossBarOverlay getBossBarOverlay() {
-		if (this.getShieldStrength() > 0) {
-			this.wasPhase1 = true;
-			return BossEvent.BossBarOverlay.NOTCHED_6;
-		}
+		if (this.getShieldStrength() > 0) return BossEvent.BossBarOverlay.NOTCHED_6;
 		return super.getBossBarOverlay();
 	}
 
@@ -780,19 +777,5 @@ public class Lich extends BaseTFBoss {
 	public int getBossBarColor() {
 		if (this.getShieldStrength() > 0) return 0xFFD800;
 		return this.getPhase() == 2 ? 0xBE23FF : 0xFF0000;
-	}
-
-	@Override
-	public void renderBossBar(LerpingBossEvent bossEvent, GuiGraphics guiGraphics, int x, int y, float progress) {
-		// If we just switched from the shield bar to the normal health bar, we remove the lerp and set it straight to the wanted value, avoiding the jitter it would make otherwise
-		if (this.getPhase() == 1) {
-			this.wasPhase1 = true;
-		} else if (this.wasPhase1) {
-			this.wasPhase1 = false;
-			bossEvent.setTime -= 200L;
-			progress = this.getHealth() / this.getMaxHealth();
-		}
-
-		super.renderBossBar(bossEvent, guiGraphics, x, y, progress);
 	}
 }

@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
@@ -63,7 +62,7 @@ import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.entity.boss.BaseTFBoss;
+import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
@@ -404,21 +403,9 @@ public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void onBossProgressRenderEvent(CustomizeGuiOverlayEvent.BossEventProgress event) {
-		LerpingBossEvent bossEvent = event.getBossEvent();
-		ResourceLocation location = ResourceLocation.tryParse(bossEvent.getName().getString());
-		if (location != null && location.getNamespace().equals(TwilightForestMod.ID)) {
-			Minecraft minecraft = Minecraft.getInstance();
-			if (minecraft.level != null && minecraft.level.getEntity(Integer.parseInt(location.getPath())) instanceof BaseTFBoss boss) {
-				event.setCanceled(true);
-
-				boss.renderBossBar(bossEvent, event.getGuiGraphics(), event.getX(), event.getY(), bossEvent.getProgress());
-
-				Component title = boss.getBossBarTitle();
-				int l = Minecraft.getInstance().font.width(title);
-				int i1 = event.getGuiGraphics().guiWidth() / 2 - l / 2;
-				int j1 = event.getY() - 9;
-				event.getGuiGraphics().drawString(Minecraft.getInstance().font, title, i1, j1, 16777215);
-			}
+		if (event.getBossEvent() instanceof ClientTFBossBar bossEvent) {
+			event.setCanceled(true);
+			bossEvent.renderBossBar(event.getGuiGraphics(), event.getX(), event.getY());
 		}
 	}
 }
