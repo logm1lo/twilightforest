@@ -14,11 +14,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
+import twilightforest.util.EntityUtil;
 
 public class PinchBeetle extends Monster implements IHostileMount {
 
@@ -44,6 +46,12 @@ public class PinchBeetle extends Monster implements IHostileMount {
 			.add(Attributes.MOVEMENT_SPEED, 0.23D)
 			.add(Attributes.ATTACK_DAMAGE, 4.0D)
 			.add(Attributes.ARMOR, 2.0D);
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.PINCH_BEETLE_AMBIENT.get();
 	}
 
 	@Override
@@ -110,8 +118,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 				entity.startRiding(this, true);
 			}
 		}
-		entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CLAMPED, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		return super.doHurtTarget(entity);
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CLAMPED, this), null);
 	}
 
 	@Override
