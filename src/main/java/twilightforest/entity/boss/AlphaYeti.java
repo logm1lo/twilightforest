@@ -213,7 +213,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -223,7 +223,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	public void makeRandomBlockFall(int range, int hangTime) {
-		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
 			// find a block nearby
 			int bx = Mth.floor(this.getX()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
 			int bz = Mth.floor(this.getZ()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);

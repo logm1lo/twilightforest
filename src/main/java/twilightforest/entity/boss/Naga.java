@@ -262,7 +262,7 @@ public class Naga extends BaseTFBoss {
 			this.setTarget(null);
 		}
 
-		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
 			AABB bb = this.getBoundingBox();
 
 			int minx = Mth.floor(bb.minX - 0.75D);

@@ -528,7 +528,7 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (this.deathTime <= 0 && EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (this.deathTime <= 0 && EventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);

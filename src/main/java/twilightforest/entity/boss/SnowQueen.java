@@ -302,7 +302,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				BlockState state = this.level().getBlockState(pos);
 				if (state.is(BlockTags.ICE)) {
