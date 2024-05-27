@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
@@ -71,19 +72,25 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 	@Override
 	public void aiStep() {
-
 		super.aiStep();
 		this.dimensions = this.getDimensions(this.getPose());
 
 		if (!this.getPassengers().isEmpty()) {
-			this.getLookControl().setLookAt(this.getPassengers().get(0), 100.0F, 100.0F);
+			Entity passenger = this.getPassengers().getFirst();
+
+			if (passenger.getVehicle() != this) {
+				this.removePassenger(passenger);
+				return;
+			}
+
+			this.getLookControl().setLookAt(passenger, 100.0F, 100.0F);
 			//always set our passenger as our target
-			if (this.getPassengers().get(0) instanceof LivingEntity entity) {
+			if (passenger instanceof LivingEntity entity) {
 				this.setTarget(entity);
 			}
 
 			//if our held player switches gamemodes let them go
-			if (this.getPassengers().get(0) instanceof Player player && player.getAbilities().invulnerable) {
+			if (passenger instanceof Player player && player.getAbilities().invulnerable) {
 				player.stopRiding();
 				this.setTarget(null);
 			}
@@ -108,6 +115,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
+		TwilightForestMod.LOGGER.error("BEMTI {}", this.getPassengers().isEmpty());
 		if (this.getPassengers().isEmpty()) {
 			var v = entity.getVehicle();
 
