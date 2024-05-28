@@ -129,7 +129,7 @@ int floatToOneOrZero(float value) {
 }
 
 float fixNoise(float noise) {
-	float absNoise = abs(noise);
+    float absNoise = abs(noise);
     // Avoids if (noise > -0.2 && noise < 0.2) else ...
     int swap = floatToOneOrZero(absNoise - 0.2);
     noise = (1 - swap) * (1.0 + absNoise * 5.0) + swap * -1.0;
