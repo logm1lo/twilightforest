@@ -1,4 +1,4 @@
-// 1.20.6	2024-05-29T13:21:41.3781	Loot Tables
+// 1.20.6	2024-05-30T11:15:55.021255	Loot Tables
 e359421e93c03f9b33ec738b61a875ad9b88b504 data/twilightforest/loot_tables/aurora_cache.json
 81271636fc9a92d48fef83c8218cfe3df48433cd data/twilightforest/loot_tables/aurora_room.json
 6b7c07d237e56f84d11d308552cd943af7a906e5 data/twilightforest/loot_tables/basement.json
@@ -40,6 +40,8 @@ a1ccdd30cf66304dd3a4e5619a83155624516c4c data/twilightforest/loot_tables/blocks/
 9412c9aa320f515843e178434d5418c26acecc89 data/twilightforest/loot_tables/blocks/canopy_trapped_chest.json
 d413e05b04f21561298fe2580cc06d7f7654efdf data/twilightforest/loot_tables/blocks/canopy_wall_hanging_sign.json
 d497557999869c0603bc3083a041efa93db51a3b data/twilightforest/loot_tables/blocks/canopy_wall_sign.json
+b27f67a1908ff407feff0de8f468a506adc086cf data/twilightforest/loot_tables/blocks/canopy_window.json
+d7c96c0f0620d62039854b460fb33c2952fb638f data/twilightforest/loot_tables/blocks/canopy_window_pane.json
 31944a27f3a7919ab4747a80c2bd60c9f037422b data/twilightforest/loot_tables/blocks/canopy_wood.json
 6b9c1460a4da6e481dc7d6f2e094b7a59aca43f8 data/twilightforest/loot_tables/blocks/carminite_block.json
 653ff2e505733dc78002678eed8945c18bb54d1c data/twilightforest/loot_tables/blocks/carminite_builder.json
