@@ -46,16 +46,22 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 	@Nullable
 	@Override
+	@SuppressWarnings("deprecation")
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return ctx.getLevel().getBlockState(ctx.getClickedPos().above()).isSolid() ? Blocks.DIRT.defaultBlockState() : super.getStateForPlacement(ctx);
+		BlockState state = ctx.getLevel().getBlockState(ctx.getClickedPos().above());
+		return state.isSolid() && !(state.getBlock() instanceof BonemealableBlock && !state.is(this)) ? Blocks.DIRT.defaultBlockState() : super.getStateForPlacement(ctx);
 	}
 
 	@Override
 	public boolean canSustainPlant(BlockState state, BlockGetter getter, BlockPos pos, Direction direction, IPlantable plantable) {
-		if (direction != Direction.UP)
-			return false;
+		if (direction != Direction.UP) return false;
 		PlantType plantType = plantable.getPlantType(getter, pos.relative(direction));
 		return plantType == PlantType.CROP || plantType == PlantType.PLAINS || plantType == PlantType.CAVE;
+	}
+
+	@Override
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
+		if (!newState.is(state.getBlock()) && !level.getBlockState(pos.above()).isAir()) this.neighborChanged(state, level, pos, this, pos.above(), moving);
 	}
 
 	@Override
@@ -72,8 +78,8 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
             switch (bonemealableBlock) {
                 case IPlantable iPlantable when iPlantable.getPlantType(level, fromPos) == PlantType.CROP -> newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
-                case MushroomBlock mushroomBlock -> newState = Blocks.MYCELIUM.defaultBlockState();
-                case BushBlock bushBlock -> newState = Blocks.GRASS_BLOCK.defaultBlockState();
+                case MushroomBlock ignored1 -> newState = Blocks.MYCELIUM.defaultBlockState();
+                case BushBlock ignored -> newState = Blocks.GRASS_BLOCK.defaultBlockState();
                 case MossBlock mossBlock -> newState = mossBlock.defaultBlockState();
 				default -> newState = Blocks.DIRT.defaultBlockState();
 			}
@@ -129,6 +135,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	//check each side of the block, as well as above and below each of those positions for valid spots
 	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state) {
 		for (Direction dir : Direction.values()) {
@@ -163,6 +170,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	//check each side of the block, as well as above and below each of those positions to check for a place to put a block
 	//the above and below checks allow the patch to jump to a new y level, makes spreading easier
 	public void performBonemeal(ServerLevel level, RandomSource rand, BlockPos pos, BlockState state) {
@@ -176,24 +184,29 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 						(blockAt.is(BlockTags.DIRT) || blockAt.is(Blocks.FARMLAND)) &&
 						!blockAt.is(TFBlocks.UBEROUS_SOIL)) {
 
-					level.setBlockAndUpdate(pos.relative(dir), this.defaultBlockState());
+					this.spreadTo(level, pos.relative(dir));
 					break;
 				} else if (
 					!level.getBlockState(pos.relative(dir).above().above()).isSolid() &&
 						(level.getBlockState(pos.relative(dir).above()).is(BlockTags.DIRT) || level.getBlockState(pos.relative(dir).above()).is(Blocks.FARMLAND)) &&
 						!level.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL)) {
 
-					level.setBlockAndUpdate(pos.relative(dir).above(), this.defaultBlockState());
+					this.spreadTo(level, pos.relative(dir).above());
 					break;
 				} else if (
 					!level.getBlockState(pos.relative(dir)).isSolid() &&
 						(level.getBlockState(pos.relative(dir).below()).is(BlockTags.DIRT) || level.getBlockState(pos.relative(dir).below()).is(Blocks.FARMLAND)) &&
 						!level.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL)) {
 
-					level.setBlockAndUpdate(pos.relative(dir).below(), this.defaultBlockState());
+					this.spreadTo(level, pos.relative(dir).below());
 					break;
 				}
 			}
 		}
+	}
+
+	public void spreadTo(ServerLevel level, BlockPos pos) {
+		level.setBlockAndUpdate(pos, this.defaultBlockState());
+		if (!level.getBlockState(pos.above()).isAir()) this.neighborChanged(this.defaultBlockState(), level, pos, this, pos.above(), false);
 	}
 }
