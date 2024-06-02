@@ -13,7 +13,7 @@ import twilightforest.init.TFFeatureModifiers;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.RootPlacer;
-import twilightforest.util.VoxelBresenhamIterator;
+import twilightforest.util.iterators.VoxelBresenhamIterator;
 
 import java.util.Optional;
 
