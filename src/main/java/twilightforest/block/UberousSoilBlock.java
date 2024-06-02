@@ -59,36 +59,38 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		if (fromPos.getY() == pos.getY() + 1) {
 			BlockState above = level.getBlockState(fromPos);
-			if (!(above.getBlock() instanceof BonemealableBlock bonemealableBlock && !above.is(TFBlocks.UBEROUS_SOIL))) {
-				if (above.isSolid())
-					level.setBlockAndUpdate(pos, pushEntitiesUp(state, Blocks.DIRT.defaultBlockState(), level, pos));
+			if (!(above.getBlock() instanceof BonemealableBlock bonemealableBlock && !above.is(this))) {
+				if (above.isSolid()) FarmBlock.turnToDirt(null, state, level, pos);
 				return;
 			}
 
-			BlockState newState = Blocks.DIRT.defaultBlockState();
+			BlockState newState;
 
-			if (bonemealableBlock instanceof IPlantable iPlantable && iPlantable.getPlantType(level, fromPos) == PlantType.CROP)
-				newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
-			else if (bonemealableBlock instanceof MushroomBlock)
-				newState = Blocks.MYCELIUM.defaultBlockState();
-			else if (bonemealableBlock instanceof BushBlock)
-				newState = Blocks.GRASS_BLOCK.defaultBlockState();
-			else if (bonemealableBlock instanceof MossBlock mossBlock)
-				newState = mossBlock.defaultBlockState();
+            switch (bonemealableBlock) {
+                case IPlantable iPlantable when iPlantable.getPlantType(level, fromPos) == PlantType.CROP -> newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
+                case MushroomBlock mushroomBlock -> newState = Blocks.MYCELIUM.defaultBlockState();
+                case BushBlock bushBlock -> newState = Blocks.GRASS_BLOCK.defaultBlockState();
+                case MossBlock mossBlock -> newState = mossBlock.defaultBlockState();
+				default -> newState = Blocks.DIRT.defaultBlockState();
+			}
 
-			if (level instanceof ServerLevel serverLevel && bonemealableBlock instanceof MushgloomBlock mushgloomBlock) {
-				/*
+			if (level instanceof ServerLevel serverLevel) {
+				if (bonemealableBlock instanceof MushgloomBlock mushgloomBlock) {
+					/*
 				  This seems a bit hacky, but it's the easiest way of letting the mushgloom only be grown by uberous soil
 				  If we make it growable by bonemeal as well, just delete this if statement and update the appropriate method inside the mushgloom class
 				 */
-				level.setBlockAndUpdate(pos, pushEntitiesUp(state, newState, level, pos));
-				mushgloomBlock.growMushroom(serverLevel, fromPos, above, serverLevel.random);
-				level.levelEvent(2005, fromPos, 0);
-				return;
-			}
+					level.setBlockAndUpdate(pos, pushEntitiesUp(state, newState, level, pos));
+					mushgloomBlock.growMushroom(serverLevel, fromPos, above, serverLevel.random);
+					level.levelEvent(2005, fromPos, 0);
+                    return;
+                }
+				level.levelEvent(1505, fromPos, 15); // Bonemeal particles
+            }
 
 			/*
 			 The block must be set to a new one before we attempt to bonemeal the plant, otherwise, we can end up with an infinite block update loop
