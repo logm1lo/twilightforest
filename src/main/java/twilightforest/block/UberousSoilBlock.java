@@ -40,6 +40,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 		super(properties);
 	}
 
+	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return SHAPE;
 	}
