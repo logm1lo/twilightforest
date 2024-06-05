@@ -1,11 +1,14 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,7 +32,7 @@ public class TrollsteinnBlock extends Block {
 		.put(Direction.WEST, WEST_LIT)
 		.put(Direction.EAST, EAST_LIT).build();
 
-	private static final int LIGHT_THRESHOLD = 7;
+	public static final int LIGHT_THRESHOLD = 7;
 
 	@SuppressWarnings("this-escape")
 	public TrollsteinnBlock(Properties properties) {
@@ -48,6 +51,14 @@ public class TrollsteinnBlock extends Block {
 	}
 
 	@Override
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		BlockState newState = state;
+		for (Direction direction : Direction.values())
+			newState = newState.setValue(PROPERTY_MAP.get(direction), level.getMaxLocalRawBrightness(pos.relative(direction)) > LIGHT_THRESHOLD);
+		if (!newState.equals(state)) level.setBlockAndUpdate(pos, newState);
+	}
+
+	@Override
 	@SuppressWarnings("deprecation")
 	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
@@ -57,17 +68,31 @@ public class TrollsteinnBlock extends Block {
 	@SuppressWarnings("deprecation")
 	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
 		int peak = 0;
-		for (Direction direction : Direction.values()) peak = Math.max(level.getMaxLocalRawBrightness(pos.relative(direction)), peak);
+		for (Direction direction : Direction.values())
+			peak = Math.max(level.getMaxLocalRawBrightness(pos.relative(direction)), peak);
 		return peak;
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		BlockState newState = state;
-		for (Map.Entry<Direction, BooleanProperty> propertyEntry : PROPERTY_MAP.entrySet()) {
-			newState = newState.setValue(propertyEntry.getValue(), level.getMaxLocalRawBrightness(pos.relative(propertyEntry.getKey())) > LIGHT_THRESHOLD);
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		BlockState ret = defaultBlockState();
+		for (Map.Entry<Direction, BooleanProperty> e : PROPERTY_MAP.entrySet()) {
+			Level level = ctx.getLevel();
+			BlockPos pos = ctx.getClickedPos();
+			int light = level.getMaxLocalRawBrightness(pos.relative(e.getKey()), level instanceof ClientLevel clientLevel ? calculateServerSkyDarken(clientLevel) : level.getSkyDarken());
+			ret = ret.setValue(e.getValue(), light > LIGHT_THRESHOLD);
 		}
-		if (!newState.equals(state)) level.setBlockAndUpdate(pos, newState);
+		return ret;
+	}
+
+	/**
+	 * Computation from vanilla function updateSkyBrightness in Level.java
+	 */
+	public static int calculateServerSkyDarken(ClientLevel level) {
+		double rainEffect = 1.0 - (double)(level.getRainLevel(1.0F) * 5.0F) / 16.0;
+		double thunderEffect = 1.0 - (double)(level.getThunderLevel(1.0F) * 5.0F) / 16.0;
+		double dayCycleEffect = 0.5 + 2.0 * Mth.clamp(Mth.cos(level.getTimeOfDay(1.0F) * (float) (Math.PI * 2)), -0.25, 0.25);
+		return  (int)((1.0 - dayCycleEffect  * rainEffect * thunderEffect) * 11.0);
 	}
 
 	@Override
