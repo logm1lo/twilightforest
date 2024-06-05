@@ -54,10 +54,7 @@ public class TFTeleporter implements ITeleporter {
 		PortalInfo pos;
 		TeleporterCache cache = TeleporterCache.get(dest);
 
-		// Scale the coords based on the dimension type coordinate_scale
-		ServerLevel tfDim = dest.getServer().getLevel(TFDimension.DIMENSION_KEY);
-		double scale = tfDim == null ? 0.125D : tfDim.dimensionType().coordinateScale();
-		scale = dest.dimension().equals(TFDimension.DIMENSION_KEY) ? 1F / scale : scale;
+		double scale = getHorizontalScale(dest);
 		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
 
 		if ((pos = placeInExistingPortal(cache, dest, entity, destPos)) == null) {
@@ -225,6 +222,13 @@ public class TFTeleporter implements ITeleporter {
 		return isPortal(world.getBlockState(pos));
 	}
 
+	// Scale the coords based on the dimension type coordinate_scale
+	protected static double getHorizontalScale(ServerLevel destination) {
+		ServerLevel tfDim = destination.getServer().getLevel(TFDimension.DIMENSION_KEY);
+		double scale = tfDim == null ? 0.125D : tfDim.dimensionType().coordinateScale();
+		return destination.dimension().equals(TFDimension.DIMENSION_KEY) ? 1F / scale : scale;
+	}
+
 	protected static PortalInfo moveToSafeCoords(ServerLevel world, Entity entity, BlockPos pos) {
 		// if we're in enforced progression mode, check the biomes for safety
 		boolean checkProgression = LandmarkUtil.isProgressionEnforced(world);
@@ -362,13 +366,23 @@ public class TFTeleporter implements ITeleporter {
 			return;
 		}
 
+		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a fallback one for {}", name);
+
+		spot = findPortalCoords(world, pos, blockpos -> isOkayForFallbackPortal(world, 	blockpos), true);
+		if (spot != null) {
+			TwilightForestMod.LOGGER.debug("Found fallback portal spot for {} at {}", name, spot);
+			cacheNewPortalCoords(cache, src, this.makePortalAt(world, spot), entity.blockPosition());
+			return;
+		}
+
 		// well I don't think we can actually just return and fail here
-		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one for {}", name);
+		TwilightForestMod.LOGGER.debug("Did not even find a fallback portal spot, just making a random one for {}", name);
 
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor(world);
-		// modified copy of base Teleporter method:
-		cacheNewPortalCoords(cache, src, this.makePortalAt(world, BlockPos.containing(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
+
+		// + 2 to make it above bedrock
+		cacheNewPortalCoords(cache, src, this.makePortalAt(world, BlockPos.containing(entity.getX() * getHorizontalScale(world), (entity.getY() * yFactor) + 2, entity.getZ() * getHorizontalScale(world))), entity.blockPosition());
 	}
 
 	protected static void loadSurroundingArea(ServerLevel world, Vec3 pos) {
@@ -385,6 +399,11 @@ public class TFTeleporter implements ITeleporter {
 
 	@Nullable
 	protected static BlockPos findPortalCoords(ServerLevel world, Vec3 loc, Predicate<BlockPos> predicate) {
+		return findPortalCoords(world, loc, predicate, false);
+	}
+
+	@Nullable
+	protected static BlockPos findPortalCoords(ServerLevel world, Vec3 loc, Predicate<BlockPos> predicate, boolean makePortalInAir) {
 		// adjust the height based on what world we're traveling to
 		double yFactor = getYFactor(world);
 		// modified copy of base Teleporter method:
@@ -404,12 +423,22 @@ public class TFTeleporter implements ITeleporter {
 
 				for (int ry = getScanHeight(world, rx, rz); ry >= world.getMinBuildHeight(); ry--) {
 
-					if (!world.isEmptyBlock(pos.set(rx, ry, rz))) {
+
+					pos.set(rx, ry, rz);
+					if (!makePortalInAir && !world.isEmptyBlock(pos)) {
 						continue;
 					}
 
-					while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
-						ry--;
+					if (makePortalInAir) {
+						while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz)) && predicate.test(pos)) {
+							ry--;
+						}
+						pos.set(rx, ry, rz);
+					}
+					else {
+						while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
+							ry--;
+						}
 					}
 
 					double yWeight = (ry + 0.5D) - loc.y() * yFactor;
@@ -450,10 +479,12 @@ public class TFTeleporter implements ITeleporter {
 	protected static boolean isIdealForPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = 0; potentialY < 4; potentialY++) {
+				for (int potentialY = 0; potentialY < 6; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
 					BlockState state = world.getBlockState(tPos);
-					if (potentialY == 0 && !state.is(BlockTags.DIRT) || potentialY >= 1 && !state.canBeReplaced()) {
+
+					// all blocks mustn't be bedrock, end portal frame, etc.; and other conditions for layers >= 0
+					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY == 0 && !state.is(BlockTags.DIRT) || potentialY >= 1 && !state.canBeReplaced()) {
 						return false;
 					}
 				}
@@ -482,13 +513,18 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockAndUpdate(pos.east().south(2), grass);
 		world.setBlockAndUpdate(pos.east(2).south(2), grass);
 
+		BlockPos[] positions = new BlockPos[4];
+		positions[0] = pos.below();
+		positions[1] = pos.east().below();
+		positions[2] = pos.south().below();
+		positions[3] = pos.east().south().below();
+
 		// dirt under it
 		BlockState dirt = Blocks.DIRT.defaultBlockState();
-
-		world.setBlockAndUpdate(pos.below(), dirt);
-		world.setBlockAndUpdate(pos.east().below(), dirt);
-		world.setBlockAndUpdate(pos.south().below(), dirt);
-		world.setBlockAndUpdate(pos.east().south().below(), dirt);
+		for (BlockPos blockpos: positions) {
+			if(world.getBlockState(pos).is(BlockTags.FEATURES_CANNOT_REPLACE))
+				world.setBlockAndUpdate(blockpos, dirt);
+		}
 
 		// portal in it
 		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.shouldReturnPortalBeUsable));
@@ -538,10 +574,29 @@ public class TFTeleporter implements ITeleporter {
 	protected static boolean isOkayForPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = 0; potentialY < 4; potentialY++) {
+				for (int potentialY = 0; potentialY < 6; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
 					BlockState state = world.getBlockState(tPos);
-					if (potentialY == 0 && !state.isSolid() && !state.liquid() || potentialY >= 1 && !state.canBeReplaced()) {
+
+					// all blocks mustn't be bedrock, end portal frame, etc.; and other conditions for layers >= 0
+					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY == 0 && !state.isSolid() && !state.liquid() || potentialY >= 1 && !state.canBeReplaced()) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	protected static boolean isOkayForFallbackPortal(ServerLevel world, BlockPos pos) {
+		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
+			for (int potentialX = 0; potentialX < 4; potentialX++) {
+				for (int potentialY = 0; potentialY < 6; potentialY++) {
+					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
+					BlockState state = world.getBlockState(tPos);
+
+					// all blocks mustn't be bedrock, end portal frame, etc.;
+					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY >= 1 && !state.canBeReplaced()) {
 						return false;
 					}
 				}
