@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.LiverootBlock;
 import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
 import twilightforest.init.TFBlocks;
 
@@ -553,8 +552,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.CINDER_LOG.get(),
 			TFBlocks.CINDER_WOOD.get(),
 			TFBlocks.IRONWOOD_BLOCK.get(),
-			TFBlocks.DEATH_TOME_SPAWNER.get(),
-			TFBlocks.EMPTY_CANOPY_BOOKSHELF.get(),
+			TFBlocks.CHISELED_CANOPY_BOOKSHELF.get(),
 			TFBlocks.CANOPY_BOOKSHELF.get(),
 			TFBlocks.TWILIGHT_OAK_CHEST.get(),
 			TFBlocks.CANOPY_CHEST.get(),

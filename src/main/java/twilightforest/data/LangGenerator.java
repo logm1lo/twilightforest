@@ -334,8 +334,7 @@ public class LangGenerator extends TFLangProvider {
 		this.createLogs("canopy", "Canopy Tree");
 		this.createWoodSet("canopy", "Canopy");
 		this.addBlock(TFBlocks.CANOPY_BOOKSHELF, "Canopy Bookshelf");
-		this.addBlock(TFBlocks.EMPTY_CANOPY_BOOKSHELF, "Empty Canopy Bookshelf");
-		this.addBlock(TFBlocks.DEATH_TOME_SPAWNER, "Death Tome Spawner");
+		this.addBlock(TFBlocks.CHISELED_CANOPY_BOOKSHELF, "Chiseled Canopy Bookshelf");
 
 		this.addBlock(TFBlocks.MANGROVE_LEAVES, "Mangrove Leaves");
 		this.addSapling("mangrove", "Mangrove Sapling");
