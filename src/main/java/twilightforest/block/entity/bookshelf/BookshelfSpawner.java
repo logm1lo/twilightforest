@@ -93,7 +93,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 				}
 
 				if (fullSlots == 0) {
-					state.setValue(ChiseledCanopyShelfBlock.SPAWNER, false);
+					level.setBlockAndUpdate(pos, state.setValue(ChiseledCanopyShelfBlock.SPAWNER, false));
 				}
 			}
 		}
