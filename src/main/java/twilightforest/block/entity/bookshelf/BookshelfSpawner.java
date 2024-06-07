@@ -184,6 +184,11 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		this.nextSpawnData = data;
 	}
 
+	@Nullable
+	public SpawnData getNextSpawnData() {
+		return this.nextSpawnData;
+	}
+
 	private SpawnData getOrCreateNextSpawnData(@Nullable Level level, RandomSource pRandom, BlockPos pos) {
 		if (this.nextSpawnData == null) {
 			this.setNextSpawnData(level, pos, this.spawnPotentials.getRandom(pRandom).map(WeightedEntry.Wrapper::data).orElseGet(SpawnData::new));
