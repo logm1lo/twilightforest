@@ -27,13 +27,13 @@ dependencies {
 jar {
 	manifest {
 		attributes(
-			'FMLModType' : "LIBRARY",
-			'Specification-Title'     : "twilightforest-asm",
-			'Specification-Vendor'    : "TeamTwilight",
-			'Specification-Version'   : "1",
-			'Implementation-Title'    : project.name,
-			'Implementation-Version'  : project.jar.archiveVersion,
-			'Implementation-Vendor'   : "TeamTwilight",
+			'FMLModType': "LIBRARY",
+			'Specification-Title': "twilightforest-asm",
+			'Specification-Vendor': "TeamTwilight",
+			'Specification-Version': "1",
+			'Implementation-Title': project.name,
+			'Implementation-Version': project.jar.archiveVersion,
+			'Implementation-Vendor': "TeamTwilight",
 			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
 		)
 	}
