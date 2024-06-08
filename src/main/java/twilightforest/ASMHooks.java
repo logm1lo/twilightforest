@@ -75,6 +75,10 @@ import java.util.Optional;
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
 
+	public static void test() {
+		TwilightForestMod.LOGGER.info("test");
+	}
+
 	/**
 	 * Minecraft Overworld seed, unique and from the save's WorldOptions. A deep bastion for supporting many features unique to the Twilight Forest dimension.
 	 */

@@ -23,16 +23,29 @@ if (secretsFile.exists()) {
     }
 }
 
-version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
-group = group_name
+jarJar.enable()
+
+allprojects {
+	version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
+	group = group_name
+
+	java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+	compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+
+	idea {
+		// Tell IDEA to always download sources/javadoc artifacts from maven.
+		module {
+			downloadJavadoc = true
+			downloadSources = true
+		}
+	}
+}
 
 base {
     archivesName = "${project.mod_id}-${project.minecraft_version}"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
 
 runs {
     configureEach {
@@ -42,6 +55,10 @@ runs {
         systemProperty 'mixin.env.disableRefMap', 'true'
 
         modSource project.sourceSets.main
+
+		dependencies {
+			runtime project(":tf-asm")
+		}
     }
 
     client {
@@ -71,6 +88,7 @@ jar {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+	mavenLocal()
     maven {
         name 'Jared\'s Maven' // JEI
         url 'https://maven.blamejared.com/'
@@ -108,6 +126,11 @@ repositories {
 }
 
 dependencies {
+	//minecraft
+	implementation "net.neoforged:neoforge:${project.neo_version}"
+
+	jarJar project(":tf-asm")
+
     //make sure to only pick one of these when testing (switch others to compileOnly)
 //  compileOnly "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
 	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
@@ -125,14 +148,11 @@ dependencies {
 
     //mods we dont have compat with but are nice to have
 //	runtimeOnly "team-twilight:crossdimcommands:${project.base_minecraft_version}-1.0"
-
-    //minecraft
-    implementation "net.neoforged:neoforge:${project.neo_version}"
 }
 
 tasks.named('jar', Jar).configure {
     manifest {
-        archiveClassifier = 'universal'
+        archiveClassifier = 'slim'
         attributes([
                 'Specification-Title'     : mod_id,
                 'Specification-Vendor'    : "TeamTwilight",
@@ -143,6 +163,10 @@ tasks.named('jar', Jar).configure {
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+}
+
+tasks.named('jarJar') {
+	archiveClassifier = 'universal'
 }
 
 publishing {
@@ -176,12 +200,4 @@ tasks.register('sourceJar', Jar) {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-}
-
-idea {
-    // Tell IDEA to always download sources/javadoc artifacts from maven.
-    module {
-        downloadJavadoc = true
-        downloadSources = true
-    }
 }
