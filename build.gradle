@@ -181,7 +181,7 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			afterEvaluate {
-				artifact project.tasks.jarJar.outputs.getFiles().getSingleFile()
+				artifact source: project.tasks.jarJar.outputs.getFiles().getSingleFile(), classifier: 'universal'
 				artifact project.sourceJar
 			}
 			setGroupId 'teamtwilight'
