@@ -30,9 +30,9 @@ steps:
 
 - task: Cache@2
   inputs:
-    key: 'gradleBuildNeoForgeLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
-    path: build/neoForge
-  displayName: Restore Project Level build/neoForge Cache
+    key: 'gradleBuildNeoformLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    path: build/neoform
+  displayName: Restore Project Level build/neoform Cache
   condition: eq(variables.SKIP_BUILD, 'false')
 
 - task: Cache@2
