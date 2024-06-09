@@ -23,26 +23,34 @@ if (secretsFile.exists()) {
 	}
 }
 
-jarJar.enable()
-
-allprojects {
-	version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
-	group = group_name
-
-	java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-	compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
-
-	idea {
-		// Tell IDEA to always download sources/javadoc artifacts from maven.
-		module {
-			downloadJavadoc = true
-			downloadSources = true
-		}
+idea {
+	// Tell IDEA to always download sources/javadoc artifacts from maven.
+	module {
+		downloadJavadoc = true
+		downloadSources = true
 	}
 }
 
+jarJar.enable()
+
+version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
+group = group_name
+
+java {
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(21))
+	}
+}
+
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+
 base {
 	archivesName = "${project.mod_id}-${project.minecraft_version}"
+}
+
+subprojects {
+	version = project(":").version
+	group = project(":").group
 }
 
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')

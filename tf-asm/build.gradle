@@ -19,6 +19,12 @@ java {
 	}
 }
 
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+
+base {
+	archivesName = "${project.mod_id}-asm-${project.minecraft_version}"
+}
+
 dependencies {
 	compileOnly "org.jetbrains:annotations:24.0.1"
 	compileOnly "net.neoforged.fancymodloader:loader:3.0.45"
