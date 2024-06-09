@@ -181,7 +181,7 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			afterEvaluate {
-				artifact project.jar
+				artifact project.jarJar
 				artifact project.sourceJar
 			}
 			setGroupId 'teamtwilight'
