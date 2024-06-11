@@ -10,7 +10,10 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import java.util.Set;
 
-public class ArmorRenderingTransformer implements ITransformer<MethodNode> {
+/**
+ * {@link twilightforest.ASMHooks#cancelArmorRendering}
+ */
+public class CancelArmorRenderingTransformer implements ITransformer<MethodNode> {
 
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
