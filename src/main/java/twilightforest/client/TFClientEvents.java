@@ -9,6 +9,7 @@ import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -367,6 +368,8 @@ public class TFClientEvents {
 		}
 	}
 
+	private static final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
+
 	@SubscribeEvent
 	public static void onRenderBlockHighlightEvent(RenderHighlightEvent.Block event) {
 		BlockPos pos = event.getTarget().getBlockPos();
@@ -382,34 +385,11 @@ public class TFClientEvents {
 			event.setCanceled(true);
 			if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
 				BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
-				renderGiantHitOutline(event.getPoseStack(), event.getMultiBufferSource().getBuffer(RenderType.lines()), Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().getPosition()));
+				VertexConsumer consumer = event.getMultiBufferSource().getBuffer(RenderType.lines());
+				Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().getPosition());
+				LevelRenderer.renderShape(event.getPoseStack(), consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), 0.0F, 0.0F, 0.0F, 0.45F);
 			}
 		}
-	}
-
-	private static final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
-
-	private static void renderGiantHitOutline(PoseStack poseStack, VertexConsumer consumer, Vec3 xyz) {
-		PoseStack.Pose pose = poseStack.last();
-		TFClientEvents.GIANT_BLOCK.forAllEdges(
-			(x, y, z, x1, y1, z1) -> {
-				float xSize = (float) (x1 - x);
-				float ySize = (float) (y1 - y);
-				float zSize = (float) (z1 - z);
-				float sqrt = Mth.sqrt(xSize * xSize + ySize * ySize + zSize * zSize);
-				xSize /= sqrt;
-				ySize /= sqrt;
-				zSize /= sqrt;
-				consumer.vertex(pose, (float)(x + xyz.x), (float)(y + xyz.y), (float)(z + xyz.z))
-					.color((float) 0.0, (float) 0.0, (float) 0.0, (float) 0.45)
-					.normal(pose, xSize, ySize, zSize)
-					.endVertex();
-				consumer.vertex(pose, (float)(x1 + xyz.x), (float)(y1 + xyz.y), (float)(z1 + xyz.z))
-					.color((float) 0.0, (float) 0.0, (float) 0.0, (float) 0.45)
-					.normal(pose, xSize, ySize, zSize)
-					.endVertex();
-			}
-		);
 	}
 
 	@SubscribeEvent
