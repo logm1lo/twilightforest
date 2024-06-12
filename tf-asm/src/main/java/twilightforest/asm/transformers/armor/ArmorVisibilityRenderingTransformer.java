@@ -1,6 +1,9 @@
 package twilightforest.asm.transformers.armor;
 
-import cpw.mods.modlauncher.api.*;
+import cpw.mods.modlauncher.api.ITransformer;
+import cpw.mods.modlauncher.api.ITransformerVotingContext;
+import cpw.mods.modlauncher.api.TargetType;
+import cpw.mods.modlauncher.api.TransformerVoteResult;
 import net.neoforged.coremod.api.ASMAPI;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
@@ -12,23 +15,23 @@ import twilightforest.asm.AsmUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#cancelArmorRendering}
+ * {@link twilightforest.ASMHooks#modifyArmorVisibility}
  */
-public class CancelArmorRenderingTransformer implements ITransformer<MethodNode> {
+public class ArmorVisibilityRenderingTransformer implements ITransformer<MethodNode> {
 
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		AsmUtil.findAllInstructions(node, Opcodes.INSTANCEOF)
+		AsmUtil.findAllVarInstructions(node, Opcodes.FSTORE, 4)
 			.findFirst()
-			.ifPresent(target -> node.instructions.insert(
+			.ifPresent(target -> node.instructions.insertBefore(
 				target,
 				ASMAPI.listOf(
-					new VarInsnNode(Opcodes.ALOAD, 7),
+					new VarInsnNode(Opcodes.ALOAD, 0),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
 						"twilightforest/ASMHooks",
-						"cancelArmorRendering",
-						"(ZLnet/minecraft/world/item/ItemStack;)Z"
+						"modifyArmorVisibility",
+						"(FLnet/minecraft/world/entity/LivingEntity;)F"
 					)
 				)
 			));
@@ -43,9 +46,9 @@ public class CancelArmorRenderingTransformer implements ITransformer<MethodNode>
 	@Override
 	public @NotNull Set<Target<MethodNode>> targets() {
 		return Set.of(Target.targetMethod(
-			"net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer",
-			"renderArmorPiece",
-			"(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V"
+			"net.minecraft.world.entity.LivingEntity",
+			"getVisibilityPercent",
+			"(Lnet/minecraft/world/entity/Entity;)D"
 		));
 	}
 

@@ -75,10 +75,6 @@ import java.util.Optional;
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
 
-	public static void test() {
-		TwilightForestMod.LOGGER.info("test");
-	}
-
 	/**
 	 * Minecraft Overworld seed, unique and from the save's WorldOptions. A deep bastion for supporting many features unique to the Twilight Forest dimension.
 	 */
@@ -365,11 +361,12 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.entity.LivingEntity#getVisibilityPercent(Entity)} <br>
-	 * [BEFORE FIRST FSTORE 4]
+	 * {@link twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.entity.LivingEntity#getVisibilityPercent(Entity)}
 	 */
-	public static float modifyClothVisibility(float o, LivingEntity entity) {
+	public static float modifyArmorVisibility(float o, LivingEntity entity) {
 		return o - getShroudedArmorPercentage(entity);
 	}
 
