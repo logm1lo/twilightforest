@@ -30,6 +30,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
@@ -164,7 +165,7 @@ public class LifedrainScepterItem extends Item {
                 if (target.hurt(damageSource, 1)) {
 					// make it explode
 					if (!level.isClientSide()) {
-						if (target.getHealth() <= 1) {
+						if (target.getHealth() <= 1 && !target.getType().is(Tags.EntityTypes.BOSSES)) {
 							if (!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH) && level instanceof ServerLevel serverLevel && living instanceof Player player) {
 								LootParams ctx = new LootParams.Builder(serverLevel)
 									.withParameter(LootContextParams.THIS_ENTITY, target)
