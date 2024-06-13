@@ -13,6 +13,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
@@ -45,6 +46,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CandelabraBlockEntity;
+import twilightforest.components.item.CandelabraData;
+import twilightforest.init.TFDataComponents;
 
 import java.util.Arrays;
 import java.util.List;
@@ -436,13 +439,22 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader reader, BlockPos pos, Player player) {
-		ItemStack newStack = new ItemStack(this);
-		if (reader.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
-			CompoundTag tag = new CompoundTag();
-			candelabra.saveAdditional(tag, reader.registryAccess());
-			newStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag));
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity living, ItemStack stack) {
+		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity be) {
+			CandelabraData data = stack.getComponents().get(TFDataComponents.CANDELABRA_DATA.get());
+			if (data != null) CandelabraData.setCandlesOf(be, data);
 		}
+	}
+
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+		ItemStack newStack = new ItemStack(this);
+
+		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity be) {
+			newStack.set(TFDataComponents.CANDELABRA_DATA, CandelabraData.dataFromBE(be));
+		}
+
 		return newStack;
 	}
+
 }

@@ -26,7 +26,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CandleBlock;
@@ -47,6 +46,7 @@ import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
 import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
 import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
+import twilightforest.components.item.CandelabraData;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.enums.BossVariant;
@@ -179,10 +179,10 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				//we need to render the candelabra block here since we have to use builtin/entity on the item.
 				//This doesnt allow us to set the item parent to the candelabra block, and without it, only the candles render, if any
 				minecraft.getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.get().defaultBlockState(), ms, buffers, light, overlay);
-				CustomData customData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
-				if (customData != null && customData.contains("Candles")) {
+				CandelabraData candelabraData = stack.get(TFDataComponents.CANDELABRA_DATA);
+				if (candelabraData != null) {
 					CandelabraBlockEntity copy = this.candelabra;
-					copy.loadCustomOnly(customData.copyTag(), minecraft.player.registryAccess());
+					CandelabraData.setCandlesOf(copy, candelabraData);
 					minecraft.getBlockEntityRenderDispatcher().renderItem(copy, ms, buffers, light, overlay);
 				}
 			} else if (block instanceof CritterBlock critter) {
