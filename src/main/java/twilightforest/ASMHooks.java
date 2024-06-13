@@ -235,8 +235,8 @@ public class ASMHooks {
 	/**
 	 * {@link twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer}<p/>
 	 *
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}<br>
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}
 	 */
 	public static Component modifyWrittenBookName(Component component, ItemStack stack) {
 		if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
@@ -294,11 +294,12 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.chunk.status.ChunkStatus#getStatusList()}<br>
-	 * [HEAD]
+	 * {@link twilightforest.asm.transformers.chunk.ChunkStatusListTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.chunk.status.ChunkStatus#getStatusList()}
 	 */
-	public static void assertChunkBlanketing() {
+	public static void chunkStatusList() {
 		// Only need to touch this class to ensure it's classloaded before other classes cache our reconstructed ChunkStatus sequence
 		ChunkBlanketProcessors.init();
 	}

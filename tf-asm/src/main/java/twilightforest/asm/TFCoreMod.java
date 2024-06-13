@@ -6,6 +6,7 @@ import twilightforest.asm.transformers.armor.ArmorColorRenderingTransformer;
 import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
 import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
 import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
+import twilightforest.asm.transformers.chunk.ChunkStatusListTransformer;
 
 import java.util.List;
 
@@ -19,7 +20,10 @@ public class TFCoreMod implements ICoreMod {
 			new ArmorVisibilityRenderingTransformer(),
 
 			// book
-			new ModifyWrittenBookNameTransformer()
+			new ModifyWrittenBookNameTransformer(),
+
+			// chunk
+			new ChunkStatusListTransformer()
 		);
 	}
 }
