@@ -10,6 +10,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -26,6 +28,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -97,6 +100,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	}
 
 	@Override
+	@SuppressWarnings("deprecation") // Fine for override
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.INVISIBLE;
 	}
@@ -173,6 +177,69 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 			}
 		}
 		return this.lightCandles(state, level, pos, player, hand);
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc && player.isSecondaryUseActive() && sc.getCandleAmount() > 0) {
+			int newCandleAmount = sc.getCandleAmount() - 1;
+			if (newCandleAmount > 0) {
+				sc.setCandleAmount(newCandleAmount);
+			} else {
+				boolean wall = state.getBlock() instanceof WallSkullCandleBlock;
+				Block newBlock = getNoCandleSkull(wall);
+				if (newBlock != null) {
+					ResolvableProfile profile = sc.getOwnerProfile();
+                    BlockState newState;
+                    if (wall) {
+                        newState = newBlock.defaultBlockState().setValue(WallSkullBlock.FACING, state.getValue(WallSkullCandleBlock.FACING));
+                    } else {
+                        newState = newBlock.defaultBlockState().setValue(SkullBlock.ROTATION, state.getValue(SkullCandleBlock.ROTATION));
+                    }
+                    level.setBlockAndUpdate(pos, newState);
+                    level.setBlockEntity(new SkullBlockEntity(pos, newState));
+                    if (level.getBlockEntity(pos) instanceof SkullBlockEntity sc1) sc1.setOwner(profile);
+				}
+			}
+			level.playSound(null, pos, SoundEvents.CANDLE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.getLightEngine().checkBlock(pos);
+			player.setItemInHand(player.getMainHandItem().isEmpty() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND, new ItemStack(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor()))));
+			return InteractionResult.sidedSuccess(level.isClientSide());
+		}
+		return super.useWithoutItem(state, level, pos, player, hitResult);
+	}
+
+	@Nullable
+	private Block getNoCandleSkull(boolean wall) {
+		Block newBlock;
+		switch ((SkullBlock.Types) this.getType()) {
+			case SKELETON -> {
+				if (wall) newBlock = Blocks.SKELETON_WALL_SKULL;
+				else newBlock = Blocks.SKELETON_SKULL;
+			}
+			case WITHER_SKELETON -> {
+				if (wall) newBlock = Blocks.WITHER_SKELETON_WALL_SKULL;
+				else newBlock = Blocks.WITHER_SKELETON_SKULL;
+			}
+			case PLAYER -> {
+				if (wall) newBlock = Blocks.PLAYER_WALL_HEAD;
+				else newBlock = Blocks.PLAYER_HEAD;
+			}
+			case ZOMBIE -> {
+				if (wall) newBlock = Blocks.ZOMBIE_WALL_HEAD;
+				else newBlock = Blocks.ZOMBIE_HEAD;
+			}
+			case CREEPER -> {
+				if (wall) newBlock = Blocks.CREEPER_WALL_HEAD;
+				else newBlock = Blocks.CREEPER_HEAD;
+			}
+			case PIGLIN -> {
+				if (wall) newBlock = Blocks.PIGLIN_WALL_HEAD;
+				else newBlock = Blocks.PIGLIN_HEAD;
+			}
+			default -> newBlock = null;
+		}
+		return newBlock;
 	}
 
 	@Override
