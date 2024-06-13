@@ -21,7 +21,7 @@ public class ArmorVisibilityRenderingTransformer implements ITransformer<MethodN
 
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		AsmUtil.findAllVarInstructions(node, Opcodes.FSTORE, 4)
+		AsmUtil.findVarInstructions(node, Opcodes.FSTORE, 4)
 			.findFirst()
 			.ifPresent(target -> node.instructions.insertBefore(
 				target,

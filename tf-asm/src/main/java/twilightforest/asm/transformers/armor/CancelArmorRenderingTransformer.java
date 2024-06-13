@@ -18,7 +18,7 @@ public class CancelArmorRenderingTransformer implements ITransformer<MethodNode>
 
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		AsmUtil.findAllInstructions(node, Opcodes.INSTANCEOF)
+		AsmUtil.findInstructions(node, Opcodes.INSTANCEOF)
 			.findFirst()
 			.ifPresent(target -> node.instructions.insert(
 				target,

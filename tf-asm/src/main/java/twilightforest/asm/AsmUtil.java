@@ -23,11 +23,11 @@ public class AsmUtil {
 		return stream.reduce((a, b) -> b);
 	}
 
-	public static Stream<AbstractInsnNode> findAllInstructions(MethodNode node, int opcode) {
+	public static Stream<AbstractInsnNode> findInstructions(MethodNode node, int opcode) {
 		return streamInstructions(node).filter(instruction -> instruction.getOpcode() == opcode);
 	}
 
-	public static Stream<MethodInsnNode> findAllMethodInstructions(MethodNode node, int opcode, String owner, String name, String descriptor) {
+	public static Stream<MethodInsnNode> findMethodInstructions(MethodNode node, int opcode, String owner, String name, String descriptor) {
 		return streamInstructions(node).filter(instruction -> instruction instanceof MethodInsnNode i &&
 			i.getOpcode() == opcode &&
 			i.owner.equals(owner) &&
@@ -36,7 +36,7 @@ public class AsmUtil {
 		).map(MethodInsnNode.class::cast);
 	}
 
-	public static Stream<FieldInsnNode> findAllFieldInstructions(MethodNode node, int opcode, String owner, String name) {
+	public static Stream<FieldInsnNode> findFieldInstructions(MethodNode node, int opcode, String owner, String name) {
 		return streamInstructions(node).filter(instruction -> instruction instanceof FieldInsnNode i &&
 			i.getOpcode() == opcode &&
 			i.owner.equals(owner) &&
@@ -44,7 +44,7 @@ public class AsmUtil {
 		).map(FieldInsnNode.class::cast);
 	}
 
-	public static Stream<VarInsnNode> findAllVarInstructions(MethodNode node, int opcode, int index) {
+	public static Stream<VarInsnNode> findVarInstructions(MethodNode node, int opcode, int index) {
 		return streamInstructions(node).filter(instruction -> instruction instanceof VarInsnNode i &&
 			i.getOpcode() == opcode &&
 			i.var == index

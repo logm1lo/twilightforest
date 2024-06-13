@@ -233,11 +233,12 @@ public class ASMHooks {
 	}
 
 	/**
+	 * {@link twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer}<p/>
+	 *
 	 * Injection Point:<br>
 	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}<br>
-	 * [BEFORE ARETURN]
 	 */
-	public static Component book(Component component, ItemStack stack) {
+	public static Component modifyWrittenBookName(Component component, ItemStack stack) {
 		if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
 			return Component.translatable(component.getString());
 		} else return component;
