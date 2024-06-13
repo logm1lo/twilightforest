@@ -15,7 +15,7 @@ import twilightforest.asm.AsmUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#cancelArmorRendering}
+ * {@link twilightforest.ASMHooks#modifyWrittenBookName}
  */
 public class ModifyWrittenBookNameTransformer implements ITransformer<MethodNode> {
 
