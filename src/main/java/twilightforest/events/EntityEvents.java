@@ -64,7 +64,7 @@ import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
-import twilightforest.enchantment.ChillAuraEnchantment;
+import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
@@ -136,7 +136,7 @@ public class EntityEvents {
 			}
 
 			if (trueSource instanceof LivingEntity target) {
-				ChillAuraEnchantment.doChillAuraEffect(target, chillLevel * 5 + 5, chillLevel, chillLevel > 0);
+				ApplyFrostedEffect.doChillAuraEffect(target, chillLevel * 5 + 5, chillLevel, chillLevel > 0);
 			}
 		}
 

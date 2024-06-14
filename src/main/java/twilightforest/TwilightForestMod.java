@@ -108,7 +108,6 @@ public final class TwilightForestMod {
 		TFMobEffects.MOB_EFFECTS.register(bus);
 		Enforcements.ENFORCEMENTS.register(bus);
 		TFCaveCarvers.CARVER_TYPES.register(bus);
-		TFEnchantments.ENCHANTMENTS.register(bus);
 		TFDataComponents.COMPONENTS.register(bus);
 		TFRecipes.RECIPE_SERIALIZERS.register(bus);
 		TFParticleType.PARTICLE_TYPES.register(bus);
@@ -122,6 +121,7 @@ public final class TwilightForestMod {
 		TFDataSerializers.DATA_SERIALIZERS.register(bus);
 		TFFeatureModifiers.FOLIAGE_PLACERS.register(bus);
 		TFFeatureModifiers.TREE_DECORATORS.register(bus);
+		TFEnchantmentEffects.ENTITY_EFFECTS.register(bus);
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(bus);
 		TFDensityFunctions.DENSITY_FUNCTION_TYPES.register(bus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(bus);

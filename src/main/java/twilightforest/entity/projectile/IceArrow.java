@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.enchantment.ChillAuraEnchantment;
+import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.init.TFEntities;
 
 public class IceArrow extends TFArrow {
@@ -39,7 +39,7 @@ public class IceArrow extends TFArrow {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		if (!this.level().isClientSide() && result.getEntity() instanceof LivingEntity living) {
-			ChillAuraEnchantment.doChillAuraEffect(living, 200, 2, true);
+			ApplyFrostedEffect.doChillAuraEffect(living, 200, 2, true);
 		}
 	}
 }
