@@ -60,7 +60,6 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -91,14 +90,14 @@ public class TFClientEvents {
 		public static void modelBake(ModelEvent.ModifyBakingResult event) {
 			TFItems.addItemModelProperties();
 
-			Map<ResourceLocation, BakedModel> models = event.getModels();
-			List<Map.Entry<ResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
-				.filter(entry -> entry.getKey().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().getPath().contains("leaves") && !entry.getKey().getPath().contains("dark")).toList();
+			Map<ModelResourceLocation, BakedModel> models = event.getModels();
+			List<Map.Entry<ModelResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
+				.filter(entry -> entry.getKey().id().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().id().getPath().contains("leaves") && !entry.getKey().id().getPath().contains("dark")).toList();
 
 			leavesModels.forEach(entry -> models.put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 
-			BakedModel oldModel = event.getModels().get(new ModelResourceLocation("twilightforest", "trollsteinn", "inventory"));
-			models.put(new ModelResourceLocation("twilightforest", "trollsteinn", "inventory"), new TrollsteinnModel(oldModel));
+			BakedModel oldModel = event.getModels().get(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn"), "inventory"));
+			models.put(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn"), "inventory"), new TrollsteinnModel(oldModel));
 		}
 
 		@SubscribeEvent
@@ -108,10 +107,6 @@ public class TFClientEvents {
 			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
 			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
 			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), "inventory"));
-
-			event.register(TwilightForestMod.prefix("block/casket_obsidian"));
-			event.register(TwilightForestMod.prefix("block/casket_stone"));
-			event.register(TwilightForestMod.prefix("block/casket_basalt"));
 		}
 
 		@SubscribeEvent
@@ -165,20 +160,20 @@ public class TFClientEvents {
 		if (Minecraft.getInstance().level == null) return;
 
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
-			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+			Tesselator tesselator = Tesselator.getInstance();
+			BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-			final double scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
+			final float scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
 			Vec3 pos = event.getCamera().getPosition();
-			double y = 256D - pos.y();
-			buffer.vertex(-scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
-			buffer.vertex(-scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
-			buffer.vertex(scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
-			buffer.vertex(scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
+			float y = (float) (256F - pos.y());
+			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
 
 			RenderSystem.enableBlend();
 			RenderSystem.enableDepthTest();
-			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F * 0.5F);
+			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick().getGameTimeDeltaTicks(), lastAurora, aurora)) / 60F * 0.5F);
 			TFShaders.AURORA.invokeThenEndTesselator(
 				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
 				(float) pos.x(), (float) pos.y(), (float) pos.z()
@@ -225,7 +220,7 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static void clientTick(ClientTickEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
-		float partial = mc.getFrameTime();
+		float partial = mc.getTimer().getRealtimeDeltaTicks();
 
 		if (!mc.isPaused()) {
 			time++;
@@ -346,9 +341,9 @@ public class TFClientEvents {
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
-		}
+//		if (ModList.get().isLoaded("curios")) {
+//			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
+//		}
 		return false;
 	}
 

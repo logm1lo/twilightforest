@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -43,8 +42,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.curios.CuriosCompat;
-import twilightforest.compat.top.TopCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -153,10 +150,10 @@ public final class TwilightForestMod {
 	}
 
 	private static void loadCuriosCompat(IEventBus bus) {
-		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
-		bus.addListener(CuriosCompat::registerCuriosCapabilities);
-		bus.addListener(CuriosCompat::registerCurioRenderers);
-		bus.addListener(CuriosCompat::registerCurioLayers);
+//		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+//		bus.addListener(CuriosCompat::registerCuriosCapabilities);
+//		bus.addListener(CuriosCompat::registerCurioRenderers);
+//		bus.addListener(CuriosCompat::registerCurioLayers);
 	}
 
 	private void registerGenericItemHandlers(RegisterCapabilitiesEvent event) {
@@ -213,7 +210,7 @@ public final class TwilightForestMod {
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
-		if (ModList.get().isLoaded("theoneprobe")) InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
+		//if (ModList.get().isLoaded("theoneprobe")) InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 	}
 
 	public void setupPackets(RegisterPayloadHandlersEvent event) {
@@ -358,19 +355,19 @@ public final class TwilightForestMod {
 	}
 
 	public static ResourceLocation prefix(String name) {
-		return new ResourceLocation(ID, name.toLowerCase(Locale.ROOT));
+		return ResourceLocation.fromNamespaceAndPath(ID, name.toLowerCase(Locale.ROOT));
 	}
 
 	public static ResourceLocation getModelTexture(String name) {
-		return new ResourceLocation(ID, MODEL_DIR + name);
+		return ResourceLocation.fromNamespaceAndPath(ID, MODEL_DIR + name);
 	}
 
 	public static ResourceLocation getGuiTexture(String name) {
-		return new ResourceLocation(ID, GUI_DIR + name);
+		return ResourceLocation.fromNamespaceAndPath(ID, GUI_DIR + name);
 	}
 
 	public static ResourceLocation getEnvTexture(String name) {
-		return new ResourceLocation(ID, ENVIRO_DIR + name);
+		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
 	}
 
 	public static Rarity getRarity() {
