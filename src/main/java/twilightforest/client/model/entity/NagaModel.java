@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.boss.Naga;
 import twilightforest.entity.boss.NagaSegment;
+import twilightforest.util.ColorModifier;
 
 public class NagaModel<T extends Entity> extends ListModel<T> {
 
@@ -50,13 +51,13 @@ public class NagaModel<T extends Entity> extends ListModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (this.entity instanceof Naga naga) {
-			this.head.render(stack, builder, light, overlay, red, green - naga.stunlessRedOverlayProgress, blue - naga.stunlessRedOverlayProgress, scale * 2);
+			this.head.render(stack, builder, light, overlay, ColorModifier.begin(color).green(o -> (int) (o * naga.stunlessRedOverlayProgress)).blue(o -> (int) (o * naga.stunlessRedOverlayProgress)).build());
 		} else if (this.entity instanceof NagaSegment) {
-			this.body.render(stack, builder, light, overlay, red, green, blue, scale * 2);
+			this.body.render(stack, builder, light, overlay, color);
 		} else {
-			this.head.render(stack, builder, light, overlay, red, green, blue, scale * 2);
+			this.head.render(stack, builder, light, overlay, color);
 		}
 		this.entity = null;
 	}

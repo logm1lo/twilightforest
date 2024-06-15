@@ -140,10 +140,10 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? TFClientEvents.time + minecraft.getDeltaFrameTime() : 0, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? TFClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, ms, buffers, light, camera);
 					ms.popPose();
 				} else {
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? TFClientEvents.time + minecraft.getDeltaFrameTime() : 0, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? TFClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, ms, buffers, light, camera);
 				}
 
 			} else if (block instanceof KeepsakeCasketBlock) {
@@ -194,9 +194,9 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		} else if (item instanceof KnightmetalShieldItem) {
 			ms.pushPose();
 			ms.scale(1.0F, -1.0F, -1.0F);
-			Material material = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(TwilightForestMod.ID, "entity/knightmetal_shield"));
+			Material material = new Material(Sheets.SHIELD_SHEET, TwilightForestMod.prefix("entity/knightmetal_shield"));
 			VertexConsumer vertexconsumer = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(buffers, this.shield.renderType(material.atlasLocation()), true, stack.hasFoil()));
-			this.shield.renderToBuffer(ms, vertexconsumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.shield.renderToBuffer(ms, vertexconsumer, light, overlay);
 			ms.popPose();
 		}
 	}

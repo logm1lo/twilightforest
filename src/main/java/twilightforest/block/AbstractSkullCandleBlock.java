@@ -86,7 +86,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	//input one of the enum names to convert it into a candle block
 	public static Block candleColorToCandle(CandleColors color) {
 		if (color != CandleColors.PLAIN) {
-			return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getSerializedName() + "_candle")));
+			return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getSerializedName() + "_candle")));
 		}
 		return Blocks.CANDLE;
 	}

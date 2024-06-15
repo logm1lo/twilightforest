@@ -241,9 +241,6 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 				if (this.isReturning) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
-						if (this.getOwner() instanceof LivingEntity living && this.blocksSmashed > 0) {
-							this.stack.hurtAndBreak(Math.min(this.blocksSmashed, 3), living, LivingEntity.getSlotForHand(this.getHand()));
-						}
 						this.discard();
 					}
 

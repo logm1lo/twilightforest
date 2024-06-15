@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import twilightforest.entity.boss.Lich;
+import twilightforest.util.ColorModifier;
 
 import java.util.Arrays;
 
@@ -73,12 +74,11 @@ public class LichModel extends HumanoidModel<Lich> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (!this.shadowClone) {
-			super.renderToBuffer(stack, builder, light, overlay, red, green, blue, alpha);
+			super.renderToBuffer(stack, builder, light, overlay, color);
 		} else {
-			float shadow = 0.25f;
-			super.renderToBuffer(stack, builder, light, overlay, red * shadow, green * shadow, blue * shadow, 0.75F);
+			super.renderToBuffer(stack, builder, light, overlay, ColorModifier.begin(color).red(ColorModifier.QUARTER).green(ColorModifier.QUARTER).blue(ColorModifier.QUARTER).alpha(o -> (int) (o * 0.75F)).build());
 		}
 	}
 

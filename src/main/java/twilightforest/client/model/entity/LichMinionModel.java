@@ -6,6 +6,7 @@ import net.minecraft.client.model.ZombieModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.effect.MobEffects;
 import twilightforest.entity.monster.LichMinion;
+import twilightforest.util.ColorModifier;
 
 public class LichMinionModel extends ZombieModel<LichMinion> {
 
@@ -21,11 +22,11 @@ public class LichMinionModel extends ZombieModel<LichMinion> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (hasStrength) {
-			super.renderToBuffer(stack, builder, light, overlay, red * 0.25F, green, blue * 0.25F, scale);
+			super.renderToBuffer(stack, builder, light, overlay, ColorModifier.begin(color).red(ColorModifier.QUARTER).blue(ColorModifier.QUARTER).build());
 		} else {
-			super.renderToBuffer(stack, builder, light, overlay, red * 0.5F, green, blue * 0.5F, scale);
+			super.renderToBuffer(stack, builder, light, overlay, ColorModifier.begin(color).red(ColorModifier.HALF).blue(ColorModifier.HALF).build());
 		}
 	}
 }

@@ -4,7 +4,9 @@ import com.google.common.collect.Iterables;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -366,10 +368,11 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		if (base.isPresent()) {
 			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 			if (blockEntity instanceof CandelabraBlockEntity candelabra) {
-				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
+				RegistryAccess access = blockEntity.getLevel().registryAccess();
+				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(access.registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.SILK_TOUCH)) > 0) {
 					ItemStack newStack = new ItemStack(this);
 					CompoundTag tag = new CompoundTag();
-					candelabra.saveAdditional(tag, blockEntity.getLevel().registryAccess());
+					candelabra.saveAdditional(tag, access);
 					newStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag));
 					drops.remove(base.get());
 					drops.add(newStack);

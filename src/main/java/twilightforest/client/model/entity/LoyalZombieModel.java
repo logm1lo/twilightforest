@@ -6,6 +6,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.LoyalZombie;
+import twilightforest.util.ColorModifier;
 
 /**
  * [VanillaCopy] {@link net.minecraft.client.model.AbstractZombieModel} due to generic restrictions
@@ -38,8 +39,8 @@ public class LoyalZombieModel extends HumanoidModel<LoyalZombie> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		// GREEEEN
-		super.renderToBuffer(stack, builder, light, overlay, red * 0.25F, green, blue * 0.25F, scale);
+		super.renderToBuffer(stack, builder, light, overlay, ColorModifier.begin(color).red(ColorModifier.QUARTER).blue(ColorModifier.QUARTER).build());
 	}
 }
