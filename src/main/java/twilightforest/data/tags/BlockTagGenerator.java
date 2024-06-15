@@ -455,14 +455,14 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.GHAST_TRAP.get(),
 			TFBlocks.FAKE_DIAMOND.get(),
 			TFBlocks.FAKE_GOLD.get()
-		).addTag(COMMON_PROTECTIONS).addOptional(new ResourceLocation("gravestone:gravestone"));
+		).addTag(COMMON_PROTECTIONS).addOptional(ResourceLocation.parse("gravestone:gravestone"));
 
 		this.tag(STRUCTURE_BANNED_INTERACTIONS).add(Blocks.LEVER).add(TFBlocks.ANTIBUILDER.get()).addTags(BlockTags.BUTTONS, Tags.Blocks.CHESTS);
 
 		// TODO add more grave mods to this list
 		this.tag(PROGRESSION_ALLOW_BREAKING)
 			.add(TFBlocks.KEEPSAKE_CASKET.get())
-			.addOptional(new ResourceLocation("gravestone", "gravestone"));
+			.addOptional(ResourceLocation.fromNamespaceAndPath("gravestone", "gravestone"));
 
 		this.tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
 			BlockTags.DIRT,
@@ -742,7 +742,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	}
 
 	public static TagKey<Block> makeCommonTag(String tagName) {
-		return BlockTags.create(new ResourceLocation("c", tagName));
+		return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", tagName));
 	}
 
 	@Override

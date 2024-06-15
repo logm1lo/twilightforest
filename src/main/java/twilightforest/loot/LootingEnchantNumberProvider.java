@@ -30,13 +30,10 @@ public record LootingEnchantNumberProvider(NumberProvider baseValue) implements 
 
 	@Override
 	public float getFloat(LootContext context) {
-		if (context.getParamOrNull(LootContextParams.KILLER_ENTITY) instanceof LivingEntity) return context.getLootingModifier() + this.baseValue.getFloat(context);
+		if (context.getParamOrNull(LootContextParams.ATTACKING_ENTITY) instanceof LivingEntity) return context.getLootingModifier() + this.baseValue.getFloat(context);
 		return this.baseValue.getFloat(context);
 	}
 
-	/**
-	 * Get the parameters used by this object.
-	 */
 	@Override
 	public Set<LootContextParam<?>> getReferencedContextParams() {
 		return this.baseValue.getReferencedContextParams();

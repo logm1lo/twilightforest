@@ -8,6 +8,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -69,11 +70,6 @@ public class LifedrainScepterItem extends Item {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return false;
 	}
 
@@ -172,8 +168,8 @@ public class LifedrainScepterItem extends Item {
 									.withParameter(LootContextParams.ORIGIN, target.getEyePosition())
 									.withParameter(LootContextParams.DAMAGE_SOURCE, damageSource)
 									.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player)
-									.withParameter(LootContextParams.KILLER_ENTITY, player)
-									.withParameter(LootContextParams.DIRECT_KILLER_ENTITY, player).create(LootContextParamSets.ENTITY);
+									.withParameter(LootContextParams.ATTACKING_ENTITY, player)
+									.withParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, player).create(LootContextParamSets.ENTITY);
 								serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.LIFEDRAIN_SCEPTER_KILL_BONUS).getRandomItems(ctx).forEach(target::spawnAtLocation);
 								animateTargetShatter(serverLevel, target);
 							}
@@ -205,8 +201,7 @@ public class LifedrainScepterItem extends Item {
 						}
 
 						if (living instanceof Player player && !player.getAbilities().instabuild) {
-							stack.hurtAndBreak(1, level.getRandom(), player, () -> {
-							});
+							stack.hurtAndBreak(1, (ServerLevel) level, player, item -> {});
 						}
 					}
 				}
@@ -221,7 +216,7 @@ public class LifedrainScepterItem extends Item {
 
 	public static void makeRedMagicTrail(Level level, LivingEntity source, Vec3 target) {
 		// make particle trail
-		Vec3 handPos = getPlayerHandPos(source, Minecraft.getInstance().getPartialTick());
+		Vec3 handPos = getPlayerHandPos(source, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
 		double distance = handPos.distanceTo(target);
 
 		for (double i = 0; i <= distance * 3; i++) {
@@ -267,7 +262,7 @@ public class LifedrainScepterItem extends Item {
 	}
 
 	@Override
-	public int getUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack, LivingEntity user) {
 		return 72000;
 	}
 

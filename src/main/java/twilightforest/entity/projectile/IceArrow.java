@@ -20,8 +20,8 @@ public class IceArrow extends TFArrow {
 		super(type, world);
 	}
 
-	public IceArrow(Level world, @Nullable Entity shooter, ItemStack stack) {
-		super(TFEntities.ICE_ARROW.get(), world, shooter, stack);
+	public IceArrow(Level world, @Nullable LivingEntity shooter, ItemStack stack, ItemStack weapon) {
+		super(TFEntities.ICE_ARROW.get(), world, shooter, stack, weapon);
 	}
 
 	@Override

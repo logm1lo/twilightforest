@@ -230,17 +230,6 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(SQUIRREL_TEMPT_ITEMS).addTag(Tags.Items.SEEDS);
 		this.tag(TINY_BIRD_TEMPT_ITEMS).addTag(Tags.Items.SEEDS);
 
-		this.tag(ItemTags.MUSIC_DISCS).add(
-			TFItems.MUSIC_DISC_FINDINGS.get(),
-			TFItems.MUSIC_DISC_HOME.get(),
-			TFItems.MUSIC_DISC_MAKER.get(),
-			TFItems.MUSIC_DISC_MOTION.get(),
-			TFItems.MUSIC_DISC_RADIANCE.get(),
-			TFItems.MUSIC_DISC_STEPS.get(),
-			TFItems.MUSIC_DISC_SUPERSTITIOUS.get(),
-			TFItems.MUSIC_DISC_THREAD.get(),
-			TFItems.MUSIC_DISC_WAYFARER.get());
-
 		this.tag(BANNED_UNCRAFTING_INGREDIENTS).add(
 			TFBlocks.INFESTED_TOWERWOOD.get().asItem(),
 			TFBlocks.HOLLOW_OAK_SAPLING.get().asItem(),
@@ -419,7 +408,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	}
 
 	public static TagKey<Item> makeCommonTag(String tagName) {
-		return ItemTags.create(new ResourceLocation("c", tagName));
+		return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", tagName));
 	}
 
 	@Override

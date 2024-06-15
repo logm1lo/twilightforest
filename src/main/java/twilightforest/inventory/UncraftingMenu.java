@@ -39,7 +39,7 @@ import twilightforest.util.TFItemStackUtils;
 
 import java.util.*;
 
-public class UncraftingMenu<I extends RecipeInput, R extends Recipe<I>> extends RecipeBookMenu<I, R> {
+public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInput>> {
 
 	private static final String TAG_MARKER = "TwilightForestMarker";
 
@@ -656,13 +656,13 @@ public class UncraftingMenu<I extends RecipeInput, R extends Recipe<I>> extends 
 	}
 
 	@Override
-	public boolean recipeMatches(RecipeHolder<R> recipeHolder) {
+	public boolean recipeMatches(RecipeHolder<Recipe<RecipeInput>> recipeHolder) {
 		return recipeHolder.value().matches(this.assemblyMatrix.asCraftInput(), this.player.level());
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
 	@Override
 	public void handlePlacement(boolean placeAll, RecipeHolder<?> recipe, ServerPlayer player) {
-		new UncrafterPlaceRecipe<>(this).recipeClicked(player, (RecipeHolder<? extends Recipe<CraftingContainer>>) recipe, placeAll);
+		new UncrafterPlaceRecipe<>(this).recipeClicked(player, (RecipeHolder<Recipe<RecipeInput>>) recipe, placeAll);
 	}
 }
