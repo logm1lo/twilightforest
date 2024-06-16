@@ -19,6 +19,7 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
@@ -36,6 +37,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -294,14 +296,13 @@ public class ASMHooks {
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.chunk.ChunkStatusListTransformer}<p/>
+	 * {@link twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.chunk.status.ChunkStatus#getStatusList()}
+	 * {@link net.minecraft.world.level.chunk.status.ChunkStatusTasks#generateSurface}
 	 */
-	public static void chunkStatusList() {
-		// Only need to touch this class to ensure it's classloaded before other classes cache our reconstructed ChunkStatus sequence
-		ChunkBlanketProcessors.init();
+	public static void chunkBlanketing(ChunkAccess chunkAccess, ServerLevel level, WorldGenRegion worldGenRegion) {
+		ChunkBlanketProcessors.chunkBlanketing(chunkAccess, level, worldGenRegion);
 	}
 
 	/**
