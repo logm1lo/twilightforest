@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -117,7 +118,7 @@ public class ASMHooks {
 	 * [AFTER FIRST GETSTATIC {@link net.minecraft.world.item.Items#FILLED_MAP}]
 	 * <p></p>
 	 * Injection Point:<br>
-	 * {@link ItemFrame#getFramedMapId()} <br>
+	 * {@link ItemFrame#getFramedMapId(ItemStack)} <br>
 	 * [BEFORE FIRST IFEQ]
 	 */
 	public static boolean shouldMapRender(boolean o, ItemStack stack) {
@@ -176,17 +177,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#onResourceManagerReload(ResourceManager)}<br>
-	 * [AFTER FIRST INVOKESPECIAL]
-	 */
-	public static EntityRendererProvider.Context bakeMultipartRenders(EntityRendererProvider.Context context) {
-		TFClientSetup.BakedMultiPartRenderers.bakeMultiPartRenderers(context);
-		return context;
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br>
+	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br>
 	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterable<Entity> renderMultiparts(Iterable<Entity> iter) {
