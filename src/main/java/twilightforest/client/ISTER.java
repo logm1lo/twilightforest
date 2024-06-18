@@ -117,7 +117,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				GenericTrophyModel trophy = this.trophies.get(variant);
 
 				if (camera == ItemDisplayContext.GUI) {
-					ModelResourceLocation back = new ModelResourceLocation(TwilightForestMod.prefix(((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()), "inventory");
+					ModelResourceLocation back = ModelResourceLocation.standalone(TwilightForestMod.prefix("item/" + ((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()));
 					BakedModel modelBack = minecraft.getItemRenderer().getItemModelShaper().getModelManager().getModel(back);
 
 					Lighting.setupForFlatItems();

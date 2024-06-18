@@ -21,7 +21,7 @@ public class TrollsteinnModel extends BakedModelWrapper<BakedModel> {
 		@Override
 		public BakedModel resolve(@NotNull BakedModel model, @NotNull ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
 			if (litTrollsteinnModel == null)
-				litTrollsteinnModel = Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), "inventory"));
+				litTrollsteinnModel = Minecraft.getInstance().getModelManager().getModel(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light")));
 
 			Entity itemEntity = (entity == null) ? stack.getEntityRepresentation() : entity;
 

@@ -94,17 +94,17 @@ public class TFClientEvents {
 
 			leavesModels.forEach(entry -> models.put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 
-			BakedModel oldModel = event.getModels().get(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn"), "inventory"));
-			models.put(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn"), "inventory"), new TrollsteinnModel(oldModel));
+			BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
+			models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
 		}
 
 		@SubscribeEvent
 		public static void registerModels(ModelEvent.RegisterAdditional event) {
 			event.register(ShieldLayer.LOC);
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), ModelResourceLocation.INVENTORY_VARIANT));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), ModelResourceLocation.INVENTORY_VARIANT));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), ModelResourceLocation.INVENTORY_VARIANT));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), ModelResourceLocation.INVENTORY_VARIANT));
+			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
+			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
+			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
+			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light")));
 		}
 
 		@SubscribeEvent
