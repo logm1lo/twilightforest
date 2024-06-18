@@ -7,10 +7,10 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import twilightforest.entity.boss.Lich;
-import twilightforest.util.ColorModifier;
 
 import java.util.Arrays;
 
@@ -78,7 +78,7 @@ public class LichModel extends HumanoidModel<Lich> {
 		if (!this.shadowClone) {
 			super.renderToBuffer(stack, builder, light, overlay, color);
 		} else {
-			super.renderToBuffer(stack, builder, light, overlay, ColorModifier.begin(color).red(ColorModifier.QUARTER).green(ColorModifier.QUARTER).blue(ColorModifier.QUARTER).alpha(o -> (int) (o * 0.75F)).build());
+			super.renderToBuffer(stack, builder, light, overlay, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * 0.75F), (int) (FastColor.ARGB32.red(color) * 0.25F), (int) (FastColor.ARGB32.green(color) * 0.25F), (int) (FastColor.ARGB32.blue(color) * 0.25F)));
 		}
 	}
 

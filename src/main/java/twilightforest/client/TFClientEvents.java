@@ -101,10 +101,10 @@ public class TFClientEvents {
 		@SubscribeEvent
 		public static void registerModels(ModelEvent.RegisterAdditional event) {
 			event.register(ShieldLayer.LOC);
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), ModelResourceLocation.STANDALONE_VARIANT));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), ModelResourceLocation.STANDALONE_VARIANT));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), ModelResourceLocation.STANDALONE_VARIANT));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), ModelResourceLocation.STANDALONE_VARIANT));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), ModelResourceLocation.INVENTORY_VARIANT));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), ModelResourceLocation.INVENTORY_VARIANT));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), ModelResourceLocation.INVENTORY_VARIANT));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), ModelResourceLocation.INVENTORY_VARIANT));
 		}
 
 		@SubscribeEvent

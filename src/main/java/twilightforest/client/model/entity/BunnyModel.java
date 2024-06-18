@@ -89,7 +89,7 @@ public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
 			});
 			ms.popPose();
 		} else {
-			super.renderToBuffer(ms, buffer, light, overlay);
+			super.renderToBuffer(ms, buffer, light, overlay, color);
 		}
 	}
 
