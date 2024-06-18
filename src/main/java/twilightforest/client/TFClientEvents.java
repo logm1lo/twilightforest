@@ -22,7 +22,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -42,7 +41,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
@@ -103,10 +101,10 @@ public class TFClientEvents {
 		@SubscribeEvent
 		public static void registerModels(ModelEvent.RegisterAdditional event) {
 			event.register(ShieldLayer.LOC);
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), "inventory"));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), ModelResourceLocation.STANDALONE_VARIANT));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), ModelResourceLocation.STANDALONE_VARIANT));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), ModelResourceLocation.STANDALONE_VARIANT));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), ModelResourceLocation.STANDALONE_VARIANT));
 		}
 
 		@SubscribeEvent
