@@ -16,6 +16,7 @@ authors = "Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, w
 description = '''
 An enchanted forest dimension.
 '''
+enumExtensions="META-INF/enumextensions.json"
 
 [[dependencies.twilightforest]]
 modId = "neoforge"

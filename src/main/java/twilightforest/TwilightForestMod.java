@@ -2,7 +2,6 @@ package twilightforest;
 
 import com.google.common.collect.Maps;
 import com.google.common.reflect.Reflection;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -49,10 +48,14 @@ import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
 import twilightforest.init.*;
-import twilightforest.init.custom.*;
+import twilightforest.init.custom.BiomeLayerStack;
+import twilightforest.init.custom.BiomeLayerTypes;
+import twilightforest.init.custom.ChunkBlanketProcessors;
+import twilightforest.init.custom.Enforcements;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
 import twilightforest.util.Restriction;
+import twilightforest.util.TFEnumExtensions;
 import twilightforest.util.TFRemapper;
 import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
@@ -78,8 +81,11 @@ public final class TwilightForestMod {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	private static final Rarity rarity = Rarity.create("TWILIGHT", prefix("twilight"), ChatFormatting.DARK_GREEN);
-	public static final DamageEffects PINCH = DamageEffects.create("TWILIGHTFOREST_PINCH", "pinch", TFSounds.PINCH_BEETLE_ATTACK);
+	/**
+	 * {@link TFEnumExtensions#pinchDamage(int, Class)}
+	 */
+	public static final DamageEffects PINCH = DamageEffects.valueOf("TWILIGHTFOREST_PINCH");
+	//private static final Rarity RARITY = Rarity.valueOf("TWILIGHTFOREST_TWILIGHT"); Crashes if initialized for some reason, idk
 
 	public TwilightForestMod(IEventBus bus, Dist dist) {
 		Reflection.initialize(ConfigSetup.class);
@@ -370,7 +376,10 @@ public final class TwilightForestMod {
 		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
 	}
 
+	/**
+	 * {@link TFEnumExtensions#twilightRarity(int, Class)}
+	 */
 	public static Rarity getRarity() {
-		return rarity;
+		return Rarity.valueOf("TWILIGHTFOREST_TWILIGHT");
 	}
 }
