@@ -97,8 +97,8 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 					for (int y = 0; y < 8; y++) {
 						if (booleans[(x * 16 + z) * 8 + y]) {
 							BlockPos offset = blockpos.offset(x, y, z);
-							BlockState offState = worldgenlevel.getBlockState(offset);
-							if (!offState.is(BlockTagGenerator.SMALL_LAKES_DONT_REPLACE)) {
+							if (!(worldgenlevel.getBlockState(offset).is(BlockTagGenerator.SMALL_LAKES_DONT_REPLACE) ||
+								worldgenlevel.getBlockState(offset.above()).is(BlockTagGenerator.SMALL_LAKES_DONT_REPLACE))) {
 								if (y >= 4) {
 									worldgenlevel.setBlock(offset, AIR, 2);
                                     worldgenlevel.scheduleTick(offset, AIR.getBlock(), 0);
