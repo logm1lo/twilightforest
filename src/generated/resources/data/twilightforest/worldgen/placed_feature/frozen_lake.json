@@ -1,9 +1,9 @@
 {
-  "feature": "twilightforest:water_lake",
+  "feature": "twilightforest:water_frozen",
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 32
+      "chance": 4
     },
     {
       "type": "minecraft:in_square"

@@ -9,6 +9,12 @@
           "level": "0"
         }
       }
+    },
+    "ice": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:ice"
+      }
     }
   }
 }
