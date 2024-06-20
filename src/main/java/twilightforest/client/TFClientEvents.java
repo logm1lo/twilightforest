@@ -25,6 +25,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -95,10 +96,10 @@ public class TFClientEvents {
 			ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
 				stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
 
-			ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), new ResourceLocation("blocking"), (stack, level, entity, idk) ->
+			ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), ResourceLocation.parse("blocking"), (stack, level, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-			ItemProperties.register(TFItems.MOON_DIAL.get(), new ResourceLocation("phase"), new ClampedItemPropertyFunction() {
+			ItemProperties.register(TFItems.MOON_DIAL.get(), ResourceLocation.parse("phase"), new ClampedItemPropertyFunction() {
 				@Override
 				public float unclampedCall(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entityBase, int idk) {
 					boolean flag = entityBase != null;
@@ -137,7 +138,7 @@ public class TFClientEvents {
 
 			ItemProperties.register(TFItems.MOONWORM_QUEEN.get(), TwilightForestMod.prefix("alt"), (stack, level, entity, idk) -> {
 				if (entity != null && entity.getUseItem() == stack) {
-					int useTime = stack.getUseDuration() - entity.getUseItemRemainingTicks();
+					int useTime = stack.getUseDuration(entity) - entity.getUseItemRemainingTicks();
 					if (useTime >= MoonwormQueenItem.FIRING_TIME && (useTime >>> 1) % 2 == 0) {
 						return 1;
 					}
@@ -145,47 +146,47 @@ public class TFClientEvents {
 				return 0;
 			});
 
-			ItemProperties.register(TFItems.ENDER_BOW.get(), new ResourceLocation("pull"), (stack, level, entity, idk) -> {
+			ItemProperties.register(TFItems.ENDER_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
 				if (entity == null) return 0.0F;
 				else
-					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
 			});
 
-			ItemProperties.register(TFItems.ENDER_BOW.get(), new ResourceLocation("pulling"), (stack, level, entity, idk) ->
+			ItemProperties.register(TFItems.ENDER_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-			ItemProperties.register(TFItems.ICE_BOW.get(), new ResourceLocation("pull"), (stack, level, entity, idk) -> {
+			ItemProperties.register(TFItems.ICE_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
 				if (entity == null) return 0.0F;
 				else
-					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
 			});
 
-			ItemProperties.register(TFItems.ICE_BOW.get(), new ResourceLocation("pulling"), (stack, level, entity, idk) ->
+			ItemProperties.register(TFItems.ICE_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-			ItemProperties.register(TFItems.SEEKER_BOW.get(), new ResourceLocation("pull"), (stack, level, entity, idk) -> {
+			ItemProperties.register(TFItems.SEEKER_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
 				if (entity == null) return 0.0F;
 				else
-					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
 			});
 
-			ItemProperties.register(TFItems.SEEKER_BOW.get(), new ResourceLocation("pulling"), (stack, level, entity, idk) ->
+			ItemProperties.register(TFItems.SEEKER_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-			ItemProperties.register(TFItems.TRIPLE_BOW.get(), new ResourceLocation("pull"), (stack, level, entity, idk) -> {
+			ItemProperties.register(TFItems.TRIPLE_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
 				if (entity == null) return 0.0F;
 				else
-					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
 			});
 
-			ItemProperties.register(TFItems.TRIPLE_BOW.get(), new ResourceLocation("pulling"), (stack, level, entity, idk) ->
+			ItemProperties.register(TFItems.TRIPLE_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-			ItemProperties.register(TFItems.ORE_MAGNET.get(), new ResourceLocation("pull"), (stack, level, entity, idk) -> {
+			ItemProperties.register(TFItems.ORE_MAGNET.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
 				if (entity == null) return 0.0F;
 				else {
 					ItemStack itemstack = entity.getUseItem();
-					return !itemstack.isEmpty() ? (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F : 0.0F;
+					return !itemstack.isEmpty() ? (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F : 0.0F;
 				}
 			});
 
@@ -200,7 +201,7 @@ public class TFClientEvents {
 				return 0.0F;
 			});
 
-			ItemProperties.register(TFItems.ORE_MAGNET.get(), new ResourceLocation("pulling"), (stack, level, entity, idk) ->
+			ItemProperties.register(TFItems.ORE_MAGNET.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
 			ItemProperties.register(TFItems.BLOCK_AND_CHAIN.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
@@ -224,6 +225,7 @@ public class TFClientEvents {
 			ItemProperties.register(TFItems.CRUMBLE_HORN.get(), TwilightForestMod.prefix("tooting"), (stack, world, entity, i) ->
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
 			);
+
 
 
 			Map<ModelResourceLocation, BakedModel> models = event.getModels();
