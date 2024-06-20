@@ -37,7 +37,7 @@ public class ChunkStatusTaskTransformer implements ITransformer<MethodNode> {
 						Opcodes.INVOKESTATIC,
 						"twilightforest/ASMHooks",
 						"chunkBlanketing",
-						"(Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/WorldGenRegion;)V"
+						"(Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/server/level/WorldGenRegion;)V"
 					)
 				)
 			));
