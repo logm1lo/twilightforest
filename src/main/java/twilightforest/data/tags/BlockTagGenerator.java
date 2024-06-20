@@ -564,7 +564,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.TIME_CHEST.get(),
 			TFBlocks.TRANSFORMATION_CHEST.get(),
 			TFBlocks.MINING_CHEST.get(),
-			TFBlocks.SORTING_CHEST.get()
+			TFBlocks.SORTING_CHEST.get(),
+			TFBlocks.HUGE_LILY_PAD.get()
 		).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD);
 
 		this.tag(BlockTags.MINEABLE_WITH_HOE).add(
@@ -739,6 +740,12 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(SMALL_LAKES_DONT_REPLACE).addTags(BlockTags.FEATURES_CANNOT_REPLACE, BlockTags.LOGS, BlockTags.LEAVES)
 			.add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), Blocks.MUSHROOM_STEM);
+
+		this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
+			.add(TFBlocks.HUGE_LILY_PAD.get());
+
+		this.tag(BlockTags.SWORD_EFFICIENT)
+			.add(TFBlocks.HUGE_LILY_PAD.get());
 	}
 
 	public static TagKey<Block> create(String tagName) {
