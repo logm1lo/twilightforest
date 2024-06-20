@@ -7,10 +7,7 @@ import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -58,9 +55,7 @@ public final class ChunkBlanketProcessors {
 		context.register(SNOWY_FOREST_GLACIER, new GlacierBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.GLACIER)), BlockStateProvider.simple(Blocks.PACKED_ICE), BlockStateProvider.simple(Blocks.ICE), 32));
 	}
 
-	private static final ResourceLocation WORLDGEN_REGION_RANDOM = TwilightForestMod.prefix("worldgen_region_random");
-
-	public static void chunkBlanketing(ChunkAccess chunkAccess, ServerLevel level, WorldGenRegion worldGenRegion) {
+	public static void chunkBlanketing(ChunkAccess chunkAccess, WorldGenRegion worldGenRegion) {
 		ChunkPos chunkPos = chunkAccess.getPos();
 
 		Set<Holder<Biome>> biomesInChunk = new ObjectArraySet<>();
@@ -69,19 +64,17 @@ public final class ChunkBlanketProcessors {
 			levelchunksection.getBiomes().getAll(biomesInChunk::add);
 		}
 
-		Iterator<ChunkBlanketProcessor> modifierIterator = level.registryAccess()
+		Iterator<ChunkBlanketProcessor> modifierIterator = worldGenRegion.registryAccess()
 			.registry(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS)
 			.map(Registry::stream)
 			.orElseGet(Stream::empty)
 			.filter(modifier -> modifier.biomesForApplication().stream().anyMatch(biomesInChunk::contains))
 			.iterator();
 
-		Function<BlockPos, Holder<Biome>> biomeGetter = level.getBiomeManager()::getBiome;
+		Function<BlockPos, Holder<Biome>> biomeGetter = worldGenRegion::getBiome;
 
 		while (modifierIterator.hasNext()) {
-			// Hopefully, for keeping some level of parity with the WorldGenRegion's RandomSource setup
-			RandomSource random = level.getChunkSource().randomState().getOrCreateRandomFactory(WORLDGEN_REGION_RANDOM).at(chunkPos.getWorldPosition());
-			modifierIterator.next().processChunk(random, biomeGetter, chunkAccess);
+			modifierIterator.next().processChunk(worldGenRegion.getRandom().fork(), biomeGetter, chunkAccess);
 		}
 	}
 }

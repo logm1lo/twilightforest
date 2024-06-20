@@ -32,7 +32,6 @@ public class ChunkStatusTaskTransformer implements ITransformer<MethodNode> {
 				target,
 				ASMAPI.listOf(
 					new VarInsnNode(Opcodes.ALOAD, 3), // ChunkAccess param
-					new VarInsnNode(Opcodes.ALOAD, 4), // ServerLevel variable
 					new VarInsnNode(Opcodes.ALOAD, 5), // WorldGenRegion variable
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,

@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -21,7 +20,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.world.InteractionHand;
@@ -292,8 +290,8 @@ public class ASMHooks {
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.world.level.chunk.status.ChunkStatusTasks#generateSurface}
 	 */
-	public static void chunkBlanketing(ChunkAccess chunkAccess, ServerLevel level, WorldGenRegion worldGenRegion) {
-		ChunkBlanketProcessors.chunkBlanketing(chunkAccess, level, worldGenRegion);
+	public static void chunkBlanketing(ChunkAccess chunkAccess, WorldGenRegion worldGenRegion) {
+		ChunkBlanketProcessors.chunkBlanketing(chunkAccess, worldGenRegion);
 	}
 
 	/**
