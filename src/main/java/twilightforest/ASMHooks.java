@@ -253,11 +253,12 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.Level#isRainingAt(BlockPos)}<br>
-	 * [BEFORE ALOAD]
+	 * {@link twilightforest.asm.transformers.cloud.IsRainingAtTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.Level#isRainingAt(BlockPos)}
 	 */
-	public static boolean cloud(boolean isRaining, Level level, BlockPos pos) {
+	public static boolean isRainingAt(boolean isRaining, Level level, BlockPos pos) {
 		if (!isRaining && TFConfig.commonCloudBlockPrecipitationDistance > 0) {
 			LevelChunk chunk = level.getChunkAt(pos);
 			for (int y = pos.getY(); y < pos.getY() + TFConfig.commonCloudBlockPrecipitationDistance; y++) {
