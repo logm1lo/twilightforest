@@ -1,4 +1,4 @@
-// 1.21	2024-06-18T11:46:58.01687	TwilightForest blockstates and block models
+// 1.21	2024-06-22T18:38:00.2104814	TwilightForest blockstates and block models
 cab88029518a1647ec691d136328ed93c18108be assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -502,7 +502,7 @@ f9231681aa47fdc0ab680e11caab75c72b7191fb assets/twilightforest/models/block/bold
 a462fd6b50a881c3a5ffea67b665576117232d7e assets/twilightforest/models/block/bold_castle_brick_tile.json
 defd9a7bbe255a5cc6e84fbd5696867739bb9695 assets/twilightforest/models/block/bold_stone_pillar.json
 5176cfb3c4c305f46764a86aca5673fabd1b93f7 assets/twilightforest/models/block/bold_stone_pillar_horizontal.json
-dd1cf288deb850319d7264f98f965ea87e65b113 assets/twilightforest/models/block/boss_spawner.json
+4f348b3f1cb065f1fdf8b30f2ba83cb609c535ca assets/twilightforest/models/block/boss_spawner.json
 0e9f345aea9692c2b708dd7e2cd5e96cb6abee63 assets/twilightforest/models/block/brown_thorns.json
 45f0e7513a99924387702ce251ec64a6fabc1d8c assets/twilightforest/models/block/brown_thorns_bottom.json
 406e440be4280d55054c53ea977566183be908f2 assets/twilightforest/models/block/brown_thorns_no_section.json
