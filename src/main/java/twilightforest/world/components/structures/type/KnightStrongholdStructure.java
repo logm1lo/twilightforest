@@ -17,6 +17,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
@@ -65,5 +66,21 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 				TerrainAdjustment.BURY
 			)
 		);
+	}
+
+	@Override
+	protected StructureStart createStart(ChunkPos chunkPos, int reference, GenerationStub generationStub) {
+		return new TFStructureStart(this, chunkPos, reference, generationStub.getPiecesBuilder().build()) {
+			@Override
+			public BoundingBox getBoundingBox() {
+				BoundingBox boundingbox = this.cachedBoundingBox;
+				if (boundingbox == null) {
+					BoundingBox bBox = super.getBoundingBox();
+					boundingbox = new BoundingBox(bBox.minX(), bBox.minY(), bBox.minZ(), bBox.maxX(), Math.min(bBox.maxY(), generationStub.position().getY() - 1), bBox.maxZ());
+					this.cachedBoundingBox = boundingbox; // Cache that shit since it may get called like every tick
+				}
+				return boundingbox;
+			}
+		};
 	}
 }
