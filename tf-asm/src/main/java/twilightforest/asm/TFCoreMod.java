@@ -8,6 +8,7 @@ import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
 import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
 import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
+import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
 
 import java.util.List;
 
@@ -27,7 +28,10 @@ public class TFCoreMod implements ICoreMod {
 			new ChunkStatusTaskTransformer(),
 
 			// cloud
-			new IsRainingAtTransformer()
+			new IsRainingAtTransformer(),
+
+			// conquered
+			new StructureStartLoadStaticTransformer()
 		);
 	}
 }
