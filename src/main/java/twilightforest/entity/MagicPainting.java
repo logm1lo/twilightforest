@@ -25,7 +25,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDataSerializers;
 import twilightforest.init.TFEntities;
@@ -73,20 +72,16 @@ public class MagicPainting extends HangingEntity {
 		List<Holder<MagicPaintingVariant>> list = new ArrayList<>();
 		level.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).holders().forEach(list::add);
 		if (list.isEmpty()) {
-			TwilightForestMod.LOGGER.error("No list");
 			return Optional.empty();
 		} else {
-			TwilightForestMod.LOGGER.error("list");
 			magicPainting.setDirection(direction);
 			list.removeIf((variant) -> {
 				magicPainting.setVariant(variant);
 				return !magicPainting.survives();
 			});
 			if (list.isEmpty()) {
-				TwilightForestMod.LOGGER.error("empetey");
 				return Optional.empty();
 			} else {
-				TwilightForestMod.LOGGER.error("full, like a baby");
 				int biggestPossibleArea = list.stream().mapToInt(MagicPainting::variantArea).max().orElse(0);
 				list.removeIf((variantArea) -> variantArea(variantArea) < biggestPossibleArea);
 				Optional<Holder<MagicPaintingVariant>> optional = Util.getRandomSafe(list, magicPainting.random);
