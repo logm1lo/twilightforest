@@ -590,7 +590,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 				if (i == 0 && r == Rotation.NONE) continue;
 				Rotation rotation = ladderUpDir.getRotated(r);
 				this.fillBlocksRotated(world, sbb, 1, bottom + i, 1, 3, bottom + i, 3, deco.platformState, rotation);
-				this.fillBlocksRotated(world, sbb, 4, bottom + i, 1, 6, bottom + i, 3, deco.floorState, rotation);
+				this.fillBlocksRotated(world, sbb, 4, bottom, 1, 6, bottom, 3, deco.floorState, rotation);
 			}
 		}
 
