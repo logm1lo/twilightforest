@@ -596,15 +596,30 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// stairs
 		Rotation rotation = ladderUpDir.getRotated(Rotation.CLOCKWISE_180);
+		this.fillAirRotated(world, sbb, 8, top, 1, 9, top, 9, rotation); // Passageway
 
-		this.fillAirRotated(world, sbb, 5, top, 8, 9, top, 9, rotation);
-		this.fillAirRotated(world, sbb, 8, top, 5, 9, top, 9, rotation);
+		// slab part
+		for (int t = 0; t < 22; t++) {
+			BlockState slab = deco.platformState.setValue(SlabBlock.TYPE, t % 2 == 0 ? SlabType.TOP : SlabType.BOTTOM);
+			int dz0 = Math.min(t, 7); // first rotation
+			int dx0 = Math.min(t - dz0, 8); // second rotation
+			int dz1 = Math.min(t - dx0 - dz0, 8); // third rotation
 
-		this.fillBlocksRotated(world, sbb, 8, top - 2, 7, 9, top - 2, 7, deco.platformState, rotation);
-		this.fillBlocksRotated(world, sbb, 8, top - 2, 8, 9, top - 2, 9, deco.floorState, rotation);
-		this.fillBlocksRotated(world, sbb, 7, top - 1, 8, 7, top - 1, 9, deco.platformState, rotation);
-		this.fillBlocksRotated(world, sbb, 6, top - 1, 8, 6, top - 1, 9, deco.platformState.setValue(SlabBlock.TYPE, SlabType.TOP), rotation);
-		this.fillBlocksRotated(world, sbb, 5, top, 8, 5, top, 9, deco.platformState, rotation);
+			int dx1 = dz0 < 7 ? 1 : 0; // make its width 2 on the first rotation
+			int dz2 = dx0 > 0 && dx0 < 7 ? 1 : 0; // make its width 2 on the second rotation
+			int dx2 = dz1 > 0 ? 1 : 0; // make its width 2 on the third rotation
+
+			int dy = (dx0 > 0 ? 1 : 0) + (dz1 > 0 ? 1 : 0); // calculate height depending on full blocks
+
+
+			this.fillBlocksRotated(world, sbb, 9 - dx0 - dx1, top - t / 2 + dy, 8 - dz0 + dz1, 9 - dx0 + dx2, top - t / 2 + dy, 8 - dz0 + dz1 + dz2, slab, rotation);
+		}
+
+		// full block part
+		this.fillBlocksRotated(world, sbb, 8, top, 8, 9, top, 9, deco.floorState, rotation);
+		this.fillBlocksRotated(world, sbb, 8, top - 3, 1, 9, top - 3, 2, deco.floorState, rotation);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 4, 1, 2, bottom + 4, 2, deco.floorState, rotation);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 1, 7, 2, bottom + 1, 8, deco.floorState, rotation);
 
 		this.decoratePillars(world, bottom, top, ladderUpDir, sbb);
 
