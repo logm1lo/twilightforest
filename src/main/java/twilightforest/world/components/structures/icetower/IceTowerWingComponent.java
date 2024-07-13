@@ -594,32 +594,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			}
 		}
 
-		// stairs
-		Rotation rotation = ladderUpDir.getRotated(Rotation.CLOCKWISE_180);
-		this.fillAirRotated(world, sbb, 8, top, 1, 9, top, 9, rotation); // Passageway
-
-		// slab part
-		for (int t = 0; t < 22; t++) {
-			BlockState slab = deco.platformState.setValue(SlabBlock.TYPE, t % 2 == 0 ? SlabType.TOP : SlabType.BOTTOM);
-			int dz0 = Math.min(t, 7); // first rotation
-			int dx0 = Math.min(t - dz0, 8); // second rotation
-			int dz1 = Math.min(t - dx0 - dz0, 8); // third rotation
-
-			int dx1 = dz0 < 7 ? 1 : 0; // make its width 2 on the first rotation
-			int dz2 = dx0 > 0 && dx0 < 7 ? 1 : 0; // make its width 2 on the second rotation
-			int dx2 = dz1 > 0 ? 1 : 0; // make its width 2 on the third rotation
-
-			int dy = (dx0 > 0 ? 1 : 0) + (dz1 > 0 ? 1 : 0); // calculate height depending on full blocks
-
-
-			this.fillBlocksRotated(world, sbb, 9 - dx0 - dx1, top - t / 2 + dy, 8 - dz0 + dz1, 9 - dx0 + dx2, top - t / 2 + dy, 8 - dz0 + dz1 + dz2, slab, rotation);
-		}
-
-		// full block part
-		this.fillBlocksRotated(world, sbb, 8, top, 8, 9, top, 9, deco.floorState, rotation);
-		this.fillBlocksRotated(world, sbb, 8, top - 3, 1, 9, top - 3, 2, deco.floorState, rotation);
-		this.fillBlocksRotated(world, sbb, 1, bottom + 4, 1, 2, bottom + 4, 2, deco.floorState, rotation);
-		this.fillBlocksRotated(world, sbb, 1, bottom + 1, 7, 2, bottom + 1, 8, deco.floorState, rotation);
+		buildStairway(world, bottom, top, ladderUpDir, sbb);
 
 		this.decoratePillars(world, bottom, top, ladderUpDir, sbb);
 
@@ -628,9 +603,58 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			int treasureX = 3;
 			int treasureY = bottom + 5;
 			int treasureZ = 2;
-			this.placeTreasureRotated(world, treasureX, treasureY, treasureZ, getOrientation(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, treasureX, treasureY, treasureZ, getOrientation().getOpposite(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
 			this.fillBlocksRotated(world, sbb, treasureX, treasureY - 1,  - 1, treasureX, treasureY - 1, treasureZ, deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X), ladderUpDir);
 		}
+	}
+
+	public void buildStairway(WorldGenLevel world, int bottom, int top, Rotation ladderUpDir, BoundingBox sbb) {
+		// Set the rotation direction by rotating 180 degrees clockwise
+		Rotation rotation = ladderUpDir.getRotated(Rotation.CLOCKWISE_180);
+		fillAirRotated(world, sbb, 8, top, 1, 9, top, 9, rotation);
+
+		// Define the slab types
+		BlockState slabTypeTop = deco.platformState.setValue(SlabBlock.TYPE, SlabType.TOP);
+		BlockState slabTypeBottom = deco.platformState.setValue(SlabBlock.TYPE, SlabType.BOTTOM);
+
+		// Build the stairway using slabs
+		for (int step = 0; step < 22; step++) {
+			// Determine if the slab is top or bottom based on the step number
+			BlockState slab = step % 2 == 0 ? slabTypeTop : slabTypeBottom;
+
+			int firstDirection = Math.min(step, 7); // First direction movement
+			int secondDirection = Math.min(step - firstDirection, 8); // Second direction movement
+			int thirdDirection = Math.min(step - firstDirection - secondDirection, 8); // Third direction movement
+
+			// Determine width adjustments for the slab placement
+			int firstWidthAdjustment = firstDirection < 7 ? 1 : 0;
+			int secondWidthAdjustment = secondDirection > 0 && secondDirection < 7 ? 1 : 0;
+			int thirdWidthAdjustment = thirdDirection > 0 ? 1 : 0;
+
+			// Calculate height adjustment based on full blocks
+			int heightAdjustment = (secondDirection > 0 ? 1 : 0) + (thirdDirection > 0 ? 1 : 0);
+
+			// Place the slab blocks in the world
+			fillBlocksRotated(world, sbb,
+				9 - secondDirection - firstWidthAdjustment,
+				top - step / 2 + heightAdjustment,
+				8 - firstDirection + thirdDirection,
+				9 - secondDirection + thirdWidthAdjustment,
+				top - step / 2 + heightAdjustment,
+				8 - firstDirection + thirdDirection + secondWidthAdjustment,
+				slab,
+				rotation
+			);
+		}
+
+		// Place full blocks to complete the stairway
+		placeFullBlocks(world, bottom, top, sbb, rotation);
+	}
+	private void placeFullBlocks(WorldGenLevel world, int bottom, int top, BoundingBox sbb, Rotation rotation) {
+		fillBlocksRotated(world, sbb, 8, top, 8, 9, top, 9, deco.floorState, rotation);
+		fillBlocksRotated(world, sbb, 8, top - 3, 1, 9, top - 3, 2, deco.floorState, rotation);
+		fillBlocksRotated(world, sbb, 1, bottom + 4, 1, 2, bottom + 4, 2, deco.floorState, rotation);
+		fillBlocksRotated(world, sbb, 1, bottom + 1, 7, 2, bottom + 1, 9, deco.floorState, rotation);
 	}
 
 
