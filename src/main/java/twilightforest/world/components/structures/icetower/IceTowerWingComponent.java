@@ -560,13 +560,6 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 	private void decoratePillarPlatforms(WorldGenLevel world, int bottom, int top, Rotation ladderUpDir, boolean hasTreasure, BoundingBox sbb) {
-		// platforms
-		Rotation r = ladderUpDir;
-		for (int i = 1; i < 10; i++) {
-			r = r.getRotated(Rotation.CLOCKWISE_90);
-			this.fillBlocksRotated(world, sbb, 2, bottom + i, 2, 4, bottom + i, 4, deco.floorState, rotation);
-		}
-
 		// clear
 		this.fillAirRotated(world, sbb, 2, top, 2, 8, top, 4, ladderUpDir);
 		this.fillAirRotated(world, sbb, 2, top, 2, 4, top, 6, ladderUpDir);
@@ -574,6 +567,13 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		// extra pillar tops
 		this.setBlockStateRotated(world, deco.platformState, 7, top, 3, ladderUpDir, sbb);
 		this.setBlockStateRotated(world, deco.platformState, 3, top, 3, ladderUpDir, sbb);
+
+		// platforms
+		for (int y = 1; y < 10; y++) {
+			int x = y % 4 < 2 ? 3 : 7;
+			int z = (y - 1) % 4 < 2 ? 3 : 7;
+			this.fillBlocksRotated(world, sbb, x - 1, bottom + y, z - 1, x + 1, bottom + y, z + 1, deco.floorState, rotation);
+		}
 
 		this.decoratePillars(world, bottom, top, ladderUpDir, sbb);
 
