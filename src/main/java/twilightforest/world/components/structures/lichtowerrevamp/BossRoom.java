@@ -44,11 +44,11 @@ public final class BossRoom extends TwilightJigsawPiece implements PieceBeardifi
 
 	@Override
 	protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds) {
-		placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 3);
+		placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 3, 4);
 	}
 
-	public static void placePainting(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds, Rotation rotation, int limitTries) {
-		if (!chunkBounds.isInside(pos) || random.nextInt(4) != 0)
+	public static void placePainting(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds, Rotation rotation, int limitTries, int rarityFactor) {
+		if (!chunkBounds.isInside(pos) || random.nextInt(rarityFactor) != 0)
 			return;
 
 		String[] params = label.split(":");
