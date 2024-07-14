@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TwilightForestMod;
@@ -27,6 +29,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), compoundTag, ctx, readSettings(compoundTag));
 
 		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		stairDecay(this.genDepth, this.placeSettings);
 
 		this.putMobBridge = compoundTag.getBoolean("put_bridge");
 		this.continueAbove = compoundTag.getBoolean("seg_above");
@@ -36,9 +39,19 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), jigsawContext);
 
 		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		stairDecay(this.genDepth, this.placeSettings);
 
 		this.putMobBridge = putMobBridge;
 		this.continueAbove = continueAbove;
+	}
+
+	private static void stairDecay(int depth, StructurePlaceSettings settings) {
+		int decayLevel = Mth.ceil((depth - 3) * 0.25);
+
+		if (decayLevel >= 0) {
+			decayLevel = Math.min(decayLevel, TowerUtil.STAIR_DECAY_PROCESSORS.length);
+			settings.addProcessor(TowerUtil.STAIR_DECAY_PROCESSORS[decayLevel]);
+		}
 	}
 
 	@Override

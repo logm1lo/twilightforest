@@ -6,6 +6,7 @@ import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -15,6 +16,8 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.util.ArrayUtil;
 import twilightforest.world.components.processors.*;
+
+import java.util.List;
 
 public final class TowerUtil {
 	public static final StructureProcessor ROOM_SPAWNERS = SpawnerProcessor.compile(1, Object2IntMaps.unmodifiable(Util.make(new Object2IntArrayMap<>(), map -> {
@@ -31,6 +34,21 @@ public final class TowerUtil {
 		map.put(EntityType.ZOMBIE, 1);
 		map.put(TFEntities.SWARM_SPIDER.get(), 1);
 	})));
+	public static final List<Block> STAIR_DECAY_BLOCKS = List.of(
+		TFBlocks.TWILIGHT_OAK_SLAB.value(),
+		TFBlocks.CANOPY_SLAB.value(),
+		TFBlocks.TWILIGHT_OAK_BANISTER.value(),
+		TFBlocks.CANOPY_BANISTER.value()
+	);
+	public static final StructureProcessor[] STAIR_DECAY_PROCESSORS = new StructureProcessor[]{
+		new VerticalDecayProcessor(STAIR_DECAY_BLOCKS, 0.05f),
+		new VerticalDecayProcessor(STAIR_DECAY_BLOCKS, 0.1f),
+		new VerticalDecayProcessor(STAIR_DECAY_BLOCKS, 0.15f),
+		new VerticalDecayProcessor(STAIR_DECAY_BLOCKS, 0.2f),
+		new VerticalDecayProcessor(STAIR_DECAY_BLOCKS, 0.25f),
+		new VerticalDecayProcessor(STAIR_DECAY_BLOCKS, 0.3f),
+		new VerticalDecayProcessor(STAIR_DECAY_BLOCKS, 0.35f)
+	};
 	public static final StructureProcessor UPDATE_MARKER = UpdateMarkingProcessor.forBlocks(Blocks.STONE_BRICK_WALL, Blocks.MOSSY_STONE_BRICK_WALL, TFBlocks.WROUGHT_IRON_FENCE.value());
 
 	@Nullable

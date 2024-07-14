@@ -40,6 +40,8 @@ public class TFStructureProcessors {
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SpawnerProcessor>> SPAWNER_PROCESSOR = registerProcessor("spawner_processor", () -> () -> SpawnerProcessor.CODEC);
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<UpdateMarkingProcessor>> UPDATE_MARKING_PROCESSOR = registerProcessor("update_marking", () -> () -> UpdateMarkingProcessor.CODEC);
 
+	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<VerticalDecayProcessor>> VERTICAL_DECAY = registerProcessor("vertical_decay", () -> () -> VerticalDecayProcessor.CODEC);
+
 	//goofy but needed
 	public static <P extends StructureProcessor> DeferredHolder<StructureProcessorType<?>, StructureProcessorType<P>> registerProcessor(String name, Supplier<StructureProcessorType<P>> processor) {
 		return STRUCTURE_PROCESSORS.register(name, processor);
