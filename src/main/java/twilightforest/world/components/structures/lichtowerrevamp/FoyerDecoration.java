@@ -78,8 +78,22 @@ public class FoyerDecoration extends TwilightJigsawPiece implements PieceBeardif
 
 			random.setSeed(placePos.asLong() + placePos.getY());
 
-			switch (random.nextInt(1)) {
-				case 2, 3 -> {
+			int noChest = level.getBlockState(placePos.above()).is(Blocks.CHISELED_STONE_BRICKS) ? -1 : 0;
+
+			switch (random.nextInt(5) + noChest) {
+				case 4 -> {
+					BlockState chest = Blocks.CHEST.defaultBlockState().rotate(rotation.getRotated(Rotation.CLOCKWISE_180));
+
+					level.setBlock(placePos, chest, 3);
+
+					if (level.getBlockEntity(placePos) instanceof ChestBlockEntity chestBE) {
+						chestBE.setLootTable(TFLootTables.TOWER_LIBRARY, random.nextLong());
+					}
+
+					BlockState chestGap = Blocks.STONE_BRICK_STAIRS.defaultBlockState().setValue(StairBlock.HALF, Half.TOP).rotate(rotation.getRotated(Rotation.CLOCKWISE_180));
+					level.setBlock(placePos.above(), chestGap, 3);
+				}
+				case 3 -> {
 					BlockState candelabra = TFBlocks.CANDELABRA.value().defaultBlockState().rotate(rotation).setValue(CandelabraBlock.LIGHTING, LightableBlock.Lighting.DIM);
 
 					for (BooleanProperty prop : CandelabraBlock.CANDLES) {
@@ -95,18 +109,6 @@ public class FoyerDecoration extends TwilightJigsawPiece implements PieceBeardif
 						candles[1] = Blocks.CANDLE;
 						candles[2] = Blocks.CANDLE;
 					}
-				}
-				case 1 -> {
-					BlockState chest = Blocks.CHEST.defaultBlockState().rotate(rotation.getRotated(Rotation.CLOCKWISE_180));
-
-					level.setBlock(placePos, chest, 3);
-
-					if (level.getBlockEntity(placePos) instanceof ChestBlockEntity chestBE) {
-						chestBE.setLootTable(TFLootTables.TOWER_LIBRARY, random.nextLong());
-					}
-
-					BlockState chestGap = Blocks.STONE_BRICK_STAIRS.defaultBlockState().setValue(StairBlock.HALF, Half.TOP).rotate(rotation.getRotated(Rotation.CLOCKWISE_180));
-					level.setBlock(placePos.above(), chestGap, 3);
 				}
 				default -> {
 					BlockState decorBlock = switch (random.nextInt(5)) {
