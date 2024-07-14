@@ -98,7 +98,7 @@ public final class TowerUtil {
 	}
 
 	public static void addDefaultProcessors(StructurePlaceSettings settings, boolean dim) {
-		settings.addProcessor(JigsawProcessor.INSTANCE)
+		settings.addProcessor(MetaBlockProcessor.INSTANCE)
 			.addProcessor(StoneBricksVariants.INSTANCE)
 			.addProcessor(CobbleVariants.INSTANCE)
 			.addProcessor(dim ? CandelabraProcessor.INSTANCE_DIM : CandelabraProcessor.INSTANCE)

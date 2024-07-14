@@ -18,11 +18,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructureProcessors;
 
 // Jigsaws have no right being replaced as late as they are, so this processor avoids complications involving neighboring block updates such as with fences or walls
-public final class JigsawProcessor extends StructureProcessor {
-	public static final JigsawProcessor INSTANCE = new JigsawProcessor();
-	public static final MapCodec<JigsawProcessor> CODEC = MapCodec.unit(INSTANCE);
+public final class MetaBlockProcessor extends StructureProcessor {
+	public static final MetaBlockProcessor INSTANCE = new MetaBlockProcessor();
+	public static final MapCodec<MetaBlockProcessor> CODEC = MapCodec.unit(INSTANCE);
 
-	private JigsawProcessor() {
+	private MetaBlockProcessor() {
 	}
 
 	@Nullable
@@ -45,6 +45,8 @@ public final class JigsawProcessor extends StructureProcessor {
 			}
 
 			return new StructureTemplate.StructureBlockInfo(modifiedInfo.pos(), blockstate, null);
+		} else if (modifiedInfo.state().is(Blocks.STRUCTURE_BLOCK)) {
+			return new StructureTemplate.StructureBlockInfo(modifiedInfo.pos(), Blocks.AIR.defaultBlockState(), null);
 		}
 
 		return modifiedInfo;
@@ -52,6 +54,6 @@ public final class JigsawProcessor extends StructureProcessor {
 
 	@Override
 	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.JIGSAW_PROCESSOR.value();
+		return TFStructureProcessors.META_BLOCK_PROCESSOR.value();
 	}
 }
