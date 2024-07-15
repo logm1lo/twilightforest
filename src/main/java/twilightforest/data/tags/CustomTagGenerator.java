@@ -171,7 +171,7 @@ public class CustomTagGenerator {
 
 		@Override
 		protected void addTags(HolderLookup.Provider provider) {
-			// Every single painting except for Villagers
+			// Every single painting except for Humble
 			tag(LICH_TOWER_PAINTINGS).add(
 				PaintingVariants.KEBAB,
 				PaintingVariants.AZTEC,
@@ -223,7 +223,7 @@ public class CustomTagGenerator {
 				PaintingVariants.SUNFLOWERS,
 				PaintingVariants.TIDES
 			);
-			// Every single painting except for Villagers and the 4 elements
+			// Every single painting except for Humble, Unpacked, and the 4 elements
 			tag(LICH_BOSS_PAINTINGS).add(
 				PaintingVariants.KEBAB,
 				PaintingVariants.AZTEC,
@@ -254,7 +254,6 @@ public class CustomTagGenerator {
 				PaintingVariants.BAROQUE,
 				PaintingVariants.MEDITATIVE,
 				PaintingVariants.PRAIRIE_RIDE,
-				PaintingVariants.UNPACKED,
 				PaintingVariants.BACKYARD,
 				PaintingVariants.BOUQUET,
 				PaintingVariants.CAVEBIRD,
