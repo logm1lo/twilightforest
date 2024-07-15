@@ -22,7 +22,6 @@ public final class TowerPieces {
 	static final ResourceLocation[] MOB_BRIDGES = new ResourceLocation[] {
 		TwilightForestMod.prefix("lich_tower/bridge_spawner"),
 		TwilightForestMod.prefix("lich_tower/bridge_spawner_bend"),
-		TwilightForestMod.prefix("lich_tower/bridge_spawner_inverted"),
 		TwilightForestMod.prefix("lich_tower/bridge_spawner_ring"),
 		TwilightForestMod.prefix("lich_tower/bridge_spawner_ropes"),
 		TwilightForestMod.prefix("lich_tower/bridge_spawner_wide"),

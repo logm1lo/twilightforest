@@ -99,7 +99,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this, connection.pos(), connection.orientation(), this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", random);
 
 					if (placeableJunction != null) {
-						StructurePiece mobBridgePiece = new TowerMobBridge(this.genDepth + 1, this.structureManager, mobBridgeLocation, placeableJunction);
+						StructurePiece mobBridgePiece = new TowerMobBridge(this.genDepth + 1, this.structureManager, mobBridgeLocation, placeableJunction, random.nextBoolean());
 						pieceAccessor.addPiece(mobBridgePiece);
 						mobBridgePiece.addChildren(this, pieceAccessor, random);
 					}

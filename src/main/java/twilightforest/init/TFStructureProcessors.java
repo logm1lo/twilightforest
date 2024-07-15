@@ -41,6 +41,7 @@ public class TFStructureProcessors {
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<UpdateMarkingProcessor>> UPDATE_MARKING_PROCESSOR = registerProcessor("update_marking", () -> () -> UpdateMarkingProcessor.CODEC);
 
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<VerticalDecayProcessor>> VERTICAL_DECAY = registerProcessor("vertical_decay", () -> () -> VerticalDecayProcessor.CODEC);
+	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<WoodMultiPaletteSwizzle>> PLANK_MULTISWIZZLE = registerProcessor("wood_multiswizzle", () -> () -> WoodMultiPaletteSwizzle.CODEC);
 
 	//goofy but needed
 	public static <P extends StructureProcessor> DeferredHolder<StructureProcessorType<?>, StructureProcessorType<P>> registerProcessor(String name, Supplier<StructureProcessorType<P>> processor) {
