@@ -555,7 +555,13 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 7, 7, getOrientation(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
+			int treasureX = 3;
+			int treasureY = bottom + 7;
+			int treasureZ = 5;
+
+			this.placeTreasureRotated(world, treasureX, treasureY, treasureZ, getOrientation(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
+			Direction.Axis axis = rotation.rotate(getOrientation()).getAxis();
+			this.fillBlocksRotated(world, sbb, treasureX, treasureY - 1,  treasureZ - 1, treasureX, treasureY - 1, treasureZ + 1, deco.pillarState.setValue(RotatedPillarBlock.AXIS, axis), ladderUpDir);
 		}
 	}
 
