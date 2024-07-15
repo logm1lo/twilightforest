@@ -346,7 +346,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	private void decorateTopFloorTreasure(WorldGenLevel world, int bottom, Rotation rotation, BoundingBox sbb) {
 		this.fillBlocksRotated(world, sbb, 5, bottom + 1, 5, 5, bottom + 4, 5, deco.pillarState, rotation);
 
-		this.placeTreasureAtCurrentPosition(world, 5, bottom + 5, 5, TFLootTables.AURORA_ROOM, sbb);
+		this.placeTreasureRotated(world, 5, bottom + 5, 5, getOrientation().getOpposite(), rotation, TFLootTables.AURORA_ROOM, false, sbb);
 	}
 
 	private void decoratePillars(WorldGenLevel world, int bottom, int top, Rotation rotation, BoundingBox sbb) {
@@ -446,7 +446,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 1, bottom + 5, 5, getOrientation(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 1, bottom + 5, 5, getOrientation().getOpposite(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
 			//int beamMetaNS = ((this.coordBaseMode + ladderUpDir) % 2 == 0) ? 4 : 8;
 			final BlockState pillarNS = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 			this.setBlockStateRotated(world, pillarNS, 1, bottom + 4, 5, ladderUpDir, sbb);
