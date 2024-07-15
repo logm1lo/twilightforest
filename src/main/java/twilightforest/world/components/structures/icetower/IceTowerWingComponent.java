@@ -705,8 +705,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		this.fillBlocksRotated(world, sbb, 7, bottom + 9, 8, 7, bottom + 9, 9, pillarEW, rotation);
 
 		// holes in ceiling
-		this.fillAirRotated(world, sbb, 2, top, 2, 8, top, 4, ladderUpDir);
-		this.fillAirRotated(world, sbb, 2, top, 2, 4, top, 6, ladderUpDir);
+		this.fillAirRotated(world, sbb, 6, top, 2, 8, top, 8, ladderUpDir);
+		this.fillAirRotated(world, sbb, 2, top, 6, 5, top, 8, ladderUpDir);
 
 		// treasure!
 		if (hasTreasure) {
