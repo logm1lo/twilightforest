@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -20,6 +21,7 @@ import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.DirectionUtil;
 import twilightforest.util.EntityUtil;
@@ -44,10 +46,10 @@ public final class BossRoom extends TwilightJigsawPiece implements PieceBeardifi
 
 	@Override
 	protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds) {
-		placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 3, 4);
+		placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 3, 3, CustomTagGenerator.PaintingVariantTagGenerator.LICH_BOSS_PAINTINGS);
 	}
 
-	public static void placePainting(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds, Rotation rotation, int limitTries, int rarityFactor) {
+	public static void placePainting(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds, Rotation rotation, int limitTries, int rarityFactor, TagKey<PaintingVariant> lichTowerPaintings) {
 		if (!chunkBounds.isInside(pos) || random.nextInt(rarityFactor) != 0)
 			return;
 
@@ -66,12 +68,17 @@ public final class BossRoom extends TwilightJigsawPiece implements PieceBeardifi
 
 		int width = Integer.parseInt(params[1]);
 		int height = Integer.parseInt(params[2]);
+		int maxArea = width * height;
 
-		List<Holder<PaintingVariant>> paintingsOfSizeOrSmaller = EntityUtil.getPaintingsOfSizeOrSmaller(genLevel, width, height);
+		List<Holder<PaintingVariant>> paintingsOfSizeOrSmaller = EntityUtil.getPaintingsOfSizeOrSmaller(genLevel, lichTowerPaintings, width, height);
 		Util.shuffle(paintingsOfSizeOrSmaller, random);
-		for (Holder<PaintingVariant> painting : paintingsOfSizeOrSmaller) {
-			if (EntityUtil.tryHangPainting(genLevel, pos, dir, painting) || limitTries-- <= 0) {
-				break;
+		for (Holder<PaintingVariant> paintingHolder : paintingsOfSizeOrSmaller) {
+			PaintingVariant painting = paintingHolder.value();
+			int area = painting.width() * painting.height();
+			if (random.nextInt(maxArea) <= area) {
+				if (EntityUtil.tryHangPainting(genLevel, pos, dir, paintingHolder) || limitTries-- <= 0) {
+					break;
+				}
 			}
 		}
 	}
