@@ -413,7 +413,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		final BlockState pillarNS = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 1, bottom + 8, 5, getOrientation().getOpposite(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 1, bottom + 8, 5, ladderUpDir.rotate(getOrientation()).getCounterClockWise(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
 			//int beamMetaNS = ((this.coordBaseMode + ladderUpDir) % 2 == 0) ? 4 : 8;
 			this.setBlockStateRotated(world, pillarNS, 1, bottom + 7, 5, ladderUpDir, sbb);
 		}
