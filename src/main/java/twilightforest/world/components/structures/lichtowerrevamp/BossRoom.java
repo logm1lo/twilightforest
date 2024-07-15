@@ -6,11 +6,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -42,6 +49,29 @@ public final class BossRoom extends TwilightJigsawPiece implements PieceBeardifi
 		super(TFStructurePieceTypes.TOWER_BOSS_ROOM.get(), 1, structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_room"), jigsawContext);
 
 		TowerUtil.addDefaultProcessors(this.placeSettings, false);
+	}
+
+	@Override
+	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureCenterPos) {
+		super.postProcess(level, structureManager, chunkGen, random, chunkBounds, chunkPos, structureCenterPos);
+
+		BlockPos center = this.getSourceJigsaw().pos().offset(this.templatePosition).above(9);
+		long aLong = center.asLong();
+		random.setSeed(aLong);
+		BlockState candle = Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true);
+		float angle = 0;
+		for (int i = 0; i < 20; i++) {
+			angle += random.nextFloat(); // Incrementing angle each iteration ensures candles among all 4 sides of the room
+			float range = Mth.clampedLerp(7, 11, random.nextFloat());
+			int x = Math.round(Mth.cos(angle) * range);
+			int z = Math.round(Mth.sin(angle) * range);
+			int y = random.nextInt(3);
+			BlockPos placeAt = center.offset(x, y, z);
+
+			if (chunkBounds.isInside(placeAt) && level.getBlockState(placeAt).isAir()) {
+				level.setBlock(placeAt, candle, 2);
+			}
+		}
 	}
 
 	@Override
