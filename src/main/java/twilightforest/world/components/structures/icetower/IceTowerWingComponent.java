@@ -463,8 +463,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 2, pillarEW, rotation);
 		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 2, pillarEW, rotation);
-		this.fillBlocksRotated(world, sbb, 8, bottom + 5, 3, 9, bottom + 5, 3, pillarNS, rotation);
-		this.fillBlocksRotated(world, sbb, 8, bottom + 5, 7, 9, bottom + 5, 7, pillarNS, rotation);
+		this.fillBlocksRotated(world, sbb, 8, bottom + 1, 3, 9, bottom + 1, 3, pillarNS, rotation);
+		this.fillBlocksRotated(world, sbb, 8, bottom + 7, 7, 9, bottom + 7, 7, pillarNS, rotation);
 
 		this.fillBlocksRotated(world, sbb, 1, bottom + 2, 3, 2, bottom + 2, 3, pillarNS, rotation);
 		this.fillBlocksRotated(world, sbb, 1, bottom + 6, 3, 2, bottom + 6, 3, pillarNS, rotation);
