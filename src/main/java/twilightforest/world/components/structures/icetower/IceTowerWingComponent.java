@@ -611,7 +611,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	public void buildStairway(WorldGenLevel world, int bottom, int top, Rotation ladderUpDir, BoundingBox sbb) {
 		// Set the rotation direction by rotating 180 degrees clockwise
 		Rotation rotation = ladderUpDir.getRotated(Rotation.CLOCKWISE_180);
-		fillAirRotated(world, sbb, 8, top, 1, 9, top, 9, rotation);
+		fillAirRotated(world, sbb, 8, top, 1, 9, top + 2, 9, rotation);
 
 		// Define the slab types
 		BlockState slabTypeTop = deco.platformState.setValue(SlabBlock.TYPE, SlabType.TOP);
