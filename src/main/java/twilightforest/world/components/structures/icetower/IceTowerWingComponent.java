@@ -518,7 +518,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 6, 5, getOrientation(), ladderDownDir, TFLootTables.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 5, bottom + 6, 5, getOrientation(), ladderDownDir, TFLootTables.AURORA_CACHE, false, sbb);
 		}
 	}
 
