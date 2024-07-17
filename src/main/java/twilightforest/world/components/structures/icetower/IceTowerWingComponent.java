@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.icetower;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -23,8 +24,15 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.components.structures.icetower.floordecorators.FloorParts;
+import twilightforest.world.components.structures.icetower.floordecorators.FloorTypesAuroraPalace;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class IceTowerWingComponent extends TowerWingComponent {
@@ -34,6 +42,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	boolean hasBase = false;
 	protected int treasureFloor = -1;
+	private boolean hasBoss;
 
 	public IceTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(TFStructurePieceTypes.TFITWin.get(), nbt);
@@ -226,23 +235,151 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 */
 
 	protected void makeFloorsForTower(WorldGenLevel world, RandomSource decoRNG, BoundingBox sbb) {
-		int floors = this.height / 10;
+		int floorHeight = 10;
+		int floors = this.height / floorHeight;
+		int topFloor = floors - 1;
 
 		Rotation ladderDir = Rotation.COUNTERCLOCKWISE_90;
-		Rotation downLadderDir = null;
+		Rotation downLadderDir = ladderDir.getRotated(Rotation.CLOCKWISE_90);
 
-		// divide the tower into floors
-		int floorHeight = 10;
-		for (int i = 0; i < floors - 1; i++) {
-			// put down a ceiling
+		decorateTopFloor(world, decoRNG, topFloor, topFloor * floorHeight, (topFloor * floorHeight) + floorHeight, ladderDir, downLadderDir, sbb);
+
+		List<Pair<FloorTypesAuroraPalace, Integer>> floorPlan = createFloorPlan(floors - 1, decoRNG);
+
+		for (int i = floors - 2; i >= 0; i--) {
 			placeFloor(world, decoRNG, sbb, floorHeight, i);
-
+			Pair<FloorTypesAuroraPalace, Integer> floor = floorPlan.get(floors - 2 - i);
+			ladderDir = Rotation.COUNTERCLOCKWISE_90;
+			for (int t = 0; t < floor.getSecond(); t++) {
+				ladderDir = ladderDir.getRotated(Rotation.CLOCKWISE_90);
+			}
 			downLadderDir = ladderDir.getRotated(Rotation.CLOCKWISE_90);
-			decorateFloor(world, decoRNG, i, (i * floorHeight), (i * floorHeight) + floorHeight, ladderDir, downLadderDir, sbb);
+
+			if (this instanceof IceTowerBossWingComponent) {
+				decorateFloor(world, decoRNG, i, i * floorHeight, (i + 1) * floorHeight, ladderDir, downLadderDir, sbb);
+			} else {
+				decorateFloor(world, decoRNG, floor.getFirst(), i, i * floorHeight, (i + 1) * floorHeight, ladderDir, downLadderDir, sbb);
+			}
+		}
+	}
+
+	private List<Pair<FloorTypesAuroraPalace, Integer>> createFloorPlan(int floorCount, RandomSource decoRNG) {
+		List<Pair<FloorTypesAuroraPalace, Integer>> plan = new ArrayList<>();
+
+		// we generate top to bottom because top floor is special and has requirements for anchors
+		Set<FloorParts> currentlyBlockedParts = new HashSet<>(FloorTypesAuroraPalace.TOP.getFloorWith3x3Map().getBlockedFloorParts());
+
+		while (plan.size() < floorCount) {
+			Set<FloorParts> finalCurrentlyBlockedParts = currentlyBlockedParts;
+			Map<FloorTypesAuroraPalace, List<Integer>> possibleFloors = Arrays.stream(FloorTypesAuroraPalace.values())
+				.collect(Collectors.toMap(
+
+					floorType -> floorType,
+					floorType -> getAllowedRotations(floorType, finalCurrentlyBlockedParts)
+				));
+
+			possibleFloors.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+			possibleFloors.keySet().remove(FloorTypesAuroraPalace.TOP);
+			if (possibleFloors.isEmpty()) {
+				plan.clear();
+				currentlyBlockedParts = new HashSet<>(FloorTypesAuroraPalace.TOP.getFloorWith3x3Map().getBlockedFloorParts());
+				continue;
+			}
+
+			FloorTypesAuroraPalace chosenType = WorldUtil.getRandomElementWithWeights(
+				possibleFloors.keySet().stream()
+					.map(floorType -> new Pair<>(floorType, floorType.getWeight()))
+					.collect(Collectors.toList()),
+				decoRNG);
+			int chosenRotation = WorldUtil.getRandomElement(possibleFloors.get(chosenType), decoRNG);
+			plan.add(new Pair<>(chosenType, chosenRotation));
+
+			currentlyBlockedParts = chosenType.getFloorWith3x3Map().getBlockedFloorParts()
+				.stream()
+				.map(part -> part.rotateClockwise(chosenRotation))
+				.collect(Collectors.toSet());
+			List<FloorParts> doorBlockedParts = getPartsBlockedByDoors(
+				(floorCount - plan.size()) * 10,  // 10 is a height of the floor
+				(floorCount - plan.size() + 1) * 10,
+				Rotation.values()[(chosenRotation + 1) % 4]  // + 1 because default rotation is clockwise_90
+			);
+			currentlyBlockedParts.addAll(doorBlockedParts);
 		}
 
-		int topFloor = floors - 1;
-		decorateTopFloor(world, decoRNG, topFloor, (topFloor * floorHeight), (topFloor * floorHeight) + floorHeight, ladderDir, downLadderDir, sbb);
+		return plan;
+	}
+
+	private List<Integer> getAllowedRotations(FloorTypesAuroraPalace floorType, Set<FloorParts> currentlyBlockedParts) {
+		return IntStream.range(0, 4)
+			.filter(rotation -> isRotationAllowed(floorType, rotation, currentlyBlockedParts))
+			.boxed()
+			.collect(Collectors.toList());
+	}
+
+	private boolean isRotationAllowed(FloorTypesAuroraPalace floorType, int rotation, Set<FloorParts> currentlyBlockedParts) {
+		Set<FloorParts> requiredParts = floorType.getFloorWith3x3Map().getRequiredFloorParts()
+			.stream()
+			.map(part -> part.rotateClockwise(rotation))
+			.collect(Collectors.toSet());
+		return Collections.disjoint(requiredParts, currentlyBlockedParts);
+	}
+
+
+	private HashMap<FloorTypesAuroraPalace, Double> calculateProbabilities(RandomSource decoRNG, int n, int minFloors, int additionFloors) {
+		HashMap<FloorTypesAuroraPalace, Integer> floorAmount = new HashMap<>();
+		for (int i = 0; i < n; i++) {
+			List<Pair<FloorTypesAuroraPalace, Integer>> plan = createFloorPlan(decoRNG.nextInt(additionFloors) + minFloors, decoRNG);
+			for (Pair<FloorTypesAuroraPalace, Integer> element : plan) {
+				FloorTypesAuroraPalace floorType = element.getFirst();
+				floorAmount.put(floorType, floorAmount.getOrDefault(floorType, 0) + 1);
+			}
+		}
+		HashMap<FloorTypesAuroraPalace, Double> probabilities = new HashMap<>();
+		for (FloorTypesAuroraPalace floorType : floorAmount.keySet()) {
+			probabilities.put(floorType, ((double) floorAmount.get(floorType)) / floorAmount.values().stream().mapToInt(Integer::intValue).sum());
+		}
+		return probabilities;
+	}
+
+	private HashMap<FloorTypesAuroraPalace, HashMap<Integer, Double>> calculateFloorDistributions(RandomSource decoRNG, int n, int fixedFloors) {
+		// Initialize a map to store the count of each floor type at each floor index
+		HashMap<FloorTypesAuroraPalace, HashMap<Integer, Integer>> floorCounts = new HashMap<>();
+
+		// Initialize floorCounts with empty maps for each FloorType
+		for (FloorTypesAuroraPalace floorType : FloorTypesAuroraPalace.values()) {
+			floorCounts.put(floorType, new HashMap<>());
+		}
+
+		// Simulate tower generation n times
+		for (int i = 0; i < n; i++) {
+			List<Pair<FloorTypesAuroraPalace, Integer>> plan = createFloorPlan(fixedFloors, decoRNG);
+			for (int j = 0; j < plan.size(); j++) {
+				Pair<FloorTypesAuroraPalace, Integer> element = plan.get(j);
+				FloorTypesAuroraPalace floorType = element.getFirst();
+				// Increment the count for this floor type at this floor index
+				HashMap<Integer, Integer> floorIndexCount = floorCounts.get(floorType);
+				floorIndexCount.put(j, floorIndexCount.getOrDefault(j, 0) + 1);
+			}
+		}
+
+		// Calculate the probabilities for each floor type at each floor index
+		HashMap<FloorTypesAuroraPalace, HashMap<Integer, Double>> probabilities = new HashMap<>();
+
+		// Total number of generations for each floor index
+		int totalGenerations = fixedFloors * n;
+
+		for (FloorTypesAuroraPalace floorType : floorCounts.keySet()) {
+			HashMap<Integer, Integer> floorIndexCount = floorCounts.get(floorType);
+			HashMap<Integer, Double> floorIndexProbabilities = new HashMap<>();
+
+			for (int floorIndex : floorIndexCount.keySet()) {
+				floorIndexProbabilities.put(floorIndex, ((double) floorIndexCount.get(floorIndex)) / totalGenerations);
+			}
+
+			probabilities.put(floorType, floorIndexProbabilities);
+		}
+
+		return probabilities;
 	}
 
 	/**
@@ -271,40 +408,33 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Called to decorate each floor.  This is responsible for adding a ladder up, the stub of the ladder going down, then picking a theme for each floor and executing it.
 	 */
-	@Override
 	@SuppressWarnings("fallthrough")
-	protected void decorateFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateFloor(WorldGenLevel world, RandomSource rand, FloorTypesAuroraPalace floorType, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		boolean hasTreasure = (this.treasureFloor == floor);
 
-		switch (rand.nextInt(8)) {
-			case 0:
-				if (isNoDoorAreaRotated(9, bottom + 5, 1, 10, top + 1, 7, ladderUpDir)) {
-					decorateWraparoundWallSteps(world, bottom, top, ladderUpDir, hasTreasure, sbb);
-					break;
-				} // fall through otherwise
-			case 1:
-				if (isNoDoorAreaRotated(7, bottom, 0, 10, top + 1, 10, ladderUpDir)) {
-					decorateFarWallSteps(world, bottom, top, ladderUpDir, hasTreasure, sbb);
-					break;
-				} // fall through otherwise
-			case 2:
-				if (isNoDoorAreaRotated(9, bottom + 5, 1, 10, top + 1, 7, ladderUpDir)) {
-					decorateWraparoundWallStepsPillars(world, bottom, top, ladderUpDir, ladderDownDir, hasTreasure, sbb);
-					break;
-				} // fall through otherwise
-			case 3:
+		switch (floorType) {
+			case WRAPAROUND_WALL_STEPS:
+				decorateWraparoundWallSteps(world, bottom, top, ladderUpDir, hasTreasure, sbb);
+				break;
+			case FAR_WALL_STEPS:
+				decorateFarWallSteps(world, bottom, top, ladderUpDir, hasTreasure, sbb);
+				break;
+			case WRAPAROUND_WALL_STEPS_PILLARS:
+				decorateWraparoundWallStepsPillars(world, bottom, top, ladderUpDir, ladderDownDir, hasTreasure, sbb);
+				break;
+			case PLATFORM:
 				decoratePlatform(world, rand, bottom, top, ladderUpDir, ladderDownDir, hasTreasure, sbb);
 				break;
-			case 4:
+			case PILLAR_PARKOUR:
 				decoratePillarParkour(world, rand, bottom, top, ladderUpDir, ladderDownDir, hasTreasure, sbb);
 				break;
-			case 5:
+			case PILLAR_PLATFORMS:
 				decoratePillarPlatforms(world, bottom, top, ladderUpDir, hasTreasure, sbb);
 				break;
-			case 6:
+			case PILLAR_PLATFORMS_OUTSIDE:
 				decoratePillarPlatformsOutside(world, bottom, top, ladderUpDir, hasTreasure, sbb);
 				break;
-			case 7:
+			case QUAD_PILLAR_STAIRS:
 			default:
 				decorateQuadPillarStairs(world, rand, bottom, top, ladderUpDir, ladderDownDir, hasTreasure, sbb);
 				break;
@@ -328,6 +458,31 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		}
 
 		return isClear;
+	}
+
+	private List<FloorParts> getPartsBlockedByDoors(int bottom, int top, Rotation rotation) {
+		List<FloorParts> parts = List.of(
+			FloorParts.LEFT_FRONT, FloorParts.FRONT, FloorParts.RIGHT_FRONT, FloorParts.LEFT, FloorParts.RIGHT, FloorParts.LEFT_BACK, FloorParts.BACK, FloorParts.RIGHT_BACK
+		);
+
+		List<int[]> coordinates = List.of(
+			new int[]{0, 0, 3, 3},
+			new int[]{4, 0, 6, 3},
+			new int[]{8, 0, 10, 3},
+			new int[]{0, 4, 3, 6},
+			new int[]{8, 4, 10, 6},
+			new int[]{0, 8, 3, 10},
+			new int[]{4, 8, 6, 10},
+			new int[]{8, 8, 10, 10}
+		);
+
+		return IntStream.range(0, parts.size())
+			.filter(i -> !isNoDoorAreaRotated(
+				coordinates.get(i)[0], bottom, coordinates.get(i)[1],
+				coordinates.get(i)[2], top, coordinates.get(i)[3], rotation)
+			)
+			.mapToObj(parts::get)
+			.collect(Collectors.toList());
 	}
 
 	protected void decorateTopFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
@@ -576,9 +731,9 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// platforms
 		for (int y = 1; y < 10; y++) {
-			int x = y % 4 < 2 ? 3 : 7;
-			int z = (y - 1) % 4 < 2 ? 3 : 7;
-			this.fillBlocksRotated(world, sbb, x - 1, bottom + y, z - 1, x + 1, bottom + y, z + 1, deco.floorState, rotation);
+			int x = (y + 1) % 4 < 2 ? 3 : 7;
+			int z = y % 4 < 2 ? 3 : 7;
+			this.fillBlocksRotated(world, sbb, x - 1, bottom + y, z - 1, x + 1, bottom + y, z + 1, deco.floorState, ladderUpDir);
 		}
 
 		this.decoratePillars(world, bottom, top, ladderUpDir, sbb);
@@ -591,13 +746,11 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	private void decoratePillarPlatformsOutside(WorldGenLevel world, int bottom, int top, Rotation ladderUpDir, boolean hasTreasure, BoundingBox sbb) {
 		// platforms
-		for (int i = 0; i < 2; i++) {
-			for (Rotation r : RotationUtil.ROTATIONS) {
-				if (i == 0 && r == Rotation.NONE) continue;
-				Rotation rotation = ladderUpDir.getRotated(r);
-				this.fillBlocksRotated(world, sbb, 1, bottom + i, 1, 3, bottom + i, 3, deco.platformState, rotation);
-				this.fillBlocksRotated(world, sbb, 4, bottom, 1, 6, bottom, 3, deco.floorState, rotation);
-			}
+		for (Rotation r : RotationUtil.ROTATIONS) {
+			if (r == Rotation.COUNTERCLOCKWISE_90) continue;  // to make space for floor entrance
+			Rotation rotation = ladderUpDir.getRotated(r);
+			this.fillBlocksRotated(world, sbb, 1, bottom + 1, 1, 3, bottom + 1	, 3, deco.platformState, rotation);
+			this.fillBlocksRotated(world, sbb, 4, bottom, 1, 6, bottom, 3, deco.floorState, rotation);
 		}
 
 		buildStairway(world, bottom, top, ladderUpDir, sbb);
