@@ -299,7 +299,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 				.map(part -> part.rotateClockwise(chosenRotation))
 				.collect(Collectors.toSet());
 			List<FloorParts> doorBlockedParts = getPartsBlockedByDoors(
-				(floorCount - plan.size()) * 10,  // 10 is a height of the floor
+				(floorCount - plan.size()) * 10,  // 10 is always the height of the floor
 				(floorCount - plan.size() + 1) * 10,
 				Rotation.values()[(chosenRotation + 1) % 4]  // + 1 because default rotation is clockwise_90
 			);
