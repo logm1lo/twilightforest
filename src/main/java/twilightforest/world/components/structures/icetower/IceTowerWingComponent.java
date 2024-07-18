@@ -414,7 +414,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 */
 	@SuppressWarnings("fallthrough")
 	protected void decorateFloor(WorldGenLevel world, RandomSource rand, FloorTypesAuroraPalace floorType, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
-		boolean hasTreasure = (this.treasureFloor == floor) || true;
+		boolean hasTreasure = (this.treasureFloor == floor);
 
 		switch (floorType) {
 			case WRAPAROUND_WALL_STEPS:
