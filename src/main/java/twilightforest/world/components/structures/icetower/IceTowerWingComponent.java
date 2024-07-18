@@ -241,7 +241,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		decorateTopFloor(world, decoRNG, topFloor, topFloor * floorHeight, (topFloor * floorHeight) + floorHeight, ladderDir, downLadderDir, sbb);
 
-		List<Pair<FloorTypesAuroraPalace, Integer>> floorPlan = createFloorPlan(floors - 1, decoRNG, world, sbb);
+		List<Pair<FloorTypesAuroraPalace, Integer>> floorPlan = createFloorPlan(floors - 1, decoRNG);
 
 		for (int i = floors - 2; i >= 0; i--) {
 			placeFloor(world, decoRNG, sbb, floorHeight, i);
@@ -260,38 +260,41 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private List<Pair<FloorTypesAuroraPalace, Integer>> createFloorPlan(int floorCount, RandomSource decoRNG, WorldGenLevel world, BoundingBox sbb) {
+	private List<Pair<FloorTypesAuroraPalace, Integer>> createFloorPlan(int floorCount, RandomSource decoRNG) {
 		List<Pair<FloorTypesAuroraPalace, Integer>> plan = new ArrayList<>();
 
 		// we generate top to bottom because top floor is special and has requirements for anchors
-		Set<FloorParts> currentlyBlockedParts = new HashSet<>(FloorTypesAuroraPalace.TOP.getFloorWith3x3Map().getBlockedFloorParts());
-		List<FloorParts> doorBlockedParts = getPartsBlockedByDoors(
+		Set<FloorParts> topBlockedPartsInit = new HashSet<>(FloorTypesAuroraPalace.TOP.getFloorWith3x3Map().getBlockedFloorParts());
+		Set<FloorParts> doorBlockedPartsInit = getPartsBlockedByDoors(
 			floorCount * 10,  // 10 is always the height of the floor
-			(floorCount + 1) * 10,
-			Rotation.NONE,  // + 1 because default rotation is clockwise_90
-			world, sbb, false);
-		currentlyBlockedParts.addAll(doorBlockedParts);
+			(floorCount + 1) * 10
+		);
+		topBlockedPartsInit.addAll(doorBlockedPartsInit);
+		Set<FloorParts> bottomBlockedPartsInit = getPartsBlockedByDoors(
+			(floorCount - 1) * 10,  // 10 is always the height of the floor
+			floorCount * 10
+		);
+
+		Set<FloorParts> doorBlockedParts;
+		Set<FloorParts> topBlockedParts = new HashSet<>(topBlockedPartsInit);
+		Set<FloorParts> bottomBlockedParts = new HashSet<>(bottomBlockedPartsInit);
 
 		while (plan.size() < floorCount) {
-			Set<FloorParts> finalCurrentlyBlockedParts = currentlyBlockedParts;
+			Set<FloorParts> finalTopBlockedParts = topBlockedParts;
+			Set<FloorParts> finalBottomBlockedParts = bottomBlockedParts;
+
 			Map<FloorTypesAuroraPalace, List<Integer>> possibleFloors = Arrays.stream(FloorTypesAuroraPalace.values())
 				.collect(Collectors.toMap(
-
 					floorType -> floorType,
-					floorType -> getAllowedRotations(floorType, finalCurrentlyBlockedParts)
-				));
+					floorType -> getAllowedRotations(floorType, finalTopBlockedParts, finalBottomBlockedParts))
+				);
 
 			possibleFloors.entrySet().removeIf(entry -> entry.getValue().isEmpty());
 			possibleFloors.keySet().remove(FloorTypesAuroraPalace.TOP);
 			if (possibleFloors.isEmpty()) {
 				plan.clear();
-				currentlyBlockedParts = new HashSet<>(FloorTypesAuroraPalace.TOP.getFloorWith3x3Map().getBlockedFloorParts());
-				doorBlockedParts = getPartsBlockedByDoors(
-					floorCount * 10,  // 10 is always the height of the floor
-					(floorCount + 1) * 10,
-					Rotation.NONE,  // + 1 because default rotation is clockwise_90
-					world, sbb, false);
-				currentlyBlockedParts.addAll(doorBlockedParts);
+				topBlockedParts = topBlockedPartsInit;
+				bottomBlockedParts = bottomBlockedPartsInit;
 				continue;
 			}
 
@@ -303,34 +306,41 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			int chosenRotation = WorldUtil.getRandomElement(possibleFloors.get(chosenType), decoRNG);
 			plan.add(new Pair<>(chosenType, chosenRotation));
 
-			currentlyBlockedParts = chosenType.getFloorWith3x3Map().getBlockedFloorParts()
+			topBlockedParts = chosenType.getFloorWith3x3Map().getBlockedFloorParts()
 				.stream()
 				.map(part -> part.rotateClockwise(chosenRotation))
 				.collect(Collectors.toSet());
 			doorBlockedParts = getPartsBlockedByDoors(
-				(floorCount - plan.size()) * 10,  // 10 is always the height of the floor
-				(floorCount - plan.size() + 1) * 10,
-				Rotation.NONE,  // + 1 because default rotation is clockwise_90
-			world, sbb, false);
-			currentlyBlockedParts.addAll(doorBlockedParts);
+				(floorCount - plan.size()) * 10,
+				(floorCount - plan.size() + 1) * 10
+			);
+			topBlockedParts.addAll(doorBlockedParts);
+			bottomBlockedParts = getPartsBlockedByDoors(
+				(floorCount - 1) * 10,  // 10 is always the height of the floor
+				floorCount * 10
+			);
 		}
 
 		return plan;
 	}
 
-	private List<Integer> getAllowedRotations(FloorTypesAuroraPalace floorType, Set<FloorParts> currentlyBlockedParts) {
+	private List<Integer> getAllowedRotations(FloorTypesAuroraPalace floorType, Set<FloorParts> topBlockedParts, Set<FloorParts> bottomBlockedParts) {
 		return IntStream.range(0, 4)
-			.filter(rotation -> isRotationAllowed(floorType, rotation, currentlyBlockedParts))
+			.filter(rotation -> isRotationAllowed(floorType, rotation, topBlockedParts, bottomBlockedParts))
 			.boxed()
 			.collect(Collectors.toList());
 	}
 
-	private boolean isRotationAllowed(FloorTypesAuroraPalace floorType, int rotation, Set<FloorParts> currentlyBlockedParts) {
+	private boolean isRotationAllowed(FloorTypesAuroraPalace floorType, int rotation, Set<FloorParts> topBlockedParts, Set<FloorParts> bottomBlockedParts) {
 		Set<FloorParts> requiredParts = floorType.getFloorWith3x3Map().getRequiredFloorParts()
 			.stream()
 			.map(part -> part.rotateClockwise(rotation))
 			.collect(Collectors.toSet());
-		return Collections.disjoint(requiredParts, currentlyBlockedParts);
+		Set<FloorParts> rotatedBlockedParts = floorType.getFloorWith3x3Map().getBlockedFloorParts()
+			.stream()
+			.map(part -> part.rotateClockwise(rotation))
+			.collect(Collectors.toSet());
+		return Collections.disjoint(requiredParts, topBlockedParts) && Collections.disjoint(rotatedBlockedParts, new HashSet<>(bottomBlockedParts));
 	}
 
 
@@ -473,7 +483,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		return isClear;
 	}
 
-	private List<FloorParts> getPartsBlockedByDoors(int bottom, int top, Rotation rotation, WorldGenLevel world, BoundingBox sbb, boolean debugWool) {
+	private Set<FloorParts> getPartsBlockedByDoors(int bottom, int top) {
 		List<FloorParts> parts = List.of(
 			FloorParts.LEFT_BACK, FloorParts.LEFT, FloorParts.LEFT_FRONT, FloorParts.BACK, FloorParts.FRONT, FloorParts.RIGHT_BACK, FloorParts.RIGHT, FloorParts.RIGHT_FRONT
 		);
@@ -489,29 +499,12 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			new int[]{7, 7, 10, 10}
 		);
 
-		List<Block> blocks = List.of(  // DEBUG
-			Blocks.BLACK_WOOL,
-			Blocks.WHITE_WOOL,
-			Blocks.RED_WOOL,
-			Blocks.ORANGE_WOOL,
-			Blocks.YELLOW_WOOL,
-			Blocks.LIME_WOOL,
-			Blocks.LIGHT_BLUE_WOOL,
-			Blocks.BLUE_WOOL,
-			Blocks.PURPLE_WOOL
-		);
-
-		if (debugWool)
-			IntStream.range(0, parts.size()).forEach(i -> fillBlocksRotated(world, sbb, coordinates.get(i)[0], bottom + 1, coordinates.get(i)[1],
-				coordinates.get(i)[2], bottom + 1, coordinates.get(i)[3], blocks.get(i).defaultBlockState(), rotation));
-
-		return IntStream.range(0, parts.size())
-			.filter(i -> !isNoDoorAreaRotated(
-				coordinates.get(i)[0], bottom, coordinates.get(i)[1],
-				coordinates.get(i)[2], top, coordinates.get(i)[3], rotation)
+		return parts.stream()
+			.filter(part -> !isNoDoorAreaRotated(
+				coordinates.get(parts.indexOf(part))[0], bottom, coordinates.get(parts.indexOf(part))[1],
+				coordinates.get(parts.indexOf(part))[2], top, coordinates.get(parts.indexOf(part))[3], Rotation.NONE)
 			)
-			.mapToObj(parts::get)
-			.collect(Collectors.toList());
+			.collect(Collectors.toSet());
 	}
 
 	protected void decorateTopFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
