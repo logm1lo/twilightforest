@@ -65,7 +65,9 @@ import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.renderer.TFSkyRenderer;
+import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
+import twilightforest.client.renderer.tileentity.JarRenderer;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.config.TFConfig;
@@ -245,6 +247,21 @@ public class TFClientEvents {
 			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
 			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
 			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light")));
+
+			for (ResourceLocation location : JarRenderer.LOG_LOCATION_MAP.values()) {
+				String name = location.getPath();
+				if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
+				event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid")));
+			}
+		}
+
+		@SubscribeEvent
+		public static void cacheModels(ModelEvent.BakingCompleted event) {
+			JarRenderer.LOG_LOCATION_MAP.forEach((item, location) -> {
+				String name = location.getPath();
+				if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
+				JarRenderer.LIDS.put(item, event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid"))));
+			});
 		}
 
 		@SubscribeEvent
@@ -388,33 +405,37 @@ public class TFClientEvents {
 			} else {
 				aurora = 0;
 			}
-		}
 
-		if (!mc.isPaused()) {
 			BugModelAnimationHelper.animate();
 
-			if (TFConfig.firstPersonEffects && mc.level != null && mc.player != null) {
-				HashSet<ChunkPos> chunksInRange = new HashSet<>();
-				for (int x = -16; x <= 16; x += 16) {
-					for (int z = -16; z <= 16; z += 16) {
-						chunksInRange.add(new ChunkPos((int) (mc.player.getX() + x) >> 4, (int) (mc.player.getZ() + z) >> 4));
-					}
+			if (mc.level != null) {
+				if (mc.level.getSkyFlashTime() > 0) {
+					MagicPaintingRenderer.lastLightning = mc.level.getGameTime();
 				}
-				for (ChunkPos pos : chunksInRange) {
-					if (mc.level.getChunk(pos.x, pos.z, ChunkStatus.FULL, false) != null) {
-						List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream()
-							.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
-							.toList();
-						if (!beanstalksInChunk.isEmpty()) {
-							BlockEntity beanstalk = beanstalksInChunk.get(0);
-							Player player = mc.player;
-							intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
-							if (intensity > 0) {
-								player.moveTo(player.getX(), player.getY(), player.getZ(),
-									player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * intensity,
-									player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * intensity);
-								intensity = 0.0F;
-								break;
+
+				if (TFConfig.firstPersonEffects && mc.player != null) {
+					HashSet<ChunkPos> chunksInRange = new HashSet<>();
+					for (int x = -16; x <= 16; x += 16) {
+						for (int z = -16; z <= 16; z += 16) {
+							chunksInRange.add(new ChunkPos((int) (mc.player.getX() + x) >> 4, (int) (mc.player.getZ() + z) >> 4));
+						}
+					}
+					for (ChunkPos pos : chunksInRange) {
+						if (mc.level.getChunk(pos.x, pos.z, ChunkStatus.FULL, false) != null) {
+							List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream()
+								.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
+								.toList();
+							if (!beanstalksInChunk.isEmpty()) {
+								BlockEntity beanstalk = beanstalksInChunk.get(0);
+								Player player = mc.player;
+								intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
+								if (intensity > 0) {
+									player.moveTo(player.getX(), player.getY(), player.getZ(),
+										player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * intensity,
+										player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * intensity);
+									intensity = 0.0F;
+									break;
+								}
 							}
 						}
 					}
