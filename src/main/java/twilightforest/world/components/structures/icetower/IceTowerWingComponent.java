@@ -8,10 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -244,7 +241,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		decorateTopFloor(world, decoRNG, topFloor, topFloor * floorHeight, (topFloor * floorHeight) + floorHeight, ladderDir, downLadderDir, sbb);
 
-		List<Pair<FloorTypesAuroraPalace, Integer>> floorPlan = createFloorPlan(floors - 1, decoRNG);
+		List<Pair<FloorTypesAuroraPalace, Integer>> floorPlan = createFloorPlan(floors - 1, decoRNG, world, sbb);
 
 		for (int i = floors - 2; i >= 0; i--) {
 			placeFloor(world, decoRNG, sbb, floorHeight, i);
@@ -263,11 +260,17 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private List<Pair<FloorTypesAuroraPalace, Integer>> createFloorPlan(int floorCount, RandomSource decoRNG) {
+	private List<Pair<FloorTypesAuroraPalace, Integer>> createFloorPlan(int floorCount, RandomSource decoRNG, WorldGenLevel world, BoundingBox sbb) {
 		List<Pair<FloorTypesAuroraPalace, Integer>> plan = new ArrayList<>();
 
 		// we generate top to bottom because top floor is special and has requirements for anchors
 		Set<FloorParts> currentlyBlockedParts = new HashSet<>(FloorTypesAuroraPalace.TOP.getFloorWith3x3Map().getBlockedFloorParts());
+		List<FloorParts> doorBlockedParts = getPartsBlockedByDoors(
+			floorCount * 10,  // 10 is always the height of the floor
+			(floorCount + 1) * 10,
+			Rotation.NONE,  // + 1 because default rotation is clockwise_90
+			world, sbb, false);
+		currentlyBlockedParts.addAll(doorBlockedParts);
 
 		while (plan.size() < floorCount) {
 			Set<FloorParts> finalCurrentlyBlockedParts = currentlyBlockedParts;
@@ -283,6 +286,12 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			if (possibleFloors.isEmpty()) {
 				plan.clear();
 				currentlyBlockedParts = new HashSet<>(FloorTypesAuroraPalace.TOP.getFloorWith3x3Map().getBlockedFloorParts());
+				doorBlockedParts = getPartsBlockedByDoors(
+					floorCount * 10,  // 10 is always the height of the floor
+					(floorCount + 1) * 10,
+					Rotation.NONE,  // + 1 because default rotation is clockwise_90
+					world, sbb, false);
+				currentlyBlockedParts.addAll(doorBlockedParts);
 				continue;
 			}
 
@@ -298,11 +307,11 @@ public class IceTowerWingComponent extends TowerWingComponent {
 				.stream()
 				.map(part -> part.rotateClockwise(chosenRotation))
 				.collect(Collectors.toSet());
-			List<FloorParts> doorBlockedParts = getPartsBlockedByDoors(
+			doorBlockedParts = getPartsBlockedByDoors(
 				(floorCount - plan.size()) * 10,  // 10 is always the height of the floor
 				(floorCount - plan.size() + 1) * 10,
-				Rotation.values()[(chosenRotation + 1) % 4]  // + 1 because default rotation is clockwise_90
-			);
+				Rotation.NONE,  // + 1 because default rotation is clockwise_90
+			world, sbb, false);
 			currentlyBlockedParts.addAll(doorBlockedParts);
 		}
 
@@ -325,62 +334,62 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 
-	private HashMap<FloorTypesAuroraPalace, Double> calculateProbabilities(RandomSource decoRNG, int n, int minFloors, int additionFloors) {
-		HashMap<FloorTypesAuroraPalace, Integer> floorAmount = new HashMap<>();
-		for (int i = 0; i < n; i++) {
-			List<Pair<FloorTypesAuroraPalace, Integer>> plan = createFloorPlan(decoRNG.nextInt(additionFloors) + minFloors, decoRNG);
-			for (Pair<FloorTypesAuroraPalace, Integer> element : plan) {
-				FloorTypesAuroraPalace floorType = element.getFirst();
-				floorAmount.put(floorType, floorAmount.getOrDefault(floorType, 0) + 1);
-			}
-		}
-		HashMap<FloorTypesAuroraPalace, Double> probabilities = new HashMap<>();
-		for (FloorTypesAuroraPalace floorType : floorAmount.keySet()) {
-			probabilities.put(floorType, ((double) floorAmount.get(floorType)) / floorAmount.values().stream().mapToInt(Integer::intValue).sum());
-		}
-		return probabilities;
-	}
-
-	private HashMap<FloorTypesAuroraPalace, HashMap<Integer, Double>> calculateFloorDistributions(RandomSource decoRNG, int n, int fixedFloors) {
-		// Initialize a map to store the count of each floor type at each floor index
-		HashMap<FloorTypesAuroraPalace, HashMap<Integer, Integer>> floorCounts = new HashMap<>();
-
-		// Initialize floorCounts with empty maps for each FloorType
-		for (FloorTypesAuroraPalace floorType : FloorTypesAuroraPalace.values()) {
-			floorCounts.put(floorType, new HashMap<>());
-		}
-
-		// Simulate tower generation n times
-		for (int i = 0; i < n; i++) {
-			List<Pair<FloorTypesAuroraPalace, Integer>> plan = createFloorPlan(fixedFloors, decoRNG);
-			for (int j = 0; j < plan.size(); j++) {
-				Pair<FloorTypesAuroraPalace, Integer> element = plan.get(j);
-				FloorTypesAuroraPalace floorType = element.getFirst();
-				// Increment the count for this floor type at this floor index
-				HashMap<Integer, Integer> floorIndexCount = floorCounts.get(floorType);
-				floorIndexCount.put(j, floorIndexCount.getOrDefault(j, 0) + 1);
-			}
-		}
-
-		// Calculate the probabilities for each floor type at each floor index
-		HashMap<FloorTypesAuroraPalace, HashMap<Integer, Double>> probabilities = new HashMap<>();
-
-		// Total number of generations for each floor index
-		int totalGenerations = fixedFloors * n;
-
-		for (FloorTypesAuroraPalace floorType : floorCounts.keySet()) {
-			HashMap<Integer, Integer> floorIndexCount = floorCounts.get(floorType);
-			HashMap<Integer, Double> floorIndexProbabilities = new HashMap<>();
-
-			for (int floorIndex : floorIndexCount.keySet()) {
-				floorIndexProbabilities.put(floorIndex, ((double) floorIndexCount.get(floorIndex)) / totalGenerations);
-			}
-
-			probabilities.put(floorType, floorIndexProbabilities);
-		}
-
-		return probabilities;
-	}
+//	private HashMap<FloorTypesAuroraPalace, Double> calculateProbabilities(RandomSource decoRNG, int n, int minFloors, int additionFloors) {  // DEBUG
+//		HashMap<FloorTypesAuroraPalace, Integer> floorAmount = new HashMap<>();
+//		for (int i = 0; i < n; i++) {
+//			List<Pair<FloorTypesAuroraPalace, Integer>> plan = createFloorPlan(decoRNG.nextInt(additionFloors) + minFloors, decoRNG);
+//			for (Pair<FloorTypesAuroraPalace, Integer> element : plan) {
+//				FloorTypesAuroraPalace floorType = element.getFirst();
+//				floorAmount.put(floorType, floorAmount.getOrDefault(floorType, 0) + 1);
+//			}
+//		}
+//		HashMap<FloorTypesAuroraPalace, Double> probabilities = new HashMap<>();
+//		for (FloorTypesAuroraPalace floorType : floorAmount.keySet()) {
+//			probabilities.put(floorType, ((double) floorAmount.get(floorType)) / floorAmount.values().stream().mapToInt(Integer::intValue).sum());
+//		}
+//		return probabilities;
+//	}
+//
+//	private HashMap<FloorTypesAuroraPalace, HashMap<Integer, Double>> calculateFloorDistributions(RandomSource decoRNG, int n, int fixedFloors) {  // DEBUG
+//		// Initialize a map to store the count of each floor type at each floor index
+//		HashMap<FloorTypesAuroraPalace, HashMap<Integer, Integer>> floorCounts = new HashMap<>();
+//
+//		// Initialize floorCounts with empty maps for each FloorType
+//		for (FloorTypesAuroraPalace floorType : FloorTypesAuroraPalace.values()) {
+//			floorCounts.put(floorType, new HashMap<>());
+//		}
+//
+//		// Simulate tower generation n times
+//		for (int i = 0; i < n; i++) {
+//			List<Pair<FloorTypesAuroraPalace, Integer>> plan = createFloorPlan(fixedFloors, decoRNG);
+//			for (int j = 0; j < plan.size(); j++) {
+//				Pair<FloorTypesAuroraPalace, Integer> element = plan.get(j);
+//				FloorTypesAuroraPalace floorType = element.getFirst();
+//				// Increment the count for this floor type at this floor index
+//				HashMap<Integer, Integer> floorIndexCount = floorCounts.get(floorType);
+//				floorIndexCount.put(j, floorIndexCount.getOrDefault(j, 0) + 1);
+//			}
+//		}
+//
+//		// Calculate the probabilities for each floor type at each floor index
+//		HashMap<FloorTypesAuroraPalace, HashMap<Integer, Double>> probabilities = new HashMap<>();
+//
+//		// Total number of generations for each floor index
+//		int totalGenerations = fixedFloors * n;
+//
+//		for (FloorTypesAuroraPalace floorType : floorCounts.keySet()) {
+//			HashMap<Integer, Integer> floorIndexCount = floorCounts.get(floorType);
+//			HashMap<Integer, Double> floorIndexProbabilities = new HashMap<>();
+//
+//			for (int floorIndex : floorIndexCount.keySet()) {
+//				floorIndexProbabilities.put(floorIndex, ((double) floorIndexCount.get(floorIndex)) / totalGenerations);
+//			}
+//
+//			probabilities.put(floorType, floorIndexProbabilities);
+//		}
+//
+//		return probabilities;
+//	}
 
 	private Direction getChestDirection(Rotation rotation) {
 		return rotation.rotate(getOrientation());
@@ -464,21 +473,37 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		return isClear;
 	}
 
-	private List<FloorParts> getPartsBlockedByDoors(int bottom, int top, Rotation rotation) {
+	private List<FloorParts> getPartsBlockedByDoors(int bottom, int top, Rotation rotation, WorldGenLevel world, BoundingBox sbb, boolean debugWool) {
 		List<FloorParts> parts = List.of(
-			FloorParts.LEFT_FRONT, FloorParts.FRONT, FloorParts.RIGHT_FRONT, FloorParts.LEFT, FloorParts.RIGHT, FloorParts.LEFT_BACK, FloorParts.BACK, FloorParts.RIGHT_BACK
+			FloorParts.LEFT_BACK, FloorParts.LEFT, FloorParts.LEFT_FRONT, FloorParts.BACK, FloorParts.FRONT, FloorParts.RIGHT_BACK, FloorParts.RIGHT, FloorParts.RIGHT_FRONT
 		);
 
 		List<int[]> coordinates = List.of(
 			new int[]{0, 0, 3, 3},
 			new int[]{4, 0, 6, 3},
-			new int[]{8, 0, 10, 3},
+			new int[]{7, 0, 10, 3},
 			new int[]{0, 4, 3, 6},
-			new int[]{8, 4, 10, 6},
-			new int[]{0, 8, 3, 10},
-			new int[]{4, 8, 6, 10},
-			new int[]{8, 8, 10, 10}
+			new int[]{7, 4, 10, 6},
+			new int[]{0, 7, 3, 10},
+			new int[]{4, 7, 6, 10},
+			new int[]{7, 7, 10, 10}
 		);
+
+		List<Block> blocks = List.of(  // DEBUG
+			Blocks.BLACK_WOOL,
+			Blocks.WHITE_WOOL,
+			Blocks.RED_WOOL,
+			Blocks.ORANGE_WOOL,
+			Blocks.YELLOW_WOOL,
+			Blocks.LIME_WOOL,
+			Blocks.LIGHT_BLUE_WOOL,
+			Blocks.BLUE_WOOL,
+			Blocks.PURPLE_WOOL
+		);
+
+		if (debugWool)
+			IntStream.range(0, parts.size()).forEach(i -> fillBlocksRotated(world, sbb, coordinates.get(i)[0], bottom + 1, coordinates.get(i)[1],
+				coordinates.get(i)[2], bottom + 1, coordinates.get(i)[3], blocks.get(i).defaultBlockState(), rotation));
 
 		return IntStream.range(0, parts.size())
 			.filter(i -> !isNoDoorAreaRotated(
