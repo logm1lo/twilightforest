@@ -1,0 +1,29 @@
+name: Aurora Palace Bug Report
+description: Report an issue related to Aurora Palace generation
+labels: [bug]
+body:
+    - type: input
+      attributes:
+          label: Seed
+          description: Provide the seed of the world where the issue occurred. This will help in reproducing the bug exactly.
+          placeholder: "Example: 1234567890"
+      validations:
+          required: true
+    - type: input
+      attributes:
+          label: Coordinates
+          description: Provide the coordinates (X, Y, Z) where the issue happened. This helps in locating the exact spot in the world.
+          placeholder: "Example: X: 100, Y: 64, Z: 200"
+      validations:
+          required: true
+    - type: input
+      attributes:
+          label: Screenshot
+          description: Provide a link to a screenshot of the issue. This helps in visualizing the problem. You can upload the screenshot to an image hosting service and paste the link here.
+          placeholder: "Example: https://private-user-images.githubusercontent.com/"
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: Additional Details
+          description: Any additional information that might be relevant to the bug report. This may include a brief description of what you were doing when the issue occurred or any other context.
