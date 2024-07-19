@@ -343,64 +343,6 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		return Collections.disjoint(requiredParts, topBlockedParts) && Collections.disjoint(rotatedBlockedParts, new HashSet<>(bottomBlockedParts));
 	}
 
-
-//	private HashMap<FloorTypesAuroraPalace, Double> calculateProbabilities(RandomSource decoRNG, int n, int minFloors, int additionFloors) {  // DEBUG
-//		HashMap<FloorTypesAuroraPalace, Integer> floorAmount = new HashMap<>();
-//		for (int i = 0; i < n; i++) {
-//			List<Pair<FloorTypesAuroraPalace, Integer>> plan = createFloorPlan(decoRNG.nextInt(additionFloors) + minFloors, decoRNG);
-//			for (Pair<FloorTypesAuroraPalace, Integer> element : plan) {
-//				FloorTypesAuroraPalace floorType = element.getFirst();
-//				floorAmount.put(floorType, floorAmount.getOrDefault(floorType, 0) + 1);
-//			}
-//		}
-//		HashMap<FloorTypesAuroraPalace, Double> probabilities = new HashMap<>();
-//		for (FloorTypesAuroraPalace floorType : floorAmount.keySet()) {
-//			probabilities.put(floorType, ((double) floorAmount.get(floorType)) / floorAmount.values().stream().mapToInt(Integer::intValue).sum());
-//		}
-//		return probabilities;
-//	}
-//
-//	private HashMap<FloorTypesAuroraPalace, HashMap<Integer, Double>> calculateFloorDistributions(RandomSource decoRNG, int n, int fixedFloors) {  // DEBUG
-//		// Initialize a map to store the count of each floor type at each floor index
-//		HashMap<FloorTypesAuroraPalace, HashMap<Integer, Integer>> floorCounts = new HashMap<>();
-//
-//		// Initialize floorCounts with empty maps for each FloorType
-//		for (FloorTypesAuroraPalace floorType : FloorTypesAuroraPalace.values()) {
-//			floorCounts.put(floorType, new HashMap<>());
-//		}
-//
-//		// Simulate tower generation n times
-//		for (int i = 0; i < n; i++) {
-//			List<Pair<FloorTypesAuroraPalace, Integer>> plan = createFloorPlan(fixedFloors, decoRNG);
-//			for (int j = 0; j < plan.size(); j++) {
-//				Pair<FloorTypesAuroraPalace, Integer> element = plan.get(j);
-//				FloorTypesAuroraPalace floorType = element.getFirst();
-//				// Increment the count for this floor type at this floor index
-//				HashMap<Integer, Integer> floorIndexCount = floorCounts.get(floorType);
-//				floorIndexCount.put(j, floorIndexCount.getOrDefault(j, 0) + 1);
-//			}
-//		}
-//
-//		// Calculate the probabilities for each floor type at each floor index
-//		HashMap<FloorTypesAuroraPalace, HashMap<Integer, Double>> probabilities = new HashMap<>();
-//
-//		// Total number of generations for each floor index
-//		int totalGenerations = fixedFloors * n;
-//
-//		for (FloorTypesAuroraPalace floorType : floorCounts.keySet()) {
-//			HashMap<Integer, Integer> floorIndexCount = floorCounts.get(floorType);
-//			HashMap<Integer, Double> floorIndexProbabilities = new HashMap<>();
-//
-//			for (int floorIndex : floorIndexCount.keySet()) {
-//				floorIndexProbabilities.put(floorIndex, ((double) floorIndexCount.get(floorIndex)) / totalGenerations);
-//			}
-//
-//			probabilities.put(floorType, floorIndexProbabilities);
-//		}
-//
-//		return probabilities;
-//	}
-
 	private Direction getChestDirection(Rotation rotation) {
 		return rotation.rotate(getOrientation());
 	}
