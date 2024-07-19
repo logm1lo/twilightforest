@@ -35,7 +35,7 @@ import java.util.stream.IntStream;
 public class IceTowerWingComponent extends TowerWingComponent {
 
 	protected static final int SIZE = 11;
-	private static final int RANGE = (int) (SIZE * 1.6F);
+	private static final int RANGE = (int) (SIZE * 4F);
 
 	boolean hasBase = false;
 	protected int treasureFloor = -1;
