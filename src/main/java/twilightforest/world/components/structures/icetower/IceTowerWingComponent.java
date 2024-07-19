@@ -316,8 +316,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			);
 			topBlockedParts.addAll(doorBlockedParts);
 			bottomBlockedParts = getPartsBlockedByDoors(
-				(floorCount - 1) * 10,  // 10 is always the height of the floor
-				floorCount * 10
+				(floorCount - plan.size() - 1) * 10,  // 10 is always the height of the floor
+				(floorCount - plan.size()) * 10
 			);
 		}
 
