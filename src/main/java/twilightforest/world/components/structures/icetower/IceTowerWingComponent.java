@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
@@ -36,6 +37,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	protected static final int SIZE = 11;
 	private static final int RANGE = (int) (SIZE * 4F);
+	private static final int FLOOR_PLAN_MAX_TRIES = 10000;
 
 	boolean hasBase = false;
 	protected int treasureFloor = -1;
@@ -241,7 +243,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		decorateTopFloor(world, decoRNG, topFloor, topFloor * floorHeight, (topFloor * floorHeight) + floorHeight, ladderDir, downLadderDir, sbb);
 
-		List<Pair<FloorTypesAuroraPalace, Integer>> floorPlan = createFloorPlan(floors - 1, decoRNG);
+		List<Pair<FloorTypesAuroraPalace, Integer>> floorPlan = createFloorPlan(floors - 1, decoRNG, sbb);
 
 		for (int i = floors - 2; i >= 0; i--) {
 			placeFloor(world, decoRNG, sbb, floorHeight, i);
@@ -260,8 +262,9 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private List<Pair<FloorTypesAuroraPalace, Integer>> createFloorPlan(int floorCount, RandomSource decoRNG) {
+	private List<Pair<FloorTypesAuroraPalace, Integer>> createFloorPlan(int floorCount, RandomSource decoRNG, BoundingBox sbb) {
 		List<Pair<FloorTypesAuroraPalace, Integer>> plan = new ArrayList<>();
+		int tries = 0;
 
 		// we generate top to bottom because top floor is special and has requirements for anchors
 		Set<FloorParts> topBlockedPartsInit = new HashSet<>(FloorTypesAuroraPalace.TOP.getFloorWith3x3Map().getBlockedFloorParts());
@@ -280,6 +283,11 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		Set<FloorParts> bottomBlockedParts = new HashSet<>(bottomBlockedPartsInit);
 
 		while (plan.size() < floorCount) {
+			if (tries > FLOOR_PLAN_MAX_TRIES) {
+				topBlockedParts.clear();
+				bottomBlockedParts.clear();
+				TwilightForestMod.LOGGER.error("Unable to generate floor plan for aurora palace at {}. Please report mod version, coords, and seed to Twilight Forest devs", sbb.getCenter());
+			}
 			Set<FloorParts> finalTopBlockedParts = topBlockedParts;
 			Set<FloorParts> finalBottomBlockedParts = bottomBlockedParts;
 
@@ -295,6 +303,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 				plan.clear();
 				topBlockedParts = topBlockedPartsInit;
 				bottomBlockedParts = bottomBlockedPartsInit;
+				tries++;
 				continue;
 			}
 
