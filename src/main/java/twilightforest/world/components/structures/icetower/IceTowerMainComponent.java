@@ -43,14 +43,22 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
-		super.addChildren(parent, list, rand);
+		if (!(list instanceof StructurePiecesBuilder start))  // should never happen
+			return;
+
+		while (!((IceTowerMainComponent) parent).hasBossWing) {
+			rand.setSeed(rand.nextLong());
+			openings.clear();
+			start.pieces.clear();
+			start.pieces.add(parent);
+			super.addChildren(parent, start, rand);
+		}
 
 		// add entrance tower
 		BoundingBox towerBB = BoundingBoxUtils.clone(this.boundingBox);
 
-		if (list instanceof StructurePiecesBuilder start)
-			for (StructurePiece structurecomponent : start.pieces)
-				towerBB.encapsulate(structurecomponent.getBoundingBox());
+		for (StructurePiece structurecomponent : start.pieces)
+			towerBB.encapsulate(structurecomponent.getBoundingBox());
 
 		// TODO: make this more general
 		BlockPos myDoor = this.openings.get(0);
