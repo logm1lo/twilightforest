@@ -9,6 +9,8 @@ public class FloorWraparoundWallStepsPillars extends FloorWith3x3Map {
 			FloorParts.LEFT_BACK
 		);
 		BLOCKED_FLOOR_PARTS = List.of(
+			FloorParts.LEFT_BACK,
+			FloorParts.LEFT_FRONT,
 			FloorParts.RIGHT_FRONT,
 			FloorParts.PILLARS
 		);
