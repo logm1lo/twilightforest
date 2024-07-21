@@ -105,10 +105,10 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				boolean generateGround = this.generateGround && connection.pos().getY() < 5;
 				if (this.roomSize < 1) {
 					return;
-				} else if (this.genDepth > 30 || random.nextInt(jigsawIndex + 1) > 1) {
+				} else if (this.genDepth > 30 || random.nextInt(3) == 0) {
 					TowerBridge.putCover(this, pieceAccessor, random, connection.pos(), connection.orientation(), this.structureManager, generateGround, this.genDepth + 1);
 				} else {
-					TowerBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, false, this.roomSize - random.nextInt(2) - (random.nextInt(this.genDepth) >> 1), generateGround, this.genDepth + 1, false);
+					TowerBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, false, this.roomSize - random.nextInt(2), generateGround, this.genDepth + 1, false);
 				}
 
 				return;
@@ -145,7 +145,8 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), topPos, connection.orientation(), this.structureManager, tempRoom, connection.target(), random);
 
 			if (placeableJunction != null) {
-				StructurePiece room = new TowerRoom(this.structureManager, this.genDepth + 1, placeableJunction, tempRoom, this.roomSize, false, this.getSourceJigsaw().orientation().front().getAxis().isHorizontal() && random.nextBoolean());
+				boolean canGenerateLadder = this.getSourceJigsaw().orientation().front().getAxis().isHorizontal() && random.nextInt(3) != 0;
+				StructurePiece room = new TowerRoom(this.structureManager, this.genDepth + 1, placeableJunction, tempRoom, this.roomSize, false, canGenerateLadder);
 
 				if (pieceAccessor.findCollisionPiece(room.getBoundingBox()) == null) {
 					pieceAccessor.addPiece(room);

@@ -69,7 +69,7 @@ public final class TowerBridge extends TwilightJigsawPiece implements PieceBeard
 		}
 
 		boolean shouldGenerateGround = generateGround && connection.pos().getY() < 6;
-		if (fromCentralTower || random.nextInt((newDepth >> 1) + 1) > 2) {
+		if (fromCentralTower || random.nextBoolean()) {
 			for (ResourceLocation bridgeId : TowerUtil.shuffledBridges(fromCentralTower, random)) {
 				if (tryBridge(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, fromCentralTower, roomMaxSize, shouldGenerateGround, newDepth, bridgeId, fromCentralTower, magicGallery)) {
 					return;

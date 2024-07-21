@@ -84,11 +84,11 @@ public final class TowerPieces {
 			TwilightForestMod.prefix("lich_tower/9x9/t_junction"),
 			TwilightForestMod.prefix("lich_tower/9x9/archives"),
 			TwilightForestMod.prefix("lich_tower/9x9/enchanting_prison"),
-			TwilightForestMod.prefix("lich_tower/9x9/keepsake_casket"),
 			TwilightForestMod.prefix("lich_tower/9x9/tiered_library"),
 			TwilightForestMod.prefix("lich_tower/9x9/mossy_junction"),
 			TwilightForestMod.prefix("lich_tower/9x9/altar"),
-			TwilightForestMod.prefix("lich_tower/9x9/lectern_hall")
+			TwilightForestMod.prefix("lich_tower/9x9/lectern_hall"),
+			TwilightForestMod.prefix("lich_tower/9x9/tiered_study")
 		}
 	};
 	static final ResourceLocation[] GALLERY_ROOMS = new ResourceLocation[] {
@@ -244,21 +244,52 @@ public final class TowerPieces {
 			4, List.of()
 		)),
 		new Int2ObjectArrayMap<>(Map.of(
-			0, List.of(),
 			1, List.of(
-				TwilightForestMod.prefix("lich_tower/9x9/altar"),
-				TwilightForestMod.prefix("lich_tower/9x9/archives"),
-				TwilightForestMod.prefix("lich_tower/9x9/centerpiece"),
-				TwilightForestMod.prefix("lich_tower/9x9/enchanting_prison"),
+				TwilightForestMod.prefix("lich_tower/9x9/straight_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/t_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/full_junction"),
-				TwilightForestMod.prefix("lich_tower/9x9/lectern_hall"),
-				TwilightForestMod.prefix("lich_tower/9x9/mossy_junction")
+				TwilightForestMod.prefix("lich_tower/9x9/keepsake_casket"),
+				TwilightForestMod.prefix("lich_tower/9x9/archives"),
+				TwilightForestMod.prefix("lich_tower/9x9/enchanting_prison"),
+				TwilightForestMod.prefix("lich_tower/9x9/mossy_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/study"),
+				TwilightForestMod.prefix("lich_tower/9x9/centerpiece"),
+				TwilightForestMod.prefix("lich_tower/9x9/altar"),
+				TwilightForestMod.prefix("lich_tower/9x9/lectern_hall")
 			),
-			2, List.of(),
-			3, List.of(),
-			4, List.of(),
-			5, List.of(),
-			6, List.of()
+			2, List.of(
+				TwilightForestMod.prefix("lich_tower/9x9/classic_library"),
+				TwilightForestMod.prefix("lich_tower/9x9/straight_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/t_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/keepsake_casket"),
+				TwilightForestMod.prefix("lich_tower/9x9/mossy_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/study")
+			),
+			4, List.of(
+				TwilightForestMod.prefix("lich_tower/9x9/classic_library"),
+				TwilightForestMod.prefix("lich_tower/9x9/straight_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/t_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/keepsake_casket"),
+				TwilightForestMod.prefix("lich_tower/9x9/mossy_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/study")
+			),
+			5, List.of(
+				TwilightForestMod.prefix("lich_tower/9x9/straight_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/t_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/full_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/keepsake_casket"),
+				TwilightForestMod.prefix("lich_tower/9x9/archives"),
+				TwilightForestMod.prefix("lich_tower/9x9/enchanting_prison"),
+				TwilightForestMod.prefix("lich_tower/9x9/mossy_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/study"),
+				TwilightForestMod.prefix("lich_tower/9x9/centerpiece"),
+				TwilightForestMod.prefix("lich_tower/9x9/altar"),
+				TwilightForestMod.prefix("lich_tower/9x9/lectern_hall")
+			)
 		))
 	);
 
