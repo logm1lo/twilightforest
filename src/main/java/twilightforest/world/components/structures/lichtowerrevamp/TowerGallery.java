@@ -114,7 +114,7 @@ public class TowerGallery extends TwilightJigsawPiece implements PieceBeardifier
 	}
 
 	public static void tryPlaceGallery(RandomSource random, StructurePieceAccessor pieceAccessor, @Nullable ResourceLocation roomId, JigsawRecord connection, TwilightJigsawPiece parent, int newDepth, StructureTemplateManager structureManager, String jigsawLabel) {
-		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent, connection.pos(), connection.orientation(), structureManager, roomId, jigsawLabel, random);
+		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), connection.pos(), connection.orientation(), structureManager, roomId, jigsawLabel, random);
 		if (placeableJunction != null) {
 			StructurePiece room = new TowerGallery(newDepth, structureManager, roomId, placeableJunction);
 			pieceAccessor.addPiece(room);

@@ -1,7 +1,14 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 // TODO: Move to DataMaps if possible to obtain RegistryAccess
 public final class TowerPieces {
@@ -79,7 +86,9 @@ public final class TowerPieces {
 			TwilightForestMod.prefix("lich_tower/9x9/enchanting_prison"),
 			TwilightForestMod.prefix("lich_tower/9x9/keepsake_casket"),
 			TwilightForestMod.prefix("lich_tower/9x9/tiered_library"),
-			TwilightForestMod.prefix("lich_tower/9x9/mossy_junction")
+			TwilightForestMod.prefix("lich_tower/9x9/mossy_junction"),
+			TwilightForestMod.prefix("lich_tower/9x9/altar"),
+			TwilightForestMod.prefix("lich_tower/9x9/lectern_hall")
 		}
 	};
 	static final ResourceLocation[] GALLERY_ROOMS = new ResourceLocation[] {
@@ -198,6 +207,60 @@ public final class TowerPieces {
 		TwilightForestMod.prefix("lich_tower/7x7/beard_flat"),
 		TwilightForestMod.prefix("lich_tower/9x9/beard_flat")
 	};
+
+	static final Set<String> LADDER_PLACEMENTS_1 = new HashSet<>(List.of(
+		"twilightforest:ladder_below/0",
+		"twilightforest:ladder_below/1",
+		"twilightforest:ladder_below/2"
+	));
+	static final Set<String> LADDER_PLACEMENTS_2 = new HashSet<>(List.of(
+		"twilightforest:ladder_below/0",
+		"twilightforest:ladder_below/1",
+		"twilightforest:ladder_below/2",
+		"twilightforest:ladder_below/3",
+		"twilightforest:ladder_below/4"
+	));
+	static final Set<String> LADDER_PLACEMENTS_3 = new HashSet<>(List.of(
+		"twilightforest:ladder_below/0",
+		"twilightforest:ladder_below/1",
+		"twilightforest:ladder_below/2",
+		"twilightforest:ladder_below/3",
+		"twilightforest:ladder_below/4",
+		"twilightforest:ladder_below/5",
+		"twilightforest:ladder_below/6"
+	));
+
+	static final List<Int2ObjectMap<List<ResourceLocation>>> LADDER_ROOMS = List.of(
+		new Int2ObjectArrayMap<>(Map.of(
+			0, List.of(),
+			1, List.of(),
+			2, List.of()
+		)),
+		new Int2ObjectArrayMap<>(Map.of(
+			0, List.of(),
+			1, List.of(),
+			2, List.of(),
+			3, List.of(),
+			4, List.of()
+		)),
+		new Int2ObjectArrayMap<>(Map.of(
+			0, List.of(),
+			1, List.of(
+				TwilightForestMod.prefix("lich_tower/9x9/altar"),
+				TwilightForestMod.prefix("lich_tower/9x9/archives"),
+				TwilightForestMod.prefix("lich_tower/9x9/centerpiece"),
+				TwilightForestMod.prefix("lich_tower/9x9/enchanting_prison"),
+				TwilightForestMod.prefix("lich_tower/9x9/full_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/lectern_hall"),
+				TwilightForestMod.prefix("lich_tower/9x9/mossy_junction")
+			),
+			2, List.of(),
+			3, List.of(),
+			4, List.of(),
+			5, List.of(),
+			6, List.of()
+		))
+	);
 
 	private TowerPieces() {
 		throw new IllegalStateException("How did we get here?");

@@ -9,12 +9,17 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -34,9 +39,17 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.util.jigsaw.JigsawUtil;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+
 public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardifierModifier {
 	private final int roomSize;
 	private final boolean generateGround;
+	private final int ladderIndex;
+	private final String jigsawLadderTarget;
+	private final int roofFallback;
 
 	public TowerRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.TOWER_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
@@ -45,15 +58,34 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 
 		this.roomSize = compoundTag.getInt("room_size");
 		this.generateGround = compoundTag.getBoolean("gen_ground");
+		this.ladderIndex = compoundTag.getInt("ladder_index");
+		this.jigsawLadderTarget = this.shouldLadderUpwards() ? this.getSpareJigsaws().get(this.ladderIndex).target() : "";
+		this.roofFallback = compoundTag.getInt("roof_index");
 	}
 
-	public TowerRoom(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, ResourceLocation roomId, int roomSize, boolean generateGround) {
+	public TowerRoom(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, ResourceLocation roomId, int roomSize, boolean generateGround, boolean canGenerateLadder) {
 		super(TFStructurePieceTypes.TOWER_ROOM.get(), genDepth, structureManager, roomId, jigsawContext);
 
 		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.ROOM_SPAWNERS), true);
 
 		this.roomSize = roomSize;
 		this.generateGround = generateGround;
+
+		Set<String> ladderPlacements = canGenerateLadder ? TowerUtil.getLadderPlacementsForSize(this.roomSize) : Collections.emptySet();
+		this.ladderIndex = canGenerateLadder ? this.pickFirstIndex(this.getSpareJigsaws(), ladderPlacements::contains) : -1;
+
+		this.jigsawLadderTarget = this.shouldLadderUpwards() ? this.getSpareJigsaws().get(this.ladderIndex).target() : "";
+		this.roofFallback = canGenerateLadder ? this.pickFirstIndex(this.getSpareJigsaws(), "twilightforest:lich_tower/roof"::equals) : -1;
+	}
+
+	private int pickFirstIndex(List<JigsawRecord> spareJigsaws, Predicate<String> filter) {
+		for (int i = 0; i < spareJigsaws.size(); i++) {
+			if (filter.test(spareJigsaws.get(i).target())) {
+				return i;
+			}
+		}
+
+		return -1;
 	}
 
 	@Override
@@ -62,6 +94,8 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 
 		structureTag.putInt("room_size", this.roomSize);
 		structureTag.putBoolean("gen_ground", this.generateGround);
+		structureTag.putInt("ladder_index", this.ladderIndex);
+		structureTag.putInt("roof_index", this.roofFallback);
 	}
 
 	@Override
@@ -76,20 +110,14 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				} else {
 					TowerBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, false, this.roomSize - random.nextInt(2) - (random.nextInt(this.genDepth) >> 1), generateGround, this.genDepth + 1, false);
 				}
+
+				return;
 			}
 			case "twilightforest:lich_tower/roof" -> {
-				FrontAndTop orientationToMatch = getVerticalOrientation(connection, Direction.UP, this);
-				BoundingBox roofExtension = BoundingBoxUtils.extrusionFrom(this.boundingBox.minX(), this.boundingBox.maxY() + 1, this.boundingBox.minZ(), this.boundingBox.maxX(), this.boundingBox.maxY() + 1, this.boundingBox.maxZ(), orientationToMatch.top().getOpposite(), 1);
-				boolean doSideAttachment = pieceAccessor.findCollisionPiece(roofExtension) != null;
-
-				for (ResourceLocation roofLocation : TowerUtil.shuffledRoofs(random, this.roomSize, doSideAttachment)) {
-					if (tryRoof(pieceAccessor, random, connection, roofLocation, orientationToMatch, false, this, this.genDepth + 1, this.structureManager)) {
-						return;
-					}
+				if (!this.shouldLadderUpwards()) {
+					this.putRoof(pieceAccessor, random, connection);
 				}
-
-				ResourceLocation fallbackRoof = TowerUtil.getFallbackRoof(this.roomSize, doSideAttachment);
-				tryRoof(pieceAccessor, random, connection, fallbackRoof, orientationToMatch, true, this, this.genDepth + 1, this.structureManager);
+				return;
 			}
 			case "twilightforest:lich_tower/beard" -> {
 				if (this.generateGround) {
@@ -109,6 +137,43 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				this.tryBeard(pieceAccessor, random, connection, fallbackBeard, orientationToMatch, true);
 			}
 		}
+
+		if (this.ladderIndex == jigsawIndex && this.jigsawLadderTarget.equals(connection.target())) {
+			int ladderOffset = Integer.parseInt(this.jigsawLadderTarget.substring(this.jigsawLadderTarget.length() - 1));
+			ResourceLocation tempRoom = TowerUtil.getRoomUpwards(random, this.roomSize, ladderOffset);
+			BlockPos topPos = connection.pos().offset(0, this.boundingBox.getYSpan() - connection.pos().getY() - 1, 0);
+			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), topPos, connection.orientation(), this.structureManager, tempRoom, connection.target(), random);
+
+			if (placeableJunction != null) {
+				StructurePiece room = new TowerRoom(this.structureManager, this.genDepth + 1, placeableJunction, tempRoom, this.roomSize, false, this.getSourceJigsaw().orientation().front().getAxis().isHorizontal() && random.nextBoolean());
+
+				if (pieceAccessor.findCollisionPiece(room.getBoundingBox()) == null) {
+					pieceAccessor.addPiece(room);
+					room.addChildren(parent, pieceAccessor, random);
+
+					return;
+				}
+			}
+
+			// If the room above cannot generate, then place the roof instead
+			this.putRoof(pieceAccessor, random, this.getSpareJigsaws().get(this.roofFallback));
+		}
+	}
+
+	private boolean putRoof(StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection) {
+		FrontAndTop orientationToMatch = getVerticalOrientation(connection, Direction.UP, this);
+		BoundingBox roofExtension = BoundingBoxUtils.extrusionFrom(this.boundingBox.minX(), this.boundingBox.maxY() + 1, this.boundingBox.minZ(), this.boundingBox.maxX(), this.boundingBox.maxY() + 1, this.boundingBox.maxZ(), orientationToMatch.top().getOpposite(), 1);
+		boolean doSideAttachment = connection.orientation().front().getAxis().isHorizontal() && pieceAccessor.findCollisionPiece(roofExtension) != null;
+
+		for (ResourceLocation roofLocation : TowerUtil.shuffledRoofs(random, this.roomSize, doSideAttachment)) {
+			if (tryRoof(pieceAccessor, random, connection, roofLocation, orientationToMatch, false, this, this.genDepth + 1, this.structureManager)) {
+				return true;
+			}
+		}
+
+		ResourceLocation fallbackRoof = TowerUtil.getFallbackRoof(this.roomSize, doSideAttachment);
+		tryRoof(pieceAccessor, random, connection, fallbackRoof, orientationToMatch, true, this, this.genDepth + 1, this.structureManager);
+		return false;
 	}
 
 	@NotNull
@@ -120,7 +185,7 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 	}
 
 	public static boolean tryRoof(StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, @Nullable ResourceLocation roofLocation, FrontAndTop orientationToMatch, boolean allowClipping, TwilightJigsawPiece parent, int newDepth, StructureTemplateManager structureManager) {
-		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent, connection.pos(), orientationToMatch, structureManager, roofLocation, "twilightforest:lich_tower/roof", random);
+		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), connection.pos(), orientationToMatch, structureManager, roofLocation, "twilightforest:lich_tower/roof", random);
 
 		if (placeableJunction != null) {
 			TowerRoof roofPiece = new TowerRoof(newDepth, structureManager, roofLocation, placeableJunction);
@@ -136,7 +201,7 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 	}
 
 	private boolean tryBeard(StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, @Nullable ResourceLocation beardLocation, FrontAndTop orientationToMatch, boolean allowClipping) {
-		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this, connection.pos(), orientationToMatch, this.structureManager, beardLocation, "twilightforest:lich_tower/beard", random);
+		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), orientationToMatch, this.structureManager, beardLocation, "twilightforest:lich_tower/beard", random);
 
 		if (placeableJunction != null) {
 			TowerBeard beardPiece = new TowerBeard(this.genDepth + 1, this.structureManager, beardLocation, placeableJunction);
@@ -149,6 +214,43 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureCenterPos) {
+		super.postProcess(level, structureManager, chunkGen, random, chunkBounds, chunkPos, structureCenterPos);
+
+		JigsawRecord sourceJigsaw = this.getSourceJigsaw();
+		if (this.hasLadderBelowRoom()) {
+			BlockPos placeAt = this.templatePosition.offset(sourceJigsaw.pos());
+			if (chunkBounds.isInside(placeAt)) {
+				BlockState ladderBlock = Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, sourceJigsaw.orientation().top());
+				level.setBlock(placeAt, ladderBlock, 3);
+				level.setBlock(placeAt.above(), ladderBlock, 3);
+			}
+		}
+
+		if (this.shouldLadderUpwards()) {
+			JigsawRecord ladderJigsaw = this.getSpareJigsaws().get(this.ladderIndex);
+			BlockPos ladderOffset = ladderJigsaw.pos();
+			BlockPos startPos = this.templatePosition.offset(ladderOffset);
+			if (chunkBounds.isInside(startPos)) {
+				BlockPos endPos = startPos.above(this.boundingBox.getYSpan() - ladderOffset.getY() - 1);
+				BlockState ladderBlock = Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, ladderJigsaw.orientation().top());
+				for (BlockPos placeAt : BlockPos.betweenClosed(startPos, endPos)) {
+					level.setBlock(placeAt, ladderBlock, 3);
+				}
+			}
+		}
+	}
+
+	private boolean hasLadderBelowRoom() {
+		JigsawRecord sourceJigsaw = this.getSourceJigsaw();
+		return sourceJigsaw != null && sourceJigsaw.orientation().front() == Direction.DOWN;
+	}
+
+	private boolean shouldLadderUpwards() {
+		return this.ladderIndex >= 0;
 	}
 
 	@Override

@@ -14,13 +14,12 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.util.RotationUtil;
-import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.List;
 
 public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings placementSettings, JigsawRecord seedJigsaw, List<JigsawRecord> spareJigsaws) {
 	@Nullable
-	public static JigsawPlaceContext pickPlaceableJunction(TwilightJigsawPiece parent, BlockPos sourceJigsawPos, FrontAndTop sourceOrientation, StructureTemplateManager structureManager, @Nullable ResourceLocation templateLocation, String jigsawLabel, RandomSource random) {
+	public static JigsawPlaceContext pickPlaceableJunction(BlockPos parentStructureTemplatePos, BlockPos sourceJigsawPos, FrontAndTop sourceOrientation, StructureTemplateManager structureManager, @Nullable ResourceLocation templateLocation, String jigsawLabel, RandomSource random) {
 		if (templateLocation == null)
 			return null;
 
@@ -32,7 +31,7 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 		);
 
 		return pickPlaceableJunction(
-			connectables, parent.templatePosition(), sourceOrientation, sourceJigsawPos, jigsawLabel, random
+			connectables, parentStructureTemplatePos, sourceOrientation, sourceJigsawPos, jigsawLabel, random
 		);
 	}
 

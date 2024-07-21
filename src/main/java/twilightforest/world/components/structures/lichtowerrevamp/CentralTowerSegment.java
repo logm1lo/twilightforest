@@ -18,6 +18,7 @@ import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
@@ -38,6 +39,8 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 
 	public CentralTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean continueAbove) {
 		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), jigsawContext);
+
+		this.boundingBox = BoundingBoxUtils.cloneWithAdjustments(this.boundingBox, 0, 0, 0, 0, 30,0);
 
 		TowerUtil.addDefaultProcessors(this.placeSettings, true);
 		stairDecay(this.genDepth, this.placeSettings);
@@ -64,7 +67,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 	}
 
 	public static void putTowerSegment(StructurePieceAccessor pieceAccessor, RandomSource random, BlockPos sourceJigsawPos, FrontAndTop sourceOrientation, TwilightJigsawPiece parent, StructureTemplateManager structureManager, boolean putMobBridge, boolean bossAbove) {
-		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent, sourceJigsawPos, sourceOrientation, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), "twilightforest:lich_tower/tower_below", random);
+		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), sourceJigsawPos, sourceOrientation, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), "twilightforest:lich_tower/tower_below", random);
 
 		if (placeableJunction == null) return;
 
@@ -80,7 +83,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 				if (this.continueAbove) {
 					CentralTowerSegment.putTowerSegment(pieceAccessor, random, connection.pos(), connection.orientation(), this, this.structureManager, !this.putMobBridge && random.nextInt(3) != 0, this.genDepth < random.nextInt(8, 10));
 				} else {
-					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this, connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_room"), "twilightforest:lich_tower/tower_below", random);
+					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_room"), "twilightforest:lich_tower/tower_below", random);
 
 					if (placeableJunction != null) {
 						StructurePiece bossRoom = new BossRoom(this.structureManager, placeableJunction);
@@ -97,7 +100,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 			case "twilightforest:mob_bridge" -> {
 				if (this.putMobBridge) {
 					ResourceLocation mobBridgeLocation = TowerUtil.rollRandomMobBridge(random);
-					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this, connection.pos(), connection.orientation(), this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", random);
+					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", random);
 
 					if (placeableJunction != null) {
 						StructurePiece mobBridgePiece = new TowerMobBridge(this.genDepth + 1, this.structureManager, mobBridgeLocation, placeableJunction, random.nextBoolean());

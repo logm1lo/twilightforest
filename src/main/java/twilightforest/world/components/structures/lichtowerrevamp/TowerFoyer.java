@@ -34,7 +34,7 @@ public final class TowerFoyer extends TwilightJigsawPiece implements PieceBeardi
 	@Override
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
 		if ("twilightforest:lich_tower/tower_base".equals(connection.target())) {
-			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this, connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/tower_base"), "twilightforest:lich_tower/tower_base", random);
+			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/tower_base"), "twilightforest:lich_tower/tower_base", random);
 
 			if (placeableJunction == null) return;
 
@@ -42,7 +42,7 @@ public final class TowerFoyer extends TwilightJigsawPiece implements PieceBeardi
 			pieceAccessor.addPiece(towerBase);
 			towerBase.addChildren(this, pieceAccessor, random);
 		} else if ("twilightforest:shelf".equals(connection.target()) && (jigsawIndex % 4) == random.nextInt(5)) {
-			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this, connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/foyer_decor"), "twilightforest:shelf", random);
+			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/foyer_decor"), "twilightforest:shelf", random);
 
 			if (placeableJunction == null) return;
 

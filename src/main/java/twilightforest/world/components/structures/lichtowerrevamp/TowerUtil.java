@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import net.minecraft.Util;
@@ -17,7 +18,9 @@ import twilightforest.init.TFEntities;
 import twilightforest.util.ArrayUtil;
 import twilightforest.world.components.processors.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public final class TowerUtil {
 	public static final StructureProcessor ROOM_SPAWNERS = SpawnerProcessor.compile(1, Object2IntMaps.unmodifiable(Util.make(new Object2IntArrayMap<>(), map -> {
@@ -85,6 +88,26 @@ public final class TowerUtil {
 
 	public static Iterable<ResourceLocation> shuffledBeards(RandomSource randomSource, int size) {
 		return ArrayUtil.safeShuffledCopy(ArrayUtil.orNull(TowerPieces.BEARDS, size - 1), randomSource);
+	}
+
+	public static Set<String> getLadderPlacementsForSize(int size) {
+		return switch (size) {
+			case 1 -> TowerPieces.LADDER_PLACEMENTS_1;
+			case 2 -> TowerPieces.LADDER_PLACEMENTS_2;
+			case 3 -> TowerPieces.LADDER_PLACEMENTS_3;
+			default -> Collections.emptySet();
+		};
+	}
+
+	@Nullable
+	public static ResourceLocation getRoomUpwards(RandomSource random, int size, int ladderOffset) {
+		if (size > 0 && size <= 3) {
+			Int2ObjectMap<List<ResourceLocation>> roomsForSize = TowerPieces.LADDER_ROOMS.get(size - 1);
+			List<ResourceLocation> roomsForLadderPlacement = roomsForSize.getOrDefault(ladderOffset, Collections.emptyList());
+			return roomsForLadderPlacement.isEmpty() ? null : roomsForLadderPlacement.get(random.nextInt(roomsForLadderPlacement.size()));
+		}
+
+		return null;
 	}
 
 	@Nullable
