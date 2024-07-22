@@ -41,7 +41,6 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	boolean hasBase = false;
 	protected int treasureFloor = -1;
-	private boolean hasBoss;
 
 	public IceTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(TFStructurePieceTypes.TFITWin.get(), nbt);
