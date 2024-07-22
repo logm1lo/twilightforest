@@ -36,7 +36,7 @@ import java.util.stream.IntStream;
 public class IceTowerWingComponent extends TowerWingComponent {
 
 	protected static final int SIZE = 11;
-	private static final int RANGE = (int) (SIZE * 4F);
+	private static final int RANGE = (int) (SIZE * 2F);
 	private static final int FLOOR_PLAN_MAX_TRIES = 10000;
 
 	boolean hasBase = false;
