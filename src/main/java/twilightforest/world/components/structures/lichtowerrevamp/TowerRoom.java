@@ -13,10 +13,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.LecternBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -29,6 +26,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
@@ -38,6 +36,7 @@ import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.util.jigsaw.JigsawUtil;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
+import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 import java.util.Collections;
 import java.util.List;
@@ -105,7 +104,7 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				boolean generateGround = this.generateGround && connection.pos().getY() < 5;
 				if (this.roomSize < 1) {
 					return;
-				} else if (this.genDepth > 30 || random.nextInt(3) == 0) {
+				} else if (this.genDepth > 30 || random.nextInt(4) == 0) {
 					TowerBridge.putCover(this, pieceAccessor, random, connection.pos(), connection.orientation(), this.structureManager, generateGround, this.genDepth + 1);
 				} else {
 					TowerBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, false, this.roomSize - random.nextInt(2), generateGround, this.genDepth + 1, false);
@@ -120,8 +119,9 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				return;
 			}
 			case "twilightforest:lich_tower/beard" -> {
-				if (this.generateGround) {
+				if (this.generateGround || this.hasLadderBelowRoom()) {
 					// Instead of placing a beard structure piece, this piece generates ground with the Beardifier!
+					// Or there's a ladder entering the room from underneath
 					return;
 				}
 
@@ -140,15 +140,21 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 
 		if (this.ladderIndex == jigsawIndex && this.jigsawLadderTarget.equals(connection.target())) {
 			int ladderOffset = Integer.parseInt(this.jigsawLadderTarget.substring(this.jigsawLadderTarget.length() - 1));
-			ResourceLocation tempRoom = TowerUtil.getRoomUpwards(random, this.roomSize, ladderOffset);
+			ResourceLocation roomId = TowerUtil.getRoomUpwards(random, this.roomSize, ladderOffset);
+			if (roomId != null && (this.templateName.equals(roomId.toString()) || (parent instanceof TwilightTemplateStructurePiece twilightTemplate && twilightTemplate.getTemplateName().equals(roomId.toString())))) {
+				// 1 chance at reroll if template is same as current or parent's
+				roomId = TowerUtil.getRoomUpwards(random, this.roomSize, ladderOffset);
+				// Otherwise if a repeat gets rolled -- how lucky!
+			}
 			BlockPos topPos = connection.pos().offset(0, this.boundingBox.getYSpan() - connection.pos().getY() - 1, 0);
-			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), topPos, connection.orientation(), this.structureManager, tempRoom, connection.target(), random);
+			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), topPos, connection.orientation(), this.structureManager, roomId, connection.target(), random);
 
 			if (placeableJunction != null) {
-				boolean canGenerateLadder = this.getSourceJigsaw().orientation().front().getAxis().isHorizontal() && random.nextInt(3) != 0;
-				StructurePiece room = new TowerRoom(this.structureManager, this.genDepth + 1, placeableJunction, tempRoom, this.roomSize, false, canGenerateLadder);
+				boolean canGenerateLadder = this.getSourceJigsaw().orientation().front().getAxis().isHorizontal() && random.nextBoolean();
+				StructurePiece room = new TowerRoom(this.structureManager, this.genDepth + 1, placeableJunction, roomId, this.roomSize, false, canGenerateLadder);
 
-				if (pieceAccessor.findCollisionPiece(room.getBoundingBox()) == null) {
+				BoundingBox boundingBox = BoundingBoxUtils.cloneWithAdjustments(room.getBoundingBox(), 1, 0, 1, -1, 0, -1);
+				if (pieceAccessor.findCollisionPiece(boundingBox) == null) {
 					pieceAccessor.addPiece(room);
 					room.addChildren(parent, pieceAccessor, random);
 
@@ -156,8 +162,19 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				}
 			}
 
-			// If the room above cannot generate, then place the roof instead
-			this.putRoof(pieceAccessor, random, this.getSpareJigsaws().get(this.roofFallback));
+			Direction front = connection.orientation().front();
+			if (front != Direction.UP) {
+				TwilightForestMod.LOGGER.error("Jigsaw was facing {} inside of {}", front, this.templateName);
+			}
+
+			if (this.roofFallback >= 0) {
+				//TwilightForestMod.LOGGER.warn("\nGenerating roof instead of {} over {}, for target {} at {}", roomId, this.templateName, connection.target(), this.templatePosition);
+				//TwilightForestMod.LOGGER.warn("Connection priority was {} and index {}. Source priority was {}", connection.priority(), jigsawIndex, this.getSourceJigsaw().priority());
+				//TwilightForestMod.LOGGER.warn("\nJigsaws in piece: {}", this.structureManager.getOrCreate(roomId).filterBlocks(BlockPos.ZERO, new StructurePlaceSettings(), Blocks.JIGSAW));
+
+				// If the room above cannot generate, then place the roof instead
+				this.putRoof(pieceAccessor, random, this.getSpareJigsaws().get(this.roofFallback));
+			}
 		}
 	}
 
@@ -228,6 +245,8 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				BlockState ladderBlock = Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, sourceJigsaw.orientation().top());
 				level.setBlock(placeAt, ladderBlock, 3);
 				level.setBlock(placeAt.above(), ladderBlock, 3);
+				level.setBlock(placeAt.above(2), Blocks.AIR.defaultBlockState(), 3);
+				level.setBlock(placeAt.above(3), Blocks.AIR.defaultBlockState(), 3);
 			}
 		}
 
@@ -265,19 +284,20 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 					level.removeBlock(pos, false); // Clears block entity data left by Data Marker
 
 					boolean putMimic = random.nextBoolean();
+					Rotation rotation = this.placeSettings.getRotation();
 					BlockState lectern = Blocks.LECTERN.defaultBlockState()
 						.setValue(HorizontalDirectionalBlock.FACING, direction)
 						.setValue(LecternBlock.HAS_BOOK, !putMimic)
-						.rotate(this.placeSettings.getRotation());
+						.rotate(rotation);
 
 					level.setBlock(pos, lectern, 3);
 
 					if (putMimic) {
 						DeathTome tomeMimic = TFEntities.DEATH_TOME.value().create(level.getLevel());
 						if (tomeMimic != null) {
-							tomeMimic.setOnLectern(true);
 							tomeMimic.setPersistenceRequired();
-							tomeMimic.moveTo(pos, 0, 0);
+							tomeMimic.moveTo(pos, lectern.getValue(HorizontalDirectionalBlock.FACING).toYRot(), 0);
+							tomeMimic.setOnLectern(true);
 							tomeMimic.finalizeSpawn(level, level.getCurrentDifficultyAt(tomeMimic.blockPosition()), MobSpawnType.STRUCTURE, null);
 							level.addFreshEntityWithPassengers(tomeMimic);
 						}

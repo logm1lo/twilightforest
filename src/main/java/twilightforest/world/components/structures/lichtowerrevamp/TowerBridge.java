@@ -142,7 +142,7 @@ public final class TowerBridge extends TwilightJigsawPiece implements PieceBeard
 
 		boolean generateGround = canPutGround && connection.pos().getY() < 4;
 
-		StructurePiece room = new TowerRoom(structureManager, newDepth, placeableJunction, roomId, roomSize, generateGround, random.nextBoolean());
+		StructurePiece room = new TowerRoom(structureManager, newDepth, placeableJunction, roomId, roomSize, generateGround, true);
 
 		if (allowClipping || pieceAccessor.findCollisionPiece(room.getBoundingBox()) == null) {
 			pieceAccessor.addPiece(room);

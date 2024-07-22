@@ -40,7 +40,8 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 	public CentralTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean continueAbove) {
 		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), jigsawContext);
 
-		this.boundingBox = BoundingBoxUtils.cloneWithAdjustments(this.boundingBox, 0, 0, 0, 0, 30,0);
+		int expansion = continueAbove ? 0 : 3;
+		this.boundingBox = BoundingBoxUtils.cloneWithAdjustments(this.boundingBox, -expansion, 0, -expansion, expansion, 30,expansion);
 
 		TowerUtil.addDefaultProcessors(this.placeSettings, true);
 		stairDecay(this.genDepth, this.placeSettings);

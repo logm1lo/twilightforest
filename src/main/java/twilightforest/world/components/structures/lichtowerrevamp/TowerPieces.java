@@ -37,7 +37,10 @@ public final class TowerPieces {
 
 	static final ResourceLocation[][] ROOMS = new ResourceLocation[][] {
 		new ResourceLocation[] {
-			TwilightForestMod.prefix("lich_tower/3x3/lookout_tinted")
+			TwilightForestMod.prefix("lich_tower/3x3/short_lookout"),
+			TwilightForestMod.prefix("lich_tower/3x3/lookout"),
+			TwilightForestMod.prefix("lich_tower/3x3/double"),
+			TwilightForestMod.prefix("lich_tower/3x3/taller_double")
 		},
 		new ResourceLocation[] {
 			TwilightForestMod.prefix("lich_tower/5x5/elbow_junction"),
@@ -210,38 +213,78 @@ public final class TowerPieces {
 
 	static final Set<String> LADDER_PLACEMENTS_1 = new HashSet<>(List.of(
 		"twilightforest:ladder_below/0",
-		"twilightforest:ladder_below/1",
 		"twilightforest:ladder_below/2"
 	));
 	static final Set<String> LADDER_PLACEMENTS_2 = new HashSet<>(List.of(
 		"twilightforest:ladder_below/0",
 		"twilightforest:ladder_below/1",
-		"twilightforest:ladder_below/2",
 		"twilightforest:ladder_below/3",
 		"twilightforest:ladder_below/4"
 	));
 	static final Set<String> LADDER_PLACEMENTS_3 = new HashSet<>(List.of(
-		"twilightforest:ladder_below/0",
 		"twilightforest:ladder_below/1",
 		"twilightforest:ladder_below/2",
-		"twilightforest:ladder_below/3",
 		"twilightforest:ladder_below/4",
-		"twilightforest:ladder_below/5",
-		"twilightforest:ladder_below/6"
+		"twilightforest:ladder_below/5"
 	));
 
 	static final List<Int2ObjectMap<List<ResourceLocation>>> LADDER_ROOMS = List.of(
 		new Int2ObjectArrayMap<>(Map.of(
-			0, List.of(),
-			1, List.of(),
-			2, List.of()
+			0, List.of(
+				TwilightForestMod.prefix("lich_tower/5x5/straight_junction"),
+				TwilightForestMod.prefix("lich_tower/5x5/elbow_junction"),
+				TwilightForestMod.prefix("lich_tower/5x5/t_junction"),
+				TwilightForestMod.prefix("lich_tower/5x5/desk"),
+				TwilightForestMod.prefix("lich_tower/5x5/webbed_spawner"),
+				TwilightForestMod.prefix("lich_tower/5x5/lectern"),
+				TwilightForestMod.prefix("lich_tower/5x5/lone_chest"),
+				TwilightForestMod.prefix("lich_tower/5x5/altar")
+			),
+			2, List.of(
+				TwilightForestMod.prefix("lich_tower/5x5/straight_junction"),
+				TwilightForestMod.prefix("lich_tower/5x5/elbow_junction"),
+				TwilightForestMod.prefix("lich_tower/5x5/t_junction"),
+				TwilightForestMod.prefix("lich_tower/5x5/desk"),
+				TwilightForestMod.prefix("lich_tower/5x5/webbed_spawner"),
+				TwilightForestMod.prefix("lich_tower/5x5/lectern"),
+				TwilightForestMod.prefix("lich_tower/5x5/lone_chest"),
+				TwilightForestMod.prefix("lich_tower/5x5/altar")
+			)
 		)),
 		new Int2ObjectArrayMap<>(Map.of(
-			0, List.of(),
-			1, List.of(),
-			2, List.of(),
-			3, List.of(),
-			4, List.of()
+			0, List.of(
+				TwilightForestMod.prefix("lich_tower/7x7/full_junction_1"),
+				TwilightForestMod.prefix("lich_tower/7x7/desk"),
+				TwilightForestMod.prefix("lich_tower/7x7/altars"),
+				TwilightForestMod.prefix("lich_tower/7x7/altar")
+			),
+			1, List.of(
+				TwilightForestMod.prefix("lich_tower/7x7/elbow_junction"),
+				TwilightForestMod.prefix("lich_tower/7x7/t_junction"),
+				TwilightForestMod.prefix("lich_tower/7x7/potion"),
+				TwilightForestMod.prefix("lich_tower/7x7/library_hall"),
+				TwilightForestMod.prefix("lich_tower/7x7/jar_study"),
+				TwilightForestMod.prefix("lich_tower/7x7/elbow_chest"),
+				TwilightForestMod.prefix("lich_tower/7x7/guarded_chest"),
+				TwilightForestMod.prefix("lich_tower/7x7/potion_lab")
+			),
+			3, List.of(
+				TwilightForestMod.prefix("lich_tower/7x7/elbow_junction"),
+				TwilightForestMod.prefix("lich_tower/7x7/t_junction"),
+				TwilightForestMod.prefix("lich_tower/7x7/library_hall"),
+				TwilightForestMod.prefix("lich_tower/7x7/jar_study"),
+				TwilightForestMod.prefix("lich_tower/7x7/elbow_chest"),
+				TwilightForestMod.prefix("lich_tower/7x7/guarded_chest"),
+				TwilightForestMod.prefix("lich_tower/7x7/garden_lab"),
+				TwilightForestMod.prefix("lich_tower/7x7/potion_lab")
+			),
+			4, List.of(
+				TwilightForestMod.prefix("lich_tower/7x7/full_junction_1"),
+				TwilightForestMod.prefix("lich_tower/7x7/desk"),
+				TwilightForestMod.prefix("lich_tower/7x7/altars"),
+				TwilightForestMod.prefix("lich_tower/7x7/jar_study"),
+				TwilightForestMod.prefix("lich_tower/7x7/altar")
+			)
 		)),
 		new Int2ObjectArrayMap<>(Map.of(
 			1, List.of(
@@ -264,7 +307,6 @@ public final class TowerPieces {
 				TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/t_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/keepsake_casket"),
-				TwilightForestMod.prefix("lich_tower/9x9/mossy_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/study")
 			),
 			4, List.of(
@@ -273,7 +315,6 @@ public final class TowerPieces {
 				TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/t_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/keepsake_casket"),
-				TwilightForestMod.prefix("lich_tower/9x9/mossy_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/study")
 			),
 			5, List.of(

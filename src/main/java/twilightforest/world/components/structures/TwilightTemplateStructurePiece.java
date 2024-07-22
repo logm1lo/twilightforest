@@ -120,6 +120,10 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 		}
 	}
 
+	public String getTemplateName() {
+		return this.templateName;
+	}
+
 	// Worse case scenario if the terrain still isn't being risen for the Lich Tower,
 	// then we'll need to do via this. I still have other solutions I'd like to explore first
 	//@Override
