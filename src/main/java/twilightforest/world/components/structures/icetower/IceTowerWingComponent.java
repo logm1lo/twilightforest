@@ -408,7 +408,6 @@ public class IceTowerWingComponent extends TowerWingComponent {
 				decoratePillarPlatformsOutside(world, bottom, top, ladderUpDir, hasTreasure, sbb);
 				break;
 			case QUAD_PILLAR_STAIRS:
-			default:
 				decorateQuadPillarStairs(world, rand, bottom, top, ladderUpDir, ladderDownDir, hasTreasure, sbb);
 				break;
 		}
