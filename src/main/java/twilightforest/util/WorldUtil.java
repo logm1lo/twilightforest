@@ -77,7 +77,7 @@ public final class WorldUtil {
 				return pair.getFirst();
 			}
 		}
-		return list.get(rng.nextInt(list.size())).getFirst(); // This line should never be reached if input list is valid
+		return getRandomElement(list, rng).getFirst(); // This line should never be reached if input list is valid
 	}
 
 	public static int getGeneratorSeaLevel(LevelAccessor level) {
