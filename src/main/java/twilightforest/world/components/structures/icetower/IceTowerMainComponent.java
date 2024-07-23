@@ -91,7 +91,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
-		IceTowerBridgeComponent bridge = new IceTowerBridgeComponent(index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
+		IceTowerBridgeComponent bridge = new IceTowerBridgeComponent(index, dest.getX(), dest.getY(), dest.getZ(), length, 4, direction);
 
 		list.addPiece(bridge);
 		if (list instanceof StructurePiecesBuilder start) {
