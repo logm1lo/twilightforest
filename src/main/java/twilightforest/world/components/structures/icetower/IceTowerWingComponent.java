@@ -28,7 +28,9 @@ import twilightforest.world.components.structures.icetower.floordecorators.Floor
 import twilightforest.world.components.structures.icetower.floordecorators.FloorTypesAuroraPalace;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -78,7 +80,12 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 
 		// should we build a base
-		this.hasBase = this.shouldHaveBase(rand);
+		this.hasBase = this.shouldHaveBase(list, rand);
+
+		makeARoof(parent, list, rand);
+		if (!this.hasBase) {
+			makeABeard(parent, list, rand);
+		}
 
 		// limit sprawl to a reasonable amount
 		if (this.getGenDepth() < 5) {
@@ -109,17 +116,20 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		if (this.treasureFloor == -1 && floors > 1) {
 			this.treasureFloor = rand.nextInt(floors - 1);
 		}
-
-		// add a roof?
-		makeARoof(parent, list, rand);
-
-		// beard?
-		if (!this.hasBase) {
-			makeABeard(parent, list, rand);
-		}
 	}
 
-	protected boolean shouldHaveBase(RandomSource rand) {
+	protected boolean shouldHaveBase(StructurePieceAccessor list, RandomSource rand) {
+		if (!(list instanceof StructurePiecesBuilder start))
+			return false;
+
+		if (start.pieces.stream().anyMatch(piece -> {
+			BoundingBox pieceBox = piece.getBoundingBox();
+			BoundingBox box = this.getBoundingBox();
+			Rectangle rectanglePiece = new Rectangle(pieceBox.minX(), pieceBox.minZ(), pieceBox.maxX() - pieceBox.minX(), pieceBox.maxZ() - pieceBox.minZ());
+			Rectangle rectangle = new Rectangle(box.minX(), box.minZ(), box.maxX() - box.minX(), box.maxZ() - box.minZ());
+			return rectangle.intersects(rectanglePiece) && this != piece;
+		}))
+			return false;
 		return this.getGenDepth() == 0 || rand.nextBoolean();
 	}
 
@@ -144,23 +154,28 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (list instanceof StructurePiecesBuilder start && !start.pieces.isEmpty() && isOutOfRange(start.pieces.get(0), dx[0], dx[2], RANGE)) {
+		if (!(list instanceof StructurePiecesBuilder start) || !start.pieces.isEmpty() && isOutOfRange(start.pieces.get(0), dx[0], dx[2], RANGE))
 			return false;
-		}
 
 		IceTowerWingComponent wing = new IceTowerWingComponent(TFStructurePieceTypes.TFITWin.get(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
-		if (intersect == null || intersect == this) {
-			list.addPiece(wing);
-			if (list instanceof StructurePiecesBuilder start) {
-				wing.addChildren(start.pieces.get(0), list, rand);
-			}
-			addOpening(x, y, z, rotation);
-			return true;
-		} else {
+		BoundingBox sbb = wing.getBoundingBox();
+		StructurePiece intersect = start.findCollisionPiece(new BoundingBox(
+			sbb.minX(), sbb.minY() - Math.round(this.size * 1.414F), sbb.minZ(),  // Magic constant is a copy-paste from IceTowerBeardComponent
+			sbb.maxX(), sbb.maxY() + Math.round(this.size * 1.414F), sbb.maxZ()));  // Calculated magic constant from IceTowerRoofComponent
+		if (intersect != null && intersect != this || start.pieces.stream().anyMatch(piece -> {
+			BoundingBox pieceBox = piece.getBoundingBox();
+			BoundingBox box = this.getBoundingBox();
+			Rectangle rectanglePiece = new Rectangle(pieceBox.minX(), pieceBox.minZ(), pieceBox.maxX() - pieceBox.minX(), pieceBox.maxZ() - pieceBox.minZ());
+			Rectangle rectangle = new Rectangle(box.minX(), box.minZ(), box.maxX() - box.minX(), box.maxZ() - box.minZ());
+			return (piece instanceof IceTowerEntranceComponent || piece instanceof IceTowerBridgeComponent) && rectangle.intersects(rectanglePiece) && this != piece;
+		}))
 			return false;
-		}
+
+		list.addPiece(wing);
+		wing.addChildren(start.pieces.get(0), list, rand);
+		addOpening(x, y, z, rotation);
+		return true;
 	}
 
 	/**

@@ -27,7 +27,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	protected boolean shouldHaveBase(RandomSource rand) {
+	protected boolean shouldHaveBase(StructurePieceAccessor list, RandomSource rand) {
 		return true;
 	}
 
@@ -46,7 +46,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 		addStairs(list, rand, this.getGenDepth() + 1, this.size / 2, 1, this.size - 1, Rotation.CLOCKWISE_90);
 
 		// should we build a base
-		this.hasBase = this.shouldHaveBase(rand);
+		this.hasBase = this.shouldHaveBase(list, rand);
 
 		// add a roof?
 		makeARoof(parent, list, rand);
