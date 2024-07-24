@@ -86,4 +86,15 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 
 		return new JigsawPlaceContext(placePos, placementSettings, JigsawRecord.fromUnconfiguredJigsaw(seedJigsaw, placementSettings), spareJigsaws);
 	}
+
+	@Nullable
+	public JigsawRecord findFirst(String name) {
+		for (JigsawRecord record : this.spareJigsaws) {
+			if (record.name().equals(name)) {
+				return record;
+			}
+		}
+
+		return null;
+	}
 }

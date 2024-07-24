@@ -104,7 +104,7 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				boolean generateGround = this.generateGround && connection.pos().getY() < 5;
 				if (this.roomSize < 1) {
 					return;
-				} else if (this.genDepth > 30 || random.nextInt(4) == 0) {
+				} else if (this.genDepth > 30 || random.nextInt(this.towerStackIndex() * 2 + 1) == 0) {
 					TowerBridge.putCover(this, pieceAccessor, random, connection.pos(), connection.orientation(), this.structureManager, generateGround, this.genDepth + 1);
 				} else {
 					TowerBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, false, this.roomSize - random.nextInt(2), generateGround, this.genDepth + 1, false);
@@ -178,6 +178,12 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 		}
 	}
 
+	private int towerStackIndex() {
+		boolean hasRoomAbove = this.shouldLadderUpwards();
+		boolean hasRoomBelow = this.hasLadderBelowRoom();
+		return hasRoomAbove && !hasRoomBelow ? 0 : hasRoomAbove ? 1 : 2;
+	}
+
 	private boolean putRoof(StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection) {
 		FrontAndTop orientationToMatch = getVerticalOrientation(connection, Direction.UP, this);
 		BoundingBox roofExtension = BoundingBoxUtils.extrusionFrom(this.boundingBox.minX(), this.boundingBox.maxY() + 1, this.boundingBox.minZ(), this.boundingBox.maxX(), this.boundingBox.maxY() + 1, this.boundingBox.maxZ(), orientationToMatch.top().getOpposite(), 1);
@@ -245,8 +251,10 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				BlockState ladderBlock = Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, sourceJigsaw.orientation().top());
 				level.setBlock(placeAt, ladderBlock, 3);
 				level.setBlock(placeAt.above(), ladderBlock, 3);
-				level.setBlock(placeAt.above(2), Blocks.AIR.defaultBlockState(), 3);
-				level.setBlock(placeAt.above(3), Blocks.AIR.defaultBlockState(), 3);
+				BlockState airBlock = Blocks.AIR.defaultBlockState();
+				for (BlockPos pos : BlockPos.betweenClosed(placeAt.above(2), placeAt.above(5))) {
+					level.setBlock(pos, airBlock, 3);
+				}
 			}
 		}
 

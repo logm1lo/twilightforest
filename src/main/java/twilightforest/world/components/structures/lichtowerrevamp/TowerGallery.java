@@ -117,12 +117,8 @@ public class TowerGallery extends TwilightJigsawPiece implements PieceBeardifier
 		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), connection.pos(), connection.orientation(), structureManager, roomId, jigsawLabel, random);
 		if (placeableJunction != null) {
 			StructurePiece room = new TowerGallery(newDepth, structureManager, roomId, placeableJunction);
-
-			// FIXME find a way to better guarantee non-collision?
-			if (pieceAccessor.findCollisionPiece(room.getBoundingBox().inflatedBy(-3)) != null) {
-				pieceAccessor.addPiece(room);
-				room.addChildren(parent, pieceAccessor, random);
-			}
+			pieceAccessor.addPiece(room);
+			room.addChildren(parent, pieceAccessor, random);
 		}
 	}
 }
