@@ -38,7 +38,7 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 			ModFileScanData.AnnotationData data = it.next();
 			currentInjectionTarget.set(data.clazz());
 			Class<?> type = Class.forName(data.clazz().getClassName());
-			if (type.isAnnotationPresent(Configurable.class))
+			if (type.isAnnotationPresent(Configurable.class) || type.isAnnotationPresent(Component.class))
 				continue;
 			Field field = type.getDeclaredField(data.memberName());
 			currentInjectionTarget.set(field);

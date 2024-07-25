@@ -26,12 +26,12 @@ public class PostConstructAnnotationDataPostProcessor implements AnnotationDataP
 			List<Method> methods = new ArrayList<>();
 			try {
 				methods.add(bean.getClass().getDeclaredMethod(name));
-			} catch (Exception ex) {
+			} catch (NoSuchMethodException ex) {
 				// NO-OP
 			}
 			try {
 				methods.add(bean.getClass().getDeclaredMethod(name, IEventBus.class));
-			} catch (Exception ex) {
+			} catch (NoSuchMethodException ex) {
 				// NO-OP
 			}
 			for (Method method : methods) {
