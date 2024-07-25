@@ -14,7 +14,8 @@ import java.util.Set;
 public final class TowerPieces {
 	// TODO: more bridges?
 	static final ResourceLocation[] CENTER_BRIDGES = new ResourceLocation[] {
-		TwilightForestMod.prefix("lich_tower/central_bridge")
+		TwilightForestMod.prefix("lich_tower/central_bridge"),
+		TwilightForestMod.prefix("lich_tower/central_bridge_open")
 	};
 	public static final ResourceLocation DIRECT_ATTACHMENT = TwilightForestMod.prefix("lich_tower/no_bridge");
 	static final ResourceLocation[] BRIDGES = new ResourceLocation[] {
