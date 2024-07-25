@@ -34,6 +34,24 @@ public final class TowerPieces {
 		TwilightForestMod.prefix("lich_tower/bridge_spawner_wide"),
 		TwilightForestMod.prefix("lich_tower/bridge_spawner_zag")
 	};
+	static final ResourceLocation[] CENTER_DECORS = new ResourceLocation[] {
+		TwilightForestMod.prefix("lich_tower/3x3/lava_spring"),
+		TwilightForestMod.prefix("lich_tower/3x3/lava_well"),
+		TwilightForestMod.prefix("lich_tower/3x3/sapling"),
+		TwilightForestMod.prefix("lich_tower/3x3/tree"),
+		TwilightForestMod.prefix("lich_tower/3x3/water_fountain"),
+		TwilightForestMod.prefix("lich_tower/3x3/water_well"),
+		TwilightForestMod.prefix("lich_tower/3x3/wither_rose")
+	};
+	static final ResourceLocation[] ROOM_DECORS = new ResourceLocation[] {
+		TwilightForestMod.prefix("lich_tower/3x3/chest"),
+		TwilightForestMod.prefix("lich_tower/3x3/lava_spring"),
+		TwilightForestMod.prefix("lich_tower/3x3/lava_well"),
+		TwilightForestMod.prefix("lich_tower/3x3/sapling"),
+		TwilightForestMod.prefix("lich_tower/3x3/spawner"),
+		TwilightForestMod.prefix("lich_tower/3x3/water_fountain"),
+		TwilightForestMod.prefix("lich_tower/3x3/water_well")
+	};
 
 	static final ResourceLocation[][] ROOMS = new ResourceLocation[][] {
 		new ResourceLocation[] {
@@ -91,7 +109,8 @@ public final class TowerPieces {
 			TwilightForestMod.prefix("lich_tower/9x9/mossy_junction"),
 			TwilightForestMod.prefix("lich_tower/9x9/altar"),
 			TwilightForestMod.prefix("lich_tower/9x9/lectern_hall"),
-			TwilightForestMod.prefix("lich_tower/9x9/tiered_study")
+			TwilightForestMod.prefix("lich_tower/9x9/tiered_study"),
+			TwilightForestMod.prefix("lich_tower/9x9/center_decor")
 		}
 	};
 	static final ResourceLocation[] GALLERY_ROOMS = new ResourceLocation[] {

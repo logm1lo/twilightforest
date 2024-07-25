@@ -78,6 +78,10 @@ public final class TowerUtil {
 		return Util.getRandom(TowerPieces.BRIDGE_COVERS, randomSource);
 	}
 
+	public static ResourceLocation rollRandomDecor(RandomSource randomSource, boolean inCentralTower) {
+		return Util.getRandom(inCentralTower ? TowerPieces.CENTER_DECORS : TowerPieces.ROOM_DECORS, randomSource);
+	}
+
 	public static Iterable<ResourceLocation> shuffledBridges(boolean fromCentralTower, RandomSource randomSource) {
 		return Util.shuffledCopy(fromCentralTower ? TowerPieces.CENTER_BRIDGES : TowerPieces.BRIDGES, randomSource);
 	}

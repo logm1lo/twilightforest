@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -112,12 +113,23 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 							structuretemplate$structureblockinfo.pos(),
 							level,
 							random,
-							chunkBounds
+							chunkBounds,
+							chunkGen // Additional param, new method callable
 						);
 					}
 				}
 			}
 		}
+	}
+
+	// Enhanced version of handleDataMarker() method that up-levels ServerLevelAccessor into WorldGenLevel while also adding ChunkGenerator parameter
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
+	}
+
+	@Deprecated
+	@Override
+	protected final void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds) {
+		// Deprecated - use above method as that is called instead
 	}
 
 	public String getTemplateName() {

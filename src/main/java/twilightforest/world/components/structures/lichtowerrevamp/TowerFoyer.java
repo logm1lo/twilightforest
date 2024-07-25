@@ -3,7 +3,6 @@ package twilightforest.world.components.structures.lichtowerrevamp;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -50,10 +49,6 @@ public final class TowerFoyer extends TwilightJigsawPiece implements PieceBeardi
 			pieceAccessor.addPiece(towerBase);
 			towerBase.addChildren(this, pieceAccessor, random);
 		}
-	}
-
-	@Override
-	protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
 	}
 
 	@Override

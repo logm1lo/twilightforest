@@ -10,7 +10,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
@@ -135,6 +134,9 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 
 				ResourceLocation fallbackBeard = TowerUtil.getFallbackBeard(this.roomSize);
 				this.tryBeard(pieceAccessor, random, connection, fallbackBeard, orientationToMatch, true);
+			}
+			case "twilightforest:lich_tower/decor" -> {
+				TowerWingDecorPiece.addDecor(this, pieceAccessor, random, connection, this.genDepth + 1, this.structureManager, false);
 			}
 		}
 
@@ -282,7 +284,7 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 	}
 
 	@Override
-	protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox boundingBox) {
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
 		String[] splitLabel = label.split(":");
 		if (splitLabel.length == 2) {
 			Direction direction = DirectionUtil.fromStringOrElse(splitLabel[1], Direction.NORTH);
