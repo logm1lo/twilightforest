@@ -26,7 +26,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,6 +42,7 @@ import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
+import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
@@ -52,7 +52,6 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.ChunkBlanketProcessors;
-import twilightforest.item.ArcticArmorItem;
 import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
@@ -63,6 +62,9 @@ import java.util.Iterator;
 // TODO: Think about reorganizing each group into their own class or subclass of ASMHooks
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
+
+	@Autowired
+	private static ArmorUtil armorUtil;
 
 	@Autowired
 	private static MultipartEntityUtil multipartEntityUtil;
@@ -78,9 +80,8 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br/>
 	 * Targets: {@link net.minecraft.world.item.component.DyedItemColor#getOrDefault(net.minecraft.world.item.ItemStack, int)}
 	 */
-	public static int armorColorRendering(int color, ArmorItem armorItem, ItemStack armorStack) {
-		if (armorItem instanceof ArcticArmorItem) return DyedItemColor.getOrDefault(armorStack, ArcticArmorItem.DEFAULT_COLOR);
-		return color;
+	public static int armorColorRendering(int color, ItemStack armorStack) {
+		return armorUtil.getArmorColor(armorStack).orElse(color);
 	}
 
 	/**
@@ -90,23 +91,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.entity.LivingEntity#getVisibilityPercent(Entity)}
 	 */
 	public static float modifyArmorVisibility(float o, LivingEntity entity) {
-		return o - getShroudedArmorPercentage(entity);
-	}
-
-	private static float getShroudedArmorPercentage(LivingEntity entity) {
-		Iterable<ItemStack> iterable = entity.getArmorSlots();
-		int shroudedArmor = 0;
-		int nonShroudedArmor = 0;
-
-		for (ItemStack stack : iterable) {
-			if (!stack.isEmpty() && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {
-				shroudedArmor++;
-			}
-
-			nonShroudedArmor++;
-		}
-
-		return nonShroudedArmor > 0 && shroudedArmor > 0 ? (float) shroudedArmor / (float) nonShroudedArmor : 0.0F;
+		return o - armorUtil.getShroudedArmorPercentage(entity);
 	}
 
 	/**
