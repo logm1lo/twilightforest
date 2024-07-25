@@ -106,6 +106,7 @@ public class TowerGallery extends TwilightJigsawPiece implements PieceBeardifier
 			case "twilightforest:lich_tower/gallery/castaway_paradise" -> "twilightforest:castaway_paradise";
 			case "twilightforest:lich_tower/gallery/darkness" -> "twilightforest:darkness";
 			case "twilightforest:lich_tower/gallery/lucid_lands" -> "twilightforest:lucid_lands";
+			case "twilightforest:lich_tower/gallery/music_in_the_mire" -> "twilightforest:music_in_the_mire";
 			case "twilightforest:lich_tower/gallery/the_hostile_paradise" -> "twilightforest:untitled"; // TODO switch to the_hostile_paradise, post-rebase
 			default -> null;
 		};
