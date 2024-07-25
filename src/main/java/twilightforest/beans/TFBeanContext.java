@@ -63,7 +63,7 @@ public final class TFBeanContext {
 			List<AnnotationDataProcessor> annotationDataProcessors = new ArrayList<>();
 			List<AnnotationDataPostProcessor> annotationDataPostProcessors = new ArrayList<>();
 
-			for (Iterator<? extends Class<?>> it = scanData.getAnnotatedBy(BeanProcessor.class, ElementType.TYPE)
+			for (Iterator<? extends Class<?>> it = DistAnnotationRetriever.retrieve(scanData, BeanProcessor.class, ElementType.TYPE)
 				.map(a -> {
 					try {
 						return Class.forName(a.clazz().getClassName());
@@ -92,7 +92,7 @@ public final class TFBeanContext {
 
 			for (Object bean : BEANS.values()) {
 				for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
-					annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, scanData, bean, currentInjection);
+					annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, bean, currentInjection);
 				}
 			}
 
@@ -105,9 +105,9 @@ public final class TFBeanContext {
 
 			currentInjection.set(null);
 
-			Objects.requireNonNull(modContainer.getEventBus()).addListener(FMLCommonSetupEvent.class, event -> injectRegistries(scanData, annotationDataPostProcessors));
+			Objects.requireNonNull(modContainer.getEventBus()).addListener(FMLCommonSetupEvent.class, event -> injectRegistries(modContainer, scanData, annotationDataPostProcessors));
 			if (forceInjectRegistries)
-				injectRegistries(scanData, annotationDataPostProcessors);
+				injectRegistries(modContainer, scanData, annotationDataPostProcessors);
 
 			logger.info("Bean Context loaded");
 		} catch (Throwable e) {
@@ -119,7 +119,7 @@ public final class TFBeanContext {
 		throw new RuntimeException("Bean injection failed." + (o.get() == null ? "" : (" At: " + o)), e);
 	}
 
-	private void injectRegistries(ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors) {
+	private void injectRegistries(ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors) {
 		logger.info("Processing registry objects");
 		AtomicReference<Object> curInj = new AtomicReference<>();
 		BuiltInRegistries.REGISTRY.holders().flatMap(r -> r.value().holders()).forEach(holder -> {
@@ -127,7 +127,7 @@ public final class TFBeanContext {
 				Object o = holder.value();
 				if (o.getClass().isAnnotationPresent(Configurable.class)) {
 					for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
-						annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, scanData, o, curInj);
+						annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, o, curInj);
 					}
 				}
 			} catch (Throwable e) {

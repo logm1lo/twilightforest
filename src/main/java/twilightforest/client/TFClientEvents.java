@@ -53,7 +53,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.TFBeanContext;
+import twilightforest.beans.Autowired;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
@@ -85,7 +85,8 @@ import java.util.Map;
 @EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class TFClientEvents {
 
-	private static final HolderMatcher holderMatcher = TFBeanContext.inject(HolderMatcher.class); // TODO: solve client classloading issues
+	@Autowired(dist = Dist.CLIENT)
+	private static HolderMatcher holderMatcher;
 
 	@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 	public static class ModBusEvents {

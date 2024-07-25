@@ -17,8 +17,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostProcessor {
 
 	@Override
-	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModFileScanData scanData, Object bean, AtomicReference<Object> currentInjectionTarget) throws Throwable {
-		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).filter(a -> a.clazz().equals(Type.getType(bean.getClass()))).iterator(); it.hasNext(); ) {
+	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModContainer modContainer, ModFileScanData scanData, Object bean, AtomicReference<Object> currentInjectionTarget) throws Throwable {
+		for (Iterator<ModFileScanData.AnnotationData> it = DistAnnotationRetriever.retrieve(scanData, Autowired.class, ElementType.FIELD).filter(a -> a.clazz().equals(Type.getType(bean.getClass()))).iterator(); it.hasNext(); ) {
 			Field field = bean.getClass().getDeclaredField(it.next().memberName());
 			if (field.isAnnotationPresent(Autowired.class)) {
 				currentInjectionTarget.set(field);
@@ -34,7 +34,7 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 
 	@Override
 	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModContainer modContainer, ModFileScanData scanData, AtomicReference<Object> currentInjectionTarget) throws Throwable {
-		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).iterator(); it.hasNext(); ) {
+		for (Iterator<ModFileScanData.AnnotationData> it = DistAnnotationRetriever.retrieve(scanData, Autowired.class, ElementType.FIELD).iterator(); it.hasNext(); ) {
 			ModFileScanData.AnnotationData data = it.next();
 			currentInjectionTarget.set(data.clazz());
 			Class<?> type = Class.forName(data.clazz().getClassName());
