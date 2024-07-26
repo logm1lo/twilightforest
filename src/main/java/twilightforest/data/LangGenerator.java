@@ -713,8 +713,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addEntityType(TFEntities.THROWN_BLOCK, "Thrown Block");
 		this.addEntityType(TFEntities.SLIDER, "Moving Slide Trap");
 		this.addEntityType(TFEntities.PROTECTION_BOX, "Progression Protection Box");
-		this.addEntityType(TFEntities.BOAT, "Boat");
-		this.addEntityType(TFEntities.CHEST_BOAT, "Boat with Chest");
 		this.addEntityType(TFEntities.MAGIC_PAINTING, "Magic Painting");
 
 		SUBTITLE_GENERATOR.forEach(this::add);
