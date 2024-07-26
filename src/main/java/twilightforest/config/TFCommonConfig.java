@@ -1,6 +1,7 @@
 package twilightforest.config;
 
 import net.minecraft.commands.Commands;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class TFCommonConfig {
 	final ModConfigSpec.EnumValue<TFConfig.MultiplayerFightAdjuster> multiplayerFightAdjuster;
 
 	public TFCommonConfig(ModConfigSpec.Builder builder) {
-		builder.comment("Settings that are not reversible without consequences.").push("Dimension Settings");
+		builder.comment("Settings that are not reversible without consequences.").translation(TFConfig.CONFIG_ID + "dim_settings").push("Dimension Settings");
 		{
 			DIMENSION.newPlayersSpawnInTF = builder
 				.translation(TFConfig.CONFIG_ID + "spawn_in_tf")
@@ -35,7 +36,7 @@ public class TFCommonConfig {
 		}
 		builder.pop();
 
-		builder.comment("All settings regarding the Twilight Forest Portal are found here").push("Portal Settings");
+		builder.comment("All settings regarding the Twilight Forest Portal are found here").translation(TFConfig.CONFIG_ID + "portal_settings").push("Portal Settings");
 		{
 			PORTAL.originDimension = builder
 				.translation(TFConfig.CONFIG_ID + "origin_dimension")
@@ -52,7 +53,7 @@ public class TFCommonConfig {
 					You can read about them here: https://minecraft.wiki/w/Permission_level""")
 				.defineInRange("portalCreationPermission", 0, 0, Commands.LEVEL_OWNERS);
 			PORTAL.disablePortalCreation = builder
-				.translation(TFConfig.CONFIG_ID + "portals")
+				.translation(TFConfig.CONFIG_ID + "disable_portal")
 				.comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.")
 				.define("disablePortalCreation", false);
 			PORTAL.checkPortalPlacement = builder
@@ -109,7 +110,7 @@ public class TFCommonConfig {
 			.define("bossesSpawnDropChests", true);
 
 		cloudBlockPrecipitationDistance = builder
-			.translation(TFConfig.CONFIG_ID + "cloud_block_precipitation_distance_server")
+			.translation(TFConfig.CONFIG_ID + "cloud_precipitation")
 			.comment("""
 				Dictates how many blocks down from a cloud block should the game logic check for handling weather related code.
 				Lower if experiencing low tick rate. Set to 0 to turn all cloud precipitation logic off.""")
@@ -126,7 +127,7 @@ public class TFCommonConfig {
 				MORE_LOOT_AND_HEALTH: does both of the above functions for each boss.""")
 			.defineEnum("multiplayerFightAdjuster", TFConfig.MultiplayerFightAdjuster.NONE);
 
-		builder.comment("Settings for all things related to the Uncrafting Table.").push("Uncrafting Table");
+		builder.comment("Settings for all things related to the Uncrafting Table.").translation(TFConfig.CONFIG_ID + "uncrafting").push("Uncrafting Table");
 		{
 			UNCRAFTING_STUFFS.uncraftingXpCostMultiplier = builder
 				.worldRestart()
@@ -152,7 +153,7 @@ public class TFCommonConfig {
 					Example: "twilightforest:firefly_particle_spawner" will disable uncrafting the particle spawner into a firefly jar, firefly, and poppy.
 					If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
 					If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""")
-				.defineListAllowEmpty("disableUncraftingRecipes", List.of("twilightforest:giant_log_to_oak_planks"), s -> s instanceof String);
+				.defineListAllowEmpty("disableUncraftingRecipes", List.of("twilightforest:giant_log_to_oak_planks"), () -> "", s -> s instanceof String);
 			UNCRAFTING_STUFFS.reverseRecipeBlacklist = builder
 				.worldRestart()
 				.translation(TFConfig.CONFIG_ID + "uncrafting_recipes_flip")
@@ -165,7 +166,7 @@ public class TFCommonConfig {
 					Here, you can disable all items from certain mods from being uncrafted.
 					Input a valid mod id to disable all uncrafting recipes from that mod.
 					Example: "twilightforest" will disable all uncrafting recipes from this mod.""")
-				.defineListAllowEmpty("blacklistedUncraftingModIds", new ArrayList<>(), s -> s instanceof String);
+				.defineListAllowEmpty("blacklistedUncraftingModIds", new ArrayList<>(), () -> "", s -> s instanceof String string && ResourceLocation.isValidNamespace(string));
 			UNCRAFTING_STUFFS.flipUncraftingModIdList = builder
 				.worldRestart()
 				.translation(TFConfig.CONFIG_ID + "uncrafting_mod_id_flip")
@@ -180,7 +181,7 @@ public class TFCommonConfig {
 				.define("enableShapelessCrafting", false);
 			UNCRAFTING_STUFFS.disableIngredientSwitching = builder
 				.worldRestart()
-				.translation(TFConfig.CONFIG_ID + "disable_ingredient_switching")
+				.translation(TFConfig.CONFIG_ID + "ingredient_switching")
 				.comment("""
 					If true, the uncrafting table will no longer allow you to switch between ingredients if a recipe uses a tag for crafting.
 					This will remove the functionality for ALL RECIPES!
@@ -205,7 +206,7 @@ public class TFCommonConfig {
 		}
 		builder.pop();
 
-		builder.comment("Settings for all things related to the magic trees.").push("Magic Trees");
+		builder.comment("Settings for all things related to the magic trees.").translation(TFConfig.CONFIG_ID + "magic_trees").push("Magic Trees");
 		{
 			MAGIC_TREES.timeRange = builder
 				.worldRestart()
@@ -241,7 +242,7 @@ public class TFCommonConfig {
 		}
 		builder.pop();
 
-		builder.comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").push("Shield Parrying");
+		builder.comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").translation(TFConfig.CONFIG_ID + "shield").push("Shield Parrying");
 		{
 			SHIELD_INTERACTIONS.parryNonTwilightAttacks = builder
 				.translation(TFConfig.CONFIG_ID + "parry_non_twilight")

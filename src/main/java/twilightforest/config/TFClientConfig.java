@@ -1,5 +1,6 @@
 package twilightforest.config;
 
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class TFClientConfig {
 			.define("fortificationShieldIndicatorInCreative", false);
 
 		cloudBlockPrecipitationDistance = builder
-			.translation(TFConfig.CONFIG_ID + "cloud_block_precipitation_distance")
+			.translation(TFConfig.CONFIG_ID + "cloud_precipitation")
 			.comment("""
 				Renders precipitation underneath cloud blocks. -1 sets it to be synced with the common config.
 				Set this to a lower number if you're experiencing poor performance, or set it to 0 if you wish to turn it off""")
@@ -80,12 +81,12 @@ public class TFClientConfig {
 			.comment("""
 				List of player UUIDs whose skins the giants of Twilight Forest should use.
 				If left empty, the giants will appear the same as the player viewing them does.""")
-			.defineListAllowEmpty("giantSkinUUIDs", new ArrayList<>(), s -> s instanceof String);
+			.defineListAllowEmpty("giantSkinUUIDs", new ArrayList<>(), () -> "", s -> s instanceof String string && string.split("-").length == 5);
 
 		auroraBiomes = builder
 			.translation(TFConfig.CONFIG_ID + "aurora_biomes")
 			.comment("Defines which biomes the aurora shader effect will appear in. Leave the list empty to disable the effect.")
-			.defineListAllowEmpty("auroraBiomes", List.of("twilightforest:glacier"), s -> s instanceof String);
+			.defineListAllowEmpty("auroraBiomes", List.of("twilightforest:glacier"), () -> "", s -> s instanceof String string && ResourceLocation.tryParse(string) != null);
 
 		prettifyOreMeterGui = builder
 			.translation(TFConfig.CONFIG_ID + "prettify_ore_meter_gui")

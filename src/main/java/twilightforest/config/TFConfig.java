@@ -27,7 +27,7 @@ import java.util.UUID;
 
 public class TFConfig {
 
-	protected static final String CONFIG_ID = "config." + TwilightForestMod.ID;
+	public static final String CONFIG_ID = "config." + TwilightForestMod.ID + ".";
 	@Nullable
 	private static ResourceLocation portalLockingAdvancement;
 	private static final List<Holder<Biome>> VALID_AURORA_BIOMES = new ArrayList<>();
