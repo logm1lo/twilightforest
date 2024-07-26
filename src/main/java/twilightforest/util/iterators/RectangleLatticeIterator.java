@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.util.iterators;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

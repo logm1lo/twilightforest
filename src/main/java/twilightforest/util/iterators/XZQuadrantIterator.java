@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.util.iterators;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,8 +37,6 @@ public class XZQuadrantIterator<T> implements Iterator<T>, Iterable<T> {
 
 	@Override
 	public T next() {
-		if (!this.hasNext()) throw new IllegalStateException("Cannot iterate further on XZ quadrants! [" + this + "]");
-
 		return switch (this.cardinal) {
 			case 0 -> {
 				this.cardinal++;

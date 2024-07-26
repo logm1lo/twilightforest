@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.util.iterators;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
