@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -21,8 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.saveddata.maps.MapId;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.level.saveddata.maps.*;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.init.TFBiomes;
@@ -30,6 +30,7 @@ import twilightforest.init.TFItems;
 import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.HashMap;
 import java.util.List;
@@ -178,17 +179,14 @@ public class MagicMapItem extends MapItem {
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
 							if (LegacyLandmarkPlacements.blockIsInLandmarkCenter(worldX, worldZ)) {
-								byte mapX = (byte) ((worldX - centerX) / (float) blocksPerPixel * 2F);
-								byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
-
 								ResourceKey<Structure> structureKey = LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, level);
 								// Filters by structures we want to give icons for
 								if (structureRegistry.getHolder(structureKey).map(structureRef -> structureRef.is(StructureTagGenerator.LANDMARK)).orElse(false)) {
-									boolean isConquered = LandmarkUtil.isConquered(level, worldX, worldZ);
-
 									TFMagicMapData tfData = (TFMagicMapData) data;
-									tfData.putMapData(new TFMagicMapData.TFMapDecoration(structureKey, mapX, mapZ, isConquered));
-									//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
+									if (structureRegistry.getOrThrow(structureKey) instanceof LandmarkStructure landmark && landmark.getMapIcon() != null) {
+										tfData.addTFDecoration(landmark.getMapIcon(), level, makeName(landmark.getMapIcon(), worldX, worldZ), worldX, worldZ, 180.0F, LandmarkUtil.isConquered(level, worldX, worldZ));
+										//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
+									}
 								}
 							}
 						}
@@ -196,6 +194,10 @@ public class MagicMapItem extends MapItem {
 				}
 			}
 		}
+	}
+
+	public static String makeName(Holder<MapDecorationType> type, int x, int z) {
+		return type.value().assetId() + "_" + x + "_" + z;
 	}
 
 	private MapColorBrightness getMapColorPerBiome(ResourceLocation biome) {

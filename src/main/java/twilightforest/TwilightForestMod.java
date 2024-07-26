@@ -125,6 +125,7 @@ public final class TwilightForestMod {
 		TFCaveCarvers.CARVER_TYPES.register(bus);
 		TFDataComponents.COMPONENTS.register(bus);
 		TFRecipes.RECIPE_SERIALIZERS.register(bus);
+		TFMapDecorations.DECORATIONS.register(bus);
 		TFParticleType.PARTICLE_TYPES.register(bus);
 		TFBlockEntities.BLOCK_ENTITIES.register(bus);
 		TFLootModifiers.LOOT_MODIFIERS.register(bus);

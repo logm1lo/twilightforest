@@ -27,6 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -39,6 +40,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.*;
@@ -46,6 +48,8 @@ import twilightforest.client.model.entity.newmodels.*;
 import twilightforest.client.particle.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.newmodels.*;
+import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
+import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.client.renderer.tileentity.*;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.TFPart;
@@ -404,5 +408,20 @@ public class TFClientSetup {
 		event.registerItem(KnightmetalArmorItem.ArmorRender.INSTANCE, TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get());
 		event.registerItem(PhantomArmorItem.ArmorRender.INSTANCE, TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 		event.registerItem(YetiArmorItem.ArmorRender.INSTANCE, TFItems.YETI_HELMET.get(), TFItems.YETI_CHESTPLATE.get(), TFItems.YETI_LEGGINGS.get(), TFItems.YETI_BOOTS.get());
+	}
+
+	@SubscribeEvent
+	public static void registerMapDecorators(RegisterMapDecorationRenderersEvent event) {
+		event.register(MapDecorationTypes.PLAYER.value(), new MagicMapPlayerIconRenderer());
+		event.register(TFMapDecorations.QUEST_GROVE.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.NAGA_COURTYARD.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.LICH_TOWER.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.LABYRINTH.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.HYDRA_LAIR.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.KNIGHT_STRONGHOLD.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.DARK_TOWER.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.YETI_LAIR.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.AURORA_PALACE.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.FINAL_CASTLE.get(), new ConqueredMapIconRenderer());
 	}
 }

@@ -2,6 +2,7 @@ package twilightforest.world.components.structures.type;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -11,10 +12,12 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.icetower.IceTowerMainComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
@@ -40,6 +43,11 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.AURORA_PALACE.get();
+	}
+
+	@Override
+	public Holder<MapDecorationType> getMapIcon() {
+		return TFMapDecorations.AURORA_PALACE;
 	}
 
 	public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstrapContext<Structure> context) {

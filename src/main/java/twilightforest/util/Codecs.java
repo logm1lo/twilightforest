@@ -11,12 +11,15 @@ import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
 import net.minecraft.Util;
 import net.minecraft.core.*;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.saveddata.maps.MapDecoration;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +46,13 @@ public final class Codecs {
 			buf.writeInt(box.maxZ());
 		}
 	};
+	public static final Codec<MapDecoration> DECORATION_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+		BuiltInRegistries.MAP_DECORATION_TYPE.holderByNameCodec().fieldOf("type").forGetter(MapDecoration::type),
+		Codec.BYTE.fieldOf("x").forGetter(MapDecoration::x),
+		Codec.BYTE.fieldOf("y").forGetter(MapDecoration::y),
+		Codec.BYTE.fieldOf("rot").forGetter(MapDecoration::rot),
+		ComponentSerialization.CODEC.optionalFieldOf("name").forGetter(MapDecoration::name)
+	).apply(instance, MapDecoration::new));
 
 	public static final Codec<Climate.ParameterList<Holder<Biome>>> CLIMATE_SYSTEM = ExtraCodecs.nonEmptyList(RecordCodecBuilder.<Pair<Climate.ParameterPoint, Holder<Biome>>>create((instance) -> instance.group(Climate.ParameterPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst), Biome.CODEC.fieldOf("biome").forGetter(Pair::getSecond)).apply(instance, Pair::of)).listOf()).xmap(Climate.ParameterList::new, Climate.ParameterList::values);
 

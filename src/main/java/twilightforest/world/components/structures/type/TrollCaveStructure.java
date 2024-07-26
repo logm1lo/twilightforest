@@ -13,11 +13,13 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
@@ -69,6 +71,11 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 	@Override
 	protected boolean dontCenter() {
 		return true;
+	}
+
+	@Override
+	public Holder<MapDecorationType> getMapIcon() {
+		return TFMapDecorations.TROLL_CAVES;
 	}
 
 	public static TrollCaveStructure buildTrollCaveConfig(BootstrapContext<Structure> context) {

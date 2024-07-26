@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -11,7 +12,9 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.data.tags.BiomeTagGenerator;
+import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.QuestGrove;
 import twilightforest.world.components.structures.util.ConquerableStructure;
@@ -34,6 +37,11 @@ public class QuestGroveStructure extends ConquerableStructure {
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.QUEST_GROVE.get();
+	}
+
+	@Override
+	public Holder<MapDecorationType> getMapIcon() {
+		return TFMapDecorations.QUEST_GROVE;
 	}
 
 	public static QuestGroveStructure buildStructureConfig(BootstrapContext<Structure> context) {
