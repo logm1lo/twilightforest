@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -27,6 +28,7 @@ import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.init.custom.MagicPaintingVariants;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
@@ -102,18 +104,18 @@ public class TowerGallery extends TwilightJigsawPiece implements PieceBeardifier
 	}
 
 	private static Optional<Holder.Reference<MagicPaintingVariant>> variantForGallery(ServerLevelAccessor level, String roomId) {
-		String variantId = switch (roomId) {
-			case "twilightforest:lich_tower/gallery/castaway_paradise" -> "twilightforest:castaway_paradise";
-			case "twilightforest:lich_tower/gallery/darkness" -> "twilightforest:darkness";
-			case "twilightforest:lich_tower/gallery/lucid_lands" -> "twilightforest:lucid_lands";
-			case "twilightforest:lich_tower/gallery/music_in_the_mire" -> "twilightforest:music_in_the_mire";
-			case "twilightforest:lich_tower/gallery/the_hostile_paradise" -> "twilightforest:untitled"; // TODO switch to the_hostile_paradise, post-rebase
+		ResourceKey<MagicPaintingVariant> variantId = switch (roomId) {
+			case "twilightforest:lich_tower/gallery/castaway_paradise" -> MagicPaintingVariants.CASTAWAY_PARADISE;
+			case "twilightforest:lich_tower/gallery/darkness" -> MagicPaintingVariants.DARKNESS;
+			case "twilightforest:lich_tower/gallery/lucid_lands" -> MagicPaintingVariants.LUCID_LANDS;
+			case "twilightforest:lich_tower/gallery/music_in_the_mire" -> MagicPaintingVariants.MUSIC_IN_THE_MIRE;
+			case "twilightforest:lich_tower/gallery/the_hostile_paradise" -> MagicPaintingVariants.THE_HOSTILE_PARADISE;
 			default -> null;
 		};
 
 		if (variantId == null) return Optional.empty();
 
-		return level.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).getHolder(ResourceLocation.parse(variantId));
+		return level.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).getHolder(variantId);
 	}
 
 	public static void tryPlaceGallery(RandomSource random, StructurePieceAccessor pieceAccessor, @Nullable ResourceLocation roomId, JigsawRecord connection, TwilightJigsawPiece parent, int newDepth, StructureTemplateManager structureManager, String jigsawLabel) {
