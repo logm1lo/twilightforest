@@ -118,6 +118,7 @@ public final class TowerPieces {
 		TwilightForestMod.prefix("lich_tower/gallery/castaway_paradise"),
 		TwilightForestMod.prefix("lich_tower/gallery/darkness"),
 		TwilightForestMod.prefix("lich_tower/gallery/lucid_lands"),
+		TwilightForestMod.prefix("lich_tower/gallery/music_in_the_mire"),
 		TwilightForestMod.prefix("lich_tower/gallery/the_hostile_paradise")
 	};
 	static final ResourceLocation[] GALLERY_ROOFS_EVEN = new ResourceLocation[] {
