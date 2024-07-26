@@ -1,11 +1,10 @@
-package twilightforest.util;
+package twilightforest.util.iterators;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,23 +29,7 @@ public class VoxelBresenhamIteratorTest {
 		for (BlockPos pos : new VoxelBresenhamIterator(source, destination))
 			iterator.add(pos);
 
-		List<BlockPos> arrayed = Arrays.asList(getBresenhamArrays(source, destination));
-
-		diffScan(iterator, arrayed);
-	}
-
-	// True if no matches found
-	private static void diffScan(List<BlockPos> first, List<BlockPos> second) {
-		int size1 = first.size();
-		int size2 = second.size();
-		assertSame(size1, size2);
-
-		int scanLength = Math.min(size1, size2);
-		for (int index = 0; index < scanLength; index++) {
-			BlockPos pos1 = first.get(index);
-			BlockPos pos2 = second.get(index);
-			assertEquals(pos1, pos2); // assertEquals(pos1, pos2, () -> "Difference: " + pos2.subtract(pos1));
-		}
+		assertArrayEquals(getBresenhamArrays(source, destination), iterator.toArray(BlockPos[]::new));
 	}
 
 	// The old code as it used to exist in older versions. Existing only as an accuracy benchmark (100% parity)
