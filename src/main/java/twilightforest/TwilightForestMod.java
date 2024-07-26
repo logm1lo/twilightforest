@@ -249,6 +249,8 @@ public final class TwilightForestMod {
 	public void createDataMaps(RegisterDataMapTypesEvent event) {
 		event.register(TFDataMaps.CRUMBLE_HORN);
 		event.register(TFDataMaps.TRANSFORMATION_POWDER);
+		event.register(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
+		event.register(TFDataMaps.ORE_MAP_ORE_COLOR);
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {

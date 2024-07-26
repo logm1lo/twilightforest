@@ -3,6 +3,7 @@ package twilightforest.util;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.doubles.Double2ObjectAVLTreeMap;
@@ -19,7 +20,9 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import twilightforest.world.components.structures.placements.AvoidLandmarkGridPlacement;
 
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +56,10 @@ public final class Codecs {
 		Codec.BYTE.fieldOf("rot").forGetter(MapDecoration::rot),
 		ComponentSerialization.CODEC.optionalFieldOf("name").forGetter(MapDecoration::name)
 	).apply(instance, MapDecoration::new));
+	public static final MapCodec<MapColor> COLOR_CODEC = RecordCodecBuilder.<MapColor>mapCodec(instance -> instance.group(
+		Codec.INT.fieldOf("id").forGetter(o -> o.id),
+		Codec.INT.fieldOf("color").forGetter(o -> o.col)
+	).apply(instance, MapColor::new)).validate(Codecs::validateMapColor);
 
 	public static final Codec<Climate.ParameterList<Holder<Biome>>> CLIMATE_SYSTEM = ExtraCodecs.nonEmptyList(RecordCodecBuilder.<Pair<Climate.ParameterPoint, Holder<Biome>>>create((instance) -> instance.group(Climate.ParameterPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst), Biome.CODEC.fieldOf("biome").forGetter(Pair::getSecond)).apply(instance, Pair::of)).listOf()).xmap(Climate.ParameterList::new, Climate.ParameterList::values);
 
@@ -98,6 +105,10 @@ public final class Codecs {
 
 	public static <E> DataResult<Pair<E, E>> arrayToPair(List<E> list) {
 		return Util.fixedSize(list, 2).map(l -> Pair.of(l.get(0), l.get(1)));
+	}
+
+	private static DataResult<MapColor> validateMapColor(MapColor color) {
+		return color.id <= 63 && MapColor.byId(color.id) != MapColor.NONE ? DataResult.success(color) : DataResult.error(() -> "Provided MapColor is not a valid MapColor");
 	}
 
 	private Codecs() {
