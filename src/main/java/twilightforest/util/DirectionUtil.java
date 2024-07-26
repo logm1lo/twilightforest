@@ -21,7 +21,4 @@ public class DirectionUtil {
 			default -> orElse;
 		};
 	}
-
-	private DirectionUtil() {
-	}
 }

@@ -17,7 +17,7 @@ import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 import net.neoforged.neoforge.client.model.geometry.UnbakedGeometryHelper;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.joml.Vector3f;
-import twilightforest.client.model.block.doors.ConnectionLogic;
+import twilightforest.client.model.block.connected.ConnectionLogic;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

@@ -19,7 +19,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.client.model.block.doors.ConnectionLogic;
+import twilightforest.client.model.block.connected.ConnectionLogic;
 import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;

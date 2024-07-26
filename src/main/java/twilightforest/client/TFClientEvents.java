@@ -60,7 +60,6 @@ import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
 import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.carpet.RoyalRagsModelBuilder;
-import twilightforest.client.model.block.doors.CastleDoorModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
 import twilightforest.client.model.block.leaves.BakedLeavesModel;
