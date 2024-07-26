@@ -67,8 +67,9 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 		return false;
 	}
 
-	@Nullable
-	public abstract Holder<MapDecorationType> getMapIcon();
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.empty();
+	}
 
 	@Nullable
 	protected abstract StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z);

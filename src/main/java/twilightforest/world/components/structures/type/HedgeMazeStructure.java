@@ -20,6 +20,7 @@ import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class HedgeMazeStructure extends LandmarkStructure {
@@ -40,8 +41,8 @@ public class HedgeMazeStructure extends LandmarkStructure {
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return TFMapDecorations.HEDGE_MAZE;
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.HEDGE_MAZE);
 	}
 
 	public static HedgeMazeStructure buildStructureConfig(BootstrapContext<Structure> context) {

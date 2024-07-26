@@ -36,6 +36,7 @@ import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns, CustomDensitySource {
@@ -90,12 +91,12 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return switch (this.size) {
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(switch (this.size) {
 			case 1 -> TFMapDecorations.SMALL_HOLLOW_HILL;
 			case 2 -> TFMapDecorations.MEDIUM_HOLLOW_HILL;
 			default -> TFMapDecorations.LARGE_HOLLOW_HILL;
-		};
+		});
 	}
 
 	public static HollowHillStructure buildSmallHillConfig(BootstrapContext<Structure> context) {

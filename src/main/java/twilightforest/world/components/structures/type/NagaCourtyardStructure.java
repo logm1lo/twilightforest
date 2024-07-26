@@ -19,6 +19,7 @@ import twilightforest.world.components.structures.courtyard.CourtyardMain;
 import twilightforest.world.components.structures.util.ConquerableStructure;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class NagaCourtyardStructure extends ConquerableStructure {
@@ -39,8 +40,8 @@ public class NagaCourtyardStructure extends ConquerableStructure {
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return TFMapDecorations.NAGA_COURTYARD;
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.NAGA_COURTYARD);
 	}
 
 	public static NagaCourtyardStructure buildStructureConfig(BootstrapContext<Structure> context) {

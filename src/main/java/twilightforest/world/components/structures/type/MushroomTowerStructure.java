@@ -2,7 +2,6 @@ package twilightforest.world.components.structures.type;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -11,9 +10,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
-import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.data.tags.BiomeTagGenerator;
-import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.mushroomtower.MushroomTowerMainComponent;
 import twilightforest.world.components.structures.util.LandmarkStructure;
@@ -36,11 +33,6 @@ public class MushroomTowerStructure extends LandmarkStructure {
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.MUSHROOM_TOWER.get();
-	}
-
-	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return null;
 	}
 
 	public static MushroomTowerStructure buildStructureConfig(BootstrapContext<Structure> context) {

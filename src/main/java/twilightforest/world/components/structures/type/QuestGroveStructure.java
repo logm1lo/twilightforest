@@ -20,6 +20,7 @@ import twilightforest.world.components.structures.QuestGrove;
 import twilightforest.world.components.structures.util.ConquerableStructure;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class QuestGroveStructure extends ConquerableStructure {
@@ -40,8 +41,8 @@ public class QuestGroveStructure extends ConquerableStructure {
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return TFMapDecorations.QUEST_GROVE;
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.QUEST_GROVE);
 	}
 
 	public static QuestGroveStructure buildStructureConfig(BootstrapContext<Structure> context) {

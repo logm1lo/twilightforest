@@ -29,6 +29,7 @@ import twilightforest.world.components.structures.util.ControlledSpawningStructu
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class KnightStrongholdStructure extends ControlledSpawningStructure {
@@ -51,8 +52,8 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return TFMapDecorations.KNIGHT_STRONGHOLD;
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.KNIGHT_STRONGHOLD);
 	}
 
 	public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstrapContext<Structure> context) {

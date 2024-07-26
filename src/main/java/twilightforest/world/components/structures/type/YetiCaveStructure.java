@@ -32,6 +32,7 @@ import twilightforest.world.components.structures.util.ControlledSpawningStructu
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class YetiCaveStructure extends ControlledSpawningStructure implements CustomDensitySource {
@@ -65,8 +66,8 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return TFMapDecorations.YETI_LAIR;
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.YETI_LAIR);
 	}
 
 	public static YetiCaveStructure buildYetiCaveConfig(BootstrapContext<Structure> context) {

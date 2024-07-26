@@ -33,6 +33,7 @@ import twilightforest.world.components.structures.util.ControlledSpawningStructu
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class LabyrinthStructure extends ControlledSpawningStructure implements ConfigurableSpawns, CustomDensitySource {
@@ -60,8 +61,8 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return TFMapDecorations.LABYRINTH;
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.LABYRINTH);
 	}
 
 	public static LabyrinthStructure buildLabyrinthConfig(BootstrapContext<Structure> context) {

@@ -62,11 +62,6 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 		return true;
 	}
 
-	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return null;
-	}
-
 	public static GiantHouseStructure buildGiantHouseConfig(BootstrapContext<Structure> context) {
 		return new GiantHouseStructure(
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),

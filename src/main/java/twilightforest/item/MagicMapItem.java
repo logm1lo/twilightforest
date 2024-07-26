@@ -183,8 +183,8 @@ public class MagicMapItem extends MapItem {
 								// Filters by structures we want to give icons for
 								if (structureRegistry.getHolder(structureKey).map(structureRef -> structureRef.is(StructureTagGenerator.LANDMARK)).orElse(false)) {
 									TFMagicMapData tfData = (TFMagicMapData) data;
-									if (structureRegistry.getOrThrow(structureKey) instanceof LandmarkStructure landmark && landmark.getMapIcon() != null) {
-										tfData.addTFDecoration(landmark.getMapIcon(), level, makeName(landmark.getMapIcon(), worldX, worldZ), worldX, worldZ, 180.0F, LandmarkUtil.isConquered(level, worldX, worldZ));
+									if (structureRegistry.getOrThrow(structureKey) instanceof LandmarkStructure landmark && landmark.getMapIcon().isPresent()) {
+										tfData.addTFDecoration(landmark.getMapIcon().get(), level, makeName(landmark.getMapIcon().get(), worldX, worldZ), worldX, worldZ, 180.0F, LandmarkUtil.isConquered(level, worldX, worldZ));
 										//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
 									}
 								}

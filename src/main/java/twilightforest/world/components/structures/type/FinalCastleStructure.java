@@ -23,6 +23,7 @@ import twilightforest.world.components.structures.util.ControlledSpawningStructu
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FinalCastleStructure extends ControlledSpawningStructure {
@@ -45,8 +46,8 @@ public class FinalCastleStructure extends ControlledSpawningStructure {
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return TFMapDecorations.FINAL_CASTLE;
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.FINAL_CASTLE);
 	}
 
 	public static FinalCastleStructure buildFinalCastleConfig(BootstrapContext<Structure> context) {

@@ -24,6 +24,7 @@ import twilightforest.world.components.structures.util.ControlledSpawningStructu
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AuroraPalaceStructure extends ControlledSpawningStructure {
@@ -46,8 +47,8 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return TFMapDecorations.AURORA_PALACE;
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.AURORA_PALACE);
 	}
 
 	public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstrapContext<Structure> context) {

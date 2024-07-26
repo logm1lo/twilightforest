@@ -25,6 +25,7 @@ import twilightforest.world.components.structures.util.ControlledSpawningStructu
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DarkTowerStructure extends ControlledSpawningStructure {
@@ -47,8 +48,8 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return TFMapDecorations.DARK_TOWER;
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.DARK_TOWER);
 	}
 
 	public static DarkTowerStructure buildDarkTowerConfig(BootstrapContext<Structure> context) {

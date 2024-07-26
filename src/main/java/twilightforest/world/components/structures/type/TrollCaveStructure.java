@@ -31,6 +31,7 @@ import twilightforest.world.components.structures.util.ProgressionStructure;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TrollCaveStructure extends ProgressionStructure implements ConfigurableSpawns {
@@ -74,8 +75,8 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 	}
 
 	@Override
-	public Holder<MapDecorationType> getMapIcon() {
-		return TFMapDecorations.TROLL_CAVES;
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.TROLL_CAVES);
 	}
 
 	public static TrollCaveStructure buildTrollCaveConfig(BootstrapContext<Structure> context) {
