@@ -189,8 +189,9 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add(String.format("tag.%s.%s.%s", tag.registry().location().getPath(), tag.location().getNamespace(), tag.location().getPath().replace('/', '.')), name);
 	}
 
-	public void configEntry(String key, String name) {
+	public void configEntry(String key, String name, String description) {
 		this.add(TFConfig.CONFIG_ID + key, name);
+		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
 	}
 
 	@Override

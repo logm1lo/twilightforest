@@ -3,6 +3,7 @@ package twilightforest.data;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import twilightforest.config.ConfigComments;
 import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -1012,64 +1013,64 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(FluidTagGenerator.FIRE_JET_FUEL, "Fire Jet Fuel");
 
 		//client config
-		this.configEntry("silent_cicadas", "Silent Cicadas");
-		this.configEntry("silent_cicadas_on_head", "Silent Cicadas on Head");
-		this.configEntry("first_person_effects", "First Person Effects");
-		this.configEntry("animate_trophies", "Animate Trophies");
-		this.configEntry("optifine", "Optifine Screen");
-		this.configEntry("locked_toasts", "Locked Biome Toasts");
-		this.configEntry("ram_indicator", "Questing Ram Wool Indicator");
-		this.configEntry("shield_indicator", "Fortification Shield Indicator");
-		this.configEntry("shield_indicator_creative", "Fortification Shield Indicator (creative)");
-		this.configEntry("giant_skin_uuid_list", "Giant Skins");
-		this.configEntry("aurora_biomes", "Aurora Shader Biomes");
-		this.configEntry("prettify_ore_meter_gui", "Prettify Ore Meter GUI");
-		this.configEntry("totem_charm_animation", "Totem of Undying Charm Animation");
+		this.configEntry("silent_cicadas", "Silent Cicadas", ConfigComments.SILENT_CICADAS);
+		this.configEntry("silent_cicadas_on_head", "Silent Cicadas on Head", ConfigComments.SILENT_CICADAS_ON_HEAD);
+		this.configEntry("screen_shake", "Beanstalk Screen Shake", ConfigComments.SCREEN_SHAKE);
+		this.configEntry("animate_trophies", "Animate Trophies", ConfigComments.ANIMATE_TROPHIES);
+		this.configEntry("optifine", "Optifine Screen", ConfigComments.OPTIFINE);
+		this.configEntry("locked_toasts", "Disable Locked Biome Toasts", ConfigComments.LOCKED_TOASTS);
+		this.configEntry("ram_indicator", "Questing Ram Wool Indicator", ConfigComments.QUESTING_RAM_WOOL);
+		this.configEntry("shield_indicator", "Fortification Shield Indicator", ConfigComments.FORTIFICATION);
+		this.configEntry("shield_indicator_creative", "Fortification Shield Indicator (creative)", ConfigComments.FORTIFICATION_CREATIVE);
+		this.configEntry("giant_skin_uuid_list", "Giant Skins", ConfigComments.GIANT_SKINS);
+		this.configEntry("aurora_biomes", "Aurora Shader Biomes", ConfigComments.AURORA_SHADER);
+		this.configEntry("prettify_ore_meter_gui", "Prettify Ore Meter GUI", ConfigComments.PRETTIFY_ORE_METER);
+		this.configEntry("totem_charm_animation", "Totem of Undying Charm Animation", ConfigComments.CHARMS_AS_TOTEMS);
 
 		//common config
-		this.configEntry("dim_settings", "Dimension Settings");
-		this.configEntry("spawn_in_tf", "Spawn in Twilight Forest");
-		this.configEntry("portal_for_new_player", "Create Return Portal for Players");
+		this.configEntry("dim_settings", "Dimension Settings", ConfigComments.DIMENSION);
+		this.configEntry("spawn_in_tf", "Spawn in Twilight Forest", ConfigComments.SPAWN_IN_TF);
+		this.configEntry("portal_for_new_player", "Create Return Portal for Players", ConfigComments.NEW_PORTAL);
 
-		this.configEntry("portal_settings", "Portal Settings");
-		this.configEntry("origin_dimension", "Origin Dimension");
-		this.configEntry("portals_in_other_dimensions", "Create Portals in Other Dimensions");
-		this.configEntry("portal_permission", "Portal Creation Permission");
-		this.configEntry("disable_portal", "Disable Portal Creation");
-		this.configEntry("check_portal_placement", "Check Portal Placement");
-		this.configEntry("destructive_portal_lighting", "Destructive Lightning");
-		this.configEntry("portal_return", "Lock Return Portal");
-		this.configEntry("portal_unlocked_by_advancement", "Portal Unlock Advancement");
-		this.configEntry("max_portal_size", "Max Portal Size");
+		this.configEntry("portal_settings", "Portal Settings", ConfigComments.PORTAL);
+		this.configEntry("origin_dimension", "Origin Dimension", ConfigComments.ORIGIN_DIMENSION);
+		this.configEntry("portals_in_other_dimensions", "Create Portals in Other Dimensions", ConfigComments.OTHER_DIMENSION_PORTALS);
+		this.configEntry("portal_permission", "Portal Creation Permission", ConfigComments.PORTAL_PERMISSION);
+		this.configEntry("disable_portal", "Disable Portal Creation", ConfigComments.DISABLE_PORTAL);
+		this.configEntry("check_portal_placement", "Check Portal Placement", ConfigComments.CHECK_PORTAL);
+		this.configEntry("destructive_portal_lighting", "Destructive Lightning", ConfigComments.PORTAL_LIGHTNING);
+		this.configEntry("portal_return", "Lock Return Portal", ConfigComments.RETURN_PORTAL);
+		this.configEntry("portal_unlocked_by_advancement", "Portal Unlock Advancement", ConfigComments.PORTAL_ADVANCEMENT);
+		this.configEntry("max_portal_size", "Max Portal Size", ConfigComments.PORTAL_SIZE);
 
-		this.configEntry("uncrafting", "Uncrafting Table");
-		this.configEntry("uncrafting_xp_cost", "Uncrafting Cost Multiplier");
-		this.configEntry("repairing_xp_cost", "Repairing Cost Multiplier");
-		this.configEntry("uncrafting_recipes", "Disabled Recipes");
-		this.configEntry("uncrafting_recipes_flip", "Recipe Blacklist");
-		this.configEntry("uncrafting_mod_ids", "Disabled Mod IDs");
-		this.configEntry("uncrafting_mod_id_flip", "Mod ID Blacklist");
-		this.configEntry("shapeless_uncrafting", "Shapeless Uncrafting");
-		this.configEntry("ingredient_switching", "Disable Ingredient Switching");
-		this.configEntry("disable_uncrafting", "Disable Uncrafting");
-		this.configEntry("disable_uncrafting_table", "Disable Uncrafting Table");
+		this.configEntry("uncrafting", "Uncrafting Table", ConfigComments.UNCRAFTING_TABLE);
+		this.configEntry("uncrafting_xp_cost", "Uncrafting Cost Multiplier", ConfigComments.UNCRAFTING_MULTIPLIER);
+		this.configEntry("repairing_xp_cost", "Repairing Cost Multiplier", ConfigComments.REPAIR_MULTIPLIER);
+		this.configEntry("uncrafting_recipes", "Disabled Recipes", ConfigComments.RECIPE_WHITELIST);
+		this.configEntry("uncrafting_recipes_flip", "Recipe Blacklist", ConfigComments.RECIPE_BLACKLIST);
+		this.configEntry("uncrafting_mod_ids", "Disabled Mod IDs", ConfigComments.MOD_ID_WHITELIST);
+		this.configEntry("uncrafting_mod_id_flip", "Mod ID Blacklist", ConfigComments.MOD_ID_BLACKLIST);
+		this.configEntry("shapeless_uncrafting", "Shapeless Uncrafting", ConfigComments.SHAPELESS_UNCRAFTING);
+		this.configEntry("ingredient_switching", "Disable Ingredient Switching", ConfigComments.INGREDIENT_SWITCHING);
+		this.configEntry("disable_uncrafting", "Disable Uncrafting", ConfigComments.DISABLE_UNCRAFTING);
+		this.configEntry("disable_uncrafting_table", "Disable Uncrafting Table", ConfigComments.DISABLE_TABLE);
 
-		this.configEntry("magic_trees", "Magic Trees");
-		this.configEntry("time_range", "Tree of Time Range");
-		this.configEntry("transformation_range", "Tree of Transformation Range");
-		this.configEntry("mining_range", "Miner's Tree Range");
-		this.configEntry("sorting_range", "Sorting Tree Range");
+		this.configEntry("magic_trees", "Magic Trees", ConfigComments.MAGIC_TREES);
+		this.configEntry("time_range", "Tree of Time Range", ConfigComments.TIME_CORE);
+		this.configEntry("transformation_range", "Tree of Transformation Range", ConfigComments.TRANFORMATION_CORE);
+		this.configEntry("mining_range", "Miner's Tree Range", ConfigComments.MINING_CORE);
+		this.configEntry("sorting_range", "Sorting Tree Range", ConfigComments.SORTING_CORE);
 
-		this.configEntry("shield", "Shield Interactions");
-		this.configEntry("parry_non_twilight", "Parry Non-TF Projectiles");
-		this.configEntry("parry_window", "Parry Window");
+		this.configEntry("shield", "Shield Interactions", ConfigComments.SHIELD_PARRYING);
+		this.configEntry("parry_non_twilight", "Parry Non-TF Projectiles", ConfigComments.PARRY_NON_TF);
+		this.configEntry("parry_window", "Parry Window", ConfigComments.PARRY_WINDOW);
 
-		this.configEntry("casket_uuid_locking", "Casket UUID Locking");
-		this.configEntry("disable_skull_candles", "Disable Skull Candles");
-		this.configEntry("default_item_enchantments", "Default Item Enchantments");
-		this.configEntry("boss_drop_chests", "Boss Drop Chests");
-		this.configEntry("cloud_precipitation", "Cloud Precipitation Distance");
-		this.configEntry("multiplayer_fight_adjuster", "Multiplayer Fight Adjuster");
+		this.configEntry("casket_uuid_locking", "Casket UUID Locking", ConfigComments.CASKET_UUID_LOCKING);
+		this.configEntry("disable_skull_candles", "Disable Skull Candles", ConfigComments.DISABLE_SKULL_CANDLES);
+		this.configEntry("default_item_enchantments", "Default Item Enchantments", ConfigComments.DEFAULT_ENCHANTS);
+		this.configEntry("boss_drop_chests", "Boss Drop Chests", ConfigComments.BOSS_CHESTS);
+		this.configEntry("cloud_precipitation", "Cloud Precipitation Distance", ConfigComments.CLOUD_PRECIP_SERVER);
+		this.configEntry("multiplayer_fight_adjuster", "Multiplayer Fight Adjuster", ConfigComments.MULTIPLAYER_ADJUSTER);
 
 	}
 }
