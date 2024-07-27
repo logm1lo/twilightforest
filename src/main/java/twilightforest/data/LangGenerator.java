@@ -1012,6 +1012,13 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(ItemTagGenerator.WIP, "Work In Progress Items");
 		this.translateTag(FluidTagGenerator.FIRE_JET_FUEL, "Fire Jet Fuel");
 
+		//config
+		this.add("twilightforest.configuration.title", "Twilight Forest Config");
+		this.add("twilightforest.configuration.section.twilightforest.client.toml", "Client Settings");
+		this.add("twilightforest.configuration.section.twilightforest.client.toml.title", "Client Settings");
+		this.add("twilightforest.configuration.section.twilightforest.common.toml", "Common Settings");
+		this.add("twilightforest.configuration.section.twilightforest.common.toml.title", "Common Settings");
+
 		//client config
 		this.configEntry("silent_cicadas", "Silent Cicadas", ConfigComments.SILENT_CICADAS);
 		this.configEntry("silent_cicadas_on_head", "Silent Cicadas on Head", ConfigComments.SILENT_CICADAS_ON_HEAD);
@@ -1023,16 +1030,18 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("shield_indicator", "Fortification Shield Indicator", ConfigComments.FORTIFICATION);
 		this.configEntry("shield_indicator_creative", "Fortification Shield Indicator (creative)", ConfigComments.FORTIFICATION_CREATIVE);
 		this.configEntry("giant_skin_uuid_list", "Giant Skins", ConfigComments.GIANT_SKINS);
+		this.add("giantSkinUUIDs.button", "Edit Skins");
 		this.configEntry("aurora_biomes", "Aurora Shader Biomes", ConfigComments.AURORA_SHADER);
+		this.add("auroraBiomes.button", "Edit Biomes");
 		this.configEntry("prettify_ore_meter_gui", "Prettify Ore Meter GUI", ConfigComments.PRETTIFY_ORE_METER);
 		this.configEntry("totem_charm_animation", "Totem of Undying Charm Animation", ConfigComments.CHARMS_AS_TOTEMS);
 
 		//common config
-		this.configEntry("dim_settings", "Dimension Settings", ConfigComments.DIMENSION);
+		this.configCategory("dim_settings", "Dimension Settings", ConfigComments.DIMENSION);
 		this.configEntry("spawn_in_tf", "Spawn in Twilight Forest", ConfigComments.SPAWN_IN_TF);
 		this.configEntry("portal_for_new_player", "Create Return Portal for Players", ConfigComments.NEW_PORTAL);
 
-		this.configEntry("portal_settings", "Portal Settings", ConfigComments.PORTAL);
+		this.configCategory("portal_settings", "Portal Settings", ConfigComments.PORTAL);
 		this.configEntry("origin_dimension", "Origin Dimension", ConfigComments.ORIGIN_DIMENSION);
 		this.configEntry("portals_in_other_dimensions", "Create Portals in Other Dimensions", ConfigComments.OTHER_DIMENSION_PORTALS);
 		this.configEntry("portal_permission", "Portal Creation Permission", ConfigComments.PORTAL_PERMISSION);
@@ -1043,7 +1052,7 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("portal_unlocked_by_advancement", "Portal Unlock Advancement", ConfigComments.PORTAL_ADVANCEMENT);
 		this.configEntry("max_portal_size", "Max Portal Size", ConfigComments.PORTAL_SIZE);
 
-		this.configEntry("uncrafting", "Uncrafting Table", ConfigComments.UNCRAFTING_TABLE);
+		this.configCategory("uncrafting", "Uncrafting Table", ConfigComments.UNCRAFTING_TABLE);
 		this.configEntry("uncrafting_xp_cost", "Uncrafting Cost Multiplier", ConfigComments.UNCRAFTING_MULTIPLIER);
 		this.configEntry("repairing_xp_cost", "Repairing Cost Multiplier", ConfigComments.REPAIR_MULTIPLIER);
 		this.configEntry("uncrafting_recipes", "Disabled Recipes", ConfigComments.RECIPE_WHITELIST);
@@ -1055,13 +1064,14 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("disable_uncrafting", "Disable Uncrafting", ConfigComments.DISABLE_UNCRAFTING);
 		this.configEntry("disable_uncrafting_table", "Disable Uncrafting Table", ConfigComments.DISABLE_TABLE);
 
-		this.configEntry("magic_trees", "Magic Trees", ConfigComments.MAGIC_TREES);
+		this.configCategory("magic_trees", "Magic Trees", ConfigComments.MAGIC_TREES);
 		this.configEntry("time_range", "Tree of Time Range", ConfigComments.TIME_CORE);
 		this.configEntry("transformation_range", "Tree of Transformation Range", ConfigComments.TRANFORMATION_CORE);
 		this.configEntry("mining_range", "Miner's Tree Range", ConfigComments.MINING_CORE);
 		this.configEntry("sorting_range", "Sorting Tree Range", ConfigComments.SORTING_CORE);
 
 		this.configEntry("shield", "Shield Interactions", ConfigComments.SHIELD_PARRYING);
+		this.add("Shield Parrying.button", "Edit");
 		this.configEntry("parry_non_twilight", "Parry Non-TF Projectiles", ConfigComments.PARRY_NON_TF);
 		this.configEntry("parry_window", "Parry Window", ConfigComments.PARRY_WINDOW);
 
@@ -1071,6 +1081,9 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("boss_drop_chests", "Boss Drop Chests", ConfigComments.BOSS_CHESTS);
 		this.configEntry("cloud_precipitation", "Cloud Precipitation Distance", ConfigComments.CLOUD_PRECIP_SERVER);
 		this.configEntry("multiplayer_fight_adjuster", "Multiplayer Fight Adjuster", ConfigComments.MULTIPLAYER_ADJUSTER);
-
+		this.add("config.twilightforest.multiplayer_fight_adjuster.none", "None");
+		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot", "More Loot");
+		this.add("config.twilightforest.multiplayer_fight_adjuster.more_health", "More Health");
+		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot_and_health", "More Loot & Health");
 	}
 }

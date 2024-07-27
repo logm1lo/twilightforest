@@ -194,6 +194,12 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
 	}
 
+	public void configCategory(String key, String name, String description) {
+		this.add(TFConfig.CONFIG_ID + key, name);
+		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
+		this.add(name + ".button", "Edit");
+	}
+
 	@Override
 	public CompletableFuture<?> run(CachedOutput cache) {
 		//generate normal lang file
