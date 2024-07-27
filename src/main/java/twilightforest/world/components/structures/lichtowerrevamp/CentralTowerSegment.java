@@ -122,7 +122,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 		switch (connection.target()) {
 			case "twilightforest:lich_tower/bridge" -> {
 				int roomMaxSize = 3;
-				boolean genMagicGallery = !this.continueAbove && jigsawIndex == 1;// && random.nextInt(10) == 0;
+				boolean genMagicGallery = !this.continueAbove && jigsawIndex == 2;// && random.nextInt(10) == 0;
 				TowerBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, roomMaxSize, false, this.genDepth + 1, genMagicGallery);
 			}
 			case "twilightforest:mob_bridge" -> {

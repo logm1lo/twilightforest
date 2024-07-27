@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -18,11 +17,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import twilightforest.TFRegistries;
 import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
@@ -84,22 +80,11 @@ public class TowerGallery extends TwilightJigsawPiece implements PieceBeardifier
 			galleryPainting.setDirection(direction);
 			galleryPainting.setVariant(variantHolderOpt.get());
 
-			Vec3 placePos = paintingPlacePos(variantHolderOpt.get().value(), pos, this.placeSettings.getRotation());
-			galleryPainting.moveTo(placePos, 0, 0);
+			variantHolderOpt.get().value();
+			this.placeSettings.getRotation();
+			galleryPainting.moveTo(pos.getBottomCenter(), 0, 0);
 
 			level.addFreshEntityWithPassengers(galleryPainting);
-		}
-	}
-
-	private static @NotNull Vec3 paintingPlacePos(MagicPaintingVariant painting, BlockPos pos, Rotation rotation) {
-		boolean hasOddWidth = ((painting.width() >> 4) & 1) == 1;
-
-		if (hasOddWidth) {
-			Vector3f shift = rotation.rotate(Direction.WEST).step();
-			// FIXME Overshooting by a full block instead of half
-			return pos.getBottomCenter().add(shift.x * 0.5f, shift.y * 0.5f, shift.z * 0.5f);
-		} else {
-			return pos.getBottomCenter();
 		}
 	}
 
