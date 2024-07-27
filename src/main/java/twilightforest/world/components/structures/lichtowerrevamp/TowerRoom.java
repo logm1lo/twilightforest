@@ -1,11 +1,17 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -15,6 +21,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -23,14 +31,22 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.ChiseledCanopyShelfBlock;
+import twilightforest.block.LightableBlock;
+import twilightforest.block.SkullCandleBlock;
+import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.entity.monster.DeathTome;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.DirectionUtil;
+import twilightforest.util.RotationUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.util.jigsaw.JigsawUtil;
@@ -285,37 +301,185 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 
 	@Override
 	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
-		String[] splitLabel = label.split(":");
-		if (splitLabel.length == 2) {
-			Direction direction = DirectionUtil.fromStringOrElse(splitLabel[1], Direction.NORTH);
+		String[] directionSplit = label.split("@");
 
-			switch (splitLabel[0]) {
-				case "lectern" -> {
-					level.removeBlock(pos, false); // Clears block entity data left by Data Marker
+		if (directionSplit.length == 0) return;
 
-					boolean putMimic = random.nextBoolean();
-					Rotation rotation = this.placeSettings.getRotation();
-					BlockState lectern = Blocks.LECTERN.defaultBlockState()
-						.setValue(HorizontalDirectionalBlock.FACING, direction)
-						.setValue(LecternBlock.HAS_BOOK, !putMimic)
-						.rotate(rotation);
+		Rotation dataRotation = directionSplit.length == 1
+			? Rotation.NONE
+			: RotationUtil.getRelativeRotation(Direction.NORTH, DirectionUtil.fromStringOrElse(directionSplit[1], Direction.NORTH));
 
-					level.setBlock(pos, lectern, 3);
+		String[] permutationSplit = directionSplit[0].split("\\|");
 
-					if (putMimic) {
-						DeathTome tomeMimic = TFEntities.DEATH_TOME.value().create(level.getLevel());
-						if (tomeMimic != null) {
-							tomeMimic.setPersistenceRequired();
-							tomeMimic.moveTo(pos, lectern.getValue(HorizontalDirectionalBlock.FACING).toYRot(), 0);
-							tomeMimic.setOnLectern(true);
-							tomeMimic.finalizeSpawn(level, level.getCurrentDifficultyAt(tomeMimic.blockPosition()), MobSpawnType.STRUCTURE, null);
-							level.addFreshEntityWithPassengers(tomeMimic);
-						}
-					} else if (level.getBlockEntity(pos) instanceof LecternBlockEntity lecternBlockEntity) {
-						lecternBlockEntity.setBook(new ItemStack(Items.WRITABLE_BOOK));
+		if (permutationSplit.length == 0) return;
+
+		String chosenLabel = Util.getRandom(permutationSplit, random);
+		String[] parameters = chosenLabel.split(":");
+
+		if (parameters.length == 0) return;
+
+		level.removeBlock(pos, false); // Clears block entity data left by Data Marker
+
+		this.handleDataParams(pos, level, random, parameters, dataRotation);
+	}
+
+	private void handleDataParams(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters, Rotation dataRotation) {
+		switch (parameters[0]) {
+			case "air", "empty" -> {} // No-Op
+			case "bookshelf" -> level.setBlock(pos, Blocks.BOOKSHELF.defaultBlockState(), 2);
+			case "canopy_shelf" -> level.setBlock(pos, TFBlocks.CANOPY_BOOKSHELF.value().defaultBlockState(), 2);
+			case "stone_brick_slab" -> level.setBlock(pos, Blocks.STONE_BRICK_SLAB.defaultBlockState(), 2);
+			case "firefly_jar" -> level.setBlock(pos, TFBlocks.FIREFLY_JAR.value().defaultBlockState(), 2);
+			case "mason_jar" -> level.setBlock(pos, TFBlocks.MASON_JAR.value().defaultBlockState(), 2);
+			case "creeper_head" -> this.putHead(pos, level, random, parameters, Blocks.CREEPER_HEAD, dataRotation);
+			case "skeleton_skull" -> this.putHead(pos, level, random, parameters, Blocks.SKELETON_SKULL, dataRotation);
+			case "wither_skull" -> this.putHead(pos, level, random, parameters, Blocks.WITHER_SKELETON_SKULL, dataRotation);
+			case "zombie_head" -> this.putHead(pos, level, random, parameters, Blocks.ZOMBIE_HEAD, dataRotation);
+			case "creeper_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.CREEPER_SKULL_CANDLE.value(), dataRotation);
+			case "skeleton_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.SKELETON_SKULL_CANDLE.value(), dataRotation);
+			case "wither_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.WITHER_SKELE_SKULL_CANDLE.value(), dataRotation);
+			case "zombie_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.ZOMBIE_SKULL_CANDLE.value(), dataRotation);
+			case "lectern" -> this.putTrappableLectern(pos, level, dataRotation, random.nextBoolean());
+			case "empty_lectern" -> {
+				Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
+				level.setBlock(pos, Blocks.LECTERN.defaultBlockState().rotate(stateRotation), 2);
+			}
+			case "candle" -> {
+				int amount = Math.min(4, parameters.length == 2 ? this.getCandleRanged(parameters[1], random) : random.nextIntBetweenInclusive(1, 3));
+				if (amount == 0) break;
+				BlockState candles = Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true).setValue(CandleBlock.CANDLES, amount);
+				level.setBlock(pos, candles, 2);
+			}
+			case "candled_lectern" -> {
+				Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
+
+				if (random.nextInt(4) != 0) {
+					int amount = Math.min(4, parameters.length == 2 ? this.getCandleRanged(parameters[1], random) : random.nextIntBetweenInclusive(1, 3));
+					if (amount == 0) break;
+					BlockState candles = Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true).setValue(CandleBlock.CANDLES, amount);
+					level.setBlock(pos.above(), candles, 2);
+				} else {
+					this.putHeadCandles(pos.above(), level, random, parameters, TFBlocks.SKELETON_SKULL_CANDLE.value(), dataRotation);
+				}
+
+				level.setBlock(pos, Blocks.LECTERN.defaultBlockState().rotate(stateRotation), 2);
+			}
+			case "chest" -> {
+				Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
+				BlockState chest = Blocks.CHEST.defaultBlockState().rotate(stateRotation);
+				level.setBlock(pos, chest, 2);
+
+				if (parameters.length == 2 && level.getBlockEntity(pos) instanceof RandomizableContainer lootBlock) {
+					ResourceLocation lootTableId = switch (parameters[1]) {
+						case "hall" -> TFLootTables.USELESS_LOOT.location(); // FIXME
+						case "library" -> TFLootTables.TOWER_LIBRARY.location();
+						case "potion" -> TFLootTables.TOWER_POTION.location();
+						case "room" -> TFLootTables.TOWER_ROOM.location();
+						default -> ResourceLocation.parse(parameters[1]);
+					};
+					lootBlock.setLootTable(ResourceKey.create(Registries.LOOT_TABLE, lootTableId), random.nextLong());
+				}
+
+				if (level.getBlockState(pos.above()).is(TFBlocks.CANOPY_BOOKSHELF)) {
+					level.setBlock(pos.above(), TFBlocks.CANOPY_SLAB.value().defaultBlockState().setValue(SlabBlock.TYPE, SlabType.TOP), 2);
+				}
+			}
+			case "chiseled_canopy_shelf" -> {
+				boolean isHostile = random.nextInt(8) == 0;
+				Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
+				BlockState shelf = TFBlocks.CHISELED_CANOPY_BOOKSHELF.value().defaultBlockState().setValue(ChiseledCanopyShelfBlock.SPAWNER, isHostile).rotate(stateRotation);
+
+				IntList filledSlots = new IntArrayList();
+				for (int i = 0; i < 6; i++)
+					if (random.nextInt(3) != 0)
+						filledSlots.add(i);
+
+				for (int index : filledSlots) {
+					shelf = shelf.setValue(ChiseledCanopyShelfBlock.SLOT_OCCUPIED_PROPERTIES.get(index), true);
+				}
+
+				level.setBlock(pos, shelf, 2);
+				if (level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity shelfBlockEntity) {
+					for (int index : filledSlots) {
+						shelfBlockEntity.items.set(index, new ItemStack(Items.BOOK));
+					}
+
+					if (isHostile) {
+						shelfBlockEntity.getSpawner().setEntityId(TFEntities.DEATH_TOME.value(), null, random, pos);
 					}
 				}
 			}
+			default -> TwilightForestMod.LOGGER.warn("Unused variation label {} ({}) in {}", parameters[0], parameters, this.templateName);
+		}
+	}
+
+	private void putHead(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters, Block headBlock, Rotation dataRotation) {
+		int rotation = parameters.length >= 2 ? this.getHeadRotation(parameters[1], random) : random.nextIntBetweenInclusive(0, 15);
+		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
+
+		BlockState candledHeadState = headBlock.defaultBlockState().setValue(BlockStateProperties.ROTATION_16, rotation).rotate(stateRotation);
+		level.setBlock(pos, candledHeadState, 2);
+	}
+
+	private void putHeadCandles(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters, Block candledHeadBlock, Rotation dataRotation) {
+		int amount = Math.min(4, parameters.length >= 2 ? this.getCandleRanged(parameters[1], random) : random.nextIntBetweenInclusive(1, 3));
+		if (amount == 0) return;
+		int rotation = parameters.length >= 3 ? this.getHeadRotation(parameters[2], random) : random.nextIntBetweenInclusive(0, 15);
+		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
+
+		BlockState candledHeadState = candledHeadBlock.defaultBlockState()
+			.setValue(SkullCandleBlock.LIGHTING, LightableBlock.Lighting.NORMAL)
+			.setValue(BlockStateProperties.CANDLES, amount)
+			.setValue(BlockStateProperties.ROTATION_16, rotation)
+			.rotate(stateRotation);
+		level.setBlock(pos, candledHeadState, 2);
+	}
+
+	private int getCandleRanged(String amountLabel, RandomSource random) {
+		String[] amountParams = amountLabel.split("-");
+
+		if (amountParams.length == 1 && StringUtils.isNumeric(amountParams[0])) {
+			return Integer.parseInt(amountParams[0]);
+		} else if (amountParams.length == 2 && StringUtils.isNumeric(amountParams[0]) && StringUtils.isNumeric(amountParams[1])) {
+			return random.nextIntBetweenInclusive(Integer.parseInt(amountParams[0]), Integer.parseInt(amountParams[1]));
+		}
+
+		return random.nextIntBetweenInclusive(1, 3);
+	}
+
+	private int getHeadRotation(String amountLabel, RandomSource random) {
+		String[] amountParams = amountLabel.split("\\+");
+
+		if (amountParams.length == 1 && StringUtils.isNumeric(amountParams[0])) {
+			return Integer.parseInt(amountParams[0]);
+		} else if (amountParams.length == 2 && StringUtils.isNumeric(amountParams[0]) && StringUtils.isNumeric(amountParams[1])) {
+			int src = Integer.parseInt(amountParams[0]);
+			int extra = Integer.parseInt(amountParams[1]);
+			return Math.floorMod(random.nextIntBetweenInclusive(src, src + extra), 16);
+		}
+
+		return random.nextIntBetweenInclusive(0, 15);
+	}
+
+	private void putTrappableLectern(BlockPos pos, WorldGenLevel level, Rotation dataRotation, boolean putMimic) {
+		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
+		BlockState lectern = Blocks.LECTERN.defaultBlockState()
+			.setValue(LecternBlock.HAS_BOOK, !putMimic)
+			.rotate(stateRotation);
+
+		level.setBlock(pos, lectern, 2);
+
+		if (putMimic) {
+			DeathTome tomeMimic = TFEntities.DEATH_TOME.value().create(level.getLevel());
+			if (tomeMimic != null) {
+				tomeMimic.setPersistenceRequired();
+				tomeMimic.moveTo(pos, lectern.getValue(HorizontalDirectionalBlock.FACING).toYRot(), 0);
+				tomeMimic.setOnLectern(true);
+				tomeMimic.finalizeSpawn(level, level.getCurrentDifficultyAt(tomeMimic.blockPosition()), MobSpawnType.STRUCTURE, null);
+				level.addFreshEntityWithPassengers(tomeMimic);
+			}
+		} else if (level.getBlockEntity(pos) instanceof LecternBlockEntity lecternBlockEntity) {
+			lecternBlockEntity.setBook(new ItemStack(Items.WRITABLE_BOOK));
 		}
 	}
 

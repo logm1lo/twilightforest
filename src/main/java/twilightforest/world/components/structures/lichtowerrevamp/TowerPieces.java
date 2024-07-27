@@ -97,7 +97,8 @@ public final class TowerPieces {
 			TwilightForestMod.prefix("lich_tower/7x7/nursery"),
 			TwilightForestMod.prefix("lich_tower/7x7/potion"),
 			TwilightForestMod.prefix("lich_tower/7x7/ritual"),
-			TwilightForestMod.prefix("lich_tower/7x7/tiered_library")
+			TwilightForestMod.prefix("lich_tower/7x7/tiered_library"),
+			TwilightForestMod.prefix("lich_tower/7x7/tiered_study")
 		},
 		new ResourceLocation[] {
 			TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
@@ -111,7 +112,8 @@ public final class TowerPieces {
 			TwilightForestMod.prefix("lich_tower/9x9/altar"),
 			TwilightForestMod.prefix("lich_tower/9x9/lectern_hall"),
 			TwilightForestMod.prefix("lich_tower/9x9/tiered_study"),
-			TwilightForestMod.prefix("lich_tower/9x9/center_decor")
+			TwilightForestMod.prefix("lich_tower/9x9/center_decor"),
+			TwilightForestMod.prefix("lich_tower/7x7/tiered_spawner")
 		}
 	};
 	static final ResourceLocation[] GALLERY_ROOMS = new ResourceLocation[] {
