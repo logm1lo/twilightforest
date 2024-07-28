@@ -11,6 +11,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.beans.processors.*;
 
 import javax.annotation.Nullable;
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -45,6 +46,7 @@ public final class TFBeanContext {
 
 	@SuppressWarnings("SameParameterValue")
 	private void initInternal(@Nullable Consumer<TFBeanContextRegistrar> context, boolean forceInjectRegistries) {
+		final long ms = System.currentTimeMillis();
 		logger.info("Starting Bean Context");
 		if (frozen)
 			throw new IllegalStateException("Bean Context already frozen");
@@ -59,7 +61,7 @@ public final class TFBeanContext {
 		ModFileScanData scanData = modContainer.getModInfo().getOwningFile().getFile().getScanResult();
 		AtomicReference<Object> currentInjection = new AtomicReference<>();
 		try {
-			logger.info("Registering Bean annotation processors");
+			logger.debug("Registering Bean annotation processors");
 			List<AnnotationDataProcessor> annotationDataProcessors = new ArrayList<>();
 			List<AnnotationDataPostProcessor> annotationDataPostProcessors = new ArrayList<>();
 
@@ -76,15 +78,15 @@ public final class TFBeanContext {
 				Class<?> c = it.next();
 				if (AnnotationDataProcessor.class.isAssignableFrom(c)) {
 					annotationDataProcessors.add((AnnotationDataProcessor) c.getConstructor().newInstance());
-					logger.info("Registered Bean annotation processor: {}", c);
+					logger.debug("Registered Bean annotation processor: {}", c);
 				} else if (AnnotationDataPostProcessor.class.isAssignableFrom(c)) {
 					annotationDataPostProcessors.add((AnnotationDataPostProcessor) c.getConstructor().newInstance());
-					logger.info("Registered Bean annotation post processor: {}", c);
+					logger.debug("Registered Bean annotation post processor: {}", c);
 				}
 			}
 
 			for (AnnotationDataProcessor annotationDataProcessor : annotationDataProcessors) {
-				logger.info("Running processor {}", annotationDataProcessor.getClass());
+				logger.debug("Running processor {}", annotationDataProcessor.getClass());
 				annotationDataProcessor.process(TFBeanContextInternalRegistrar.SINGLETON, modContainer, scanData);
 			}
 
@@ -99,7 +101,7 @@ public final class TFBeanContext {
 			currentInjection.set(null);
 
 			for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
-				logger.info("Running post processor {}", annotationDataPostProcessor.getClass());
+				logger.debug("Running post processor {}", annotationDataPostProcessor.getClass());
 				annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, currentInjection);
 			}
 
@@ -109,7 +111,7 @@ public final class TFBeanContext {
 			if (forceInjectRegistries)
 				injectRegistries(modContainer, scanData, annotationDataPostProcessors);
 
-			logger.info("Bean Context loaded");
+			logger.info("Bean Context loaded in {} ms", System.currentTimeMillis() - ms);
 		} catch (Throwable e) {
 			throwInjectionFailedException(currentInjection, e);
 		}
@@ -120,12 +122,12 @@ public final class TFBeanContext {
 	}
 
 	private void injectRegistries(ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors) {
-		logger.info("Processing registry objects");
+		logger.debug("Processing registry objects");
 		AtomicReference<Object> curInj = new AtomicReference<>();
 		BuiltInRegistries.REGISTRY.holders().flatMap(r -> r.value().holders()).forEach(holder -> {
 			try {
 				Object o = holder.value();
-				if (o.getClass().isAnnotationPresent(Configurable.class)) {
+				if (classOrSuperHasAnnotation(o.getClass(), Configurable.class)) {
 					for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
 						annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, o, curInj);
 					}
@@ -134,7 +136,11 @@ public final class TFBeanContext {
 				throwInjectionFailedException(curInj, e);
 			}
 		});
-		logger.info("Finished processing registry objects");
+		logger.debug("Finished processing registry objects");
+	}
+
+	private boolean classOrSuperHasAnnotation(Class<?> c, Class<? extends Annotation> a) {
+		return c.isAnnotationPresent(a) || (c.getSuperclass() instanceof Class<?> s && classOrSuperHasAnnotation(s, a));
 	}
 
 	public boolean isFrozen() {
@@ -142,7 +148,7 @@ public final class TFBeanContext {
 	}
 
 	private void registerInternal(Class<?> type, @Nullable String name, Object instance) {
-		logger.info("Registering Bean {} {}", type, name == null ? "" : ("with name: " + name));
+		logger.debug("Registering Bean {} {}", type, name == null ? "" : ("with name: " + name));
 		if (frozen)
 			throw new IllegalStateException("Bean Context already frozen");
 		BeanDefinition<?> beanDefinition = new BeanDefinition<>(type, name);
