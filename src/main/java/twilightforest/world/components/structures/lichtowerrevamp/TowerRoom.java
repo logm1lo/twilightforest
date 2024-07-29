@@ -353,10 +353,11 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 		switch (parameters[0]) {
 			case "air", "empty" -> {} // No-Op; block already replaced
 			case "bookshelf" -> level.setBlock(pos, Blocks.BOOKSHELF.defaultBlockState(), 2);
-			case "canopy_shelf" -> level.setBlock(pos, TFBlocks.CANOPY_BOOKSHELF.value().defaultBlockState(), 2);
+			case "canopy_shelf", "canopy_bookshelf" -> level.setBlock(pos, TFBlocks.CANOPY_BOOKSHELF.value().defaultBlockState(), 2);
 			case "stone_brick_slab" -> level.setBlock(pos, Blocks.STONE_BRICK_SLAB.defaultBlockState(), 2);
 			case "firefly_jar" -> level.setBlock(pos, TFBlocks.FIREFLY_JAR.value().defaultBlockState(), 2);
 			case "mason_jar" -> level.setBlock(pos, TFBlocks.MASON_JAR.value().defaultBlockState(), 2);
+			case "canopy_slab" -> level.setBlock(pos, TFBlocks.CANOPY_SLAB.value().defaultBlockState(), 2);
 			case "creeper_head" -> this.putHead(pos, level, random, parameters, Blocks.CREEPER_HEAD, dataRotation);
 			case "skeleton_skull" -> this.putHead(pos, level, random, parameters, Blocks.SKELETON_SKULL, dataRotation);
 			case "wither_skull" -> this.putHead(pos, level, random, parameters, Blocks.WITHER_SKELETON_SKULL, dataRotation);
@@ -371,7 +372,7 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 			case "chiseled_canopy_shelf" -> this.putTrappableBookshelf(pos, level, random, dataRotation);
 			case "chest" -> this.putChest(pos, level, random, parameters, dataRotation, Blocks.CHEST.defaultBlockState());
 			case "trapped_chest" -> this.putChest(pos, level, random, parameters, dataRotation, Blocks.TRAPPED_CHEST.defaultBlockState());
-			case "candle" -> this.putCandles(parameters, random, level, pos);
+			case "candle", "candles" -> this.putCandles(parameters, random, level, pos);
 			case "empty_lectern" -> {
 				Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
 				level.setBlock(pos, Blocks.LECTERN.defaultBlockState().rotate(stateRotation), 2);
