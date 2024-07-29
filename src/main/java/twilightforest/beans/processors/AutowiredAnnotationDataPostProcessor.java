@@ -52,7 +52,7 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 					throw new IllegalStateException("@Autowired fields must be non-static inside Beans");
 				}
 				field.trySetAccessible();
-				field.set(bean, context.inject(field.getType(), name.orElse(null)));
+				field.set(bean, context.inject(field.getType(), name.filter(s -> !s.equals(Component.DEFAULT_VALUE)).orElse(null)));
 			}
 		}
 	}
