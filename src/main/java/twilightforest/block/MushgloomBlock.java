@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.MushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.PlantType;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
 
@@ -36,8 +35,4 @@ public class MushgloomBlock extends MushroomBlock {
 		return false;
 	}
 
-	@Override
-	public PlantType getPlantType(BlockGetter world, BlockPos pos) {
-		return PlantType.CAVE;
-	}
 }

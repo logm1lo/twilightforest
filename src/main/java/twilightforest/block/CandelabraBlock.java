@@ -22,6 +22,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -45,6 +46,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CandelabraBlockEntity;
@@ -82,7 +85,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	public static final List<Vec3> X_OFFSETS = List.of(new Vec3(0.5D, 0.9D, 0.1875D), new Vec3(0.5D, 0.9D, 0.5D), new Vec3(0.5D, 0.9D, 0.8125D));
 	public static final List<Vec3> Z_OFFSETS = List.of(new Vec3(0.1875D, 0.9D, 0.5D), new Vec3(0.5D, 0.9D, 0.5D), new Vec3(0.8125D, 0.9D, 0.5D));
 
-	@SuppressWarnings("this-escape")
 	public CandelabraBlock(Properties properties) {
 		super(properties);
 		BlockState state = this.getStateDefinition().any().setValue(LIGHTING, Lighting.NONE).setValue(FACING, Direction.NORTH).setValue(ON_WALL, false).setValue(LIGHTING, Lighting.NONE).setValue(WATERLOGGED, false);
@@ -145,6 +147,17 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 	}
 
+	@Nullable
+	@Override
+	public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+		if (ItemAbilities.FIRESTARTER_LIGHT == itemAbility) {
+			if (this.canBeLit(state)) {
+				return state.setValue(LIGHTING, Lighting.NORMAL);
+			}
+		}
+		return super.getToolModifiedState(state, context, itemAbility, simulate);
+	}
+
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (stack.is(ItemTags.CANDLES) || player.isSecondaryUseActive()) {
@@ -173,9 +186,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 								player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 								candelabra.setCandle(i, block.getBlock());
 								level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-								if (!player.getAbilities().instabuild) {
-									stack.shrink(1);
-								}
+								stack.consume(1, player);
 							}
 							return ItemInteractionResult.sidedSuccess(level.isClientSide());
 						}
@@ -185,9 +196,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 		if (stack.is(Tags.Items.DUSTS_REDSTONE) && state.getValue(LIGHTING) == Lighting.NORMAL) {
 			level.setBlockAndUpdate(pos, state.setValue(LIGHTING, Lighting.DIM));
-			if (!player.getAbilities().instabuild) {
-				stack.shrink(1);
-			}
+			stack.consume(1, player);
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return this.lightCandles(state, level, pos, player, hand);

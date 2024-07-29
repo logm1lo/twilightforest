@@ -20,10 +20,9 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.IPlantable;
-import net.neoforged.neoforge.common.PlantType;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
+import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -54,10 +53,10 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, BlockGetter getter, BlockPos pos, Direction direction, IPlantable plantable) {
-		if (direction.getAxis() != Direction.Axis.Y) return false;
-		PlantType plantType = plantable.getPlantType(getter, pos.relative(direction));
-		return plantType == PlantType.CROP || plantType == PlantType.PLAINS || plantType == PlantType.CAVE;
+	public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos soilPosition, Direction facing, BlockState plant) {
+		if (facing.getAxis() != Direction.Axis.Y) return TriState.FALSE;
+		if (plant.is(BlockTags.CROPS)) return TriState.TRUE;
+		return super.canSustainPlant(state, level, soilPosition, facing, plant);
 	}
 
 	@Override
@@ -75,15 +74,16 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 				return;
 			}
 
-			BlockState newState;
+			BlockState newState = Blocks.DIRT.defaultBlockState();
 
-            switch (bonemealableBlock) {
-                case IPlantable iPlantable when iPlantable.getPlantType(level, fromPos) == PlantType.CROP -> newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
-                case MushroomBlock ignored1 -> newState = Blocks.MYCELIUM.defaultBlockState();
-                case BushBlock ignored -> newState = Blocks.GRASS_BLOCK.defaultBlockState();
-                case MossBlock mossBlock -> newState = mossBlock.defaultBlockState();
-				default -> newState = Blocks.DIRT.defaultBlockState();
-			}
+			if (above.is(BlockTags.CROPS))
+				newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
+			else if (bonemealableBlock instanceof MushroomBlock)
+				newState = Blocks.MYCELIUM.defaultBlockState();
+			else if (bonemealableBlock instanceof BushBlock)
+				newState = Blocks.GRASS_BLOCK.defaultBlockState();
+			else if (bonemealableBlock instanceof MossBlock mossBlock)
+				newState = mossBlock.defaultBlockState();
 
 			if (level instanceof ServerLevel serverLevel) {
 				if (bonemealableBlock instanceof MushgloomBlock mushgloomBlock) {
@@ -94,10 +94,10 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 					level.setBlockAndUpdate(pos, pushEntitiesUp(state, newState, level, pos));
 					mushgloomBlock.growMushroom(serverLevel, fromPos, above, serverLevel.random);
 					level.levelEvent(2005, fromPos, 0);
-                    return;
-                }
+					return;
+				}
 				level.levelEvent(1505, fromPos, 15); // Bonemeal particles
-            }
+			}
 
 			/*
 			 The block must be set to a new one before we attempt to bonemeal the plant, otherwise, we can end up with an infinite block update loop
