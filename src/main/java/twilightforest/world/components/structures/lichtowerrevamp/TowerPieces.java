@@ -98,7 +98,11 @@ public final class TowerPieces {
 			TwilightForestMod.prefix("lich_tower/7x7/potion"),
 			TwilightForestMod.prefix("lich_tower/7x7/ritual"),
 			TwilightForestMod.prefix("lich_tower/7x7/tiered_library"),
-			TwilightForestMod.prefix("lich_tower/7x7/tiered_study")
+			TwilightForestMod.prefix("lich_tower/7x7/tiered_study"),
+			TwilightForestMod.prefix("lich_tower/7x7/tiered_spawner"),
+			TwilightForestMod.prefix("lich_tower/7x7/center_decor"),
+			TwilightForestMod.prefix("lich_tower/7x7/pedestal_junction"),
+			TwilightForestMod.prefix("lich_tower/7x7/shelved_jars")
 		},
 		new ResourceLocation[] {
 			TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
@@ -113,7 +117,7 @@ public final class TowerPieces {
 			TwilightForestMod.prefix("lich_tower/9x9/lectern_hall"),
 			TwilightForestMod.prefix("lich_tower/9x9/tiered_study"),
 			TwilightForestMod.prefix("lich_tower/9x9/center_decor"),
-			TwilightForestMod.prefix("lich_tower/7x7/tiered_spawner")
+			TwilightForestMod.prefix("lich_tower/9x9/library_junction")
 		}
 	};
 	static final ResourceLocation[] GALLERY_ROOMS = new ResourceLocation[] {
@@ -330,7 +334,8 @@ public final class TowerPieces {
 				TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/t_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/keepsake_casket"),
-				TwilightForestMod.prefix("lich_tower/9x9/study")
+				TwilightForestMod.prefix("lich_tower/9x9/study"),
+				TwilightForestMod.prefix("lich_tower/9x9/library_junction")
 			),
 			4, List.of(
 				TwilightForestMod.prefix("lich_tower/9x9/classic_library"),
@@ -338,7 +343,8 @@ public final class TowerPieces {
 				TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/t_junction"),
 				TwilightForestMod.prefix("lich_tower/9x9/keepsake_casket"),
-				TwilightForestMod.prefix("lich_tower/9x9/study")
+				TwilightForestMod.prefix("lich_tower/9x9/study"),
+				TwilightForestMod.prefix("lich_tower/9x9/library_junction")
 			),
 			5, List.of(
 				TwilightForestMod.prefix("lich_tower/9x9/straight_junction"),

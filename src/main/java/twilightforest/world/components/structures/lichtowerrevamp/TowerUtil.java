@@ -128,7 +128,7 @@ public final class TowerUtil {
 		settings.addProcessor(MetaBlockProcessor.INSTANCE)
 			.addProcessor(StoneBricksVariants.INSTANCE)
 			.addProcessor(CobbleVariants.INSTANCE)
-			.addProcessor(dim ? CandelabraProcessor.INSTANCE_DIM : CandelabraProcessor.INSTANCE)
+			//.addProcessor(dim ? CandelabraProcessor.INSTANCE_DIM : CandelabraProcessor.INSTANCE)
 			.addProcessor(UPDATE_MARKER);
 	}
 
