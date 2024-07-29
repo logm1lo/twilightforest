@@ -19,16 +19,16 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 		return clazz.equals(Type.getType(c)) || (c.getSuperclass() instanceof Class<?> sup && classOrSuperEquals(clazz, sup));
 	}
 
-	private List<Field> getAllConfigurableFieldsIncludingSuper(Class<?> c, String name, @Nullable String value) {
+	private List<Field> getAllConfigurableFieldsIncludingSuper(Class<?> c, String name, String value) {
 		List<Field> list =  new ArrayList<>();
 		getAllConfigurableFieldsIncludingSuper(c, name, value, list);
 		return list;
 	}
 
-	private void getAllConfigurableFieldsIncludingSuper(Class<?> c, String name, @Nullable String value, List<Field> list) {
+	private void getAllConfigurableFieldsIncludingSuper(Class<?> c, String name, String value, List<Field> list) {
 		try {
 			Field f = c.getDeclaredField(name);
-			if (f.isAnnotationPresent(Autowired.class) && Objects.equals(f.getAnnotation(Autowired.class).value(), value == null ? Component.DEFAULT_VALUE : value))
+			if (f.isAnnotationPresent(Autowired.class) && Objects.equals(f.getAnnotation(Autowired.class).value(), value))
 				list.add(f);
 		} catch (NoSuchFieldException ex) {
 			// NO-OP
@@ -43,17 +43,16 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 		for (Iterator<ModFileScanData.AnnotationData> it = DistAnnotationRetriever.retrieve(scanData, Autowired.class, ElementType.FIELD)
 			.filter(a -> classOrSuperEquals(a.clazz(), bean.getClass())).iterator(); it.hasNext(); ) {
 			ModFileScanData.AnnotationData data = it.next();
-			String name = Optional.ofNullable(data.annotationData().get("value"))
+			Optional<String> name = Optional.ofNullable(data.annotationData().get("value"))
 				.filter(String.class::isInstance)
-				.map(String.class::cast)
-				.orElse(null);
-			for (Field field : getAllConfigurableFieldsIncludingSuper(bean.getClass(), data.memberName(), name)) {
+				.map(String.class::cast);
+			for (Field field : getAllConfigurableFieldsIncludingSuper(bean.getClass(), data.memberName(), name.orElse(Component.DEFAULT_VALUE))) {
 				currentInjectionTarget.set(field);
 				if (Modifier.isStatic(field.getModifiers())) {
 					throw new IllegalStateException("@Autowired fields must be non-static inside Beans");
 				}
 				field.trySetAccessible();
-				field.set(bean, context.inject(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
+				field.set(bean, context.inject(field.getType(), name.orElse(null)));
 			}
 		}
 	}
