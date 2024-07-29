@@ -21,13 +21,13 @@ public final class TowerFoyer extends TwilightJigsawPiece implements PieceBeardi
 	public TowerFoyer(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.TOWER_FOYER.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	public TowerFoyer(StructureTemplateManager structureManager, BlockPos startPosition, Rotation rotation) {
 		super(TFStructurePieceTypes.TOWER_FOYER.get(), 0, structureManager, TwilightForestMod.prefix("lich_tower/tower_foyer"), makeSettings(rotation), startPosition.below());
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	@Override

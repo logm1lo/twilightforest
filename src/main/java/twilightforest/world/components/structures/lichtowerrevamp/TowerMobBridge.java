@@ -35,7 +35,7 @@ public class TowerMobBridge extends TwilightJigsawPiece implements PieceBeardifi
 	public TowerMobBridge(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.MOB_BRIDGE.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.CENTRAL_SPAWNERS), true);
+		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.CENTRAL_SPAWNERS));
 
 		this.invertedPalette = compoundTag.getBoolean("inverted");
 
@@ -62,7 +62,7 @@ public class TowerMobBridge extends TwilightJigsawPiece implements PieceBeardifi
 	public TowerMobBridge(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, boolean invertedPalette) {
 		super(TFStructurePieceTypes.MOB_BRIDGE.get(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.CENTRAL_SPAWNERS), true);
+		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.CENTRAL_SPAWNERS));
 
 		this.invertedPalette = invertedPalette;
 

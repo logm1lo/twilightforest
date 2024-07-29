@@ -28,7 +28,7 @@ public final class CentralTowerBase extends TwilightJigsawPiece implements Piece
 	public CentralTowerBase(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.CENTRAL_TOWER_BASE.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	public CentralTowerBase(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
@@ -36,7 +36,7 @@ public final class CentralTowerBase extends TwilightJigsawPiece implements Piece
 
 		this.boundingBox = BoundingBoxUtils.cloneWithAdjustments(this.boundingBox, 0, 0, 0, 0, 30,0);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	@Override

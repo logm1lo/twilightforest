@@ -35,13 +35,13 @@ public class FoyerDecoration extends TwilightJigsawPiece implements PieceBeardif
 	public FoyerDecoration(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.FOYER_DECORATION.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	public FoyerDecoration(int genDepth, StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
 		super(TFStructurePieceTypes.FOYER_DECORATION.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/foyer_decor"), jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	@Override

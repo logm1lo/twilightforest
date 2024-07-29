@@ -124,11 +124,10 @@ public final class TowerUtil {
 		return ArrayUtil.orNull(TowerPieces.FLAT_BEARDS, size - 1);
 	}
 
-	public static void addDefaultProcessors(StructurePlaceSettings settings, boolean dim) {
+	public static void addDefaultProcessors(StructurePlaceSettings settings) {
 		settings.addProcessor(MetaBlockProcessor.INSTANCE)
 			.addProcessor(StoneBricksVariants.INSTANCE)
 			.addProcessor(CobbleVariants.INSTANCE)
-			//.addProcessor(dim ? CandelabraProcessor.INSTANCE_DIM : CandelabraProcessor.INSTANCE)
 			.addProcessor(UPDATE_MARKER);
 	}
 

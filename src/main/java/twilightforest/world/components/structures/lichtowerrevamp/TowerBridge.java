@@ -25,7 +25,7 @@ public final class TowerBridge extends TwilightJigsawPiece implements PieceBeard
 	public TowerBridge(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.TOWER_BRIDGE.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 
 		this.generateGround = compoundTag.getBoolean("gen_ground");
 	}
@@ -33,7 +33,7 @@ public final class TowerBridge extends TwilightJigsawPiece implements PieceBeard
 	public TowerBridge(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, ResourceLocation templateLocation, boolean generateGround) {
 		super(TFStructurePieceTypes.TOWER_BRIDGE.get(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 
 		this.generateGround = generateGround; // Only true for bridge entryway covers on the ground
 	}

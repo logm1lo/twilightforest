@@ -42,13 +42,13 @@ public final class BossRoom extends TwilightJigsawPiece implements PieceBeardifi
 	public BossRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.TOWER_BOSS_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, false);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	public BossRoom(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
 		super(TFStructurePieceTypes.TOWER_BOSS_ROOM.get(), 1, structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_room"), jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, false);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	@Override

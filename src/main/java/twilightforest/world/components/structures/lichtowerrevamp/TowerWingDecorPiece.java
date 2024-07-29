@@ -31,14 +31,14 @@ public class TowerWingDecorPiece extends TwilightJigsawPiece implements PieceBea
 	public TowerWingDecorPiece(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.TOWER_DECOR.value(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.ROOM_SPAWNERS), true);
+		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.ROOM_SPAWNERS));
 		this.isInCenterTower = compoundTag.getBoolean("is_in_central");
 	}
 
 	public TowerWingDecorPiece(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, boolean isInCenterTower) {
 		super(TFStructurePieceTypes.TOWER_DECOR.value(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.ROOM_SPAWNERS), true);
+		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.ROOM_SPAWNERS));
 		this.isInCenterTower = isInCenterTower;
 	}
 

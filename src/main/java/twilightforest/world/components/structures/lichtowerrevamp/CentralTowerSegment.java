@@ -33,7 +33,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 	public CentralTowerSegment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);
 
 		this.putMobBridge = compoundTag.getBoolean("put_bridge");
@@ -43,7 +43,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 	public CentralTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean continueAbove) {
 		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings, true);
+		TowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);
 
 		this.putMobBridge = putMobBridge;
