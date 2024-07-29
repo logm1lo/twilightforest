@@ -36,9 +36,6 @@ public final class TowerPieces {
 		TwilightForestMod.prefix("lich_tower/bridge_spawner_zag")
 	};
 	static final ResourceLocation[] CENTER_DECORS = new ResourceLocation[] {
-		TwilightForestMod.prefix("lich_tower/3x3/lava_spring"),
-		TwilightForestMod.prefix("lich_tower/3x3/lava_well"),
-		TwilightForestMod.prefix("lich_tower/3x3/sapling"),
 		TwilightForestMod.prefix("lich_tower/3x3/tree"),
 		TwilightForestMod.prefix("lich_tower/3x3/water_fountain"),
 		TwilightForestMod.prefix("lich_tower/3x3/water_well"),
@@ -46,10 +43,8 @@ public final class TowerPieces {
 	};
 	static final ResourceLocation[] ROOM_DECORS = new ResourceLocation[] {
 		TwilightForestMod.prefix("lich_tower/3x3/chest"),
-		TwilightForestMod.prefix("lich_tower/3x3/lava_spring"),
 		TwilightForestMod.prefix("lich_tower/3x3/lava_well"),
 		TwilightForestMod.prefix("lich_tower/3x3/sapling"),
-		TwilightForestMod.prefix("lich_tower/3x3/spawner"),
 		TwilightForestMod.prefix("lich_tower/3x3/water_fountain"),
 		TwilightForestMod.prefix("lich_tower/3x3/water_well")
 	};
