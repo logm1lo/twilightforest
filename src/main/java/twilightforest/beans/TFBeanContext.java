@@ -1,9 +1,11 @@
 package twilightforest.beans;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -108,6 +110,7 @@ public final class TFBeanContext {
 			currentInjection.set(null);
 
 			Objects.requireNonNull(modContainer.getEventBus()).addListener(FMLCommonSetupEvent.class, event -> injectRegistries(modContainer, scanData, annotationDataPostProcessors));
+			Objects.requireNonNull(modContainer.getEventBus()).addListener(EventPriority.HIGHEST, GatherDataEvent.class, event -> injectRegistries(modContainer, scanData, annotationDataPostProcessors));
 			if (forceInjectRegistries)
 				injectRegistries(modContainer, scanData, annotationDataPostProcessors);
 
@@ -122,6 +125,7 @@ public final class TFBeanContext {
 	}
 
 	private void injectRegistries(ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors) {
+		final long ms = System.currentTimeMillis();
 		logger.debug("Processing registry objects");
 		AtomicReference<Object> curInj = new AtomicReference<>();
 		BuiltInRegistries.REGISTRY.holders().flatMap(r -> r.value().holders()).forEach(holder -> {
@@ -136,7 +140,7 @@ public final class TFBeanContext {
 				throwInjectionFailedException(curInj, e);
 			}
 		});
-		logger.debug("Finished processing registry objects");
+		logger.debug("Finished processing registry objects in {} ms", System.currentTimeMillis() - ms);
 	}
 
 	private boolean classOrSuperHasAnnotation(Class<?> c, Class<? extends Annotation> a) {
