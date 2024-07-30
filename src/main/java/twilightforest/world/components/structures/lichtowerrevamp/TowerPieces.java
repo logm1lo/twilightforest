@@ -257,7 +257,6 @@ public final class TowerPieces {
 				TwilightForestMod.prefix("lich_tower/5x5/elbow_junction"),
 				TwilightForestMod.prefix("lich_tower/5x5/t_junction"),
 				TwilightForestMod.prefix("lich_tower/5x5/desk"),
-				TwilightForestMod.prefix("lich_tower/5x5/webbed_spawner"),
 				TwilightForestMod.prefix("lich_tower/5x5/lectern"),
 				TwilightForestMod.prefix("lich_tower/5x5/lone_chest"),
 				TwilightForestMod.prefix("lich_tower/5x5/altar")
@@ -267,7 +266,6 @@ public final class TowerPieces {
 				TwilightForestMod.prefix("lich_tower/5x5/elbow_junction"),
 				TwilightForestMod.prefix("lich_tower/5x5/t_junction"),
 				TwilightForestMod.prefix("lich_tower/5x5/desk"),
-				TwilightForestMod.prefix("lich_tower/5x5/webbed_spawner"),
 				TwilightForestMod.prefix("lich_tower/5x5/lectern"),
 				TwilightForestMod.prefix("lich_tower/5x5/lone_chest"),
 				TwilightForestMod.prefix("lich_tower/5x5/altar")

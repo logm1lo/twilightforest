@@ -332,8 +332,8 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 		if (directionSplit.length == 0) return;
 
 		Rotation dataRotation = directionSplit.length == 1
-			? Rotation.NONE
-			: RotationUtil.getRelativeRotation(Direction.NORTH, DirectionUtil.fromStringOrElse(directionSplit[1], Direction.NORTH));
+			? Rotation.CLOCKWISE_180
+			: RotationUtil.getRelativeRotation(Direction.NORTH, DirectionUtil.fromStringOrElse(directionSplit[1], Direction.SOUTH));
 
 		String[] permutationSplit = directionSplit[0].split("\\|");
 
@@ -378,14 +378,13 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				level.setBlock(pos, Blocks.LECTERN.defaultBlockState().rotate(stateRotation), 2);
 			}
 			case "candled_lectern" -> {
-				Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
-
 				if (random.nextInt(4) != 0) {
 					this.putCandles(parameters, random, level, pos.above());
 				} else {
 					this.putHeadCandles(pos.above(), level, random, parameters, TFBlocks.SKELETON_SKULL_CANDLE.value(), dataRotation);
 				}
 
+				Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
 				level.setBlock(pos, Blocks.LECTERN.defaultBlockState().rotate(stateRotation), 2);
 			}
 			default -> {
@@ -516,7 +515,7 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 
 	private void putHead(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters, Block headBlock, Rotation dataRotation) {
 		int rotation = parameters.length >= 2 ? this.getHeadRotation(parameters[1], random) : random.nextIntBetweenInclusive(0, 15);
-		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
+		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation.getRotated(Rotation.CLOCKWISE_180));
 
 		BlockState candledHeadState = headBlock.defaultBlockState().setValue(BlockStateProperties.ROTATION_16, rotation).rotate(stateRotation);
 		level.setBlock(pos, candledHeadState, 2);
@@ -524,9 +523,9 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 
 	private void putHeadCandles(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters, Block candledHeadBlock, Rotation dataRotation) {
 		int amount = Math.min(4, parameters.length >= 2 ? this.getCandleRanged(parameters[1], random) : random.nextIntBetweenInclusive(1, 3));
-		if (amount == 0) return;
+		if (amount <= 0) return;
 		int rotation = parameters.length >= 3 ? this.getHeadRotation(parameters[2], random) : random.nextIntBetweenInclusive(0, 15);
-		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
+		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation.getRotated(Rotation.CLOCKWISE_180));
 
 		BlockState candledHeadState = candledHeadBlock.defaultBlockState()
 			.setValue(SkullCandleBlock.LIGHTING, LightableBlock.Lighting.NORMAL)
