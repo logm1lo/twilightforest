@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.RandomizableContainer;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
@@ -66,6 +68,7 @@ import twilightforest.world.components.structures.TwilightTemplateStructurePiece
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -445,7 +448,12 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				case "swarm_spider" -> TFEntities.SWARM_SPIDER.value();
 				default -> EntityType.ZOMBIE;
 			};
-			spawner.setEntityId(monster, random);
+
+			CompoundTag entityToSpawn = new CompoundTag();
+			entityToSpawn.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(monster).toString());
+			SpawnData spawnData = new SpawnData(entityToSpawn, Optional.of(new SpawnData.CustomSpawnRules(new InclusiveRange<>(0, 7), new InclusiveRange<>(0, 15))), Optional.empty());
+			spawner.getSpawner().setNextSpawnData(null, pos, spawnData);
+
 			if (parameters.length == 3 && StringUtils.isNumeric(parameters[2])) {
 				spawner.getSpawner().spawnRange = Mth.clamp(Integer.parseInt(parameters[2]), 1, 16);
 			}
