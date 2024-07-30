@@ -51,6 +51,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
+import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.init.TFBlocks;
@@ -359,7 +360,7 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 			case "canopy_shelf", "canopy_bookshelf" -> level.setBlock(pos, TFBlocks.CANOPY_BOOKSHELF.value().defaultBlockState(), 2);
 			case "stone_brick_slab" -> level.setBlock(pos, Blocks.STONE_BRICK_SLAB.defaultBlockState(), 2);
 			case "firefly_jar" -> level.setBlock(pos, TFBlocks.FIREFLY_JAR.value().defaultBlockState(), 2);
-			case "mason_jar" -> level.setBlock(pos, TFBlocks.MASON_JAR.value().defaultBlockState(), 2);
+			case "mason_jar" -> this.putMasonJar(pos, level, random, parameters);
 			case "canopy_slab" -> level.setBlock(pos, TFBlocks.CANOPY_SLAB.value().defaultBlockState(), 2);
 			case "creeper_head" -> this.putHead(pos, level, random, parameters, Blocks.CREEPER_HEAD, dataRotation);
 			case "skeleton_skull" -> this.putHead(pos, level, random, parameters, Blocks.SKELETON_SKULL, dataRotation);
@@ -399,6 +400,26 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 					TwilightForestMod.LOGGER.warn("Variation label {} ({}) obtained {} in {}", parameters[0], parameters, blockState, this.templateName);
 				}
 			}
+		}
+	}
+
+	private void putMasonJar(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters) {
+		BlockState jar = TFBlocks.MASON_JAR.value().defaultBlockState();
+		level.setBlock(pos, jar, 2);
+
+		if (parameters.length == 2 && level.getBlockEntity(pos) instanceof MasonJarBlockEntity jarEntity) {
+			ResourceLocation lootTableId = switch (parameters[1]) {
+				case "hall" -> TFLootTables.USELESS_LOOT.location(); // FIXME
+				case "library" -> TFLootTables.TOWER_LIBRARY.location();
+				case "potion" -> TFLootTables.TOWER_POTION.location();
+				case "room" -> TFLootTables.TOWER_ROOM.location();
+				default -> ResourceLocation.parse(parameters[1]);
+			};
+			jarEntity.fillFromLootTable(ResourceKey.create(Registries.LOOT_TABLE, lootTableId), random.nextLong());
+		}
+
+		if (level.getBlockState(pos.above()).is(TFBlocks.CANOPY_BOOKSHELF)) {
+			level.setBlock(pos.above(), TFBlocks.CANOPY_SLAB.value().defaultBlockState().setValue(SlabBlock.TYPE, SlabType.TOP), 2);
 		}
 	}
 
