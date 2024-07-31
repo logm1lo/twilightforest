@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 public class HedgeMazeStructure extends LandmarkStructure {
 	public static final MapCodec<HedgeMazeStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, HedgeMazeStructure::new));
 
-	public HedgeMazeStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(decorationConfig, structureSettings);
+	public HedgeMazeStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
 	@Override
@@ -40,14 +40,10 @@ public class HedgeMazeStructure extends LandmarkStructure {
 		return TFStructureTypes.HEDGE_MAZE.get();
 	}
 
-	@Override
-	public Optional<Holder<MapDecorationType>> getMapIcon() {
-		return Optional.of(TFMapDecorations.HEDGE_MAZE);
-	}
-
 	public static HedgeMazeStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new HedgeMazeStructure(
 			new DecorationClearance.DecorationConfig(2, false, true, true),
+			true, Optional.of(TFMapDecorations.HEDGE_MAZE),
 			new Structure.StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HEDGE_MAZE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

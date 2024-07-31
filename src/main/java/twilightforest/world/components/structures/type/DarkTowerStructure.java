@@ -33,8 +33,8 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 		controlledSpawningCodec(instance).apply(instance, DarkTowerStructure::new)
 	);
 
-	public DarkTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+	public DarkTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
 	@Override
@@ -45,11 +45,6 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.DARK_TOWER.get();
-	}
-
-	@Override
-	public Optional<Holder<MapDecorationType>> getMapIcon() {
-		return Optional.of(TFMapDecorations.DARK_TOWER);
 	}
 
 	public static DarkTowerStructure buildDarkTowerConfig(BootstrapContext<Structure> context) {
@@ -73,6 +68,7 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_knights"))),
 			new HintConfig(HintConfig.book("darktower", 3), TFEntities.KOBOLD.get()),
 			new DecorationConfig(1, false, true, true),
+			true, Optional.of(TFMapDecorations.DARK_TOWER),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_DARK_TOWER_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
 public class NagaCourtyardStructure extends ConquerableStructure {
 	public static final MapCodec<NagaCourtyardStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, NagaCourtyardStructure::new));
 
-	public NagaCourtyardStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(decorationConfig, structureSettings);
+	public NagaCourtyardStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
 	@Override
@@ -39,14 +39,10 @@ public class NagaCourtyardStructure extends ConquerableStructure {
 		return TFStructureTypes.NAGA_COURTYARD.get();
 	}
 
-	@Override
-	public Optional<Holder<MapDecorationType>> getMapIcon() {
-		return Optional.of(TFMapDecorations.NAGA_COURTYARD);
-	}
-
 	public static NagaCourtyardStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new NagaCourtyardStructure(
 			new DecorationConfig(3, false, true, true),
+			true, Optional.of(TFMapDecorations.NAGA_COURTYARD),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_NAGA_COURTYARD_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

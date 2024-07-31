@@ -41,8 +41,8 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 		controlledSpawningCodec(instance).apply(instance, LabyrinthStructure::new)
 	);
 
-	public LabyrinthStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+	public LabyrinthStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
 	@Override
@@ -60,11 +60,6 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 		return TFStructureTypes.LABYRINTH.get();
 	}
 
-	@Override
-	public Optional<Holder<MapDecorationType>> getMapIcon() {
-		return Optional.of(TFMapDecorations.LABYRINTH);
-	}
-
 	public static LabyrinthStructure buildLabyrinthConfig(BootstrapContext<Structure> context) {
 		return new LabyrinthStructure(
 			ControlledSpawningConfig.firstIndexMonsters(
@@ -80,6 +75,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
 			new HintConfig(HintConfig.book("labyrinth", 5), TFEntities.KOBOLD.get()),
 			new DecorationConfig(3, true, false, false),
+			true, Optional.of(TFMapDecorations.LABYRINTH),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LABYRINTH_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

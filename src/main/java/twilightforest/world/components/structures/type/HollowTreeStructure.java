@@ -115,7 +115,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 	}
 
 	@Override
-	protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+	public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
 		ChunkPos chunkPos = context.chunkPos();
 
 		RandomSource random = RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L);

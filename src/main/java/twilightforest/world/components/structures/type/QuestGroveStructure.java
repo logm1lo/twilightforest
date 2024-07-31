@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 public class QuestGroveStructure extends ConquerableStructure {
 	public static final MapCodec<QuestGroveStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, QuestGroveStructure::new));
 
-	public QuestGroveStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(decorationConfig, structureSettings);
+	public QuestGroveStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
 	@Override
@@ -40,14 +40,10 @@ public class QuestGroveStructure extends ConquerableStructure {
 		return TFStructureTypes.QUEST_GROVE.get();
 	}
 
-	@Override
-	public Optional<Holder<MapDecorationType>> getMapIcon() {
-		return Optional.of(TFMapDecorations.QUEST_GROVE);
-	}
-
 	public static QuestGroveStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new QuestGroveStructure(
 			new DecorationConfig(1, false, true, true),
+			true, Optional.of(TFMapDecorations.QUEST_GROVE),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

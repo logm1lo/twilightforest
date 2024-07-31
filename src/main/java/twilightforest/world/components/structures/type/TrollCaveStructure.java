@@ -47,8 +47,8 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 	private final ControlledSpawningConfig controlledSpawningConfig;
 	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-	public TrollCaveStructure(ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+	public TrollCaveStructure(ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.controlledSpawningConfig = controlledSpawningConfig;
 		this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
@@ -69,16 +69,6 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 		return this.controlledSpawningConfig;
 	}
 
-	@Override
-	protected boolean dontCenter() {
-		return true;
-	}
-
-	@Override
-	public Optional<Holder<MapDecorationType>> getMapIcon() {
-		return Optional.of(TFMapDecorations.TROLL_CAVES);
-	}
-
 	public static TrollCaveStructure buildTrollCaveConfig(BootstrapContext<Structure> context) {
 		return new TrollCaveStructure(
 			ControlledSpawningConfig.create(List.of(List.of(
@@ -95,6 +85,7 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
 			new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get()),
 			new DecorationConfig(4, true, true, false),
+			false, Optional.of(TFMapDecorations.TROLL_CAVES),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_TROLL_CAVE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

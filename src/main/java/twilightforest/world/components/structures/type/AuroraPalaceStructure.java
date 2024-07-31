@@ -32,8 +32,8 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 		controlledSpawningCodec(instance).apply(instance, AuroraPalaceStructure::new)
 	);
 
-	public AuroraPalaceStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+	public AuroraPalaceStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
 	@Override
@@ -46,11 +46,6 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 		return TFStructureTypes.AURORA_PALACE.get();
 	}
 
-	@Override
-	public Optional<Holder<MapDecorationType>> getMapIcon() {
-		return Optional.of(TFMapDecorations.AURORA_PALACE);
-	}
-
 	public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstrapContext<Structure> context) {
 		return new AuroraPalaceStructure(
 			ControlledSpawningConfig.firstIndexMonsters(
@@ -61,6 +56,7 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_yeti"))),
 			new HintConfig(HintConfig.book("icetower", 3), TFEntities.KOBOLD.get()),
 			new DecorationConfig(2, false, true, false),
+			true, Optional.of(TFMapDecorations.AURORA_PALACE),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_AURORA_PALACE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

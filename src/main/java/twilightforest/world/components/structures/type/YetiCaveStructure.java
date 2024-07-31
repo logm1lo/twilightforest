@@ -44,8 +44,8 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 
 	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-	public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings, Holder<StructureSpeleothemConfig> speleothemConfig) {
-		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+	public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, Holder<StructureSpeleothemConfig> speleothemConfig) {
+		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
 	}
@@ -60,22 +60,13 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 		return TFStructureTypes.YETI_CAVE.get();
 	}
 
-	@Override
-	protected boolean dontCenter() {
-		return true;
-	}
-
-	@Override
-	public Optional<Holder<MapDecorationType>> getMapIcon() {
-		return Optional.of(TFMapDecorations.YETI_LAIR);
-	}
-
 	public static YetiCaveStructure buildYetiCaveConfig(BootstrapContext<Structure> context) {
 		return new YetiCaveStructure(
 			ControlledSpawningConfig.firstIndexMonsters(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 5, 1, 2)),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
 			new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.get()),
 			new DecorationConfig(2, true, false, false),
+			false, Optional.of(TFMapDecorations.YETI_LAIR),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_YETI_CAVE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

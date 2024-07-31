@@ -24,6 +24,7 @@ import twilightforest.world.components.structures.util.ProgressionStructure;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GiantHouseStructure extends ProgressionStructure implements ConfigurableSpawns {
@@ -35,8 +36,8 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 
 	private final ControlledSpawningConfig controlledSpawningConfig;
 
-	public GiantHouseStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings, ControlledSpawningConfig controlledSpawningConfig) {
-		super(advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+	public GiantHouseStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, ControlledSpawningConfig controlledSpawningConfig) {
+		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.controlledSpawningConfig = controlledSpawningConfig;
 	}
@@ -57,16 +58,12 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 		return this.controlledSpawningConfig;
 	}
 
-	@Override
-	protected boolean dontCenter() {
-		return true;
-	}
-
 	public static GiantHouseStructure buildGiantHouseConfig(BootstrapContext<Structure> context) {
 		return new GiantHouseStructure(
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
 			new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get()),
 			new DecorationConfig(1, true, true, false),
+			false, Optional.empty(),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_GIANT_HOUSE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
