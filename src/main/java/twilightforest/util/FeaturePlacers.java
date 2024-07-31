@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.HolderSet;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -63,7 +64,7 @@ public final class FeaturePlacers {
 	/**
 	 * Build a root, but don't let it stick out too far into thin air because that's weird
 	 */
-	public static void buildRoot(LevelAccessor world, BiConsumer<BlockPos, BlockState> placer, RandomSource rand, BlockPos start, double offset, int b, BlockStateProvider config) {
+	public static void buildRoot(LevelAccessor world, RootPlacer placer, RandomSource rand, BlockPos start, double offset, int b, BlockStateProvider config) {
 		BlockPos dest = FeatureLogic.translate(start.below(b + 2), 5, 0.3 * b + offset, 0.8);
 
 		// go through block by block and stop drawing when we head too far into open air
@@ -245,9 +246,9 @@ public final class FeaturePlacers {
 		}
 	}
 
-	public static boolean placeIfValidRootPos(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, RandomSource random, BlockPos pos, BlockStateProvider config) {
-		if (FeatureLogic.canRootGrowIn(world, pos)) {
-			placer.accept(pos, config.getState(random, pos));
+	public static boolean placeIfValidRootPos(LevelSimulatedReader world, RootPlacer placer, RandomSource random, BlockPos pos, BlockStateProvider config) {
+		if (!FeatureUtil.anyBelowMatch(pos, placer.getRootPenetrability() - 1, (blockPos -> !FeatureLogic.canRootGrowIn(world, blockPos)))) {
+			placer.getPlacer().accept(pos, config.getState(random, pos));
 			return true;
 		} else {
 			return false;
@@ -295,11 +296,11 @@ public final class FeaturePlacers {
 		return stateOut.setValue(property, stateIn.getValue(property));
 	}
 
-	public static void traceRoot(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
+	public static void traceRoot(LevelSimulatedReader worldReader, RootPlacer worldPlacer, RandomSource random, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
 		// Trace block positions and stop tracing too far into open air
 		for (BlockPos rootPos : posTracer) {
-			if (worldReader.isStateAtPosition(rootPos, FeatureLogic.ROOT_SHOULD_SKIP))
-				continue; // Ignore pos if this block should be checked (root, or one of the protected block IDs)
+			if (FeatureUtil.anyBelowMatch(rootPos, worldPlacer.getRootPenetrability() - 1, (blockPos -> worldReader.isStateAtPosition(blockPos, FeatureLogic.ROOT_SHOULD_SKIP))))
+				return; // End root if this block cannot be penetrated
 
 			// If the block/position cannot be replaced or is detached from ground-mass, stop
 			if (!FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, rootPos, dirtRoot))
@@ -307,20 +308,23 @@ public final class FeaturePlacers {
 		}
 	}
 
-	public static void traceExposedRoot(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, BlockStateProvider exposedRoot, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
+	public static void traceExposedRoot(LevelSimulatedReader worldReader, RootPlacer worldPlacer, RandomSource random, BlockStateProvider exposedRoot, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
 		// Trace block positions and alternate the root tracing once "underground"
 		for (BlockPos exposedPos : posTracer) {
-			if (worldReader.isStateAtPosition(exposedPos, FeatureLogic.ROOT_SHOULD_SKIP))
-				continue;
+			if (FeatureUtil.anyBelowMatch(exposedPos, worldPlacer.getRootPenetrability() - 1, (blockPos -> worldReader.isStateAtPosition(blockPos, (state) -> FeatureLogic.ROOT_SHOULD_SKIP.test(state)
+				&& state != dirtRoot.getState(random, blockPos)
+				&& state != exposedRoot.getState(random, exposedPos)))))
+				return;
 
 			// Is the position considered not underground?
 			if (FeatureLogic.hasEmptyNeighborExceptBelow(worldReader, exposedPos)) {
 				// Check if the position is not replaceable
-				if (!worldReader.isStateAtPosition(exposedPos, FeatureLogic::worldGenReplaceable))
+				if (FeatureUtil.anyBelowMatch(exposedPos, worldPlacer.getRootPenetrability() - 1, (blockPos -> worldReader.isStateAtPosition(blockPos, (state) -> !FeatureLogic.worldGenReplaceable(state)
+					&& state != exposedRoot.getState(random, exposedPos)))))
 					return; // Root must stop
 
 				// Good to go!
-				worldPlacer.accept(exposedPos, exposedRoot.getState(random, exposedPos));
+				worldPlacer.getPlacer().accept(exposedPos, exposedRoot.getState(random, exposedPos));
 			} else { // We are in-fact underground, finish tracing root's path by placing underground roots
 				// Retry placement at position as underground root. If successful, continue the tracing as regular root
 				if (FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, exposedPos, dirtRoot))
@@ -330,6 +334,7 @@ public final class FeaturePlacers {
 			}
 		}
 	}
+
 
 	@Deprecated
 	@SuppressWarnings("SameParameterValue")
