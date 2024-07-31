@@ -52,7 +52,7 @@ public final class TowerUtil {
 		new VerticalDecayProcessor(STAIR_DECAY_BLOCKS, 0.3f),
 		new VerticalDecayProcessor(STAIR_DECAY_BLOCKS, 0.35f)
 	};
-	public static final StructureProcessor UPDATE_MARKER = UpdateMarkingProcessor.forBlocks(Blocks.STONE_BRICK_WALL, Blocks.MOSSY_STONE_BRICK_WALL, TFBlocks.WROUGHT_IRON_FENCE.value());
+	public static final StructureProcessor UPDATE_MARKER = UpdateMarkingProcessor.forBlocks(Blocks.STONE_BRICK_WALL, Blocks.MOSSY_STONE_BRICK_WALL, TFBlocks.WROUGHT_IRON_FENCE.value(), TFBlocks.CANOPY_FENCE.value());
 
 	@Nullable
 	public static ResourceLocation rollRandomRoom(RandomSource randomSource, int size) {
