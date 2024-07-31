@@ -282,11 +282,11 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 			BlockPos placeAt = this.templatePosition.offset(sourceJigsaw.pos());
 			if (chunkBounds.isInside(placeAt)) {
 				BlockState ladderBlock = Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, sourceJigsaw.orientation().top());
-				level.setBlock(placeAt, ladderBlock, 3);
-				level.setBlock(placeAt.above(), ladderBlock, 3);
+				level.setBlock(placeAt, ladderBlock, 2);
+				level.setBlock(placeAt.above(), ladderBlock, 2);
 				BlockState airBlock = Blocks.AIR.defaultBlockState();
 				for (BlockPos pos : BlockPos.betweenClosed(placeAt.above(2), placeAt.above(5))) {
-					level.setBlock(pos, airBlock, 3);
+					level.setBlock(pos, airBlock, 2);
 				}
 			}
 		}
@@ -299,7 +299,7 @@ public final class TowerRoom extends TwilightJigsawPiece implements PieceBeardif
 				BlockPos endPos = startPos.above(this.boundingBox.getYSpan() - ladderOffset.getY() - 1);
 				BlockState ladderBlock = Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, ladderJigsaw.orientation().top());
 				for (BlockPos placeAt : BlockPos.betweenClosed(startPos, endPos)) {
-					level.setBlock(placeAt, ladderBlock, 3);
+					level.setBlock(placeAt, ladderBlock, 2);
 				}
 			}
 		}
