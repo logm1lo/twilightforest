@@ -157,7 +157,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
 				);
 			} else if (level instanceof ServerLevel)
-				PacketDistributor.sendToPlayersTrackingEntity(entity, new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
+				PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
 		}
 	}
 }
