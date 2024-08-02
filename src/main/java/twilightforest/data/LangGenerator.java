@@ -69,7 +69,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addStructure(TFStructures.FINAL_CASTLE, "Final Plateau Castle");
 
 		this.addCommand("usage", "/%s <info | reactivate | conquer | center>");
-		this.addCommand("not_in_twilight_forest", "You are not in the Twilight Forest dimension");
 		this.addCommand("not_player", "This command must be run by a valid player!");
 		this.addCommand("none_nearby", "Couldn't find a feature nearby!");
 		this.addCommand("nearest", "The nearest feature is: %s");
