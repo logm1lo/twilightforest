@@ -65,7 +65,7 @@ import twilightforest.network.*;
 import twilightforest.util.Restriction;
 import twilightforest.util.TFEnumExtensions;
 import twilightforest.util.TFRemapper;
-import twilightforest.util.WoodPalette;
+import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;

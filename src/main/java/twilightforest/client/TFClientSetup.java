@@ -56,7 +56,7 @@ import twilightforest.entity.boss.NagaSegment;
 import twilightforest.entity.boss.SnowQueenIceShield;
 import twilightforest.init.*;
 import twilightforest.item.*;
-import twilightforest.util.TFWoodTypes;
+import twilightforest.util.woods.TFWoodTypes;
 
 import java.time.LocalDate;
 import java.time.Month;

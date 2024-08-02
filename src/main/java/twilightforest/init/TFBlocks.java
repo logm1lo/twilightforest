@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -24,7 +23,7 @@ import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.util.TFWoodTypes;
+import twilightforest.util.woods.TFWoodTypes;
 import twilightforest.world.components.feature.trees.growers.TFTreeGrowers;
 
 import java.util.function.Supplier;
