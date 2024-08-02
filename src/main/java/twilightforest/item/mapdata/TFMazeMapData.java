@@ -78,6 +78,12 @@ public class TFMazeMapData extends MapItemSavedData {
 		else return (TFMazeMapData) ((ServerLevel) level).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
 	}
 
+	// Like the method above, but if we know we're on client
+	@Nullable
+	public static TFMazeMapData getClientMagicMapData(String name) {
+		return CLIENT_DATA.get(name);
+	}
+
 	public static SavedData.Factory<MapItemSavedData> factory() {
 		return new SavedData.Factory<>(() -> {
 			throw new IllegalStateException("Should never create an empty map saved data");
