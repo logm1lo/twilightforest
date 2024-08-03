@@ -16,11 +16,13 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.ItemSteerable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
@@ -168,7 +170,11 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 					if (!level.isClientSide()) {
 						ItemStack itemstack = new ItemStack(candelabra.removeCandle(i));
 						level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-						if (!player.getAbilities().instabuild) {
+						if (player.hasInfiniteMaterials()) {
+							if (!player.getInventory().contains(itemstack)) {
+								player.getInventory().add(itemstack);
+							}
+						} else {
 							if (!player.getInventory().add(itemstack)) {
 								player.drop(itemstack, false);
 							}
