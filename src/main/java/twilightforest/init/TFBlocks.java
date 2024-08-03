@@ -3,10 +3,7 @@ package twilightforest.init;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
@@ -606,7 +603,7 @@ public class TFBlocks {
 
 	public static <T extends Block> DeferredBlock<T> registerFireResistantItem(String name, Supplier<T> block) {
 		DeferredBlock<T> ret = BLOCKS.register(name, block);
-		TFItems.ITEMS.register(name, () -> new BlockItem(ret.get(), new Item.Properties().fireResistant()));
+		TFItems.ITEMS.register(name, () -> new BlockItem(ret.get(), new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
 		return ret;
 	}
 
