@@ -27,7 +27,7 @@ public class CenterCommand {
 
 		String structurename = Component.translatable(closestFeature.toLanguageKey("structure")).withStyle(ChatFormatting.DARK_GREEN).getString();
 		source.sendSuccess(() -> Component.translatable("commands.tffeature.nearest", structurename), false);
-		source.sendSuccess(() -> Component.translatable("commands.tffeature.center", cc), false);
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.center", cc.toShortString()), false);
 		source.sendSuccess(() -> Component.translatable("commands.tffeature.chunk", fc), false);
 
 		return Command.SINGLE_SUCCESS;
