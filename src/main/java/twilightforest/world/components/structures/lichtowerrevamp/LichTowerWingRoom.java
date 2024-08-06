@@ -6,6 +6,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.StructureManager;
@@ -61,6 +63,7 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.DirectionUtil;
 import twilightforest.util.RotationUtil;
+import twilightforest.util.WorldUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.util.jigsaw.JigsawUtil;
@@ -352,10 +355,10 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 		level.removeBlock(pos, false); // Clears block entity data left by Data Marker
 
-		this.handleDataParams(pos, level, random, parameters, dataRotation);
+		this.handleDataParams(pos, level, WorldUtil.getRegistryAccess(), random, parameters, dataRotation);
 	}
 
-	private void handleDataParams(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters, Rotation dataRotation) {
+	private void handleDataParams(BlockPos pos, WorldGenLevel level, RegistryAccess registryAccess, RandomSource random, String[] parameters, Rotation dataRotation) {
 		switch (parameters[0]) {
 			case "air", "empty" -> {} // No-Op; block already replaced
 			case "bookshelf" -> level.setBlock(pos, Blocks.BOOKSHELF.defaultBlockState(), 2);
@@ -375,7 +378,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			case "spawner" -> this.putSpawner(pos, level, random, parameters);
 			case "brewing_stand" -> this.putBrewingStand(pos, level, random);
 			case "lectern" -> this.putTrappableLectern(pos, level, dataRotation, random.nextBoolean());
-			case "chiseled_canopy_shelf" -> this.putTrappableBookshelf(pos, level, random, dataRotation);
+			case "chiseled_canopy_shelf" -> this.putTrappableBookshelf(pos, level, registryAccess, random, dataRotation);
 			case "chest" -> this.putChest(pos, level, random, parameters, dataRotation, Blocks.CHEST.defaultBlockState());
 			case "trapped_chest" -> this.putChest(pos, level, random, parameters, dataRotation, Blocks.TRAPPED_CHEST.defaultBlockState());
 			case "candle", "candles" -> this.putCandles(parameters, random, level, pos);
@@ -519,7 +522,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		}
 	}
 
-	private void putTrappableBookshelf(BlockPos pos, WorldGenLevel level, RandomSource random, Rotation dataRotation) {
+	private void putTrappableBookshelf(BlockPos pos, WorldGenLevel level, RegistryAccess registryAccess, RandomSource random, Rotation dataRotation) {
 		boolean isHostile = random.nextInt(8) == 0;
 		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
 		BlockState shelf = TFBlocks.CHISELED_CANOPY_BOOKSHELF.value().defaultBlockState().setValue(ChiseledCanopyShelfBlock.SPAWNER, isHostile).rotate(stateRotation);
@@ -535,7 +538,9 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		level.setBlock(pos, shelf, 2);
 		if (level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity shelfBlockEntity) {
 			for (int index : filledSlots) {
-				shelfBlockEntity.items.set(index, new ItemStack(Items.BOOK));
+				// Spawner shelves never contain enchanted books; Otherwise Chiseled Shelves have a 1/5 chance of generating an enchanted book instead of only a book
+				ItemStack book = isHostile || random.nextInt(5) != 0 ? new ItemStack(Items.BOOK) : EnchantmentHelper.enchantItem(random, new ItemStack(Items.BOOK), random.nextIntBetweenInclusive(1, 40), registryAccess, Optional.empty());
+				shelfBlockEntity.items.set(index, book);
 			}
 
 			if (isHostile) {
