@@ -45,6 +45,8 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.ProcessBeanAnnotationsEvent;
 import twilightforest.beans.TFBeanContext;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.client.TFClientSetup;
@@ -100,7 +102,11 @@ public final class TwilightForestMod {
 		TFBeanContext.init();
 	}
 
+	@Autowired
+	private TFCommand tfCommand;
+
 	public TwilightForestMod(IEventBus bus, Dist dist) {
+		bus.post(new ProcessBeanAnnotationsEvent(this)); // Enables @Autowired
 		Reflection.initialize(ConfigSetup.class);
 		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
 		if (dist.isClient()) {
@@ -439,7 +445,7 @@ public final class TwilightForestMod {
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {
-		TFCommand.register(event.getDispatcher());
+		tfCommand.register(event.getDispatcher());
 	}
 
 	public static ResourceLocation prefix(String name) {

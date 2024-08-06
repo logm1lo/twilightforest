@@ -10,11 +10,12 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 
+@twilightforest.beans.Component
 public class TFCommand {
 
-	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+	public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("twilightforest")
-			.executes(TFCommand::run)
+			.executes(this::run)
 			.then(CenterCommand.register())
 			.then(MapLocatorCommand.register())
 			.then(ConquerCommand.register())
@@ -23,11 +24,11 @@ public class TFCommand {
 			.then(MapBiomesCommand.register())
 			.then(ShieldCommand.register());
 		LiteralCommandNode<CommandSourceStack> node = dispatcher.register(builder);
-		dispatcher.register(Commands.literal("tf").executes(TFCommand::run).redirect(node));
-		dispatcher.register(Commands.literal("tffeature").executes(TFCommand::run).redirect(node));
+		dispatcher.register(Commands.literal("tf").executes(this::run).redirect(node));
+		dispatcher.register(Commands.literal("tffeature").executes(this::run).redirect(node));
 	}
 
-	private static int run(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+	private int run(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 		throw new SimpleCommandExceptionType(Component.translatable("commands.tffeature.usage", ctx.getInput())).create();
 	}
 }
