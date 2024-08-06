@@ -1,4 +1,4 @@
-// 1.21	2024-08-04T22:05:44.77026581	Registries
+// 1.21	2024-08-06T16:13:07.175592	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -344,6 +344,7 @@ aa4567b8171a3bb0d739364aa9e8bb5a5fead921 data/twilightforest/worldgen/structure/
 2a51406fdc1088d7de4914189d81c69bf788d77c data/twilightforest/worldgen/structure/naga_courtyard.json
 4ff0066540dbb64483260da0b4d60d6e622304b2 data/twilightforest/worldgen/structure/quest_grove.json
 da563625a31738c46356e6c58c35824f5d98c2c4 data/twilightforest/worldgen/structure/small_hollow_hill.json
+2db553ab8a6b2ca93ce23fe0738645cff99e2520 data/twilightforest/worldgen/structure/swamp_hollow_tree.json
 c80eb035dafc0e1686ca2cffc235606e90cc189b data/twilightforest/worldgen/structure/troll_cave.json
 46bb4ea0d05e23fa627094fb8f1fbf2763cf27ea data/twilightforest/worldgen/structure/yeti_cave.json
 9b7532428e43ad07cbd01befa87d2e61c1b3665b data/twilightforest/worldgen/structure_set/aurora_palace.json
@@ -351,7 +352,7 @@ c80eb035dafc0e1686ca2cffc235606e90cc189b data/twilightforest/worldgen/structure/
 812d3931021ba71e0967f0ca1ed4ed9b8b4084c6 data/twilightforest/worldgen/structure_set/final_castle.json
 9e2378306467bacffd457718c88ea7f0a068e935 data/twilightforest/worldgen/structure_set/giant_house.json
 09dc97d2a9357ba05b229ac193478c5a89596e1f data/twilightforest/worldgen/structure_set/hedge_maze.json
-5d07c9e7aa98d9da8941c22bbb0605c529d16de5 data/twilightforest/worldgen/structure_set/hollow_tree.json
+bf5c69a98b658d4a3c19a45d6cf4b26c3afa7f71 data/twilightforest/worldgen/structure_set/hollow_tree.json
 092bee267f85358da5705eb8673bffac6b51c20b data/twilightforest/worldgen/structure_set/hydra_lair.json
 4b6dd5c286f414050ec5cd9c2827ca71a454c97d data/twilightforest/worldgen/structure_set/knight_stronghold.json
 0c4260f4a0de458e5e7f2600463793b8df42c21d data/twilightforest/worldgen/structure_set/labyrinth.json
