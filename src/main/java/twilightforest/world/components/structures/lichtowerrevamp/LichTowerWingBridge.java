@@ -136,7 +136,8 @@ public final class LichTowerWingBridge extends TwilightJigsawPiece implements Pi
 
 		boolean generateGround = canPutGround && connection.pos().getY() < 4;
 
-		StructurePiece room = new LichTowerWingRoom(structureManager, newDepth, placeableJunction, roomId, roomSize, generateGround, random.nextBoolean());
+		boolean doLadder = generateGround || random.nextBoolean();
+		StructurePiece room = new LichTowerWingRoom(structureManager, newDepth, placeableJunction, roomId, roomSize, generateGround, doLadder);
 
 		if (allowClipping || pieceAccessor.findCollisionPiece(room.getBoundingBox()) == null) {
 			pieceAccessor.addPiece(room);

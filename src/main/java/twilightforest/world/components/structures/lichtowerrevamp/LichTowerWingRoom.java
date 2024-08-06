@@ -136,8 +136,10 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 					return;
 				} else if (this.genDepth > 30 || random.nextInt(this.towerStackIndex() * 2 + 1) == 0) {
 					LichTowerWingBridge.putCover(this, pieceAccessor, random, connection.pos(), connection.orientation(), this.structureManager, generateGround, this.genDepth + 1);
-				} else {
+				} else if (!generateGround) {
 					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, false, this.roomSize - random.nextInt(2), generateGround, this.genDepth + 1, false);
+				} else {
+					LichTowerWingBridge.putCover(this, pieceAccessor, random, connection.pos(), connection.orientation(), this.structureManager, false, this.genDepth + 1);
 				}
 
 				return;
