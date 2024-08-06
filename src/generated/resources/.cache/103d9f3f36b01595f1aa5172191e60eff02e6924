@@ -1,4 +1,4 @@
-// 1.21	2024-08-02T21:15:36.248368	Registries
+// 1.21	2024-08-04T22:05:44.77026581	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -222,7 +222,7 @@ c923cb36a4a7190f2bec1ad3ce6be81fb012e755 data/twilightforest/worldgen/configured
 7f621cf20a68d70764e47a1365e26f948ac9445d data/twilightforest/worldgen/configured_feature/tree/selector/enchanted_forest_trees.json
 9c42c640892024958f9171d185ba4a18a5cca734 data/twilightforest/worldgen/configured_feature/tree/selector/firefly_forest_trees.json
 77679e79279a34d2afb4f0590862298960f8dd89 data/twilightforest/worldgen/configured_feature/tree/selector/highlands_trees.json
-3a5804397a82b2a712e0721f0b08faf6ad80719e data/twilightforest/worldgen/configured_feature/tree/selector/snowy_forest_trees.json
+636310ed05f9ba187f75a0492914d76034b706d0 data/twilightforest/worldgen/configured_feature/tree/selector/snowy_forest_trees.json
 a273ae0c707476c603fd68540093aabe244eda06 data/twilightforest/worldgen/configured_feature/tree/selector/vanilla/vanilla_mushrooms.json
 18ffcf7ec69980631b5ffa2c49115ce282c586e0 data/twilightforest/worldgen/configured_feature/tree/selector/vanilla_trees.json
 9fd60fc820ee73e76b076c44f3abf90f7c02356b data/twilightforest/worldgen/configured_feature/tree/smaller_jungle_tree.json
