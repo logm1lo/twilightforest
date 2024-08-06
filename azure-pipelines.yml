@@ -16,7 +16,7 @@ variables:
 steps:
   - powershell: |
       $json = [Ordered]@{
-          title = "(This is a test) Maven Publish Failed"
+          title = "Maven Publish Failed"
           url = "$($env:SYSTEM_TEAMFOUNDATIONSERVERURI)Twilight%20Forest/_build/results?buildId=$($Env:BUILD_BUILDID)&view=results"
           color = 16733440
           fields = (
