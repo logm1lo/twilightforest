@@ -102,7 +102,7 @@ public final class TowerBridge extends TwilightJigsawPiece implements PieceBeard
 	}
 
 	public static void putCover(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, BlockPos sourceJigsawPos, FrontAndTop sourceOrientation, StructureTemplateManager structureManager, boolean generateGround, int newDepth) {
-		ResourceLocation bridgeCoverLocation = TowerUtil.rollRandomCover(random);
+		ResourceLocation bridgeCoverLocation = pieceAccessor.findCollisionPiece(BoundingBox.fromCorners(sourceJigsawPos.relative(sourceOrientation.front(), 1), sourceJigsawPos.relative(sourceOrientation.front(), 3))) == null ? TowerUtil.rollRandomCover(random) : TowerPieces.COBBLESTONE_WALL;
 		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), sourceJigsawPos, sourceOrientation, structureManager, bridgeCoverLocation, "twilightforest:lich_tower/bridge", random);
 
 		if (placeableJunction != null) {
