@@ -1,8 +1,10 @@
 package twilightforest.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -142,5 +144,9 @@ public class BoundingBoxUtils {
 			case NORTH -> cloneWithAdjustments(box, 0, 0, length, 0, 0, 0);
 			case SOUTH -> cloneWithAdjustments(box, 0, 0, 0, 0, 0, -length);
 		};
+	}
+
+	public static boolean isPosWithinBox(BlockPos origin, BlockPos.MutableBlockPos offset, int range) {
+		return range >= Mth.absMax(offset.getY() - origin.getY(), Mth.absMax(offset.getX() - origin.getX(), offset.getZ() - origin.getZ()));
 	}
 }

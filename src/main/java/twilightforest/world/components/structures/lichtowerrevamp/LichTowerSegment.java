@@ -26,24 +26,24 @@ import twilightforest.world.components.structures.TwilightTemplateStructurePiece
 
 import java.util.ArrayList;
 
-public final class CentralTowerSegment extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public final class LichTowerSegment extends TwilightJigsawPiece implements PieceBeardifierModifier {
 	private final boolean putMobBridge;
 	private final boolean continueAbove;
 
-	public CentralTowerSegment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), compoundTag, ctx, readSettings(compoundTag));
+	public LichTowerSegment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings);
+		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);
 
 		this.putMobBridge = compoundTag.getBoolean("put_bridge");
 		this.continueAbove = compoundTag.getBoolean("seg_above");
 	}
 
-	public CentralTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean continueAbove) {
-		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), jigsawContext);
+	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean continueAbove) {
+		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings);
+		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);
 
 		this.putMobBridge = putMobBridge;
@@ -54,8 +54,8 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 		int decayLevel = Mth.ceil((depth - 3) * 0.25);
 
 		if (decayLevel >= 0) {
-			decayLevel = Math.min(decayLevel, TowerUtil.STAIR_DECAY_PROCESSORS.length);
-			settings.addProcessor(TowerUtil.STAIR_DECAY_PROCESSORS[decayLevel]);
+			decayLevel = Math.min(decayLevel, LichTowerUtil.STAIR_DECAY_PROCESSORS.length);
+			settings.addProcessor(LichTowerUtil.STAIR_DECAY_PROCESSORS[decayLevel]);
 		}
 	}
 
@@ -79,7 +79,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 
 			if (placeableJunction == null) continue;
 
-			CentralTowerSegment towerSegment = new CentralTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, putMobBridge, i != segments - 1);
+			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, putMobBridge, i != segments - 1);
 
 			pieceAccessor.addPiece(towerSegment);
 			pieces.add(towerSegment); // Add to list for adding children later, must build upwards to the boss room before beginning Sidetowers from the base & upwards too
@@ -97,7 +97,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 		// The boss room is wider than Main Tower segments, adding to piece list sooner will help prevent these collisions
 		JigsawPlaceContext bossRoomJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_room"), "twilightforest:lich_tower/tower_below", random);
 		if (bossRoomJunction != null) {
-			StructurePiece bossRoom = new BossRoom(structureManager, bossRoomJunction);
+			StructurePiece bossRoom = new LichBossRoom(structureManager, bossRoomJunction);
 			pieceAccessor.addPiece(bossRoom);
 			bossRoom.addChildren(priorPiece, pieceAccessor, random);
 		}
@@ -123,15 +123,15 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 			case "twilightforest:lich_tower/bridge" -> {
 				int roomMaxSize = 3;
 				boolean genMagicGallery = !this.continueAbove && jigsawIndex == 2;// && random.nextInt(10) == 0;
-				TowerBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, roomMaxSize, false, this.genDepth + 1, genMagicGallery);
+				LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, roomMaxSize, false, this.genDepth + 1, genMagicGallery);
 			}
 			case "twilightforest:mob_bridge" -> {
 				if (this.putMobBridge) {
-					ResourceLocation mobBridgeLocation = TowerUtil.rollRandomMobBridge(random);
+					ResourceLocation mobBridgeLocation = LichTowerUtil.rollRandomMobBridge(random);
 					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", random);
 
 					if (placeableJunction != null) {
-						StructurePiece mobBridgePiece = new TowerMobBridge(this.genDepth + 1, this.structureManager, mobBridgeLocation, placeableJunction, random.nextBoolean());
+						StructurePiece mobBridgePiece = new LichTowerSpawnerBridge(this.genDepth + 1, this.structureManager, mobBridgeLocation, placeableJunction, random.nextBoolean());
 						pieceAccessor.addPiece(mobBridgePiece);
 						mobBridgePiece.addChildren(this, pieceAccessor, random);
 					}
@@ -142,7 +142,7 @@ public final class CentralTowerSegment extends TwilightJigsawPiece implements Pi
 
 	@Override
 	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
-		BossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 1, 16, CustomTagGenerator.PaintingVariantTagGenerator.LICH_TOWER_PAINTINGS);
+		LichBossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 1, 16, CustomTagGenerator.PaintingVariantTagGenerator.LICH_TOWER_PAINTINGS);
 	}
 
 	@Override
