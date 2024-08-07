@@ -214,8 +214,9 @@ public class TreeConfigurations {
 		new StraightTrunkPlacer(1, 0, 0),
 		BlockStateProvider.simple(Blocks.OAK_LEAVES),
 		new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 2),
-		new TwoLayersFeatureSize(0, 0, 0)
-	).build();
+		new TwoLayersFeatureSize(0, 0, 0))
+		.ignoreVines()
+		.build();
 
 	//[VanillaCopy] of Features.MEGA_SPRUCE, just without all the nasty podzol so it fits better
 	public static final TreeConfiguration BIG_SPRUCE = new TreeConfiguration.TreeConfigurationBuilder(
