@@ -11,12 +11,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
+@twilightforest.beans.Component
 public class CenterCommand {
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
-		return Commands.literal("center").requires(cs -> cs.hasPermission(2)).executes(CenterCommand::run);
+
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
+		return Commands.literal("center").requires(cs -> cs.hasPermission(2)).executes(this::run);
 	}
 
-	private static int run(CommandContext<CommandSourceStack> ctx) {
+	private int run(CommandContext<CommandSourceStack> ctx) {
 		CommandSourceStack source = ctx.getSource();
 
 		int dx = Mth.floor(source.getPosition().x());
