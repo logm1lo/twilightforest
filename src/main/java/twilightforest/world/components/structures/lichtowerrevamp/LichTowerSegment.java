@@ -67,19 +67,20 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		structureTag.putBoolean("seg_above", this.continueAbove);
 	}
 
-	public static void buildTowerBySegments(StructurePieceAccessor pieceAccessor, RandomSource random, final BlockPos sourceJigsawPos, final FrontAndTop sourceOrientation, final TwilightJigsawPiece parentBase, StructureTemplateManager structureManager, boolean putMobBridge, final int segments) {
+	public static void buildTowerBySegments(StructurePieceAccessor pieceAccessor, RandomSource random, final BlockPos sourceJigsawPos, final FrontAndTop sourceOrientation, final TwilightJigsawPiece parentBase, StructureTemplateManager structureManager, boolean v, final int segments) {
 		ResourceLocation segmentId = TwilightForestMod.prefix("lich_tower/tower_slice");
 		ArrayList<TwilightTemplateStructurePiece> pieces = new ArrayList<>();
 
 		TwilightTemplateStructurePiece priorPiece = parentBase;
 		BlockPos priorJigsawOffset = sourceJigsawPos;
 		FrontAndTop priorOrientation = sourceOrientation;
+		int mobBridge = random.nextIntBetweenInclusive(0, 5);
 		for (int i = 0; i < segments; i++) {
 			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, segmentId, "twilightforest:lich_tower/tower_below", random);
 
 			if (placeableJunction == null) continue;
 
-			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, putMobBridge, i != segments - 1);
+			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, i != segments - 1);
 
 			pieceAccessor.addPiece(towerSegment);
 			pieces.add(towerSegment); // Add to list for adding children later, must build upwards to the boss room before beginning Sidetowers from the base & upwards too
@@ -91,7 +92,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 			priorPiece = towerSegment;
 			priorJigsawOffset = firstJunction.pos();
 			priorOrientation = firstJunction.orientation();
-			putMobBridge = !towerSegment.putMobBridge && random.nextInt(3) != 0;
+			mobBridge = mobBridge == 0 ? random.nextIntBetweenInclusive(2, 5) : (mobBridge - 1);
 		}
 
 		// The boss room is wider than Main Tower segments, adding to piece list sooner will help prevent these collisions
