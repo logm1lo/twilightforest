@@ -28,7 +28,8 @@ import java.util.ArrayList;
 
 public final class LichTowerSegment extends TwilightJigsawPiece implements PieceBeardifierModifier {
 	private final boolean putMobBridge;
-	private final boolean continueAbove;
+	private final boolean putWings;
+	private final boolean putGallery;
 
 	public LichTowerSegment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), compoundTag, ctx, readSettings(compoundTag));
@@ -37,17 +38,19 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		stairDecay(this.genDepth, this.placeSettings);
 
 		this.putMobBridge = compoundTag.getBoolean("put_bridge");
-		this.continueAbove = compoundTag.getBoolean("seg_above");
+		this.putWings = compoundTag.getBoolean("put_wings");
+		this.putGallery = compoundTag.getBoolean("put_gallery");
 	}
 
-	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean continueAbove) {
+	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean putWings, boolean putGallery) {
 		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);
 
 		this.putMobBridge = putMobBridge;
-		this.continueAbove = continueAbove;
+		this.putWings = putWings;
+		this.putGallery = putGallery;
 	}
 
 	private static void stairDecay(int depth, StructurePlaceSettings settings) {
@@ -64,10 +67,11 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		super.addAdditionalSaveData(ctx, structureTag);
 
 		structureTag.putBoolean("put_bridge", this.putMobBridge);
-		structureTag.putBoolean("seg_above", this.continueAbove);
+		structureTag.putBoolean("put_wings", this.putWings);
+		structureTag.putBoolean("put_gallery", this.putGallery);
 	}
 
-	public static void buildTowerBySegments(StructurePieceAccessor pieceAccessor, RandomSource random, final BlockPos sourceJigsawPos, final FrontAndTop sourceOrientation, final TwilightJigsawPiece parentBase, StructureTemplateManager structureManager, boolean v, final int segments) {
+	public static void buildTowerBySegments(StructurePieceAccessor pieceAccessor, RandomSource random, final BlockPos sourceJigsawPos, final FrontAndTop sourceOrientation, final TwilightJigsawPiece parentBase, StructureTemplateManager structureManager, final int segments) {
 		ResourceLocation segmentId = TwilightForestMod.prefix("lich_tower/tower_slice");
 		ArrayList<TwilightTemplateStructurePiece> pieces = new ArrayList<>();
 
@@ -80,7 +84,8 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 
 			if (placeableJunction == null) continue;
 
-			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, i != segments - 1);
+			boolean putWings = i > segments >> 1;
+			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, putWings, i != segments - 1);
 
 			pieceAccessor.addPiece(towerSegment);
 			pieces.add(towerSegment); // Add to list for adding children later, must build upwards to the boss room before beginning Sidetowers from the base & upwards too
@@ -122,9 +127,10 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
 			case "twilightforest:lich_tower/bridge" -> {
-				int roomMaxSize = 3;
-				boolean genMagicGallery = !this.continueAbove && jigsawIndex == 2;// && random.nextInt(10) == 0;
-				LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, roomMaxSize, false, this.genDepth + 1, genMagicGallery);
+				if (this.putWings) {
+					boolean genMagicGallery = !this.putGallery && jigsawIndex == 2 && random.nextInt(10) == 0;
+					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, false, this.genDepth + 1, genMagicGallery);
+				}
 			}
 			case "twilightforest:mob_bridge" -> {
 				if (this.putMobBridge) {
