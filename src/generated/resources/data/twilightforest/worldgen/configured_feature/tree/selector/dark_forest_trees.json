@@ -21,7 +21,7 @@
         }
       },
       {
-        "chance": 0.2,
+        "chance": 0.4,
         "feature": {
           "feature": "twilightforest:tree/dark_oak_bush",
           "placement": []
