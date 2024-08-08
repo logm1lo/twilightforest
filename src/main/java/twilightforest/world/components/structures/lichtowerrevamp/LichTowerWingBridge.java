@@ -64,25 +64,24 @@ public final class LichTowerWingBridge extends TwilightJigsawPiece implements Pi
 		}
 
 		boolean shouldGenerateGround = generateGround && connection.pos().getY() < 6;
-		if (fromCentralTower || random.nextBoolean()) {
-			Iterable<ResourceLocation> bridges = fromCentralTower ? LichTowerUtil.shuffledCenterBridges(random) : LichTowerUtil.shuffledRoomBridges(random);
-			for (ResourceLocation bridgeId : bridges) {
-				if (tryBridge(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, fromCentralTower, roomMaxSize, shouldGenerateGround, newDepth, bridgeId, fromCentralTower)) {
-					return;
+
+		if (!generateGround) {
+			if (fromCentralTower || random.nextBoolean()) {
+				Iterable<ResourceLocation> bridges = fromCentralTower ? LichTowerUtil.shuffledCenterBridges(random) : LichTowerUtil.shuffledRoomBridges(random);
+				for (ResourceLocation bridgeId : bridges) {
+					if (tryBridge(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, fromCentralTower, roomMaxSize, false, newDepth, bridgeId, fromCentralTower)) {
+						return;
+					}
 				}
 			}
 		}
 
-		// This here is reached only if a room was not successfully generated - now a wall must be placed to cover where the bridge would have been
 		if (fromCentralTower) {
-			return; // Don't generate covers nor direct side-tower attachments from the central tower
+			tryBridge(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, true, roomMaxSize, shouldGenerateGround, newDepth, LichTowerPieces.ENCLOSED_BRIDGE_CENTRAL, true);
+		} else if (!tryBridge(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, false, roomMaxSize, shouldGenerateGround, newDepth, LichTowerPieces.DIRECT_ATTACHMENT, true)) {
+			// This here is reached only if a room was not successfully generated - now a wall must be placed to cover where the bridge would have been
+			putCover(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, shouldGenerateGround, newDepth);
 		}
-
-		if (tryBridge(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, false, roomMaxSize, shouldGenerateGround, newDepth, LichTowerPieces.DIRECT_ATTACHMENT, true)) {
-			return;
-		}
-
-		putCover(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, shouldGenerateGround, newDepth);
 	}
 
 	private static boolean tryBridge(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, BlockPos sourceJigsawPos, FrontAndTop sourceOrientation, StructureTemplateManager structureManager, boolean fromCentralTower, int roomMaxSize, boolean generateGround, int newDepth, ResourceLocation bridgeId, boolean allowClipping) {
