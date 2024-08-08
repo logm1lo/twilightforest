@@ -112,6 +112,10 @@ public class BoundingBoxUtils {
 		return getVolume(box) == 0;
 	}
 
+	public static BoundingBox extrusionFrom(BoundingBox box, Direction direction, int length) {
+		return extrusionFrom(box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ(), direction, length);
+	}
+
 	public static BoundingBox extrusionFrom(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Direction direction, int length) {
 		return switch (direction) {
 			case WEST -> new BoundingBox(minX - length, minY, minZ, minX - 1, maxY, maxZ);

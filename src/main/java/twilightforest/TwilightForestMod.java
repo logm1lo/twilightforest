@@ -66,7 +66,6 @@ import twilightforest.init.custom.Enforcements;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
 import twilightforest.util.Restriction;
-import twilightforest.util.TFEnumExtensions;
 import twilightforest.util.TFRemapper;
 import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
@@ -91,12 +90,6 @@ public final class TwilightForestMod {
 			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(enforced.get())))); //sends a packet to every player online when this changes so weather effects update accordingly
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
-
-	/**
-	 * {@link TFEnumExtensions#pinchDamage(int, Class)}
-	 */
-	public static final DamageEffects PINCH = DamageEffects.valueOf("TWILIGHTFOREST_PINCH");
-	//private static final Rarity RARITY = Rarity.valueOf("TWILIGHTFOREST_TWILIGHT"); Crashes if initialized for some reason, idk
 
 	static { // Load as early as possible
 		TFBeanContext.init();
@@ -464,10 +457,4 @@ public final class TwilightForestMod {
 		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
 	}
 
-	/**
-	 * {@link TFEnumExtensions#twilightRarity(int, Class)}
-	 */
-	public static Rarity getRarity() {
-		return Rarity.valueOf("TWILIGHTFOREST_TWILIGHT");
-	}
 }
