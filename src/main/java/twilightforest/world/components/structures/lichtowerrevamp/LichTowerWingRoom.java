@@ -188,7 +188,9 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), topPos, connection.orientation(), this.structureManager, roomId, connection.target(), random);
 
 			if (placeableJunction != null) {
-				boolean canGenerateLadder = this.getSourceJigsaw().orientation().front().getAxis().isHorizontal() && random.nextBoolean();
+				BoundingBox aboveRoomBounds = BoundingBoxUtils.extrusionFrom(placeableJunction.makeBoundingBox(this.structureManager.getOrCreate(roomId)), Direction.UP, 11);
+
+				boolean canGenerateLadder = this.getSourceJigsaw().orientation().front().getAxis().isHorizontal() && random.nextBoolean() && pieceAccessor.findCollisionPiece(aboveRoomBounds) == null;
 				StructurePiece room = new LichTowerWingRoom(this.structureManager, this.genDepth + 1, placeableJunction, roomId, this.roomSize, false, canGenerateLadder);
 
 				BoundingBox boundingBox = BoundingBoxUtils.cloneWithAdjustments(room.getBoundingBox(), 1, 0, 1, -1, 0, -1);
