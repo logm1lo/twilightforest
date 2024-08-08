@@ -91,10 +91,6 @@ public final class TwilightForestMod {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	/**
-	 * {@link TFEnumExtensions#pinchDamage(int, Class)}
-	 */
-	public static final DamageEffects PINCH = DamageEffects.valueOf("TWILIGHTFOREST_PINCH");
 	//private static final Rarity RARITY = Rarity.valueOf("TWILIGHTFOREST_TWILIGHT"); Crashes if initialized for some reason, idk
 
 	static { // Load as early as possible

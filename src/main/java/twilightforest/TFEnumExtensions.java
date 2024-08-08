@@ -19,10 +19,13 @@ import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused") // Referenced by enumextender.json
 public class TFEnumExtensions {
+
 	/**
-	 * {@link twilightforest.TwilightForestMod#PINCH}
+	 * {@link net.minecraft.world.damagesource.DamageEffects}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFDamageEffectsEnumExtension#PINCH}
 	 */
-	public static Object pinchDamage(int idx, Class<?> type) {
+	public static Object DamageEffects_PINCH(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> prefix("pinch");
 			case 1 -> TFSounds.PINCH_BEETLE_ATTACK;

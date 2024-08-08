@@ -6,7 +6,7 @@
       "constructor": "(Ljava/lang/String;Ljava/util/function/Supplier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "pinchDamage"
+        "method": "DamageEffects_PINCH"
       }
     },
     {
