@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
@@ -379,7 +380,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			case "zombie_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.ZOMBIE_SKULL_CANDLE.value(), dataRotation);
 			case "spawner" -> this.putSpawner(pos, level, random, parameters);
 			case "brewing_stand" -> this.putBrewingStand(pos, level, random);
-			case "lectern" -> this.putTrappableLectern(pos, level, dataRotation, random.nextBoolean());
+			case "lectern" -> this.putTrappableLectern(pos, level, dataRotation, random.nextBoolean() && WorldUtil.getDifficulty() != Difficulty.PEACEFUL);
 			case "chiseled_canopy_shelf" -> this.putTrappableBookshelf(pos, level, registryAccess, random, dataRotation);
 			case "chest" -> this.putChest(pos, level, random, parameters, dataRotation, Blocks.CHEST.defaultBlockState());
 			case "trapped_chest" -> this.putChest(pos, level, random, parameters, dataRotation, Blocks.TRAPPED_CHEST.defaultBlockState());
@@ -525,7 +526,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private void putTrappableBookshelf(BlockPos pos, WorldGenLevel level, RegistryAccess registryAccess, RandomSource random, Rotation dataRotation) {
-		boolean isHostile = random.nextInt(8) == 0;
+		boolean isHostile = random.nextInt(8) == 0 && WorldUtil.getDifficulty() != Difficulty.PEACEFUL;
 		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
 		BlockState shelf = TFBlocks.CHISELED_CANOPY_BOOKSHELF.value().defaultBlockState().setValue(ChiseledCanopyShelfBlock.SPAWNER, isHostile).rotate(stateRotation);
 
