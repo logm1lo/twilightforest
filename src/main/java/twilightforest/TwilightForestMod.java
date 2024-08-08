@@ -91,8 +91,6 @@ public final class TwilightForestMod {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	//private static final Rarity RARITY = Rarity.valueOf("TWILIGHTFOREST_TWILIGHT"); Crashes if initialized for some reason, idk
-
 	static { // Load as early as possible
 		TFBeanContext.init();
 	}
@@ -459,10 +457,4 @@ public final class TwilightForestMod {
 		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
 	}
 
-	/**
-	 * {@link TFEnumExtensions#twilightRarity(int, Class)}
-	 */
-	public static Rarity getRarity() {
-		return Rarity.valueOf("TWILIGHTFOREST_TWILIGHT");
-	}
 }

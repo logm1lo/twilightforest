@@ -34,9 +34,11 @@ public class TFEnumExtensions {
 	}
 
 	/**
-	 * {@link TwilightForestMod#getRarity()}
+	 * {@link net.minecraft.world.item.Rarity}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFRarityEnumExtension#TWILIGHT}
 	 */
-	public static Object twilightRarity(int idx, Class<?> type) {
+	public static Object Rarity_TWILIGHT(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> -1;
 			case 1 -> prefix("twilight");

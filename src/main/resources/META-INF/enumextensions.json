@@ -15,7 +15,7 @@
       "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "twilightRarity"
+        "method": "Rarity_TWILIGHT"
       }
     },
     {
