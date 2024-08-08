@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
@@ -8,7 +8,6 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.tileentity.JarRenderer;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
