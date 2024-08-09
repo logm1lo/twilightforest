@@ -392,11 +392,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	}
 
 	@Override
-	public boolean isSignalSource(BlockState state) {
-		return state.getValue(LIGHTING) == Lighting.DIM;
-	}
-
-	@Override
 	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
