@@ -28,9 +28,7 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFDamageTypes;
-import twilightforest.init.TFItems;
-import twilightforest.init.TFSounds;
+import twilightforest.init.*;
 
 public class ChainBlock extends ThrowableProjectile implements IEntityWithComplexSpawn {
 
@@ -230,6 +228,9 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 				if (this.isReturning) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
+						if (this.getOwner() instanceof LivingEntity living && living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() > 0) {
+							this.stack.hurtAndBreak(Math.min(living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed(), 3), living, LivingEntity.getSlotForHand(this.getHand()));
+						}
 						this.discard();
 					}
 
