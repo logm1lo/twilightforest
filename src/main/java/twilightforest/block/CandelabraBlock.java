@@ -16,13 +16,11 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.ItemSteerable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
@@ -165,7 +163,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (stack.is(ItemTags.CANDLES) || player.isSecondaryUseActive()) {
 			if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
-				int i = this.getSlot(state.getValue(FACING), result.getDirection(), result.getLocation().subtract(result.getBlockPos().getX(), result.getBlockPos().getY(), result.getBlockPos().getZ()));
+				int i = this.getSlot(state.getValue(FACING), result.getLocation().subtract(result.getBlockPos().getX(), result.getBlockPos().getY(), result.getBlockPos().getZ()));
 				if (state.getValue(CANDLES.get(i)) && player.isSecondaryUseActive()) {
 					if (!level.isClientSide()) {
 						ItemStack itemstack = new ItemStack(candelabra.removeCandle(i));
@@ -215,10 +213,10 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 	}
 
-	protected int getSlot(Direction blockDir, Direction hitFace, Vec3 hitVec) {
+	protected int getSlot(Direction blockDir, Vec3 hitVec) {
 		Vec3i up = new Vec3i(0, 1, 0);
 		Vec3i dir = up.cross(blockDir.getNormal());
-		boolean reverse = blockDir.getAxis() == Direction.Axis.X && hitFace.getAxis() != blockDir.getAxis();
+		boolean reverse = blockDir == Direction.NORTH || blockDir == Direction.EAST;
 
 		double cx = dir.getX() * hitVec.x() + dir.getZ() * hitVec.z();
 
