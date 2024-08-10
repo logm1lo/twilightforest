@@ -48,6 +48,11 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 		super(pos, state);
 	}
 
+	@Override
+	public boolean isValidBlockState(BlockState state) {
+		return TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get().isValid(state);
+	}
+
 	public static void tick(Level level, BlockPos pos, BlockState state, ChiseledCanopyShelfBlockEntity te) {
 		if (!level.isClientSide() && state.getValue(ChiseledCanopyShelfBlock.SPAWNER)) {
 			te.spawner.serverTick((ServerLevel) level, pos, state);
