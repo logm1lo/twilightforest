@@ -135,13 +135,16 @@ repositories {
 	maven { // TOP
 		url "https://maven.k-4u.nl"
 	}
-	maven {
-		name 'Curseforge Maven' // Jade
-		url "https://www.cursemaven.com"
-		content {
-			includeGroup "curse.maven"
-		}
+	maven { //CS
+		url "https://nexus.resourcefulbees.com/repository/maven-public/"
 	}
+    maven {
+        name 'Curseforge Maven' // Jade
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -165,6 +168,9 @@ dependencies {
 //	runtimeOnly "curse.maven:museum-curator-859070:4629894"
 
 	compileOnly "mcjty.theoneprobe:theoneprobe:${project.top_version}"
+
+    //mods we dont have compat with but are nice to have
+	runtimeOnly "com.telepathicgrunt:CommandStructures-Neoforge:4.3.2+1.20.6"
 
 	testImplementation group: 'net.neoforged', name: 'testframework', version: project.neo_version
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.10.3'

@@ -62,29 +62,23 @@ import java.util.Optional;
 @SuppressWarnings("deprecation")
 public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, SimpleWaterloggedBlock {
 
-	public static final MapCodec<CandelabraBlock> CODEC = simpleCodec(CandelabraBlock::new);
 	public static final BooleanProperty ON_WALL = BooleanProperty.create("on_wall");
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final List<BooleanProperty> CANDLES = List.of(BooleanProperty.create("has_candle_1"), BooleanProperty.create("has_candle_2"), BooleanProperty.create("has_candle_3"));
-
 	public static final VoxelShape CANDLES_NORTH = Shapes.or(Block.box(1, 7, 2, 15, 15, 6), Block.box(1, 1, 3.5, 15, 7, 4.5), Block.box(7.5, 1, 1, 8.5, 7, 7), Block.box(6, 2, 0, 10, 6, 1));
 	public static final VoxelShape CANDLES_SOUTH = Shapes.or(Block.box(1, 7, 10, 15, 15, 14), Block.box(1, 1, 11.5, 15, 7, 12.5), Block.box(7.5, 1, 9, 8.5, 7, 15), Block.box(6, 2, 15, 10, 6, 16));
-
 	public static final VoxelShape CANDLES_WEST = Shapes.or(Block.box(2, 7, 1, 6, 15, 15), Block.box(3.5, 1, 1, 4.5, 7, 15), Block.box(1, 1, 7.5, 7, 7, 8.5), Block.box(0, 2, 6, 1, 6, 10));
 	public static final VoxelShape CANDLES_EAST = Shapes.or(Block.box(10, 7, 1, 14, 15, 15), Block.box(11.5, 1, 1, 12.5, 7, 15), Block.box(9, 1, 7.5, 15, 7, 8.5), Block.box(15, 2, 6, 16, 6, 10));
-
 	public static final VoxelShape CANDLES_X = Shapes.or(Block.box(6, 7, 1, 10, 15, 15), Block.box(7.5, 1, 1, 8.5, 7, 15), Block.box(5, 1, 7.5, 11, 7, 8.5), Block.box(6, 0, 6, 10, 1, 10));
 	public static final VoxelShape CANDLES_Z = Shapes.or(Block.box(1, 7, 6, 15, 15, 10), Block.box(1, 1, 7.5, 15, 7, 8.5), Block.box(7.5, 1, 5, 8.5, 7, 11), Block.box(6, 0, 6, 10, 1, 10));
-
 	public static final List<Vec3> NORTH_OFFSETS = List.of(new Vec3(0.1875D, 0.9D, 0.25D), new Vec3(0.5D, 0.9D, 0.25D), new Vec3(0.8125D, 0.9D, 0.25D));
 	public static final List<Vec3> SOUTH_OFFSETS = List.of(new Vec3(0.1875D, 0.9D, 0.75D), new Vec3(0.5D, 0.9D, 0.75D), new Vec3(0.8125D, 0.9D, 0.75D));
-
 	public static final List<Vec3> WEST_OFFSETS = List.of(new Vec3(0.25D, 0.9D, 0.1875D), new Vec3(0.25D, 0.9D, 0.5D), new Vec3(0.25D, 0.9D, 0.8125D));
 	public static final List<Vec3> EAST_OFFSETS = List.of(new Vec3(0.75D, 0.9D, 0.1875D), new Vec3(0.75D, 0.9D, 0.5D), new Vec3(0.75D, 0.9D, 0.8125D));
-
 	public static final List<Vec3> X_OFFSETS = List.of(new Vec3(0.5D, 0.9D, 0.1875D), new Vec3(0.5D, 0.9D, 0.5D), new Vec3(0.5D, 0.9D, 0.8125D));
 	public static final List<Vec3> Z_OFFSETS = List.of(new Vec3(0.1875D, 0.9D, 0.5D), new Vec3(0.5D, 0.9D, 0.5D), new Vec3(0.8125D, 0.9D, 0.5D));
+	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	public static final MapCodec<CandelabraBlock> CODEC = simpleCodec(CandelabraBlock::new);
 
 	public CandelabraBlock(Properties properties) {
 		super(properties);
@@ -97,17 +91,21 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		this.registerDefaultState(state);
 	}
 
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
-	}
-
 	public static int getCandleCount(BlockState state) {
 		int candleCount = 0;
 		for (BooleanProperty property : CANDLES) {
 			if (state.getValue(property)) candleCount++;
 		}
 		return candleCount;
+	}
+
+	public static boolean canSurvive(LevelReader reader, BlockPos pos, boolean onWall, Direction facing) {
+		return canSupportCenter(reader, onWall ? pos.relative(facing) : pos.below(), Direction.UP);
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -148,7 +146,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 	}
 
-	@Nullable
 	@Override
 	public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
 		if (ItemAbilities.FIRESTARTER_LIGHT == itemAbility) {
@@ -251,8 +248,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
 		boolean flag = fluidstate.is(Fluids.WATER);
 
-		// If placer is clicking the bottom block, then we want to test for the bottom block first
-		//  before we cycle the walls for possible placements
+		// If placer is clicking the bottom block, then we want to test for the bottom block first before we cycle the walls for possible placements
 		// Otherwise we test wall placements before testing the bottom block
 		if (onBottomBlock) {
 			if (canSurvive(level, placePos, false, context.getHorizontalDirection()))
@@ -304,10 +300,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		return canSurvive(reader, pos, state.getValue(ON_WALL), state.getValue(FACING));
 	}
 
-	public static boolean canSurvive(LevelReader reader, BlockPos pos, boolean onWall, Direction facing) {
-		return canSupportCenter(reader, onWall ? pos.relative(facing) : pos.below(), Direction.UP);
-	}
-
 	@Override
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
@@ -344,7 +336,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new CandelabraBlockEntity(pos, state);

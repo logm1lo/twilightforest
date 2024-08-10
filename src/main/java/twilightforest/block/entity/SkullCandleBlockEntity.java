@@ -3,7 +3,6 @@ package twilightforest.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
@@ -24,6 +23,16 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 	public SkullCandleBlockEntity(BlockPos pos, BlockState state, int color) {
 		super(pos, state);
 		this.candleColor = color;
+	}
+
+	public static void tick(Level level, BlockPos pos, BlockState state, SkullCandleBlockEntity entity) {
+		if (level.hasNeighborSignal(pos)) {
+			entity.isAnimating = true;
+			++entity.animationTickCount;
+		} else {
+			entity.isAnimating = false;
+		}
+
 	}
 
 	@Override
@@ -50,11 +59,6 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		return tag;
 	}
 
-	@Override
-	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this);
-	}
-
 	public int getCandleColor() {
 		return this.candleColor;
 	}
@@ -65,14 +69,6 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
 	}
 
-	public static void tick(Level level, BlockPos pos, BlockState state, SkullCandleBlockEntity entity) {
-		if (level.hasNeighborSignal(pos)) {
-			entity.isAnimating = true;
-			++entity.animationTickCount;
-		} else {
-			entity.isAnimating = false;
-		}
-	}
 
 	@Override
 	public float getAnimation(float partialTick) {

@@ -35,7 +35,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -49,7 +48,6 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 	private static final VoxelShape AABB = Shapes.or(JAR, LID);
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	@SuppressWarnings("this-escape")
 	public JarBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
@@ -61,7 +59,6 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
@@ -109,7 +106,6 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 		return super.getDrops(state, params);
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new JarBlockEntity(pos, state);
