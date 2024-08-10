@@ -25,6 +25,11 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		this.candleColor = color;
 	}
 
+	@Override
+	public boolean isValidBlockState(BlockState state) {
+		return this.getType().isValid(state);
+	}
+
 	public static void tick(Level level, BlockPos pos, BlockState state, SkullCandleBlockEntity entity) {
 		if (level.hasNeighborSignal(pos)) {
 			entity.isAnimating = true;
@@ -68,7 +73,6 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		this.setChanged();
 		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
 	}
-
 
 	@Override
 	public float getAnimation(float partialTick) {
