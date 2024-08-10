@@ -4,11 +4,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GrassColor;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import twilightforest.beans.Autowired;
-import twilightforest.client.renderer.tileentity.JarRenderer;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
@@ -116,9 +113,11 @@ public class TFEnumExtensions {
 	}
 
 	/**
-	 * {@link JarRenderer.MasonJarRenderer#JARRED}
+	 * {@link net.minecraft.world.item.ItemDisplayContext}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFItemDisplayContextEnumExtension#JARRED}
 	 */
-	public static Object jarred(int idx, Class<?> type) {
+	public static Object ItemDisplayContext_JARRED(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> -1;
 			case 1 -> prefix("jarred");
