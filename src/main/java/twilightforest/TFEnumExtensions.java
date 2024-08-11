@@ -129,6 +129,11 @@ public class TFEnumExtensions {
 		});
 	}
 
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#TWILIGHT_OAK}
+	 */
 	public static Object Boat$Type_TWILIGHT_OAK(int idx, Class<?> type) {
 		if (idx == 5) // Lazy away around boxing the boolean
 			return false;
@@ -142,6 +147,11 @@ public class TFEnumExtensions {
 		});
 	}
 
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#CANOPY}
+	 */
 	public static Object Boat$Type_CANOPY(int idx, Class<?> type) {
 		if (idx == 5) // Lazy away around boxing the boolean
 			return false;
@@ -155,6 +165,11 @@ public class TFEnumExtensions {
 		});
 	}
 
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#MANGROVE}
+	 */
 	public static Object Boat$Type_MANGROVE(int idx, Class<?> type) {
 		if (idx == 5) // Lazy away around boxing the boolean
 			return false;
@@ -168,6 +183,11 @@ public class TFEnumExtensions {
 		});
 	}
 
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#DARK}
+	 */
 	public static Object Boat$Type_DARK(int idx, Class<?> type) {
 		if (idx == 5) // Lazy away around boxing the boolean
 			return false;
@@ -181,6 +201,11 @@ public class TFEnumExtensions {
 		});
 	}
 
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#TIME}
+	 */
 	public static Object Boat$Type_TIME(int idx, Class<?> type) {
 		if (idx == 5) // Lazy away around boxing the boolean
 			return false;
@@ -194,6 +219,11 @@ public class TFEnumExtensions {
 		});
 	}
 
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#TRANSFORMATION}
+	 */
 	public static Object Boat$Type_TRANSFORMATION(int idx, Class<?> type) {
 		if (idx == 5) // Lazy away around boxing the boolean
 			return false;
@@ -207,6 +237,11 @@ public class TFEnumExtensions {
 		});
 	}
 
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#MINING}
+	 */
 	public static Object Boat$Type_MINING(int idx, Class<?> type) {
 		if (idx == 5) // Lazy away around boxing the boolean
 			return false;
@@ -220,6 +255,11 @@ public class TFEnumExtensions {
 		});
 	}
 
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#SORTING}
+	 */
 	public static Object Boat$Type_SORTING(int idx, Class<?> type) {
 		if (idx == 5) // Lazy away around boxing the boolean
 			return false;
