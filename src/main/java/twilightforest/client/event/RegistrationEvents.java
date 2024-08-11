@@ -616,6 +616,7 @@ public class RegistrationEvents {
 	}
 
 	private static void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
+		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
 		for (EntityType<?> type : event.getEntityTypes()) {
 			var renderer = event.getRenderer(type);
 			if (renderer instanceof LivingEntityRenderer<?, ?> living) {
