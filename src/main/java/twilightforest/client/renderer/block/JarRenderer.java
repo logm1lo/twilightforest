@@ -26,6 +26,7 @@ import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.common.util.Lazy;
 import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
@@ -152,10 +153,11 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 
 	}
 
+	@Configurable
 	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
 
-		@Autowired(dist = Dist.CLIENT)
-		private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
+		@Autowired
+		private TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 		protected final ItemRenderer itemRenderer;
 		protected final EntityRenderDispatcher entityRender;
