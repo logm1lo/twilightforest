@@ -5,9 +5,15 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Spider;
-import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
+import twilightforest.util.IdPrefixUtil;
 
+@Configurable
 public class TFSpiderRenderer<T extends Spider> extends SpiderRenderer<T> {
+
+	@Autowired
+	private IdPrefixUtil modidPrefixUtil;
 
 	private final ResourceLocation texture;
 	private final float scale;
@@ -15,7 +21,7 @@ public class TFSpiderRenderer<T extends Spider> extends SpiderRenderer<T> {
 	public TFSpiderRenderer(EntityRendererProvider.Context context, float shadowSize, String texture, float scale) {
 		super(context);
 		this.shadowRadius = shadowSize;
-		this.texture = TwilightForestMod.getModelTexture(texture);
+		this.texture = modidPrefixUtil.modelTexture(texture);
 		this.scale = scale;
 	}
 

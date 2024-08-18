@@ -12,15 +12,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import twilightforest.beans.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
+import twilightforest.util.IdPrefixUtil;
 
 import java.util.Collections;
 import java.util.Optional;
 
-import static twilightforest.TwilightForestMod.prefix;
-
 public class StonecuttingGenerator {
+
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
 
 	protected static void buildRecipes(RecipeOutput output) {
 		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.CASTLE_BRICK_STAIRS.get());
@@ -158,7 +161,7 @@ public class StonecuttingGenerator {
 
 	private static ResourceLocation getIdFor(ItemLike input, ItemLike output) {
 		String path = String.format("stonecutting/%s/%s", BuiltInRegistries.ITEM.getKey(input.asItem()).getPath(), BuiltInRegistries.ITEM.getKey(output.asItem()).getPath());
-		return prefix(path);
+		return modidPrefixUtil.prefix(path);
 	}
 
 	protected static Criterion<InventoryChangeTrigger.TriggerInstance> has(ItemLike item) {

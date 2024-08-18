@@ -12,18 +12,24 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.IdPrefixUtil;
 import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 public class CourtyardTerraceDuct extends TwilightTemplateStructurePiece {
+
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
+
 	public CourtyardTerraceDuct(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFNCDu.get(), nbt, ctx, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
 	}
 
 	public CourtyardTerraceDuct(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager) {
-		super(TFStructurePieceTypes.TFNCDu.get(), i, structureManager, TwilightForestMod.prefix("courtyard/terrace_duct"), makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y + 3, z));
+		super(TFStructurePieceTypes.TFNCDu.get(), i, structureManager, modidPrefixUtil.prefix("courtyard/terrace_duct"), makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y + 3, z));
 	}
 
 	@Override

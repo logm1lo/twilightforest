@@ -26,8 +26,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
+import twilightforest.util.IdPrefixUtil;
 import twilightforest.util.entities.EntityRenderingUtil;
 
 import java.util.ArrayList;
@@ -37,7 +40,10 @@ import java.util.stream.Stream;
 
 public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySerializer<Entity> {
 
-	public static EntryType<Entity> ENTITY_TYPE = EntryType.deferred(TwilightForestMod.prefix("entity"));
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
+
+	public static Lazy<EntryType<Entity>> ENTITY_TYPE = Lazy.of(() -> EntryType.deferred(modidPrefixUtil.prefix("entity")));
 
 	private final EntryRenderer<Entity> renderer;
 
@@ -52,7 +58,7 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
 
 	@Override
 	public EntryType<Entity> getType() {
-		return ENTITY_TYPE;
+		return ENTITY_TYPE.get();
 	}
 
 	@Override

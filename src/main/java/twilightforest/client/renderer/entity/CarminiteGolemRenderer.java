@@ -5,13 +5,20 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import net.neoforged.neoforge.common.util.Lazy;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
 import twilightforest.client.model.entity.CarminiteGolemModel;
 import twilightforest.entity.monster.CarminiteGolem;
+import twilightforest.util.IdPrefixUtil;
 
+@Configurable
 public class CarminiteGolemRenderer<T extends CarminiteGolem, M extends CarminiteGolemModel<T>> extends MobRenderer<T, M> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("carminitegolem.png");
+	@Autowired
+	private IdPrefixUtil modidPrefixUtil;
+
+	private final Lazy<ResourceLocation> TEXTURE = Lazy.of(() -> modidPrefixUtil.modelTexture("carminitegolem.png"));
 
 	public CarminiteGolemRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
 		super(context, model, shadowSize);
@@ -33,6 +40,6 @@ public class CarminiteGolemRenderer<T extends CarminiteGolem, M extends Carminit
 
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return TEXTURE;
+		return TEXTURE.get();
 	}
 }

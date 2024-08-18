@@ -43,6 +43,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
@@ -63,6 +64,7 @@ import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.init.*;
 import twilightforest.item.*;
+import twilightforest.util.IdPrefixUtil;
 import twilightforest.util.woods.TFWoodTypes;
 
 import java.util.List;
@@ -70,6 +72,9 @@ import java.util.Map;
 import java.util.Objects;
 
 public class RegistrationEvents {
+
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
 
 	private static boolean optifinePresent = false;
 
@@ -97,16 +102,16 @@ public class RegistrationEvents {
 	}
 
 	private static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event) {
-		event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("noise_varying"), NoiseVaryingModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
+		event.register(modidPrefixUtil.prefix("patch"), PatchModelLoader.INSTANCE);
+		event.register(modidPrefixUtil.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
+		event.register(modidPrefixUtil.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
+		event.register(modidPrefixUtil.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
+		event.register(modidPrefixUtil.prefix("noise_varying"), NoiseVaryingModelLoader.INSTANCE);
+		event.register(modidPrefixUtil.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
 	}
 
 	private static void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
-		ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
+		ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), modidPrefixUtil.prefix("thrown"), (stack, level, entity, idk) ->
 			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
 
 		ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), ResourceLocation.parse("blocking"), (stack, level, entity, idk) ->
@@ -140,7 +145,7 @@ public class RegistrationEvents {
 			}
 		});
 
-		ItemProperties.register(TFItems.ORE_METER.get(), TwilightForestMod.prefix("active"), (stack, level, entity, idk) -> {
+		ItemProperties.register(TFItems.ORE_METER.get(), modidPrefixUtil.prefix("active"), (stack, level, entity, idk) -> {
 			if (OreMeterItem.isLoading(stack)) {
 				int totalLoadTime = OreMeterItem.LOAD_TIME + OreMeterItem.getRange(stack) * 25;
 				int progress = OreMeterItem.getLoadProgress(stack);
@@ -149,7 +154,7 @@ public class RegistrationEvents {
 			return stack.has(TFDataComponents.ORE_DATA) ? 1 : 0;
 		});
 
-		ItemProperties.register(TFItems.MOONWORM_QUEEN.get(), TwilightForestMod.prefix("alt"), (stack, level, entity, idk) -> {
+		ItemProperties.register(TFItems.MOONWORM_QUEEN.get(), modidPrefixUtil.prefix("alt"), (stack, level, entity, idk) -> {
 			if (entity != null && entity.getUseItem() == stack) {
 				int useTime = stack.getUseDuration(entity) - entity.getUseItemRemainingTicks();
 				if (useTime >= MoonwormQueenItem.FIRING_TIME && (useTime >>> 1) % 2 == 0) {
@@ -203,7 +208,7 @@ public class RegistrationEvents {
 			}
 		});
 
-		ItemProperties.register(TFBlocks.RED_THREAD.get().asItem(), TwilightForestMod.prefix("size"), (stack, level, entity, idk) -> {
+		ItemProperties.register(TFBlocks.RED_THREAD.get().asItem(), modidPrefixUtil.prefix("size"), (stack, level, entity, idk) -> {
 			if (stack.getCount() >= 32) {
 				return 1.0F;
 			} else if (stack.getCount() >= 16) {
@@ -217,25 +222,25 @@ public class RegistrationEvents {
 		ItemProperties.register(TFItems.ORE_MAGNET.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(TFItems.BLOCK_AND_CHAIN.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
+		ItemProperties.register(TFItems.BLOCK_AND_CHAIN.get(), modidPrefixUtil.prefix("thrown"), (stack, level, entity, idk) ->
 			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
 
-		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.THINK, (stack, level, entity, idk) ->
+		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.THINK.get(), (stack, level, entity, idk) ->
 			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("think") ? 1 : 0);
 
-		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.FULL, (stack, level, entity, idk) ->
+		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.FULL.get(), (stack, level, entity, idk) ->
 			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("full") ? 1 : 0);
 
-		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("breakage"), (stack, level, entity, i) ->
+		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), modidPrefixUtil.prefix("breakage"), (stack, level, entity, i) ->
 			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).breakage());
 
-		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
+		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), modidPrefixUtil.prefix("potion_level"), (stack, level, entity, i) ->
 			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
 
-		ItemProperties.register(TFItems.GREATER_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
+		ItemProperties.register(TFItems.GREATER_FLASK.get(), modidPrefixUtil.prefix("potion_level"), (stack, level, entity, i) ->
 			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
 
-		ItemProperties.register(TFItems.CRUMBLE_HORN.get(), TwilightForestMod.prefix("tooting"), (stack, world, entity, i) ->
+		ItemProperties.register(TFItems.CRUMBLE_HORN.get(), modidPrefixUtil.prefix("tooting"), (stack, world, entity, i) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
 		);
 
@@ -245,21 +250,21 @@ public class RegistrationEvents {
 
 		leavesModels.forEach(entry -> models.put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 
-		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
-		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
+		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(modidPrefixUtil.prefix("trollsteinn")));
+		models.put(ModelResourceLocation.inventory(modidPrefixUtil.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
 	}
 
 	private static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
 		event.register(ShieldLayer.LOC);
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
+		event.register(ModelResourceLocation.standalone(modidPrefixUtil.prefix("item/trophy")));
+		event.register(ModelResourceLocation.standalone(modidPrefixUtil.prefix("item/trophy_minor")));
+		event.register(ModelResourceLocation.standalone(modidPrefixUtil.prefix("item/trophy_quest")));
 		event.register(TrollsteinnModel.LIT_TROLLSTEINN);
 
 		for (ResourceLocation location : JarRenderer.LOG_LOCATION_MAP.get().values()) {
 			String name = location.getPath();
 			if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
-			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid")));
+			event.register(ModelResourceLocation.standalone(modidPrefixUtil.prefix("block/" + name + "_lid")));
 		}
 	}
 
@@ -267,7 +272,7 @@ public class RegistrationEvents {
 		JarRenderer.LOG_LOCATION_MAP.get().forEach((item, location) -> {
 			String name = location.getPath();
 			if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
-			JarRenderer.LIDS.put(item, event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid"))));
+			JarRenderer.LIDS.put(item, event.getModels().get(ModelResourceLocation.standalone(modidPrefixUtil.prefix("block/" + name + "_lid"))));
 		});
 	}
 
@@ -374,8 +379,8 @@ public class RegistrationEvents {
 
 		// projectiles
 		event.registerEntityRenderer(TFEntities.NATURE_BOLT.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(TFEntities.LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/item/twilight_orb.png")));
-		event.registerEntityRenderer(TFEntities.WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/item/twilight_orb.png")));
+		event.registerEntityRenderer(TFEntities.LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, modidPrefixUtil.prefix("textures/item/twilight_orb.png")));
+		event.registerEntityRenderer(TFEntities.WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, modidPrefixUtil.prefix("textures/item/twilight_orb.png")));
 		event.registerEntityRenderer(TFEntities.TOME_BOLT.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(TFEntities.HYDRA_MORTAR.get(), HydraMortarRenderer::new);
 		event.registerEntityRenderer(TFEntities.SLIME_BLOB.get(), ThrownItemRenderer::new);

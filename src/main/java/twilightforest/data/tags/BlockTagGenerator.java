@@ -10,12 +10,17 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.util.IdPrefixUtil;
 
 import java.util.concurrent.CompletableFuture;
 
 public class BlockTagGenerator extends ModdedBlockTagGenerator {
+
+	private static final IdPrefixUtil modidPrefixUtil = new IdPrefixUtil(TwilightForestMod.ID); // FIXME: Bandaid, look into this later
+
 	public static final TagKey<Block> MAZESTONE = create("mazestone");
 	public static final TagKey<Block> TOWERWOOD = create("towerwood");
 	public static final TagKey<Block> CLOUDS = create("clouds");
@@ -753,7 +758,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	}
 
 	public static TagKey<Block> create(String tagName) {
-		return BlockTags.create(TwilightForestMod.prefix(tagName));
+		return BlockTags.create(modidPrefixUtil.prefix(tagName));
 	}
 
 	public static TagKey<Block> makeCommonTag(String tagName) {

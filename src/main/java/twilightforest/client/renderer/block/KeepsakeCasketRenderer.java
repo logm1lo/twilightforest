@@ -22,18 +22,24 @@ import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.init.TFBlocks;
+import twilightforest.util.IdPrefixUtil;
 
 /**
  * Keepsake Casket Model - MCVinnyq
  * Created using Tabula 8.0.0
  */
 //Most of the other stuff is derived from ChestRenderer
+@Configurable
 public class KeepsakeCasketRenderer<T extends KeepsakeCasketBlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
+
+	@Autowired
+	private IdPrefixUtil modidPrefixUtil;
 
 	private final ModelPart base;
 	private final ModelPart lid;
@@ -95,7 +101,7 @@ public class KeepsakeCasketRenderer<T extends KeepsakeCasketBlockEntity & LidBlo
 			f1 = 1.0F - f1;
 			f1 = 1.0F - f1 * f1 * f1;
 
-			ResourceLocation casket = TwilightForestMod.getModelTexture("casket/keepsake_casket_" + damage + ".png");
+			ResourceLocation casket = modidPrefixUtil.modelTexture("casket/keepsake_casket_" + damage + ".png");
 			this.renderModels(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(casket)), this.lid, this.base, f1, light, overlay);
 			stack.popPose();
 		}

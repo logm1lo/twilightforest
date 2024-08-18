@@ -5,13 +5,22 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.common.util.Lazy;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
 import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.model.entity.NagaModel;
 import twilightforest.entity.boss.NagaSegment;
+import twilightforest.util.IdPrefixUtil;
 
+@Configurable
 public class NagaSegmentRenderer<T extends NagaSegment, M extends NagaModel<T>> extends TFPartRenderer<T, M> {
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("nagasegment.png");
+
+	@Autowired
+	private IdPrefixUtil modidPrefixUtil;
+
+	private final Lazy<ResourceLocation> TEXTURE = Lazy.of(() -> modidPrefixUtil.modelTexture("nagasegment.png"));
 
 	public NagaSegmentRenderer(EntityRendererProvider.Context context, M model) {
 		super(context, model);
@@ -46,6 +55,6 @@ public class NagaSegmentRenderer<T extends NagaSegment, M extends NagaModel<T>> 
 
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return TEXTURE;
+		return TEXTURE.get();
 	}
 }

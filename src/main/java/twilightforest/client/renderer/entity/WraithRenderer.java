@@ -3,13 +3,20 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import net.neoforged.neoforge.common.util.Lazy;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
 import twilightforest.client.model.entity.WraithModel;
 import twilightforest.entity.monster.Wraith;
+import twilightforest.util.IdPrefixUtil;
 
+@Configurable
 public class WraithRenderer extends HumanoidMobRenderer<Wraith, WraithModel> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("ghost.png");
+	@Autowired
+	private IdPrefixUtil modidPrefixUtil;
+
+	private final Lazy<ResourceLocation> TEXTURE = Lazy.of(() -> modidPrefixUtil.modelTexture("ghost.png"));
 
 	public WraithRenderer(EntityRendererProvider.Context context, WraithModel model, float shadowSize) {
 		super(context, model, shadowSize);
@@ -17,6 +24,6 @@ public class WraithRenderer extends HumanoidMobRenderer<Wraith, WraithModel> {
 
 	@Override
 	public ResourceLocation getTextureLocation(Wraith wraith) {
-		return TEXTURE;
+		return TEXTURE.get();
 	}
 }

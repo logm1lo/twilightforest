@@ -9,21 +9,28 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.data.tags.compat.ModdedEntityTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.util.IdPrefixUtil;
 
 import java.util.concurrent.CompletableFuture;
 
 public class EntityTagGenerator extends ModdedEntityTagGenerator {
-	public static final TagKey<EntityType<?>> BOSSES = create(TwilightForestMod.prefix("bosses"));
-	public static final TagKey<EntityType<?>> LICH_POPPABLES = create(TwilightForestMod.prefix("lich_poppables"));
-	public static final TagKey<EntityType<?>> LIFEDRAIN_DROPS_NO_FLESH = create(TwilightForestMod.prefix("lifedrain_drops_no_flesh"));
-	public static final TagKey<EntityType<?>> RIDES_OBSTRUCT_SNATCHING = create(TwilightForestMod.prefix("rides_obstruct_snatching"));
-	public static final TagKey<EntityType<?>> DONT_KILL_BUGS = create(TwilightForestMod.prefix("dont_kill_bugs"));
-	public static final TagKey<EntityType<?>> SORTABLE_ENTITIES = create(TwilightForestMod.prefix("sortable_entities"));
-	public static final TagKey<EntityType<?>> MULTIPLAYER_INCLUSIVE_ENTITIES = create(TwilightForestMod.prefix("multiplayer_inclusive_entities"));
+
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
+
+	public static final Lazy<TagKey<EntityType<?>>> BOSSES = Lazy.of(() -> create(modidPrefixUtil.prefix("bosses")));
+	public static final Lazy<TagKey<EntityType<?>>> LICH_POPPABLES = Lazy.of(() -> create(modidPrefixUtil.prefix("lich_poppables")));
+	public static final Lazy<TagKey<EntityType<?>>> LIFEDRAIN_DROPS_NO_FLESH = Lazy.of(() -> create(modidPrefixUtil.prefix("lifedrain_drops_no_flesh")));
+	public static final Lazy<TagKey<EntityType<?>>> RIDES_OBSTRUCT_SNATCHING = Lazy.of(() -> create(modidPrefixUtil.prefix("rides_obstruct_snatching")));
+	public static final Lazy<TagKey<EntityType<?>>> DONT_KILL_BUGS = Lazy.of(() -> create(modidPrefixUtil.prefix("dont_kill_bugs")));
+	public static final Lazy<TagKey<EntityType<?>>> SORTABLE_ENTITIES = Lazy.of(() -> create(modidPrefixUtil.prefix("sortable_entities")));
+	public static final Lazy<TagKey<EntityType<?>>> MULTIPLAYER_INCLUSIVE_ENTITIES = Lazy.of(() -> create(modidPrefixUtil.prefix("multiplayer_inclusive_entities")));
 
 	public EntityTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
 		super(output, provider, helper);
@@ -38,7 +45,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 		this.tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE.get());
 		this.tag(EntityTypeTags.FROG_FOOD).add(TFEntities.MAZE_SLIME.get());
 
-		this.tag(BOSSES).add(
+		this.tag(BOSSES.get()).add(
 			TFEntities.NAGA.get(),
 			TFEntities.LICH.get(),
 			TFEntities.MINOSHROOM.get(),
@@ -92,7 +99,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.KNIGHT_PHANTOM.get(),
 			TFEntities.WINTER_WOLF.get(),
 			TFEntities.YETI.get()
-		).addTag(BOSSES);
+		).addTag(BOSSES.get());
 
 		this.tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
 			TFEntities.NAGA.get(),
@@ -114,12 +121,12 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.CARMINITE_GHASTGUARD.get(),
 			TFEntities.TINY_BIRD.get());
 
-		this.tag(LICH_POPPABLES)
+		this.tag(LICH_POPPABLES.get())
 			.addTag(EntityTypeTags.SKELETONS)
 			.add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER.get())
 			.remove(Tags.EntityTypes.BOSSES);
 
-		this.tag(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).add(
+		this.tag(LIFEDRAIN_DROPS_NO_FLESH.get()).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).add(
 			EntityType.BLAZE,
 			EntityType.BREEZE,
 			EntityType.IRON_GOLEM,
@@ -141,11 +148,11 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.WRAITH.get());
 
 		// These entities forcefully take players from the entity they're riding
-		this.tag(RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get());
+		this.tag(RIDES_OBSTRUCT_SNATCHING.get()).add(TFEntities.PINCH_BEETLE.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get());
 
-		this.tag(DONT_KILL_BUGS).add(TFEntities.MOONWORM_SHOT.get());
+		this.tag(DONT_KILL_BUGS.get()).add(TFEntities.MOONWORM_SHOT.get());
 
-		this.tag(SORTABLE_ENTITIES).add(
+		this.tag(SORTABLE_ENTITIES.get()).add(
 			EntityType.CHEST_MINECART,
 			EntityType.HOPPER_MINECART,
 			EntityType.LLAMA,
@@ -153,7 +160,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			EntityType.DONKEY,
 			EntityType.MULE);
 
-		this.tag(MULTIPLAYER_INCLUSIVE_ENTITIES).add(
+		this.tag(MULTIPLAYER_INCLUSIVE_ENTITIES.get()).add(
 			TFEntities.NAGA.get(),
 			TFEntities.LICH.get(),
 			TFEntities.MINOSHROOM.get(),
@@ -164,7 +171,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.PLATEAU_BOSS.get()
 		);
 
-		this.tag(Tags.EntityTypes.BOSSES).addTag(BOSSES);
+		this.tag(Tags.EntityTypes.BOSSES).addTag(BOSSES.get());
 		this.tag(EntityTypeTags.ARTHROPOD).add(
 			TFEntities.CARMINITE_BROODLING.get(),
 			TFEntities.FIRE_BEETLE.get(),

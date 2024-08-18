@@ -31,9 +31,13 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.init.custom.Enforcements;
+import twilightforest.util.IdPrefixUtil;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.Restriction;
 
@@ -44,10 +48,13 @@ import java.util.Optional;
  */
 public class TFWeatherRenderer {
 
+	@Autowired(dist = Dist.CLIENT)
+	private static IdPrefixUtil modidPrefixUtil;
+
 	public static final ResourceLocation RAIN_TEXTURES = ResourceLocation.withDefaultNamespace("textures/environment/rain.png");
 	public static final ResourceLocation SNOW_TEXTURES = ResourceLocation.withDefaultNamespace("textures/environment/snow.png");
 
-	private static final ResourceLocation SPARKLES_TEXTURE = TwilightForestMod.getEnvTexture("sparkles.png");
+	private static final Lazy<ResourceLocation> SPARKLES_TEXTURE = Lazy.of(() -> modidPrefixUtil.envTexture("sparkles.png"));
 
 	public static final float[] rainxs = new float[1024];
 	public static final float[] rainzs = new float[1024];
@@ -270,7 +277,7 @@ public class TFWeatherRenderer {
 
 							if (drawFlag != 0) {
 								drawFlag = 0;
-								RenderSystem.setShaderTexture(0, SPARKLES_TEXTURE);
+								RenderSystem.setShaderTexture(0, SPARKLES_TEXTURE.get());
 								bufferbuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 							}
 
@@ -369,13 +376,13 @@ public class TFWeatherRenderer {
 		BIG_RAIN("bigrain.png");
 
 		RenderType(String textureName) {
-			this.textureLocation = TwilightForestMod.getEnvTexture(textureName);
+			this.textureLocation = Lazy.of(() -> modidPrefixUtil.envTexture(textureName));
 		}
 
-		private final ResourceLocation textureLocation;
+		private final Lazy<ResourceLocation> textureLocation;
 
 		public ResourceLocation getTextureLocation() {
-			return textureLocation;
+			return textureLocation.get();
 		}
 	}
 

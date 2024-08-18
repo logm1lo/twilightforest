@@ -18,7 +18,7 @@ import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuil
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.block.*;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelBuilder;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
@@ -30,6 +30,7 @@ import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.data.helpers.BlockModelBuilders;
 import twilightforest.enums.*;
 import twilightforest.init.TFBlocks;
+import twilightforest.util.IdPrefixUtil;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -37,12 +38,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static twilightforest.TwilightForestMod.prefix;
-
 //TODO clean this class up for god's sake
 //make better helper methods and move them to BlockModelBuilders
 //finish datagenning blocks that arent done yet
 public class BlockstateGenerator extends BlockModelBuilders {
+
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
+
 	public BlockstateGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
 		super(output, exFileHelper);
 	}
@@ -66,8 +69,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 		builtinEntity(TFBlocks.RED_THREAD.get(), "block/blank");
 
-		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
-		ModelFile portalOverlayModel = models().getExistingFile(prefix("block/twilight_portal_barrier"));
+		ModelFile portalModel = models().getExistingFile(modidPrefixUtil.prefix("block/twilight_portal"));
+		ModelFile portalOverlayModel = models().getExistingFile(modidPrefixUtil.prefix("block/twilight_portal_barrier"));
 		getMultipartBuilder(TFBlocks.TWILIGHT_PORTAL.get())
 			.part().modelFile(portalModel).addModel().end()
 			.part().modelFile(portalOverlayModel).addModel().condition(TFPortalBlock.DISALLOW_RETURN, true).end();
@@ -77,19 +80,19 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			String basePath = String.format("block/experiment115_%d_8", 8 - bitesTaken);
 			ModelFile model;
 			if (state.getValue(Experiment115Block.REGENERATE)) {
-				model = models().withExistingParent(basePath + "_regenerating", prefix(basePath))
+				model = models().withExistingParent(basePath + "_regenerating", modidPrefixUtil.prefix(basePath))
 					.texture("top_2", "block/experiment115/experiment115_sprinkle");
 			} else {
-				model = models().getExistingFile(prefix(basePath));
+				model = models().getExistingFile(modidPrefixUtil.prefix(basePath));
 			}
 			return ConfiguredModel.builder().modelFile(model).build();
 		});
 
 		MultiPartBlockStateBuilder ironLadder = getMultipartBuilder(TFBlocks.IRON_LADDER.get());
-		ModelFile ironLadderLeft = models().getExistingFile(prefix("block/iron_ladder_left"));
-		ModelFile ironLadderLeftConnected = models().getExistingFile(prefix("block/iron_ladder_left_connection"));
-		ModelFile ironLadderRight = models().getExistingFile(prefix("block/iron_ladder_right"));
-		ModelFile ironLadderRightConnected = models().getExistingFile(prefix("block/iron_ladder_right_connection"));
+		ModelFile ironLadderLeft = models().getExistingFile(modidPrefixUtil.prefix("block/iron_ladder_left"));
+		ModelFile ironLadderLeftConnected = models().getExistingFile(modidPrefixUtil.prefix("block/iron_ladder_left_connection"));
+		ModelFile ironLadderRight = models().getExistingFile(modidPrefixUtil.prefix("block/iron_ladder_right"));
+		ModelFile ironLadderRightConnected = models().getExistingFile(modidPrefixUtil.prefix("block/iron_ladder_right_connection"));
 		for (Direction d : Direction.Plane.HORIZONTAL) {
 			int rotY = switch (d) {
 				default -> 0;
@@ -109,10 +112,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		}
 
 		getMultipartBuilder(TFBlocks.ROPE.value())
-			.part().modelFile(models().getExistingFile(prefix("block/rope_y"))).addModel().condition(RopeBlock.Y, true).end()
-			.part().modelFile(models().getExistingFile(prefix("block/rope_x"))).addModel().condition(RopeBlock.X, true).end()
-			.part().modelFile(models().getExistingFile(prefix("block/rope_z"))).addModel().condition(RopeBlock.Z, true).end()
-			.part().modelFile(models().getExistingFile(prefix("block/rope_knot"))).addModel().useOr()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("block/rope_y"))).addModel().condition(RopeBlock.Y, true).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("block/rope_x"))).addModel().condition(RopeBlock.X, true).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("block/rope_z"))).addModel().condition(RopeBlock.Z, true).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("block/rope_knot"))).addModel().useOr()
 			.nestedGroup().condition(RopeBlock.X, true).condition(RopeBlock.Y, true).end()
 			.nestedGroup().condition(RopeBlock.Y, true).condition(RopeBlock.Z, true).end()
 			.nestedGroup().condition(RopeBlock.Z, true).condition(RopeBlock.X, true).end()
@@ -158,9 +161,9 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.PIGLIN_SKULL_CANDLE.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 		simpleBlock(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 
-		getVariantBuilder(TFBlocks.SPIRAL_BRICKS.get()).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(models().getExistingFile(TwilightForestMod.prefix("block/spiral_bricks/" + state.getValue(SpiralBrickBlock.AXIS_FACING).getName() + "_spiral_" + state.getValue(SpiralBrickBlock.DIAGONAL).getSerializedName()))).build(), BlockStateProperties.WATERLOGGED);
+		getVariantBuilder(TFBlocks.SPIRAL_BRICKS.get()).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(models().getExistingFile(modidPrefixUtil.prefix("block/spiral_bricks/" + state.getValue(SpiralBrickBlock.AXIS_FACING).getName() + "_spiral_" + state.getValue(SpiralBrickBlock.DIAGONAL).getSerializedName()))).build(), BlockStateProperties.WATERLOGGED);
 
-		ModelFile shieldModel = models().cubeTop(TFBlocks.STRONGHOLD_SHIELD.getId().getPath(), prefix("block/shield_outside"), prefix("block/shield_inside"));
+		ModelFile shieldModel = models().cubeTop(TFBlocks.STRONGHOLD_SHIELD.getId().getPath(), modidPrefixUtil.prefix("block/shield_outside"), modidPrefixUtil.prefix("block/shield_inside"));
 		getVariantBuilder(TFBlocks.STRONGHOLD_SHIELD.get())
 			.forAllStates(state -> {
 				Direction dir = state.getValue(BlockStateProperties.FACING);
@@ -195,7 +198,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		allRotations(TFBlocks.CRACKED_DEADROCK.get(), deadrockCracked);
 		ModelFile deadrockWeathered = models().cubeAll(TFBlocks.WEATHERED_DEADROCK.getId().getPath(), blockTexture(TFBlocks.WEATHERED_DEADROCK.get()));
 		allRotations(TFBlocks.WEATHERED_DEADROCK.get(), deadrockWeathered);
-		perFaceBlock(TFBlocks.TROLLSTEINN.get(), blockTexture(TFBlocks.TROLLSTEINN.get()), prefix("block/" + TFBlocks.TROLLSTEINN.getId().getPath() + "_light"));
+		perFaceBlock(TFBlocks.TROLLSTEINN.get(), blockTexture(TFBlocks.TROLLSTEINN.get()), modidPrefixUtil.prefix("block/" + TFBlocks.TROLLSTEINN.getId().getPath() + "_light"));
 		simpleBlockWithRenderType(TFBlocks.WISPY_CLOUD.get(), TRANSLUCENT);
 		simpleBlock(TFBlocks.FLUFFY_CLOUD.get());
 		simpleBlock(TFBlocks.RAINY_CLOUD.get());
@@ -222,15 +225,15 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.UBEROUS_SOIL.get(), models().withExistingParent(TFBlocks.UBEROUS_SOIL.getId().getPath(), "block/template_farmland")
 			.texture("top", blockTexture(TFBlocks.UBEROUS_SOIL.get()))
 			.texture("dirt", blockTexture(TFBlocks.UBEROUS_SOIL.get())));
-		axisBlock(TFBlocks.HUGE_STALK.get(), prefix("block/huge_stalk"), prefix("block/huge_stalk_top"));
+		axisBlock(TFBlocks.HUGE_STALK.get(), modidPrefixUtil.prefix("block/huge_stalk"), modidPrefixUtil.prefix("block/huge_stalk_top"));
 		builtinEntity(TFBlocks.BEANSTALK_GROWER.get(), "block/blank");
-		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
-		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_mushgloom_stem"));
+		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM.get(), modidPrefixUtil.prefix("block/huge_gloom_inside"), modidPrefixUtil.prefix("block/huge_gloom_cap"));
+		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), modidPrefixUtil.prefix("block/huge_gloom_inside"), modidPrefixUtil.prefix("block/huge_mushgloom_stem"));
 		simpleBlock(TFBlocks.TROLLVIDR.get(), models().cross(TFBlocks.TROLLVIDR.getId().getPath(), blockTexture(TFBlocks.TROLLVIDR.get())).renderType(CUTOUT));
 		simpleBlock(TFBlocks.UNRIPE_TROLLBER.get(), models().cross(TFBlocks.UNRIPE_TROLLBER.getId().getPath(), blockTexture(TFBlocks.UNRIPE_TROLLBER.get())).renderType(CUTOUT));
 		ModelFile trollber = this.make2layerCross(TFBlocks.TROLLBER.getId().getPath(), CUTOUT, 1, 10)
 			.texture("cross", blockTexture(TFBlocks.TROLLBER.get()))
-			.texture("cross2", prefix("block/" + TFBlocks.TROLLBER.getId().getPath() + "_glow"));
+			.texture("cross2", modidPrefixUtil.prefix("block/" + TFBlocks.TROLLBER.getId().getPath() + "_glow"));
 		simpleBlock(TFBlocks.TROLLBER.get(), trollber);
 		lilyPad(TFBlocks.HUGE_LILY_PAD.get());
 		simpleBlock(TFBlocks.HUGE_WATER_LILY.get(), models().cross(TFBlocks.HUGE_WATER_LILY.getId().getPath(), blockTexture(TFBlocks.HUGE_WATER_LILY.get())).renderType(CUTOUT));
@@ -243,27 +246,27 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 		rotationallyCorrectColumn(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get());
 		rotationallyCorrectColumn(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get());
-		simpleBlock(TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), models().cubeAll(TFBlocks.ENCASED_CASTLE_BRICK_TILE.getId().getPath(), prefix("block/" + TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.getId().getPath() + "_end")));
+		simpleBlock(TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), models().cubeAll(TFBlocks.ENCASED_CASTLE_BRICK_TILE.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.getId().getPath() + "_end")));
 		simpleBlock(TFBlocks.BOLD_CASTLE_BRICK_TILE.get());
-		stairsBlock(TFBlocks.CASTLE_BRICK_STAIRS.get(), prefix("block/" + TFBlocks.CASTLE_BRICK_STAIRS.getId().getPath()));
-		stairsBlock(TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(), prefix("block/" + TFBlocks.WORN_CASTLE_BRICK.getId().getPath()));
-		stairsBlock(TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(), prefix("block/" + TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.getId().getPath()));
-		stairsBlock(TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(), prefix("block/" + TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.getId().getPath()));
-		bisectedStairsBlock(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS, prefix("block/encased_castle_brick_pillar_h"), prefix("block/castleblock_tile"), prefix("block/" + TFBlocks.CASTLE_ROOF_TILE.getId().getPath()));
-		stairsBlock(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(), prefix("block/" + TFBlocks.BOLD_CASTLE_BRICK_TILE.getId().getPath()));
+		stairsBlock(TFBlocks.CASTLE_BRICK_STAIRS.get(), modidPrefixUtil.prefix("block/" + TFBlocks.CASTLE_BRICK_STAIRS.getId().getPath()));
+		stairsBlock(TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(), modidPrefixUtil.prefix("block/" + TFBlocks.WORN_CASTLE_BRICK.getId().getPath()));
+		stairsBlock(TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(), modidPrefixUtil.prefix("block/" + TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.getId().getPath()));
+		stairsBlock(TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(), modidPrefixUtil.prefix("block/" + TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.getId().getPath()));
+		bisectedStairsBlock(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS, modidPrefixUtil.prefix("block/encased_castle_brick_pillar_h"), modidPrefixUtil.prefix("block/castleblock_tile"), modidPrefixUtil.prefix("block/" + TFBlocks.CASTLE_ROOF_TILE.getId().getPath()));
+		stairsBlock(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(), modidPrefixUtil.prefix("block/" + TFBlocks.BOLD_CASTLE_BRICK_TILE.getId().getPath()));
 
 		ConfiguredModel[] runeBrickModels = new ConfiguredModel[8];
 		for (int i = 0; i < runeBrickModels.length; i++) {
 			runeBrickModels[i] = new ConfiguredModel(models().withExistingParent("castle_rune_brick_" + i, "block/block")
-				.texture("particle", prefix("block/castle_brick")).customLoader(CompositeModelBuilder::begin)
-				.child("brick", models().withExistingParent("castle_rune_bricks", "block/cube_all").texture("all", prefix("block/castle_brick")))
-				.child("runes", this.makeEmissiveBlockAll("castle_runes_" + i, CUTOUT, 15).texture("all", prefix("block/castleblock_magic_" + i)))
+				.texture("particle", modidPrefixUtil.prefix("block/castle_brick")).customLoader(CompositeModelBuilder::begin)
+				.child("brick", models().withExistingParent("castle_rune_bricks", "block/cube_all").texture("all", modidPrefixUtil.prefix("block/castle_brick")))
+				.child("runes", this.makeEmissiveBlockAll("castle_runes_" + i, CUTOUT, 15).texture("all", modidPrefixUtil.prefix("block/castleblock_magic_" + i)))
 				.end());
 		}
 
 		this.make2LayerCubeAllSidesSame("castle_rune_inventory", CUTOUT, 0, 15, false)
-			.texture("all", prefix("block/castle_brick"))
-			.texture("all2", prefix("block/castleblock_magic_0"));
+			.texture("all", modidPrefixUtil.prefix("block/castle_brick"))
+			.texture("all2", modidPrefixUtil.prefix("block/castleblock_magic_0"));
 
 		simpleBlock(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), runeBrickModels);
 		simpleBlock(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), runeBrickModels);
@@ -271,7 +274,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), runeBrickModels);
 
 		logBlock(TFBlocks.CINDER_LOG.get());
-		simpleBlock(TFBlocks.CINDER_WOOD.get(), models().cubeAll(TFBlocks.CINDER_WOOD.getId().getPath(), prefix("block/" + TFBlocks.CINDER_LOG.getId().getPath())));
+		simpleBlock(TFBlocks.CINDER_WOOD.get(), models().cubeAll(TFBlocks.CINDER_WOOD.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.CINDER_LOG.getId().getPath())));
 		ModelFile furnaceOff = models().getExistingFile(ResourceLocation.withDefaultNamespace("block/furnace"));
 		ModelFile furnaceOn = models().getExistingFile(ResourceLocation.withDefaultNamespace("block/furnace_on"));
 		horizontalBlock(TFBlocks.CINDER_FURNACE.get(), state -> state.getValue(CinderFurnaceBlock.LIT) ? furnaceOn : furnaceOff);
@@ -288,28 +291,28 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.texture("overlay_texture", blockTexture(TFBlocks.ARCTIC_FUR_BLOCK.get()))
 			.texture("overlay_connected", blockTexture(TFBlocks.ARCTIC_FUR_BLOCK.get()).withSuffix("_ctm"))
 			.customLoader(ConnectedTextureBuilder::begin).connectsTo(TFBlocks.ARCTIC_FUR_BLOCK.get()).end());
-		ModelFile steeleafBlock = models().cubeAll(TFBlocks.STEELEAF_BLOCK.getId().getPath(), prefix("block/" + TFBlocks.STEELEAF_BLOCK.getId().getPath()));
+		ModelFile steeleafBlock = models().cubeAll(TFBlocks.STEELEAF_BLOCK.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.STEELEAF_BLOCK.getId().getPath()));
 		allRotations(TFBlocks.STEELEAF_BLOCK.get(), steeleafBlock);
 		ModelFile carminiteBlock = this.make2LayerCubeAllSidesSame(TFBlocks.CARMINITE_BLOCK.getId().getPath(), SOLID, 4, 7, true)
-			.texture("all", prefix("block/" + TFBlocks.CARMINITE_BLOCK.getId().getPath()))
-			.texture("all2", prefix("block/" + TFBlocks.CARMINITE_BLOCK.getId().getPath() + "_overlay"));
+			.texture("all", modidPrefixUtil.prefix("block/" + TFBlocks.CARMINITE_BLOCK.getId().getPath()))
+			.texture("all2", modidPrefixUtil.prefix("block/" + TFBlocks.CARMINITE_BLOCK.getId().getPath() + "_overlay"));
 		allRotations(TFBlocks.CARMINITE_BLOCK.get(), carminiteBlock);
 
-		horizontalBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/portal")));
-		horizontalBlock(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/naga_courtyard")));
-		horizontalBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/lich_tower")));
+		horizontalBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), models().getExistingFile(modidPrefixUtil.prefix("block/miniature/portal")));
+		horizontalBlock(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), models().getExistingFile(modidPrefixUtil.prefix("block/miniature/naga_courtyard")));
+		horizontalBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), models().getExistingFile(modidPrefixUtil.prefix("block/miniature/lich_tower")));
 		mazestone();
 		simpleBlock(TFBlocks.HEDGE.get(), ConfiguredModel.builder()
 			.weight(10).modelFile(models().cubeAll(TFBlocks.HEDGE.getId().getPath(), blockTexture(TFBlocks.HEDGE.get()))).nextModel()
-			.weight(1).modelFile(models().cubeAll(TFBlocks.HEDGE.getId().getPath() + "_rose", prefix("block/" + TFBlocks.HEDGE.getId().getPath() + "_rose"))).build());
+			.weight(1).modelFile(models().cubeAll(TFBlocks.HEDGE.getId().getPath() + "_rose", modidPrefixUtil.prefix("block/" + TFBlocks.HEDGE.getId().getPath() + "_rose"))).build());
 
-		/*ModelFile bigSpawner = models().withExistingParent("boss_spawner", "block/block").renderType(CUTOUT).texture("particle", "#all").texture("all", TwilightForestMod.prefix("block/boss_spawner")).element()
+		/*ModelFile bigSpawner = models().withExistingParent("boss_spawner", "block/block").renderType(CUTOUT).texture("particle", "#all").texture("all", modidPrefixUtil.prefix("block/boss_spawner")).element()
 				.from(-4, -4, -4)
 				.to(20, 20, 20)
 				.allFaces((dir, builder) -> builder*//*.cullface(dir)*//*.uvs(2, 2, 14, 14).texture("#all"))
 				.end();*/
 
-		ModelFile bigSpawner = models().withExistingParent( "boss_spawner", "block/spawner").texture("all", TwilightForestMod.prefix("block/boss_spawner")).renderType(CUTOUT);
+		ModelFile bigSpawner = models().withExistingParent( "boss_spawner", "block/spawner").texture("all", modidPrefixUtil.prefix("block/boss_spawner")).renderType(CUTOUT);
 
 		simpleBlock(TFBlocks.NAGA_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.LICH_BOSS_SPAWNER.get(), bigSpawner);
@@ -327,7 +330,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.FIREFLY_JAR.get(), masonJar);
 		simpleBlockExisting(TFBlocks.FIREFLY_SPAWNER.get());
 
-		ResourceLocation jarLid = TwilightForestMod.prefix("jar_lid");
+		ResourceLocation jarLid = modidPrefixUtil.prefix("jar_lid");
 		for (ResourceLocation item : JarRenderer.LOG_LOCATION_MAP.get().values()) {
 			String name = item.getPath() + "_lid";
 			if ((name.equals("mangrove_log_lid") || name.equals("stripped_mangrove_log_lid")) && item.getNamespace().equals("minecraft")) name = "vanilla_" + name;
@@ -342,36 +345,36 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.MANGROVE_ROOT.get());
 
 		ModelFile glowing = this.make2LayerCubeNoBottom(TFBlocks.UNCRAFTING_TABLE.getId().getPath() + "_glowing", TRANSLUCENT, 0, 15, true)
-			.texture("top", prefix("block/uncrafting_top"))
-			.texture("north", prefix("block/uncrafting_side"))
-			.texture("south", prefix("block/uncrafting_side"))
-			.texture("west", prefix("block/uncrafting_side"))
-			.texture("east", prefix("block/uncrafting_side"))
+			.texture("top", modidPrefixUtil.prefix("block/uncrafting_top"))
+			.texture("north", modidPrefixUtil.prefix("block/uncrafting_side"))
+			.texture("south", modidPrefixUtil.prefix("block/uncrafting_side"))
+			.texture("west", modidPrefixUtil.prefix("block/uncrafting_side"))
+			.texture("east", modidPrefixUtil.prefix("block/uncrafting_side"))
 			.texture("bottom", ResourceLocation.withDefaultNamespace("block/jungle_planks"))
-			.texture("top2", prefix("block/uncrafting_glow"))
-			.texture("north2", prefix("block/uncrafting_glow_side"))
-			.texture("south2", prefix("block/uncrafting_glow_side"))
-			.texture("west2", prefix("block/uncrafting_glow_side"))
-			.texture("east2", prefix("block/uncrafting_glow_side"));
+			.texture("top2", modidPrefixUtil.prefix("block/uncrafting_glow"))
+			.texture("north2", modidPrefixUtil.prefix("block/uncrafting_glow_side"))
+			.texture("south2", modidPrefixUtil.prefix("block/uncrafting_glow_side"))
+			.texture("west2", modidPrefixUtil.prefix("block/uncrafting_glow_side"))
+			.texture("east2", modidPrefixUtil.prefix("block/uncrafting_glow_side"));
 
 		ModelFile notglowing = this.makeCubeWithTopLayer(TFBlocks.UNCRAFTING_TABLE.getId().getPath(), TRANSLUCENT, 0, 15)
-			.texture("top", prefix("block/uncrafting_top"))
-			.texture("north", prefix("block/uncrafting_side"))
-			.texture("south", prefix("block/uncrafting_side"))
-			.texture("west", prefix("block/uncrafting_side"))
-			.texture("east", prefix("block/uncrafting_side"))
+			.texture("top", modidPrefixUtil.prefix("block/uncrafting_top"))
+			.texture("north", modidPrefixUtil.prefix("block/uncrafting_side"))
+			.texture("south", modidPrefixUtil.prefix("block/uncrafting_side"))
+			.texture("west", modidPrefixUtil.prefix("block/uncrafting_side"))
+			.texture("east", modidPrefixUtil.prefix("block/uncrafting_side"))
 			.texture("bottom", ResourceLocation.withDefaultNamespace("block/jungle_planks"))
-			.texture("top2", prefix("block/uncrafting_glow"));
+			.texture("top2", modidPrefixUtil.prefix("block/uncrafting_glow"));
 
 		getVariantBuilder(TFBlocks.UNCRAFTING_TABLE.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(s.getValue(UncraftingTableBlock.POWERED) ? glowing : notglowing).build());
 		registerSmokersAndJets();
-		axisBlock(TFBlocks.TWISTED_STONE.get(), prefix("block/twisted_stone_side"), prefix("block/twisted_stone_end"));
-		axisBlock(TFBlocks.BOLD_STONE_PILLAR.get(), prefix("block/stone_pillar_side"), prefix("block/stone_pillar_end"));
+		axisBlock(TFBlocks.TWISTED_STONE.get(), modidPrefixUtil.prefix("block/twisted_stone_side"), modidPrefixUtil.prefix("block/twisted_stone_end"));
+		axisBlock(TFBlocks.BOLD_STONE_PILLAR.get(), modidPrefixUtil.prefix("block/stone_pillar_side"), modidPrefixUtil.prefix("block/stone_pillar_end"));
 		simpleBlock(TFBlocks.CANOPY_BOOKSHELF.get(), ConfiguredModel.builder()
-			.weight(3).modelFile(models().cubeColumn("canopy_bookshelf", prefix("block/wood/bookshelf_canopy"), prefix("block/wood/planks_canopy_0"))).nextModel()
-			.modelFile(models().cubeColumn("canopy_bookshelf_1", prefix("block/wood/bookshelf_canopy_1"), prefix("block/wood/planks_canopy_0"))).nextModel()
-			.modelFile(models().cubeColumn("canopy_bookshelf_2", prefix("block/wood/bookshelf_canopy_2"), prefix("block/wood/planks_canopy_0"))).nextModel()
-			.modelFile(models().cubeColumn("canopy_bookshelf_3", prefix("block/wood/bookshelf_canopy_3"), prefix("block/wood/planks_canopy_0")))
+			.weight(3).modelFile(models().cubeColumn("canopy_bookshelf", modidPrefixUtil.prefix("block/wood/bookshelf_canopy"), modidPrefixUtil.prefix("block/wood/planks_canopy_0"))).nextModel()
+			.modelFile(models().cubeColumn("canopy_bookshelf_1", modidPrefixUtil.prefix("block/wood/bookshelf_canopy_1"), modidPrefixUtil.prefix("block/wood/planks_canopy_0"))).nextModel()
+			.modelFile(models().cubeColumn("canopy_bookshelf_2", modidPrefixUtil.prefix("block/wood/bookshelf_canopy_2"), modidPrefixUtil.prefix("block/wood/planks_canopy_0"))).nextModel()
+			.modelFile(models().cubeColumn("canopy_bookshelf_3", modidPrefixUtil.prefix("block/wood/bookshelf_canopy_3"), modidPrefixUtil.prefix("block/wood/planks_canopy_0")))
 			.build());
 
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(TFBlocks.CHISELED_CANOPY_BOOKSHELF.get());
@@ -381,8 +384,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			//add base block for each rotation
 			builder.part().uvLock(true).rotationY(pair.getSecond()).modelFile(models()
 				.withExistingParent("chiseled_canopy_bookshelf", "chiseled_bookshelf")
-				.texture("top", prefix("block/wood/chiseled_canopy_bookshelf_top"))
-				.texture("side", prefix("block/wood/chiseled_canopy_bookshelf_side"))).addModel()
+				.texture("top", modidPrefixUtil.prefix("block/wood/chiseled_canopy_bookshelf_top"))
+				.texture("side", modidPrefixUtil.prefix("block/wood/chiseled_canopy_bookshelf_side"))).addModel()
 				.condition(HorizontalDirectionalBlock.FACING, direction).end();
 			//add each bookshelf part for each slot
 			List.of(
@@ -396,41 +399,41 @@ public class BlockstateGenerator extends BlockModelBuilders {
 					//filled part
 					builder.part().uvLock(true).rotationY(pair.getSecond()).modelFile(models()
 							.withExistingParent("chiseled_canopy_bookshelf_occupied" + pair1.getSecond(), "template_chiseled_bookshelf" + pair1.getSecond())
-							.texture("texture", prefix("block/wood/chiseled_canopy_bookshelf_occupied"))).addModel()
+							.texture("texture", modidPrefixUtil.prefix("block/wood/chiseled_canopy_bookshelf_occupied"))).addModel()
 						.nestedGroup().condition(HorizontalDirectionalBlock.FACING, direction).condition(pair1.getFirst(), true).end();
 					//empty part
 					builder.part().uvLock(true).rotationY(pair.getSecond()).modelFile(models()
 						.withExistingParent("chiseled_canopy_bookshelf_empty" + pair1.getSecond(), "template_chiseled_bookshelf" + pair1.getSecond())
-						.texture("texture", prefix("block/wood/chiseled_canopy_bookshelf_empty"))).addModel()
+						.texture("texture", modidPrefixUtil.prefix("block/wood/chiseled_canopy_bookshelf_empty"))).addModel()
 						.nestedGroup().condition(HorizontalDirectionalBlock.FACING, direction).condition(pair1.getFirst(), false).end();
 				});
 		});
 
-		itemModels().getBuilder("chiseled_canopy_bookshelf").parent(models().orientable("chiseled_canopy_bookshelf_inventory", prefix("block/wood/chiseled_canopy_bookshelf_side"), prefix("block/wood/chiseled_canopy_bookshelf_empty"), prefix("block/wood/chiseled_canopy_bookshelf_top")));
+		itemModels().getBuilder("chiseled_canopy_bookshelf").parent(models().orientable("chiseled_canopy_bookshelf_inventory", modidPrefixUtil.prefix("block/wood/chiseled_canopy_bookshelf_side"), modidPrefixUtil.prefix("block/wood/chiseled_canopy_bookshelf_empty"), modidPrefixUtil.prefix("block/wood/chiseled_canopy_bookshelf_top")));
 
 		getMultipartBuilder(TFBlocks.WROUGHT_IRON_FENCE.get())
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post"))).addModel().condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post_capped"))).addModel().condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_post"))).addModel().condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_post_capped"))).addModel().condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED).end()
 
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_full"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_top"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_middle"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_bottom"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end()
 
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_full"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_top"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_middle"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_bottom"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end()
 
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_full"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_top"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_middle"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_bottom"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end()
 
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
-			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end();
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_full"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_top"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_middle"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
+			.part().modelFile(models().getExistingFile(modidPrefixUtil.prefix("wrought_iron_fence_bottom"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end();
 
 		registerLoftyCarpet();
 
@@ -439,20 +442,20 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		registerForceFields();
 		simpleBlock(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TWILIGHT_OAK_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_CANOPY_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_CANOPY_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.CANOPY_SAPLING.get())));
-		simpleBlock(TFBlocks.POTTED_MANGROVE_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_MANGROVE_SAPLING.getId().getPath(), prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.MANGROVE_SAPLING.get())));
-		simpleBlock(TFBlocks.POTTED_DARKWOOD_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_DARKWOOD_SAPLING.getId().getPath(), prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.DARKWOOD_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_MANGROVE_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_MANGROVE_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.MANGROVE_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_DARKWOOD_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_DARKWOOD_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.DARKWOOD_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.HOLLOW_OAK_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.RAINBOW_OAK_SAPLING.get())));
-		simpleBlock(TFBlocks.POTTED_TIME_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TIME_SAPLING.getId().getPath(), prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TIME_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_TIME_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TIME_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TIME_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_TRANSFORMATION_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TRANSFORMATION_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TRANSFORMATION_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_MINING_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_MINING_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.MINING_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_SORTING_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_SORTING_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.SORTING_SAPLING.get())));
-		simpleBlock(TFBlocks.POTTED_MAYAPPLE.get(), models().getExistingFile(prefix("block/potted_mayapple")));
+		simpleBlock(TFBlocks.POTTED_MAYAPPLE.get(), models().getExistingFile(modidPrefixUtil.prefix("block/potted_mayapple")));
 		simpleBlock(TFBlocks.POTTED_FIDDLEHEAD.get(), models().withExistingParent(TFBlocks.POTTED_FIDDLEHEAD.getId().getPath(), "block/tinted_flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.POTTED_FIDDLEHEAD.get())));
 		simpleBlock(TFBlocks.POTTED_MUSHGLOOM.get(), models().withExistingParent(TFBlocks.POTTED_MUSHGLOOM.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.POTTED_MUSHGLOOM.get())));
-		simpleBlock(TFBlocks.POTTED_THORN.get(), models().withExistingParent(TFBlocks.POTTED_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/brown_thorns_top")).texture("thorn_side", prefix("block/brown_thorns_side")));
-		simpleBlock(TFBlocks.POTTED_GREEN_THORN.get(), models().withExistingParent(TFBlocks.POTTED_GREEN_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/green_thorns_top")).texture("thorn_side", prefix("block/green_thorns_side")));
-		simpleBlock(TFBlocks.POTTED_DEAD_THORN.get(), models().withExistingParent(TFBlocks.POTTED_DEAD_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/burnt_thorns_top")).texture("thorn_side", prefix("block/burnt_thorns_side")));
+		simpleBlock(TFBlocks.POTTED_THORN.get(), models().withExistingParent(TFBlocks.POTTED_THORN.getId().getPath(), modidPrefixUtil.prefix("block/potted_thorn_template")).texture("thorn_top", modidPrefixUtil.prefix("block/brown_thorns_top")).texture("thorn_side", modidPrefixUtil.prefix("block/brown_thorns_side")));
+		simpleBlock(TFBlocks.POTTED_GREEN_THORN.get(), models().withExistingParent(TFBlocks.POTTED_GREEN_THORN.getId().getPath(), modidPrefixUtil.prefix("block/potted_thorn_template")).texture("thorn_top", modidPrefixUtil.prefix("block/green_thorns_top")).texture("thorn_side", modidPrefixUtil.prefix("block/green_thorns_side")));
+		simpleBlock(TFBlocks.POTTED_DEAD_THORN.get(), models().withExistingParent(TFBlocks.POTTED_DEAD_THORN.getId().getPath(), modidPrefixUtil.prefix("block/potted_thorn_template")).texture("thorn_top", modidPrefixUtil.prefix("block/burnt_thorns_top")).texture("thorn_side", modidPrefixUtil.prefix("block/burnt_thorns_side")));
 
 		builtinEntity(TFBlocks.TWILIGHT_OAK_SIGN.get(), "twilightforest:block/wood/planks_twilight_oak_0");
 		builtinEntity(TFBlocks.TWILIGHT_WALL_SIGN.get(), "twilightforest:block/wood/planks_twilight_oak_0");
@@ -512,7 +515,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 		this.terrorcotta();
 
-		this.simpleBlock(TFBlocks.CURSED_SPAWNER.value(), this.models().withExistingParent( "cursed_spawner", "block/spawner").texture("all", TwilightForestMod.prefix("block/cursed_spawner")).renderType(CUTOUT));
+		this.simpleBlock(TFBlocks.CURSED_SPAWNER.value(), this.models().withExistingParent( "cursed_spawner", "block/spawner").texture("all", modidPrefixUtil.prefix("block/cursed_spawner")).renderType(CUTOUT));
 	}
 
 	private void registerLoftyCarpet() {
@@ -526,7 +529,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private void registerForceFields() {
 		for (DeferredHolder<Block, Block> block : ImmutableList.of(TFBlocks.PINK_FORCE_FIELD, TFBlocks.BLUE_FORCE_FIELD, TFBlocks.GREEN_FORCE_FIELD, TFBlocks.VIOLET_FORCE_FIELD, TFBlocks.ORANGE_FORCE_FIELD)) {
-			ResourceLocation textureLocation = prefix("block/" + block.getId().getPath());
+			ResourceLocation textureLocation = modidPrefixUtil.prefix("block/" + block.getId().getPath());
 			simpleBlock(block.get(), models().withExistingParent(block.getId().getPath(), ResourceLocation.withDefaultNamespace("block/block"))
 				.texture("particle", textureLocation)
 				.texture("pane", textureLocation)
@@ -673,11 +676,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	private void registerNagastone() {
 		// todo 1.15 cleanup: generate these models as well instead of getExistingFile-ing them
 		String baseName = TFBlocks.NAGASTONE.getId().getPath();
-		ModelFile solid = models().cubeBottomTop(baseName, prefix("block/nagastone_long_side"), prefix("block/nagastone_bottom_long"), prefix("block/nagastone_turn_top"));
-		ModelFile down = models().getExistingFile(prefix("block/naga_segment/down"));
-		ModelFile up = models().getExistingFile(prefix("block/naga_segment/up"));
-		ModelFile horizontal = models().getExistingFile(prefix("block/naga_segment/horizontal"));
-		ModelFile vertical = models().getExistingFile(prefix("block/naga_segment/vertical"));
+		ModelFile solid = models().cubeBottomTop(baseName, modidPrefixUtil.prefix("block/nagastone_long_side"), modidPrefixUtil.prefix("block/nagastone_bottom_long"), modidPrefixUtil.prefix("block/nagastone_turn_top"));
+		ModelFile down = models().getExistingFile(modidPrefixUtil.prefix("block/naga_segment/down"));
+		ModelFile up = models().getExistingFile(modidPrefixUtil.prefix("block/naga_segment/up"));
+		ModelFile horizontal = models().getExistingFile(modidPrefixUtil.prefix("block/naga_segment/horizontal"));
+		ModelFile vertical = models().getExistingFile(modidPrefixUtil.prefix("block/naga_segment/vertical"));
 		getVariantBuilder(TFBlocks.NAGASTONE.get()).forAllStates(s -> switch (s.getValue(NagastoneBlock.VARIANT)) {
 			case NORTH_DOWN -> ConfiguredModel.builder().modelFile(down).rotationY(270).build();
 			case SOUTH_DOWN -> ConfiguredModel.builder().modelFile(down).rotationY(90).build();
@@ -693,7 +696,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			case SOLID -> ConfiguredModel.builder().modelFile(solid).build();
 		});
 
-		horizontalBlock(TFBlocks.NAGASTONE_HEAD.get(), models().getExistingFile(prefix("block/" + TFBlocks.NAGASTONE_HEAD.getId().getPath())));
+		horizontalBlock(TFBlocks.NAGASTONE_HEAD.get(), models().getExistingFile(modidPrefixUtil.prefix("block/" + TFBlocks.NAGASTONE_HEAD.getId().getPath())));
 		nagastonePillar(TFBlocks.NAGASTONE_PILLAR.get(), "");
 		nagastonePillar(TFBlocks.MOSSY_NAGASTONE_PILLAR.get(), "_mossy");
 		nagastonePillar(TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), "_weathered");
@@ -701,18 +704,18 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		etchedNagastone(TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), "_mossy");
 		etchedNagastone(TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), "_weathered");
 
-		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT, prefix("block/etched_nagastone_left"), prefix("block/stone_tiles"), prefix("block/nagastone_bare"));
-		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_RIGHT, prefix("block/etched_nagastone_right"), prefix("block/stone_tiles"), prefix("block/nagastone_bare"));
-		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT, prefix("block/etched_nagastone_left_mossy"), prefix("block/stone_tiles_mossy"), prefix("block/nagastone_bare_mossy"));
-		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT, prefix("block/etched_nagastone_right_mossy"), prefix("block/stone_tiles_mossy"), prefix("block/nagastone_bare_mossy"));
-		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT, prefix("block/etched_nagastone_left_weathered"), prefix("block/stone_tiles_weathered"), prefix("block/nagastone_bare_weathered"));
-		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT, prefix("block/etched_nagastone_right_weathered"), prefix("block/stone_tiles_weathered"), prefix("block/nagastone_bare_weathered"));
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT, modidPrefixUtil.prefix("block/etched_nagastone_left"), modidPrefixUtil.prefix("block/stone_tiles"), modidPrefixUtil.prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_RIGHT, modidPrefixUtil.prefix("block/etched_nagastone_right"), modidPrefixUtil.prefix("block/stone_tiles"), modidPrefixUtil.prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT, modidPrefixUtil.prefix("block/etched_nagastone_left_mossy"), modidPrefixUtil.prefix("block/stone_tiles_mossy"), modidPrefixUtil.prefix("block/nagastone_bare_mossy"));
+		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT, modidPrefixUtil.prefix("block/etched_nagastone_right_mossy"), modidPrefixUtil.prefix("block/stone_tiles_mossy"), modidPrefixUtil.prefix("block/nagastone_bare_mossy"));
+		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT, modidPrefixUtil.prefix("block/etched_nagastone_left_weathered"), modidPrefixUtil.prefix("block/stone_tiles_weathered"), modidPrefixUtil.prefix("block/nagastone_bare_weathered"));
+		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT, modidPrefixUtil.prefix("block/etched_nagastone_right_weathered"), modidPrefixUtil.prefix("block/stone_tiles_weathered"), modidPrefixUtil.prefix("block/nagastone_bare_weathered"));
 	}
 
 	private void nagastonePillar(Block b, String suffix) {
-		ResourceLocation side = prefix("block/nagastone_pillar_side" + suffix);
-		ResourceLocation end = prefix("block/nagastone_pillar_end" + suffix);
-		ResourceLocation alt = prefix("block/nagastone_pillar_side" + suffix + "_alt");
+		ResourceLocation side = modidPrefixUtil.prefix("block/nagastone_pillar_side" + suffix);
+		ResourceLocation end = modidPrefixUtil.prefix("block/nagastone_pillar_end" + suffix);
+		ResourceLocation alt = modidPrefixUtil.prefix("block/nagastone_pillar_side" + suffix + "_alt");
 		ModelFile model = models().cubeColumn(name(b), side, end);
 		ModelFile reversed = models().cubeColumn(name(b) + "_reversed", alt, end);
 		getVariantBuilder(b).forAllStates(state -> {
@@ -734,11 +737,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void etchedNagastone(Block b, String suffix) {
-		ResourceLocation stoneTiles = prefix("block/stone_tiles" + suffix);
-		ResourceLocation upTex = prefix("block/etched_nagastone_up" + suffix);
-		ResourceLocation downTex = prefix("block/etched_nagastone_down" + suffix);
-		ResourceLocation rightTex = prefix("block/etched_nagastone_right" + suffix);
-		ResourceLocation leftTex = prefix("block/etched_nagastone_left" + suffix);
+		ResourceLocation stoneTiles = modidPrefixUtil.prefix("block/stone_tiles" + suffix);
+		ResourceLocation upTex = modidPrefixUtil.prefix("block/etched_nagastone_up" + suffix);
+		ResourceLocation downTex = modidPrefixUtil.prefix("block/etched_nagastone_down" + suffix);
+		ResourceLocation rightTex = modidPrefixUtil.prefix("block/etched_nagastone_right" + suffix);
+		ResourceLocation leftTex = modidPrefixUtil.prefix("block/etched_nagastone_left" + suffix);
 
 		// todo 1.15 cleanup make this more "logical" with rotations, etc. instead of just reproducing what was in the old blockstate json
 		ModelFile down = models().cubeColumn(name(b), downTex, stoneTiles);
@@ -770,9 +773,9 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		var builder = getVariantBuilder(TFBlocks.KEEPSAKE_CASKET.get());
 
 		var empty = models().getBuilder(name(TFBlocks.KEEPSAKE_CASKET.get())).parent(new ModelFile.UncheckedModelFile("builtin/entity")).texture("particle", "minecraft:block/netherite_block");
-		var obsidian = models().withExistingParent("casket_obsidian", prefix("block/casket_solid_template")).texture("top", ResourceLocation.withDefaultNamespace("block/obsidian")).texture("side", ResourceLocation.withDefaultNamespace("block/obsidian"));
-		var stone = models().withExistingParent("casket_stone", prefix("block/casket_solid_template")).texture("top", ResourceLocation.withDefaultNamespace("block/stone")).texture("side", ResourceLocation.withDefaultNamespace("block/stone"));
-		var basalt = models().withExistingParent("casket_basalt", prefix("block/casket_solid_template")).texture("top", ResourceLocation.withDefaultNamespace("block/basalt_top")).texture("side", ResourceLocation.withDefaultNamespace("block/basalt_side"));
+		var obsidian = models().withExistingParent("casket_obsidian", modidPrefixUtil.prefix("block/casket_solid_template")).texture("top", ResourceLocation.withDefaultNamespace("block/obsidian")).texture("side", ResourceLocation.withDefaultNamespace("block/obsidian"));
+		var stone = models().withExistingParent("casket_stone", modidPrefixUtil.prefix("block/casket_solid_template")).texture("top", ResourceLocation.withDefaultNamespace("block/stone")).texture("side", ResourceLocation.withDefaultNamespace("block/stone"));
+		var basalt = models().withExistingParent("casket_basalt", modidPrefixUtil.prefix("block/casket_solid_template")).texture("top", ResourceLocation.withDefaultNamespace("block/basalt_top")).texture("side", ResourceLocation.withDefaultNamespace("block/basalt_side"));
 
 		builder.partialState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.AIR).setModels(new ConfiguredModel(empty));
 		builder.partialState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.WATER).setModels(new ConfiguredModel(empty));
@@ -785,53 +788,53 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private void registerSmokersAndJets() {
 		simpleBlock(TFBlocks.SMOKER.get(), this.makeTintedBlockColumnUniqueBottom(TFBlocks.SMOKER.getId().getPath())
-			.texture("side", prefix("block/firejet_side"))
-			.texture("top", prefix("block/firejet_top"))
+			.texture("side", modidPrefixUtil.prefix("block/firejet_side"))
+			.texture("top", modidPrefixUtil.prefix("block/firejet_top"))
 			.texture("bottom", ResourceLocation.withDefaultNamespace("block/grass_block_top")));
 		simpleBlock(TFBlocks.FIRE_JET.get(), this.makeTintedBlockColumnUniqueBottom(TFBlocks.FIRE_JET.getId().getPath())
-			.texture("side", prefix("block/firejet_side"))
-			.texture("top", prefix("block/firejet_top"))
+			.texture("side", modidPrefixUtil.prefix("block/firejet_side"))
+			.texture("top", modidPrefixUtil.prefix("block/firejet_top"))
 			.texture("bottom", ResourceLocation.withDefaultNamespace("block/grass_block_top")));
 
 		ModelFile smokerOff = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_SMOKER.getId().getPath(), 0, 10, 15, 10, 10)
-			.texture("top", prefix("block/towerdev_ghasttraplid_off"))
-			.texture("side", prefix("block/towerdev_smoker_off"))
+			.texture("top", modidPrefixUtil.prefix("block/towerdev_ghasttraplid_off"))
+			.texture("side", modidPrefixUtil.prefix("block/towerdev_smoker_off"))
 			.texture("bottom", blockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
-			.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
-			.texture("side2", prefix("block/tower_device_level_1/towerdev_smoker_1"))
-			.texture("top3", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
-			.texture("side3", prefix("block/tower_device_level_2/towerdev_smoker_off_1"));
+			.texture("top2", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+			.texture("side2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_smoker_1"))
+			.texture("top3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+			.texture("side3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_smoker_off_1"));
 
 		ModelFile smokerOn = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_SMOKER.getId().getPath() + "_on", 0, 10, 15, 7, 10)
-			.texture("top", prefix("block/towerdev_ghasttraplid_on"))
-			.texture("side", prefix("block/towerdev_firejet_on"))
+			.texture("top", modidPrefixUtil.prefix("block/towerdev_ghasttraplid_on"))
+			.texture("side", modidPrefixUtil.prefix("block/towerdev_firejet_on"))
 			.texture("bottom", blockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
-			.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_on_1"))
-			.texture("side2", prefix("block/tower_device_level_1/towerdev_smoker_1"))
-			.texture("top3", prefix("block/tower_device_level_3/towerdev_ghasttraplid_on_2"))
-			.texture("side3", prefix("block/tower_device_level_2/towerdev_smoker_on_1"));
+			.texture("top2", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttraplid_on_1"))
+			.texture("side2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_smoker_1"))
+			.texture("top3", modidPrefixUtil.prefix("block/tower_device_level_3/towerdev_ghasttraplid_on_2"))
+			.texture("side3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_smoker_on_1"));
 		getVariantBuilder(TFBlocks.ENCASED_SMOKER.get()).partialState()
 			.with(EncasedSmokerBlock.ACTIVE, false).setModels(new ConfiguredModel(smokerOff));
 		getVariantBuilder(TFBlocks.ENCASED_SMOKER.get()).partialState()
 			.with(EncasedSmokerBlock.ACTIVE, true).setModels(new ConfiguredModel(smokerOn));
 
 		ModelFile encasedJetOff = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_FIRE_JET.getId().getPath(), 0, 10, 15, 10, 10)
-			.texture("top", prefix("block/towerdev_ghasttraplid_off"))
-			.texture("side", prefix("block/towerdev_firejet_off"))
+			.texture("top", modidPrefixUtil.prefix("block/towerdev_ghasttraplid_off"))
+			.texture("side", modidPrefixUtil.prefix("block/towerdev_firejet_off"))
 			.texture("bottom", blockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
-			.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
-			.texture("side2", prefix("block/tower_device_level_1/towerdev_firejet_1"))
-			.texture("top3", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
-			.texture("side3", prefix("block/tower_device_level_2/towerdev_firejet_off_1"));
+			.texture("top2", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+			.texture("side2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_firejet_1"))
+			.texture("top3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+			.texture("side3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_firejet_off_1"));
 
 		ModelFile encasedJetOn = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_FIRE_JET.getId().getPath() + "_on", 0, 10, 15, 7, 10)
-			.texture("top", prefix("block/towerdev_ghasttraplid_on"))
-			.texture("side", prefix("block/towerdev_firejet_on"))
+			.texture("top", modidPrefixUtil.prefix("block/towerdev_ghasttraplid_on"))
+			.texture("side", modidPrefixUtil.prefix("block/towerdev_firejet_on"))
 			.texture("bottom", blockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
-			.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_on_1"))
-			.texture("side2", prefix("block/tower_device_level_1/towerdev_firejet_1"))
-			.texture("top3", prefix("block/tower_device_level_3/towerdev_ghasttraplid_on_2"))
-			.texture("side3", prefix("block/tower_device_level_2/towerdev_firejet_on_1"));
+			.texture("top2", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttraplid_on_1"))
+			.texture("side2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_firejet_1"))
+			.texture("top3", modidPrefixUtil.prefix("block/tower_device_level_3/towerdev_ghasttraplid_on_2"))
+			.texture("side3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_firejet_on_1"));
 
 		getVariantBuilder(TFBlocks.ENCASED_FIRE_JET.get()).partialState()
 			.with(FireJetBlock.STATE, FireJetVariant.IDLE).setModels(new ConfiguredModel(encasedJetOff));
@@ -844,18 +847,18 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void registerPlantBlocks() {
-		simpleBlock(TFBlocks.MOSS_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/moss_patch"))));
+		simpleBlock(TFBlocks.MOSS_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(modidPrefixUtil.prefix("block/moss_patch"))));
 		simpleBlockExisting(TFBlocks.MAYAPPLE.get());
-		simpleBlock(TFBlocks.CLOVER_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/clover_patch"))));
+		simpleBlock(TFBlocks.CLOVER_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(modidPrefixUtil.prefix("block/clover_patch"))));
 		simpleBlock(TFBlocks.FIDDLEHEAD.get(), models().withExistingParent(TFBlocks.FIDDLEHEAD.getId().getPath(), "block/tinted_cross").renderType(CUTOUT)
 			.texture("cross", blockTexture(TFBlocks.FIDDLEHEAD.get())));
 		simpleBlock(TFBlocks.MUSHGLOOM.get(), this.make2layerCross(TFBlocks.MUSHGLOOM.getId().getPath(), CUTOUT, 10, 6)
 			.texture("cross", blockTexture(TFBlocks.MUSHGLOOM.get()))
-			.texture("cross2", prefix("block/" + TFBlocks.MUSHGLOOM.getId().getPath() + "_head")));
+			.texture("cross2", modidPrefixUtil.prefix("block/" + TFBlocks.MUSHGLOOM.getId().getPath() + "_head")));
 
 		ModelFile berry = this.make2layerCross(TFBlocks.TORCHBERRY_PLANT.getId().getPath(), CUTOUT, 0, 15)
 			.texture("cross", blockTexture(TFBlocks.TORCHBERRY_PLANT.get()))
-			.texture("cross2", prefix("block/" + TFBlocks.TORCHBERRY_PLANT.getId().getPath() + "_glow"));
+			.texture("cross2", modidPrefixUtil.prefix("block/" + TFBlocks.TORCHBERRY_PLANT.getId().getPath() + "_glow"));
 		ModelFile noBerry = models().withExistingParent(TFBlocks.TORCHBERRY_PLANT.getId().getPath() + "_no_berries", ResourceLocation.withDefaultNamespace("block/cross")).renderType(CUTOUT)
 			.texture("cross", blockTexture(TFBlocks.TORCHBERRY_PLANT.get()));
 		getVariantBuilder(TFBlocks.TORCHBERRY_PLANT.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(s.getValue(TorchberryPlantBlock.HAS_BERRIES) ? berry : noBerry).build());
@@ -885,7 +888,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		plankBlocks("twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS.get(), TFBlocks.TWILIGHT_OAK_SLAB.get(), TFBlocks.TWILIGHT_OAK_STAIRS.get(), TFBlocks.TWILIGHT_OAK_BUTTON.get(), TFBlocks.TWILIGHT_OAK_FENCE.get(), TFBlocks.TWILIGHT_OAK_GATE.get(), TFBlocks.TWILIGHT_OAK_PLATE.get(), TFBlocks.TWILIGHT_OAK_DOOR.get(), TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), TFBlocks.TWILIGHT_OAK_BANISTER.get());
 		singleBlockBoilerPlate(TFBlocks.TWILIGHT_OAK_LEAVES.get(), "block/leaves", m -> m.texture("all", "minecraft:block/oak_leaves"));
 
-		ResourceLocation rainboakSaplTex = prefix("block/" + TFBlocks.RAINBOW_OAK_SAPLING.getId().getPath());
+		ResourceLocation rainboakSaplTex = modidPrefixUtil.prefix("block/" + TFBlocks.RAINBOW_OAK_SAPLING.getId().getPath());
 		simpleBlock(TFBlocks.RAINBOW_OAK_SAPLING.get(), models().cross(TFBlocks.RAINBOW_OAK_SAPLING.getId().getPath(), rainboakSaplTex).renderType(CUTOUT));
 		singleBlockBoilerPlate(TFBlocks.RAINBOW_OAK_LEAVES.get(), "block/leaves", m -> m.texture("all", "minecraft:block/oak_leaves"));
 
@@ -934,11 +937,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		banisterVanilla(TFBlocks.BAMBOO_BANISTER.get(), "bamboo_planks", "bamboo");
 		banisterVanilla(TFBlocks.CHERRY_BANISTER.get(), "cherry_planks", "cherry");
 
-		final ResourceLocation MOSS = TwilightForestMod.prefix("block/mosspatch");
-		final ResourceLocation MOSS_OVERHANG = TwilightForestMod.prefix("block/moss_overhang");
+		final ResourceLocation MOSS = modidPrefixUtil.prefix("block/mosspatch");
+		final ResourceLocation MOSS_OVERHANG = modidPrefixUtil.prefix("block/moss_overhang");
 		final ResourceLocation TALL_GRASS = ResourceLocation.withDefaultNamespace("block/short_grass");
 		final ResourceLocation SNOW = ResourceLocation.withDefaultNamespace("block/snow");
-		final ResourceLocation SNOW_OVERHANG = TwilightForestMod.prefix("block/snow_overhang");
+		final ResourceLocation SNOW_OVERHANG = modidPrefixUtil.prefix("block/snow_overhang");
 
 		final ModelFile EMPTY_LOG = this.buildHorizontalHollowLog(false, false);
 		final ModelFile LAYERED_LOG = this.buildHorizontalHollowLog(true, false);
@@ -971,9 +974,9 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void magicLogCore(Block b) {
-		ResourceLocation topTex = prefix("block/" + name(b).replace("_core", "_top"));
+		ResourceLocation topTex = modidPrefixUtil.prefix("block/" + name(b).replace("_core", "_top"));
 		ModelFile off = models().cubeColumn(name(b), blockTexture(b), topTex);
-		ModelFile on = models().cubeColumn(name(b) + "_on", prefix("block/" + name(b) + "_on"), topTex);
+		ModelFile on = models().cubeColumn(name(b) + "_on", modidPrefixUtil.prefix("block/" + name(b) + "_on"), topTex);
 		getVariantBuilder(b).forAllStates(s -> {
 			ModelFile f = s.getValue(SpecialMagicLogBlock.ACTIVE) ? on : off;
 			Direction.Axis axis = s.getValue(RotatedPillarBlock.AXIS);
@@ -985,16 +988,16 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void rotationallyCorrectColumn(Block b) {
-		ResourceLocation side = prefix("block/" + name(b) + "_side");
-		ResourceLocation end = prefix("block/" + name(b) + "_end");
+		ResourceLocation side = modidPrefixUtil.prefix("block/" + name(b) + "_side");
+		ResourceLocation end = modidPrefixUtil.prefix("block/" + name(b) + "_end");
 		ConfiguredModel yModel = new ConfiguredModel(models().cubeColumn(name(b), side, end));
 		ConfiguredModel xModel = ConfiguredModel.builder()
-			.modelFile(models().withExistingParent(name(b) + "_x", prefix("block/util/cube_column_rotationally_correct_x"))
+			.modelFile(models().withExistingParent(name(b) + "_x", modidPrefixUtil.prefix("block/util/cube_column_rotationally_correct_x"))
 				.texture("side", side).texture("end", end))
 			.rotationX(90).rotationY(90)
 			.buildLast();
 		ConfiguredModel zModel = ConfiguredModel.builder()
-			.modelFile(models().withExistingParent(name(b) + "_z", prefix("block/util/cube_column_rotationally_correct_z"))
+			.modelFile(models().withExistingParent(name(b) + "_z", modidPrefixUtil.prefix("block/util/cube_column_rotationally_correct_z"))
 				.texture("side", side).texture("end", end))
 			.rotationX(90)
 			.buildLast();
@@ -1005,16 +1008,16 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void rotationallySpecialColumn(Block b) {
-		ResourceLocation sideA = prefix("block/" + name(b) + "_side_a");
-		ResourceLocation sideB = prefix("block/" + name(b) + "_side_b");
-		ResourceLocation end = prefix("block/" + name(b) + "_end");
+		ResourceLocation sideA = modidPrefixUtil.prefix("block/" + name(b) + "_side_a");
+		ResourceLocation sideB = modidPrefixUtil.prefix("block/" + name(b) + "_side_b");
+		ResourceLocation end = modidPrefixUtil.prefix("block/" + name(b) + "_end");
 		ConfiguredModel yModel = new ConfiguredModel(models().cubeColumn(name(b), sideA, end));
 		ConfiguredModel xModel = ConfiguredModel.builder()
-			.modelFile(models().withExistingParent(name(b) + "_x", prefix("block/util/cube_column_rotationally_special_x"))
+			.modelFile(models().withExistingParent(name(b) + "_x", modidPrefixUtil.prefix("block/util/cube_column_rotationally_special_x"))
 				.texture("side_a", sideA).texture("side_b", sideB).texture("end", end))
 			.buildLast();
 		ConfiguredModel zModel = ConfiguredModel.builder()
-			.modelFile(models().withExistingParent(name(b) + "_z", prefix("block/util/cube_column_rotationally_special_z"))
+			.modelFile(models().withExistingParent(name(b) + "_z", modidPrefixUtil.prefix("block/util/cube_column_rotationally_special_z"))
 				.texture("side_a", sideA).texture("side_b", sideB).texture("end", end))
 			.buildLast();
 		getVariantBuilder(b)
@@ -1025,18 +1028,18 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private void castleDoor(Block b) {
 		ModelFile vanished = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath() + "_vanished", "block/block")
-			.texture("base_texture", TwilightForestMod.prefix("block/castle_door_vanished"))
-			.texture("particle", TwilightForestMod.prefix("block/castle_door_vanished"))
-			.texture("overlay_texture", TwilightForestMod.prefix("block/castle_door_rune_corners"))
-			.texture("overlay_connected", TwilightForestMod.prefix("block/castle_door_rune_ctm"))
+			.texture("base_texture", modidPrefixUtil.prefix("block/castle_door_vanished"))
+			.texture("particle", modidPrefixUtil.prefix("block/castle_door_vanished"))
+			.texture("overlay_texture", modidPrefixUtil.prefix("block/castle_door_rune_corners"))
+			.texture("overlay_connected", modidPrefixUtil.prefix("block/castle_door_rune_ctm"))
 			.renderType(CUTOUT)
 			.customLoader(ConnectedTextureBuilder::begin).connectsTo(TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()).setOverlayTintIndex(0).setOverlayEmissivity(15).end();
 
 		ModelFile main = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath(), "block/block")
-			.texture("base_texture", TwilightForestMod.prefix("block/castle_door"))
-			.texture("particle", TwilightForestMod.prefix("block/castle_door"))
-			.texture("overlay_texture", TwilightForestMod.prefix("block/castle_door_rune_corners"))
-			.texture("overlay_connected", TwilightForestMod.prefix("block/castle_door_rune_ctm"))
+			.texture("base_texture", modidPrefixUtil.prefix("block/castle_door"))
+			.texture("particle", modidPrefixUtil.prefix("block/castle_door"))
+			.texture("overlay_texture", modidPrefixUtil.prefix("block/castle_door_rune_corners"))
+			.texture("overlay_connected", modidPrefixUtil.prefix("block/castle_door_rune_ctm"))
 			.renderType(CUTOUT)
 			.customLoader(ConnectedTextureBuilder::begin).connectsTo(TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()).setOverlayTintIndex(0).setOverlayEmissivity(15).end();
 
@@ -1058,11 +1061,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void stonePillar() {
-		ModelFile base = models().getExistingFile(prefix("block/pillar/pillar_base"));
-		ModelFile up = models().getExistingFile(prefix("block/pillar/pillar_up"));
-		ModelFile down = models().getExistingFile(prefix("block/pillar/pillar_down"));
-		ModelFile top = models().getExistingFile(prefix("block/pillar/pillar_top"));
-		ModelFile bottom = models().getExistingFile(prefix("block/pillar/pillar_bottom"));
+		ModelFile base = models().getExistingFile(modidPrefixUtil.prefix("block/pillar/pillar_base"));
+		ModelFile up = models().getExistingFile(modidPrefixUtil.prefix("block/pillar/pillar_up"));
+		ModelFile down = models().getExistingFile(modidPrefixUtil.prefix("block/pillar/pillar_down"));
+		ModelFile top = models().getExistingFile(modidPrefixUtil.prefix("block/pillar/pillar_top"));
+		ModelFile bottom = models().getExistingFile(modidPrefixUtil.prefix("block/pillar/pillar_bottom"));
 
 		getMultipartBuilder(TFBlocks.TWISTED_STONE_PILLAR.get())
 			.part().modelFile(base).rotationX(90).rotationY(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.X).end()
@@ -1086,8 +1089,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void slider() {
-		ModelFile slider = models().getExistingFile(TwilightForestMod.prefix("block/slider"));
-		ModelFile horizSlider = models().getExistingFile(TwilightForestMod.prefix("block/slider_horiz"));
+		ModelFile slider = models().getExistingFile(modidPrefixUtil.prefix("block/slider"));
+		ModelFile horizSlider = models().getExistingFile(modidPrefixUtil.prefix("block/slider_horiz"));
 		getVariantBuilder(TFBlocks.SLIDER.get()).forAllStates(state -> switch (state.getValue(SliderBlock.AXIS)) {
 			case X -> ConfiguredModel.builder().modelFile(horizSlider).rotationX(90).rotationY(90).build();
 			case Z -> ConfiguredModel.builder().modelFile(horizSlider).rotationX(90).build();
@@ -1097,17 +1100,17 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private void towerBlocks() {
 		ModelFile reappear = this.make3LayerCubeAllSidesSame(TFBlocks.REAPPEARING_BLOCK.getId().getPath(), CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_reappearing_off"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_reappearing_off_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_reappearing_off_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_reappearing_off"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_reappearing_off_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_reappearing_off_2"));
 		ModelFile reappearActive = this.make3LayerCubeAllSidesSame(TFBlocks.REAPPEARING_BLOCK.getId().getPath() + "_active", CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_reappearing_on"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_reappearing_on_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_reappearing_on_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_reappearing_on"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_reappearing_on_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_reappearing_on_2"));
 		ModelFile reappearVanished = this.make4x4x4SmallCube(TFBlocks.REAPPEARING_BLOCK.getId().getPath() + "_vanished")
-			.texture("all", prefix("block/towerdev_reappearing_trace_off"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_reappearing_trace_off"));
 		ModelFile reappearVanishedActive = this.make4x4x4SmallCube(TFBlocks.REAPPEARING_BLOCK.getId().getPath() + "_vanished_active")
-			.texture("all", prefix("block/towerdev_reappearing_trace_on"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_reappearing_trace_on"));
 		getVariantBuilder(TFBlocks.REAPPEARING_BLOCK.get()).forAllStates(s -> {
 			ModelFile model;
 			if (s.getValue(VanishingBlock.VANISHED)) {
@@ -1119,62 +1122,62 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		});
 
 		ModelFile vanish = this.make3LayerCubeAllSidesSame("vanishing_block", CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_vanish_off"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_vanish_off_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_vanish_off_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_vanish_off"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_vanish_off_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_vanish_off_2"));
 		ModelFile vanishActive = this.make3LayerCubeAllSidesSame("vanishing_block_active", CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_vanish_on"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_vanish_on_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_vanish_on_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_vanish_on"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_vanish_on_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_vanish_on_2"));
 		getVariantBuilder(TFBlocks.UNBREAKABLE_VANISHING_BLOCK.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(VanishingBlock.ACTIVE) ? vanishActive : vanish).build());
 		getVariantBuilder(TFBlocks.VANISHING_BLOCK.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(VanishingBlock.ACTIVE) ? vanishActive : vanish).build());
 
 		ModelFile vanishLocked = this.make3LayerCubeAllSidesSame(TFBlocks.LOCKED_VANISHING_BLOCK.getId().getPath(), CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_lock_on"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_lock_on_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_lock_on_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_lock_on"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_lock_on_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_lock_on_2"));
 		ModelFile vanishUnlocked = this.make3LayerCubeAllSidesSame(TFBlocks.LOCKED_VANISHING_BLOCK.getId().getPath() + "_unlocked", CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_lock_off"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_lock_off_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_lock_off_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_lock_off"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_lock_off_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_lock_off_2"));
 		getVariantBuilder(TFBlocks.LOCKED_VANISHING_BLOCK.get()).partialState()
 			.with(LockedVanishingBlock.LOCKED, true).setModels(new ConfiguredModel(vanishLocked));
 		getVariantBuilder(TFBlocks.LOCKED_VANISHING_BLOCK.get()).partialState()
 			.with(LockedVanishingBlock.LOCKED, false).setModels(new ConfiguredModel(vanishUnlocked));
 
 		ModelFile ghastTrap = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.GHAST_TRAP.getId().getPath(), 0, 10, 15, 10, 10)
-			.texture("top", prefix("block/towerdev_ghasttraplid_off"))
-			.texture("side", prefix("block/towerdev_ghasttrap_off"))
-			.texture("bottom", prefix("block/encased_towerwood"))
-			.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
-			.texture("side2", prefix("block/tower_device_level_1/towerdev_ghasttrap_off_1"))
-			.texture("top3", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
-			.texture("side3", prefix("block/tower_device_level_2/towerdev_ghasttrap_off_2"));
+			.texture("top", modidPrefixUtil.prefix("block/towerdev_ghasttraplid_off"))
+			.texture("side", modidPrefixUtil.prefix("block/towerdev_ghasttrap_off"))
+			.texture("bottom", modidPrefixUtil.prefix("block/encased_towerwood"))
+			.texture("top2", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+			.texture("side2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_ghasttrap_off_1"))
+			.texture("top3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+			.texture("side3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttrap_off_2"));
 		ModelFile ghastTrapActive = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.GHAST_TRAP.getId().getPath() + "_active", 0, 10, 15, 7, 10)
-			.texture("top", prefix("block/towerdev_ghasttraplid_on"))
-			.texture("side", prefix("block/towerdev_ghasttrap_on"))
-			.texture("bottom", prefix("block/encased_towerwood"))
-			.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_on_1"))
-			.texture("side2", prefix("block/tower_device_level_1/towerdev_ghasttrap_on_1"))
-			.texture("top3", prefix("block/tower_device_level_3/towerdev_ghasttraplid_on_2"))
-			.texture("side3", prefix("block/tower_device_level_2/towerdev_ghasttrap_on_2"));
+			.texture("top", modidPrefixUtil.prefix("block/towerdev_ghasttraplid_on"))
+			.texture("side", modidPrefixUtil.prefix("block/towerdev_ghasttrap_on"))
+			.texture("bottom", modidPrefixUtil.prefix("block/encased_towerwood"))
+			.texture("top2", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttraplid_on_1"))
+			.texture("side2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_ghasttrap_on_1"))
+			.texture("top3", modidPrefixUtil.prefix("block/tower_device_level_3/towerdev_ghasttraplid_on_2"))
+			.texture("side3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_ghasttrap_on_2"));
 		getVariantBuilder(TFBlocks.GHAST_TRAP.get()).partialState()
 			.with(GhastTrapBlock.ACTIVE, false).setModels(new ConfiguredModel(ghastTrap));
 		getVariantBuilder(TFBlocks.GHAST_TRAP.get()).partialState()
 			.with(GhastTrapBlock.ACTIVE, true).setModels(new ConfiguredModel(ghastTrapActive));
 
 		ModelFile builder = this.make3LayerCubeAllSidesSame(TFBlocks.CARMINITE_BUILDER.getId().getPath(), CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_builder_off"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_builder_off_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_builder_off_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_builder_off"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_builder_off_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_builder_off_2"));
 		ModelFile builderActive = this.make3LayerCubeAllSidesSame(TFBlocks.CARMINITE_BUILDER.getId().getPath() + "_active", CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_builder_on"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_builder_on_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_builder_on_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_builder_on"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_builder_on_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_builder_on_2"));
 		ModelFile builderTimeout = this.make3LayerCubeAllSidesSame(TFBlocks.CARMINITE_BUILDER.getId().getPath() + "_timeout", CUTOUT, 0, 10, 7)
-			.texture("all", prefix("block/towerdev_builder_timeout"))
-			.texture("all2", prefix("block/tower_device_level_2/towerdev_builder_timeout_1"))
-			.texture("all3", prefix("block/tower_device_level_3/towerdev_builder_timeout_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_builder_timeout"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_builder_timeout_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_3/towerdev_builder_timeout_2"));
 		getVariantBuilder(TFBlocks.CARMINITE_BUILDER.get()).partialState()
 			.with(BuilderBlock.STATE, TowerDeviceVariant.BUILDER_INACTIVE).setModels(new ConfiguredModel(builder));
 		getVariantBuilder(TFBlocks.CARMINITE_BUILDER.get()).partialState()
@@ -1183,34 +1186,34 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.with(BuilderBlock.STATE, TowerDeviceVariant.BUILDER_TIMEOUT).setModels(new ConfiguredModel(builderTimeout));
 
 		ModelFile built = this.make2LayerCubeAllSidesSame(TFBlocks.BUILT_BLOCK.getId().getPath(), CUTOUT, 15, 15, false)
-			.texture("all", prefix("block/towerdev_built_off"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_builder_off_1"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_built_off"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_builder_off_1"));
 		ModelFile builtActive = this.make2LayerCubeAllSidesSame(TFBlocks.BUILT_BLOCK.getId().getPath() + "_active", CUTOUT, 15, 15, false)
-			.texture("all", prefix("block/towerdev_built_on"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_builder_on_1"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_built_on"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_builder_on_1"));
 		getVariantBuilder(TFBlocks.BUILT_BLOCK.get()).partialState()
 			.with(TranslucentBuiltBlock.ACTIVE, false).setModels(new ConfiguredModel(built));
 		getVariantBuilder(TFBlocks.BUILT_BLOCK.get()).partialState()
 			.with(TranslucentBuiltBlock.ACTIVE, true).setModels(new ConfiguredModel(builtActive));
 
 		ModelFile antibuilder = this.make3LayerCubeAllSidesSame(TFBlocks.ANTIBUILDER.getId().getPath(), CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_antibuilder"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_antibuilder_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_antibuilder_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_antibuilder"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_antibuilder_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_antibuilder_2"));
 		simpleBlock(TFBlocks.ANTIBUILDER.get(), antibuilder);
 		ModelFile antibuilt = this.make2LayerCubeAllSidesSame(TFBlocks.ANTIBUILT_BLOCK.getId().getPath(), CUTOUT, 0, 10, false)
-			.texture("all", prefix("block/towerdev_antibuilt"))
-			.texture("all2", prefix("block/tower_device_level_2/towerdev_antibuilt_1"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_antibuilt"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_antibuilt_1"));
 		simpleBlock(TFBlocks.ANTIBUILT_BLOCK.get(), antibuilt);
 
 		ModelFile reactor = this.make3LayerCubeAllSidesSame(TFBlocks.CARMINITE_REACTOR.getId().getPath(), CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_reactor_off"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_reactor_off_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_reactor_off_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_reactor_off"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_reactor_off_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_reactor_off_2"));
 		ModelFile reactorActive = this.make3LayerCubeAllSidesSame(TFBlocks.CARMINITE_REACTOR.getId().getPath() + "_active", CUTOUT, 0, 15, 10)
-			.texture("all", prefix("block/towerdev_reactor_on"))
-			.texture("all2", prefix("block/tower_device_level_1/towerdev_reactor_on_1"))
-			.texture("all3", prefix("block/tower_device_level_2/towerdev_reactor_on_2"));
+			.texture("all", modidPrefixUtil.prefix("block/towerdev_reactor_on"))
+			.texture("all2", modidPrefixUtil.prefix("block/tower_device_level_1/towerdev_reactor_on_1"))
+			.texture("all3", modidPrefixUtil.prefix("block/tower_device_level_2/towerdev_reactor_on_2"));
 		getVariantBuilder(TFBlocks.CARMINITE_REACTOR.get()).partialState()
 			.with(CarminiteReactorBlock.ACTIVE, false).setModels(new ConfiguredModel(reactor));
 		getVariantBuilder(TFBlocks.CARMINITE_REACTOR.get()).partialState()
@@ -1220,22 +1223,22 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private ModelFile pedestalModel(String name, String north, String south, String west, String east, boolean active) {
 		BlockModelBuilder ret = this.makePedestal(name, active)
-			.texture("end", prefix("block/pedestal/top"))
-			.texture("north", prefix("block/pedestal/" + north + "_latent"))
-			.texture("south", prefix("block/pedestal/" + south + "_latent"))
-			.texture("west", prefix("block/pedestal/" + west + "_latent"))
-			.texture("east", prefix("block/pedestal/" + east + "_latent"));
+			.texture("end", modidPrefixUtil.prefix("block/pedestal/top"))
+			.texture("north", modidPrefixUtil.prefix("block/pedestal/" + north + "_latent"))
+			.texture("south", modidPrefixUtil.prefix("block/pedestal/" + south + "_latent"))
+			.texture("west", modidPrefixUtil.prefix("block/pedestal/" + west + "_latent"))
+			.texture("east", modidPrefixUtil.prefix("block/pedestal/" + east + "_latent"));
 		if (active) {
 			ret = ret
-				.texture("end2", prefix("block/pedestal/top_glow"))
-				.texture("north2", prefix("block/pedestal/" + north + "_glow"))
-				.texture("south2", prefix("block/pedestal/" + south + "_glow"))
-				.texture("west2", prefix("block/pedestal/" + west + "_glow"))
-				.texture("east2", prefix("block/pedestal/" + east + "_glow"))
-				.texture("north3", prefix("block/pedestal/" + north))
-				.texture("south3", prefix("block/pedestal/" + south))
-				.texture("west3", prefix("block/pedestal/" + west))
-				.texture("east3", prefix("block/pedestal/" + east));
+				.texture("end2", modidPrefixUtil.prefix("block/pedestal/top_glow"))
+				.texture("north2", modidPrefixUtil.prefix("block/pedestal/" + north + "_glow"))
+				.texture("south2", modidPrefixUtil.prefix("block/pedestal/" + south + "_glow"))
+				.texture("west2", modidPrefixUtil.prefix("block/pedestal/" + west + "_glow"))
+				.texture("east2", modidPrefixUtil.prefix("block/pedestal/" + east + "_glow"))
+				.texture("north3", modidPrefixUtil.prefix("block/pedestal/" + north))
+				.texture("south3", modidPrefixUtil.prefix("block/pedestal/" + south))
+				.texture("west3", modidPrefixUtil.prefix("block/pedestal/" + west))
+				.texture("east3", modidPrefixUtil.prefix("block/pedestal/" + east));
 		}
 		return ret;
 	}
@@ -1279,28 +1282,28 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	private void thorns() {
 		for (DeferredHolder<Block, Block> block : ImmutableList.of(TFBlocks.GREEN_THORNS, TFBlocks.BROWN_THORNS, TFBlocks.BURNT_THORNS)) {
 			String path = block.getId().getPath();
-			ResourceLocation sideTexture = prefix("block/" + path + "_side");
-			ResourceLocation endTexture = prefix("block/" + path + "_top");
+			ResourceLocation sideTexture = modidPrefixUtil.prefix("block/" + path + "_side");
+			ResourceLocation endTexture = modidPrefixUtil.prefix("block/" + path + "_top");
 
-			models().withExistingParent(path, prefix("block/thorns_main")).renderType(CUTOUT)//This is just used for the item model
+			models().withExistingParent(path, modidPrefixUtil.prefix("block/thorns_main")).renderType(CUTOUT)//This is just used for the item model
 				.texture("side", sideTexture)
 				.texture("end", endTexture);
 
-			ModelFile thorns = models().withExistingParent(path + "_thorns", prefix("block/thorns")).renderType(CUTOUT)
+			ModelFile thorns = models().withExistingParent(path + "_thorns", modidPrefixUtil.prefix("block/thorns")).renderType(CUTOUT)
 				.texture("side", sideTexture);
 
-			ModelFile top = models().withExistingParent(path + "_top", prefix("block/thorns_section_top")).renderType(CUTOUT)
+			ModelFile top = models().withExistingParent(path + "_top", modidPrefixUtil.prefix("block/thorns_section_top")).renderType(CUTOUT)
 				.texture("side", sideTexture)
 				.texture("end", endTexture);
 
-			ModelFile bottom = models().withExistingParent(path + "_bottom", prefix("block/thorns_section_bottom")).renderType(CUTOUT)
+			ModelFile bottom = models().withExistingParent(path + "_bottom", modidPrefixUtil.prefix("block/thorns_section_bottom")).renderType(CUTOUT)
 				.texture("side", sideTexture)
 				.texture("end", endTexture);
 
-			ModelFile section = models().withExistingParent(path + "_no_section", prefix("block/thorns_no_section")).renderType(CUTOUT)
+			ModelFile section = models().withExistingParent(path + "_no_section", modidPrefixUtil.prefix("block/thorns_no_section")).renderType(CUTOUT)
 				.texture("side", sideTexture);
 
-			ModelFile noSectionAlt = models().withExistingParent(path + "_no_section_alt", prefix("block/thorns_no_section_alt")).renderType(CUTOUT)
+			ModelFile noSectionAlt = models().withExistingParent(path + "_no_section_alt", modidPrefixUtil.prefix("block/thorns_no_section_alt")).renderType(CUTOUT)
 				.texture("side", sideTexture);
 
 			getMultipartBuilder(block.get())
@@ -1351,24 +1354,24 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		BlockModelBuilder[] models = new BlockModelBuilder[variants];
 		for (int i = 0; i < variants; i++) {
 			models[i] = this.makeTintedBlockAll(TFBlocks.AURORA_BLOCK.getId().getPath() + "_" + i, SOLID)
-				.texture("all", prefix("block/" + TFBlocks.AURORA_BLOCK.getId().getPath() + "_" + i));
+				.texture("all", modidPrefixUtil.prefix("block/" + TFBlocks.AURORA_BLOCK.getId().getPath() + "_" + i));
 		}
 
 		simpleBlock(TFBlocks.AURORA_BLOCK.get(), models().withExistingParent(TFBlocks.AURORA_BLOCK.getId().getPath(), ResourceLocation.withDefaultNamespace("block/block"))
 			.customLoader(NoiseVaryingModelBuilder::new).addAll(models).end());
 
 		ModelFile pillarModel = this.makeTintedBlockColumn(TFBlocks.AURORA_PILLAR.getId().getPath())
-			.texture("end", prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
+			.texture("end", modidPrefixUtil.prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
 			.texture("side", blockTexture(TFBlocks.AURORA_PILLAR.get()));
 		axisBlock(TFBlocks.AURORA_PILLAR.get(), pillarModel, pillarModel);
 
 		ModelFile slabModel = this.makeTintedSlab(TFBlocks.AURORA_SLAB.getId().getPath())
-			.texture("bottom", prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
-			.texture("top", prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
-			.texture("side", prefix("block/" + TFBlocks.AURORA_SLAB.getId().getPath() + "_side"));
+			.texture("bottom", modidPrefixUtil.prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
+			.texture("top", modidPrefixUtil.prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
+			.texture("side", modidPrefixUtil.prefix("block/" + TFBlocks.AURORA_SLAB.getId().getPath() + "_side"));
 		ModelFile doubleSlabModel = this.makeTintedBlockColumn(TFBlocks.AURORA_SLAB.getId().getPath() + "_double")
-			.texture("end", prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
-			.texture("side", prefix("block/" + TFBlocks.AURORA_SLAB.getId().getPath() + "_side"));
+			.texture("end", modidPrefixUtil.prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
+			.texture("side", modidPrefixUtil.prefix("block/" + TFBlocks.AURORA_SLAB.getId().getPath() + "_side"));
 
 		getVariantBuilder(TFBlocks.AURORA_SLAB.get()).partialState()
 			.with(SlabBlock.TYPE, SlabType.BOTTOM).setModels(new ConfiguredModel(slabModel));
@@ -1413,11 +1416,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private void lilyPad(Block b) {
 		String baseName = name(b);
-		ResourceLocation parent = prefix("block/huge_lily_pad");
+		ResourceLocation parent = modidPrefixUtil.prefix("block/huge_lily_pad");
 		ModelFile[] models = new ModelFile[4];
 		for (int i = 0; i < models.length; i++) {
 			models[i] = models().withExistingParent(baseName + "_" + i, parent).renderType(CUTOUT)
-				.texture("texture", prefix("block/huge_lily_pad_" + i))
+				.texture("texture", modidPrefixUtil.prefix("block/huge_lily_pad_" + i))
 				.texture("particle", "#texture");
 		}
 
@@ -1495,13 +1498,13 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private BlockModelBuilder makeTerrorcottaCurvesModel(String type, int rotation) {
 		return this.models().withExistingParent(type + "_" + (rotation * 90), ResourceLocation.withDefaultNamespace("block/cube"))
-			.texture("particle", prefix("block/" + type + "_a"))
-			.texture("up", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.UP)))
-			.texture("down", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.DOWN)))
-			.texture("south", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.SOUTH)))
-			.texture("west", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.WEST)))
-			.texture("north", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.NORTH)))
-			.texture("east", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.EAST)));
+			.texture("particle", modidPrefixUtil.prefix("block/" + type + "_a"))
+			.texture("up", modidPrefixUtil.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.UP)))
+			.texture("down", modidPrefixUtil.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.DOWN)))
+			.texture("south", modidPrefixUtil.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.SOUTH)))
+			.texture("west", modidPrefixUtil.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.WEST)))
+			.texture("north", modidPrefixUtil.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.NORTH)))
+			.texture("east", modidPrefixUtil.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.EAST)));
 	}
 
 	@NotNull
@@ -1545,13 +1548,13 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private BlockModelBuilder makeTerrorcottaLinesModel(String type, boolean rotated) {
 		return this.models().withExistingParent(type + "_" + (rotated ? 90 : 0), ResourceLocation.withDefaultNamespace("block/cube"))
-			.texture("particle", prefix("block/" + type + "_a"))
-			.texture("up", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.UP)))
-			.texture("down", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.DOWN)))
-			.texture("south", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.SOUTH)))
-			.texture("west", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.WEST)))
-			.texture("north", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.NORTH)))
-			.texture("east", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.EAST)));
+			.texture("particle", modidPrefixUtil.prefix("block/" + type + "_a"))
+			.texture("up", modidPrefixUtil.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.UP)))
+			.texture("down", modidPrefixUtil.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.DOWN)))
+			.texture("south", modidPrefixUtil.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.SOUTH)))
+			.texture("west", modidPrefixUtil.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.WEST)))
+			.texture("north", modidPrefixUtil.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.NORTH)))
+			.texture("east", modidPrefixUtil.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.EAST)));
 	}
 
 	@NotNull
@@ -1580,9 +1583,9 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void hollowLogs(DeferredHolder<Block, RotatedPillarBlock> originalLog, DeferredHolder<Block, RotatedPillarBlock> strippedLog, DeferredHolder<Block, HorizontalHollowLogBlock> horizontalHollowLog, DeferredHolder<Block, VerticalHollowLogBlock> verticalHollowLog, DeferredHolder<Block, ClimbableHollowLogBlock> climbableHollowLog, ModelFile emptyLog, ModelFile mossLog, ModelFile grassLog, ModelFile snowLog, ModelFile hollowLog, ModelFile vineLog, ModelFile ladderLog) {
-		ResourceLocation top = TwilightForestMod.prefix("block/" + originalLog.getId().getPath() + "_top");
-		ResourceLocation side = TwilightForestMod.prefix("block/" + originalLog.getId().getPath());
-		ResourceLocation inner = TwilightForestMod.prefix("block/" + strippedLog.getId().getPath());
+		ResourceLocation top = modidPrefixUtil.prefix("block/" + originalLog.getId().getPath() + "_top");
+		ResourceLocation side = modidPrefixUtil.prefix("block/" + originalLog.getId().getPath());
+		ResourceLocation inner = modidPrefixUtil.prefix("block/" + strippedLog.getId().getPath());
 
 		this.getVariantBuilder(horizontalHollowLog.get()).forAllStates(state -> ConfiguredModel.builder().modelFile((switch (state.getValue(HorizontalHollowLogBlock.VARIANT)) {
 			case MOSS -> models().getBuilder(horizontalHollowLog.getId().getPath() + "_moss").parent(mossLog);

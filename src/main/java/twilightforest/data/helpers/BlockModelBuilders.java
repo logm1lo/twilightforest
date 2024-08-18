@@ -10,11 +10,14 @@ import net.neoforged.neoforge.client.model.generators.ModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.beans.Autowired;
 import twilightforest.enums.HollowLogVariants;
-
-import static twilightforest.TwilightForestMod.prefix;
+import twilightforest.util.IdPrefixUtil;
 
 public abstract class BlockModelBuilders extends BlockModelHelpers {
+
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
 
 	public BlockModelBuilders(PackOutput output, ExistingFileHelper helper) {
 		super(output, helper);
@@ -429,9 +432,9 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 	protected BlockModelBuilder makeJar(String name) {
 		return models().withExistingParent(name, "minecraft:block/block").renderType(CUTOUT)
 			.texture("particle", "#side")
-			.texture("side", prefix("block/jar_side"))
-			.texture("bottom", prefix("block/jar_bottom"))
-			.texture("top", prefix("block/jar_top"))
+			.texture("side", modidPrefixUtil.prefix("block/jar_side"))
+			.texture("bottom", modidPrefixUtil.prefix("block/jar_bottom"))
+			.texture("top", modidPrefixUtil.prefix("block/jar_top"))
 			.element().from(3.0F, 0.0F, 3.0F).to(13.0F, 14.0F, 13.0F)
 			.face(Direction.UP).texture("#top").end()
 			.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).end()

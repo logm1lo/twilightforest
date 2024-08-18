@@ -5,13 +5,13 @@ import net.neoforged.neoforge.common.util.Lazy;
 import twilightforest.TFEnumExtensions;
 import twilightforest.beans.Autowired;
 import twilightforest.beans.Component;
-import twilightforest.util.ModidPrefixUtil;
+import twilightforest.util.IdPrefixUtil;
 
 @Component
 public class TFBoatTypeEnumExtension {
 
 	@Autowired
-	private ModidPrefixUtil modidPrefixUtil;
+	private IdPrefixUtil modidPrefixUtil;
 
 	/**
 	 * {@link TFEnumExtensions#Boat$Type_TWILIGHT_OAK(int, Class)}

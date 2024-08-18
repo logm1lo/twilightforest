@@ -65,6 +65,7 @@ import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.init.custom.Enforcements;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
+import twilightforest.util.IdPrefixUtil;
 import twilightforest.util.Restriction;
 import twilightforest.util.TFRemapper;
 import twilightforest.util.woods.WoodPalette;
@@ -79,10 +80,6 @@ public final class TwilightForestMod {
 
 	public static final String ID = "twilightforest";
 
-	private static final String MODEL_DIR = "textures/entity/";
-	private static final String GUI_DIR = "textures/gui/";
-	private static final String ENVIRO_DIR = "textures/environment/";
-
 	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression",
 		GameRules.Category.UPDATES,  //Putting it in UPDATES since other world stuff is here
 		GameRules.BooleanValue.create(true, (server, enforced) ->
@@ -91,8 +88,11 @@ public final class TwilightForestMod {
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
 	static { // Load as early as possible
-		TFBeanContext.init();
+		TFBeanContext.init(registry -> registry.register(IdPrefixUtil.class, new IdPrefixUtil(ID)));
 	}
+
+	@Autowired
+	private IdPrefixUtil idPrefixUtil;
 
 	@Autowired
 	private TFCommand tfCommand;
@@ -245,7 +245,7 @@ public final class TwilightForestMod {
 
 	public void registerExtraStuff(RegisterEvent evt) {
 		if (evt.getRegistryKey().equals(Registries.BIOME_SOURCE)) {
-			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
+			Registry.register(BuiltInRegistries.BIOME_SOURCE, idPrefixUtil.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 		}
 	}
 
@@ -264,7 +264,7 @@ public final class TwilightForestMod {
 		PayloadRegistrar registrar = event.registrar(ID).versioned("1.0.0").optional();
 		registrar.playToClient(AreaProtectionPacket.TYPE, AreaProtectionPacket.STREAM_CODEC, AreaProtectionPacket::handle);
 		registrar.playToClient(CreateMovingCicadaSoundPacket.TYPE, CreateMovingCicadaSoundPacket.STREAM_CODEC, CreateMovingCicadaSoundPacket::handle);
-		registrar.playToClient(EnforceProgressionStatusPacket.TYPE, EnforceProgressionStatusPacket.STREAM_CODEC, EnforceProgressionStatusPacket::handle);
+		registrar.playToClient(EnforceProgressionStatusPacket.TYPE.get(), EnforceProgressionStatusPacket.STREAM_CODEC, EnforceProgressionStatusPacket::handle);
 		registrar.playToClient(MagicMapPacket.TYPE, MagicMapPacket.STREAM_CODEC, MagicMapPacket::handle);
 		registrar.playToClient(MazeMapPacket.TYPE, MazeMapPacket.STREAM_CODEC, MazeMapPacket::handle);
 		registrar.playToClient(MissingAdvancementToastPacket.TYPE, MissingAdvancementToastPacket.STREAM_CODEC, MissingAdvancementToastPacket::handle);
@@ -570,22 +570,6 @@ public final class TwilightForestMod {
 
 	public void registerCommands(RegisterCommandsEvent event) {
 		tfCommand.register(event.getDispatcher());
-	}
-
-	public static ResourceLocation prefix(String name) {
-		return ResourceLocation.fromNamespaceAndPath(ID, name.toLowerCase(Locale.ROOT));
-	}
-
-	public static ResourceLocation getModelTexture(String name) {
-		return ResourceLocation.fromNamespaceAndPath(ID, MODEL_DIR + name);
-	}
-
-	public static ResourceLocation getGuiTexture(String name) {
-		return ResourceLocation.fromNamespaceAndPath(ID, GUI_DIR + name);
-	}
-
-	public static ResourceLocation getEnvTexture(String name) {
-		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
 	}
 
 }

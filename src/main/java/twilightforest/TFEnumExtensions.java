@@ -9,7 +9,7 @@ import twilightforest.beans.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
-import twilightforest.util.ModidPrefixUtil;
+import twilightforest.util.IdPrefixUtil;
 import twilightforest.world.components.BiomeColorAlgorithms;
 
 import java.util.function.Supplier;
@@ -21,7 +21,7 @@ public class TFEnumExtensions {
 	@Autowired
 	private static BiomeColorAlgorithms biomeColorAlgorithms;
 
-	private static final ModidPrefixUtil modidPrefixUtil = new ModidPrefixUtil(); // Enum extensions run before the bean context loads
+	private static final IdPrefixUtil modidPrefixUtil = new IdPrefixUtil(TwilightForestMod.ID); // Enum extensions run before the bean context loads
 
 	/**
 	 * {@link net.minecraft.world.damagesource.DamageEffects}<p/>

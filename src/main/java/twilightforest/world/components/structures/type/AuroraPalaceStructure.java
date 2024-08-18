@@ -15,10 +15,12 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.util.IdPrefixUtil;
 import twilightforest.world.components.structures.icetower.IceTowerMainComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
@@ -28,9 +30,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AuroraPalaceStructure extends ControlledSpawningStructure {
+
 	public static final MapCodec<AuroraPalaceStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
 		controlledSpawningCodec(instance).apply(instance, AuroraPalaceStructure::new)
 	);
+
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
 
 	public AuroraPalaceStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
@@ -53,7 +59,7 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 				new MobSpawnSettings.SpawnerData(TFEntities.STABLE_ICE_CORE.get(), 10, 1, 2),
 				new MobSpawnSettings.SpawnerData(TFEntities.UNSTABLE_ICE_CORE.get(), 5, 1, 2)
 			),
-			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_yeti"))),
+			new AdvancementLockConfig(List.of(modidPrefixUtil.prefix("progress_yeti"))),
 			new HintConfig(HintConfig.book("icetower", 3), TFEntities.KOBOLD.get()),
 			new DecorationConfig(2, false, true, false),
 			true, Optional.of(TFMapDecorations.AURORA_PALACE),

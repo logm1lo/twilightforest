@@ -13,9 +13,11 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.rei.displays.REICrumbleHornDisplay;
 import twilightforest.init.TFItems;
+import twilightforest.util.IdPrefixUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +25,11 @@ import java.util.function.Function;
 
 public class REICrumbleHornCategory implements DisplayCategory<REICrumbleHornDisplay> {
 
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
+
 	public static final CategoryIdentifier<REICrumbleHornDisplay> CRUMBLE_HORN = CategoryIdentifier.of(TwilightForestMod.ID, "crumble_horn");
-	public static final Function<Boolean, ResourceLocation> TEXTURE = dark -> dark ? TwilightForestMod.getGuiTexture("crumble_horn_jei_dark.png") : TwilightForestMod.getGuiTexture("crumble_horn_jei.png");
+	public static final Function<Boolean, ResourceLocation> TEXTURE = dark -> dark ? modidPrefixUtil.guiTexture("crumble_horn_jei_dark.png") : modidPrefixUtil.guiTexture("crumble_horn_jei.png");
 
 	private final Renderer icon;
 	private final Component localizedName;

@@ -121,7 +121,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 	public void registerEntryRenderers(EntryRendererRegistry registry) {
 		RENDER_CACHE.clear();
 
-		registry.register(EntityEntryDefinition.ENTITY_TYPE, (entry, last) -> {
+		registry.register(EntityEntryDefinition.ENTITY_TYPE.get(), (entry, last) -> {
 			if (entry.getValue() instanceof ItemEntity) {
 				return RENDER_CACHE.computeIfAbsent(entry, stack -> new EntityEntryDefinition.ItemEntityRenderer());
 			}
@@ -132,9 +132,9 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 	@Override
 	public void registerEntryTypes(EntryTypeRegistry registry) {
-		registry.register(EntityEntryDefinition.ENTITY_TYPE, ENTITY_DEFINITION);
+		registry.register(EntityEntryDefinition.ENTITY_TYPE.get(), ENTITY_DEFINITION);
 
-		registry.registerBridge(VanillaEntryTypes.ITEM, EntityEntryDefinition.ENTITY_TYPE, object -> {
+		registry.registerBridge(VanillaEntryTypes.ITEM, EntityEntryDefinition.ENTITY_TYPE.get(), object -> {
 			Optional<Stream<EntryStack<Entity>>> stream;
 
 			ItemStack stack = object.getValue();
@@ -159,7 +159,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 			return stream.map(CompoundEventResult::interruptTrue).orElseGet(CompoundEventResult::pass);
 		});
 
-		registry.registerBridge(EntityEntryDefinition.ENTITY_TYPE, VanillaEntryTypes.ITEM, object -> {
+		registry.registerBridge(EntityEntryDefinition.ENTITY_TYPE.get(), VanillaEntryTypes.ITEM, object -> {
 			Optional<Stream<EntryStack<ItemStack>>> stream = Optional.empty();
 
 			Entity entity = EntityRenderingUtil.fetchEntity(object.getValue().getType(), Minecraft.getInstance().level);

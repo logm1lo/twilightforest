@@ -9,15 +9,23 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.entity.PartEntity;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
 import twilightforest.network.UpdateTFMultipartPacket;
+import twilightforest.util.IdPrefixUtil;
 
 import java.util.Objects;
 
 public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
-	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("noop");
+	@Autowired(dist = Dist.CLIENT)
+	private static IdPrefixUtil modidPrefixUtil;
+
+	public static final Lazy<ResourceLocation> RENDERER = Lazy.of(() -> modidPrefixUtil.prefix("noop"));
 
 	protected EntityDimensions realSize = EntityDimensions.fixed(1F, 1F);
 
@@ -38,7 +46,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	}
 
 	public ResourceLocation renderer() {
-		return RENDERER;
+		return RENDERER.get();
 	}
 
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {

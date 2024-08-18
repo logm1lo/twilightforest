@@ -11,16 +11,23 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.DirectionalBlock;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
 import twilightforest.block.entity.MoonwormBlockEntity;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
+import twilightforest.util.IdPrefixUtil;
 
+@Configurable
 public class MoonwormRenderer implements BlockEntityRenderer<MoonwormBlockEntity> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
+	@Autowired
+	private IdPrefixUtil modidPrefixUtil;
+
+	private final Lazy<ResourceLocation> TEXTURE = Lazy.of(() -> modidPrefixUtil.modelTexture("moonworm.png"));
 	private final MoonwormModel moonwormModel;
 
 	public MoonwormRenderer(BlockEntityRendererProvider.Context context) {
@@ -42,7 +49,7 @@ public class MoonwormRenderer implements BlockEntityRenderer<MoonwormBlockEntity
 		stack.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
 		stack.mulPose(Axis.YN.rotationDegrees(yaw));
 
-		VertexConsumer consumer = buffer.getBuffer(this.moonwormModel.renderType(TEXTURE));
+		VertexConsumer consumer = buffer.getBuffer(this.moonwormModel.renderType(TEXTURE.get()));
 		this.moonwormModel.setRotationAngles(entity, partialTicks);
 		this.moonwormModel.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 

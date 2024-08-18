@@ -12,16 +12,24 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.ClientHooks;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
 import twilightforest.entity.boss.Hydra;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
+import twilightforest.util.IdPrefixUtil;
 
+@Configurable
 public class HydraHeadRenderer<T extends HydraHead, M extends ListModel<T>> extends TFPartRenderer<T, M> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
+	@Autowired
+	private IdPrefixUtil modidPrefixUtil;
+
+	private final Lazy<ResourceLocation> TEXTURE = Lazy.of(() -> modidPrefixUtil.modelTexture("hydra4.png"));
 
 
 	public HydraHeadRenderer(EntityRendererProvider.Context context, M model) {
@@ -93,6 +101,6 @@ public class HydraHeadRenderer<T extends HydraHead, M extends ListModel<T>> exte
 
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return TEXTURE;
+		return TEXTURE.get();
 	}
 }

@@ -25,22 +25,42 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.event.EventHooks;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
+import twilightforest.beans.PostConstruct;
+import twilightforest.beans.TFBeanContext;
 import twilightforest.entity.monster.Wraith;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.IdPrefixUtil;
 import twilightforest.util.features.FeatureLogic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+@Configurable
 public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
-	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("feature/graveyard/graveyard");
-	private static final ResourceLocation TRAP = TwilightForestMod.prefix("feature/graveyard/grave_trap");
+
+	@Autowired
+	private IdPrefixUtil modidPrefixUtil;
+
+	@Nullable
+	private ResourceLocation GRAVEYARD;
+	@Nullable
+	private ResourceLocation TRAP;
+
+	@PostConstruct
+	private void setup() {
+		GRAVEYARD = modidPrefixUtil.prefix("feature/graveyard/graveyard");
+		TRAP = modidPrefixUtil.prefix("feature/graveyard/grave_trap");
+	}
 
 	public GraveyardFeature(Codec<NoneFeatureConfiguration> config) {
 		super(config);
@@ -94,15 +114,15 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		int flags = 16 | 2 | 1;
 
 		StructureTemplateManager templatemanager = world.getLevel().getServer().getStructureManager();
-		StructureTemplate base = templatemanager.getOrCreate(GRAVEYARD);
+		StructureTemplate base = templatemanager.getOrCreate(Objects.requireNonNull(GRAVEYARD));
 		if (base == null)
 			return false;
 		List<Pair<GraveType, StructureTemplate>> graves = new ArrayList<>();
-		StructureTemplate trap = templatemanager.getOrCreate(TRAP);
+		StructureTemplate trap = templatemanager.getOrCreate(Objects.requireNonNull(TRAP));
 		if (trap == null)
 			return false;
 		for (GraveType type : GraveType.VALUES) {
-			StructureTemplate grave = templatemanager.getOrCreate(type.RL);
+			StructureTemplate grave = templatemanager.getOrCreate(type.RL.get());
 			if (grave == null)
 				return false;
 			graves.add(Pair.of(type, grave));
@@ -209,17 +229,17 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 
 	private enum GraveType {
 
-		Full(TwilightForestMod.prefix("feature/graveyard/grave_full")),
+		Full("feature/graveyard/grave_full"),
 
-		Upper(TwilightForestMod.prefix("feature/graveyard/grave_upper")),
+		Upper("feature/graveyard/grave_upper"),
 
-		Lower(TwilightForestMod.prefix("feature/graveyard/grave_lower"));
+		Lower("feature/graveyard/grave_lower");
 
 		private static final GraveType[] VALUES = values();
-		private final ResourceLocation RL;
+		private final Lazy<ResourceLocation> RL;
 
-		GraveType(ResourceLocation rl) {
-			this.RL = rl;
+		GraveType(String rl) {
+			this.RL = Lazy.of(() -> TFBeanContext.inject(IdPrefixUtil.class).prefix(rl)); // Cursed, enums are static
 		}
 	}
 

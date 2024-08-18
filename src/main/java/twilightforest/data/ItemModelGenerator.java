@@ -18,7 +18,6 @@ import net.neoforged.neoforge.client.model.generators.loaders.SeparateTransforms
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.beans.Autowired;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
@@ -26,14 +25,16 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
 import twilightforest.item.Experiment115Item;
 import twilightforest.item.HollowLogItem;
-
-import static twilightforest.TwilightForestMod.prefix;
+import twilightforest.util.IdPrefixUtil;
 
 @SuppressWarnings("SameParameterValue")
 public class ItemModelGenerator extends ItemModelProvider {
 
 	@Autowired
 	private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
+
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
 
 	public ItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
 		super(output, TwilightForestMod.ID, existingFileHelper);
@@ -62,7 +63,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.FAKE_DIAMOND.get(), ResourceLocation.withDefaultNamespace("block/diamond_block"));
 		toBlock(TFBlocks.STRONGHOLD_SHIELD.get());
 		toBlock(TFBlocks.TROPHY_PEDESTAL.get());
-		toBlockModel(TFBlocks.AURORA_BLOCK.get(), prefix("block/aurora_block_0"));
+		toBlockModel(TFBlocks.AURORA_BLOCK.get(), modidPrefixUtil.prefix("block/aurora_block_0"));
 		toBlock(TFBlocks.AURORA_PILLAR.get());
 		toBlock(TFBlocks.AURORA_SLAB.get());
 		toBlock(TFBlocks.AURORALIZED_GLASS.get());
@@ -73,16 +74,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.GREEN_THORNS.get());
 		toBlock(TFBlocks.BROWN_THORNS.get());
 		toBlock(TFBlocks.BURNT_THORNS.get());
-		generated(TFBlocks.THORN_ROSE.getId().getPath(), prefix("block/" + TFBlocks.THORN_ROSE.getId().getPath()));
+		generated(TFBlocks.THORN_ROSE.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.THORN_ROSE.getId().getPath()));
 		toBlockModel(TFBlocks.THORN_LEAVES.get(), ResourceLocation.withDefaultNamespace("block/oak_leaves"));
 		toBlockModel(TFBlocks.BEANSTALK_LEAVES.get(), ResourceLocation.withDefaultNamespace("block/azalea_leaves"));
 		toBlock(TFBlocks.DEADROCK.get());
 		toBlock(TFBlocks.CRACKED_DEADROCK.get());
 		toBlock(TFBlocks.WEATHERED_DEADROCK.get());
 		getBuilder(TFBlocks.TROLLSTEINN.getId().getPath()).parent(getExistingFile(ResourceLocation.withDefaultNamespace("block/cube_all")))
-			.texture("all", prefix("block/trollsteinn"));
+			.texture("all", modidPrefixUtil.prefix("block/trollsteinn"));
 		getBuilder(TFBlocks.TROLLSTEINN.getId().getPath() + "_light").parent(getExistingFile(ResourceLocation.withDefaultNamespace("block/cube_all")))
-			.texture("all", prefix("block/trollsteinn_light"));
+			.texture("all", modidPrefixUtil.prefix("block/trollsteinn_light"));
 		toBlock(TFBlocks.WISPY_CLOUD.get());
 		toBlock(TFBlocks.FLUFFY_CLOUD.get());
 		toBlock(TFBlocks.RAINY_CLOUD.get());
@@ -122,15 +123,15 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.UBEROUS_SOIL.get());
 		toBlock(TFBlocks.HUGE_STALK.get());
 		getBuilder(TFBlocks.HUGE_MUSHGLOOM.getId().getPath()).parent(getExistingFile(ResourceLocation.withDefaultNamespace("block/cube_all")))
-			.texture("all", prefix("block/huge_gloom_cap"));
+			.texture("all", modidPrefixUtil.prefix("block/huge_gloom_cap"));
 		getBuilder(TFBlocks.HUGE_MUSHGLOOM_STEM.getId().getPath()).parent(getExistingFile(ResourceLocation.withDefaultNamespace("block/cube_all")))
-			.texture("all", prefix("block/huge_mushgloom_stem"));
-		generated(TFBlocks.TROLLVIDR.getId().getPath(), prefix("block/" + TFBlocks.TROLLVIDR.getId().getPath()));
-		generated(TFBlocks.UNRIPE_TROLLBER.getId().getPath(), prefix("block/" + TFBlocks.UNRIPE_TROLLBER.getId().getPath()));
-		generated(TFBlocks.TROLLBER.getId().getPath(), prefix("block/" + TFBlocks.TROLLBER.getId().getPath()));
+			.texture("all", modidPrefixUtil.prefix("block/huge_mushgloom_stem"));
+		generated(TFBlocks.TROLLVIDR.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.TROLLVIDR.getId().getPath()));
+		generated(TFBlocks.UNRIPE_TROLLBER.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.UNRIPE_TROLLBER.getId().getPath()));
+		generated(TFBlocks.TROLLBER.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.TROLLBER.getId().getPath()));
 		toBlock(TFBlocks.SLIDER.get());
-		generated(TFBlocks.HUGE_LILY_PAD.getId().getPath(), prefix("block/" + TFBlocks.HUGE_LILY_PAD.getId().getPath()));
-		generated(TFBlocks.HUGE_WATER_LILY.getId().getPath(), prefix("block/" + TFBlocks.HUGE_WATER_LILY.getId().getPath()));
+		generated(TFBlocks.HUGE_LILY_PAD.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.HUGE_LILY_PAD.getId().getPath()));
+		generated(TFBlocks.HUGE_WATER_LILY.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.HUGE_WATER_LILY.getId().getPath()));
 		toBlock(TFBlocks.CASTLE_BRICK.get());
 		toBlock(TFBlocks.WORN_CASTLE_BRICK.get());
 		toBlock(TFBlocks.CRACKED_CASTLE_BRICK.get());
@@ -155,19 +156,19 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
 		toBlockModel(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
 		toBlockModel(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
-		forcefield(TFBlocks.PINK_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		forcefield(TFBlocks.BLUE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		forcefield(TFBlocks.GREEN_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		forcefield(TFBlocks.VIOLET_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		forcefield(TFBlocks.ORANGE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.PINK_FORCE_FIELD.getId().getPath(), modidPrefixUtil.prefix("block/forcefield_white"));
+		forcefield(TFBlocks.BLUE_FORCE_FIELD.getId().getPath(), modidPrefixUtil.prefix("block/forcefield_white"));
+		forcefield(TFBlocks.GREEN_FORCE_FIELD.getId().getPath(), modidPrefixUtil.prefix("block/forcefield_white"));
+		forcefield(TFBlocks.VIOLET_FORCE_FIELD.getId().getPath(), modidPrefixUtil.prefix("block/forcefield_white"));
+		forcefield(TFBlocks.ORANGE_FORCE_FIELD.getId().getPath(), modidPrefixUtil.prefix("block/forcefield_white"));
 		toBlock(TFBlocks.CINDER_LOG.get());
 		toBlock(TFBlocks.CINDER_WOOD.get());
 		toBlockModel(TFBlocks.CINDER_FURNACE.get(), ResourceLocation.withDefaultNamespace("block/furnace"));
-		ModelFile think115 = generated("item/think115", prefix("item/think115"));
-		ModelFile fullBlockSprinkle = getExistingFile(prefix("block/experiment115_8_8_regenerating"));
-		generated(TFBlocks.EXPERIMENT_115.getId().getPath(), prefix("item/experiment_115"))
-			.override().predicate(Experiment115Item.THINK, 1).model(think115).end()
-			.override().predicate(Experiment115Item.FULL, 1).model(fullBlockSprinkle).end();
+		ModelFile think115 = generated("item/think115", modidPrefixUtil.prefix("item/think115"));
+		ModelFile fullBlockSprinkle = getExistingFile(modidPrefixUtil.prefix("block/experiment115_8_8_regenerating"));
+		generated(TFBlocks.EXPERIMENT_115.getId().getPath(), modidPrefixUtil.prefix("item/experiment_115"))
+			.override().predicate(Experiment115Item.THINK.get(), 1).model(think115).end()
+			.override().predicate(Experiment115Item.FULL.get(), 1).model(fullBlockSprinkle).end();
 		toBlockModel(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), "miniature/portal");
 		toBlockModel(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), "miniature/naga_courtyard");
 		toBlockModel(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), "miniature/lich_tower");
@@ -185,37 +186,37 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.MOSSY_MAZESTONE.get());
 		toBlock(TFBlocks.MAZESTONE_MOSAIC.get());
 		toBlock(TFBlocks.MAZESTONE_BORDER.get());
-		ModelFile bundle = generated("red_thread_bundle", prefix("item/red_thread_bundle_0"));
-		ModelFile spool = generated("red_thread_spool", prefix("item/red_thread_bundle_1"));
-		ModelFile large_spool = generated("red_thread_large_spool", prefix("item/red_thread_bundle_2"));
+		ModelFile bundle = generated("red_thread_bundle", modidPrefixUtil.prefix("item/red_thread_bundle_0"));
+		ModelFile spool = generated("red_thread_spool", modidPrefixUtil.prefix("item/red_thread_bundle_1"));
+		ModelFile large_spool = generated("red_thread_large_spool", modidPrefixUtil.prefix("item/red_thread_bundle_2"));
 		singleTex(TFBlocks.RED_THREAD)
-			.override().predicate(prefix("size"), 0.25F).model(bundle).end()
-			.override().predicate(prefix("size"), 0.5F).model(spool).end()
-			.override().predicate(prefix("size"), 1.0F).model(large_spool).end();
+			.override().predicate(modidPrefixUtil.prefix("size"), 0.25F).model(bundle).end()
+			.override().predicate(modidPrefixUtil.prefix("size"), 0.5F).model(spool).end()
+			.override().predicate(modidPrefixUtil.prefix("size"), 1.0F).model(large_spool).end();
 		toBlock(TFBlocks.HEDGE.get());
 		toBlock(TFBlocks.ROOT_BLOCK.get());
 		toBlock(TFBlocks.LIVEROOT_BLOCK.get());
 		toBlock(TFBlocks.MANGROVE_ROOT.get());
 		toBlock(TFBlocks.UNCRAFTING_TABLE.get());
-		toBlockModel(TFBlocks.NAGA_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
-		toBlockModel(TFBlocks.LICH_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
-		toBlockModel(TFBlocks.HYDRA_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
-		toBlockModel(TFBlocks.UR_GHAST_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
-		toBlockModel(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
-		toBlockModel(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
-		toBlockModel(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
-		toBlockModel(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
-		toBlockModel(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
-		toBlockModel(TFBlocks.FIREFLY_JAR.get(), prefix("item/mason_jar"));
+		toBlockModel(TFBlocks.NAGA_BOSS_SPAWNER.get(), modidPrefixUtil.prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.LICH_BOSS_SPAWNER.get(), modidPrefixUtil.prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.HYDRA_BOSS_SPAWNER.get(), modidPrefixUtil.prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.UR_GHAST_BOSS_SPAWNER.get(), modidPrefixUtil.prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), modidPrefixUtil.prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get(), modidPrefixUtil.prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), modidPrefixUtil.prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), modidPrefixUtil.prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), modidPrefixUtil.prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.FIREFLY_JAR.get(), modidPrefixUtil.prefix("item/mason_jar"));
 		toBlock(TFBlocks.FIREFLY_SPAWNER.get());
-		toBlockModel(TFBlocks.CICADA_JAR.get(), prefix("item/mason_jar"));
-		generated(TFBlocks.MOSS_PATCH.getId().getPath(), prefix("block/patch/moss"));
-		generated(TFBlocks.MAYAPPLE.getId().getPath(), prefix("block/mayapple"));
-		generated(TFBlocks.CLOVER_PATCH.getId().getPath(), prefix("block/patch/clover"));
-		generated(TFBlocks.FIDDLEHEAD.getId().getPath(), prefix("block/fiddlehead"));
-		generated(TFBlocks.MUSHGLOOM.getId().getPath(), prefix("block/mushgloom"), prefix("block/mushgloom_head"));
-		generated(TFBlocks.TORCHBERRY_PLANT.getId().getPath(), prefix("block/torchberry_plant"));
-		generated(TFBlocks.ROOT_STRAND.getId().getPath(), prefix("block/root_strand"));
+		toBlockModel(TFBlocks.CICADA_JAR.get(), modidPrefixUtil.prefix("item/mason_jar"));
+		generated(TFBlocks.MOSS_PATCH.getId().getPath(), modidPrefixUtil.prefix("block/patch/moss"));
+		generated(TFBlocks.MAYAPPLE.getId().getPath(), modidPrefixUtil.prefix("block/mayapple"));
+		generated(TFBlocks.CLOVER_PATCH.getId().getPath(), modidPrefixUtil.prefix("block/patch/clover"));
+		generated(TFBlocks.FIDDLEHEAD.getId().getPath(), modidPrefixUtil.prefix("block/fiddlehead"));
+		generated(TFBlocks.MUSHGLOOM.getId().getPath(), modidPrefixUtil.prefix("block/mushgloom"), modidPrefixUtil.prefix("block/mushgloom_head"));
+		generated(TFBlocks.TORCHBERRY_PLANT.getId().getPath(), modidPrefixUtil.prefix("block/torchberry_plant"));
+		generated(TFBlocks.ROOT_STRAND.getId().getPath(), modidPrefixUtil.prefix("block/root_strand"));
 		generated(TFBlocks.FALLEN_LEAVES.getId().getPath(), ResourceLocation.withDefaultNamespace("block/oak_leaves"));
 		toBlock(TFBlocks.SMOKER.get());
 		toBlock(TFBlocks.FIRE_JET.get());
@@ -235,31 +236,31 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get());
 		toBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get());
 		toBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get());
-		toBlockModel(TFBlocks.SPIRAL_BRICKS.get(), prefix("block/spiral_bricks/z_spiral_bottom_right"));
+		toBlockModel(TFBlocks.SPIRAL_BRICKS.get(), modidPrefixUtil.prefix("block/spiral_bricks/z_spiral_bottom_right"));
 		toBlock(TFBlocks.TWISTED_STONE.get());
-		toBlockModel(TFBlocks.TWISTED_STONE_PILLAR.get(), prefix("block/pillar/pillar_inventory"));
+		toBlockModel(TFBlocks.TWISTED_STONE_PILLAR.get(), modidPrefixUtil.prefix("block/pillar/pillar_inventory"));
 		toBlock(TFBlocks.BOLD_STONE_PILLAR.get());
 		toBlock(TFBlocks.CANOPY_BOOKSHELF.get());
-		generated(TFBlocks.ROPE.getId().getPath(), prefix("block/" + TFBlocks.ROPE.getId().getPath()));
+		generated(TFBlocks.ROPE.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.ROPE.getId().getPath()));
 		toBlock(TFBlocks.CANOPY_WINDOW.value());
-		generated(TFBlocks.CANOPY_WINDOW_PANE.getId().getPath(), prefix("block/" + TFBlocks.CANOPY_WINDOW.getId().getPath()));
+		generated(TFBlocks.CANOPY_WINDOW_PANE.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.CANOPY_WINDOW.getId().getPath()));
 
-		toBlockModel(TFBlocks.TERRORCOTTA_ARCS.get(), prefix("block/terrorcotta_arcs"));
-		toBlockModel(TFBlocks.TERRORCOTTA_LINES.get(), prefix("block/terrorcotta_lines_0"));
-		toBlockModel(TFBlocks.TERRORCOTTA_CURVES.get(), prefix("block/terrorcotta_curves_90"));
+		toBlockModel(TFBlocks.TERRORCOTTA_ARCS.get(), modidPrefixUtil.prefix("block/terrorcotta_arcs"));
+		toBlockModel(TFBlocks.TERRORCOTTA_LINES.get(), modidPrefixUtil.prefix("block/terrorcotta_lines_0"));
+		toBlockModel(TFBlocks.TERRORCOTTA_CURVES.get(), modidPrefixUtil.prefix("block/terrorcotta_curves_90"));
 		carpet(TFBlocks.ROYAL_RAGS.getRegisteredName(), TFBlocks.ROYAL_RAGS.getId().withPrefix("block/"));
 
-		withExistingParent(TFBlocks.OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/oak_planks");
-		withExistingParent(TFBlocks.SPRUCE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/spruce_planks");
-		withExistingParent(TFBlocks.BIRCH_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/birch_planks");
-		withExistingParent(TFBlocks.JUNGLE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/jungle_planks");
-		withExistingParent(TFBlocks.ACACIA_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/acacia_planks");
-		withExistingParent(TFBlocks.DARK_OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/dark_oak_planks");
-		withExistingParent(TFBlocks.CRIMSON_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/crimson_planks");
-		withExistingParent(TFBlocks.WARPED_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/warped_planks");
-		withExistingParent(TFBlocks.VANGROVE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/mangrove_planks");
-		withExistingParent(TFBlocks.BAMBOO_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/bamboo_planks");
-		withExistingParent(TFBlocks.CHERRY_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/cherry_planks");
+		withExistingParent(TFBlocks.OAK_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/oak_planks");
+		withExistingParent(TFBlocks.SPRUCE_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/spruce_planks");
+		withExistingParent(TFBlocks.BIRCH_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/birch_planks");
+		withExistingParent(TFBlocks.JUNGLE_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/jungle_planks");
+		withExistingParent(TFBlocks.ACACIA_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/acacia_planks");
+		withExistingParent(TFBlocks.DARK_OAK_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/dark_oak_planks");
+		withExistingParent(TFBlocks.CRIMSON_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/crimson_planks");
+		withExistingParent(TFBlocks.WARPED_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/warped_planks");
+		withExistingParent(TFBlocks.VANGROVE_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/mangrove_planks");
+		withExistingParent(TFBlocks.BAMBOO_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/bamboo_planks");
+		withExistingParent(TFBlocks.CHERRY_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "minecraft:block/cherry_planks");
 
 		toBlock(TFBlocks.TWILIGHT_OAK_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
@@ -267,8 +268,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get());
 		toBlock(TFBlocks.TWILIGHT_OAK_LEAVES.get());
 		toBlock(TFBlocks.RAINBOW_OAK_LEAVES.get());
-		generated(TFBlocks.RAINBOW_OAK_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.RAINBOW_OAK_SAPLING.getId().getPath()));
-		generated(TFBlocks.TWILIGHT_OAK_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.TWILIGHT_OAK_SAPLING.getId().getPath()));
+		generated(TFBlocks.RAINBOW_OAK_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.RAINBOW_OAK_SAPLING.getId().getPath()));
+		generated(TFBlocks.TWILIGHT_OAK_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.TWILIGHT_OAK_SAPLING.getId().getPath()));
 		woodBlock(TFBlocks.TWILIGHT_OAK_PLANKS.get(), "planks/twilight_oak");
 		woodBlock(TFBlocks.TWILIGHT_OAK_STAIRS.get(), "stairs/twilight_oak");
 		woodBlock(TFBlocks.TWILIGHT_OAK_SLAB.get(), "slab/twilight_oak");
@@ -279,17 +280,17 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlockModel(TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), "twilight_oak_trapdoor_bottom", "trapdoor/twilight_oak");
 		singleTex(TFItems.TWILIGHT_OAK_SIGN);
 		singleTex(TFItems.TWILIGHT_OAK_HANGING_SIGN);
-		withExistingParent(TFBlocks.TWILIGHT_OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_twilight_oak_0");
-		generated(TFBlocks.TWILIGHT_OAK_DOOR.getId().getPath(), prefix("item/" + TFBlocks.TWILIGHT_OAK_DOOR.getId().getPath()));
-		withExistingParent(TFBlocks.TWILIGHT_OAK_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_twilight_oak_0"));
-		withExistingParent(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_twilight_oak_0"));
+		withExistingParent(TFBlocks.TWILIGHT_OAK_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "block/wood/planks_twilight_oak_0");
+		generated(TFBlocks.TWILIGHT_OAK_DOOR.getId().getPath(), modidPrefixUtil.prefix("item/" + TFBlocks.TWILIGHT_OAK_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.TWILIGHT_OAK_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_twilight_oak_0"));
+		withExistingParent(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_twilight_oak_0"));
 
 		toBlock(TFBlocks.CANOPY_LOG.get());
 		toBlock(TFBlocks.STRIPPED_CANOPY_LOG.get());
 		toBlock(TFBlocks.CANOPY_WOOD.get());
 		toBlock(TFBlocks.STRIPPED_CANOPY_WOOD.get());
 		toBlock(TFBlocks.CANOPY_LEAVES.get());
-		generated(TFBlocks.CANOPY_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.CANOPY_SAPLING.getId().getPath()));
+		generated(TFBlocks.CANOPY_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.CANOPY_SAPLING.getId().getPath()));
 		woodBlock(TFBlocks.CANOPY_PLANKS.get(), "planks/canopy");
 		woodBlock(TFBlocks.CANOPY_STAIRS.get(), "stairs/canopy");
 		woodBlock(TFBlocks.CANOPY_SLAB.get(), "slab/canopy");
@@ -300,17 +301,17 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlockModel(TFBlocks.CANOPY_TRAPDOOR.get(), "canopy_trapdoor_bottom", "trapdoor/canopy");
 		singleTex(TFItems.CANOPY_SIGN);
 		singleTex(TFItems.CANOPY_HANGING_SIGN);
-		withExistingParent(TFBlocks.CANOPY_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_canopy_0");
-		generated(TFBlocks.CANOPY_DOOR.getId().getPath(), prefix("item/" + TFBlocks.CANOPY_DOOR.getId().getPath()));
-		withExistingParent(TFBlocks.CANOPY_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_canopy_0"));
-		withExistingParent(TFBlocks.CANOPY_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_canopy_0"));
+		withExistingParent(TFBlocks.CANOPY_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "block/wood/planks_canopy_0");
+		generated(TFBlocks.CANOPY_DOOR.getId().getPath(), modidPrefixUtil.prefix("item/" + TFBlocks.CANOPY_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.CANOPY_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_canopy_0"));
+		withExistingParent(TFBlocks.CANOPY_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_canopy_0"));
 
 		toBlock(TFBlocks.MANGROVE_LOG.get());
 		toBlock(TFBlocks.STRIPPED_MANGROVE_LOG.get());
 		toBlock(TFBlocks.MANGROVE_WOOD.get());
 		toBlock(TFBlocks.STRIPPED_MANGROVE_WOOD.get());
 		toBlock(TFBlocks.MANGROVE_LEAVES.get());
-		generated(TFBlocks.MANGROVE_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.MANGROVE_SAPLING.getId().getPath()));
+		generated(TFBlocks.MANGROVE_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.MANGROVE_SAPLING.getId().getPath()));
 		woodBlock(TFBlocks.MANGROVE_PLANKS.get(), "planks/mangrove");
 		woodBlock(TFBlocks.MANGROVE_STAIRS.get(), "stairs/mangrove");
 		woodBlock(TFBlocks.MANGROVE_SLAB.get(), "slab/mangrove");
@@ -321,17 +322,17 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlockModel(TFBlocks.MANGROVE_TRAPDOOR.get(), "mangrove_trapdoor_bottom", "trapdoor/mangrove");
 		singleTex(TFItems.MANGROVE_SIGN);
 		singleTex(TFItems.MANGROVE_HANGING_SIGN);
-		withExistingParent(TFBlocks.MANGROVE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_mangrove_0");
-		generated(TFBlocks.MANGROVE_DOOR.getId().getPath(), prefix("item/" + TFBlocks.MANGROVE_DOOR.getId().getPath()));
-		withExistingParent(TFBlocks.MANGROVE_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mangrove_0"));
-		withExistingParent(TFBlocks.MANGROVE_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mangrove_0"));
+		withExistingParent(TFBlocks.MANGROVE_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "block/wood/planks_mangrove_0");
+		generated(TFBlocks.MANGROVE_DOOR.getId().getPath(), modidPrefixUtil.prefix("item/" + TFBlocks.MANGROVE_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.MANGROVE_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_mangrove_0"));
+		withExistingParent(TFBlocks.MANGROVE_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_mangrove_0"));
 
 		toBlock(TFBlocks.DARK_LOG.get());
 		toBlock(TFBlocks.STRIPPED_DARK_LOG.get());
 		toBlock(TFBlocks.DARK_WOOD.get());
 		toBlock(TFBlocks.STRIPPED_DARK_WOOD.get());
 		toBlock(TFBlocks.DARK_LEAVES.get());
-		generated(TFBlocks.DARKWOOD_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.DARKWOOD_SAPLING.getId().getPath()));
+		generated(TFBlocks.DARKWOOD_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.DARKWOOD_SAPLING.getId().getPath()));
 		woodBlock(TFBlocks.DARK_PLANKS.get(), "planks/darkwood");
 		woodBlock(TFBlocks.DARK_STAIRS.get(), "stairs/darkwood");
 		woodBlock(TFBlocks.DARK_SLAB.get(), "slab/darkwood");
@@ -342,11 +343,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlockModel(TFBlocks.DARK_TRAPDOOR.get(), "darkwood_trapdoor_bottom", "trapdoor/darkwood");
 		singleTex(TFItems.DARK_SIGN);
 		singleTex(TFItems.DARK_HANGING_SIGN);
-		withExistingParent(TFBlocks.DARK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_darkwood_0");
-		generated(TFBlocks.DARK_DOOR.getId().getPath(), prefix("item/" + TFBlocks.DARK_DOOR.getId().getPath()));
-		generated(TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath()));
-		withExistingParent(TFBlocks.DARK_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_darkwood_0"));
-		withExistingParent(TFBlocks.DARK_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_darkwood_0"));
+		withExistingParent(TFBlocks.DARK_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "block/wood/planks_darkwood_0");
+		generated(TFBlocks.DARK_DOOR.getId().getPath(), modidPrefixUtil.prefix("item/" + TFBlocks.DARK_DOOR.getId().getPath()));
+		generated(TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath()));
+		withExistingParent(TFBlocks.DARK_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_darkwood_0"));
+		withExistingParent(TFBlocks.DARK_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_darkwood_0"));
 
 		toBlock(TFBlocks.TIME_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TIME_LOG.get());
@@ -354,7 +355,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.STRIPPED_TIME_WOOD.get());
 		toBlock(TFBlocks.TIME_LOG_CORE.get());
 		toBlock(TFBlocks.TIME_LEAVES.get());
-		generated(TFBlocks.TIME_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.TIME_SAPLING.getId().getPath()));
+		generated(TFBlocks.TIME_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.TIME_SAPLING.getId().getPath()));
 		woodBlock(TFBlocks.TIME_PLANKS.get(), "planks/time");
 		woodBlock(TFBlocks.TIME_STAIRS.get(), "stairs/time");
 		woodBlock(TFBlocks.TIME_SLAB.get(), "slab/time");
@@ -365,10 +366,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlockModel(TFBlocks.TIME_TRAPDOOR.get(), "time_trapdoor_bottom", "trapdoor/time");
 		singleTex(TFItems.TIME_SIGN);
 		singleTex(TFItems.TIME_HANGING_SIGN);
-		withExistingParent(TFBlocks.TIME_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_time_0");
-		generated(TFBlocks.TIME_DOOR.getId().getPath(), prefix("item/" + TFBlocks.TIME_DOOR.getId().getPath()));
-		withExistingParent(TFBlocks.TIME_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_time_0"));
-		withExistingParent(TFBlocks.TIME_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_time_0"));
+		withExistingParent(TFBlocks.TIME_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "block/wood/planks_time_0");
+		generated(TFBlocks.TIME_DOOR.getId().getPath(), modidPrefixUtil.prefix("item/" + TFBlocks.TIME_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.TIME_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_time_0"));
+		withExistingParent(TFBlocks.TIME_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_time_0"));
 
 		toBlock(TFBlocks.TRANSFORMATION_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
@@ -376,7 +377,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get());
 		toBlock(TFBlocks.TRANSFORMATION_LOG_CORE.get());
 		toBlock(TFBlocks.TRANSFORMATION_LEAVES.get());
-		generated(TFBlocks.TRANSFORMATION_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.TRANSFORMATION_SAPLING.getId().getPath()));
+		generated(TFBlocks.TRANSFORMATION_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.TRANSFORMATION_SAPLING.getId().getPath()));
 		woodBlock(TFBlocks.TRANSFORMATION_PLANKS.get(), "planks/trans");
 		woodBlock(TFBlocks.TRANSFORMATION_STAIRS.get(), "stairs/trans");
 		woodBlock(TFBlocks.TRANSFORMATION_SLAB.get(), "slab/trans");
@@ -387,10 +388,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlockModel(TFBlocks.TRANSFORMATION_TRAPDOOR.get(), "trans_trapdoor_bottom", "trapdoor/trans");
 		singleTex(TFItems.TRANSFORMATION_SIGN);
 		singleTex(TFItems.TRANSFORMATION_HANGING_SIGN);
-		withExistingParent(TFBlocks.TRANSFORMATION_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_trans_0");
-		generated(TFBlocks.TRANSFORMATION_DOOR.getId().getPath(), prefix("item/" + TFBlocks.TRANSFORMATION_DOOR.getId().getPath()));
-		withExistingParent(TFBlocks.TRANSFORMATION_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_trans_0"));
-		withExistingParent(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_trans_0"));
+		withExistingParent(TFBlocks.TRANSFORMATION_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "block/wood/planks_trans_0");
+		generated(TFBlocks.TRANSFORMATION_DOOR.getId().getPath(), modidPrefixUtil.prefix("item/" + TFBlocks.TRANSFORMATION_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.TRANSFORMATION_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_trans_0"));
+		withExistingParent(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_trans_0"));
 
 		toBlock(TFBlocks.MINING_LOG.get());
 		toBlock(TFBlocks.STRIPPED_MINING_LOG.get());
@@ -398,7 +399,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.STRIPPED_MINING_WOOD.get());
 		toBlock(TFBlocks.MINING_LOG_CORE.get());
 		toBlock(TFBlocks.MINING_LEAVES.get());
-		generated(TFBlocks.MINING_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.MINING_SAPLING.getId().getPath()));
+		generated(TFBlocks.MINING_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.MINING_SAPLING.getId().getPath()));
 		woodBlock(TFBlocks.MINING_PLANKS.get(), "planks/mine");
 		woodBlock(TFBlocks.MINING_STAIRS.get(), "stairs/mine");
 		woodBlock(TFBlocks.MINING_SLAB.get(), "slab/mine");
@@ -409,10 +410,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlockModel(TFBlocks.MINING_TRAPDOOR.get(), "mine_trapdoor_bottom", "trapdoor/mine");
 		singleTex(TFItems.MINING_SIGN);
 		singleTex(TFItems.MINING_HANGING_SIGN);
-		withExistingParent(TFBlocks.MINING_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_mine_0");
-		generated(TFBlocks.MINING_DOOR.getId().getPath(), prefix("item/" + TFBlocks.MINING_DOOR.getId().getPath()));
-		withExistingParent(TFBlocks.MINING_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mine_0"));
-		withExistingParent(TFBlocks.MINING_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mine_0"));
+		withExistingParent(TFBlocks.MINING_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "block/wood/planks_mine_0");
+		generated(TFBlocks.MINING_DOOR.getId().getPath(), modidPrefixUtil.prefix("item/" + TFBlocks.MINING_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.MINING_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_mine_0"));
+		withExistingParent(TFBlocks.MINING_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_mine_0"));
 
 		toBlock(TFBlocks.SORTING_LOG.get());
 		toBlock(TFBlocks.STRIPPED_SORTING_LOG.get());
@@ -420,7 +421,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.STRIPPED_SORTING_WOOD.get());
 		toBlock(TFBlocks.SORTING_LOG_CORE.get());
 		toBlock(TFBlocks.SORTING_LEAVES.get());
-		generated(TFBlocks.SORTING_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.SORTING_SAPLING.getId().getPath()));
+		generated(TFBlocks.SORTING_SAPLING.getId().getPath(), modidPrefixUtil.prefix("block/" + TFBlocks.SORTING_SAPLING.getId().getPath()));
 		woodBlock(TFBlocks.SORTING_PLANKS.get(), "planks/sort");
 		woodBlock(TFBlocks.SORTING_STAIRS.get(), "stairs/sort");
 		woodBlock(TFBlocks.SORTING_SLAB.get(), "slab/sort");
@@ -431,12 +432,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlockModel(TFBlocks.SORTING_TRAPDOOR.get(), "sort_trapdoor_bottom", "trapdoor/sort");
 		singleTex(TFItems.SORTING_SIGN);
 		singleTex(TFItems.SORTING_HANGING_SIGN);
-		withExistingParent(TFBlocks.SORTING_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_sort_0");
-		generated(TFBlocks.SORTING_DOOR.getId().getPath(), prefix("item/" + TFBlocks.SORTING_DOOR.getId().getPath()));
-		withExistingParent(TFBlocks.SORTING_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_sort_0"));
-		withExistingParent(TFBlocks.SORTING_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_sort_0"));
+		withExistingParent(TFBlocks.SORTING_BANISTER.getId().toString(), modidPrefixUtil.prefix("item/banister_item")).texture("texture", "block/wood/planks_sort_0");
+		generated(TFBlocks.SORTING_DOOR.getId().getPath(), modidPrefixUtil.prefix("item/" + TFBlocks.SORTING_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.SORTING_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_sort_0"));
+		withExistingParent(TFBlocks.SORTING_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", modidPrefixUtil.prefix("block/wood/planks_sort_0"));
 
-		ResourceLocation templateTrophy = prefix("item/template_trophy");
+		ResourceLocation templateTrophy = modidPrefixUtil.prefix("item/template_trophy");
 		withExistingParent(TFItems.NAGA_TROPHY.getId().toString(), templateTrophy);
 		withExistingParent(TFItems.LICH_TROPHY.getId().toString(), templateTrophy);
 		withExistingParent(TFItems.MINOSHROOM_TROPHY.getId().toString(), templateTrophy);
@@ -457,12 +458,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(TFItems.QUEST_RAM_TROPHY.getId().toString(), templateTrophy).transforms()
 			.transform(itemDisplayContextEnumExtension.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
 
-		withExistingParent(TFItems.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFItems.PIGLIN_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFItems.PLAYER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFItems.SKELETON_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFItems.WITHER_SKELETON_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFItems.ZOMBIE_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.CREEPER_SKULL_CANDLE.getId().toString(), modidPrefixUtil.prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.PIGLIN_SKULL_CANDLE.getId().toString(), modidPrefixUtil.prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.PLAYER_SKULL_CANDLE.getId().toString(), modidPrefixUtil.prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.SKELETON_SKULL_CANDLE.getId().toString(), modidPrefixUtil.prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.WITHER_SKELETON_SKULL_CANDLE.getId().toString(), modidPrefixUtil.prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.ZOMBIE_SKULL_CANDLE.getId().toString(), modidPrefixUtil.prefix("item/template_skull_candle"));
 
 		hollowLog(TFItems.HOLLOW_OAK_LOG);
 		hollowLog(TFItems.HOLLOW_SPRUCE_LOG);
@@ -491,8 +492,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTexTool(TFItems.ZOMBIE_SCEPTER);
 		singleTexTool(TFItems.FORTIFICATION_SCEPTER);
 		singleTex(TFItems.MAGIC_PAINTING);
-		ModelFile active = generated("ore_meter_active", prefix("item/ore_meter_active"));
-		singleTex(TFItems.ORE_METER).override().predicate(TwilightForestMod.prefix("active"), 1).model(active).end();
+		ModelFile active = generated("ore_meter_active", modidPrefixUtil.prefix("item/ore_meter_active"));
+		singleTex(TFItems.ORE_METER).override().predicate(modidPrefixUtil.prefix("active"), 1).model(active).end();
 		singleTex(TFItems.FILLED_MAGIC_MAP);
 		singleTex(TFItems.FILLED_MAZE_MAP);
 		singleTex(TFItems.FILLED_ORE_MAP);
@@ -545,8 +546,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.MAGIC_MAP);
 		singleTex(TFItems.MAZE_MAP);
 		singleTex(TFItems.ORE_MAP);
-		ModelFile magnetPull1 = specialTool("ore_magnet_pulling_1", prefix("item/ore_magnet_pulling_1"));
-		ModelFile magnetPull2 = specialTool("ore_magnet_pulling_2", prefix("item/ore_magnet_pulling_2"));
+		ModelFile magnetPull1 = specialTool("ore_magnet_pulling_1", modidPrefixUtil.prefix("item/ore_magnet_pulling_1"));
+		ModelFile magnetPull2 = specialTool("ore_magnet_pulling_2", modidPrefixUtil.prefix("item/ore_magnet_pulling_2"));
 		specialTool(TFItems.ORE_MAGNET)
 			.override().predicate(ResourceLocation.withDefaultNamespace("pulling"), 1).predicate(ResourceLocation.withDefaultNamespace("pull"), (float) 0.5).model(magnetPull1).end()
 			.override().predicate(ResourceLocation.withDefaultNamespace("pulling"), 1).predicate(ResourceLocation.withDefaultNamespace("pull"), 1).model(magnetPull2).end();
@@ -559,8 +560,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.CHARM_OF_LIFE_1);
 		singleTex(TFItems.CHARM_OF_LIFE_2);
 		singleTexFullbright(TFItems.TOWER_KEY);
-		generated(TFItems.BORER_ESSENCE.getId().getPath(), prefix("item/" + TFItems.BORER_ESSENCE.getId().getPath()), prefix("item/borer_essence_particles"));
-		buildItem(TFItems.CARMINITE.getId().getPath(), "item/generated", 7, prefix("item/" + TFItems.CARMINITE.getId().getPath()));
+		generated(TFItems.BORER_ESSENCE.getId().getPath(), modidPrefixUtil.prefix("item/" + TFItems.BORER_ESSENCE.getId().getPath()), modidPrefixUtil.prefix("item/borer_essence_particles"));
+		buildItem(TFItems.CARMINITE.getId().getPath(), "item/generated", 7, modidPrefixUtil.prefix("item/" + TFItems.CARMINITE.getId().getPath()));
 		singleTex(TFItems.ARMOR_SHARD);
 		singleTex(TFItems.ARMOR_SHARD_CLUSTER);
 		singleTex(TFItems.KNIGHTMETAL_INGOT);
@@ -591,39 +592,39 @@ public class ItemModelGenerator extends ItemModelProvider {
 		trimmedLayeredArmor(TFItems.ARCTIC_LEGGINGS);
 		trimmedLayeredArmor(TFItems.ARCTIC_BOOTS);
 		singleTex(TFItems.MAGIC_BEANS);
-		ModelFile triplePulling0 = bowItem("triple_bow_pulling_0", prefix("item/triple_bow_pulling_0"));
-		ModelFile triplePulling1 = bowItem("triple_bow_pulling_1", prefix("item/triple_bow_pulling_1"));
-		ModelFile triplePulling2 = bowItem("triple_bow_pulling_2", prefix("item/triple_bow_pulling_2"));
+		ModelFile triplePulling0 = bowItem("triple_bow_pulling_0", modidPrefixUtil.prefix("item/triple_bow_pulling_0"));
+		ModelFile triplePulling1 = bowItem("triple_bow_pulling_1", modidPrefixUtil.prefix("item/triple_bow_pulling_1"));
+		ModelFile triplePulling2 = bowItem("triple_bow_pulling_2", modidPrefixUtil.prefix("item/triple_bow_pulling_2"));
 		bowTex(TFItems.TRIPLE_BOW, triplePulling0, triplePulling1, triplePulling2);
-		ModelFile seekerPulling0 = bowItem("seeker_bow_pulling_0", prefix("item/seeker_bow_pulling_0"));
-		ModelFile seekerPulling1 = bowItem("seeker_bow_pulling_1", prefix("item/seeker_bow_pulling_1"));
-		ModelFile seekerPulling2 = bowItem("seeker_bow_pulling_2", prefix("item/seeker_bow_pulling_2"));
+		ModelFile seekerPulling0 = bowItem("seeker_bow_pulling_0", modidPrefixUtil.prefix("item/seeker_bow_pulling_0"));
+		ModelFile seekerPulling1 = bowItem("seeker_bow_pulling_1", modidPrefixUtil.prefix("item/seeker_bow_pulling_1"));
+		ModelFile seekerPulling2 = bowItem("seeker_bow_pulling_2", modidPrefixUtil.prefix("item/seeker_bow_pulling_2"));
 		bowTex(TFItems.SEEKER_BOW, seekerPulling0, seekerPulling1, seekerPulling2);
-		ModelFile icePulling0 = bowItem("ice_bow_pulling_0", prefix("item/ice_bow_solid_pulling_0"), prefix("item/ice_bow_clear_pulling_0"));
-		ModelFile icePulling1 = bowItem("ice_bow_pulling_1", prefix("item/ice_bow_solid_pulling_1"), prefix("item/ice_bow_clear_pulling_1"));
-		ModelFile icePulling2 = bowItem("ice_bow_pulling_2", prefix("item/ice_bow_solid_pulling_2"), prefix("item/ice_bow_clear_pulling_2"));
+		ModelFile icePulling0 = bowItem("ice_bow_pulling_0", modidPrefixUtil.prefix("item/ice_bow_solid_pulling_0"), modidPrefixUtil.prefix("item/ice_bow_clear_pulling_0"));
+		ModelFile icePulling1 = bowItem("ice_bow_pulling_1", modidPrefixUtil.prefix("item/ice_bow_solid_pulling_1"), modidPrefixUtil.prefix("item/ice_bow_clear_pulling_1"));
+		ModelFile icePulling2 = bowItem("ice_bow_pulling_2", modidPrefixUtil.prefix("item/ice_bow_solid_pulling_2"), modidPrefixUtil.prefix("item/ice_bow_clear_pulling_2"));
 		iceBowTex(icePulling0, icePulling1, icePulling2);
-		ModelFile enderPulling0 = bowItem("ender_bow_pulling_0", prefix("item/ender_bow_pulling_0"));
-		ModelFile enderPulling1 = bowItem("ender_bow_pulling_1", prefix("item/ender_bow_pulling_1"));
-		ModelFile enderPulling2 = bowItem("ender_bow_pulling_2", prefix("item/ender_bow_pulling_2"));
+		ModelFile enderPulling0 = bowItem("ender_bow_pulling_0", modidPrefixUtil.prefix("item/ender_bow_pulling_0"));
+		ModelFile enderPulling1 = bowItem("ender_bow_pulling_1", modidPrefixUtil.prefix("item/ender_bow_pulling_1"));
+		ModelFile enderPulling2 = bowItem("ender_bow_pulling_2", modidPrefixUtil.prefix("item/ender_bow_pulling_2"));
 		bowTex(TFItems.ENDER_BOW, enderPulling0, enderPulling1, enderPulling2);
-		tool(TFItems.ICE_SWORD.getId().getPath(), prefix("item/ice_sword_solid"), prefix("item/ice_sword_clear"));
-		tool(TFItems.GLASS_SWORD.getId().getPath(), prefix("item/glass_sword_solid"), prefix("item/glass_sword_clear"));
-		ModelFile chainThrown = tool("block_and_chain_thrown", prefix("item/block_and_chain_thrown"));
-		singleTexTool(TFItems.BLOCK_AND_CHAIN).override().predicate(prefix("thrown"), 1).model(chainThrown).end();
-		ModelFile cubeThrown = tool("cube_of_annihilation_thrown", prefix("item/cube_of_annihilation_thrown"));
-		singleTexTool(TFItems.CUBE_OF_ANNIHILATION).override().predicate(prefix("thrown"), 1).model(cubeThrown).end();
+		tool(TFItems.ICE_SWORD.getId().getPath(), modidPrefixUtil.prefix("item/ice_sword_solid"), modidPrefixUtil.prefix("item/ice_sword_clear"));
+		tool(TFItems.GLASS_SWORD.getId().getPath(), modidPrefixUtil.prefix("item/glass_sword_solid"), modidPrefixUtil.prefix("item/glass_sword_clear"));
+		ModelFile chainThrown = tool("block_and_chain_thrown", modidPrefixUtil.prefix("item/block_and_chain_thrown"));
+		singleTexTool(TFItems.BLOCK_AND_CHAIN).override().predicate(modidPrefixUtil.prefix("thrown"), 1).model(chainThrown).end();
+		ModelFile cubeThrown = tool("cube_of_annihilation_thrown", modidPrefixUtil.prefix("item/cube_of_annihilation_thrown"));
+		singleTexTool(TFItems.CUBE_OF_ANNIHILATION).override().predicate(modidPrefixUtil.prefix("thrown"), 1).model(cubeThrown).end();
 		singleTex(TFItems.CUBE_TALISMAN);
 		//moon dial is a big boi
-		ModelFile full = phaseTex("moon_dial_full", prefix("item/moon_dial/full"));
-		ModelFile waning_gib = phaseTex("moon_dial_waning_gib", prefix("item/moon_dial/waning_gibbous"));
-		ModelFile quarter3 = phaseTex("moon_dial_quarter3", prefix("item/moon_dial/third_quarter"));
-		ModelFile waning_cres = phaseTex("moon_dial_waning_cres", prefix("item/moon_dial/waning_cresent"));
-		ModelFile unlit = phaseTex("moon_dial_new", prefix("item/moon_dial/new")); //cant use new for the name lmao
-		ModelFile waxing_cres = phaseTex("moon_dial_waxing_cres", prefix("item/moon_dial/waxing_cresent"));
-		ModelFile quarter1 = phaseTex("moon_dial_quarter1", prefix("item/moon_dial/first_quarter"));
-		ModelFile waxing_gib = phaseTex("moon_dial_waxing_gib", prefix("item/moon_dial/waxing_gibbous"));
-		phaseTex(TFItems.MOON_DIAL.getId().getPath(), prefix("item/moon_dial/full"))
+		ModelFile full = phaseTex("moon_dial_full", modidPrefixUtil.prefix("item/moon_dial/full"));
+		ModelFile waning_gib = phaseTex("moon_dial_waning_gib", modidPrefixUtil.prefix("item/moon_dial/waning_gibbous"));
+		ModelFile quarter3 = phaseTex("moon_dial_quarter3", modidPrefixUtil.prefix("item/moon_dial/third_quarter"));
+		ModelFile waning_cres = phaseTex("moon_dial_waning_cres", modidPrefixUtil.prefix("item/moon_dial/waning_cresent"));
+		ModelFile unlit = phaseTex("moon_dial_new", modidPrefixUtil.prefix("item/moon_dial/new")); //cant use new for the name lmao
+		ModelFile waxing_cres = phaseTex("moon_dial_waxing_cres", modidPrefixUtil.prefix("item/moon_dial/waxing_cresent"));
+		ModelFile quarter1 = phaseTex("moon_dial_quarter1", modidPrefixUtil.prefix("item/moon_dial/first_quarter"));
+		ModelFile waxing_gib = phaseTex("moon_dial_waxing_gib", modidPrefixUtil.prefix("item/moon_dial/waxing_gibbous"));
+		phaseTex(TFItems.MOON_DIAL.getId().getPath(), modidPrefixUtil.prefix("item/moon_dial/full"))
 			.override().predicate(ResourceLocation.withDefaultNamespace("phase"), 0).model(full).end()
 			.override().predicate(ResourceLocation.withDefaultNamespace("phase"), 0.125F).model(waning_gib).end()
 			.override().predicate(ResourceLocation.withDefaultNamespace("phase"), 0.25F).model(quarter3).end()
@@ -633,38 +634,38 @@ public class ItemModelGenerator extends ItemModelProvider {
 			.override().predicate(ResourceLocation.withDefaultNamespace("phase"), 0.75F).model(quarter1).end()
 			.override().predicate(ResourceLocation.withDefaultNamespace("phase"), 0.875F).model(waxing_gib).end();
 
-		ModelFile fill1 = generated("brittle_flask_0", prefix("item/brittle_potion_flask_1"), prefix("item/brittle_potion_flask_labelled"));
-		ModelFile fill2 = generated("brittle_flask_1", prefix("item/brittle_potion_flask_2"), prefix("item/brittle_potion_flask_labelled"));
-		ModelFile fill3 = generated("brittle_flask_2", prefix("item/brittle_potion_flask_3"), prefix("item/brittle_potion_flask_labelled"));
-		ModelFile splintered = generated("brittle_flask_splintered", prefix("item/brittle_potion_flask_splintered"));
-		ModelFile fill1_splintered = generated("brittle_flask_0_splintered", prefix("item/brittle_potion_flask_1"), prefix("item/brittle_potion_flask_splintered"));
-		ModelFile fill2_splintered = generated("brittle_flask_1_splintered", prefix("item/brittle_potion_flask_2"), prefix("item/brittle_potion_flask_splintered"));
-		ModelFile fill3_splintered = generated("brittle_flask_2_splintered", prefix("item/brittle_potion_flask_3"), prefix("item/brittle_potion_flask_splintered"));
-		ModelFile damaged = generated("brittle_flask_damaged", prefix("item/brittle_potion_flask_damaged"));
-		ModelFile fill1_damaged = generated("brittle_flask_0_damaged", prefix("item/brittle_potion_flask_1"), prefix("item/brittle_potion_flask_damaged"));
-		ModelFile fill2_damaged = generated("brittle_flask_1_damaged", prefix("item/brittle_potion_flask_2"), prefix("item/brittle_potion_flask_damaged"));
-		ModelFile fill3_damaged = generated("brittle_flask_2_damaged", prefix("item/brittle_potion_flask_3"), prefix("item/brittle_potion_flask_damaged"));
-		generated(TFItems.BRITTLE_FLASK.getId().getPath(), prefix("block/blank"), prefix("item/brittle_potion_flask"))
-			.override().predicate(prefix("potion_level"), 1).model(fill1).end()
-			.override().predicate(prefix("potion_level"), 2).model(fill2).end()
-			.override().predicate(prefix("potion_level"), 3).model(fill3).end()
-			.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 1).model(splintered).end()
-			.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 1).model(fill1_splintered).end()
-			.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 1).model(fill2_splintered).end()
-			.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 1).model(fill3_splintered).end()
-			.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 2).model(damaged).end()
-			.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 2).model(fill1_damaged).end()
-			.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 2).model(fill2_damaged).end()
-			.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 2).model(fill3_damaged).end();
+		ModelFile fill1 = generated("brittle_flask_0", modidPrefixUtil.prefix("item/brittle_potion_flask_1"), modidPrefixUtil.prefix("item/brittle_potion_flask_labelled"));
+		ModelFile fill2 = generated("brittle_flask_1", modidPrefixUtil.prefix("item/brittle_potion_flask_2"), modidPrefixUtil.prefix("item/brittle_potion_flask_labelled"));
+		ModelFile fill3 = generated("brittle_flask_2", modidPrefixUtil.prefix("item/brittle_potion_flask_3"), modidPrefixUtil.prefix("item/brittle_potion_flask_labelled"));
+		ModelFile splintered = generated("brittle_flask_splintered", modidPrefixUtil.prefix("item/brittle_potion_flask_splintered"));
+		ModelFile fill1_splintered = generated("brittle_flask_0_splintered", modidPrefixUtil.prefix("item/brittle_potion_flask_1"), modidPrefixUtil.prefix("item/brittle_potion_flask_splintered"));
+		ModelFile fill2_splintered = generated("brittle_flask_1_splintered", modidPrefixUtil.prefix("item/brittle_potion_flask_2"), modidPrefixUtil.prefix("item/brittle_potion_flask_splintered"));
+		ModelFile fill3_splintered = generated("brittle_flask_2_splintered", modidPrefixUtil.prefix("item/brittle_potion_flask_3"), modidPrefixUtil.prefix("item/brittle_potion_flask_splintered"));
+		ModelFile damaged = generated("brittle_flask_damaged", modidPrefixUtil.prefix("item/brittle_potion_flask_damaged"));
+		ModelFile fill1_damaged = generated("brittle_flask_0_damaged", modidPrefixUtil.prefix("item/brittle_potion_flask_1"), modidPrefixUtil.prefix("item/brittle_potion_flask_damaged"));
+		ModelFile fill2_damaged = generated("brittle_flask_1_damaged", modidPrefixUtil.prefix("item/brittle_potion_flask_2"), modidPrefixUtil.prefix("item/brittle_potion_flask_damaged"));
+		ModelFile fill3_damaged = generated("brittle_flask_2_damaged", modidPrefixUtil.prefix("item/brittle_potion_flask_3"), modidPrefixUtil.prefix("item/brittle_potion_flask_damaged"));
+		generated(TFItems.BRITTLE_FLASK.getId().getPath(), modidPrefixUtil.prefix("block/blank"), modidPrefixUtil.prefix("item/brittle_potion_flask"))
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 1).model(fill1).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 2).model(fill2).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 3).model(fill3).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 0).predicate(modidPrefixUtil.prefix("breakage"), 1).model(splintered).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 1).predicate(modidPrefixUtil.prefix("breakage"), 1).model(fill1_splintered).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 2).predicate(modidPrefixUtil.prefix("breakage"), 1).model(fill2_splintered).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 3).predicate(modidPrefixUtil.prefix("breakage"), 1).model(fill3_splintered).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 0).predicate(modidPrefixUtil.prefix("breakage"), 2).model(damaged).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 1).predicate(modidPrefixUtil.prefix("breakage"), 2).model(fill1_damaged).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 2).predicate(modidPrefixUtil.prefix("breakage"), 2).model(fill2_damaged).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 3).predicate(modidPrefixUtil.prefix("breakage"), 2).model(fill3_damaged).end();
 
-		ModelFile gfill1 = generated("greater_flask_0", prefix("item/greater_potion_flask_1"), prefix("item/greater_potion_flask"));
-		ModelFile gfill2 = generated("greater_flask_1", prefix("item/greater_potion_flask_2"), prefix("item/greater_potion_flask"));
-		ModelFile gfill3 = generated("greater_flask_2", prefix("item/greater_potion_flask_3"), prefix("item/greater_potion_flask"));
+		ModelFile gfill1 = generated("greater_flask_0", modidPrefixUtil.prefix("item/greater_potion_flask_1"), modidPrefixUtil.prefix("item/greater_potion_flask"));
+		ModelFile gfill2 = generated("greater_flask_1", modidPrefixUtil.prefix("item/greater_potion_flask_2"), modidPrefixUtil.prefix("item/greater_potion_flask"));
+		ModelFile gfill3 = generated("greater_flask_2", modidPrefixUtil.prefix("item/greater_potion_flask_3"), modidPrefixUtil.prefix("item/greater_potion_flask"));
 
-		generated(TFItems.GREATER_FLASK.getId().getPath(), prefix("block/blank"), prefix("item/greater_potion_flask"))
-			.override().predicate(prefix("potion_level"), 1).model(gfill1).end()
-			.override().predicate(prefix("potion_level"), 2).model(gfill2).end()
-			.override().predicate(prefix("potion_level"), 3).model(gfill3).end();
+		generated(TFItems.GREATER_FLASK.getId().getPath(), modidPrefixUtil.prefix("block/blank"), modidPrefixUtil.prefix("item/greater_potion_flask"))
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 1).model(gfill1).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 2).model(gfill2).end()
+			.override().predicate(modidPrefixUtil.prefix("potion_level"), 3).model(gfill3).end();
 
 		singleTex(TFItems.MUSIC_DISC_FINDINGS);
 		singleTex(TFItems.MUSIC_DISC_HOME);
@@ -694,21 +695,21 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.MINING_CHEST_BOAT);
 		singleTex(TFItems.SORTING_CHEST_BOAT);
 
-		generated(TFItems.NAGA_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
-		generated(TFItems.LICH_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
-		generated(TFItems.MINOSHROOM_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
-		generated(TFItems.HYDRA_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
-		generated(TFItems.KNIGHT_PHANTOM_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
-		generated(TFItems.UR_GHAST_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
-		generated(TFItems.ALPHA_YETI_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
-		generated(TFItems.SNOW_QUEEN_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
-		generated(TFItems.QUEST_RAM_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
+		generated(TFItems.NAGA_BANNER_PATTERN.getId().getPath(), modidPrefixUtil.prefix("item/tf_banner_pattern"));
+		generated(TFItems.LICH_BANNER_PATTERN.getId().getPath(), modidPrefixUtil.prefix("item/tf_banner_pattern"));
+		generated(TFItems.MINOSHROOM_BANNER_PATTERN.getId().getPath(), modidPrefixUtil.prefix("item/tf_banner_pattern"));
+		generated(TFItems.HYDRA_BANNER_PATTERN.getId().getPath(), modidPrefixUtil.prefix("item/tf_banner_pattern"));
+		generated(TFItems.KNIGHT_PHANTOM_BANNER_PATTERN.getId().getPath(), modidPrefixUtil.prefix("item/tf_banner_pattern"));
+		generated(TFItems.UR_GHAST_BANNER_PATTERN.getId().getPath(), modidPrefixUtil.prefix("item/tf_banner_pattern"));
+		generated(TFItems.ALPHA_YETI_BANNER_PATTERN.getId().getPath(), modidPrefixUtil.prefix("item/tf_banner_pattern"));
+		generated(TFItems.SNOW_QUEEN_BANNER_PATTERN.getId().getPath(), modidPrefixUtil.prefix("item/tf_banner_pattern"));
+		generated(TFItems.QUEST_RAM_BANNER_PATTERN.getId().getPath(), modidPrefixUtil.prefix("item/tf_banner_pattern"));
 
 		//these models are used as references in other things, they dont have actual items
-		generated("trophy", prefix("item/trophy"));
-		generated("trophy_minor", prefix("item/trophy_minor"));
-		generated("trophy_quest", prefix("item/trophy_quest"));
-		generated("shield", prefix("item/lich_shield_frame"), prefix("item/lich_shield_fill"));
+		generated("trophy", modidPrefixUtil.prefix("item/trophy"));
+		generated("trophy_minor", modidPrefixUtil.prefix("item/trophy_minor"));
+		generated("trophy_quest", modidPrefixUtil.prefix("item/trophy_quest"));
+		generated("shield", modidPrefixUtil.prefix("item/lich_shield_frame"), modidPrefixUtil.prefix("item/lich_shield_fill"));
 
 		this.toBlock(TFBlocks.CURSED_SPAWNER.value());
 	}
@@ -749,27 +750,27 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private ItemModelBuilder singleTexFullbright(DeferredHolder<Item, ? extends Item> item) {
-		return fullbright(item.getId().getPath(), prefix("item/" + item.getId().getPath()));
+		return fullbright(item.getId().getPath(), modidPrefixUtil.prefix("item/" + item.getId().getPath()));
 	}
 
 	private ItemModelBuilder singleTexFullbrightTool(DeferredHolder<Item, ? extends Item> item) {
-		return fullbrightTool(item.getId().getPath(), prefix("item/" + item.getId().getPath()));
+		return fullbrightTool(item.getId().getPath(), modidPrefixUtil.prefix("item/" + item.getId().getPath()));
 	}
 
 	private ItemModelBuilder singleTexTool(DeferredHolder<Item, ? extends Item> item) {
-		return tool(item.getId().getPath(), prefix("item/" + item.getId().getPath()));
+		return tool(item.getId().getPath(), modidPrefixUtil.prefix("item/" + item.getId().getPath()));
 	}
 
 	private ItemModelBuilder singleTex(DeferredHolder<?, ?> item) {
-		return generated(item.getId().getPath(), prefix("item/" + item.getId().getPath()));
+		return generated(item.getId().getPath(), modidPrefixUtil.prefix("item/" + item.getId().getPath()));
 	}
 
 	private ItemModelBuilder specialTool(DeferredHolder<Item, ? extends Item> item) {
-		return specialTool(item.getId().getPath(), prefix("item/" + item.getId().getPath()));
+		return specialTool(item.getId().getPath(), modidPrefixUtil.prefix("item/" + item.getId().getPath()));
 	}
 
 	private ItemModelBuilder specialTool(String name, ResourceLocation... layers) {
-		ItemModelBuilder builder = withExistingParent(name, TwilightForestMod.prefix("item/special_handheld"));
+		ItemModelBuilder builder = withExistingParent(name, modidPrefixUtil.prefix("item/special_handheld"));
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
@@ -785,14 +786,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void bowTex(DeferredHolder<Item, Item> item, ModelFile pull0, ModelFile pull1, ModelFile pull2) {
-		bowItem(item.getId().getPath(), prefix("item/" + item.getId().getPath()))
+		bowItem(item.getId().getPath(), modidPrefixUtil.prefix("item/" + item.getId().getPath()))
 			.override().predicate(ResourceLocation.withDefaultNamespace("pulling"), 1).model(pull0).end()
 			.override().predicate(ResourceLocation.withDefaultNamespace("pulling"), 1).predicate(ResourceLocation.withDefaultNamespace("pull"), (float) 0.65).model(pull1).end()
 			.override().predicate(ResourceLocation.withDefaultNamespace("pulling"), 1).predicate(ResourceLocation.withDefaultNamespace("pull"), (float) 0.9).model(pull2).end();
 	}
 
 	private void iceBowTex(ModelFile pull0, ModelFile pull1, ModelFile pull2) {
-		bowItem(TFItems.ICE_BOW.getId().getPath(), prefix("item/ice_bow_solid"), prefix("item/ice_bow_clear"))
+		bowItem(TFItems.ICE_BOW.getId().getPath(), modidPrefixUtil.prefix("item/ice_bow_solid"), modidPrefixUtil.prefix("item/ice_bow_clear"))
 			.override().predicate(ResourceLocation.withDefaultNamespace("pulling"), 1).model(pull0).end()
 			.override().predicate(ResourceLocation.withDefaultNamespace("pulling"), 1).predicate(ResourceLocation.withDefaultNamespace("pull"), (float) 0.65).model(pull1).end()
 			.override().predicate(ResourceLocation.withDefaultNamespace("pulling"), 1).predicate(ResourceLocation.withDefaultNamespace("pull"), (float) 0.9).model(pull2).end();
@@ -819,7 +820,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void hollowLog(DeferredHolder<Item, HollowLogItem> hollowLog) {
-		getBuilder(BuiltInRegistries.ITEM.getKey(hollowLog.get().asItem()).getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath() + "_horizontal"), this.existingFileHelper));
+		getBuilder(BuiltInRegistries.ITEM.getKey(hollowLog.get().asItem()).getPath()).parent(new ModelFile.ExistingModelFile(modidPrefixUtil.prefix("block/" + hollowLog.getId().getPath() + "_horizontal"), this.existingFileHelper));
 	}
 
 	private void toBlock(Block b) {
@@ -831,11 +832,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void toBlockModel(Block b, String model) {
-		toBlockModel(b, prefix("block/" + model));
+		toBlockModel(b, modidPrefixUtil.prefix("block/" + model));
 	}
 
 	private void woodBlockModel(Block b, String model, String variant) {
-		toBlockModel(b, prefix("block/wood/" + variant + "/" + model));
+		toBlockModel(b, modidPrefixUtil.prefix("block/wood/" + variant + "/" + model));
 	}
 
 	private void toBlockModel(Block b, ResourceLocation model) {
@@ -870,7 +871,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 			String material = trim.name();
 			String name = armor.getId().getPath() + "_" + material + "_trim";
 			ModelFile trimModel = this.withExistingParent(name, this.mcLoc("item/generated"))
-				.texture("layer0", prefix("item/" + armor.getId().getPath()))
+				.texture("layer0", modidPrefixUtil.prefix("item/" + armor.getId().getPath()))
 				.texture("layer1", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
 			base.override().predicate(ResourceLocation.withDefaultNamespace("trim_type"), trim.itemModelIndex()).model(trimModel).end();
 		}
@@ -882,7 +883,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 			String material = trim.name();
 			String name = armor.getId().getPath() + "_" + material + "_trim";
 			ModelFile trimModel = this.withExistingParent(name, this.mcLoc("item/generated"))
-				.texture("layer0", prefix("item/" + armor.getId().getPath()))
+				.texture("layer0", modidPrefixUtil.prefix("item/" + armor.getId().getPath()))
 				.texture("layer1", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
 			base.override().predicate(ResourceLocation.withDefaultNamespace("trim_type"), trim.itemModelIndex()).model(trimModel).end();
 		}
@@ -890,13 +891,13 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void trimmedLayeredArmor(DeferredHolder<Item, ArmorItem> armor) {
-		ItemModelBuilder base = this.generated(armor.getId().getPath(), prefix("item/" + armor.getId().getPath()), prefix("item/" + armor.getId().getPath() + "_0"));
+		ItemModelBuilder base = this.generated(armor.getId().getPath(), modidPrefixUtil.prefix("item/" + armor.getId().getPath()), modidPrefixUtil.prefix("item/" + armor.getId().getPath() + "_0"));
 		for (ItemModelGenerators.TrimModelData trim : ItemModelGenerators.GENERATED_TRIM_MODELS) {
 			String material = trim.name();
 			String name = armor.getId().getPath() + "_" + material + "_trim";
 			ModelFile trimModel = this.withExistingParent(name, this.mcLoc("item/generated"))
-				.texture("layer0", prefix("item/" + armor.getId().getPath()))
-				.texture("layer1", prefix("item/" + armor.getId().getPath() + "_0"))
+				.texture("layer0", modidPrefixUtil.prefix("item/" + armor.getId().getPath()))
+				.texture("layer1", modidPrefixUtil.prefix("item/" + armor.getId().getPath() + "_0"))
 				.texture("layer2", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
 			base.override().predicate(ResourceLocation.withDefaultNamespace("trim_type"), trim.itemModelIndex()).model(trimModel).end();
 		}
@@ -905,17 +906,17 @@ public class ItemModelGenerator extends ItemModelProvider {
 	private void crumbleHorn(DeferredHolder<Item, Item> item) {
 		String name = item.getId().getPath();
 		ItemModelBuilder tooting = withExistingParent("tooting_" + name, this.mcLoc("item/tooting_goat_horn"))
-			.texture("layer0", prefix("item/" + name));
+			.texture("layer0", modidPrefixUtil.prefix("item/" + name));
 
 		withExistingParent(name, this.mcLoc("item/goat_horn"))
-			.texture("layer0", prefix("item/" + name))
-			.override().predicate(TwilightForestMod.prefix("tooting"), 1).model(tooting);
+			.texture("layer0", modidPrefixUtil.prefix("item/" + name))
+			.override().predicate(modidPrefixUtil.prefix("tooting"), 1).model(tooting);
 	}
 
 	private void lamp(DeferredHolder<Item, Item> item) {
 		String name = item.getId().getPath();
 		tool(name)
-			.texture("layer0", prefix("item/" + name))
+			.texture("layer0", modidPrefixUtil.prefix("item/" + name))
 			.transforms()
 			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
 			.rotation(0, -90, 0)
@@ -933,7 +934,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	private void moonwormQueen(DeferredHolder<Item, Item> item) {
 		String name = item.getId().getPath();
 
-		ModelFile alt = fullbrightTool(name + "_alt", prefix("item/" + name + "_alt"))
+		ModelFile alt = fullbrightTool(name + "_alt", modidPrefixUtil.prefix("item/" + name + "_alt"))
 			.transforms()
 			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
 			.rotation(0, -90, 55)
@@ -960,7 +961,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 			.scale(0.85F)
 			.end()
 			.end()
-			.override().predicate(prefix("alt"), 1).model(alt).end();
+			.override().predicate(modidPrefixUtil.prefix("alt"), 1).model(alt).end();
 	}
 
 	@Override

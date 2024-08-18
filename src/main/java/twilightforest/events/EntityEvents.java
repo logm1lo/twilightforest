@@ -59,6 +59,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
@@ -70,6 +71,7 @@ import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.YetiArmorItem;
 import twilightforest.network.WipeOreMeterPacket;
+import twilightforest.util.IdPrefixUtil;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -83,11 +85,14 @@ import java.util.UUID;
 @EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EntityEvents {
 
+	@Autowired
+	private static IdPrefixUtil modidPrefixUtil;
+
 	private static final boolean SHIELD_PARRY_MOD_LOADED = ModList.get().isLoaded("parry");
 
 	@SubscribeEvent
 	public static void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
-		if (event.getAdvancement().id().equals(TwilightForestMod.prefix("progression_end"))) {
+		if (event.getAdvancement().id().equals(modidPrefixUtil.prefix("progression_end"))) {
 			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.experiment115.com/")))));
 		}
 	}
