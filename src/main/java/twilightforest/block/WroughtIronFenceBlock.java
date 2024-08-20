@@ -104,7 +104,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		//Waterlogged
 		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
 		BlockState state = this.defaultBlockState().setValue(WATERLOGGED, fluid.getType() == Fluids.WATER);
-		return this.fenceShape(level, state, pos.above(), above, northFace, eastFace, southFace, westFace);
+		return this.fenceShape(level, state, pos.above(), northFace, eastFace, southFace, westFace);
 	}
 
 	private boolean connectsTo(BlockState state, boolean solid) {
@@ -117,7 +117,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 
-		return direction == Direction.UP ? this.updateTop(level, state, neighborPos, neighbor) : this.updateSide(level, pos, state, neighborPos, neighbor, direction);
+		return direction.getAxis() == Direction.Axis.Y ? this.updateTop(level, state, neighborPos) : this.updateSide(level, pos, state, neighborPos, neighbor, direction);
 	}
 
 	private BlockState updateSide(LevelReader level, BlockPos firstPos, BlockState firstState, BlockPos secondPos, BlockState secondState, Direction direction) {
@@ -127,28 +127,28 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		boolean south = direction == Direction.SOUTH ? this.connectsTo(secondState, secondState.isFaceSturdy(level, secondPos, opposite)) : isConnected(firstState, SOUTH_FENCE);
 		boolean west = direction == Direction.WEST ? this.connectsTo(secondState, secondState.isFaceSturdy(level, secondPos, opposite)) : isConnected(firstState, WEST_FENCE);
 		BlockPos above = firstPos.above();
-		return this.fenceShape(level, firstState, above, level.getBlockState(above), north, east, south, west);
+		return this.fenceShape(level, firstState, above, north, east, south, west);
 	}
 
-	private BlockState updateTop(LevelReader level, BlockState state, BlockPos pos, BlockState facing) {
+	private BlockState updateTop(LevelReader level, BlockState state, BlockPos pos) {
 		boolean north = isConnected(state, NORTH_FENCE);
 		boolean east = isConnected(state, EAST_FENCE);
 		boolean south = isConnected(state, SOUTH_FENCE);
 		boolean west = isConnected(state, WEST_FENCE);
-		return this.fenceShape(level, state, pos, facing, north, east, south, west);
+		return this.fenceShape(level, state, pos, north, east, south, west);
 	}
 
-	private BlockState fenceShape(LevelReader level, BlockState state, BlockPos pos, BlockState neighbor, boolean north, boolean east, boolean south, boolean west) {
+	private BlockState fenceShape(LevelReader level, BlockState state, BlockPos pos, boolean north, boolean east, boolean south, boolean west) {
 		//huh?
 		BlockState above = level.getBlockState(pos);
 		BlockState below = level.getBlockState(pos.below(2));
 		BlockState blockstate = this.updateSides(state, above, below, north, east, south, west);
-		return blockstate.setValue(POST, this.makePost(blockstate, neighbor, above.isAir()));
+		return blockstate.setValue(POST, this.makePost(blockstate, above, below));
 	}
 
-	private PostState makePost(BlockState state, BlockState neighbor, boolean freeTop) {
-		boolean flag = neighbor.is(this) && neighbor.getValue(POST) != PostState.NONE;
-		if (state.getValue(POST) == PostState.CAPPED && freeTop) return PostState.CAPPED;
+	private PostState makePost(BlockState state, BlockState above, BlockState below) {
+		boolean flag = (above.is(this) && above.getValue(POST) != PostState.NONE) || (below.is(this) && below.getValue(POST) != PostState.NONE);
+		if (state.getValue(POST) == PostState.CAPPED && above.isAir()) return PostState.CAPPED;
 		if (flag) {
 			return PostState.POST;
 		} else {
