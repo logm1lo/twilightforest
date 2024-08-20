@@ -116,18 +116,16 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		if (state.getValue(WATERLOGGED)) {
 			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
-
-		return direction.getAxis() == Direction.Axis.Y ? this.updateTop(level, state, neighborPos) : this.updateSide(level, pos, state, neighborPos, neighbor, direction);
+		return direction.getAxis() == Direction.Axis.Y ? this.updateTop(level, state, pos) : this.updateSide(level, pos, state, neighborPos, neighbor, direction);
 	}
 
-	private BlockState updateSide(LevelReader level, BlockPos firstPos, BlockState firstState, BlockPos secondPos, BlockState secondState, Direction direction) {
+	private BlockState updateSide(LevelReader level, BlockPos pos, BlockState firstState, BlockPos secondPos, BlockState secondState, Direction direction) {
 		Direction opposite = direction.getOpposite();
 		boolean north = direction == Direction.NORTH ? this.connectsTo(secondState, secondState.isFaceSturdy(level, secondPos, opposite)) : isConnected(firstState, NORTH_FENCE);
 		boolean east = direction == Direction.EAST ? this.connectsTo(secondState, secondState.isFaceSturdy(level, secondPos, opposite)) : isConnected(firstState, EAST_FENCE);
 		boolean south = direction == Direction.SOUTH ? this.connectsTo(secondState, secondState.isFaceSturdy(level, secondPos, opposite)) : isConnected(firstState, SOUTH_FENCE);
 		boolean west = direction == Direction.WEST ? this.connectsTo(secondState, secondState.isFaceSturdy(level, secondPos, opposite)) : isConnected(firstState, WEST_FENCE);
-		BlockPos above = firstPos.above();
-		return this.fenceShape(level, firstState, above, north, east, south, west);
+		return this.fenceShape(level, firstState, pos, north, east, south, west);
 	}
 
 	private BlockState updateTop(LevelReader level, BlockState state, BlockPos pos) {
@@ -139,66 +137,70 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 	}
 
 	private BlockState fenceShape(LevelReader level, BlockState state, BlockPos pos, boolean north, boolean east, boolean south, boolean west) {
-		//huh?
-		BlockState above = level.getBlockState(pos);
-		BlockState below = level.getBlockState(pos.below(2));
-		BlockState blockstate = this.updateSides(state, above, below, north, east, south, west);
-		return blockstate.setValue(POST, this.makePost(blockstate, above, below));
+		BlockState blockstate = this.updateSides(level, state, pos, north, east, south, west);
+		return blockstate.setValue(POST, this.makePost(level, blockstate, pos));
 	}
 
-	private PostState makePost(BlockState state, BlockState above, BlockState below) {
-		boolean flag = (above.is(this) && above.getValue(POST) != PostState.NONE) || (below.is(this) && below.getValue(POST) != PostState.NONE);
+	private BlockState updateSides(LevelReader level, BlockState state, BlockPos pos, boolean north, boolean east, boolean south, boolean west) {
+		return state.setValue(NORTH_FENCE, north ? this.makeFenceState(Direction.NORTH, level, pos) : FenceSide.NONE)
+			.setValue(EAST_FENCE, east ? this.makeFenceState(Direction.EAST, level, pos) : FenceSide.NONE)
+			.setValue(SOUTH_FENCE, south ? this.makeFenceState(Direction.SOUTH, level, pos) : FenceSide.NONE)
+			.setValue(WEST_FENCE, west ? this.makeFenceState(Direction.WEST, level, pos) : FenceSide.NONE);
+	}
+
+	private FenceSide makeFenceState(Direction direction, LevelReader level, BlockPos pos) {
+		BlockPos up = pos.above();
+		BlockPos down = pos.below();
+
+		boolean above = level.getBlockState(up).is(this) && level.getBlockState(up.relative(direction)).is(this);
+		boolean below = level.getBlockState(down).is(this) && level.getBlockState(down.relative(direction)).is(this);
+
+		if (above && below) return FenceSide.MIDDLE;
+		if (!above && below) return FenceSide.TOP;
+		if (above) return FenceSide.BOTTOM;
+		return FenceSide.FULL;
+	}
+
+	private PostState makePost(LevelReader level, BlockState state, BlockPos pos) {
+		BlockState above = level.getBlockState(pos.above());
+
+		boolean shouldAnyBePost = shouldAnyBePost(level, pos);
 		if (state.getValue(POST) == PostState.CAPPED && above.isAir()) return PostState.CAPPED;
-		if (flag) {
-			return PostState.POST;
-		} else {
-			//get sides
-			FenceSide nSide = state.getValue(NORTH_FENCE);
-			FenceSide sSide = state.getValue(SOUTH_FENCE);
-			FenceSide eSide = state.getValue(EAST_FENCE);
-			FenceSide wSide = state.getValue(WEST_FENCE);
-			boolean north = nSide == FenceSide.NONE;
-			boolean south = sSide == FenceSide.NONE;
-			boolean east = eSide == FenceSide.NONE;
-			boolean west = wSide == FenceSide.NONE;
-
-			if (north && south && east && west || north != south || east != west) {
-				return PostState.POST;
-			}
-		}
-
-		return PostState.NONE;
+		if (shouldAnyBePost) return PostState.POST;
+		else return shouldBePost(state) ? PostState.POST : PostState.NONE;
 	}
 
-	private BlockState updateSides(BlockState state, BlockState above, BlockState below, boolean north, boolean east, boolean south, boolean west) {
-		return state.setValue(NORTH_FENCE, this.makeFenceState(north, NORTH_FENCE, above, below))
-			.setValue(EAST_FENCE, this.makeFenceState(east, EAST_FENCE, above, below))
-			.setValue(SOUTH_FENCE, this.makeFenceState(south, SOUTH_FENCE, above, below))
-			.setValue(WEST_FENCE, this.makeFenceState(west, WEST_FENCE, above, below));
+	private boolean shouldAnyBePost(LevelReader level, BlockPos pos) {
+		BlockPos.MutableBlockPos mutable = pos.above().mutable();
+		while (true) {
+			BlockState checkState = level.getBlockState(mutable);
+			if (!checkState.is(this)) break;
+			mutable.move(Direction.UP);
+			if (shouldBePost(checkState) || checkState.getValue(POST) == PostState.CAPPED) return true;
+		}
+
+		mutable.set(pos.below());
+		while (true) {
+			BlockState checkState = level.getBlockState(mutable);
+			if (!checkState.is(this)) break;
+			mutable.move(Direction.DOWN);
+			if (shouldBePost(checkState)) return true;
+		}
+
+		return false;
 	}
 
-	private FenceSide makeFenceState(boolean connect, EnumProperty<FenceSide> property, BlockState above, BlockState below) {
-		boolean flagA = false;
-		boolean flagB = false;
+	private boolean shouldBePost(BlockState state) {
+		FenceSide nSide = state.getValue(NORTH_FENCE);
+		FenceSide sSide = state.getValue(SOUTH_FENCE);
+		FenceSide eSide = state.getValue(EAST_FENCE);
+		FenceSide wSide = state.getValue(WEST_FENCE);
+		boolean north = nSide == FenceSide.NONE;
+		boolean south = sSide == FenceSide.NONE;
+		boolean east = eSide == FenceSide.NONE;
+		boolean west = wSide == FenceSide.NONE;
 
-		if (above.is(this)) {
-			if (above.getValue(property) != FenceSide.NONE) {
-				flagA = true;
-			}
-		}
-		if (below.is(this)) {
-			if (below.getValue(property) != FenceSide.NONE) {
-				flagB = true;
-			}
-		}
-		if (connect) {
-			if (flagA && flagB) return FenceSide.MIDDLE;
-			if (!flagA && flagB) return FenceSide.TOP;
-			if (flagA) return FenceSide.BOTTOM;
-			return FenceSide.FULL;
-		} else {
-			return FenceSide.NONE;
-		}
+		return north && south && east && west || north != south || east != west;
 	}
 
 	@Override
@@ -212,7 +214,6 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 	}
 
 	@Override
-
 	public BlockState rotate(BlockState state, Rotation rotation) {
 		return switch (rotation) {
 			case CLOCKWISE_180 -> state.setValue(NORTH_FENCE, state.getValue(SOUTH_FENCE)).setValue(EAST_FENCE, state.getValue(WEST_FENCE)).setValue(SOUTH_FENCE, state.getValue(NORTH_FENCE)).setValue(WEST_FENCE, state.getValue(WEST_FENCE));
