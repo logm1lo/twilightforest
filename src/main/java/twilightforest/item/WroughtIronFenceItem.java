@@ -3,7 +3,6 @@ package twilightforest.item;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -19,10 +18,12 @@ public class WroughtIronFenceItem extends BlockItem {
 
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
-		if (context.isSecondaryUseActive() && context.getLevel().getBlockState(context.getClickedPos()).is(this.getBlock())) {
-			Level level = context.getLevel();
-			BlockPos pos = context.getClickedPos();
-			BlockState state =level.getBlockState(pos);
+		Level level = context.getLevel();
+		BlockPos pos = context.getClickedPos();
+		Block block = this.getBlock();
+		if (context.isSecondaryUseActive() && level.getBlockState(pos).is(block) && !level.getBlockState(pos.above()).is(block)) {
+			BlockState state = level.getBlockState(pos);
+			if (state.getValue(WroughtIronFenceBlock.POST) == WroughtIronFenceBlock.PostState.CAPPED) return InteractionResult.FAIL;
 			level.setBlockAndUpdate(pos, state.setValue(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED));
 			level.playSound(null, pos, TFSounds.WROUGHT_IRON_FENCE_EXTENDED.get(), SoundSource.BLOCKS, 0.35F, level.getRandom().nextFloat() * 0.1F + 0.75F);
 			return InteractionResult.SUCCESS;

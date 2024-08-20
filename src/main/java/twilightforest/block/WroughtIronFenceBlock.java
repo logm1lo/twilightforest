@@ -150,10 +150,12 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 
 	private FenceSide makeFenceState(Direction direction, LevelReader level, BlockPos pos) {
 		BlockPos up = pos.above();
+		BlockState upState = level.getBlockState(up.relative(direction));
 		BlockPos down = pos.below();
+		BlockState downState = level.getBlockState(down.relative(direction));
 
-		boolean above = level.getBlockState(up).is(this) && level.getBlockState(up.relative(direction)).is(this);
-		boolean below = level.getBlockState(down).is(this) && level.getBlockState(down.relative(direction)).is(this);
+		boolean above = level.getBlockState(up).is(this) && (upState.is(this) || this.connectsTo(upState, upState.isFaceSturdy(level, up.relative(direction), direction.getOpposite())));
+		boolean below = level.getBlockState(down).is(this) && (downState.is(this) || this.connectsTo(downState, downState.isFaceSturdy(level, down.relative(direction), direction.getOpposite())));
 
 		if (above && below) return FenceSide.MIDDLE;
 		if (!above && below) return FenceSide.TOP;
