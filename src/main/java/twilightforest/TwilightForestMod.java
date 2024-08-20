@@ -98,6 +98,9 @@ public final class TwilightForestMod {
 	@Autowired
 	private TFCommand tfCommand;
 
+	@Autowired
+	private HolidayEvent holidayEvent;
+
 	public TwilightForestMod(IEventBus bus, Dist dist) {
 		bus.post(new ProcessBeanAnnotationsEvent(this)); // Enables @Autowired
 		Reflection.initialize(ConfigSetup.class);
@@ -287,9 +290,6 @@ public final class TwilightForestMod {
 		registrar.playToClient(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, TFBossBarPacket.UpdateTFBossBarStylePacket.STREAM_CODEC, TFBossBarPacket.UpdateTFBossBarStylePacket::handle);
 		registrar.playToClient(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC, SetMasonJarItemPacket::handle);
 	}
-
-	@Autowired
-	private HolidayEvent holidayEvent;
 
 	public void init(FMLCommonSetupEvent evt) {
 		evt.enqueueWork(() -> {
