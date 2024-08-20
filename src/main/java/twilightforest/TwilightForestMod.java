@@ -43,12 +43,12 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.client.event.RegistrationEvents;
-import twilightforest.client.event.ClientEvents;
 import twilightforest.beans.Autowired;
 import twilightforest.beans.ProcessBeanAnnotationsEvent;
 import twilightforest.beans.TFBeanContext;
 import twilightforest.block.entity.JarBlockEntity;
+import twilightforest.client.event.ClientEvents;
+import twilightforest.client.event.RegistrationEvents;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.CosmeticArmorCompat;
 import twilightforest.compat.curios.CuriosCompat;
@@ -65,6 +65,7 @@ import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.init.custom.Enforcements;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
+import twilightforest.util.HolidayEvent;
 import twilightforest.util.Restriction;
 import twilightforest.util.TFRemapper;
 import twilightforest.util.woods.WoodPalette;
@@ -286,6 +287,9 @@ public final class TwilightForestMod {
 		registrar.playToClient(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, TFBossBarPacket.UpdateTFBossBarStylePacket.STREAM_CODEC, TFBossBarPacket.UpdateTFBossBarStylePacket::handle);
 		registrar.playToClient(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC, SetMasonJarItemPacket::handle);
 	}
+
+	@Autowired
+	private HolidayEvent holidayEvent;
 
 	public void init(FMLCommonSetupEvent evt) {
 		evt.enqueueWork(() -> {
@@ -529,42 +533,46 @@ public final class TwilightForestMod {
 			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.OAK_LEAVES, TFBlocks.GIANT_LEAVES.get().asItem());
 			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.OBSIDIAN, TFBlocks.GIANT_OBSIDIAN.get().asItem());
 
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.MANGROVE_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.CANOPY_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.DARK_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.MINING_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.SORTING_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.TIME_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.TRANSFORMATION_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.TWILIGHT_OAK_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.ACACIA_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.BIRCH_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.CHERRY_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.DARK_OAK_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.JUNGLE_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.MANGROVE_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.OAK_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.SPRUCE_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.CRIMSON_STEM);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.WARPED_STEM);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.STRIPPED_MANGROVE_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.STRIPPED_CANOPY_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.STRIPPED_DARK_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.STRIPPED_MINING_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.STRIPPED_SORTING_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.STRIPPED_TIME_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.STRIPPED_TRANSFORMATION_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.asItem());
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.STRIPPED_ACACIA_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.STRIPPED_BIRCH_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.STRIPPED_CHERRY_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.STRIPPED_DARK_OAK_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.STRIPPED_JUNGLE_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.STRIPPED_MANGROVE_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.STRIPPED_OAK_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.STRIPPED_SPRUCE_LOG);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.STRIPPED_CRIMSON_STEM);
-			JarBlockEntity.REGISTERED_LOG_LIDS.add(Items.STRIPPED_WARPED_STEM);
+			JarBlockEntity.addLid(TFBlocks.MANGROVE_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.CANOPY_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.DARK_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.MINING_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.SORTING_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.TIME_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.TRANSFORMATION_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.TWILIGHT_OAK_LOG.asItem());
+			JarBlockEntity.addLid(Items.ACACIA_LOG);
+			JarBlockEntity.addLid(Items.BIRCH_LOG);
+			JarBlockEntity.addLid(Items.CHERRY_LOG);
+			JarBlockEntity.addLid(Items.DARK_OAK_LOG);
+			JarBlockEntity.addLid(Items.JUNGLE_LOG);
+			JarBlockEntity.addLid(Items.MANGROVE_LOG);
+			JarBlockEntity.addLid(Items.OAK_LOG);
+			JarBlockEntity.addLid(Items.SPRUCE_LOG);
+			JarBlockEntity.addLid(Items.CRIMSON_STEM);
+			JarBlockEntity.addLid(Items.WARPED_STEM);
+			JarBlockEntity.addLid(TFBlocks.STRIPPED_MANGROVE_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.STRIPPED_CANOPY_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.STRIPPED_DARK_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.STRIPPED_MINING_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.STRIPPED_SORTING_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.STRIPPED_TIME_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.STRIPPED_TRANSFORMATION_LOG.asItem());
+			JarBlockEntity.addLid(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.asItem());
+			JarBlockEntity.addLid(Items.STRIPPED_ACACIA_LOG);
+			JarBlockEntity.addLid(Items.STRIPPED_BIRCH_LOG);
+			JarBlockEntity.addLid(Items.STRIPPED_CHERRY_LOG);
+			JarBlockEntity.addLid(Items.STRIPPED_DARK_OAK_LOG);
+			JarBlockEntity.addLid(Items.STRIPPED_JUNGLE_LOG);
+			JarBlockEntity.addLid(Items.STRIPPED_MANGROVE_LOG);
+			JarBlockEntity.addLid(Items.STRIPPED_OAK_LOG);
+			JarBlockEntity.addLid(Items.STRIPPED_SPRUCE_LOG);
+			JarBlockEntity.addLid(Items.STRIPPED_CRIMSON_STEM);
+			JarBlockEntity.addLid(Items.STRIPPED_WARPED_STEM);
+			JarBlockEntity.addLid(TFBlocks.CINDER_LOG.asItem());
+			JarBlockEntity.addLid(Items.BAMBOO_BLOCK);
+			JarBlockEntity.addLid(Items.STRIPPED_BAMBOO_BLOCK);
+			JarBlockEntity.addLid(Items.PUMPKIN, () -> holidayEvent.isHalloweenWeek());
 		});
 	}
 

@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
@@ -328,9 +329,16 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlockExisting(TFBlocks.FIREFLY_SPAWNER.get());
 
 		ResourceLocation jarLid = TwilightForestMod.prefix("jar_lid");
-		for (ResourceLocation item : JarRenderer.LOG_LOCATION_MAP.get().values()) {
+		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
+			ResourceLocation item = lid.resourceLocation();
 			String name = item.getPath() + "_lid";
-			if ((name.equals("mangrove_log_lid") || name.equals("stripped_mangrove_log_lid")) && item.getNamespace().equals("minecraft")) name = "vanilla_" + name;
+			if (lid.lid() == Items.PUMPKIN) {
+				this.models().withExistingParent(name, jarLid)
+					.texture("1", "minecraft:block/pumpkin_top")
+					.texture("2", "minecraft:block/pumpkin_side");
+				continue;
+			}
+			if (lid.customPath() != null) name = lid.customPath();
 			this.models().withExistingParent(name, jarLid)
 				.texture("1", item.getNamespace() + ":block/" + item.getPath() + "_top")
 				.texture("2", item.getNamespace() + ":block/" + item.getPath());

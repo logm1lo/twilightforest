@@ -21,10 +21,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import twilightforest.beans.Autowired;
 import twilightforest.beans.Configurable;
 import twilightforest.block.entity.JarBlockEntity;
@@ -32,48 +32,69 @@ import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRenderer<T> {
 	public static final Map<Item, BakedModel> LIDS = new HashMap<>();
-	public static final Lazy<Map<Item, ResourceLocation>> LOG_LOCATION_MAP = Lazy.of(() -> Map.ofEntries(
-		Map.entry(TFBlocks.MANGROVE_LOG.asItem(), TFBlocks.MANGROVE_LOG.getId()),
-		Map.entry(TFBlocks.CANOPY_LOG.asItem(), TFBlocks.CANOPY_LOG.getId()),
-		Map.entry(TFBlocks.DARK_LOG.asItem(), TFBlocks.DARK_LOG.getId()),
-		Map.entry(TFBlocks.MINING_LOG.asItem(), TFBlocks.MINING_LOG.getId()),
-		Map.entry(TFBlocks.SORTING_LOG.asItem(), TFBlocks.SORTING_LOG.getId()),
-		Map.entry(TFBlocks.TIME_LOG.asItem(), TFBlocks.TIME_LOG.getId()),
-		Map.entry(TFBlocks.TRANSFORMATION_LOG.asItem(), TFBlocks.TRANSFORMATION_LOG.getId()),
-		Map.entry(TFBlocks.TWILIGHT_OAK_LOG.asItem(), TFBlocks.TWILIGHT_OAK_LOG.getId()),
-		Map.entry(Items.ACACIA_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "acacia_log")),
-		Map.entry(Items.BIRCH_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "birch_log")),
-		Map.entry(Items.CHERRY_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "cherry_log")),
-		Map.entry(Items.DARK_OAK_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "dark_oak_log")),
-		Map.entry(Items.JUNGLE_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "jungle_log")),
-		Map.entry(Items.MANGROVE_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "mangrove_log")),
-		Map.entry(Items.OAK_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "oak_log")),
-		Map.entry(Items.SPRUCE_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "spruce_log")),
-		Map.entry(Items.CRIMSON_STEM, ResourceLocation.fromNamespaceAndPath("minecraft", "crimson_stem")),
-		Map.entry(Items.WARPED_STEM, ResourceLocation.fromNamespaceAndPath("minecraft", "warped_stem")),
-		Map.entry(TFBlocks.STRIPPED_MANGROVE_LOG.asItem(), TFBlocks.STRIPPED_MANGROVE_LOG.getId()),
-		Map.entry(TFBlocks.STRIPPED_CANOPY_LOG.asItem(), TFBlocks.STRIPPED_CANOPY_LOG.getId()),
-		Map.entry(TFBlocks.STRIPPED_DARK_LOG.asItem(), TFBlocks.STRIPPED_DARK_LOG.getId()),
-		Map.entry(TFBlocks.STRIPPED_MINING_LOG.asItem(), TFBlocks.STRIPPED_MINING_LOG.getId()),
-		Map.entry(TFBlocks.STRIPPED_SORTING_LOG.asItem(), TFBlocks.STRIPPED_SORTING_LOG.getId()),
-		Map.entry(TFBlocks.STRIPPED_TIME_LOG.asItem(), TFBlocks.STRIPPED_TIME_LOG.getId()),
-		Map.entry(TFBlocks.STRIPPED_TRANSFORMATION_LOG.asItem(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.getId()),
-		Map.entry(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.asItem(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.getId()),
-		Map.entry(Items.STRIPPED_ACACIA_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_acacia_log")),
-		Map.entry(Items.STRIPPED_BIRCH_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_birch_log")),
-		Map.entry(Items.STRIPPED_CHERRY_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_cherry_log")),
-		Map.entry(Items.STRIPPED_DARK_OAK_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_dark_oak_log")),
-		Map.entry(Items.STRIPPED_JUNGLE_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_jungle_log")),
-		Map.entry(Items.STRIPPED_MANGROVE_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_mangrove_log")),
-		Map.entry(Items.STRIPPED_OAK_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_oak_log")),
-		Map.entry(Items.STRIPPED_SPRUCE_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_spruce_log")),
-		Map.entry(Items.STRIPPED_CRIMSON_STEM, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_crimson_stem")),
-		Map.entry(Items.STRIPPED_WARPED_STEM, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_warped_stem"))
+
+	public record LidResource(Item lid, ResourceLocation resourceLocation, @Nullable String customPath) {
+		public LidResource(DeferredBlock<?> lid) {
+			this(lid.asItem(), lid.getId(), null);
+		}
+
+		public LidResource(Item item, String path) {
+			this(item, ResourceLocation.fromNamespaceAndPath("minecraft", path), null);
+		}
+
+		public LidResource(Item item, String path, String customPath) {
+			this(item, ResourceLocation.fromNamespaceAndPath("minecraft", path), customPath);
+		}
+	}
+
+	public static final Lazy<List<LidResource>> LID_LOCATION_LIST = Lazy.of(() -> List.of(
+		new LidResource(TFBlocks.MANGROVE_LOG),
+		new LidResource(TFBlocks.CANOPY_LOG),
+		new LidResource(TFBlocks.DARK_LOG),
+		new LidResource(TFBlocks.MINING_LOG),
+		new LidResource(TFBlocks.SORTING_LOG),
+		new LidResource(TFBlocks.TIME_LOG),
+		new LidResource(TFBlocks.TRANSFORMATION_LOG),
+		new LidResource(TFBlocks.TWILIGHT_OAK_LOG),
+		new LidResource(Items.ACACIA_LOG, "acacia_log"),
+		new LidResource(Items.BIRCH_LOG, "birch_log"),
+		new LidResource(Items.CHERRY_LOG, "cherry_log"),
+		new LidResource(Items.DARK_OAK_LOG, "dark_oak_log"),
+		new LidResource(Items.JUNGLE_LOG, "jungle_log"),
+		new LidResource(Items.MANGROVE_LOG, "mangrove_log", "vanilla_mangrove_log_lid"),
+		new LidResource(Items.OAK_LOG, "oak_log"),
+		new LidResource(Items.SPRUCE_LOG, "spruce_log"),
+		new LidResource(Items.CRIMSON_STEM, "crimson_stem"),
+		new LidResource(Items.WARPED_STEM, "warped_stem"),
+		new LidResource(TFBlocks.STRIPPED_MANGROVE_LOG),
+		new LidResource(TFBlocks.STRIPPED_CANOPY_LOG),
+		new LidResource(TFBlocks.STRIPPED_DARK_LOG),
+		new LidResource(TFBlocks.STRIPPED_MINING_LOG),
+		new LidResource(TFBlocks.STRIPPED_SORTING_LOG),
+		new LidResource(TFBlocks.STRIPPED_TIME_LOG),
+		new LidResource(TFBlocks.STRIPPED_TRANSFORMATION_LOG),
+		new LidResource(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG),
+		new LidResource(Items.STRIPPED_ACACIA_LOG, "stripped_acacia_log"),
+		new LidResource(Items.STRIPPED_BIRCH_LOG, "stripped_birch_log"),
+		new LidResource(Items.STRIPPED_CHERRY_LOG, "stripped_cherry_log"),
+		new LidResource(Items.STRIPPED_DARK_OAK_LOG, "stripped_dark_oak_log"),
+		new LidResource(Items.STRIPPED_JUNGLE_LOG, "stripped_jungle_log"),
+		new LidResource(Items.STRIPPED_MANGROVE_LOG, "stripped_mangrove_log", "vanilla_stripped_mangrove_log_lid"),
+		new LidResource(Items.STRIPPED_OAK_LOG, "stripped_oak_log"),
+		new LidResource(Items.STRIPPED_SPRUCE_LOG, "stripped_spruce_log"),
+		new LidResource(Items.STRIPPED_CRIMSON_STEM, "stripped_crimson_stem"),
+		new LidResource(Items.STRIPPED_WARPED_STEM, "stripped_warped_stem"),
+		new LidResource(TFBlocks.CINDER_LOG),
+		new LidResource(Items.PUMPKIN, "pumpkin"),
+		new LidResource(Items.BAMBOO_BLOCK, "bamboo_block"),
+		new LidResource(Items.STRIPPED_BAMBOO_BLOCK, "stripped_bamboo_block")
 	));
 
 	protected final BlockRenderDispatcher blockRenderer;

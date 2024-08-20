@@ -256,18 +256,19 @@ public class RegistrationEvents {
 		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
 		event.register(TrollsteinnModel.LIT_TROLLSTEINN);
 
-		for (ResourceLocation location : JarRenderer.LOG_LOCATION_MAP.get().values()) {
+		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
+			ResourceLocation location = lid.resourceLocation();
 			String name = location.getPath();
-			if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
+			if (lid.customPath() != null) name = lid.customPath();
 			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid")));
 		}
 	}
 
 	private static void cacheJarLids(ModelEvent.BakingCompleted event) {
-		JarRenderer.LOG_LOCATION_MAP.get().forEach((item, location) -> {
-			String name = location.getPath();
-			if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
-			JarRenderer.LIDS.put(item, event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid"))));
+		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
+			String name = lid.resourceLocation().getPath();
+			if (lid.customPath() != null) name = lid.customPath();
+			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid"))));
 		});
 	}
 
