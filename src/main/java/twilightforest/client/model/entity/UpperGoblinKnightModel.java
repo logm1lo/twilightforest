@@ -1,7 +1,5 @@
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -174,13 +172,6 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
 
 
 		return LayerDefinition.create(meshdefinition, 128, 64);
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		super.renderToBuffer(stack, builder, light, overlay, color);
-
-		this.breastplate.render(stack, builder, light, overlay, color);
 	}
 
 	@Override
