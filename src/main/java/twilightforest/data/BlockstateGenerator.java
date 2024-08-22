@@ -331,7 +331,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		ResourceLocation jarLid = TwilightForestMod.prefix("jar_lid");
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
 			ResourceLocation item = lid.resourceLocation();
-			String name = item.getPath() + "_lid";
+			String name = item.getPath();
 			if (lid.lid() == Items.PUMPKIN) {
 				this.models().withExistingParent(name, jarLid)
 					.texture("1", "minecraft:block/pumpkin_top")
@@ -339,7 +339,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				continue;
 			}
 			if (lid.customPath() != null) name = lid.customPath();
-			this.models().withExistingParent(name, jarLid)
+			this.models().withExistingParent("block/lid/" + name, jarLid)
 				.texture("1", item.getNamespace() + ":block/" + item.getPath() + "_top")
 				.texture("2", item.getNamespace() + ":block/" + item.getPath());
 		}

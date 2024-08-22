@@ -260,7 +260,8 @@ public class RegistrationEvents {
 			ResourceLocation location = lid.resourceLocation();
 			String name = location.getPath();
 			if (lid.customPath() != null) name = lid.customPath();
-			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid")));
+			TwilightForestMod.LOGGER.error(name);
+			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name)));
 		}
 	}
 
@@ -268,7 +269,8 @@ public class RegistrationEvents {
 		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
 			String name = lid.resourceLocation().getPath();
 			if (lid.customPath() != null) name = lid.customPath();
-			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid"))));
+			TwilightForestMod.LOGGER.error(name);
+			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
 		});
 	}
 
