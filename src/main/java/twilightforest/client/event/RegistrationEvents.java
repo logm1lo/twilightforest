@@ -260,7 +260,6 @@ public class RegistrationEvents {
 			ResourceLocation location = lid.resourceLocation();
 			String name = location.getPath();
 			if (lid.customPath() != null) name = lid.customPath();
-			TwilightForestMod.LOGGER.error(name);
 			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name)));
 		}
 	}
