@@ -190,7 +190,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				CandelabraData candelabraData = stack.get(TFDataComponents.CANDELABRA_DATA);
 				if (candelabraData != null) {
 					CandelabraBlockEntity copy = this.candelabra;
-					CandelabraData.setCandlesOf(copy, candelabraData);
+					copy.setData(candelabraData);
 					minecraft.getBlockEntityRenderDispatcher().renderItem(copy, pose, buffers, light, overlay);
 				}
 			} else if (block instanceof CritterBlock critter) {
