@@ -38,6 +38,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.LifedrainParticlePacket;
 import twilightforest.network.ParticlePacket;
+import twilightforest.util.TFItemStackUtils;
 import twilightforest.util.entities.EntityUtil;
 
 import java.util.List;
@@ -199,7 +200,7 @@ public class LifedrainScepterItem extends Item {
 						}
 
 						if (living instanceof Player player && !player.getAbilities().instabuild) {
-							stack.hurtAndBreak(1, (ServerLevel) level, player, item -> {});
+							TFItemStackUtils.hurtButDontBreak(stack, 1, (ServerLevel) level, player);
 						}
 					}
 				}

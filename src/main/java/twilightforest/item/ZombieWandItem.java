@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -20,6 +19,7 @@ import net.minecraft.world.phys.HitResult;
 import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
+import twilightforest.util.TFItemStackUtils;
 
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class ZombieWandItem extends Item {
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
 
 				if (!player.getAbilities().instabuild) {
-					stack.hurtAndBreak(1, (ServerLevel) level, player, item -> {});
+					TFItemStackUtils.hurtButDontBreak(stack, 1, (ServerLevel) level, player);
 				}
 				zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.get(), 1.0F, 1.0F);
 			}

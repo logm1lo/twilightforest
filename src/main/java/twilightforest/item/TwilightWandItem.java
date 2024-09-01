@@ -1,6 +1,8 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.init.TFSounds;
+import twilightforest.util.TFItemStackUtils;
 
 import java.util.List;
 
@@ -34,7 +37,7 @@ public class TwilightWandItem extends Item {
 			if (!level.isClientSide()) {
 				level.addFreshEntity(new TwilightWandBolt(level, player));
 				if (!player.getAbilities().instabuild) {
-					stack.hurtAndBreak(1, (ServerLevel) level, player, item -> {});
+					TFItemStackUtils.hurtButDontBreak(stack, 1, (ServerLevel) level, player);
 				}
 			}
 
