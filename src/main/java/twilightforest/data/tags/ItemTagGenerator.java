@@ -14,7 +14,6 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.compat.ModdedItemTagGenerator;
-import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
@@ -222,7 +221,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.MAGIC_PAINTING.get(),
 			TFItems.BRITTLE_FLASK.get(),
 			TFItems.GREATER_FLASK.get(),
-			TFItems.LICH_CROWN.get(),
+			TFItems.MYSTIC_CROWN.get(),
 			TFItems.CROWN_SPLINTER.get()
 		);
 

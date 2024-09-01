@@ -17,10 +17,10 @@ import net.minecraft.world.level.Level;
 
 import java.util.function.Supplier;
 
-public class LichCrownWearable extends Item implements Equipable {
+public class WearableLichCrown extends Item implements Equipable {
 	private final Supplier<ItemAttributeModifiers> defaultModifiers;
 
-	public LichCrownWearable(Properties properties, final float armor, final float toughness) {
+	public WearableLichCrown(Properties properties, final float armor, final float toughness) {
 		super(properties);
 
 		this.defaultModifiers = Suppliers.memoize(() -> {
@@ -28,7 +28,8 @@ public class LichCrownWearable extends Item implements Equipable {
 
 			ItemAttributeModifiers.Builder attribBuilder = ItemAttributeModifiers.builder();
 			attribBuilder.add(Attributes.ARMOR, new AttributeModifier(attribForEquipSlot, armor, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD);
-			attribBuilder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(attribForEquipSlot, toughness, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD);
+			if (toughness > 0.0F)
+				attribBuilder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(attribForEquipSlot, toughness, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD);
 
 			return attribBuilder.build();
 		});

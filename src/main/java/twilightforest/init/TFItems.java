@@ -157,7 +157,7 @@ public class TFItems {
 	public static final DeferredItem<Item> EMPERORS_CLOTH = ITEMS.register("emperors_cloth", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> FOUR_LEAF_CLOVER = ITEMS.register("four_leaf_clover", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> CROWN_SPLINTER = ITEMS.register("crown_splinter", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final DeferredItem<Item> LICH_CROWN = ITEMS.register("lich_crown", () -> new LichCrownWearable(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 2, 0));
+	public static final DeferredItem<Item> MYSTIC_CROWN = ITEMS.register("mystic_crown", () -> new WearableLichCrown(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 2.0F, 0.0F));
 
 	public static final DeferredItem<Item> HUGE_LILY_PAD = ITEMS.register("huge_lily_pad", () -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), new Item.Properties()));
 	public static final DeferredItem<Item> HUGE_WATER_LILY = ITEMS.register("huge_water_lily", () -> new PlaceOnWaterBlockItem(TFBlocks.HUGE_WATER_LILY.get(), new Item.Properties()));

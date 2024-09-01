@@ -455,7 +455,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(TFItems.SNOW_QUEEN_TROPHY.getId().toString(), templateTrophy);
 		withExistingParent(TFItems.QUEST_RAM_TROPHY.getId().toString(), templateTrophy).transforms()
 			.transform(itemDisplayContextEnumExtension.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
-		withExistingParent(TFItems.LICH_CROWN.getId().toString(), templateTrophy);
+		withExistingParent(TFItems.MYSTIC_CROWN.getId().toString(), templateTrophy);
 
 		withExistingParent(TFItems.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
 		withExistingParent(TFItems.PIGLIN_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
