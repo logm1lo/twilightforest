@@ -42,6 +42,11 @@ public class ReactorDebrisBlock extends BaseEntityBlock {
 	}
 
 	@Override
+	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return Shapes.block();
+	}
+
+	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
 		if(!level.isClientSide() && level.getBlockEntity(pos) instanceof ReactorDebrisBlockEntity blockEntity) {  //  blockEntity should always be
 			blockEntity.randomizeDimensions();
