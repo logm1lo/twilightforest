@@ -1,4 +1,4 @@
-// 1.21.1	2024-08-11T11:15:17.169637138	TwilightForest Item and BlockItem models
+// 1.21.1	2024-09-01T11:14:09.127673	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -149,6 +149,7 @@ e1ffc6d6a57fdbbb38445efa9a7d08cb95d0086c assets/twilightforest/models/item/crack
 6b6a25ad9ce64efc5c2dc11c2409bab06ca245a3 assets/twilightforest/models/item/cracked_underbrick.json
 bf81b7da7483a7cb79e848de49ff41d1c6c832f9 assets/twilightforest/models/item/creeper_skull_candle.json
 ddf1661fe44de18c06718d5e915599ffe8a54b32 assets/twilightforest/models/item/crimson_banister.json
+26b4954dcdc98cb4a179d670509b880dffe0dd5f assets/twilightforest/models/item/crown_splinter.json
 fe2455115203978f14e2618c1cea45aada2ae3b0 assets/twilightforest/models/item/crumble_horn.json
 e5bc6e6bd2d27099d01f8c97ef219a4490508ca4 assets/twilightforest/models/item/cube_of_annihilation.json
 1ce5d3fe1b3c3104bee4bab8dd23df16c5393881 assets/twilightforest/models/item/cube_of_annihilation_thrown.json
@@ -444,6 +445,7 @@ a7ec10a496b1b6935e8dc144efe701e3f5ec7f00 assets/twilightforest/models/item/knigh
 315ba5b6cb31f2543efff7794e5a78ad0db0f490 assets/twilightforest/models/item/lamp_of_cinders.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/lich_banner_pattern.json
 061906a0c9a9a334fbb82acb809c3748e2b1f9cb assets/twilightforest/models/item/lich_boss_spawner.json
+621a3a44e9aa5fc8a52bf833e473ca652f4c15b9 assets/twilightforest/models/item/lich_crown.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/lich_spawn_egg.json
 914de44a64ac77e886f4d4c3504a24b48a59a543 assets/twilightforest/models/item/lich_tower_miniature_structure.json
 621a3a44e9aa5fc8a52bf833e473ca652f4c15b9 assets/twilightforest/models/item/lich_trophy.json

@@ -16,10 +16,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -34,6 +31,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFDamageTypes;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.LifedrainParticlePacket;
@@ -199,7 +197,7 @@ public class LifedrainScepterItem extends Item {
 							}
 						}
 
-						if (living instanceof Player player && !player.getAbilities().instabuild) {
+						if (living instanceof Player player && !player.getAbilities().instabuild && (!player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.LICH_CROWN) || level.getRandom().nextFloat() > 0.05f)) {
 							TFItemStackUtils.hurtButDontBreak(stack, 1, (ServerLevel) level, player);
 						}
 					}
