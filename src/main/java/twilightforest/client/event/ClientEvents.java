@@ -102,7 +102,6 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
 
 		NeoForge.EVENT_BUS.addListener(FogHandler::renderFog);
-		NeoForge.EVENT_BUS.addListener(FogHandler::setupFogColors);
 		NeoForge.EVENT_BUS.addListener(FogHandler::unloadFog);
 
 		NeoForge.EVENT_BUS.addListener(LockedBiomeToastHandler::tickLockedToastLogic);
