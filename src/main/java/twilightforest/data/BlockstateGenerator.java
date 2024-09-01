@@ -64,6 +64,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		builtinEntity(TFBlocks.FIREFLY.get(), "block/blank");
 		builtinEntity(TFBlocks.MOONWORM.get(), "block/blank");
 		builtinEntity(TFBlocks.CICADA.get(), "block/blank");
+		builtinEntity(TFBlocks.REACTOR_DEBRIS.get(), "block/blank");
 
 		builtinEntity(TFBlocks.RED_THREAD.get(), "block/blank");
 
