@@ -51,6 +51,7 @@ import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CandelabraBlockEntity;
+import twilightforest.components.item.CandelabraData;
 
 import java.util.List;
 import java.util.Optional;
@@ -415,7 +416,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
+		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra && candelabra.getCandles() != CandelabraData.EMPTY) {
 			ItemStack itemstack = new ItemStack(this);
 			itemstack.applyComponents(candelabra.collectComponents());
 			return itemstack;
