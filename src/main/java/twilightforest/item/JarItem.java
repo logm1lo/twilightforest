@@ -12,15 +12,12 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import twilightforest.block.JarBlock;
 import twilightforest.block.entity.MasonJarBlockEntity;
-import twilightforest.client.ISTER;
 import twilightforest.components.item.JarLid;
 import twilightforest.init.TFDataComponents;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class JarItem extends BlockItem {
 	public JarItem(JarBlock block, Properties properties) {
@@ -48,7 +45,7 @@ public class JarItem extends BlockItem {
 			ItemContainerContents contents = stack.getComponents().get(DataComponents.CONTAINER);
 			if (contents != null) {
 				ItemStack storedStack = contents.copyOne();
-				if (!storedStack.isEmpty()) components.add(storedStack.getDisplayName().copy().withStyle(ChatFormatting.GRAY));
+				if (!storedStack.isEmpty()) components.add(storedStack.getDisplayName().copy().append(" x" + storedStack.getCount()).withStyle(ChatFormatting.GRAY));
 			}
 		}
 
