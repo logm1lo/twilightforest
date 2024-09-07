@@ -37,7 +37,7 @@ public class ReactorDebrisBlock extends BaseEntityBlock {
 	@Override
 	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		if (level.getBlockEntity(pos) instanceof ReactorDebrisBlockEntity reactorDebrisBlockEntity)
-			return reactorDebrisBlockEntity.SHAPE;
+			return reactorDebrisBlockEntity.shape;
 		return ReactorDebrisBlockEntity.calculateVoxelShape();
 	}
 
