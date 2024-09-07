@@ -41,6 +41,9 @@ public class HollowLogItem extends BlockItem {
 		blockItemMap.put(this.climbable, item);
 	}
 
+	// FIXME Depreciated for removal, NeoForge will no longer continue supporting this method
+	//  https://github.com/neoforged/NeoForge/pull/1480
+	@SuppressWarnings("removal")
 	@Override
 	public void removeFromBlockToItemMap(Map<Block, Item> blockItemMap, Item item) {
 		super.removeFromBlockToItemMap(blockItemMap, item);
