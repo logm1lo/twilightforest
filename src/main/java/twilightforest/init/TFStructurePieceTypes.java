@@ -98,6 +98,7 @@ public class TFStructurePieceTypes {
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_MAGIC_GALLERY = registerPieceType("TFLT" + "TGallery", LichTowerMagicGallery::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_FOYER_DECORATION = registerPieceType("TFLT" + "TFoyD", LichTowerFoyerDecor::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_BOSS_ROOM = registerPieceType("TFLT" + "TBoss", LichBossRoom::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_BOSS_ROOF = registerPieceType("TFLT" + "TBossRoof", LichBossRoof::new);
 
 	// Labyrinth
 	//public static final DeferredHolder<StructurePieceType, StructurePieceType> TFLr = registerPieceType("TFLr", StructureStartLabyrinth::new);

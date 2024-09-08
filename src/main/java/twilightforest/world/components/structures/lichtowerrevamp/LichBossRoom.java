@@ -115,6 +115,18 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 
 	@Override
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
+		if (!"twilightforest:lich_tower/tower_below".equals(connection.target()))
+			return;
+
+		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_roof"), "twilightforest:lich_tower/tower_below", random);
+
+		if (placeableJunction == null)
+			return;
+
+		LichBossRoof lichBossRoof = new LichBossRoof(this.structureManager, placeableJunction);
+
+		pieceAccessor.addPiece(lichBossRoof);
+		lichBossRoof.addChildren(this, pieceAccessor, random);
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 			case "twilightforest:lich_tower/bridge" -> LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, true, this.genDepth + 1, false);
 			case "twilightforest:lich_tower/decor" -> {
 				ResourceLocation decorId = LichTowerUtil.rollRandomDecor(random, true);
-				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), structureManager, decorId, "twilightforest:lich_tower/decor", random);
+				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, decorId, "twilightforest:lich_tower/decor", random);
 
 				if (placeableJunction != null) {
 					StructurePiece decor = new LichTowerRoomDecor(this.genDepth + 1, this.structureManager, decorId, placeableJunction, false);
