@@ -79,13 +79,14 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		BlockPos priorJigsawOffset = sourceJigsawPos;
 		FrontAndTop priorOrientation = sourceOrientation;
 		int mobBridge = random.nextIntBetweenInclusive(0, 5);
-		for (int i = 0; i < segments; i++) {
+		for (int stackIndex = 0; stackIndex < segments; stackIndex++) {
 			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, segmentId, "twilightforest:lich_tower/tower_below", random);
 
 			if (placeableJunction == null) continue;
 
-			boolean putWings = i > segments >> 1;
-			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, putWings, i != segments - 1);
+			boolean putWings = stackIndex > segments >> 1;
+			boolean putGallery = stackIndex == segments - 1;
+			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, putWings, putGallery);
 
 			pieceAccessor.addPiece(towerSegment);
 			pieces.add(towerSegment); // Add to list for adding children later, must build upwards to the boss room before beginning Sidetowers from the base & upwards too
@@ -127,9 +128,16 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
 			case "twilightforest:lich_tower/bridge" -> {
-				if (this.putWings) {
-					boolean genMagicGallery = !this.putGallery && jigsawIndex == 2 && random.nextInt(10) == 0;
-					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, false, this.genDepth + 1, genMagicGallery);
+				if (!this.putWings) return;
+
+				// If this is the top segment, then place only the gallery so that the normal side towers place lower
+				//  and thus generate taller without colliding into the boss room
+				if (this.putGallery) {
+					if (jigsawIndex == 2 /*&& random.nextInt(10) == 0*/) {
+						LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, false, this.genDepth + 1, true);
+					}
+				} else {
+					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, false, this.genDepth + 1, false);
 				}
 			}
 			case "twilightforest:mob_bridge" -> {
