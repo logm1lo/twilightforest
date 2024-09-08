@@ -17,18 +17,32 @@ import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.processors.SoftReplaceProcessor;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
+import twilightforest.world.components.structures.util.SortablePiece;
 
-public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece {
+	private final boolean generateGround;
+
 	public LichTowerWingBeard(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_WING_BEARD.get(), compoundTag, ctx, readSettings(compoundTag));
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
+
+		this.generateGround = compoundTag.getBoolean("gen_ground");
 	}
 
-	public LichTowerWingBeard(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
+	public LichTowerWingBeard(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, boolean generateGround) {
 		super(TFStructurePieceTypes.LICH_WING_BEARD.get(), genDepth, structureManager, templateLocation, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
+
+		this.generateGround = generateGround;
+	}
+
+	@Override
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
+		super.addAdditionalSaveData(ctx, structureTag);
+
+		structureTag.putBoolean("gen_ground", this.generateGround);
 	}
 
 	@Override
@@ -38,12 +52,12 @@ public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBear
 
 	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
+		return this.generateGround ? TerrainAdjustment.BEARD_BOX : TerrainAdjustment.NONE;
 	}
 
 	@Override
 	public int getGroundLevelDelta() {
-		return 0;
+		return 5;
 	}
 
 	@Override
@@ -56,5 +70,10 @@ public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBear
 		}
 
 		return BoundingBoxUtils.cloneWithAdjustments(this.boundingBox, 1, 0, 1, -1, -1, -1);
+	}
+
+	@Override
+	public int getSortKey() {
+		return -1;
 	}
 }

@@ -98,6 +98,11 @@ public final class LichTowerUtil {
 		return ArrayUtil.safeShuffledCopy(ArrayUtil.orNull(LichTowerPieces.BEARDS, size - 1), randomSource);
 	}
 
+	@Nullable
+	public static ResourceLocation getTrim(int size) {
+		return ArrayUtil.orNull(LichTowerPieces.WING_TRIMS, size - 1);
+	}
+
 	public static Set<String> getLadderPlacementsForSize(int size) {
 		return switch (size) {
 			case 1 -> LichTowerPieces.LADDER_PLACEMENTS_1;

@@ -160,15 +160,14 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
 			case "twilightforest:lich_tower/bridge" -> {
-				boolean generateGround = this.generateGround && connection.pos().getY() < 5;
 				if (this.roomSize < 1) {
 					return;
 				} else if (this.genDepth > 30 || random.nextInt(this.towerStackIndex() * 2 + 1) == 0) {
-					LichTowerWingBridge.putCover(this, pieceAccessor, random, connection.pos(), connection.orientation(), this.structureManager, generateGround, this.genDepth + 1);
-				} else if (!generateGround) {
-					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, false, this.roomSize - random.nextInt(2), generateGround, this.genDepth + 1, false);
+					LichTowerWingBridge.putCover(this, pieceAccessor, random, connection.pos(), connection.orientation(), this.structureManager, this.generateGround, this.genDepth + 1);
+				} else if (!this.generateGround) {
+					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, false, this.roomSize - random.nextInt(2), false, this.genDepth + 1, false);
 				} else {
-					LichTowerWingBridge.putCover(this, pieceAccessor, random, connection.pos(), connection.orientation(), this.structureManager, false, this.genDepth + 1);
+					LichTowerWingBridge.putCover(this, pieceAccessor, random, connection.pos(), connection.orientation(), this.structureManager, true, this.genDepth + 1);
 				}
 
 				return;
@@ -180,7 +179,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				return;
 			}
 			case "twilightforest:lich_tower/beard" -> {
-				if (this.generateGround || this.hasLadderBelowRoom()) {
+				if (this.hasLadderBelowRoom()) {
 					// Instead of placing a beard structure piece, this piece generates ground with the Beardifier!
 					// Or there's a ladder entering the room from underneath
 					return;
@@ -188,14 +187,19 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 				FrontAndTop orientationToMatch = getVerticalOrientation(connection, Direction.DOWN, this);
 
-				for (ResourceLocation beardLocation : LichTowerUtil.shuffledBeards(random, this.roomSize)) {
-					if (this.tryBeard(pieceAccessor, random, connection, beardLocation, orientationToMatch, false)) {
-						return;
+				if (this.generateGround) {
+					ResourceLocation trim = LichTowerUtil.getTrim(this.roomSize);
+					this.tryBeard(pieceAccessor, random, connection, trim, orientationToMatch, true, true);
+				} else {
+					for (ResourceLocation beardLocation : LichTowerUtil.shuffledBeards(random, this.roomSize)) {
+						if (this.tryBeard(pieceAccessor, random, connection, beardLocation, orientationToMatch, false, false)) {
+							return;
+						}
 					}
-				}
 
-				ResourceLocation fallbackBeard = LichTowerUtil.getFallbackBeard(this.roomSize);
-				this.tryBeard(pieceAccessor, random, connection, fallbackBeard, orientationToMatch, true);
+					ResourceLocation fallbackBeard = LichTowerUtil.getFallbackBeard(this.roomSize);
+					this.tryBeard(pieceAccessor, random, connection, fallbackBeard, orientationToMatch, true, false);
+				}
 			}
 			case "twilightforest:lich_tower/decor" -> {
 				LichTowerRoomDecor.addDecor(this, pieceAccessor, random, connection, this.genDepth + 1, this.structureManager, false);
@@ -286,11 +290,11 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		return false;
 	}
 
-	private boolean tryBeard(StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, @Nullable ResourceLocation beardLocation, FrontAndTop orientationToMatch, boolean allowClipping) {
+	private boolean tryBeard(StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, @Nullable ResourceLocation beardLocation, FrontAndTop orientationToMatch, boolean allowClipping, boolean generateGround) {
 		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), orientationToMatch, this.structureManager, beardLocation, "twilightforest:lich_tower/beard", random);
 
 		if (placeableJunction != null) {
-			LichTowerWingBeard beardPiece = new LichTowerWingBeard(this.genDepth + 1, this.structureManager, beardLocation, placeableJunction);
+			LichTowerWingBeard beardPiece = new LichTowerWingBeard(this.genDepth + 1, this.structureManager, beardLocation, placeableJunction, generateGround);
 
 			if (allowClipping || pieceAccessor.findCollisionPiece(beardPiece.generationCollisionBox()) == null) {
 				pieceAccessor.addPiece(beardPiece);
@@ -687,11 +691,11 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
-		return this.generateGround ? TerrainAdjustment.BEARD_THIN : TerrainAdjustment.NONE;
+		return TerrainAdjustment.NONE;
 	}
 
 	@Override
 	public int getGroundLevelDelta() {
-		return this.roomSize == 0 ? 2 : 1;
+		return 0;
 	}
 }

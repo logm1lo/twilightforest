@@ -213,6 +213,12 @@ public final class LichTowerPieces {
 		}
 	};
 
+	static final ResourceLocation[] WING_TRIMS = new ResourceLocation[] {
+		TwilightForestMod.prefix("lich_tower/5x5/beard_trim"),
+		TwilightForestMod.prefix("lich_tower/7x7/beard_trim"),
+		TwilightForestMod.prefix("lich_tower/9x9/beard_trim")
+	};
+
 	static final ResourceLocation[] FLAT_SIDE_ROOFS = new ResourceLocation[] {
 		TwilightForestMod.prefix("lich_tower/3x3/flat_side_roof"),
 		TwilightForestMod.prefix("lich_tower/5x5/flat_side_roof"),
