@@ -3,7 +3,9 @@ package twilightforest.world.components.structures.lichtowerrevamp;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CandleBlock;
@@ -14,9 +16,10 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
@@ -28,7 +31,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	public LichTowerBase(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_TOWER_BASE.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings);
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TrimProcessor.INSTANCE));
 	}
 
 	public LichTowerBase(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
@@ -36,7 +39,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 
 		this.boundingBox = BoundingBoxUtils.cloneWithAdjustments(this.boundingBox, 0, 0, 0, 0, 30,0);
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings);
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TrimProcessor.INSTANCE));
 	}
 
 	@Override
@@ -89,5 +92,25 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	@Override
 	public int getGroundLevelDelta() {
 		return 1;
+	}
+
+	private static class TrimProcessor extends StructureProcessor {
+		private static final TrimProcessor INSTANCE = new TrimProcessor();
+
+		@Nullable
+		@Override
+		public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+			if (modifiedBlockInfo.state().is(Blocks.POLISHED_ANDESITE_STAIRS) && level.getBlockState(modifiedBlockInfo.pos()).is(BlockTags.STONE_BRICKS)) {
+				// Don't replace trim blocks placed by tower wings
+				return null;
+			}
+
+			return super.process(level, origin, centerBottom, originalBlockInfo, modifiedBlockInfo, settings, template);
+		}
+
+		@Override
+		protected StructureProcessorType<?> getType() {
+			return null; // not serialized
+		}
 	}
 }
