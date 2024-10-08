@@ -71,11 +71,12 @@ public class Lich extends BaseTFBoss {
 	private static final EntityDataAccessor<Integer> ATTACK_TYPE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 
 	private static final ItemParticleOption BONE_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.BONE.getDefaultInstance());
-	public static final int MAX_SHADOW_CLONES = 2;
-	public static final int INITIAL_SHIELD_STRENGTH = 6;
 	public static final int MAX_ACTIVE_MINIONS = 3;
-	public static final int INITIAL_MINIONS_TO_SUMMON = 9;
+
 	public static final int MAX_HEALTH = 100;
+	public static final int MAX_SHADOW_CLONES = 2;
+	public static final int MAX_SHIELD_STRENGTH = 6;
+	public static final int MAX_MINIONS_TO_SUMMON = 9;
 
 	private int attackCooldown;
 	private int popCooldown;
@@ -87,6 +88,8 @@ public class Lich extends BaseTFBoss {
 	public Lich(EntityType<? extends Lich> type, Level level) {
 		super(type, level);
 		this.xpReward = 217;
+		this.setShieldStrength((int) this.getAttributeValue(TFAttributes.SHIELD_STRENGTH));
+		this.setMinionsToSummon((int) this.getAttributeValue(TFAttributes.MINION_COUNT));
 	}
 
 	@SuppressWarnings("this-escape")
@@ -100,15 +103,18 @@ public class Lich extends BaseTFBoss {
 		return Monster.createMonsterAttributes()
 			.add(Attributes.MAX_HEALTH, MAX_HEALTH)
 			.add(Attributes.ATTACK_DAMAGE, 3.0D)
-			.add(Attributes.MOVEMENT_SPEED, 0.45D); // Same speed as an angry enderman
+			.add(Attributes.MOVEMENT_SPEED, 0.45D) // Same speed as an angry enderman
+			.add(TFAttributes.CLONE_COUNT, MAX_SHADOW_CLONES)
+			.add(TFAttributes.SHIELD_STRENGTH, MAX_SHIELD_STRENGTH)
+			.add(TFAttributes.MINION_COUNT, MAX_MINIONS_TO_SUMMON);
 	}
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(MASTER_LICH, Optional.empty());
-		builder.define(SHIELD_STRENGTH, INITIAL_SHIELD_STRENGTH);
-		builder.define(MINIONS_LEFT, INITIAL_MINIONS_TO_SUMMON);
+		builder.define(SHIELD_STRENGTH, MAX_SHIELD_STRENGTH);
+		builder.define(MINIONS_LEFT, MAX_MINIONS_TO_SUMMON);
 		builder.define(ATTACK_TYPE, 0);
 	}
 
@@ -382,7 +388,7 @@ public class Lich extends BaseTFBoss {
 	}
 
 	public boolean wantsNewClone(Lich clone) {
-		return clone.isShadowClone() && this.countMyClones() < Lich.MAX_SHADOW_CLONES;
+		return clone.isShadowClone() && this.countMyClones() < this.getAttributeValue(TFAttributes.CLONE_COUNT);
 	}
 
 	public int countMyClones() {
@@ -764,7 +770,7 @@ public class Lich extends BaseTFBoss {
 	protected void tickBossBar() {
 		this.getBossBar().setVisible(!this.isShadowClone());
 		int phase = this.getPhase();
-		if (phase == 1) this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
+		if (phase == 1) this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (this.getAttributeValue(TFAttributes.SHIELD_STRENGTH)));
 		else this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
 		if (phase != this.previousPhase) this.getBossBar().updateStyle(this.getBossBarColor(), this.getBossBarOverlay(), this.previousPhase != 1);
 		this.previousPhase = phase;

@@ -12,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.Lich;
 import twilightforest.entity.projectile.LichBolt;
 import twilightforest.entity.projectile.LichBomb;
+import twilightforest.init.TFAttributes;
 import twilightforest.init.TFItems;
 
 import java.util.EnumSet;
@@ -89,7 +90,7 @@ public class LichShadowsGoal extends Goal {
 
 	private void checkAndSpawnClones() {
 		// if not, spawn one!
-		if (this.lich.countMyClones() < Lich.MAX_SHADOW_CLONES)
+		if (this.lich.countMyClones() < this.lich.getAttributeValue(TFAttributes.CLONE_COUNT))
 			this.spawnShadowClone();
 	}
 
