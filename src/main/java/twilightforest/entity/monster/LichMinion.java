@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class LichMinion extends Zombie {
 
+	@Nullable
 	public Lich master;
 
 	public LichMinion(EntityType<? extends LichMinion> type, Level world) {

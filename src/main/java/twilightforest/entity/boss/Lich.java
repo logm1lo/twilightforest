@@ -84,6 +84,7 @@ public class Lich extends BaseTFBoss {
 	private int spawnTime;
 	private final List<UUID> summonedClones = new ArrayList<>();
 	private int previousPhase = 1;
+	private int babyMinionsSummoned = 0;
 
 	public Lich(EntityType<? extends Lich> type, Level level) {
 		super(type, level);
@@ -175,6 +176,7 @@ public class Lich extends BaseTFBoss {
 		}
 		compound.putInt("ShieldStrength", this.getShieldStrength());
 		compound.putInt("MinionsToSummon", this.getMinionsToSummon());
+		compound.putInt("BabyMinionsSummoned", this.babyMinionsSummoned);
 	}
 
 	@Override
@@ -190,6 +192,7 @@ public class Lich extends BaseTFBoss {
 		}
 		this.setShieldStrength(compound.getInt("ShieldStrength"));
 		this.setMinionsToSummon(compound.getInt("MinionsToSummon"));
+		this.babyMinionsSummoned = compound.getInt("BabyMinionsSummoned");
 	}
 
 	@Override
@@ -619,6 +622,14 @@ public class Lich extends BaseTFBoss {
 
 	public void setNextAttackType(int attackType) {
 		this.getEntityData().set(ATTACK_TYPE, attackType);
+	}
+
+	public int getBabyMinionsSummoned() {
+		return this.babyMinionsSummoned;
+	}
+
+	public void setBabyMinionsSummoned(int babyMinionsSummoned) {
+		this.babyMinionsSummoned = babyMinionsSummoned;
 	}
 
 
