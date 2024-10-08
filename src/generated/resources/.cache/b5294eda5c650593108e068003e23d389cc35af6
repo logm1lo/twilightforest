@@ -1,4 +1,4 @@
-// 1.21.1	2024-08-11T11:15:17.212949284	Particle Descriptions
+// 1.21.1	2024-10-08T17:25:00.2188931	Particle Descriptions
 ce403794cbcc5ec5f72b853a8c0a2f0608fadd0f assets/twilightforest/particles/annihilate.json
 21cdc0ed30720178ebd7bd11d6d92e9063330b1c assets/twilightforest/particles/cloud_puff.json
 69cdc834e1efba1bdd494bc2a4d0b166fb53fb0a assets/twilightforest/particles/dim_flame.json
@@ -11,6 +11,7 @@ ce403794cbcc5ec5f72b853a8c0a2f0608fadd0f assets/twilightforest/particles/annihil
 f6ee855ba7953d1f388116739ddcd20e78d4ede9 assets/twilightforest/particles/large_flame.json
 33407865daf96f1eaa11e09ea3a04e4f651a59c9 assets/twilightforest/particles/leaf_rune.json
 a30e84a77731c3583936efa8471c6c8d943d9fe2 assets/twilightforest/particles/log_core_particle.json
+ac30be158afad3968f4f1078b9ba237e4a141065 assets/twilightforest/particles/magic_effect.json
 e3bcad650b1e2acd0f025c6432eba365315f6fa8 assets/twilightforest/particles/ominous_flame.json
 5c3da6f955c278a9dde87ab1ea25c37b23d81af0 assets/twilightforest/particles/particle_spawner_firefly.json
 512b0b60af28b1d94771e69ce5c21159a523a1a1 assets/twilightforest/particles/protection.json

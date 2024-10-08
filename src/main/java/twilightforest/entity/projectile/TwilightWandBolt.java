@@ -16,6 +16,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 
 public class TwilightWandBolt extends TFThrowable {
@@ -50,7 +51,7 @@ public class TwilightWandBolt extends TFThrowable {
 			float s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
 			float s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
 
-			this.level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, s1, s2, s3), dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			this.level().addParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), s1, s2, s3), dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

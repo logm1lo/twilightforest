@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.LifedrainParticlePacket;
@@ -222,7 +223,7 @@ public class LifedrainScepterItem extends Item {
 			float r = 1.0F;
 			float g = 0.5F;
 			float b = 0.5F;
-			level.addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, r, g, b), particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
+			level.addParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), r, g, b), particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
 		}
 	}
 
