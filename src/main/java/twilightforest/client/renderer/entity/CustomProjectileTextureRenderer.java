@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.entity.projectile.TFThrowable;
 
@@ -18,17 +19,30 @@ import twilightforest.entity.projectile.TFThrowable;
 public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable> {
 
 	private final ResourceLocation texture;
+	private final float scale;
+	private final boolean fullBright;
 
-	public CustomProjectileTextureRenderer(EntityRendererProvider.Context ctx, ResourceLocation texture) {
+	public CustomProjectileTextureRenderer(EntityRendererProvider.Context ctx, ResourceLocation texture, float scale, boolean fullBright) {
 		super(ctx);
 		this.texture = texture;
+		this.scale = scale;
+		this.fullBright = fullBright;
+	}
+
+	public CustomProjectileTextureRenderer(EntityRendererProvider.Context ctx, ResourceLocation texture) {
+		this(ctx, texture, 1.0F, false);
+	}
+
+	@Override
+	protected int getBlockLightLevel(TFThrowable entity, BlockPos pos) {
+		return this.fullBright ? 15 : super.getBlockLightLevel(entity, pos);
 	}
 
 	//[VanillaCopy] of DragonFireballRender.render, we just input our own texture stuff instead
 	@Override
 	public void render(TFThrowable entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		stack.pushPose();
-		stack.scale(0.5F, 0.5F, 0.5F);
+		stack.scale(0.5F * this.scale, 0.5F * this.scale, 0.5F * this.scale);
 		stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
 		stack.mulPose(Axis.YP.rotationDegrees(180.0F));
 		PoseStack.Pose pose = stack.last();
