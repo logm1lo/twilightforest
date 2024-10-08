@@ -36,8 +36,9 @@ public class LichRenderer<T extends Lich, M extends LichModel<T>> extends Humano
 
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
+		stack.pushPose();
+		stack.scale(1.125F, 1.125F, 1.125F);
 		if (entity.deathTime > 0) {
-			stack.pushPose();
 			if (entity.deathTime > Lich.DEATH_ANIMATION_POINT_A) {
 				stack.translate(0.0D, -1.8D * Math.pow(Math.min(((float) (entity.deathTime - Lich.DEATH_ANIMATION_POINT_A) + partialTicks) * 0.05D, 1.0D), 3.0D), 0.0D);
 			} else {
@@ -45,8 +46,8 @@ public class LichRenderer<T extends Lich, M extends LichModel<T>> extends Humano
 				stack.translate(Math.sin(time * time) * 0.01D, 0.0D, Math.cos(time * time) * 0.01D);
 			}
 			super.render(entity, entityYaw, partialTicks, stack, buffer, packedLight);
-			stack.popPose();
 		} else super.render(entity, entityYaw, partialTicks, stack, buffer, packedLight);
+		stack.popPose();
 	}
 
 	@Override
