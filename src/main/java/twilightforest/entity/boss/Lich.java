@@ -54,6 +54,7 @@ import twilightforest.block.LightableBlock;
 import twilightforest.data.tags.DamageTypeTagGenerator;
 import twilightforest.entity.ai.goal.*;
 import twilightforest.entity.monster.LichMinion;
+import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.*;
 import twilightforest.network.ParticlePacket;
 import twilightforest.util.entities.EntityUtil;
@@ -353,7 +354,9 @@ public class Lich extends BaseTFBoss {
 		double ty = (this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F) - (this.getY() + this.getBbHeight() / 2.0F);
 		double tz = this.getTarget().getZ() - sz;
 
-		this.playSound(TFSounds.LICH_SHOOT.get(), this.getSoundVolume(), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
+		float pitch = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F;
+		if (projectile instanceof LichBomb) pitch *= 0.85F;
+		this.playSound(TFSounds.LICH_SHOOT.get(), this.getSoundVolume(), pitch);
 
 		projectile.moveTo(sx, sy, sz, this.getYRot(), this.getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
