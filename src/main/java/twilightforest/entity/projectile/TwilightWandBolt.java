@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFParticleType;
@@ -43,9 +45,9 @@ public class TwilightWandBolt extends TFThrowable {
 
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = this.getX() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
-			double dy = this.getY() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
-			double dz = this.getZ() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
+			double dx = this.getX() + 0.25D * (this.random.nextDouble() - this.random.nextDouble());
+			double dy = this.getY() + 0.25D * (this.random.nextDouble() - this.random.nextDouble());
+			double dz = this.getZ() + 0.25D * (this.random.nextDouble() - this.random.nextDouble());
 
 			float s1 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.17F;  // color
 			float s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
@@ -74,6 +76,13 @@ public class TwilightWandBolt extends TFThrowable {
 
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
+		if (result.getEntity() instanceof Lich lich && lich.getPhase() > 1) { // Lich bounces that shit back in phases 2 and 3
+			this.setDeltaMovement(this.getDeltaMovement().add(0.5D - this.random.nextDouble(), 0.75D, 0.5D - this.random.nextDouble()).multiply(0.75D, 1.5D, 0.75D));
+			lich.playSound(TFSounds.SHIELD_BLOCK.get(), 0.5F, lich.getVoicePitch() * 1.5F);
+			lich.swing(InteractionHand.MAIN_HAND);
+			this.setOwner(lich);
+			return;
+		}
 		super.onHitEntity(result);
 		if (!this.level().isClientSide()) {
 			result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.TWILIGHT_SCEPTER, this, this.getOwner()), 6);
