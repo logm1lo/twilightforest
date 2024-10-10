@@ -1,6 +1,8 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -8,8 +10,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Lich;
 import twilightforest.entity.monster.LichMinion;
@@ -44,25 +50,35 @@ public class LichMinionsGoal extends Goal {
 	@Override
 	public void tick() {
 		LivingEntity targetedEntity = this.lich.getTarget();
-		if (targetedEntity == null)
-			return;
+		if (targetedEntity == null) return;
 		float dist = this.lich.distanceTo(targetedEntity);
 		// spawn minions every so often
-		if (this.lich.getAttackCooldown() % 15 == 0) {
-			this.checkAndSpawnMinions();
+		if (this.lich.getAttackCooldown() % 15 == 0) this.checkAndSpawnMinions();
+
+		if (dist <= 20.0F && this.lich.level() instanceof ServerLevel level) {
+			Vec3 pos = this.lich.getEyePosition();
+			Vec3 player = targetedEntity.getEyePosition();
+			Vec3 diff = pos.subtract(player).normalize();
+
+			Vec3 goal = pos;
+			for (float angle = -90.0F; angle <= 90.0F; angle += 45.0F) {
+				Vec3 angled = diff.yRot(angle * Mth.DEG_TO_RAD);
+				BlockHitResult clip = level.clip(new ClipContext(player, player.add(angled.scale(24.0F)), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, CollisionContext.empty()));
+				if (clip.getType() != HitResult.Type.MISS && clip.getLocation().distanceToSqr(player) > goal.distanceToSqr(player)) goal = clip.getLocation();
+			}
+
+			this.lich.getNavigation().moveTo(goal.x, goal.y, goal.z, 0.75D);
 		}
 
 		if (this.lich.getAttackCooldown() == 0) {
 			if (dist < 2.0F) {
 				// melee attack
 				this.lich.doHurtTarget(targetedEntity);
+				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setAttackCooldown(20);
 			} else if (dist < 20F && this.lich.getSensing().hasLineOfSight(targetedEntity)) {
-				if (this.lich.getNextAttackType() == 0) {
-					this.lich.launchProjectileAt(new LichBolt(this.lich.level(), this.lich));
-				} else {
-					this.lich.launchProjectileAt(new LichBomb(this.lich.level(), this.lich));
-				}
+				if (this.lich.getNextAttackType() == 0) this.lich.launchProjectileAt(new LichBolt(this.lich.level(), this.lich));
+				else this.lich.launchProjectileAt(new LichBomb(this.lich.level(), this.lich));
 
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setNextAttackType(this.lich.getRandom().nextBoolean() ? 0 : 1);
@@ -71,7 +87,6 @@ public class LichMinionsGoal extends Goal {
 				// if not, teleport around
 				this.lich.teleportToSightOfEntity(targetedEntity);
 				this.lich.setAttackCooldown(20);
-
 			}
 		}
 	}
@@ -106,11 +121,11 @@ public class LichMinionsGoal extends Goal {
 
 			if (this.lich.level().getDifficulty() != Difficulty.EASY) {
 				int babiesSummoned = this.lich.getBabyMinionsSummoned();
-                if (this.lich.level().getDifficulty() == Difficulty.NORMAL) {
-                    if (babiesSummoned < this.lich.getAttributeValue(TFAttributes.MINION_COUNT) / 4) { // One quarter can be babies on normal, by default: 9 / 4 = 2
-                        baby = this.lich.getRandom().nextInt(100) <= 20; // 20%
-                    }
-                } else if (babiesSummoned < this.lich.getAttributeValue(TFAttributes.MINION_COUNT) / 3) { // One third can be babies on hard, by default: 9 / 3 = 3
+				if (this.lich.level().getDifficulty() == Difficulty.NORMAL) {
+					if (babiesSummoned < this.lich.getAttributeValue(TFAttributes.MINION_COUNT) / 4) { // One quarter can be babies on normal, by default: 9 / 4 = 2
+						baby = this.lich.getRandom().nextInt(100) <= 20; // 20%
+					}
+				} else if (babiesSummoned < this.lich.getAttributeValue(TFAttributes.MINION_COUNT) / 3) { // One third can be babies on hard, by default: 9 / 3 = 3
 					baby = this.lich.getRandom().nextInt(100) <= 40; // 40%
 				}
 				if (baby) this.lich.setBabyMinionsSummoned(babiesSummoned + 1);

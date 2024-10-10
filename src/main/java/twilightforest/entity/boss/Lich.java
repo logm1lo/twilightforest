@@ -150,9 +150,9 @@ public class Lich extends BaseTFBoss {
 		this.goalSelector.addGoal(1, new AlwaysWatchTargetGoal(this));
 		this.goalSelector.addGoal(1, new LichPopMobsGoal(this));
 		this.goalSelector.addGoal(1, new LichAbsorbMinionsGoal(this));
-		this.goalSelector.addGoal(2, new LichShadowsGoal(this));
-		this.goalSelector.addGoal(3, new LichMinionsGoal(this));
-		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.75D, true) {
+		this.goalSelector.addGoal(2, new LichShadowsGoal(this)); // Phase 1
+		this.goalSelector.addGoal(3, new LichMinionsGoal(this)); // Phase 2
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.75D, true) { // Phase 3
 			@Override
 			public boolean canUse() {
 				return Lich.this.getPhase() == 3 && super.canUse();
@@ -536,13 +536,10 @@ public class Lich extends BaseTFBoss {
 			int particles = 128;
 			for (int i = 0; i < particles; i++) {
 				double trailFactor = i / (particles - 1.0D);
-				float f = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
-				float f1 = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
-				float f2 = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
 				double tx = srcX + (destX - srcX) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
 				double ty = srcY + (destY - srcY) * trailFactor + this.getRandom().nextDouble() * this.getBbHeight();
 				double tz = srcZ + (destZ - srcZ) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
-				particlePacket.queueParticle(ParticleTypes.EFFECT, false, tx, ty, tz, f, f1, f2);
+				particlePacket.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), 1.0F, 1.0F, 1.0F), false, tx, ty, tz, 0.0D, 0.0D, 0.0D);
 			}
 			PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 		}
