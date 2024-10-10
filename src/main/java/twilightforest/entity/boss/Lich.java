@@ -149,7 +149,7 @@ public class Lich extends BaseTFBoss {
 				super.tick();
 				if (this.mob.getTarget() != null && !this.mob.isWithinMeleeAttackRange(this.mob.getTarget()) && this.mob.getNavigation().isDone()) {
 					this.mob.getNavigation().moveTo(this.mob.getTarget(), this.speedModifier);
-                }
+				}
 			}
 
 			@Override
@@ -503,18 +503,28 @@ public class Lich extends BaseTFBoss {
 	//                PARTICLES                //
 	//-----------------------------------------//
 
+	@Override
+	public void handleEntityEvent(byte b) {
+		if (b == 46 && this.isShadowClone()) return; // NO TP particles for clones
+		super.handleEntityEvent(b);
+	}
+
 	public void makeTeleportTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
-		// make particle trail
-		int particles = 128;
-		for (int i = 0; i < particles; i++) {
-			double trailFactor = i / (particles - 1.0D);
-			float f = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
-			float f1 = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
-			float f2 = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
-			double tx = srcX + (destX - srcX) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
-			double ty = srcY + (destY - srcY) * trailFactor + this.getRandom().nextDouble() * this.getBbHeight();
-			double tz = srcZ + (destZ - srcZ) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
-			this.level().addParticle(ParticleTypes.EFFECT, tx, ty, tz, f, f1, f2);
+		if (this.level() instanceof ServerLevel && !this.isShadowClone()) {
+			// make particle trail
+			ParticlePacket particlePacket = new ParticlePacket();
+			int particles = 128;
+			for (int i = 0; i < particles; i++) {
+				double trailFactor = i / (particles - 1.0D);
+				float f = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
+				float f1 = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
+				float f2 = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
+				double tx = srcX + (destX - srcX) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
+				double ty = srcY + (destY - srcY) * trailFactor + this.getRandom().nextDouble() * this.getBbHeight();
+				double tz = srcZ + (destZ - srcZ) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
+				particlePacket.queueParticle(ParticleTypes.EFFECT, false, tx, ty, tz, f, f1, f2);
+			}
+			PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 		}
 	}
 
