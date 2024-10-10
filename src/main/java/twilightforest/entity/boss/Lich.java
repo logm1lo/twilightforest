@@ -21,12 +21,11 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -39,6 +38,7 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -99,6 +99,19 @@ public class Lich extends BaseTFBoss {
 		this(TFEntities.LICH.get(), level);
 		this.setMasterUUID(otherLich.getUUID());
 		this.getBossBar().setVisible(false);
+	}
+
+	@Nullable
+	@Override
+	@SuppressWarnings({"deprecation", "OverrideOnly"})
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+		SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+		if (!this.isShadowClone()) {
+            this.setItemInHand(InteractionHand.MAIN_HAND, TFItems.FORTIFICATION_SCEPTER.toStack());
+			this.playSound(TFSounds.SHIELD_ADD.get(), 1.5F, this.getVoicePitch());
+			this.swing(InteractionHand.MAIN_HAND);
+        }
+		return data;
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -218,7 +231,6 @@ public class Lich extends BaseTFBoss {
 		double dy = this.getY() + (this.getBbHeight() * 0.94);
 		double dz = this.getZ() + (Mth.sin(angle) * 0.65);
 
-
 		// add particles!
 
 		// how many particles do we want to add?!
@@ -311,12 +323,16 @@ public class Lich extends BaseTFBoss {
 			if (src.is(DamageTypeTagGenerator.BREAKS_LICH_SHIELDS) && damage > 2) {
 				// reduce shield for magic damage greater than 1 heart
 				if (this.getShieldStrength() > 0) {
-					this.setShieldStrength(this.getShieldStrength() - 1);
-					this.playSound(TFSounds.SHIELD_BREAK.get(), 1.0F, this.getVoicePitch() * 2.0F);
+					int newShieldStrength = this.getShieldStrength() - 1;
+					this.setShieldStrength(newShieldStrength);
+					float volume = 1.5F;
+					if (newShieldStrength < 6) volume += 0.25F * (6 - newShieldStrength);
+					if (newShieldStrength == 0) volume += 0.5F;
+					this.playSound(TFSounds.SHIELD_BREAK.get(), volume, this.getVoicePitch() * 1.25F);
 					this.gameEvent(GameEvent.ENTITY_DAMAGE);
 				}
 			} else {
-				this.playSound(TFSounds.SHIELD_BLOCK.get(), 0.5F, this.getVoicePitch() * 2.0F);
+				this.playSound(TFSounds.SHIELD_BLOCK.get(), 0.75F, this.getVoicePitch() * 1.75F);
 				this.gameEvent(GameEvent.ENTITY_DAMAGE);
 				if (src.getEntity() instanceof LivingEntity living) {
 					this.setLastHurtByMob(living);
@@ -675,6 +691,8 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
+	@Nullable
+	@SuppressWarnings("NullableProblems")
 	public ResourceKey<LootTable> getDefaultLootTable() {
 		return !this.isShadowClone() ? super.getDefaultLootTable() : null;
 	}

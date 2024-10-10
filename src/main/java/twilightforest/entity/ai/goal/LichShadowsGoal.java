@@ -31,7 +31,7 @@ public class LichShadowsGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return this.lich.getPhase() == 1;
+		return this.lich.getPhase() == 1 && this.lich.tickCount > 20 && this.lich.getTarget() != null;
 	}
 
 	@Override
