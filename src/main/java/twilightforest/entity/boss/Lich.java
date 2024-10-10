@@ -64,14 +64,14 @@ import java.util.*;
 public class Lich extends BaseTFBoss {
 	public static final int DEATH_ANIMATION_DURATION = 175; //How many ticks until the body disappears
 	public static final int DEATH_ANIMATION_POINT_A = 50;
-	private static final int DEATH_ANIMATION_POINT_B = 70;
+	public static final int DEATH_ANIMATION_POINT_B = 70;
 
-	private static final EntityDataAccessor<Optional<UUID>> MASTER_LICH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.OPTIONAL_UUID);
-	private static final EntityDataAccessor<Integer> SHIELD_STRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> MINIONS_LEFT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> ATTACK_TYPE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Optional<UUID>> MASTER_LICH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.OPTIONAL_UUID);
+	protected static final EntityDataAccessor<Integer> SHIELD_STRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> MINIONS_LEFT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> ATTACK_TYPE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 
-	private static final ItemParticleOption BONE_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.BONE.getDefaultInstance());
+	protected static final ItemParticleOption BONE_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.BONE.getDefaultInstance());
 	public static final int MAX_ACTIVE_MINIONS = 3;
 
 	public static final int MAX_HEALTH = 100;
@@ -79,13 +79,14 @@ public class Lich extends BaseTFBoss {
 	public static final int MAX_SHIELD_STRENGTH = 6;
 	public static final int MAX_MINIONS_TO_SUMMON = 9;
 
-	private int attackCooldown;
-	private int popCooldown;
-	private int heldScepterTime;
-	private int spawnTime;
-	private final List<UUID> summonedClones = new ArrayList<>();
-	private int previousPhase = 1;
-	private int babyMinionsSummoned = 0;
+	protected int attackCooldown;
+	protected int popCooldown;
+	protected int heldScepterTime;
+	protected int spawnTime;
+	protected final List<UUID> summonedClones = new ArrayList<>();
+	protected int previousPhase = 1;
+	protected int babyMinionsSummoned = 0;
+	protected int hitsWithoutTeleport = 0;
 
 	public Lich(EntityType<? extends Lich> type, Level level) {
 		super(type, level);
@@ -200,6 +201,7 @@ public class Lich extends BaseTFBoss {
 		compound.putInt("ShieldStrength", this.getShieldStrength());
 		compound.putInt("MinionsToSummon", this.getMinionsToSummon());
 		compound.putInt("BabyMinionsSummoned", this.babyMinionsSummoned);
+		compound.putInt("HitsWithoutTeleport", this.hitsWithoutTeleport);
 	}
 
 	@Override
@@ -216,6 +218,7 @@ public class Lich extends BaseTFBoss {
 		this.setShieldStrength(compound.getInt("ShieldStrength"));
 		this.setMinionsToSummon(compound.getInt("MinionsToSummon"));
 		this.babyMinionsSummoned = compound.getInt("BabyMinionsSummoned");
+		this.hitsWithoutTeleport = compound.getInt("HitsWithoutTeleport");
 	}
 
 	@Override
@@ -343,7 +346,8 @@ public class Lich extends BaseTFBoss {
 		}
 
 		if (super.hurt(src, damage)) {
-			if (this.getRandom().nextInt(this.getPhase() == 3 ? 6 : 3) == 0) {
+			if (this.getRandom().nextInt(this.getPhase() == 3 ? 6 : 3) <= this.hitsWithoutTeleport++) {
+				this.hitsWithoutTeleport = 0;
 				this.teleportToSightOfEntity(this.getTarget());
 			}
 
