@@ -167,7 +167,7 @@ steps:
     condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
 
   - task: Gradle@2
-    displayName: Publish to Maven
+    displayName: Publish to Mavenz
     inputs:
       workingDirectory: ''
       options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
