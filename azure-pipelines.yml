@@ -187,7 +187,7 @@ steps:
       messageType: 'embeds'
       embeds: |
         [$(DiscordMessageMavenFailed)]
-    condition: failed()
+    condition: and(and(failed(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
 
   - script: |
       # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
