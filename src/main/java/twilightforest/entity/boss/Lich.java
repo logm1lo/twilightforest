@@ -106,6 +106,7 @@ public class Lich extends BaseTFBoss {
 			.add(Attributes.MAX_HEALTH, MAX_HEALTH)
 			.add(Attributes.ATTACK_DAMAGE, 3.0D)
 			.add(Attributes.MOVEMENT_SPEED, 0.45D) // Same speed as an angry enderman
+			.add(Attributes.FOLLOW_RANGE, 35.0)
 			.add(TFAttributes.CLONE_COUNT, MAX_SHADOW_CLONES)
 			.add(TFAttributes.SHIELD_STRENGTH, MAX_SHIELD_STRENGTH)
 			.add(TFAttributes.MINION_COUNT, MAX_MINIONS_TO_SUMMON);
@@ -141,6 +142,14 @@ public class Lich extends BaseTFBoss {
 			@Override
 			public boolean canUse() {
 				return Lich.this.getPhase() == 3 && super.canUse();
+			}
+
+			@Override
+			public void tick() {
+				super.tick();
+				if (this.mob.getTarget() != null && !this.mob.isWithinMeleeAttackRange(this.mob.getTarget()) && this.mob.getNavigation().isDone()) {
+					this.mob.getNavigation().moveTo(this.mob.getTarget(), this.speedModifier);
+                }
 			}
 
 			@Override
