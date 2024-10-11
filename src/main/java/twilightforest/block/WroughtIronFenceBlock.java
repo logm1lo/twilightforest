@@ -202,7 +202,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		boolean east = eSide == FenceSide.NONE;
 		boolean west = wSide == FenceSide.NONE;
 
-		return north && south && east && west || north != south || east != west;
+		return north && south && east && west || north != south || east != west || !north && !south && !east && !west;
 	}
 
 	@Override
