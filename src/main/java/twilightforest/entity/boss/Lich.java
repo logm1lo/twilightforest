@@ -370,6 +370,7 @@ public class Lich extends BaseTFBoss {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if (!this.isShadowClone()) {
+			this.despawnClones();
 			this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 			if (this.getShieldStrength() > 0) {
 				this.setShieldStrength(0);
@@ -408,6 +409,16 @@ public class Lich extends BaseTFBoss {
 
 	public List<UUID> getClones() {
 		return this.summonedClones;
+	}
+
+	public void despawnClones() {
+		if (this.level() instanceof ServerLevel server) {
+			for (UUID uuid : this.getClones()) {
+				if (server.getEntity(uuid) instanceof Lich clone && clone.getMaster() == this) {
+					clone.remove(Entity.RemovalReason.DISCARDED);
+				}
+			}
+		}
 	}
 
 	@Nullable
