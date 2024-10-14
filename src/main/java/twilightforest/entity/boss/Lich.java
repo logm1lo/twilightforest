@@ -267,14 +267,20 @@ public class Lich extends BaseTFBoss {
 				this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
 	}
 
+	public boolean isOutsideHomeRange(Vec3 pos) {
+		if (this.getRestrictionPoint() == null) return false;
+		BlockPos point = this.getRestrictionPoint().pos();
+        return point.distToCenterSqr(pos) > (this.getHomeRadius() * this.getHomeRadius()) || (this.getPhase() == 3 && this.getY() < point.below(3).getY());
+    }
+
 	@Override
 	protected void customServerAiStep() {
 		super.customServerAiStep();
 
 		// Teleport home if we get too far away from it
-		if (this.getRestrictionPoint() != null && this.getRestrictionPoint().pos().distSqr(this.blockPosition()) > (this.getHomeRadius() * this.getHomeRadius()) || (this.getPhase() == 3 && this.getRestrictionPoint() != null && this.getY() < this.getRestrictionPoint().pos().below(3).getY())) {
-			this.level().setBlockAndUpdate(this.getRestrictionPoint().pos().below(2), Blocks.GLASS.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
-			BlockPos pos = this.getRestrictionPoint().pos();
+		if (this.isOutsideHomeRange(this.position())) {
+			BlockPos pos = Objects.requireNonNull(this.getRestrictionPoint()).pos();
+			if (this.level().getBlockState(pos.below(2)).isAir()) this.level().setBlockAndUpdate(pos.below(2), Blocks.GLASS.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
 			this.teleportToNoChecks(pos.getX(), pos.getY(), pos.getZ());
 		}
 
@@ -487,13 +493,15 @@ public class Lich extends BaseTFBoss {
 			double ty = targetEntity.getY();
 			double tz = targetEntity.getZ() + this.getRandom().nextGaussian() * 16D;
 
-			boolean destClear = this.randomTeleport(tx, ty, tz, true);
+			boolean destClear = this.randomTeleport(tx, ty, tz, false);
 			boolean canSeeTargetAtDest = this.hasLineOfSight(targetEntity); // Don't use senses cache because we're in a temporary position
 			this.teleportTo(origX, origY, origZ);
 
-			if (destClear && canSeeTargetAtDest) {
-				return new Vec3(tx, ty, tz);
-			}
+			Vec3 tpPos = new Vec3(tx, ty, tz);
+			if (destClear && canSeeTargetAtDest && !this.isOutsideHomeRange(tpPos) && tpPos.distanceToSqr(targetEntity.position()) >= 25.0F) {
+				if (this.level() instanceof ServerLevel serverLevel) serverLevel.broadcastEntityEvent(this, (byte)46);
+                return tpPos;
+            }
 		}
 
 		return null;
