@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -482,6 +483,7 @@ public class Lich extends BaseTFBoss {
 		if (this.getRestrictionPoint() != null) {
 			BlockPos pos = this.getRestrictionPoint().pos();
 			if (this.level().getBlockState(pos.below(2)).isAir()) this.level().setBlockAndUpdate(pos.below(2), Blocks.GLASS.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
+			if (this.level().getBlockState(pos.below()).isAir()) pos = pos.below();
 			this.teleportToNoChecks(pos.getX(), pos.getY(), pos.getZ());
 		}
 	}
@@ -522,10 +524,7 @@ public class Lich extends BaseTFBoss {
 			this.teleportTo(origX, origY, origZ);
 
 			Vec3 tpPos = new Vec3(tx, ty, tz);
-			if (destClear && canSeeTargetAtDest && !this.isOutsideHomeRange(tpPos) && tpPos.distanceToSqr(targetEntity.position()) >= 25.0F) {
-				if (this.level() instanceof ServerLevel serverLevel) serverLevel.broadcastEntityEvent(this, (byte)46);
-                return tpPos;
-            }
+			if (destClear && canSeeTargetAtDest && !this.isOutsideHomeRange(tpPos) && tpPos.distanceToSqr(targetEntity.position()) >= 25.0F) return tpPos;
 		}
 
 		return null;
@@ -546,6 +545,7 @@ public class Lich extends BaseTFBoss {
 		this.makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
 		this.playSound(TFSounds.LICH_TELEPORT.get(), 1.0F, 1.0F);
 		this.gameEvent(GameEvent.TELEPORT);
+		if (this.level() instanceof ServerLevel serverLevel) serverLevel.broadcastEntityEvent(this, (byte)46);
 
 		// sometimes we need to do this
 		this.jumping = false;
@@ -557,21 +557,30 @@ public class Lich extends BaseTFBoss {
 
 	@Override
 	public void handleEntityEvent(byte b) {
-		if (b == 46 && this.isShadowClone()) return; // NO TP particles for clones
+		if (b == 46) return;
 		super.handleEntityEvent(b);
 	}
 
 	public void makeTeleportTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
-		if (this.level() instanceof ServerLevel && !this.isShadowClone()) {
+		if (this.level() instanceof ServerLevel) {
 			// make particle trail
 			ParticlePacket particlePacket = new ParticlePacket();
-			int particles = 128;
-			for (int i = 0; i < particles; i++) {
-				double trailFactor = i / (particles - 1.0D);
-				double tx = srcX + (destX - srcX) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
-				double ty = srcY + (destY - srcY) * trailFactor + this.getRandom().nextDouble() * this.getBbHeight();
-				double tz = srcZ + (destZ - srcZ) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
-				particlePacket.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), 1.0F, 1.0F, 1.0F), false, tx, ty, tz, 0.0D, 0.0D, 0.0D);
+			if (!this.isShadowClone()) {
+				int particles = 128;
+				for (int i = 0; i < particles; i++) {
+					double trailFactor = i / (particles - 1.0D);
+					double tx = srcX + (destX - srcX) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
+					double ty = srcY + (destY - srcY) * trailFactor + this.getRandom().nextDouble() * this.getBbHeight();
+					double tz = srcZ + (destZ - srcZ) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
+					particlePacket.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), 1.0F, 1.0F, 1.0F), false, tx, ty, tz, 0.0D, 0.0D, 0.0D);
+				}
+			}
+			ParticleOptions options = this.isShadowClone() ? ParticleTypes.SMOKE : TFParticleType.OMINOUS_FLAME.get();
+			for(int j = 0; j < 64; ++j) {
+				double x = this.getX((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 1.5D);
+				double y = this.getY(this.random.nextDouble() * this.random.nextDouble() * 1.25D);
+				double z = this.getZ((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 1.5D);
+				particlePacket.queueParticle(options, false, x, y, z, 0.0D, 0.0D, 0.0D);
 			}
 			PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 		}
