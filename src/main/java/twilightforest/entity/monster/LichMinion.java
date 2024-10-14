@@ -7,7 +7,13 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
@@ -30,6 +36,19 @@ public class LichMinion extends Zombie {
 	public LichMinion(Level world, Lich entityTFLich) {
 		super(TFEntities.LICH_MINION.get(), world);
 		this.master = entityTFLich;
+	}
+
+	@Override
+	protected void addBehaviourGoals() {
+		this.goalSelector.addGoal(2, new ZombieAttackGoal(this, 1.0, false));
+		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Lich.class) {
+			@Override
+			protected boolean canAttack(@Nullable LivingEntity potentialTarget, TargetingConditions targetPredicate) {
+				return !(potentialTarget instanceof Lich) && super.canAttack(potentialTarget, targetPredicate);
+			}
+		});
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
 	@Override
