@@ -307,8 +307,8 @@ public class Lich extends BaseTFBoss {
 		}
 
 		if (this.getTarget() != null) {
-			if (this.spawnTime-- > 0 && this.hasLineOfSight(this.getTarget())) {
-				if (this.spawnTime < 30) {
+			if (this.spawnTime > 0 && this.hasLineOfSight(this.getTarget())) {
+				if (--this.spawnTime < 30) {
 					this.extinguishNearbyCandles(30 - this.spawnTime);
 				}
 			}
@@ -587,10 +587,10 @@ public class Lich extends BaseTFBoss {
 		}
 	}
 
-	private void extinguishNearbyCandles(int tick) {
+	protected void extinguishNearbyCandles(int tick) {
 		int range = (tick / 2) + 2;
 		int yRange = (tick / 3) + 2;
-		for (BlockPos pos : BlockPos.betweenClosed(this.blockPosition().offset(-range, 0, -range), this.blockPosition().offset(range, yRange, range))) {
+		for (BlockPos pos : BlockPos.betweenClosed(this.homeOrElseCurrent().offset(-range, -3, -range), this.homeOrElseCurrent().offset(range, yRange, range))) {
 			if (this.level().getBlockState(pos).getBlock() instanceof AbstractCandleBlock && this.level().getBlockState(pos).getValue(BlockStateProperties.LIT)) {
 				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(BlockStateProperties.LIT, false));
 				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);
@@ -599,6 +599,24 @@ public class Lich extends BaseTFBoss {
 				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 0.75F);
 			}
 		}
+	}
+
+	protected void lightNearbyCandles(int tick) {
+		int range = (int) ((tick * 1.5F) + 2);
+		int yRange = tick + 2;
+		for (BlockPos pos : BlockPos.betweenClosed(this.homeOrElseCurrent().offset(-range, -3, -range), this.homeOrElseCurrent().offset(range, yRange, range))) {
+			if (this.level().getBlockState(pos).getBlock() instanceof AbstractCandleBlock && !this.level().getBlockState(pos).getValue(BlockStateProperties.LIT)) {
+				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(BlockStateProperties.LIT, true));
+				this.level().playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.25F, 1.5F);
+			} else if (this.level().getBlockState(pos).getBlock() instanceof LightableBlock && this.level().getBlockState(pos).getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.OMINOUS) {
+				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(LightableBlock.LIGHTING, LightableBlock.Lighting.NORMAL));
+				this.level().playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.25F, 1.15F);
+			}
+		}
+	}
+
+	protected BlockPos homeOrElseCurrent() {
+		return this.getRestrictionPoint() == null ? this.blockPosition() : this.getRestrictionPoint().pos();
 	}
 
 	//-----------------------------------------//
@@ -835,6 +853,14 @@ public class Lich extends BaseTFBoss {
 				double z = Math.cos((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
 				this.level().addParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.x() + x, particlePos.y() - 0.25D, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
+		}
+	}
+
+	@Override
+	protected void tickDeath() {
+		super.tickDeath();
+		if (this.deathTime >= DEATH_ANIMATION_DURATION - 10) {
+			this.lightNearbyCandles(this.deathTime - DEATH_ANIMATION_DURATION + 10);
 		}
 	}
 
