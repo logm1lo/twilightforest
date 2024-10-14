@@ -141,10 +141,20 @@ public class Lich extends BaseTFBoss {
 		this.goalSelector.addGoal(0, new AttemptToGoHomeGoal<>(this, 1.25D) {
 			@Override
 			public boolean canUse() {
-				if (Lich.this.getRestrictionPoint() == null) {
-					return false;
-				}
+				if (Lich.this.getRestrictionPoint() == null) return false;
 				return Lich.this.getRestrictionPoint().pos().getY() > Lich.this.getY() + 2 || super.canUse();
+			}
+
+			@Override
+			public boolean requiresUpdateEveryTick() {
+				return true;
+			}
+
+			@Override
+			public void tick() {
+				if (Lich.this.getNavigation().getPath() == null || Lich.this.getNavigation().isStuck() || !Lich.this.getNavigation().getPath().canReach()) {
+					if (!Lich.this.teleportToSightOfEntity(Lich.this.getTarget())) Lich.this.teleportHome();
+				}
 			}
 		});
 		this.goalSelector.addGoal(1, new AlwaysWatchTargetGoal(this));
@@ -278,11 +288,7 @@ public class Lich extends BaseTFBoss {
 		super.customServerAiStep();
 
 		// Teleport home if we get too far away from it
-		if (this.isOutsideHomeRange(this.position())) {
-			BlockPos pos = Objects.requireNonNull(this.getRestrictionPoint()).pos();
-			if (this.level().getBlockState(pos.below(2)).isAir()) this.level().setBlockAndUpdate(pos.below(2), Blocks.GLASS.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
-			this.teleportToNoChecks(pos.getX(), pos.getY(), pos.getZ());
-		}
+		if (this.isOutsideHomeRange(this.position())) this.teleportHome();
 
 		if (this.getAttackCooldown() > 0 && this.spawnTime <= 0) {
 			this.attackCooldown--;
@@ -463,16 +469,26 @@ public class Lich extends BaseTFBoss {
 	//              TELEPORTATION              //
 	//-----------------------------------------//
 
-	public void teleportToSightOfEntity(@Nullable Entity entity) {
-		if (entity == null || !this.getSensing().hasLineOfSight(entity))
-			return;
+
+	public void teleportHome() {
+		if (this.getRestrictionPoint() != null) {
+			BlockPos pos = this.getRestrictionPoint().pos();
+			if (this.level().getBlockState(pos.below(2)).isAir()) this.level().setBlockAndUpdate(pos.below(2), Blocks.GLASS.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
+			this.teleportToNoChecks(pos.getX(), pos.getY(), pos.getZ());
+		}
+	}
+
+	public boolean teleportToSightOfEntity(@Nullable Entity entity) {
+		if (entity == null || !this.getSensing().hasLineOfSight(entity)) return false;
 		Vec3 dest = this.findVecInLOSOf(entity);
 
 		if (dest != null) {
 			this.teleportToNoChecks(dest.x(), dest.y(), dest.z());
 			this.getLookControl().setLookAt(entity, 100.0F, 100.0F);
 			this.yBodyRot = this.getYRot();
+			return true;
 		}
+		return false;
 	}
 
 	/**
