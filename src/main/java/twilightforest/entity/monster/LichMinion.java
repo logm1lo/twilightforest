@@ -1,6 +1,7 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -36,16 +37,14 @@ public class LichMinion extends Zombie {
 		LivingEntity prevTarget = getTarget();
 
 		if (super.hurt(source, amount)) {
-			if (source.getEntity() instanceof Lich) {
+			if (source.getEntity() instanceof Lich && this.level().getDifficulty() == Difficulty.HARD) {
 				// return to previous target but speed up
 				this.setLastHurtByMob(prevTarget);
 				this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 4));
 				this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 1));
 			}
 			return true;
-		} else {
-			return false;
-		}
+		} else return false;
 	}
 
 	@Override

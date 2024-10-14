@@ -1,19 +1,24 @@
 package twilightforest.init;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
 import twilightforest.enums.extensions.TFDamageEffectsEnumExtension;
-import twilightforest.util.entities.EntityExcludedDamageSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TFDamageTypes {
 
@@ -71,7 +76,7 @@ public class TFDamageTypes {
 	}
 
 	public static DamageSource getIndirectEntityDamageSource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker, @Nullable Entity indirectAttacker, EntityType<?>... toIgnore) {
-		return toIgnore.length > 0 ? new EntityExcludedDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), toIgnore) : new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), attacker, indirectAttacker);
+		return toIgnore.length > 0 ? new TFEntityExcludedDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), attacker, indirectAttacker, toIgnore) : new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), attacker, indirectAttacker);
 	}
 
 	public static void bootstrap(BootstrapContext<DamageType> context) {
@@ -111,5 +116,29 @@ public class TFDamageTypes {
 		context.register(FALLING_ICE, new DamageType("fallingBlock", 0.1F));
 		context.register(MOONWORM, new DamageType("twilightforest.moonworm", 0.0F));
 		context.register(ACID_RAIN, new DamageType("twilightforest.acid_rain", 0.0F));
+	}
+
+	public static class TFEntityExcludedDamageSource extends DamageSource {
+		protected final List<EntityType<?>> entities;
+
+		public TFEntityExcludedDamageSource(Holder<DamageType> type, @Nullable Entity directEntity, @Nullable Entity causingEntity, EntityType<?>... entities) {
+			super(type, directEntity, causingEntity);
+			this.entities = Arrays.stream(entities).toList();
+		}
+
+		@Override
+		public Component getLocalizedDeathMessage(LivingEntity living) {
+			LivingEntity livingentity = living.getKillCredit();
+			String s = "death.attack." + this.type().msgId();
+			String s1 = s + ".player";
+			if (livingentity != null) {
+				for (EntityType<?> entity : entities) {
+					if (livingentity.getType() == entity) {
+						return Component.translatable(s, living.getDisplayName());
+					}
+				}
+			}
+			return livingentity != null ? Component.translatable(s1, living.getDisplayName(), livingentity.getDisplayName()) : Component.translatable(s, living.getDisplayName());
+		}
 	}
 }
