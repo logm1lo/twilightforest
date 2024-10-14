@@ -69,10 +69,7 @@ public class LichMinionsGoal extends Goal {
 		if (dist < ATTACK_RANGE && this.seeTime >= 20) {
 			this.lich.getNavigation().stop();
 			++this.strafingTime;
-		} else {
-			this.lich.getNavigation().moveTo(targetedEntity, 0.75D);
-			this.strafingTime = -1;
-		}
+		} else this.strafingTime = -1;
 
 		if (this.strafingTime >= 20) {
 			if ((double)this.lich.getRandom().nextFloat() < 0.3) this.strafingClockwise = !this.strafingClockwise;

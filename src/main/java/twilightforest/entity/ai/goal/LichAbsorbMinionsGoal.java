@@ -51,7 +51,7 @@ public class LichAbsorbMinionsGoal extends Goal {
 			.stream().filter(m -> m.master == this.lich).toList();
 
 		if (!minions.isEmpty()) {
-			LichMinion minion = minions.get(0);
+			LichMinion minion = minions.getFirst();
 			minion.discard();
 			//rain particles
 			LifedrainScepterItem.animateTargetShatter((ServerLevel) this.lich.level(), minion);
