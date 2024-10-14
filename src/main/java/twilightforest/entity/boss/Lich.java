@@ -357,15 +357,13 @@ public class Lich extends BaseTFBoss {
 		}
 
 		if (super.hurt(src, damage)) {
-			if (this.getRandom().nextInt(this.getPhase() == 3 ? 6 : 3) <= this.hitsWithoutTeleport++) {
+			if (this.getRandom().nextInt(this.getPhase() == 3 ? 6 : 3) <= this.hitsWithoutTeleport++ && !this.isDeadOrDying()) {
 				this.hitsWithoutTeleport = 0;
 				this.teleportToSightOfEntity(this.getTarget());
 			}
 
 			return true;
-		} else {
-			return false;
-		}
+		} else return false;
 	}
 
 	@Override
