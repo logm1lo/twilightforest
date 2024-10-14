@@ -155,7 +155,7 @@ public class LichMinionsGoal extends Goal {
 
 			this.lich.swing(InteractionHand.MAIN_HAND);
 			// make sparkles leading to it
-			this.lich.makeMagicTrail(this.lich.getEyePosition(), minion.getEyePosition(), 0.0F, 0.0F, 0.0F);
+			this.lich.makeMagicTrail(this.lich.getEyePosition(), minion.getEyePosition(), this.lich.getRandom().nextFloat() * 0.0625F + 0.125F, this.lich.getRandom().nextFloat() * 0.0625F + 0.125F, this.lich.getRandom().nextFloat() * 0.0625F + 0.125F);
 		}
 	}
 
