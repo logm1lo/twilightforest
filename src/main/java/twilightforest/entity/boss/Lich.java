@@ -307,10 +307,9 @@ public class Lich extends BaseTFBoss {
 		}
 
 		if (this.getTarget() != null) {
-			if (this.spawnTime > 0 && this.hasLineOfSight(this.getTarget())) {
-				this.spawnTime--;
-				if (this.spawnTime <= 0) {
-					this.extinguishNearbyCandles();
+			if (this.spawnTime-- > 0 && this.hasLineOfSight(this.getTarget())) {
+				if (this.spawnTime < 30) {
+					this.extinguishNearbyCandles(30 - this.spawnTime);
 				}
 			}
 		}
@@ -590,10 +589,9 @@ public class Lich extends BaseTFBoss {
 		}
 	}
 
-	//TODO quickly convert candles over time instead of all at once
-	private void extinguishNearbyCandles() {
-		int range = 16;
-		int yRange = 10;
+	private void extinguishNearbyCandles(int tick) {
+		int range = (tick / 2) + 2;
+		int yRange = (tick / 3) + 2;
 		for (BlockPos pos : BlockPos.betweenClosed(this.blockPosition().offset(-range, 0, -range), this.blockPosition().offset(range, yRange, range))) {
 			if (this.level().getBlockState(pos).getBlock() instanceof AbstractCandleBlock && this.level().getBlockState(pos).getValue(BlockStateProperties.LIT)) {
 				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(BlockStateProperties.LIT, false));
@@ -610,7 +608,7 @@ public class Lich extends BaseTFBoss {
 	//-----------------------------------------//
 
 	public void setExtinguishTimer() {
-		this.spawnTime = 20;
+		this.spawnTime = 40;
 	}
 
 	/**
