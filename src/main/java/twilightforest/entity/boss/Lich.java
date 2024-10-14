@@ -270,7 +270,7 @@ public class Lich extends BaseTFBoss {
 		}
 
 		if (this.getPhase() == 3)
-			this.level().addParticle(ParticleTypes.ANGRY_VILLAGER,
+			this.level().addParticle(TFParticleType.ANGRY_LICH.get(),
 				this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
 				this.getY() + 1.0D + this.getRandom().nextFloat() * this.getBbHeight(),
 				this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),

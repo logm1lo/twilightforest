@@ -59,4 +59,5 @@ public class TFParticleType {
 			return ColorParticleOption.streamCodec(MAGIC_EFFECT.get());
 		}
 	});
+	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ANGRY_LICH = PARTICLE_TYPES.register("angry_lich", () -> new SimpleParticleType(false));
 }

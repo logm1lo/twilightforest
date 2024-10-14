@@ -53,5 +53,6 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 		this.sprite(TFParticleType.TRANSFORMATION_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
 		this.sprite(TFParticleType.WANDERING_FIREFLY.get(), TwilightForestMod.prefix("firefly"));
 		this.spriteSet(TFParticleType.MAGIC_EFFECT.get(), ResourceLocation.withDefaultNamespace("effect"), 8, true);
+		this.sprite(TFParticleType.ANGRY_LICH.get(), ResourceLocation.withDefaultNamespace("angry"));
 	}
 }
